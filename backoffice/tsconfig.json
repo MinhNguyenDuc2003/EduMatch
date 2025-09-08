@@ -9,52 +9,52 @@
         "common/items/*"
       ],
       "@locationComponents/*": [
-        "modules/location/components/*"
+        "src/modules/location/components/*"
       ],
       "@locationModels/*": [
-        "modules/location/models/*"
+        "src/modules/location/models/*"
       ],
       "@locationServices/*": [
-        "modules/location/services/*"
+        "src/modules/location/services/*"
       ],
       "@taxServices/*": [
-        "modules/tax/services/*"
+        "src/modules/tax/services/*"
       ],
       "@taxComponents/*": [
-        "modules/tax/components/*"
+        "src/modules/tax/components/*"
       ],
       "@taxModels/*": [
-        "modules/tax/models/*"
+        "src/modules/tax/models/*"
       ],
       "@constants/*": [
-        "constants/*"
+        "src/constants/*"
       ],
       "@catalogModels/*": [
-        "modules/catalog/models/*"
+        "src/modules/catalog/models/*"
       ],
       "@catalogServices/*": [
-        "modules/catalog/services/*"
+        "src/modules/catalog/services/*"
       ],
       "@catalogComponents/*": [
-        "modules/catalog/components/*"
+        "src/modules/catalog/components/*"
       ],
       "@inventoryServices/*": [
-        "modules/inventory/services/*"
+        "src/modules/inventory/services/*"
       ],
       "@inventoryModels/*": [
-        "modules/inventory/models/*"
+        "src/modules/inventory/models/*"
       ],
       "@inventoryComponents/*": [
-        "modules/inventory/components/*"
+        "src/modules/inventory/components/*"
       ],
       "@webhookComponents/*": [
-        "modules/webhook/components/*"
+        "src/modules/webhook/components/*"
       ],
       "@webhookServices/*": [
-        "modules/webhook/services/*"
+        "src/modules/webhook/services/*"
       ],
       "@webhookModels/*": [
-        "modules/webhook/models/*"
+        "src/modules/webhook/models/*"
       ]
     },
     "target": "esnext",

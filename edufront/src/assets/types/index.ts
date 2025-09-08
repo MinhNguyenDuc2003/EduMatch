@@ -6,7 +6,7 @@ declare global {
     FunctionDescription?: null;
     Module?: string;
     FunctionType?: string;
-    Permissions?: number;
+    Permissions?: string ;
     ParentFunctionID?: string;
     IsShow?: boolean;
   };
