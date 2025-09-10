@@ -5,7 +5,8 @@ import { routing } from "@/src/i18n/routing";
 import { hasLocale } from "next-intl";
 import { map } from "lodash";
 import { setRequestLocale } from "next-intl/server";
-
+import { Loading } from "@/src/pattern/share/Loading";
+import "./globals.css";
 
 export function generateStacticParams () {
   return map(routing.locales, (locale) => ({ locale }))
@@ -36,6 +37,7 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
+            <Loading />
         </NextIntlClientProvider>
       </body>
     </html>

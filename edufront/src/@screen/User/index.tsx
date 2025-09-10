@@ -2,11 +2,13 @@
 import React from 'react'
 import useTranslate from '@/src/hooks/useTranslate';
 import { sStore } from '@/src/stores';
+import { onSetLoading } from '@/src/utils/eventBus';
 
 export default function User() {
      const { translate, translated, loading, error } = useTranslate();
      const ss = sStore();
      const locale = ss.Auth?.Locale
+     onSetLoading(loading);
   const Text =
     'Nepal’s prime minister has quit amid deadly Gen Z protests over a social media ban and corruption. Here’s what to know';
     return (
