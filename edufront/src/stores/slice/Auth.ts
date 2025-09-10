@@ -6,6 +6,7 @@ type State = {
     Token?: string;
     Permission?: IPermission;
     Functions?: IFunction[];
+    Locale ?: string
   };
   setToken(data: string): void;
   setAuthData(Obj: State["Auth"]): void;
