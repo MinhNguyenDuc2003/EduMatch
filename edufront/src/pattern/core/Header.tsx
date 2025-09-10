@@ -5,10 +5,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from './button';
+import { CustomFormField } from '../share/CustomFormField';
+import { useForm } from 'react-hook-form';
+import { Form } from './form';
 
 const Header = () => {
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
+
+  const methods = useForm<{ example: string }>({
+    resolver: undefined,
+    defaultValues: {
+      example: '',
+    },
+  });
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -20,6 +31,17 @@ const Header = () => {
     <Begin className="border-b border-b-gray-400 py-5 sticky top-0 z-50 bg-white">
       <Link href={SegUrl.User}>Đi tới màn hình User </Link>
       <Button onClick={() => router.push(SegUrl.Profile)}>Đi tới màn hình Profile</Button>
+      <Form {...methods}>
+        <form>
+          <CustomFormField
+            name="example"
+            label="Example Field"
+            placeholder="Enter something..."
+            className="flex"
+            labelClassName="mr-4 w-32"
+          />
+        </form>
+      </Form>
     </Begin>
   );
 };
