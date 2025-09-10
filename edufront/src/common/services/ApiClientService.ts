@@ -41,7 +41,7 @@ const sendRequest = async (
       window.location.href = response.url;
     }
 
-    return response;
+     return await response.json();
   } catch (error) {
     console.error('API call error:', error);
     throw error;
