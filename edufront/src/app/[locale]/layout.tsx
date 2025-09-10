@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
-import { routing } from '@/src/i18n/routing';
+import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 import { map } from 'lodash';
 import { setRequestLocale } from 'next-intl/server';
-import { Loading } from '@/src/pattern/share/Loading';
+import { Loading } from '@/pattern/share/Loading';
 import './globals.css';
 
 export function generateStacticParams() {
