@@ -159,7 +159,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
           <FormControl>
             {renderFormControl({
               ...field,
-              value: field.value !== undefined ? field.value : initialValue,
+              value: field.value ?? initialValue ?? "",
             })}
           </FormControl>
           <FormMessage className="text-red-400" />
