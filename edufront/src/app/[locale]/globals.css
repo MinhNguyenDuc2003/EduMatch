@@ -77,6 +77,26 @@ body {
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
+   --whites: #ffffff;
+  --bg-disable_button: #d9d9d9;
+  --bg-disable: #bfbfbf;
+
+  --text-primary: #1b3053;
+  --text-stroke: #3d4c63;
+  --text-constrast: #ffffff;
+  --normal: #64748b;
+
+  --primary-brand: #3d6cb9;
+  --primary-light: #e5ecf9;
+
+  --btn_submain: #6b7280;
+  --btn_error: #ef4444;
+  --btn_warning: #f59e0b;
+  --danger-main: #dc2626;
+
+  --secondary-normal: #9ca3af;
+  --gradient-green-enable: linear-gradient(to right, #22c55e, #16a34a);
+  --gradient-blue-enable: linear-gradient(to right, #3b82f6, #1d4ed8);
 }
 
 .dark {

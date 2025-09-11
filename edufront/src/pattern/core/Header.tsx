@@ -32,9 +32,9 @@ const Header = () => {
       <Link href={SegUrl.User}>Đi tới màn hình User </Link>
          <Button
                 disabled={false}
+                variant={"delete"}
                 color='text-white'
                 onClick={() =>router.push(SegUrl.User)}
-                className='bg-[#3D6CB9]'
                >
               Button test
               </Button>

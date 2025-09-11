@@ -216,6 +216,7 @@ export function Button({
       }}
       className={cn(
         buttonVariants({
+          
           variant,
           size,
           full,
