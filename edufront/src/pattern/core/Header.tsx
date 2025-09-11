@@ -28,9 +28,16 @@ const Header = () => {
     return null;
   }
   return (
-    <Begin className="border-b border-b-gray-400 py-5 sticky top-0 z-50 bg-white">
+    <Begin className="border-b border-b-gray-400 py-5 sticky top-0 z-50 bg-white pl-9">
       <Link href={SegUrl.User}>Đi tới màn hình User </Link>
-      <Button onClick={() => router.push(SegUrl.Profile)}>Đi tới màn hình Profile</Button>
+         <Button
+                disabled={false}
+                color='text-white'
+                onClick={() =>router.push(SegUrl.User)}
+                className='bg-[#3D6CB9]'
+               >
+              Button test
+              </Button>
       <Form {...methods}>
         <form>
           <CustomFormField
