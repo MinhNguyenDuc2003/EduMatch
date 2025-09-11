@@ -1,14 +1,19 @@
 "use client"
-import apiClientService from "@/src/common/services/ApiClientService";
-import { GenCtx } from "@/src/provider/GeneralContext";
-import { sStore } from "@/src/stores"
-import { onSetLoading } from "@/src/utils/eventBus";
+
+import apiClientService from "@/common/services/ApiClientService";
+import { GenCtx } from "@/provider/GeneralContext";
+import { sStore } from "@/stores";
+import { onSetLoading } from "@/utils/eventBus";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const data = "ffffff"
 export default GenCtx({
   useLogic(){
+      type IForm = {
+  fields: object;
+  filters: object;
+};
     const ss = sStore();
     const methods = useForm<IForm>({
       mode : "onSubmit",
@@ -33,7 +38,8 @@ export default GenCtx({
     }
     return {
       ss,
-      data
+      data,
+      meds
     }
   } 
 })
