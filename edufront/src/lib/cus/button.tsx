@@ -174,6 +174,7 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   IButton & {
     asChild?: boolean;
     value?: string;
+    label?: string;
   };
 
 export function Button({
@@ -197,6 +198,7 @@ export function Button({
   color,
   background,
   borderColor,
+  label,
   ...props
 }: ButtonProps) {
   const Comp = asChild ? Slot : 'button';
@@ -232,12 +234,13 @@ export function Button({
         background,
         className
       )}
+      title={props.title}
       {...props}
     >
       {iconLeft && <span className="mr-1">{iconLeft}</span>}
-      {(value || children) && (
+      {(value || children || label) && (
         <span className="value flex items-center gap-2 font-semibold leading-none transition-all w-max">
-          {value || children}
+          {value || children || label}
         </span>
       )}
       {iconRight && <span className="ml-1">{iconRight}</span>}

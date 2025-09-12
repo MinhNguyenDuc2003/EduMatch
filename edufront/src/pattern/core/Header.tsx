@@ -4,10 +4,10 @@ import { Begin } from '@/lib/by/Div';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Button } from './button';
-import { CustomFormField } from '../share/CustomFormField';
 import { useForm } from 'react-hook-form';
-import { Form } from './form';
+import { CustomFormField } from '../../lib/cus/CustomFormField';
+import { Button } from '../../lib/cus/button';
+import { Form } from '../../lib/cus/form';
 
 const Header = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -30,14 +30,14 @@ const Header = () => {
   return (
     <Begin className="border-b border-b-gray-400 py-5 sticky top-0 z-50 bg-white pl-9">
       <Link href={SegUrl.User}>Đi tới màn hình User </Link>
-         <Button
-                disabled={false}
-                variant={"delete"}
-                color='text-white'
-                onClick={() =>router.push(SegUrl.User)}
-               >
-              Button test
-              </Button>
+      <Button
+        disabled={false}
+        variant={'delete'}
+        color="text-white"
+        onClick={() => router.push(SegUrl.User)}
+      >
+        Button test
+      </Button>
       <Form {...methods}>
         <form>
           <CustomFormField

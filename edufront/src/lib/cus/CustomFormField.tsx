@@ -1,17 +1,17 @@
 import React from 'react';
 import { ControllerRenderProps, FieldValues, useFormContext, useFieldArray } from 'react-hook-form';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/pattern/core/form';
-import { Input } from '@/pattern/core/input';
-import { Button } from '@/pattern/core/button';
-import { Textarea } from '@/pattern/core/textarea';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/lib/cus/form';
+import { Input } from '@/lib/cus/input';
+import { Button } from '@/lib/cus/button';
+import { Textarea } from '@/lib/cus/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/pattern/core/select';
-import { Switch } from '@/pattern/core/switch';
+} from '@/lib/cus/select';
+import { Switch } from '@/lib/cus/switch';
 import { Edit, X, Plus } from 'lucide-react';
 
 interface FormFieldProps {
