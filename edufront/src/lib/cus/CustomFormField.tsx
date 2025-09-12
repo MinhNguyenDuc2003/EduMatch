@@ -4,13 +4,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/lib/
 import { Input } from '@/lib/cus/input';
 import { Button } from '@/lib/cus/button';
 import { Textarea } from '@/lib/cus/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/lib/cus/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/cus/select';
 import { Switch } from '@/lib/cus/switch';
 import { Edit, X, Plus } from 'lucide-react';
 
@@ -159,7 +153,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
           <FormControl>
             {renderFormControl({
               ...field,
-              value: field.value ?? initialValue ?? "",
+              value: field.value ?? initialValue ?? '',
             })}
           </FormControl>
           <FormMessage className="text-red-400" />

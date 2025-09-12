@@ -40,7 +40,7 @@ export type IButton = {
   borderColor?: IColorNames;
   iconLeft?: any;
   iconRight?: any;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'icon';
   shape?: 'circle' | 'square' | '';
   btnType?:
     | 'ok'
@@ -140,6 +140,7 @@ const buttonVariants = cva(
         md: 'h-8 px-3 text-sm',
         lg: 'h-10 px-4 text-base',
         xl: 'h-12 px-5 text-lg',
+        icon: 'size-9',
       },
       full: { true: 'w-full', false: '' },
       reasonable: { true: 'min-w-max px-2 py-1 text-[12px]', false: '' },
@@ -218,11 +219,9 @@ export function Button({
       }}
       className={cn(
         buttonVariants({
-          
           variant,
           size,
           full,
-          hug,
           reasonable,
           shadown,
           isPlump,
