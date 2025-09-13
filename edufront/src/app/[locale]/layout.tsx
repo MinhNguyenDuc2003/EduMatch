@@ -35,7 +35,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body>
+      <body className='p-[150px]'>
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
           <Loading />

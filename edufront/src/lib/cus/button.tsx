@@ -90,6 +90,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        Gray: 'bg-[#E6E6E6] px-2 py-1 [&_.value]:text-white hover:opacity-90 [&_.value]:text-black',
+        Blue: 'bg-[#3D6CB9] px-2 py-1 [&_.value]:text-white hover:opacity-90 ',
         ok: 'bg-gradient-to-b from-[#3D6CB9] to-[#1B3053] px-2 py-1 [&_.value]:text-white hover:opacity-90',
         back: 'bg-[#dee1e6]',
         confirm: 'bg-[#36b37e] [&_.value]:text-white',
