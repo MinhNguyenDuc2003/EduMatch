@@ -2,7 +2,8 @@ import { StateCreator } from "zustand";
 
 type State = {
   Joint: {
-    ListTest?: IListTest[];
+    ListScholarshipOpportunities?: IListScholarshipOpportunities[];
+    formFocusID?: string;
   };
   setJointData(Obj: State["Joint"]): void;
   resetJoint(): void;

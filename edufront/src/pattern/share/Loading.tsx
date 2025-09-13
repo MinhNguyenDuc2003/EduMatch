@@ -1,6 +1,6 @@
 "use client";
-import { Box, Core, RText } from "@/src/lib/by/Div";
-import { eventBus } from "@/src/utils/eventBus";
+import { Box, Core, RText } from "@/lib/by/Div";
+import { eventBus } from "@/utils/eventBus";
 import { delay } from "lodash";
 import { useEffect, useState } from "react";
 

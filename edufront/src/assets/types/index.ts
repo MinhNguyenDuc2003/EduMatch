@@ -10,9 +10,6 @@ declare global {
     ParentFunctionID?: string;
     IsShow?: boolean;
   };
-  type IForm = {
-  fields: object;
-  filters: object;
-};
+
 }
 export {};

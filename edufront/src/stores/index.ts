@@ -1,6 +1,6 @@
-import { reduce } from 'lodash';
 import { create } from 'zustand';
-import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { devtools, persist, createJSONStorage } from 'zustand/middleware';
+import { reduce } from 'lodash';
 import { AuthSlice } from './slice/Auth';
 import { JointSlice } from './slice/Joint';
 
@@ -28,15 +28,19 @@ export const sStore = create<State>()(
         ),
       {
         name: 'store',
-        storage: createJSONStorage(() => sessionStorage),
-
-        merge: (persistedState, currentState) => Object.assign(currentState, persistedState),
-
-        partialize: ({ Auth }) => {
+        storage: createJSONStorage(() => {
+          if (typeof window !== 'undefined') {
+            return sessionStorage;
+          }
           return {
-            Auth,
+            getItem: () => null,
+            setItem: () => {},
+            removeItem: () => {},
           };
-        },
+        }),
+        merge: (persistedState, currentState) =>
+          Object.assign(currentState, persistedState),
+        partialize: ({ Auth }) => ({ Auth }),
       }
     )
   )
