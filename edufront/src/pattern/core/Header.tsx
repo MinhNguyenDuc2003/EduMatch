@@ -8,13 +8,21 @@ import { useForm } from 'react-hook-form';
 import { CustomFormField } from '../../lib/cus/CustomFormField';
 import { Button } from '../../lib/cus/button';
 import { Form } from '../../lib/cus/form';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const schemas = z.object({
+  example: z.string().min(2, { message: 'Min length is 2' }),
+});
+
+type schemaType = z.infer<typeof schemas>;
 
 const Header = () => {
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
 
-  const methods = useForm<{ example: string }>({
-    resolver: undefined,
+  const methods = useForm<schemaType>({
+    resolver: zodResolver(schemas),
     defaultValues: {
       example: '',
     },
@@ -32,14 +40,14 @@ const Header = () => {
       <Link href={SegUrl.User}>Đi tới màn hình User </Link>
       <Button
         disabled={false}
-        variant={'delete'}
+        variant={'ok'}
         color="text-white"
         onClick={() => router.push(SegUrl.User)}
       >
         Button test
       </Button>
       <Form {...methods}>
-        <form>
+        <form onSubmit={methods.handleSubmit((data) => console.log(data))} className="space-y-4">
           <CustomFormField
             name="example"
             label="Example Field"
@@ -47,6 +55,8 @@ const Header = () => {
             className="flex"
             labelClassName="mr-4 w-32"
           />
+
+          <Button type="submit" label="Submit" />
         </form>
       </Form>
     </Begin>
