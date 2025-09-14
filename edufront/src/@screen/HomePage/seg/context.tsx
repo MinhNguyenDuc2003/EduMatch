@@ -144,7 +144,14 @@ export default GenCtx({
           formData.append('scholarship', JSON.stringify(item));
 
           const data = await apiClientService.post(
+            //Test xác nhận
             'https://justindo.app.n8n.cloud/webhook-test/8c87db94-10db-4f9d-939b-d079bacb16c1',
+            //Production
+            // 'https://justindo.app.n8n.cloud/webhook/e6fe88d9-a50c-496d-ab2c-2097038d4e7c',
+            //Test meeting
+            // 'https://justindo.app.n8n.cloud/webhook-test/e6fe88d9-a50c-496d-ab2c-2097038d4e7c',
+            //Production
+            // 'https://justindo.app.n8n.cloud/webhook/8c87db94-10db-4f9d-939b-d079bacb16c1',
             formData
           );
 
