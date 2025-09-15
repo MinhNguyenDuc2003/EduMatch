@@ -4,6 +4,7 @@ import feign.Feign;
 import feign.RequestInterceptor;
 import feign.Retryer;
 import feign.codec.Encoder;
+import feign.codec.ErrorDecoder;
 import feign.form.spring.SpringFormEncoder;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
@@ -23,6 +24,11 @@ public class FeignInterceptorConfig {
     @Bean
     public RequestInterceptor getRequestInterceptor() {
         return new CustomFeignInterceptor();
+    }
+
+    @Bean
+    public ErrorDecoder errorDecoder() {
+        return new FeignErrorDecoder();
     }
 
     @Bean

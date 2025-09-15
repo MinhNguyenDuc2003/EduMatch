@@ -33,7 +33,7 @@ public class UaaSession {
     private HttpServletRequest request;
 
     private String headerAuthorization;
-    private Long userId;
+    private String userId;
     private String username;
     private List<String> roles = new ArrayList<>();
 

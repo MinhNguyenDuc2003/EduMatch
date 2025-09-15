@@ -1,6 +1,11 @@
 package com.minh.constants;
 
 public final class EndPoint {
+
+    public static class PROFILES {
+        public static final String PROFILES = "/profiles";
+    }
+
     public static class LOCATION {
         public static final String COUNTRY = "/backoffice/countries";
         public static final String STATE_OR_PROVINCE = "/storefront/state-or-provinces";

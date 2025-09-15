@@ -1,5 +1,5 @@
 server {
-  server_name api.yas.local;
+  server_name 160.30.113.224;
 
   # Docker DNS
   resolver 127.0.0.11;
@@ -13,33 +13,36 @@ server {
   location /location/ {
     proxy_pass http://location;
   }
+  location /profile/ {
+    proxy_pass http://profile;
+  }
 }
 
 server {
-  server_name backoffice;
-  location / {
+  server_name 160.30.113.224;
+  location /backoffice {
     proxy_pass http://backoffice;
   }
 }
 
 server {
-  server_name edufront;
-  location / {
+  server_name  160.30.113.224;
+  location /edufront {
     proxy_pass http://edufront;
   }
 }
 
 server {
-  server_name pgadmin.yas.local;
-  location / {
+  server_name  160.30.113.224;
+  location /pgadmin {
     proxy_pass http://pgadmin;
   }
 }
 
 server {
-  server_name identity;
+  server_name 160.30.113.224;
   large_client_header_buffers 8 32k;
-  location / {
+  location /identity {
     proxy_pass http://identity;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;

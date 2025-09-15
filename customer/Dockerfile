@@ -23,7 +23,7 @@ ENV ENV_ISSUER_URI=http://identity/realms/Yas
 ENV ENV_AUTHORIZATION_URL=http://identity/realms/Yas/protocol/openid-connect/auth
 ENV ENV_TOKEN_URL=http://identity/realms/Yas/protocol/openid-connect/token
 
-ENV ENV_LOCATION_URL=http://api.yas.local/location
+ENV ENV_LOCATION_URL=http://location/location
 ENV ENV_KEYCLOAK_URL=http://identity
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]

@@ -20,6 +20,7 @@
         <module>customer</module>
         <module>backoffice-bff</module>
         <module>edufront-bff</module>
+        <module>profile</module>
     </modules>
 
     <properties>

@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -36,6 +37,9 @@ public class UserAddressService {
         }
 
         List<UserAddress> userAddressList = userAddressRepository.findAllByUserId(userId);
+        if (userAddressList.isEmpty()) {
+            return new ArrayList<>();
+        }
         List<AddressDetailVm> addressVmList = locationService.getAddressesByIdList(
                 userAddressList.stream().map(UserAddress::getAddressId).collect(Collectors.toList()));
 
