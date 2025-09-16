@@ -11,14 +11,7 @@ const data = 'ffffff';
 export default GenCtx({
   useLogic() {
     type IForm = {
-      fields: {
-        User: {
-          name: string;
-          age: number;
-          gmail: string;
-          description: string;
-        };
-      };
+      fields: object;
       filters: object;
     };
     const ss = sStore();
@@ -35,7 +28,6 @@ export default GenCtx({
         onSetLoading(true);
         try {
           const data = await apiClientService.get('/api/gemini/meds');
-          return 
         } catch (error) {
           console.error({ error });
         } finally {

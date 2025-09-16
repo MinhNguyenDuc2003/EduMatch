@@ -1,7 +1,7 @@
 'use client';
 
 import apiClientService from '@/common/services/ApiClientService';
-import { formSchema, IForm } from '@/lib/schemas';
+import { schemas } from '@/lib/schemas';
 import { GenCtx } from '@/provider/GeneralContext';
 import { sStore } from '@/stores';
 import { onSetLoading } from '@/utils/eventBus';
@@ -105,15 +105,25 @@ const ListScholarshipOpportunities = [
     UpdatedAt: '2025-09-13T08:00:00Z',
   },
 ];
+export type IUserForm = {
+  Fields: {
+    User: {
+      name: string;
+      age: number;
+      gmail: string;
+      description?: string;
+    };
+  };
+  Filters: object;
+};
 
 export default GenCtx({
   useLogic() {
     const ss = sStore();
-
-    const methods = useForm<IForm>({
+    const methods = useForm<IUserForm>({
       reValidateMode: 'onSubmit',
       mode: 'onChange',
-      resolver: zodResolver(formSchema),
+      resolver: zodResolver(schemas.User),
       defaultValues: {
         Fields: {
           User: {

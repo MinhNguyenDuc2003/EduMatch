@@ -10,6 +10,7 @@ import LanguageSwitcher from '@/pattern/share/LanguageSwitcher';
 import { compact, map } from 'lodash';
 import { useTranslations } from 'next-intl';
 import Context from './seg/context';
+import AddFiled from '@/pattern/share/AddFiled';
 
 export default function HomePage() {
   const t = useTranslations('home');
@@ -30,7 +31,7 @@ export default function HomePage() {
                 placeholder="Enter something..."
                 // className="flex"
                 labelClassName="mr-4 w-32"
-                inputClassName="flex-1"
+                inputClassName="w-64"
               />
               <CustomFormField
                 name="Fields.User.age"
@@ -103,6 +104,7 @@ export default function HomePage() {
                   />
                 ))}
               </Anchor>
+              <AddFiled/>
             </>
           );
         }}
