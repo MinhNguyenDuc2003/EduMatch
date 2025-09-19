@@ -21,7 +21,7 @@ export default function HomePage() {
         {({ ss, methods: { watch, getValues, setValue, handleSubmit }, meds }) => {
           return (
             <>
-              <h1 className="text-3xl text-red-600">{t('title')}</h1>
+              {/* <h1 className="text-3xl text-red-600">{t('title')}</h1> */}
 
               <Header />
 
@@ -77,15 +77,14 @@ export default function HomePage() {
                 {map(ss.Joint.ListScholarshipOpportunities, (item) => (
                   <CardSmalPic
                     key={item.OpportunityId}
-                    // picture="/default-avatar.png" 
+                    // picture="/default-avatar.png"
                     title={item.Title}
                     amount={item?.FundingAmount ?? 0}
                     deadline={item.Deadline}
                     description={item.ShortDescription}
                     tagName={compact([item?.Country, item?.FieldOfStudy])}
                     titleButton="Apply Now"
-                onClick={() => meds.onPushDataToN8n(item)}
-
+                    onClick={() => meds.onPushDataToN8n(item)}
                   />
                 ))}
               </Anchor>
@@ -93,7 +92,7 @@ export default function HomePage() {
                 {map(ss.Joint.ListScholarshipOpportunities, (item) => (
                   <CardBigPic
                     key={item.OpportunityId}
-                    // picture="/default-avatar.png" 
+                    // picture="/default-avatar.png"
                     title={item.Title}
                     amount={item?.FundingAmount ?? 0}
                     deadline={item.Deadline}
@@ -104,7 +103,7 @@ export default function HomePage() {
                   />
                 ))}
               </Anchor>
-              <AddFiled/>
+              <AddFiled />
             </>
           );
         }}
