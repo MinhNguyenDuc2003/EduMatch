@@ -2,31 +2,39 @@ server {
   listen 80;
   server_name 160.30.113.224;
 
+  # Docker DNS resolver
   resolver 127.0.0.11;
 
   location /swagger-ui/ {
-    proxy_pass http://swagger-ui;
+    proxy_pass http://swagger-ui/;
   }
+
   location /customer/ {
-    proxy_pass http://customer;
+    proxy_pass http://customer/;
   }
+
   location /location/ {
-    proxy_pass http://location;
+    proxy_pass http://location/;
   }
+
   location /profile/ {
-    proxy_pass http://profile;
+    proxy_pass http://profile/;
   }
+
   location /backoffice/ {
-    proxy_pass http://backoffice;
+    proxy_pass http://backoffice/;
   }
+
   location /edufront/ {
-    proxy_pass http://edufront;
+    proxy_pass http://edufront/;
   }
+
   location /pgadmin/ {
-    proxy_pass http://pgadmin;
+    proxy_pass http://pgadmin/;
   }
+
   location /identity/ {
-    proxy_pass http://identity;
+    proxy_pass http://identity/;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-Proto $scheme;
