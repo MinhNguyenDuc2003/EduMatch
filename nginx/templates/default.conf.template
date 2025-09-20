@@ -1,57 +1,39 @@
 server {
+  listen 80;
   server_name 160.30.113.224;
 
-  # Docker DNS
   resolver 127.0.0.11;
 
   location /swagger-ui/ {
     proxy_pass http://swagger-ui:8080;
   }
   location /customer/ {
-    proxy_pass http://customer;
+    proxy_pass http://customer:8080;
   }
   location /location/ {
-    proxy_pass http://location;
+    proxy_pass http://location:8080;
   }
   location /profile/ {
-    proxy_pass http://profile;
+    proxy_pass http://profile:8080;
   }
-}
-
-server {
-  server_name 160.30.113.224;
-  location /backoffice {
-    proxy_pass http://backoffice;
+  location /backoffice/ {
+    proxy_pass http://backoffice:3000;
   }
-}
-
-server {
-  server_name  160.30.113.224;
-  location /edufront {
-    proxy_pass http://edufront;
+  location /edufront/ {
+    proxy_pass http://edufront:3000;
   }
-}
-
-server {
-  server_name  160.30.113.224;
-  location /pgadmin {
-    proxy_pass http://pgadmin;
+  location /pgadmin/ {
+    proxy_pass http://pgadmin:80;
   }
-}
-
-server {
-  server_name 160.30.113.224;
-  large_client_header_buffers 8 32k;
-  location /identity {
-    proxy_pass http://identity;
+  location /identity/ {
+    proxy_pass http://identity:8080;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
-    # Workaround to void CORS error from Reactjs
     if ($uri ~ "^(.*)/(protocol/openid-connect/auth|login/oauth2/code)(.*)") {
-    	add_header Access-Control-Allow-Origin *;
+      add_header Access-Control-Allow-Origin *;
     }
   }
 }
