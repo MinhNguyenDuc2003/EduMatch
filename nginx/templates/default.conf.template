@@ -1,47 +1,85 @@
 server {
-  listen 80;
-  server_name 160.30.113.224;
+    listen 80;
+    server_name 160.30.113.224;
 
-  # Docker DNS resolver
-  resolver 127.0.0.11;
+    # Docker DNS resolver
+    resolver 127.0.0.11 valid=30s;
 
-  location /swagger-ui/ {
-    proxy_pass http://swagger-ui;
-  }
-
-  location /customer/ {
-    proxy_pass http://customer;
-  }
-
-  location /location/ {
-    proxy_pass http://location;
-  }
-
-  location /profile/ {
-    proxy_pass http://profile;
-  }
-
-  location /backoffice/ {
-    proxy_pass http://backoffice;
-  }
-
-  location /edufront/ {
-    proxy_pass http://edufront;
-  }
-
-  location /pgadmin/ {
-    proxy_pass http://pgadmin;
-  }
-
-  location /identity/ {
-    rewrite ^/identity/(.*)$ /$1 break;
-    proxy_pass http://identity;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    if ($uri ~ "^(.*)/(protocol/openid-connect/auth|login/oauth2/code)(.*)") {
-      add_header Access-Control-Allow-Origin *;
+    set $swagger_host "swagger-ui";
+    location /swagger-ui/ {
+        proxy_pass http://$swagger_host;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
-  }
+
+    set $customer_host "customer";
+    location /customer/ {
+        proxy_pass http://$customer_host;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    set $location_host "location";
+    location /location/ {
+        proxy_pass http://$location_host;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    set $profile_host "profile";
+    location /profile/ {
+        proxy_pass http://$profile_host;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    set $backoffice_host "backoffice";
+    location /backoffice/ {
+        proxy_pass http://$backoffice_host;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    set $edufront_host "edufront";
+    location /edufront/ {
+        proxy_pass http://$edufront_host;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    set $pgadmin_host "pgadmin";
+    location /pgadmin/ {
+        proxy_pass http://$pgadmin_host;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    set $identity_host "identity";
+    location /identity/ {
+        rewrite ^/identity/(.*)$ /$1 break;
+        proxy_pass http://$identity_host;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        # Workaround CORS for Keycloak login
+        if ($uri ~ "^(.*)/(protocol/openid-connect/auth|login/oauth2/code)(.*)") {
+            add_header Access-Control-Allow-Origin *;
+        }
+    }
 }
