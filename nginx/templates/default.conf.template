@@ -5,73 +5,96 @@ server {
     # Docker DNS resolver
     resolver 127.0.0.11 valid=30s;
 
+    # ==========================
+    # Swagger UI
+    # ==========================
     set $swagger_host "swagger-ui";
     location /swagger-ui/ {
-        proxy_pass http://$swagger_host;
+        proxy_pass http://$swagger_host$request_uri;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
+    # ==========================
+    # Customer service
+    # ==========================
     set $customer_host "customer";
     location /customer/ {
-        proxy_pass http://$customer_host;
+        proxy_pass http://$customer_host$request_uri;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
+    # ==========================
+    # Location service
+    # ==========================
     set $location_host "location";
     location /location/ {
-        proxy_pass http://$location_host;
+        proxy_pass http://$location_host$request_uri;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
+    # ==========================
+    # Profile service
+    # ==========================
     set $profile_host "profile";
     location /profile/ {
-        proxy_pass http://$profile_host;
+        proxy_pass http://$profile_host$request_uri;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
+    # ==========================
+    # Backoffice
+    # ==========================
     set $backoffice_host "backoffice";
     location /backoffice/ {
-        proxy_pass http://$backoffice_host;
+        proxy_pass http://$backoffice_host$request_uri;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
+    # ==========================
+    # Edufront (Next.js frontend)
+    # ==========================
     set $edufront_host "edufront";
     location /edufront/ {
-        proxy_pass http://$edufront_host;
+        proxy_pass http://$edufront_host$request_uri;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
+    # ==========================
+    # PgAdmin
+    # ==========================
     set $pgadmin_host "pgadmin";
     location /pgadmin/ {
-        proxy_pass http://$pgadmin_host;
+        proxy_pass http://$pgadmin_host$request_uri;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
+    # ==========================
+    # Keycloak / Identity
+    # ==========================
     set $identity_host "identity";
     location /identity/ {
-        rewrite ^/identity/(.*)$ /$1 break;
-        proxy_pass http://$identity_host;
+        proxy_pass http://$identity_host$request_uri;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
