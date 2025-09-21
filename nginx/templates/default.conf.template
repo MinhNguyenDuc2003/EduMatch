@@ -37,7 +37,7 @@ server {
     }
 
     location /backoffice/ {
-        proxy_pass http://backoffice/;
+        proxy_pass http://backoffice;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -45,7 +45,7 @@ server {
     }
 
     location /edufront/ {
-        proxy_pass http://edufront/;
+        proxy_pass http://edufront;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -53,15 +53,15 @@ server {
     }
 
     location /pgadmin/ {
-        proxy_pass http://pgadmin/;
+        proxy_pass http://pgadmin;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
-    location /identity/ {
-        proxy_pass http://identity/;
+    location /identity {
+        proxy_pass http://identity;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
