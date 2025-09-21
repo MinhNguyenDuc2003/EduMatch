@@ -656,7 +656,8 @@
       "redirectUris": [
         "http://backoffice/*",
         "http://localhost:3000/*",
-        "http://localhost:8087/*"
+        "http://localhost:8087/*",
+        "http://160.30.113.224/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -997,7 +998,8 @@
       "secret": "ZrU9I0q2uXBglBnmvyJdkl1lf0ncr8tn",
       "redirectUris": [
         "http://storefront/*",
-        "http://localhost:8087/*"
+        "http://localhost:8087/*",
+        "http://160.30.113.224/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -1146,7 +1148,8 @@
         "http://localhost:8085/*",
         "http://localhost:8084/*",
         "http://localhost:8086/*",
-        "http://localhost:8092/*"
+        "http://localhost:8092/*",
+        "http://160.30.113.224/*"
       ],
       "webOrigins": [
         "http://api.yas.local",

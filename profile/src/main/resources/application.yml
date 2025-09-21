@@ -116,7 +116,7 @@ logging:
     org.flywaydb: DEBUG
 
 springdoc:
-  packages-to-scan: com.minh.customer
+  packages-to-scan: com.minh.profile
   swagger-ui:
     path: /swagger-ui
     oauth:
