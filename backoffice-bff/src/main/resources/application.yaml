@@ -1,5 +1,12 @@
 server:
   port: '${env.port:8087}'
+  servlet:
+    context-path: /backoffice
+  compression:
+    enabled: true
+  tomcat:
+    relaxed-query-chars: '|,{,},[,]'
+  max-http-request-header-size: 65536
 spring:
   application:
     name: backoffice-bff

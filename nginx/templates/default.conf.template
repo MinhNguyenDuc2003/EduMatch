@@ -5,7 +5,7 @@ server {
     resolver 127.0.0.11 valid=30s;
 
     location /swagger-ui/ {
-        proxy_pass http://swagger-ui;
+        proxy_pass http://swagger-ui:8080;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -36,16 +36,16 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
-    location /backoffice {
-        proxy_pass http://backoffice;
+    location /backoffice/ {
+        proxy_pass http://backoffice/;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
-    location /edufront {
-        proxy_pass http://edufront;
+    location /edufront/ {
+        proxy_pass http://edufront/;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
