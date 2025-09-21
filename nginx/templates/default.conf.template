@@ -68,8 +68,8 @@ server {
     }
 
     set $identity_host "identity";
-    location /identity/ {
-        proxy_pass http://$identity_host;
+    location /identity {
+        proxy_pass http://$identity_host/;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
