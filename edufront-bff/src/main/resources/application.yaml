@@ -2,7 +2,7 @@ server:
   forward-headers-strategy: framework
   port: '${env.port:8087}'
   servlet:
-    context-path: /edufront
+    context-path: /
   compression:
     enabled: true
   tomcat:
