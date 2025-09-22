@@ -1,4 +1,5 @@
 server:
+  forward-headers-strategy: framework
   port: '${env.port:8087}'
   servlet:
     context-path: /backoffice
