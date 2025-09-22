@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from '@/lib/cus/dropdown-menu';
 import { User } from 'lucide-react';
+import MobileNavigation from '../share/MobileNavigation';
 
 const Header = () => {
   const [isStudentOpen, setIsStudentOpen] = useState(false);
@@ -32,13 +33,19 @@ const Header = () => {
     return null;
   }
   return (
-    <Begin className="px-4 lg:px-20 py-4 flex items-center border-b backdrop-blur-md sticky top-0 z-50">
-      <div className="w-full flex h-16 items-center justify-between px-4">
-        <Link className="flex items-center justify-center" href={SegUrl.User}>
-          <Image src={'/logo.svg'} alt="logo" width={75} height={75} />
-          <span className="ml-2.5 text-2xl">Edu</span>
-          <span className="text-2xl text-[#3D6CB9] font-bold ">Match</span>
-        </Link>
+    <Begin className="px-4 lg:px-20 py-4 flex items-center border-b bg-white sticky top-0 z-50">
+      <div className="w-full flex h-16 items-center justify-between">
+        <div className="flex items-center space-x-4">
+          {/* Mobile menu */}
+          <MobileNavigation />
+
+          {/* Logo */}
+          <Link className="flex items-center" href={SegUrl.User}>
+            <Image src={'/logo.svg'} alt="logo" width={75} height={75} />
+            <span className="ml-2.5 text-2xl">Edu</span>
+            <span className="text-2xl text-[#3D6CB9] font-bold ">Match</span>
+          </Link>
+        </div>
 
         <nav className="hidden lg:flex items-center space-x-6">
           <DropdownSection
@@ -60,7 +67,7 @@ const Header = () => {
         <div className="flex items-center">
           <div className="hidden lg:flex items-center space-x-4">
             <Link href={SegUrl.User}>
-              <Button variant="outline" className="text-[var(--primary-brand)] text-lg p-4">
+              <Button variant="outline" className="text-primary-brand text-lg p-4">
                 <RText>
                   Student <span className="font-bold">Login</span>
                 </RText>
@@ -68,7 +75,7 @@ const Header = () => {
             </Link>
 
             <Link href={SegUrl.User}>
-              <Button className=" bg-[#3D6CB9] text-white rounded-lg  hover:bg-[#2c4e8a] text-lg p-4">
+              <Button className=" bg-primary-brand text-white rounded-lg  hover:bg-[#2c4e8a] text-lg p-4">
                 <RText>
                   Student <span className="font-bold">Sign Up</span>
                 </RText>
@@ -76,7 +83,7 @@ const Header = () => {
             </Link>
           </div>
 
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="shadow-none rounded-full">
                 <User className="h-6 w-6" />

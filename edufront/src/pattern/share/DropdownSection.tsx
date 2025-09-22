@@ -21,7 +21,7 @@ const DropdownSection = ({
   gridCols?: string;
 }) => {
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen} modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"

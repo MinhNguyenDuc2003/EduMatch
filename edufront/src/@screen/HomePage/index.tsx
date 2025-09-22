@@ -11,6 +11,7 @@ import { compact, map } from 'lodash';
 import { useTranslations } from 'next-intl';
 import Context from './seg/context';
 import AddFiled from '@/pattern/share/AddFiled';
+import Footer from '@/pattern/core/Footer';
 
 export default function HomePage() {
   const t = useTranslations('home');
@@ -104,6 +105,8 @@ export default function HomePage() {
                 ))}
               </Anchor>
               <AddFiled />
+
+              <Footer />
             </>
           );
         }}
