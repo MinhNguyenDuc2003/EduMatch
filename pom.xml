@@ -21,6 +21,7 @@
         <module>backoffice-bff</module>
         <module>edufront-bff</module>
         <module>profile</module>
+        <module>registry</module>
     </modules>
 
     <properties>

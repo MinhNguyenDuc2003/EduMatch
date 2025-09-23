@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "profile", path = "/profile", contextId = "customer-feign-client", configuration = FeignInterceptorConfig.class)
+@FeignClient(name = "PROFILE", path = "/profile", contextId = "customer-feign-client", configuration = FeignInterceptorConfig.class)
 public interface ApplicantProfileFeign {
 
     @GetMapping("/user")
