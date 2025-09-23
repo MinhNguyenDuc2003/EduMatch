@@ -1,5 +1,13 @@
 server:
+  forward-headers-strategy: framework
   port: '${env.port:8087}'
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+  tomcat:
+    relaxed-query-chars: '|,{,},[,]'
+  max-http-request-header-size: 65536
 spring:
   application:
     name: backoffice-bff
@@ -13,7 +21,7 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: http://identity/realms/Yas
+            issuer-uri: ${env.issuer.uri:http://localhost:8080/realms/Yas}
         registration:
           api-client:
             provider: keycloak

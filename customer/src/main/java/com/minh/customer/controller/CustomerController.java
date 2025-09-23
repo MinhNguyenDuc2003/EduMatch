@@ -1,5 +1,6 @@
 package com.minh.customer.controller;
 
+import com.minh.customer.data.vo.CustomerVo;
 import com.minh.customer.service.CustomerService;
 import com.minh.customer.viewmodel.customer.CustomerAdminVm;
 import com.minh.customer.viewmodel.customer.CustomerListVm;
@@ -7,9 +8,10 @@ import com.minh.customer.viewmodel.customer.CustomerPostVm;
 import com.minh.customer.viewmodel.customer.CustomerProfileRequestVm;
 import com.minh.customer.viewmodel.customer.CustomerVm;
 import com.minh.customer.viewmodel.customer.GuestUserVm;
+import com.minh.model.ApiResponse;
+import com.minh.utils.SecurityUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,8 +43,8 @@ public class CustomerController {
     }
 
     @GetMapping("/backoffice/customers/profile/{id}")
-    public ResponseEntity<CustomerVm> getCustomerById(@PathVariable String id) {
-        return ResponseEntity.ok(customerService.getCustomerProfile(id));
+    public ApiResponse<CustomerVo> getCustomerById(@PathVariable String id) {
+        return ApiResponse.ok(customerService.getCustomerProfile(id));
     }
 
     @PutMapping("/backoffice/customers/profile/{id}")
@@ -72,9 +74,21 @@ public class CustomerController {
     }
 
     @GetMapping("/storefront/customer/profile")
-    public ResponseEntity<CustomerVm> getCustomerProfile() {
-        return ResponseEntity.ok(
-                customerService.getCustomerProfile(SecurityContextHolder.getContext().getAuthentication().getName()));
+    public ApiResponse<CustomerVo> getCustomerProfile() {
+        return ApiResponse.ok(
+                customerService.getCustomerProfile(SecurityUtil.getCurrentUserId()));
+    }
+
+    @PostMapping("/storefront/customer/profile")
+    public ApiResponse<CustomerVo> createCustomerProfile(@RequestBody CustomerVo customerVo) {
+        return ApiResponse.ok(
+                customerService.createCustomerProfile(customerVo));
+    }
+
+    @PutMapping("/storefront/customer/profile")
+    public ApiResponse<CustomerVo> updateCustomerProfile(@RequestBody CustomerVo customerVo) {
+        return ApiResponse.ok(
+                customerService.updateCustomerProfile(customerVo));
     }
 
     @PostMapping("/storefront/customer/guest-user")

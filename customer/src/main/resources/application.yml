@@ -126,7 +126,7 @@ springdoc:
     authorization-url: ${env.authorization.url:http://localhost:8080/realms/Yas/protocol/openid-connect/auth}
     token-url: ${env.token.url:http://localhost:8080/realms/Yas/protocol/openid-connect/token}
 
-yas:
+edu:
   services:
     location: ${env.location.url:http://localhost:8088/location}
 

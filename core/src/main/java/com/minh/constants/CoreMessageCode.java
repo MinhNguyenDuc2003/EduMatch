@@ -12,4 +12,6 @@ public final class CoreMessageCode {
     public static final String USER_WITH_EMAIL_ALREADY_EXITED = "User with email already exited";
     public static final String UNAUTHENTICATED = "Unauthenticated";
     public static final String USER_ADDRESS_NOT_FOUND = "User address not found";
+    public static final String APPLICANT_ID_IS_NOT_EXIST = "Applicant id is not exist";
+    public static final String APPLICANT_IS_NOT_EXIST = "Applicant is not exist";
 }

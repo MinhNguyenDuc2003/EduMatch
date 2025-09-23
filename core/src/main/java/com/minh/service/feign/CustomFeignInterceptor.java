@@ -17,7 +17,6 @@ public class CustomFeignInterceptor implements RequestInterceptor {
 
         assert servletRequestAttribute != null;
         String authHeader = servletRequestAttribute.getRequest().getHeader("Authorization");
-        log.info("Header: {}", authHeader);
         if (StringUtils.hasText(authHeader))
             template.header("Authorization", authHeader);
     }
