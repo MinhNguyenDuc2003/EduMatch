@@ -2,6 +2,7 @@ package com.minh.backoffice.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -15,6 +16,7 @@ import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -39,7 +41,15 @@ public class SecurityConfig {
                 .authorizeExchange(auth -> auth
                         .pathMatchers("/health", "/actuator/prometheus", "/actuator/health/**").permitAll()
                         .anyExchange().hasAnyRole("ADMIN"))
-                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login(oauth2 -> oauth2
+                        .authenticationSuccessHandler((webFilterExchange, authentication) -> {
+                            var exchange = webFilterExchange.getExchange();
+                            var response = exchange.getResponse();
+                            response.setStatusCode(HttpStatus.FOUND);
+                            response.getHeaders().setLocation(URI.create("/backoffice/home"));
+                            return response.setComplete();
+                        })
+                )
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
@@ -47,6 +57,7 @@ public class SecurityConfig {
                         .logoutSuccessHandler(oidcLogoutSuccessHandler())
                 )
                 .build();
+
     }
 
     private ServerLogoutSuccessHandler oidcLogoutSuccessHandler() {

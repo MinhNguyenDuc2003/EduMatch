@@ -13,7 +13,7 @@ server {
     }
 
     location /customer/ {
-        proxy_pass http://customer$request_uri;
+        proxy_pass http://customer;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -21,7 +21,7 @@ server {
     }
 
     location /location/ {
-        proxy_pass http://location$request_uri;
+        proxy_pass http://location;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -29,7 +29,7 @@ server {
     }
 
     location /profile/ {
-        proxy_pass http://profile$request_uri;
+        proxy_pass http://profile;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
