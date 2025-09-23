@@ -19,11 +19,12 @@ ENV ENV_DB_SEPARATOR=/
 ENV ENV_DB_POOL_MINIMUM=2
 ENV ENV_DB_POOL_MAXIMUM=10
 
-ENV ENV_ISSUER_URI=http://160.30.113.224/identity/realms/Yas
-ENV ENV_AUTHORIZATION_URL=http://160.30.113.224/identity/realms/Yas/protocol/openid-connect/auth
-ENV ENV_TOKEN_URL=http://160.30.113.224/identity/realms/Yas/protocol/openid-connect/token
+ENV ENV_ISSUER_URI=http://identity/identity/realms/Yas
+ENV ENV_AUTHORIZATION_URL=http://identity/identity/realms/Yas/protocol/openid-connect/auth
+ENV ENV_TOKEN_URL=http://identity/identity/realms/Yas/protocol/openid-connect/token
+ENV ENV_KEYCLOAK_URL=http://identity/identity
 
-ENV ENV_KEYCLOAK_URL=http://identity
+ENV ENV_LOCATION_URL=http://location/location
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 
