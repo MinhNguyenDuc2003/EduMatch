@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '../../lib/cus/button';
 import Image from 'next/image';
-import DropdownSection from '../share/DropdownSection';
 import { scholarshipProviderMenuItems, studentMenuItems } from '@/constants/Common';
 import {
   DropdownMenu,
@@ -16,12 +15,16 @@ import {
 } from '@/lib/cus/dropdown-menu';
 import { User } from 'lucide-react';
 import MobileNavigation from '../share/MobileNavigation';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem as NavMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/lib/cus/navigation-menu';
+import { NavigationMenuItem } from '../share/NavigationMenuItem';
 
 const Header = () => {
-  const [isStudentOpen, setIsStudentOpen] = useState(false);
-  const [isScholarshipProviderOpen, setIsScholarshipProviderOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
 
@@ -47,22 +50,33 @@ const Header = () => {
           </Link>
         </div>
 
-        <nav className="hidden lg:flex items-center space-x-6">
-          <DropdownSection
-            items={studentMenuItems}
-            isOpen={isStudentOpen}
-            setIsOpen={setIsStudentOpen}
-            triggerText="Students"
-          />
+        <NavigationMenu className="hidden lg:flex items-center space-x-6 ">
+          <NavigationMenuList>
+            <NavMenuItem>
+              <NavigationMenuTrigger className="text-lg">Students</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="grid w-[800px] grid-cols-2 gap-6 p-6">
+                  {studentMenuItems.map((item, index) => (
+                    <NavigationMenuItem key={index} {...item} />
+                  ))}
+                </div>
+              </NavigationMenuContent>
+            </NavMenuItem>
 
-          <DropdownSection
-            items={scholarshipProviderMenuItems}
-            isOpen={isScholarshipProviderOpen}
-            setIsOpen={setIsScholarshipProviderOpen}
-            triggerText="Scholarship Providers"
-            gridCols="grid-cols-1"
-          />
-        </nav>
+            <NavMenuItem>
+              <NavigationMenuTrigger className="text-lg">
+                Scholarship Providers
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="grid w-[600px] grid-cols-1 gap-6 p-6">
+                  {scholarshipProviderMenuItems.map((item, index) => (
+                    <NavigationMenuItem key={index} {...item} />
+                  ))}
+                </div>
+              </NavigationMenuContent>
+            </NavMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
 
         <div className="flex items-center">
           <div className="hidden lg:flex items-center space-x-4">
