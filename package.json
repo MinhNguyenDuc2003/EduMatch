@@ -1,0 +1,22 @@
+{
+  "name": "edumatch",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "dev:front": "cd edufront && npm run dev",
+    "dev:back": "cd backoffice && npm run dev",
+    "all": "concurrently \"npm run dev:front\" \"npm run dev:back\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/lodash": "^4.17.20",
+    "lodash": "^4.17.21",
+    "zustand": "^5.0.8"
+  }
+}
