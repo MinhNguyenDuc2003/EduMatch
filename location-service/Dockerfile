@@ -27,5 +27,9 @@ ENV ENV_KEYCLOAK_URL=http://identity/identity
 
 ENV ENV_LOCATION_URL=http://location/location
 
+ENV ENV_EUREKA_URL=http://registry-server:8761/eureka/
+ENV EUREKA_REGISTER_WITH_EUREKA=true
+ENV EUREKA_FETCH_REGISTRY=true
+
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 
