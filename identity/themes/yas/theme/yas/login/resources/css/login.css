@@ -1,242 +1,119 @@
-body,
-html {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-  min-height: 0;
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.87);
-  margin: 0;
-  height: 100%;
-}
 body {
-  margin: 0;
-}
-.login-content {
-  background-size: cover;
-  background-position: center;
-  min-height: 100%;
-  min-width: 320px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
-.login-content .box {
-  width: 448px;
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.24), 0 0 2px 0 rgba(0, 0, 0, 0.12);
-  margin: auto;
-}
-.login-content .box .box-container {
-  width: 100%;
-  padding-left: 32px;
-}
-.login-content .box .logo {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 30px;
-}
-.login-content .box .application-name {
-  width: 270px;
-  font-family: Muli;
-  font-size: 24px;
-  font-weight: 600;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 0.83;
-  letter-spacing: -0.4px;
-  text-align: left;
-  color: #0055b8;
-  margin-left: 32px;
-  margin-top: 40px;
-}
-input {
-  cursor: pointer;
-}
-.login-content .box .form {
-  margin-left: 32px;
-  margin-top: 55px;
-  margin-bottom: -55px;
-}
-.login-content .box .login-field {
-  width: 320px;
-  height: 24px;
-  font-family: Muli;
-  font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: -0.4px;
-  text-align: left;
-  color: #000000;
-  border: none;
-  border-bottom: 1px solid #ccc;
-  outline: none;
-  background-color: #fff;
-}
-.login-content .box input[type="text"]:focus,
-.login-content .box input[type="password"]:focus {
-  border-bottom: 2px solid #0055b8;
-}
-.login-content .box input[type="text"]:-webkit-autofill,
-.login-content .box input[type="password"]:-webkit-autofill {
-  box-shadow: 0 0 0px 1000px white inset;
-}
-.login-content .box .submit {
-  width: 320px;
-  height: 36px;
-  border-radius: 2px;
-  background-color: #00754a;
-  font-family: Muli;
-  font-size: 14px;
-  font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: center;
-  color: #ffffff;
-  border-style: none;
-  margin-top: 5rem;
-  margin-bottom: 4rem;
-}
-.login-content .box .visibility {
-  position: relative;
-  left: 296px;
-  top: 20px;
-  width: 24px;
-  height: 24px;
-  opacity: 0.54;
-  border: none;
-}
-.login-content .box .copyright {
-  min-width: 320px;
-  text-align: center;
-  font-size: 14px;
-  opacity: 0.54;
-  position: relative;
-  top: 50px;
-}
-.message-text {
-  width: 322px;
-  height: 22px;
-  opacity: 0.87;
-  font-family: Muli;
-  font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.3;
-  letter-spacing: -0.4px;
-  text-align: left;
-  color: #b8082a;
-  border: 0px;
-  position: relative;
-  top: 235px;
-  left: 64px;
-  display: inline-flex;
-  align-items: center;
-}
-.identity-providers {
-  width: 270px;
-  font-family: Muli;
-  font-size: 16px;
-  font-weight: 600;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 0.83;
-  letter-spacing: -0.4px;
-  text-align: left;
-  color: #0055b8;
-  margin-left: 32px;
-  margin-top: 20px;
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #333;
+    margin: 0;
 }
 
-.login-content .box .social-link-style {
-  width: 320px;
-  height: 36px;
-  border-radius: 2px;
-  background-color: var(--white);
-  font-family: Muli;
-  font-size: 14px;
-  font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: center;
-  color: #00754a;
-  border-style: solid;
-  border-color: #00754a;
-  margin-top: 0px;
-  margin-left: 30px;
-
-  margin-bottom: 10px;
+.login-container {
+    display: flex;
+    height: 100vh;
 }
 
-.login-content .box .para {
-  font-family: Muli;
-  font-size: 14px;
-  margin-left: 30px;
-}
-.logoyas {
-  max-width: 10px;
-  max-height: 10px;
+.login-illustration {
+    flex: 1;
+    background: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-a {
-  text-decoration: none;
+.login-illustration img {
+    max-width: 80%;
+    height: auto;
 }
 
-.register {
-  width: 320px;
-  height: 36px;
-  border-radius: 2px;
-  background-color: white;
-  font-family: Muli;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  color: black;
-  margin-left: 16px;
-  margin-top: 5px;
-  border-style: 1px solid black;
+.login-box {
+    flex: 1;
+    background: #fff;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 
-.backtologin {
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 1rem;
+.logo-container {
+    margin-bottom: 1rem;
 }
 
-.register-submit {
-  width: 320px;
-  height: 36px;
-  border-radius: 2px;
-  background-color: #00754a;
-  font-family: Muli;
-  font-size: 14px;
-  font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: center;
-  color: #ffffff;
-  border-style: none;
-  margin-top: 2rem;
-  margin-bottom: 3rem;
+.logo {
+    height: 60px;
+}
+
+.tagline {
+    font-size: 1rem;
+    color: #2a5298;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 .input-group {
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin: 0.6rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-field {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
 }
 
 .error-message {
-  color: red;
+    font-size: 0.8rem;
+    color: red;
+    margin-top: 0.3rem;
+}
+
+.submit {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.8rem;
+    background: #2a5298;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: 0.3s;
+}
+
+.submit:hover {
+    background: #1e3c72;
+}
+
+.wrapper-button {
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.backtologin {
+    margin-bottom: 1rem;
+}
+
+.backtologin a {
+    color: #2a5298;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.backtologin a:hover {
+    text-decoration: underline;
+}
+
+.copyright {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: #999;
 }
