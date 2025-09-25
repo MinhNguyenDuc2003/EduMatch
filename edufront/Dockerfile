@@ -26,6 +26,9 @@ WORKDIR /app
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV API_BASE_PATH http://160.30.113.224/edufront/api
+ENV I18NEXUS_API_KEY 9tyPHZ7HboEM-F0f_Lqmbw
+ENV GEMINI_API_KEY AIzaSyDaQ3-9F7xROuJZxu7LTp2jtmejqe2IMFo
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs

@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS customer;
 
-create table customer.USER_ADDRESS (
+create table IF NOT EXISTS customer.USER_ADDRESS (
     id bigserial not null,
     CREATED_BY VARCHAR(32) DEFAULT '',
     UPDATED_BY VARCHAR(32) DEFAULT '',

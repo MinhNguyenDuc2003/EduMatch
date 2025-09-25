@@ -3,13 +3,14 @@
 
 <@layout.registrationLayout displayInfo=social.displayInfo; section>
     <#if section = "title">
-        ${msg("loginTitle",(realm.displayName!''))}
+        EduMatch | Login
     <#elseif section = "header">
-        <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+        <link href="${url.resourcesPath}/css/login.css" rel="stylesheet"/>
         <script>
             function togglePassword() {
-                var x = document.getElementById("password");
-                var v = document.getElementById("vi");
+                const x = document.getElementById("password");
+                const v = document.getElementById("vi");
                 if (x.type === "password") {
                     x.type = "text";
                     v.src = "${url.resourcesPath}/img/eye.png";
@@ -19,34 +20,45 @@
                 }
             }
         </script>
-            <div class="logoyas">
-           <img class="logo" src="${url.resourcesPath}/img/yaslogo.png" alt="yas">
-        </div>
     <#elseif section = "form">
-    
-        <div class="box-container">
-            <div>
-                <p class="application-name">Welcome to Yas store</p>
+        <div class="login-container">
+            <!-- Cột trái: hình minh hoạ -->
+            <div class="login-illustration">
+                <img src="${url.resourcesPath}/img/edumatch-illustration.png" alt="EduMatch illustration">
             </div>
-        <#if realm.password>
-            <div>
-               <form id="kc-form-login" class="form" onsubmit="return true;" action="${url.loginAction}" method="post">
-                    <input id="username" class="login-field" placeholder="${msg("username")}" type="text" name="username" tabindex="1">
-                    <div>
-                        <label class="visibility" id="v" onclick="togglePassword()"><img id="vi" src="${url.resourcesPath}/img/eye-off.png"></label>
-                    </div>
-                <input id="password" class="login-field" placeholder="${msg("password")}" type="password" name="password" tabindex="2">
-                <input class="submit" type="submit" value="${msg("doLogIn")}" tabindex="3">
-                </form>
+
+            <!-- Cột phải: form login -->
+            <div class="login-box">
+                <div class="logo-container">
+                    <img class="logo" src="${url.resourcesPath}/img/edumatch-logo.png" alt="EduMatch Logo">
+                </div>
+                <p class="tagline">Find your scholarship, build your future ✨</p>
+
+                <#if realm.password>
+                    <form id="kc-form-login" class="form" action="${url.loginAction}" method="post">
+                        <input id="username" class="login-field" placeholder="${msg("username")}" type="text" name="username" tabindex="1">
+
+                        <div class="password-container">
+                            <input id="password" class="login-field" placeholder="${msg("password")}" type="password" name="password" tabindex="2">
+                            <label class="visibility" onclick="togglePassword()">
+                                <img id="vi" src="${url.resourcesPath}/img/eye-off.png">
+                            </label>
+                        </div>
+
+                        <input class="submit" type="submit" value="${msg("doLogIn")}" tabindex="3">
+                    </form>
+                </#if>
+
+                <div class="register">
+                    <@linkPrimary.kw href=url.registrationUrl>
+                        <input class="register-btn" type="button" value="${msg("doRegister")}" tabindex="4">
+                    </@linkPrimary.kw>
+                </div>
+
+                <p class="copyright">
+                    © EduMatch ${.now?string('yyyy')}
+                </p>
             </div>
-            <div class="register">
-               <@linkPrimary.kw href=url.registrationUrl>
-                    <input class="register" type="button" value="${msg("doRegister")}" tabindex="3" href=url.registrationUrl>
-                </@linkPrimary.kw>
-            </div>
-        </#if>
-        <div>
-            <p class="copyright">&copy; copyright - yas.nashtech-garage ${.now?string('yyyy')}</p>
         </div>
     </#if>
 </@layout.registrationLayout>

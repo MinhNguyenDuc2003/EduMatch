@@ -1,5 +1,7 @@
 app:
   environment: '${spring.profiles.environment:local}'
+  url:
+    eureka: '${env.eureka.url:http://localhost:8761/eureka/}'
   db:
     schema: location
     port: '${env.db.port:5432}'
@@ -126,3 +128,14 @@ springdoc:
     authorization-url: ${env.authorization.url:http://localhost:8080/realms/Yas/protocol/openid-connect/auth}
     token-url: ${env.token.url:http://localhost:8080/realms/Yas/protocol/openid-connect/token}
 
+eureka:
+  instance:
+    preferIpAddress: false
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 1
+  client:
+    registerWithEureka: ${EUREKA_REGISTER_WITH_EUREKA:true}
+    fetchRegistry: ${EUREKA_FETCH_REGISTRY:true}
+    serviceUrl:
+      defaultZone: '${app.url.eureka}'

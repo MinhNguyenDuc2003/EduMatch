@@ -2,6 +2,10 @@ package com.minh.customer.service;
 
 import com.minh.constants.CoreMessageCode;
 import com.minh.customer.configuration.KeycloakPropsConfig;
+import com.minh.customer.data.vo.ApplicantProfileVo;
+import com.minh.customer.data.vo.CustomerVo;
+import com.minh.customer.feign.ApplicantProfileFeign;
+import com.minh.customer.viewmodel.address.ActiveAddressVm;
 import com.minh.customer.viewmodel.customer.CustomerAdminVm;
 import com.minh.customer.viewmodel.customer.CustomerListVm;
 import com.minh.customer.viewmodel.customer.CustomerPostVm;
@@ -9,6 +13,7 @@ import com.minh.customer.viewmodel.customer.CustomerProfileRequestVm;
 import com.minh.customer.viewmodel.customer.CustomerVm;
 import com.minh.customer.viewmodel.customer.GuestUserVm;
 import com.minh.exception.BusinessException;
+import com.minh.service.base.BaseService;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.core.Response;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -19,6 +24,7 @@ import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +34,20 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class CustomerService {
+public class CustomerService extends BaseService {
 
     private static final String ERROR_FORMAT = "%s: Client %s don't have access right for this resource";
     private static final int USER_PER_PAGE = 10;
     private static final String GUEST = "GUEST";
     private final Keycloak keycloak;
     private final KeycloakPropsConfig keycloakPropsConfig;
+
+    @Autowired
+    private ApplicantProfileFeign profileFeign;
+    @Autowired
+    private UserAddressService userAddressService;
+    @Autowired
+    private LocationService locationService;
 
     public CustomerService(Keycloak keycloak, KeycloakPropsConfig keycloakPropsConfig) {
         this.keycloak = keycloak;
@@ -111,11 +124,21 @@ public class CustomerService {
         }
     }
 
-    public CustomerVm getCustomerProfile(String userId) {
+    public CustomerVo getCustomerProfile(String userId) {
         try {
-            return CustomerVm.fromUserRepresentation(
-                    keycloak.realm(keycloakPropsConfig.getRealm()).users().get(userId).toRepresentation());
+            CustomerVo vo = new CustomerVo();
 
+            CustomerVm customerVm = CustomerVm.fromUserRepresentation(
+                    keycloak.realm(keycloakPropsConfig.getRealm()).users().get(userId).toRepresentation());
+            vo.setCustomer(customerVm);
+
+            ApplicantProfileVo profileVo = this.parseResponse(profileFeign.getOneByUserId(userId));
+            vo.setApplicantProfile(profileVo);
+
+            List<ActiveAddressVm> addressList = userAddressService.getUserAddressList();
+            vo.setAddresses(addressList);
+
+            return vo;
         } catch (ForbiddenException exception) {
             throw new AccessDeniedException(
                     String.format(ERROR_FORMAT, exception.getMessage(), keycloakPropsConfig.getResource()));
@@ -202,4 +225,17 @@ public class CustomerService {
         List<UserRepresentation> users = realmResource.users().search(null, null, null, email, 0, 1);
         return !users.isEmpty();
     }
+
+    public CustomerVo createCustomerProfile(CustomerVo customerVo) {
+        profileFeign.create(customerVo.getApplicantProfile());
+        userAddressService.createAddress(customerVo.getAddressPostVm());
+        return customerVo;
+    }
+
+    public CustomerVo updateCustomerProfile(CustomerVo customerVo) {
+        profileFeign.update(customerVo.getApplicantProfile());
+        locationService.updateAddress(customerVo.getAddressPostVm());
+        return customerVo;
+    }
+
 }

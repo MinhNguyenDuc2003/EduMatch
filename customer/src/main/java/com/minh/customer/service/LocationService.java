@@ -36,7 +36,7 @@ public class LocationService extends AbstractCircuitBreakFallbackHandler {
                 .queryParam("ids", ids)
                 .buildAndExpand()
                 .toUri();
-
+        System.out.println("Location url: " + url);
         return restClient.get()
                 .uri(url)
                 .headers(h -> h.setBearerAuth(jwt))
@@ -75,6 +75,25 @@ public class LocationService extends AbstractCircuitBreakFallbackHandler {
                 .toUri();
 
         return restClient.post()
+                .uri(url)
+                .headers(h -> h.setBearerAuth(jwt))
+                .body(addressPostVm)
+                .retrieve()
+                .body(AddressVm.class);
+    }
+
+    @Retry(name = "restApi")
+    @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleAddressFallback")
+    public AddressVm updateAddress(AddressPostVm addressPostVm) {
+        final String jwt =
+                ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getTokenValue();
+        final URI url = UriComponentsBuilder
+                .fromHttpUrl(serviceUrlConfig.location())
+                .path("/storefront/addresses/" + addressPostVm.id())
+                .buildAndExpand()
+                .toUri();
+
+        return restClient.put()
                 .uri(url)
                 .headers(h -> h.setBearerAuth(jwt))
                 .body(addressPostVm)

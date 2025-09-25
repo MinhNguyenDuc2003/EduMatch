@@ -19,11 +19,17 @@ ENV ENV_DB_SEPARATOR=/
 ENV ENV_DB_POOL_MINIMUM=2
 ENV ENV_DB_POOL_MAXIMUM=10
 
-ENV ENV_ISSUER_URI=http://identity/realms/Yas
-ENV ENV_AUTHORIZATION_URL=http://identity/realms/Yas/protocol/openid-connect/auth
-ENV ENV_TOKEN_URL=http://identity/realms/Yas/protocol/openid-connect/token
+ENV ENV_ISSUER_URI=http://160.30.113.224/identity/realms/Yas
+ENV ENV_AUTHORIZATION_URL=http://160.30.113.224/identity/realms/Yas/protocol/openid-connect/auth
+ENV ENV_TOKEN_URL=http://160.30.113.224/identity/realms/Yas/protocol/openid-connect/token
 
-ENV ENV_KEYCLOAK_URL=http://identity
+ENV ENV_KEYCLOAK_URL=http://identity/identity
+
+ENV ENV_LOCATION_URL=http://location/location
+
+ENV ENV_EUREKA_URL=http://registry-server:8761/eureka/
+ENV EUREKA_REGISTER_WITH_EUREKA=true
+ENV EUREKA_FETCH_REGISTRY=true
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 
