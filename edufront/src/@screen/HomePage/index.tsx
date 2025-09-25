@@ -6,7 +6,6 @@ import { Button } from '@/lib/cus/button';
 import Header from '@/pattern/core/Header';
 import CardBigPic from '@/pattern/share/CardBigPic';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
-import LanguageSwitcher from '@/pattern/share/LanguageSwitcher';
 import { compact, map } from 'lodash';
 import { useTranslations } from 'next-intl';
 import Context from './seg/context';
@@ -26,7 +25,7 @@ export default function HomePage() {
 
               <Header />
 
-              <CustomFormField
+              {/* <CustomFormField
                 name="Fields.User.name"
                 label="Name"
                 placeholder="Enter something..."
@@ -60,7 +59,7 @@ export default function HomePage() {
               />
 
               {watch('Fields.User.name')}
-              {watch('Fields.User.age')}
+              {watch('Fields.User.age')} */}
 
               {/* <Button label="Push data to N8n" onClick={handleSubmit(meds.onPushDataToN8n)} /> */}
               {/* <Button
@@ -73,38 +72,39 @@ export default function HomePage() {
                 label="Push data to N8n"
                 onClick={handleSubmit(meds.onPushDataToN8n)}
               /> */}
-              <LanguageSwitcher />
-              <Anchor className="grid grid-cols-3 gap-5">
-                {map(ss.Joint.ListScholarshipOpportunities, (item) => (
-                  <CardSmalPic
-                    key={item.OpportunityId}
-                    // picture="/default-avatar.png"
-                    title={item.Title}
-                    amount={item?.FundingAmount ?? 0}
-                    deadline={item.Deadline}
-                    description={item.ShortDescription}
-                    tagName={compact([item?.Country, item?.FieldOfStudy])}
-                    titleButton="Apply Now"
-                    onClick={() => meds.onPushDataToN8n(item)}
-                  />
-                ))}
-              </Anchor>
-              <Anchor className="grid grid-cols-4 gap-5 mt-7">
-                {map(ss.Joint.ListScholarshipOpportunities, (item) => (
-                  <CardBigPic
-                    key={item.OpportunityId}
-                    // picture="/default-avatar.png"
-                    title={item.Title}
-                    amount={item?.FundingAmount ?? 0}
-                    deadline={item.Deadline}
-                    description={item.ShortDescription}
-                    tagName={item?.Country}
-                    titleButton="Apply Now"
-                    onClick={() => console.log(`Apply for ${item.Title}`)}
-                  />
-                ))}
-              </Anchor>
-              <AddFiled />
+              <div className="lg:px-40 py-4">
+                <Anchor className="grid grid-cols-3 gap-5">
+                  {map(ss.Joint.ListScholarshipOpportunities, (item) => (
+                    <CardSmalPic
+                      key={item.OpportunityId}
+                      // picture="/default-avatar.png"
+                      title={item.Title}
+                      amount={item?.FundingAmount ?? 0}
+                      deadline={item.Deadline}
+                      description={item.ShortDescription}
+                      tagName={compact([item?.Country, item?.FieldOfStudy])}
+                      titleButton="Apply Now"
+                      onClick={() => meds.onPushDataToN8n(item)}
+                    />
+                  ))}
+                </Anchor>
+                <Anchor className="grid grid-cols-4 gap-5 mt-7">
+                  {map(ss.Joint.ListScholarshipOpportunities, (item) => (
+                    <CardBigPic
+                      key={item.OpportunityId}
+                      // picture="/default-avatar.png"
+                      title={item.Title}
+                      amount={item?.FundingAmount ?? 0}
+                      deadline={item.Deadline}
+                      description={item.ShortDescription}
+                      tagName={item?.Country}
+                      titleButton="Apply Now"
+                      onClick={() => console.log(`Apply for ${item.Title}`)}
+                    />
+                  ))}
+                </Anchor>
+                <AddFiled />
+              </div>
 
               <Footer />
             </>

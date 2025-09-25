@@ -2,7 +2,6 @@
 import { SegUrl } from '@/@init/base';
 import { Begin, RText } from '@/lib/by/Div';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '../../lib/cus/button';
 import Image from 'next/image';
@@ -13,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/lib/cus/dropdown-menu';
-import { User } from 'lucide-react';
+import { CircleUserRound } from 'lucide-react';
 import MobileNavigation from '../share/MobileNavigation';
 import {
   NavigationMenu,
@@ -23,10 +22,12 @@ import {
   NavigationMenuTrigger,
 } from '@/lib/cus/navigation-menu';
 import { NavigationMenuItem } from '../share/NavigationMenuItem';
+import { useTranslations } from 'next-intl';
+import LanguageSwitcher from '../share/LanguageSwitcher';
 
 const Header = () => {
   const [isMounted, setIsMounted] = useState(false);
-  const router = useRouter();
+  const t = useTranslations('header');
 
   useEffect(() => {
     setIsMounted(true);
@@ -36,7 +37,7 @@ const Header = () => {
     return null;
   }
   return (
-    <Begin className="px-4 lg:px-20 py-4 flex items-center border-b bg-white sticky top-0 z-50">
+    <Begin className="px-4 lg:px-40 py-4 flex items-center border-b bg-white sticky top-0 z-50">
       <div className="w-full flex h-16 items-center justify-between">
         <div className="flex items-center space-x-4">
           {/* Mobile menu */}
@@ -46,16 +47,18 @@ const Header = () => {
           <Link className="flex items-center" href={SegUrl.User}>
             <Image src={'/logo.svg'} alt="logo" width={75} height={75} />
             <span className="ml-2.5 text-2xl">Edu</span>
-            <span className="text-2xl text-[#3D6CB9] font-bold ">Match</span>
+            <span className="text-2xl text-primary-brand font-bold ">Match</span>
           </Link>
         </div>
 
         <NavigationMenu className="hidden lg:flex items-center space-x-6 ">
           <NavigationMenuList>
             <NavMenuItem>
-              <NavigationMenuTrigger className="text-lg">Students</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="text-md">
+                {t('navMenu.title1')}
+              </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="grid w-[800px] grid-cols-2 gap-6 p-6">
+                <div className="grid w-[800px] grid-cols-2 gap-4 p-2">
                   {studentMenuItems.map((item, index) => (
                     <NavigationMenuItem key={index} {...item} />
                   ))}
@@ -64,11 +67,11 @@ const Header = () => {
             </NavMenuItem>
 
             <NavMenuItem>
-              <NavigationMenuTrigger className="text-lg">
-                Scholarship Providers
+              <NavigationMenuTrigger className="text-md">
+                {t('navMenu.title2')}
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="grid w-[600px] grid-cols-1 gap-6 p-6">
+                <div className="grid w-[500px] grid-cols-1 gap-4 p-2">
                   {scholarshipProviderMenuItems.map((item, index) => (
                     <NavigationMenuItem key={index} {...item} />
                   ))}
@@ -78,8 +81,8 @@ const Header = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="flex items-center">
-          <div className="hidden lg:flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
+          <div className="hidden lg:flex items-center space-x-2">
             <Link href={SegUrl.User}>
               <Button variant="outline" className="text-primary-brand text-lg p-4">
                 <RText>
@@ -97,10 +100,12 @@ const Header = () => {
             </Link>
           </div>
 
+          <LanguageSwitcher />
+
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="shadow-none rounded-full">
-                <User className="h-6 w-6" />
+                <CircleUserRound className="h-8 w-8" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="" align="end" forceMount>

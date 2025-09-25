@@ -17,14 +17,14 @@ export function NavigationMenuItem({
   return (
     <NavigationMenuLink
       href={href}
-      className="flex flex-row items-start space-x-4 p-4 rounded-lg hover:bg-accent transition-colors group"
+      className="flex flex-row items-start space-x-2 rounded-lg hover:bg-accent transition-colors group"
     >
       <div className="flex-shrink-0">
-        <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-          <Icon className="text-primary " />
+        <div className="size-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+          <Icon className="text-primary" />
         </div>
       </div>
-      <div className="flex-1 min-w-0 text-lg">
+      <div className="flex-1 min-w-0 text-md">
         <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
           {title}
         </h3>
