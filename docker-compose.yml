@@ -29,7 +29,7 @@ services:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
       KC_DB_USERNAME: admin
-      KC_DB_PASSWORD: admin
+      KC_DB_PASSWORD: minh01672527656
       KC_HTTP_PORT: 80
       KC_PROXY: edge
       KC_HOSTNAME: 160.30.113.224
@@ -54,18 +54,6 @@ services:
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
-    networks:
-      - m-network
-  pgadmin:
-    image: dpage/pgadmin4:2024-10-19-2
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    ports:
-      - "8080:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@minh.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_CONFIG_WSGI_SCRIPT_NAME: /pgadmin
     networks:
       - m-network
   redis:
