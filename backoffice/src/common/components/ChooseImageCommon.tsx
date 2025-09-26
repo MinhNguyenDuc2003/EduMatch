@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { useState } from 'react';
 import { Image } from 'react-bootstrap';
 import styles from '../../styles/ChooseImage.module.css';
 
