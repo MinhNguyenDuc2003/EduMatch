@@ -9,8 +9,6 @@ ENV ENV_PORT=8761
 
 ENV SERVER_PORT=8761
 ENV EUREKA_HOSTNAME=registry-server
-ENV EUREKA_REGISTER_WITH_EUREKA=true
-ENV EUREKA_FETCH_REGISTRY=true
 ENV EUREKA_URL=http://registry-server:8761/eureka/
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]

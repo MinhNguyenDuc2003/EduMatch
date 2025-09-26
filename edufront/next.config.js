@@ -6,7 +6,8 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
     reactStrictMode: true,
     output: 'standalone',
-     outputFileTracingRoot: __dirname,
+    outputFileTracingRoot: __dirname,
+    basePath: '/edufront',
 };
 
 console.log("👉 Next.js đang chạy ở thư mục:", process.cwd());
