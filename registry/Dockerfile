@@ -1,5 +1,5 @@
 FROM eclipse-temurin:21-jre-alpine
-COPY target/profile*.jar app.jar
+COPY target/registry*.jar app.jar
 
 ENV SPRING_PROFILES_ACTIVE=prod
 ENV SPRING_PROFILES_ENVIRONMENT=develop

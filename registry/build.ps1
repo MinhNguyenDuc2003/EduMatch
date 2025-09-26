@@ -1,4 +1,4 @@
-$REGISTRY = "registry.edumatch.registry"
+$REGISTRY = "registry.edumatch.space"
 $PROJECT  = "edumatch"
 $SERVICE  = "registry"
 $VERSION  = "1.0.0"

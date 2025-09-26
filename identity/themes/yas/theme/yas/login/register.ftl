@@ -1,115 +1,73 @@
-<#import "template.ftl" as layout>
-<#import "components/link/primary.ftl" as linkPrimary>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EduMatch | Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="${url.resourcesPath}/css/login.css" />
+</head>
+<body>
+<div class="register-container">
+    <!-- Illustration -->
+    <div class="illustration">
+        <img src="${url.resourcesPath}/img/edumatch-illustration.png" alt="EduMatch illustration">
+    </div>
 
-<@layout.registrationLayout displayMessage=!messagesPerField.existsError('firstName','lastName','email','username','password','password-confirm'); section>
-    <#if section = "title">
-        EduMatch | Register
-    <#elseif section = "header">
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
-        <link href="${url.resourcesPath}/css/login.css" rel="stylesheet"/>
-    <#elseif section = "form">
-        <div class="login-container">
-            <!-- Cột trái: Hình minh hoạ -->
-            <div class="login-illustration">
-                <img src="${url.resourcesPath}/img/edumatch-illustration.png" alt="EduMatch illustration">
-            </div>
+    <!-- Form -->
+    <div class="form-side">
+        <div class="form-box">
+            <img src="${url.resourcesPath}/img/edumatch-logo.png" alt="EduMatch logo" class="logo">
+            <p class="tagline">Join EduMatch – Unlock your scholarship opportunities 🚀</p>
 
-            <!-- Cột phải: form đăng ký -->
-            <div class="login-box">
-                <div class="logo-container">
-                    <img class="logo" src="${url.resourcesPath}/img/edumatch-logo.png" alt="EduMatch Logo">
+            <form id="kc-register-form" action="${url.registrationAction}" method="post">
+                <#if !realm.registrationEmailAsUsername>
+                    <div class="input-group">
+                        <label for="firstName">First Name</label>
+                        <input id="firstName" name="firstName" class="register-field" type="text"
+                               value="${(register.formData.firstName!'')}" placeholder="Enter first name" />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="lastName">Last Name</label>
+                        <input id="lastName" name="lastName" class="register-field" type="text"
+                               value="${(register.formData.lastName!'')}" placeholder="Enter last name" />
+                    </div>
+                </#if>
+
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" class="register-field" type="email"
+                           value="${(register.formData.email!'')}" placeholder="Enter email" />
                 </div>
-                <p class="tagline">Join EduMatch – Unlock your scholarship opportunities 🚀</p>
 
-                <form id="kc-register-form" class="form" action="${url.registrationAction}" method="post">
-
-                    <!-- First name -->
+                <#if !realm.registrationEmailAsUsername>
                     <div class="input-group">
-                        <input type="text" id="firstName" class="login-field" name="firstName"
-                               placeholder="${msg("firstName")}"
-                               value="${(register.formData.firstName!'')}"
-                               aria-invalid="<#if messagesPerField.existsError('firstName')>true</#if>" />
-                        <#if messagesPerField.existsError('firstName')>
-                            <span class="error-message">${kcSanitize(messagesPerField.get('firstName'))?no_esc}</span>
-                        </#if>
+                        <label for="username">Username</label>
+                        <input id="username" name="username" class="register-field" type="text"
+                               value="${(register.formData.username!'')}" placeholder="Enter username" />
                     </div>
+                </#if>
 
-                    <!-- Last name -->
-                    <div class="input-group">
-                        <input type="text" id="lastName" class="login-field" name="lastName"
-                               placeholder="${msg("lastName")}"
-                               value="${(register.formData.lastName!'')}"
-                               aria-invalid="<#if messagesPerField.existsError('lastName')>true</#if>" />
-                        <#if messagesPerField.existsError('lastName')>
-                            <span class="error-message">${kcSanitize(messagesPerField.get('lastName'))?no_esc}</span>
-                        </#if>
-                    </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" class="register-field" type="password" placeholder="Enter password" />
+                </div>
 
-                    <!-- Email -->
-                    <div class="input-group">
-                        <input type="text" id="email" class="login-field" name="email"
-                               placeholder="${msg("email")}"
-                               value="${(register.formData.email!'')}" autocomplete="email"
-                               aria-invalid="<#if messagesPerField.existsError('email')>true</#if>" />
-                        <#if messagesPerField.existsError('email')>
-                            <span class="error-message">${kcSanitize(messagesPerField.get('email'))?no_esc}</span>
-                        </#if>
-                    </div>
+                <div class="input-group">
+                    <label for="password-confirm">Confirm</label>
+                    <input id="password-confirm" name="password-confirm" class="register-field" type="password" placeholder="Confirm password" />
+                </div>
 
-                    <!-- Username -->
-                    <#if !realm.registrationEmailAsUsername>
-                        <div class="input-group">
-                            <input type="text" id="username" class="login-field" name="username"
-                                   placeholder="${msg("username")}"
-                                   value="${(register.formData.username!'')}" autocomplete="username"
-                                   aria-invalid="<#if messagesPerField.existsError('username')>true</#if>" />
-                            <#if messagesPerField.existsError('username')>
-                                <span class="error-message">${kcSanitize(messagesPerField.get('username'))?no_esc}</span>
-                            </#if>
-                        </div>
-                    </#if>
+                <button type="submit" class="btn submit">Register</button>
+            </form>
 
-                    <!-- Password -->
-                    <#if passwordRequired??>
-                        <div class="input-group">
-                            <input type="password" id="password" class="login-field" name="password"
-                                   placeholder="${msg("password")}" autocomplete="new-password"
-                                   aria-invalid="<#if messagesPerField.existsError('password')>true</#if>" />
-                            <#if messagesPerField.existsError('password')>
-                                <span class="error-message">${kcSanitize(messagesPerField.get('password'))?no_esc}</span>
-                            </#if>
-                        </div>
-
-                        <div class="input-group">
-                            <input type="password" id="password-confirm" class="login-field" name="password-confirm"
-                                   placeholder="${msg("passwordConfirm")}"
-                                   aria-invalid="<#if messagesPerField.existsError('password-confirm')>true</#if>" />
-                            <#if messagesPerField.existsError('password-confirm')>
-                                <span class="error-message">${kcSanitize(messagesPerField.get('password-confirm'))?no_esc}</span>
-                            </#if>
-                        </div>
-                    </#if>
-
-                    <!-- Recaptcha -->
-                    <#if recaptchaRequired??>
-                        <div class="form-group">
-                            <div class="g-recaptcha" data-size="compact" data-sitekey="${recaptchaSiteKey}"></div>
-                        </div>
-                    </#if>
-
-                    <!-- Buttons -->
-                    <div class="wrapper-button">
-                        <div id="kc-form-options" class="backtologin">
-                            <a href="${url.loginUrl}">${kcSanitize(msg("backToLogin"))?no_esc}</a>
-                        </div>
-                        <input class="submit" type="submit" value="${msg("doRegister")}" />
-                    </div>
-                </form>
-
-                <p class="copyright">
-                    © EduMatch ${.now?string('yyyy')}
-                </p>
+            <div class="form-footer">
+                <a href="${url.loginUrl}" class="login-link">Back to Login</a>
             </div>
+
+            <p class="copyright">© EduMatch 2025</p>
         </div>
-    </#if>
-</@layout.registrationLayout>
+    </div>
+</div>
+</body>
+</html>

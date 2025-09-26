@@ -8,8 +8,8 @@ import { setRequestLocale } from 'next-intl/server';
 import { Loading } from '@/pattern/share/Loading';
 import './globals.css';
 
-export function generateStacticParams() {
-  return map(routing.locales, (locale) => ({ locale }));
+export function generateStaticParams(): { locale: string }[] {
+  return routing.locales.map((locale) => ({ locale }));
 }
 export default async function LocaleLayout({
   children,
