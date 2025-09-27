@@ -7,7 +7,6 @@ const nextConfig = {
     reactStrictMode: true,
     output: 'standalone',
     outputFileTracingRoot: __dirname,
-    basePath: '/edufront',
 };
 
 module.exports = withNextIntl(nextConfig);

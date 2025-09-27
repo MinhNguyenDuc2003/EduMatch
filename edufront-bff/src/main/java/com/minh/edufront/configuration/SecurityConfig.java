@@ -2,7 +2,6 @@ package com.minh.edufront.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -16,7 +15,6 @@ import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 
-import java.net.URI;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -38,27 +36,19 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
-                .authorizeExchange(auth -> auth
-                        .pathMatchers("/profile/**").authenticated()
-                        .pathMatchers("/address/**").authenticated()
-                        .anyExchange().permitAll())
-                .oauth2Login(oauth2 -> oauth2
-                        .authenticationSuccessHandler((webFilterExchange, authentication) -> {
-                            var response = webFilterExchange.getExchange().getResponse();
-                            response.setStatusCode(HttpStatus.FOUND);
-                            response.getHeaders().setLocation(URI.create("/edufront/en"));
-                            return response.setComplete();
-                        })
-                )
-                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
-                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .logout(logout -> logout
-                        .logoutSuccessHandler(oidcLogoutSuccessHandler())
-                )
-                .build();
+            .authorizeExchange(auth -> auth
+                .pathMatchers("/profile/**").authenticated()
+                .pathMatchers("/address/**").authenticated()
+                .anyExchange().permitAll())
+            .oauth2Login(Customizer.withDefaults())
+            .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
+            .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
+            .csrf(ServerHttpSecurity.CsrfSpec::disable)
+            .logout(logout -> logout
+                .logoutSuccessHandler(oidcLogoutSuccessHandler())
+            )
+            .build();
     }
-
 
     private ServerLogoutSuccessHandler oidcLogoutSuccessHandler() {
         OidcClientInitiatedServerLogoutSuccessHandler oidcLogoutSuccessHandler =
