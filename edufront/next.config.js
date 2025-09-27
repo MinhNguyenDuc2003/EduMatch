@@ -10,6 +10,4 @@ const nextConfig = {
     basePath: '/edufront',
 };
 
-console.log("👉 Next.js đang chạy ở thư mục:", process.cwd());
-
 module.exports = withNextIntl(nextConfig);

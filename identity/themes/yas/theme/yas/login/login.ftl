@@ -18,9 +18,8 @@
         <div class="form-box">
             <img src="${url.resourcesPath}/img/edumatch-logo.png" alt="EduMatch logo" class="logo">
             <p class="tagline">Find your scholarship, build your future ✨</p>
-
-            <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
-                <div class="input-group">
+            <form id="kc-form-login" action="${url.loginAction}" method="post">
+            <div class="input-group">
                     <label for="username">Username</label>
                     <input tabindex="1" id="username" name="username" class="login-field" type="text" autofocus
                            value="${(login.username!'')}" placeholder="Enter username" />
