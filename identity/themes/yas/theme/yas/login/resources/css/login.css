@@ -59,7 +59,7 @@ body {
     width: 250px;
     display: flex;
     align-items: flex-start; /* căn label trên cùng */
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     position: relative;
 }
 
@@ -80,6 +80,7 @@ body {
     left: 105px; /* cách label một chút */
     top: -18px;  /* nằm trên input */
     width: calc(100% - 105px); /* bằng chiều rộng input */
+    white-space: nowrap;
 }
 
 .login-field, .register-field {
