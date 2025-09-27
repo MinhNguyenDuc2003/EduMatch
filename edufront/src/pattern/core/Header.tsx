@@ -83,18 +83,10 @@ const Header = () => {
 
         <div className="flex items-center space-x-2">
           <div className="hidden lg:flex items-center space-x-2">
-            <Link href={SegUrl.User}>
+            <Link href='http://160.30.113.224/edufront/oauth2/authorization/storefront-bff'>
               <Button variant="outline" className="text-primary-brand text-lg p-4">
                 <RText>
-                  Student <span className="font-bold">Login</span>
-                </RText>
-              </Button>
-            </Link>
-
-            <Link href={SegUrl.User}>
-              <Button className=" bg-primary-brand text-white rounded-lg  hover:bg-[#2c4e8a] text-lg p-4">
-                <RText>
-                  Student <span className="font-bold">Sign Up</span>
+                  Student <span className="font-bold">Login / Sign Up</span>
                 </RText>
               </Button>
             </Link>

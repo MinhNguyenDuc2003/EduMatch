@@ -15,12 +15,6 @@
             border-radius: 6px;
             margin-bottom: 12px;
         }
-        .field-error {
-            display: none;
-            color: #b00020;
-            font-size: 0.9rem;
-            margin-top: 6px;
-        }
         .disabled {
             opacity: 0.6;
             pointer-events: none;
@@ -40,76 +34,76 @@
 
             <!-- Server error top -->
             <#if message?has_content>
-                <div id="server-error" class="error" style="display:block" aria-live="assertive">${message}</div>
+                <div id="server-error" class="error" style="display:block" aria-live="assertive">Username is already exist. Please choose another username.</div>
             </#if>
 
             <form id="kc-register-form" action="${url.registrationAction}" method="post" novalidate>
                 <#if !realm.registrationEmailAsUsername>
                     <div class="input-group">
                         <label for="firstName">First Name</label>
-                        <input id="firstName" name="firstName" class="register-field" type="text"
-                               value="${(register.formData.firstName!'')}" placeholder="Enter first name" />
                         <div id="err-firstName" class="field-error">
                             <#if message?has_content && message?contains("firstName")>
                                 ${message}
                             </#if>
                         </div>
+                        <input id="firstName" name="firstName" class="register-field" type="text"
+                               value="${(register.formData.firstName!'')}" placeholder="Enter first name" />
                     </div>
 
                     <div class="input-group">
                         <label for="lastName">Last Name</label>
-                        <input id="lastName" name="lastName" class="register-field" type="text"
-                               value="${(register.formData.lastName!'')}" placeholder="Enter last name" />
                         <div id="err-lastName" class="field-error">
                             <#if message?has_content && message?contains("lastName")>
                                 ${message}
                             </#if>
                         </div>
+                        <input id="lastName" name="lastName" class="register-field" type="text"
+                               value="${(register.formData.lastName!'')}" placeholder="Enter last name" />
                     </div>
                 </#if>
 
                 <div class="input-group">
                     <label for="email">Email</label>
-                    <input id="email" name="email" class="register-field" type="email"
-                           value="${(register.formData.email!'')}" placeholder="Enter email" />
                     <div id="err-email" class="field-error">
                         <#if message?has_content && message?contains("email")>
                             ${message}
                         </#if>
                     </div>
+                    <input id="email" name="email" class="register-field" type="email"
+                           value="${(register.formData.email!'')}" placeholder="Enter email" />
                 </div>
 
                 <#if !realm.registrationEmailAsUsername>
                     <div class="input-group">
                         <label for="username">Username</label>
-                        <input id="username" name="username" class="register-field" type="text"
-                               value="${(register.formData.username!'')}" placeholder="Enter username" />
                         <div id="err-username" class="field-error">
                             <#if message?has_content && message?contains("username")>
                                 ${message}
                             </#if>
                         </div>
+                        <input id="username" name="username" class="register-field" type="text"
+                               value="${(register.formData.username!'')}" placeholder="Enter username" />
                     </div>
                 </#if>
 
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input id="password" name="password" class="register-field" type="password" placeholder="Enter password" />
                     <div id="err-password" class="field-error">
                         <#if message?has_content && message?contains("password")>
                             ${message}
                         </#if>
                     </div>
+                    <input id="password" name="password" class="register-field" type="password" placeholder="Enter password" />
                 </div>
 
                 <div class="input-group">
                     <label for="password-confirm">Confirm</label>
-                    <input id="password-confirm" name="password-confirm" class="register-field" type="password" placeholder="Confirm password" />
                     <div id="err-password-confirm" class="field-error">
                         <#if message?has_content && message?contains("confirm")>
                             ${message}
                         </#if>
                     </div>
+                    <input id="password-confirm" name="password-confirm" class="register-field" type="password" placeholder="Confirm password" />
                 </div>
 
                 <button id="register-btn" type="submit" class="btn submit">Register</button>
