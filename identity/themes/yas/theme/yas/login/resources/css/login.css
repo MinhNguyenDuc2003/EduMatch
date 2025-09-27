@@ -56,40 +56,38 @@ body {
 }
 
 .input-group {
-    width: 250px;
-    display: flex;
-    align-items: flex-start; /* căn label trên cùng */
-    margin-bottom: 2rem;
-    position: relative;
+    display: flex;              /* label + input nằm ngang */
+    align-items: center;        /* canh giữa theo chiều dọc */
+    position: relative;         /* để field-error tính vị trí absolute */
+    margin-bottom: 1.5rem;      /* khoảng cách giữa các ô, tránh chồng input */
 }
 
 .input-group label {
-    width: 100px;
+    flex: 0 0 120px;            /* label cố định chiều rộng 120px */
     font-size: 0.9rem;
     color: #444;
-    margin-right: 0.5rem;
     text-align: right;
-    flex-shrink: 0;
-}
-
-.field-error {
-    display: none;
-    color: #b00020;
-    font-size: 0.85rem;
-    position: absolute;
-    left: 105px; /* cách label một chút */
-    top: -18px;  /* nằm trên input */
-    width: calc(100% - 105px); /* bằng chiều rộng input */
-    white-space: nowrap;
+    margin-right: 0.5rem;
 }
 
 .login-field, .register-field {
-    flex: 1;
+    flex: 1;                    /* chiếm phần còn lại */
+    min-width: 200px;           /* ô input tối thiểu */
     padding: 0.8rem;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1rem;
     box-sizing: border-box;
+}
+
+.field-error {
+    display: none;
+    position: absolute;
+    top: -18px;                 /* nằm trên input */
+    left: 125px;                /* cách label, bằng flex-basis + margin */
+    font-size: 0.85rem;
+    color: #b00020;
+    white-space: nowrap;        /* không wrap xuống dòng */
 }
 
 .btn {

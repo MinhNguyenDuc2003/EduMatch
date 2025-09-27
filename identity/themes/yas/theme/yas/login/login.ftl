@@ -15,12 +15,6 @@
             border-radius: 6px;
             margin-bottom: 12px;
         }
-        .field-error {
-            display: none;
-            color: #b00020;
-            font-size: 0.9rem;
-            margin-top: 6px;
-        }
         .disabled {
             opacity: 0.6;
             pointer-events: none;
