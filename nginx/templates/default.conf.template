@@ -42,31 +42,29 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
-    location /backoffice/ {
-        rewrite ^/backoffice/(.*)$ /$1 break;
-        proxy_pass http://backoffice/$1;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Prefix /backoffice;
-        proxy_set_header Accept-Encoding "";
-        proxy_request_buffering off;
-    }
+location /backoffice/ {
+    proxy_pass http://backoffice;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Prefix /backoffice;
+    proxy_set_header Accept-Encoding "";
+    proxy_request_buffering off;
+}
 
-    location /edufront/ {
-        rewrite ^/edufront/(.*)$ /$1 break;
-        proxy_pass http://edufront/$1;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Prefix /edufront;
-        proxy_set_header Accept-Encoding "";
-        proxy_request_buffering off;
-    }
+location /edufront/ {
+    proxy_pass http://edufront;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Prefix /edufront;
+    proxy_set_header Accept-Encoding "";
+    proxy_request_buffering off;
+}
 
     location /pgadmin/ {
         proxy_pass http://pgadmin:80/;
