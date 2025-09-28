@@ -1,7 +1,7 @@
 server:
   port: '${env.port:8087}'
   servlet:
-    context-path: /backoffice
+    context-path: /
   compression:
     enabled: true
   tomcat:
@@ -87,7 +87,7 @@ spring:
         - SaveSession
       routes:
         - id: api
-          uri: http://nginx
+          uri: http://160.30.113.224
           predicates:
             - Path=/api/**
           filters:
@@ -95,8 +95,6 @@ spring:
             - TokenRelay=
             - StripPrefix=1
         - id: nextjs
-          uri: http://backoffice-nextjs:3000
+          uri: http://160.30.113.224/backoffice
           predicates:
-            - Path=/backoffice/**
-          filters:
-            - StripPrefix=1
+            - Path=/**

@@ -1,8 +1,7 @@
 server:
-  forward-headers-strategy: framework
   port: '${env.port:8087}'
   servlet:
-    context-path: /edufront
+    context-path: /
   compression:
     enabled: true
   tomcat:
@@ -97,7 +96,7 @@ spring:
         - id: nextjs
           uri: http://edufront-nextjs:3000
           predicates:
-            - Path=/edufront/**
+            - Path=/**
           filters:
             - StripPrefix=1
 ---
