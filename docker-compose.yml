@@ -79,7 +79,7 @@ services:
     networks:
       - m-network
   registry-server:
-    image: registry.edumatch.space/edumatch/registry:latest
+    image: registry.edumatch.space/edumatch/registry:1.0.0
     #    environment:
     #      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/customer
     #      - SERVER_SERVLET_CONTEXT_PATH=/customer
@@ -105,7 +105,7 @@ services:
     networks:
       - m-network
   customer:
-    image: registry.edumatch.space/edumatch/customer:latest
+    image: registry.edumatch.space/edumatch/customer:1.0.0
 #    environment:
 #      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/customer
 #      - SERVER_SERVLET_CONTEXT_PATH=/customer
@@ -131,7 +131,7 @@ services:
     networks:
       - m-network
   location:
-    image: registry.edumatch.space/edumatch/location:latest
+    image: registry.edumatch.space/edumatch/location:1.0.0
 #    environment:
 #      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/location
 #      - SERVER_SERVLET_CONTEXT_PATH=/location
@@ -157,7 +157,7 @@ services:
     networks:
       - m-network
   profile:
-    image: registry.edumatch.space/edumatch/profile:latest
+    image: registry.edumatch.space/edumatch/profile:1.0.0
     #    environment:
     #      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/location
     #      - SERVER_SERVLET_CONTEXT_PATH=/location
@@ -183,7 +183,7 @@ services:
     networks:
       - m-network
   backoffice:
-    image: registry.edumatch.space/edumatch/backoffice:latest
+    image: registry.edumatch.space/edumatch/backoffice:1.0.0
     entrypoint: [ "./wait-for-it.sh", "identity:80", "--timeout=300", "--", "java", "-jar", "/app.jar" ]
 #    environment:
 #      - SPRING_PROFILES_ACTIVE=prod
@@ -208,7 +208,7 @@ services:
     networks:
       - m-network
   edufront:
-    image: registry.edumatch.space/edumatch/edufront:latest
+    image: registry.edumatch.space/edumatch/edufront:1.0.0
     entrypoint: [ "./wait-for-it.sh", "identity:80", "--timeout=300", "--", "java", "-jar", "/app.jar" ]
     #    environment:
     #      - SPRING_PROFILES_ACTIVE=prod
@@ -233,13 +233,13 @@ services:
     networks:
       - m-network
   backoffice-nextjs:
-    image: registry.edumatch.space/edumatch/backoffice-nextjs:latest
+    image: registry.edumatch.space/edumatch/backoffice-nextjs:1.0.0
     ports:
       - "9000:3000"
     networks:
       - m-network
   edufront-nextjs:
-    image: registry.edumatch.space/edumatch/edufront-nextjs:latest
+    image: registry.edumatch.space/edumatch/edufront-nextjs:1.0.0
     ports:
       - "9001:3000"
     networks:

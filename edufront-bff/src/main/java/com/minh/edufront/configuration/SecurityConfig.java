@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
+import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -94,4 +95,12 @@ public class SecurityConfig {
             .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
             .collect(Collectors.toList());
     }
+
+    @Bean
+    ForwardedHeaderTransformer forwardedHeaderTransformer() {
+        ForwardedHeaderTransformer transformer = new ForwardedHeaderTransformer();
+        transformer.setRemoveOnly(true);
+        return transformer;
+    }
+
 }
