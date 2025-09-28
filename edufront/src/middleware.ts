@@ -1,11 +1,9 @@
-import createMiddleware from 'next-intl/middleware';
-import { routing } from './i18n/routing';
 import { NextRequest } from 'next/server';
 
-const nextIntlMiddleware = createMiddleware(routing);
+// const nextIntlMiddleware = createMiddleware(routing);
 
 export function middleware(req: NextRequest) {
-  return nextIntlMiddleware(req);
+  // return nextIntlMiddleware(req);
 }
 
 

@@ -27,7 +27,7 @@ const Header = () => {
         disabled={false}
         variant={'ok'}
         color="text-white"
-        onClick={() => router.push(SegUrl.User)}
+        onClick={() => router.push(SegUrl.Profile)}
       >
         Button test
       </Button>
