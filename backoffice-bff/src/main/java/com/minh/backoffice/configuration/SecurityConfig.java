@@ -41,15 +41,7 @@ public class SecurityConfig {
                 .authorizeExchange(auth -> auth
                         .pathMatchers("/health", "/actuator/prometheus", "/actuator/health/**").permitAll()
                         .anyExchange().hasAnyRole("ADMIN"))
-                .oauth2Login(oauth2 -> oauth2
-                        .authenticationSuccessHandler((webFilterExchange, authentication) -> {
-                            var exchange = webFilterExchange.getExchange();
-                            var response = exchange.getResponse();
-                            response.setStatusCode(HttpStatus.FOUND);
-                            response.getHeaders().setLocation(URI.create("/backoffice/home"));
-                            return response.setComplete();
-                        })
-                )
+                .oauth2Login(Customizer.withDefaults())
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
@@ -57,7 +49,6 @@ public class SecurityConfig {
                         .logoutSuccessHandler(oidcLogoutSuccessHandler())
                 )
                 .build();
-
     }
 
     private ServerLogoutSuccessHandler oidcLogoutSuccessHandler() {

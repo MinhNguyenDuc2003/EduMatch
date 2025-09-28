@@ -98,4 +98,6 @@ spring:
         - id: nextjs
           uri: http://backoffice-nextjs:3000
           predicates:
-            - Path=/**
+            - Path=/backoffice/**
+          filters:
+            - StripPrefix=1

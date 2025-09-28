@@ -2,6 +2,12 @@
   "form": {
     "title": "Thử "
   },
+  "header": {
+    "navMenu": {
+      "title1": "Sinh Viên",
+      "title2": "Nhà Cung Cấp Học Bổng"
+    }
+  },
   "home": {
     "title": "Trang chủ"
   },

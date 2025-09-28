@@ -1,30 +1,30 @@
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import apiClientService from '../services/ApiClientService';
+// import Link from 'next/link';
+// import { useEffect, useState } from 'react';
+// import apiClientService from '../services/ApiClientService';
 
-const baseUrl = '/authentication/user';
+// const baseUrl = '/authentication/user';
 
-export default function AuthenticationInfo() {
-  type AuthenticatedUser = {
-    username: string;
-  };
+// export default function AuthenticationInfo() {
+//   type AuthenticatedUser = {
+//     username: string;
+//   };
 
-  const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUser>({ username: '' });
+//   const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUser>({ username: '' });
 
-  async function getAuthenticatedUser() {
-    return (await apiClientService.get(baseUrl)).json();
-  }
+//   async function getAuthenticatedUser() {
+//     return (await apiClientService.get(baseUrl)).json();
+//   }
 
-  useEffect(() => {
-    getAuthenticatedUser().then((data) => {
-      setAuthenticatedUser(data);
-    });
-  }, []);
+//   useEffect(() => {
+//     getAuthenticatedUser().then((data) => {
+//       setAuthenticatedUser(data);
+//     });
+//   }, []);
 
-  return (
-    <>
-      Signed in as: <Link href="/profile">{authenticatedUser.username}</Link>{' '}
-      <Link href="/logout">Logout</Link>
-    </>
-  );
-}
+//   return (
+//     <>
+//       Signed in as: <Link href="/profile">{authenticatedUser.username}</Link>{' '}
+//       <Link href="/logout">Logout</Link>
+//     </>
+//   );
+// }

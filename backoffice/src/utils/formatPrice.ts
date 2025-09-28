@@ -1,4 +1,4 @@
-export function formatPriceVND(price: number): any {
+export function formatPriceVND(price: number) {
   const formatter = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
@@ -7,7 +7,7 @@ export function formatPriceVND(price: number): any {
   return formatter.format(price);
 }
 
-export function formatPriceUSD(price: number): any {
+export function formatPriceUSD(price: number) {
   const formatter = new Intl.NumberFormat('en-us', {
     style: 'currency',
     currency: 'USD',

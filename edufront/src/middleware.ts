@@ -9,5 +9,8 @@ export function middleware(req: NextRequest) {
 
 // Áp dụng cho tất cả route trừ api, _next, etc.
 export const config = {
-  matcher: ['/((?!api|trpc|_next|_vercel|.*\\..*).*)']
+    matcher: [
+        '/((?!api|trpc|_next|_vercel|.*\\..*).*)',
+        '/edufront/((?!api|trpc|_next|_vercel|.*\\..*).*)'
+    ]
 };

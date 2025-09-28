@@ -29,7 +29,7 @@ services:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
       KC_DB_USERNAME: admin
-      KC_DB_PASSWORD: admin
+      KC_DB_PASSWORD: minh01672527656
       KC_HTTP_PORT: 80
       KC_PROXY: edge
       KC_HOSTNAME: 160.30.113.224
@@ -64,7 +64,7 @@ services:
       - "8080:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@minh.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_PASSWORD: minh01672527656
       PGADMIN_CONFIG_WSGI_SCRIPT_NAME: /pgadmin
     networks:
       - m-network
@@ -78,8 +78,34 @@ services:
       - redis:/data
     networks:
       - m-network
+  registry-server:
+    image: registry.edumatch.space/edumatch/registry:latest
+    #    environment:
+    #      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/customer
+    #      - SERVER_SERVLET_CONTEXT_PATH=/customer
+    #      - YAS_SERVICES_LOCATION
+    #      - SERVER_PORT
+    #      - LOGGING_CONFIG
+    #      - JAVA_TOOL_OPTIONS
+    #      - OTEL_EXPORTER_OTLP_ENDPOINT
+    #      - OTEL_EXPORTER_OTLP_PROTOCOL
+    #      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+    #      - OTEL_RESOURCE_ATTRIBUTES
+    #      - OTEL_SERVICE_NAME=customer-service
+    #      - OTEL_LOGS_EXPORTER
+    #      - OTEL_TRACES_EXPORTER
+    #      - OTEL_METRICS_EXPORTER
+    #      - OTEL_INSTRUMENTATION_LOGBACK-MDC_ADD-BAGGAGE
+    #      - OTEL_JAVAAGENT_LOGGING
+    #      - OTEL_JAVAAGENT_ENABLED
+    #      - OTEL_JAVAAGENT_DEBUG
+    volumes:
+      - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
+      - ./deployment/app-config:/app-config
+    networks:
+      - m-network
   customer:
-    image: registry.edumatch.space/edumatch/customer:1.0.0
+    image: registry.edumatch.space/edumatch/customer:latest
 #    environment:
 #      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/customer
 #      - SERVER_SERVLET_CONTEXT_PATH=/customer
@@ -105,7 +131,7 @@ services:
     networks:
       - m-network
   location:
-    image: registry.edumatch.space/edumatch/location:1.0.0
+    image: registry.edumatch.space/edumatch/location:latest
 #    environment:
 #      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/location
 #      - SERVER_SERVLET_CONTEXT_PATH=/location
@@ -131,7 +157,7 @@ services:
     networks:
       - m-network
   profile:
-    image: registry.edumatch.space/edumatch/profile:1.0.0
+    image: registry.edumatch.space/edumatch/profile:latest
     #    environment:
     #      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/location
     #      - SERVER_SERVLET_CONTEXT_PATH=/location
@@ -157,7 +183,7 @@ services:
     networks:
       - m-network
   backoffice:
-    image: registry.edumatch.space/edumatch/backoffice:1.0.0
+    image: registry.edumatch.space/edumatch/backoffice:latest
     entrypoint: [ "./wait-for-it.sh", "identity:80", "--timeout=300", "--", "java", "-jar", "/app.jar" ]
 #    environment:
 #      - SPRING_PROFILES_ACTIVE=prod
@@ -182,7 +208,7 @@ services:
     networks:
       - m-network
   edufront:
-    image: registry.edumatch.space/edumatch/edufront:1.0.0
+    image: registry.edumatch.space/edumatch/edufront:latest
     entrypoint: [ "./wait-for-it.sh", "identity:80", "--timeout=300", "--", "java", "-jar", "/app.jar" ]
     #    environment:
     #      - SPRING_PROFILES_ACTIVE=prod
@@ -207,11 +233,11 @@ services:
     networks:
       - m-network
   backoffice-nextjs:
-    image: registry.edumatch.space/edumatch/backoffice-nextjs:1.0.0
+    image: registry.edumatch.space/edumatch/backoffice-nextjs:latest
     networks:
       - m-network
   edufront-nextjs:
-    image: registry.edumatch.space/edumatch/edufront-nextjs:1.0.0
+    image: registry.edumatch.space/edumatch/edufront-nextjs:latest
     networks:
       - m-network
 

@@ -97,7 +97,9 @@ spring:
         - id: nextjs
           uri: http://edufront-nextjs:3000
           predicates:
-            - Path=/**
+            - Path=/edufront/**
+          filters:
+            - StripPrefix=1
 ---
 yas:
   services:

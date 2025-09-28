@@ -1,5 +1,6 @@
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { JSX } from 'react';
 
 type DialogProps = {
   isOpen?: boolean;

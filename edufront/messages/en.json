@@ -2,6 +2,12 @@
   "form": {
     "title": "Try "
   },
+  "header": {
+    "navMenu": {
+      "title1": "Students",
+      "title2": "Scholarship Providers"
+    }
+  },
   "home": {
     "title": "Home"
   },
