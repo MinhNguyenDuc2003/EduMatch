@@ -234,10 +234,14 @@ services:
       - m-network
   backoffice-nextjs:
     image: registry.edumatch.space/edumatch/backoffice-nextjs:latest
+    ports:
+      - "9000:3000"
     networks:
       - m-network
   edufront-nextjs:
     image: registry.edumatch.space/edumatch/edufront-nextjs:latest
+    ports:
+      - "9001:3000"
     networks:
       - m-network
 

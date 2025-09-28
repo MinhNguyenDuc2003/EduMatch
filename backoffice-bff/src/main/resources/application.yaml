@@ -90,11 +90,11 @@ spring:
         - id: api
           uri: http://nginx
           predicates:
-            - Path=/api/**
+            - Path=/backoffice/api/**
           filters:
             - DedupeResponseHeader=Origin Access-Control-Request-Method Access-Control-Request-Headers
             - TokenRelay=
-            - StripPrefix=1
+            - StripPrefix=2
         - id: nextjs
           uri: http://backoffice-nextjs:3000
           predicates:
