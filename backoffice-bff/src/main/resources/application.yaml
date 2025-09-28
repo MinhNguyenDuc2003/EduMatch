@@ -1,8 +1,7 @@
 server:
-  forward-headers-strategy: framework
   port: '${env.port:8087}'
   servlet:
-    context-path: /
+    context-path: /backoffice
   compression:
     enabled: true
   tomcat:
@@ -90,11 +89,11 @@ spring:
         - id: api
           uri: http://nginx
           predicates:
-            - Path=/backoffice/api/**
+            - Path=/api/**
           filters:
             - DedupeResponseHeader=Origin Access-Control-Request-Method Access-Control-Request-Headers
             - TokenRelay=
-            - StripPrefix=2
+            - StripPrefix=1
         - id: nextjs
           uri: http://backoffice-nextjs:3000
           predicates:

@@ -2,7 +2,6 @@ package com.minh.backoffice.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -15,9 +14,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
-import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 
-import java.net.URI;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -98,10 +95,4 @@ public class SecurityConfig {
                 .collect(Collectors.toList());
     }
 
-    @Bean
-    ForwardedHeaderTransformer forwardedHeaderTransformer() {
-        ForwardedHeaderTransformer transformer = new ForwardedHeaderTransformer();
-        transformer.setRemoveOnly(true);
-        return transformer;
-    }
 }
