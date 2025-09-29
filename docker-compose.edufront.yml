@@ -6,6 +6,8 @@ services:
     ports:
       - "80:80"
     restart: unless-stopped
+    networks:
+      - m-network
   redis:
     image: redis:7.4.1-alpine
     restart: always
