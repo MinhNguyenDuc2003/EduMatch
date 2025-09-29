@@ -95,6 +95,6 @@ spring:
             - TokenRelay=
             - StripPrefix=1
         - id: nextjs
-          uri: http://160.30.113.224/backoffice
+          uri: http://160.30.113.224
           predicates:
-            - Path=/**
+            - Path=/backoffice/**
