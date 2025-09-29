@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   backoffice:
-    image: registry.edumatch.space/edumatch/backoffice:1.0.0
+    image: registry.edumatch.space/edumatch/edufront:1.0.0
     ports:
       - "80:80"
     restart: unless-stopped

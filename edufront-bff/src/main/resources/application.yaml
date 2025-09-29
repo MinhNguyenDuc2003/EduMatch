@@ -86,7 +86,7 @@ spring:
         - SaveSession
       routes:
         - id: api
-          uri: http://nginx
+          uri: http://160.30.113.224
           predicates:
             - Path=/api/**
           filters:
@@ -94,14 +94,6 @@ spring:
             - TokenRelay=
             - StripPrefix=1
         - id: nextjs
-          uri: http://edufront-nextjs:3000
+          uri: http://160.30.113.224/edufront
           predicates:
             - Path=/**
-          filters:
-            - StripPrefix=1
----
-yas:
-  services:
-    customer: http://api.yas.local/customer
-    cart: http://api.yas.local/cart
-    token-identity: http://identity/realms/Yas/protocol/openid-connect/token
