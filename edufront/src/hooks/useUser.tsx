@@ -9,7 +9,7 @@ function useHasPermission(permission: string) {
       FunctionID: '1',
     },
     {
-      FunctionCode: '/',
+      FunctionCode: 'formScholarship',
       FunctionID: '2',
     },
   ];
