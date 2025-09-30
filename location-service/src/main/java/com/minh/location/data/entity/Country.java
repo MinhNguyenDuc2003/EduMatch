@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(schema = "warehouse", name = "country")
+@Table(schema = "location", name = "country")
 @Getter
 @Setter
 @NoArgsConstructor
