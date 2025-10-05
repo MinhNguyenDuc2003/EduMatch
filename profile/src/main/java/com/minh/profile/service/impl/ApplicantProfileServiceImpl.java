@@ -24,6 +24,7 @@ import com.minh.profile.data.repository.ApplicantSkillRepository;
 import com.minh.profile.data.vo.ApplicantProfileVo;
 import com.minh.profile.service.ApplicantProfileService;
 import com.minh.utils.UaaContextHolder;
+import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,9 +62,15 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     private ApplicantEducationIntentionMapper applicantEducationIntentionMapper;
 
     @Override
+    @Transactional(rollbackOn =  Exception.class)
     public ApplicantProfileDto create(ApplicantProfileVo profile) {
         String userId = UaaContextHolder.getUserId();
         profile.setUserId(userId);
+
+        if(applicantProfileRepository.findByUserIdAndActive(userId, true).isPresent()){
+            throw new BusinessException(CoreMessageCode.USER_PROFILE_ALREADY_EXISTED);
+        }
+
         ApplicantProfileEntity savedProfile = applicantProfileRepository.save(applicantProfileMapper.toEntity(profile));
 
         saveProfileData(profile, savedProfile.getId());
@@ -86,6 +93,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     }
 
     @Override
+    @Transactional(rollbackOn =  Exception.class)
     public ApplicantProfileDto update(ApplicantProfileVo profile) {
         if (ObjectUtils.isEmpty(profile.getId())) {
             throw new BusinessException(CoreMessageCode.APPLICANT_ID_IS_NOT_EXIST);

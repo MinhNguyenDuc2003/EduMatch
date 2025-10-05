@@ -1,4 +1,4 @@
-INSERT INTO location.country (name, code_2, code3, is_billing_enabled, is_shipping_enabled, is_city_enabled, is_zip_code_enabled, is_district_enabled)
+INSERT INTO location.country (name, code2, code3, is_billing_enabled, is_shipping_enabled, is_city_enabled, is_zip_code_enabled, is_district_enabled)
 VALUES
     ('Vietnam', 'VN', 'VNM', TRUE, TRUE, TRUE, TRUE, TRUE),
     ('United States', 'US', 'USA', TRUE, TRUE, TRUE, TRUE, TRUE),

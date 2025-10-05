@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.minh.model.dto.BaseDto;
+import com.minh.utils.serializer.DateToTimestamp;
+import com.minh.utils.serializer.TimestampToDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,12 +40,12 @@ public class ApplicantEducationHistoryDto extends BaseDto {
     private String classRank;
     private Integer classSize;
 
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = TimestampToDate.class)
+    @JsonSerialize(using = DateToTimestamp.class)
     private LocalDateTime enrollmentStartDate;
 
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = TimestampToDate.class)
+    @JsonSerialize(using = DateToTimestamp.class)
     private LocalDateTime enrollmentEndDate;
 
     private Integer graduationYear;

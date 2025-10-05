@@ -64,7 +64,7 @@ spring:
       max-lifetime: 180000
       minimum-idle: ${app.db.pool.minimum}
       maximum-pool-size: ${app.db.pool.maximum}
-      auto-commit: true
+      auto-commit: false
   jpa:
     hibernate:
       ddl-auto: none

@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS location;
 CREATE TABLE IF NOT EXISTS location.country (
                                                 id BIGSERIAL PRIMARY KEY,
                                                 NAME VARCHAR(450) NOT NULL,
-    CODE_2 VARCHAR(3),
+    CODE2 VARCHAR(3),
     CODE3 VARCHAR(3),
     IS_BILLING_ENABLED BOOLEAN,
     IS_SHIPPING_ENABLED BOOLEAN,

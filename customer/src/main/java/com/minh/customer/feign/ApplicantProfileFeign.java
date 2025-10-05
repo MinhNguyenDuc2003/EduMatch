@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "PROFILE", path = "/profile", contextId = "customer-feign-client", configuration = FeignInterceptorConfig.class)
 public interface ApplicantProfileFeign {
 
-    @GetMapping("/user")
+    @GetMapping("/applicants/user")
     ApiResponse<ApplicantProfileVo> getOneByUserId(@RequestParam String userId);
 
-    @PostMapping
+    @PostMapping("/applicants")
     ApiResponse<ApplicantProfileDto> create(@RequestBody ApplicantProfileVo profile);
 
-    @PutMapping
+    @PostMapping("/applicants")
     ApiResponse<ApplicantProfileDto> update(@RequestBody ApplicantProfileVo profile);
 
 }

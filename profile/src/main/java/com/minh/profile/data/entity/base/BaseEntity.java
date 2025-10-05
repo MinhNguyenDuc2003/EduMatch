@@ -1,4 +1,4 @@
-package com.minh.location.data.entity.base;
+package com.minh.profile.data.entity.base;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.minh.utils.UaaContextHolder;

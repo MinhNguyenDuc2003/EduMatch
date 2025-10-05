@@ -1,6 +1,6 @@
 package com.minh.profile.data.entity;
 
-import com.minh.location.data.entity.base.BaseEntity;
+import com.minh.profile.data.entity.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
