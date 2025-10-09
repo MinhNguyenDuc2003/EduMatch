@@ -1,4 +1,4 @@
-package com.minh.location.configuration;
+package com.minh.profile.configuration;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 
-@OpenAPIDefinition(info = @Info(title = "Location Service API", description = "Location API documentation",
+@OpenAPIDefinition(info = @Info(title = "Profile Service API", description = "Profile API documentation",
     version = "1.0"), security = @SecurityRequirement(name = "oauth2_bearer"),
     servers = {@Server(url = "${server.servlet.context-path}", description = "Default Server URL")})
 @SecurityScheme(name = "oauth2_bearer", type = SecuritySchemeType.OAUTH2,

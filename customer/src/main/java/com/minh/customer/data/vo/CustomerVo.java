@@ -23,6 +23,7 @@ public class CustomerVo {
 
     private CustomerVm customer;
     private ApplicantProfileVo applicantProfile;
+    private ProviderProfileVo providerProfile;
     private List<ActiveAddressVm> addresses = new ArrayList<>();
     private AddressPostVm addressPostVm;
 

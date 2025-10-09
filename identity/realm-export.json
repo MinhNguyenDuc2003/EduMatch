@@ -658,7 +658,9 @@
         "http://backoffice/*",
         "http://localhost:3000/*",
         "http://localhost:8087/*",
-        "http://160.30.113.224/*"
+        "http://160.30.113.224/*",
+        "http://139.59.251.181/*",
+        "http://159.89.200.244/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -1000,7 +1002,9 @@
       "redirectUris": [
         "http://storefront/*",
         "http://localhost:8087/*",
-        "http://160.30.113.224/*"
+        "http://160.30.113.224/*",
+        "http://139.59.251.181/*",
+        "http://159.89.200.244/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -1150,7 +1154,9 @@
         "http://localhost:8084/*",
         "http://localhost:8086/*",
         "http://localhost:8092/*",
-        "http://160.30.113.224/*"
+        "http://160.30.113.224/*",
+        "http://139.59.251.181/*",
+        "http://159.89.200.244/*"
       ],
       "webOrigins": [
         "http://api.yas.local",
@@ -1165,7 +1171,10 @@
         "http://localhost:8090",
         "http://localhost:8093",
         "http://localhost:8081",
-        "http://localhost:8092"
+        "http://localhost:8092",
+        "http://160.30.113.224/*",
+        "http://139.59.251.181/*",
+        "http://159.89.200.244/*"
       ],
       "notBefore": 0,
       "bearerOnly": false,

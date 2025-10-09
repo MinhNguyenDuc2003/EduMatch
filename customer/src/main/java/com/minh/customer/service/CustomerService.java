@@ -1,19 +1,20 @@
 package com.minh.customer.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.CoreMessageCode;
 import com.minh.customer.configuration.KeycloakPropsConfig;
 import com.minh.customer.data.vo.ApplicantProfileVo;
 import com.minh.customer.data.vo.CustomerVo;
+import com.minh.customer.data.vo.ProviderProfileVo;
 import com.minh.customer.feign.ApplicantProfileFeign;
+import com.minh.customer.feign.ProviderProfileFeign;
 import com.minh.customer.viewmodel.address.ActiveAddressVm;
-import com.minh.customer.viewmodel.customer.CustomerAdminVm;
-import com.minh.customer.viewmodel.customer.CustomerListVm;
-import com.minh.customer.viewmodel.customer.CustomerPostVm;
-import com.minh.customer.viewmodel.customer.CustomerProfileRequestVm;
-import com.minh.customer.viewmodel.customer.CustomerVm;
-import com.minh.customer.viewmodel.customer.GuestUserVm;
+import com.minh.customer.viewmodel.customer.*;
 import com.minh.exception.BusinessException;
+import com.minh.model.dto.profile.ProviderProfileDto;
 import com.minh.service.base.BaseService;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.core.Response;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -27,6 +28,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -44,6 +46,8 @@ public class CustomerService extends BaseService {
 
     @Autowired
     private ApplicantProfileFeign profileFeign;
+    @Autowired
+    private ProviderProfileFeign providerFeign;
     @Autowired
     private UserAddressService userAddressService;
     @Autowired
@@ -78,6 +82,7 @@ public class CustomerService extends BaseService {
         }
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public void updateCustomer(String id, CustomerProfileRequestVm requestVm) {
         UserRepresentation userRepresentation =
                 keycloak.realm(keycloakPropsConfig.getRealm()).users().get(id).toRepresentation();
@@ -93,6 +98,7 @@ public class CustomerService extends BaseService {
         }
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public void deleteCustomer(String id) {
         UserRepresentation userRepresentation =
                 keycloak.realm(keycloakPropsConfig.getRealm()).users().get(id).toRepresentation();
@@ -145,6 +151,7 @@ public class CustomerService extends BaseService {
         }
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public GuestUserVm createGuestUser() {
         // Get realm
         RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
@@ -181,6 +188,7 @@ public class CustomerService extends BaseService {
         return encoder.encodeToString(bytes);
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public CustomerVm create(CustomerPostVm customerPostVm) {
         // Get realm
         RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
@@ -226,16 +234,42 @@ public class CustomerService extends BaseService {
         return !users.isEmpty();
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public CustomerVo createCustomerProfile(CustomerVo customerVo) {
         profileFeign.create(customerVo.getApplicantProfile());
         userAddressService.createAddress(customerVo.getAddressPostVm());
         return customerVo;
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public CustomerVo updateCustomerProfile(CustomerVo customerVo) {
         profileFeign.update(customerVo.getApplicantProfile());
         locationService.updateAddress(customerVo.getAddressPostVm());
         return customerVo;
     }
 
+    @Transactional(rollbackOn = Exception.class)
+    public CustomerVo createProviderProfile(CustomerVo profile, MultipartFile logo, MultipartFile banner) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ProviderProfileDto providerProfileDto = this.parseResponse(providerFeign.create(objectMapper.writeValueAsString(profile.getProviderProfile()), logo, banner));
+        userAddressService.createProviderAddress(profile.getAddressPostVm(), providerProfileDto.getId());
+        return profile;
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public CustomerVo updateProviderProfile(CustomerVo customerVo, MultipartFile logo, MultipartFile banner) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        providerFeign.update(objectMapper.writeValueAsString(customerVo.getProviderProfile()), logo, banner);
+        locationService.updateAddress(customerVo.getAddressPostVm());
+        return customerVo;
+    }
+
+    public CustomerVo getProviderProfile() {
+        CustomerVo vo = new CustomerVo();
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerFeign.getMyProviderInfo());
+        vo.setProviderProfile(providerProfileVo);
+        List<ActiveAddressVm> addressList = userAddressService.getProviderAddressList(providerProfileVo.getId());
+        vo.setAddresses(addressList);
+        return vo;
+    }
 }

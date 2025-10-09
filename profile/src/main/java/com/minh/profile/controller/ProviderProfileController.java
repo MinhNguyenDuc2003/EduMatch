@@ -1,5 +1,6 @@
 package com.minh.profile.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.profile.ProviderProfileDto;
@@ -8,6 +9,7 @@ import com.minh.profile.service.ProviderProfileService;
 import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,19 +30,31 @@ public class ProviderProfileController {
     }
 
     @Authorized
-    @PostMapping
-    public ApiResponse<ProviderProfileDto> create(@RequestPart ProviderProfileVo profile,
-                                                  @RequestPart(required = false) MultipartFile logo,
-                                                  @RequestPart(required = false) MultipartFile banner) throws IOException {
-        return ApiResponse.ok(providerProfileService.create(profile, logo, banner));
+    @GetMapping("/my-info")
+    public ApiResponse<ProviderProfileVo> getMyProviderInfo() {
+        return ApiResponse.ok(providerProfileService.getMyProviderInfo());
+    }
+
+    @Authorized
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<ProviderProfileDto> create(
+            @RequestPart("profile") String profile,
+            @RequestPart(value = "logo", required = false) MultipartFile logo,
+            @RequestPart(value = "banner", required = false) MultipartFile banner
+    ) throws IOException {
+        ProviderProfileVo profileVo = new ObjectMapper().readValue(profile, ProviderProfileVo.class);
+        return ApiResponse.ok(providerProfileService.create(profileVo, logo, banner));
     }
 
     @Authorized
     @PutMapping
-    public ApiResponse<ProviderProfileDto> update(@RequestPart ProviderProfileVo profile,
-                                                  @RequestPart(required = false) MultipartFile logo,
-                                                  @RequestPart(required = false) MultipartFile banner) throws IOException {
-        return ApiResponse.ok(providerProfileService.update(profile, logo, banner));
+    public ApiResponse<ProviderProfileDto> update(
+            @RequestPart("profile") String profile,
+            @RequestPart(value = "logo", required = false) MultipartFile logo,
+            @RequestPart(value = "banner", required = false) MultipartFile banner
+    ) throws IOException {
+        ProviderProfileVo profileVo = new ObjectMapper().readValue(profile, ProviderProfileVo.class);
+        return ApiResponse.ok(providerProfileService.update(profileVo, logo, banner));
     }
 
 }

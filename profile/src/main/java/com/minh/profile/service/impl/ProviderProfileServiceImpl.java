@@ -5,6 +5,7 @@ import com.minh.exception.BusinessException;
 import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.profile.ProviderContactDto;
 import com.minh.model.dto.profile.ProviderProfileDto;
+import com.minh.profile.data.entity.ProviderContactEntity;
 import com.minh.profile.data.entity.ProviderProfileEntity;
 import com.minh.profile.data.entity.junction.ProviderMediaEntity;
 import com.minh.profile.data.mapper.ProviderContactMapper;
@@ -69,6 +70,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
             logoRequest.setContentType(logo.getContentType());
             logoRequest.setThumbnail(logo.getBytes());
             logoRequest.setIsPublic(true);
+            logoRequest.setFolderName("providers");
             MediaDto mediaDto = this.parseResponse(mediaFeign.create(logoRequest));
 
             ProviderMediaEntity logoMediaEntity = new ProviderMediaEntity();
@@ -148,7 +150,44 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
         ProviderProfileEntity providerProfileEntity = providerProfileRepository
                 .findById(id)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
-        return providerProfileMapper.toVo(providerProfileEntity);
+        ProviderProfileVo vo = providerProfileMapper.toVo(providerProfileEntity);
+        List<ProviderContactEntity> contacts = providerContactRepository.findByProviderId(id);
+        vo.setProviderContactDtos(providerContactMapper.toDto(contacts));
+        List<ProviderMediaEntity> medias = providerMediaRepository.findByProviderId(id);
+        Long logoId = medias.stream().filter(o -> "LOGO".equalsIgnoreCase(o.getImageType())).map(ProviderMediaEntity::getMediaId).findFirst().orElse(null);
+        if (ObjectUtils.isNotEmpty(logoId)) {
+            MediaDto logo = this.parseResponse(mediaFeign.getById(logoId));
+            vo.setLogoUrl(logo.getUrl());
+        }
+        Long bannerId = medias.stream().filter(o -> "BANNER".equalsIgnoreCase(o.getImageType())).map(ProviderMediaEntity::getMediaId).findFirst().orElse(null);
+        if (ObjectUtils.isNotEmpty(logoId)) {
+            MediaDto banner = this.parseResponse(mediaFeign.getById(bannerId));
+            vo.setBannerUrl(banner.getUrl());
+        }
+        return vo;
+    }
+
+    @Override
+    public ProviderProfileVo getMyProviderInfo() {
+        String userId = UaaContextHolder.getUserId();
+        ProviderProfileEntity providerProfileEntity = providerProfileRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
+        ProviderProfileVo vo = providerProfileMapper.toVo(providerProfileEntity);
+        List<ProviderContactEntity> contacts = providerContactRepository.findByProviderId(providerProfileEntity.getId());
+        vo.setProviderContactDtos(providerContactMapper.toDto(contacts));
+        List<ProviderMediaEntity> medias = providerMediaRepository.findByProviderId(providerProfileEntity.getId());
+        Long logoId = medias.stream().filter(o -> "LOGO".equalsIgnoreCase(o.getImageType())).map(ProviderMediaEntity::getMediaId).findFirst().orElse(null);
+        if (ObjectUtils.isNotEmpty(logoId)) {
+            MediaDto logo = this.parseResponse(mediaFeign.getById(logoId));
+            vo.setLogoUrl(logo.getUrl());
+        }
+        Long bannerId = medias.stream().filter(o -> "BANNER".equalsIgnoreCase(o.getImageType())).map(ProviderMediaEntity::getMediaId).findFirst().orElse(null);
+        if (ObjectUtils.isNotEmpty(logoId)) {
+            MediaDto banner = this.parseResponse(mediaFeign.getById(bannerId));
+            vo.setBannerUrl(banner.getUrl());
+        }
+        return vo;
     }
 
 }

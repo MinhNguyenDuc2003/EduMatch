@@ -5,9 +5,9 @@ app:
   db:
     schema: location
     port: '${env.db.port:5432}'
-    endpoint: '${env.db.endpoint:160.30.113.224}'
-    database: '${env.db.database:location}'
-    username: '${env.db.username:admin}'
+    endpoint: '${env.db.endpoint:localhost}'
+    database: '${env.db.database:postgres}'
+    username: '${env.db.username:postgres}'
     password: '${env.db.password:minh01672527656}'
     pool:
       minimum: '${env.db.pool.minimum:2}'

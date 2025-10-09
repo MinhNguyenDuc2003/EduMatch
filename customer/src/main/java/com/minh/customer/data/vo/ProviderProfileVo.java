@@ -1,4 +1,4 @@
-package com.minh.profile.data.vo;
+package com.minh.customer.data.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

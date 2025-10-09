@@ -1,6 +1,6 @@
 package com.minh.profile.data.entity.junction;
 
-import com.minh.profile.data.entity.junction.id.ProviderMediaId;
+import com.minh.profile.data.entity.junction.id.ProviderNewsMediaId;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@IdClass(ProviderMediaId.class)
+@IdClass(ProviderNewsMediaId.class)
 @Table(schema = "profile", name = "PROVIDER_NEWS_MEDIA")
 public class ProviderNewsMediaEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -22,7 +22,7 @@ public class ProviderNewsMediaEntity implements Serializable {
     private Long providerNewsId;
 
     @Id
-    @Column(name = "MEIDA_ID")
+    @Column(name = "MEDIA_ID")
     private Long mediaId;
 
 }

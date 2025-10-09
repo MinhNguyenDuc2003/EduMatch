@@ -5,13 +5,9 @@ import com.minh.model.ApiResponse;
 import com.minh.model.dto.profile.ApplicantProfileDto;
 import com.minh.service.feign.FeignInterceptorConfig;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "PROFILE", path = "/profile", contextId = "customer-feign-client", configuration = FeignInterceptorConfig.class)
+@FeignClient(name = "PROFILE", path = "/profile", contextId = "applicant-feign-client", configuration = FeignInterceptorConfig.class)
 public interface ApplicantProfileFeign {
 
     @GetMapping("/applicants/user")
@@ -20,7 +16,7 @@ public interface ApplicantProfileFeign {
     @PostMapping("/applicants")
     ApiResponse<ApplicantProfileDto> create(@RequestBody ApplicantProfileVo profile);
 
-    @PostMapping("/applicants")
+    @PutMapping("/applicants")
     ApiResponse<ApplicantProfileDto> update(@RequestBody ApplicantProfileVo profile);
 
 }

@@ -22,10 +22,9 @@ public class ProviderMediaEntity implements Serializable {
     private Long providerId;
 
     @Id
-    @Column(name = "MEIDA_ID")
+    @Column(name = "MEDIA_ID")
     private Long mediaId;
 
-    @Id
     @Column(name = "IMAGE_TYPE")
     private String imageType;
 

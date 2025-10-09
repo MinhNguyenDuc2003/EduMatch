@@ -14,4 +14,5 @@ public interface ProviderProfileService {
 
     ProviderProfileVo getById(Long id);
 
+    ProviderProfileVo getMyProviderInfo();
 }
