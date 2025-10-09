@@ -182,6 +182,37 @@ services:
       - ./deployment/app-config:/app-config
     networks:
       - m-network
+  media:
+    image: registry.edumatch.space/edumatch/media:1.0.0
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+      - AWS_BUCKET_NAME
+    #    environment:
+    #      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/location
+    #      - SERVER_SERVLET_CONTEXT_PATH=/location
+    #      - YAS_PUBLIC_URL=${YAS_PUBLIC_API_URL}/location
+    #      - SERVER_PORT
+    #      - LOGGING_CONFIG
+    #      - JAVA_TOOL_OPTIONS
+    #      - OTEL_EXPORTER_OTLP_ENDPOINT
+    #      - OTEL_EXPORTER_OTLP_PROTOCOL
+    #      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+    #      - OTEL_RESOURCE_ATTRIBUTES
+    #      - OTEL_SERVICE_NAME=location-service
+    #      - OTEL_LOGS_EXPORTER
+    #      - OTEL_TRACES_EXPORTER
+    #      - OTEL_METRICS_EXPORTER
+    #      - OTEL_INSTRUMENTATION_LOGBACK-MDC_ADD-BAGGAGE
+    #      - OTEL_JAVAAGENT_LOGGING
+    #      - OTEL_JAVAAGENT_ENABLED
+    #      - OTEL_JAVAAGENT_DEBUG
+    volumes:
+      - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
+      - ./deployment/app-config:/app-config
+    networks:
+      - m-network
   backoffice-nextjs:
     image: registry.edumatch.space/edumatch/backoffice-nextjs:1.0.0
     networks:
