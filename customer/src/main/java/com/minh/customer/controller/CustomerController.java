@@ -1,12 +1,14 @@
 package com.minh.customer.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.customer.data.vo.CustomerVo;
 import com.minh.customer.service.CustomerService;
 import com.minh.customer.viewmodel.customer.*;
 import com.minh.model.ApiResponse;
 import com.minh.utils.SecurityUtil;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -86,18 +88,24 @@ public class CustomerController {
         return customerService.createGuestUser();
     }
 
-    @PostMapping("/storefront/provider/profile")
-    public ApiResponse<CustomerVo> createProviderProfile(@RequestPart("profile") CustomerVo profile,
+    @PostMapping(
+            value = "/storefront/provider/profile",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+    )
+    public ApiResponse<CustomerVo> createProviderProfile(@RequestPart("profile") String profile,
                                                          @RequestPart(value = "logo", required = false) MultipartFile logo,
                                                          @RequestPart(value = "banner", required = false) MultipartFile banner) throws JsonProcessingException {
+        CustomerVo customerVo = new ObjectMapper().readValue(profile, CustomerVo.class);
         return ApiResponse.ok(
-                customerService.createProviderProfile(profile, logo, banner));
+                customerService.createProviderProfile(customerVo, logo, banner));
     }
 
-    @PutMapping("/storefront/provider/profile")
-    public ApiResponse<CustomerVo> updateProviderProfile(@RequestPart("profile") CustomerVo customerVo,
+    @PutMapping(value = "/storefront/provider/profile",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ApiResponse<CustomerVo> updateProviderProfile(@RequestPart("profile") String profile,
                                                          @RequestPart(value = "logo", required = false) MultipartFile logo,
                                                          @RequestPart(value = "banner", required = false) MultipartFile banner) throws JsonProcessingException {
+        CustomerVo customerVo = new ObjectMapper().readValue(profile, CustomerVo.class);
         return ApiResponse.ok(
                 customerService.updateProviderProfile(customerVo, logo, banner));
     }
