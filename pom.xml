@@ -23,6 +23,7 @@
         <module>profile</module>
         <module>registry</module>
         <module>media</module>
+        <module>scholarship</module>
     </modules>
 
     <properties>
