@@ -70,7 +70,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
             logoRequest.setContentType(logo.getContentType());
             logoRequest.setThumbnail(logo.getBytes());
             logoRequest.setIsPublic(true);
-            logoRequest.setFolderName("providers");
+            logoRequest.setFolderName("providers/" + savedProfile.getId());
             MediaDto mediaDto = this.parseResponse(mediaFeign.create(logoRequest));
 
             ProviderMediaEntity logoMediaEntity = new ProviderMediaEntity();
@@ -86,6 +86,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
             bannerRequest.setSize(banner.getSize());
             bannerRequest.setContentType(banner.getContentType());
             bannerRequest.setThumbnail(banner.getBytes());
+            bannerRequest.setFolderName("providers/" + savedProfile.getId());
             bannerRequest.setIsPublic(true);
             MediaDto mediaBanner = this.parseResponse(mediaFeign.create(bannerRequest));
 
@@ -114,6 +115,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
             logoRequest.setSize(logo.getSize());
             logoRequest.setContentType(logo.getContentType());
             logoRequest.setThumbnail(logo.getBytes());
+            logoRequest.setFolderName("providers/" + savedProfile.getId());
             logoRequest.setIsPublic(true);
             MediaDto mediaDto = this.parseResponse(mediaFeign.create(logoRequest));
 
@@ -131,6 +133,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
             bannerRequest.setSize(banner.getSize());
             bannerRequest.setContentType(banner.getContentType());
             bannerRequest.setThumbnail(banner.getBytes());
+            bannerRequest.setFolderName("providers/" + savedProfile.getId());
             bannerRequest.setIsPublic(true);
             MediaDto mediaBanner = this.parseResponse(mediaFeign.create(bannerRequest));
 
@@ -138,6 +141,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
             ProviderMediaEntity bannerMediaEntity = new ProviderMediaEntity();
             bannerMediaEntity.setProviderId(savedProfile.getId());
             bannerMediaEntity.setMediaId(mediaBanner.getId());
+            bannerRequest.setFolderName("providers/" + savedProfile.getId());
             bannerMediaEntity.setImageType("BANNER");
             providerMediaRepository.save(bannerMediaEntity);
         }
