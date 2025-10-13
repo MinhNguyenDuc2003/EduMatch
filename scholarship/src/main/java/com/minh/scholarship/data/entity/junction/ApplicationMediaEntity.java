@@ -12,7 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@IdClass(ScholarshipMediaId.class)
+@IdClass(ApplicationMediaEntity.class)
 @Table(schema = "scholarship", name = "APPLICATION_MEDIA")
 public class ApplicationMediaEntity implements Serializable {
     private static final long serialVersionUID = 1L;

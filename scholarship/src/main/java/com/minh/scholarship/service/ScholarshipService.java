@@ -1,19 +1,18 @@
 package com.minh.scholarship.service;
 
-import com.minh.scholarship.data.entity.ScholarshipEntity;
+import com.minh.model.dto.scholarship.ScholarshipDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ScholarshipService {
 
-    List<ScholarshipEntity> getAll();
+    List<ScholarshipDto> getAll();
 
-    Optional<ScholarshipEntity> getById(Long id);
+    ScholarshipDto getById(Long id);
 
-    ScholarshipEntity create(ScholarshipEntity scholarship);
+    ScholarshipDto create(ScholarshipDto scholarship);
 
-    ScholarshipEntity update(Long id, ScholarshipEntity scholarship);
+    ScholarshipDto update(ScholarshipDto scholarship);
 
     void delete(Long id);
 }

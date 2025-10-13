@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ApplicantProfileServiceImpl implements ApplicantProfileService {
@@ -137,35 +138,39 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
         if (ObjectUtils.isNotEmpty(certificates)) {
             List<ApplicantCertificateDto> updatedCertificates = certificates.stream()
                     .peek(o -> o.setApplicantId(id))
-                    .toList();
+                    .collect(Collectors.toList());
             applicantCertificateRepository.saveAll(applicantCertificateMapper.toEntity(updatedCertificates));
         }
 
         List<ApplicantEducationHistoryDto> educationHistories = profile.getEducationHistories();
         if (ObjectUtils.isNotEmpty(educationHistories)) {
             List<ApplicantEducationHistoryDto> updatedEducationHistories = educationHistories.stream()
-                    .peek(o -> o.setApplicantId(id)).toList();
+                    .peek(o -> o.setApplicantId(id))
+                    .collect(Collectors.toList());
             applicantEducationHistoryRepository.saveAll(applicantEducationHistoryMapper.toEntity(updatedEducationHistories));
         }
 
         List<ApplicantPhoneNumberDto> phoneNumbers = profile.getPhoneNumbers();
         if (ObjectUtils.isNotEmpty(phoneNumbers)) {
             List<ApplicantPhoneNumberDto> updatedPhoneNumbers = phoneNumbers.stream()
-                    .peek(o -> o.setApplicantId(id)).toList();
+                    .peek(o -> o.setApplicantId(id))
+                    .collect(Collectors.toList());
             applicantPhoneNumberRepository.saveAll(applicantPhoneNumberMapper.toEntity(updatedPhoneNumbers));
         }
 
         List<ApplicantSkillDto> skills = profile.getSkills();
         if (ObjectUtils.isNotEmpty(skills)) {
             List<ApplicantSkillDto> updatedSkills = skills.stream()
-                    .peek(o -> o.setApplicantId(id)).toList();
+                    .peek(o -> o.setApplicantId(id))
+                    .collect(Collectors.toList());
             applicantSkillRepository.saveAll(applicantSkillMapper.toEntity(updatedSkills));
         }
 
         List<ApplicantEducationIntentionDto> intentions = profile.getIntentions();
         if (ObjectUtils.isNotEmpty(intentions)) {
             List<ApplicantEducationIntentionDto> updatedIntentions = intentions.stream()
-                    .peek(o -> o.setApplicantId(id)).toList();
+                    .peek(o -> o.setApplicantId(id))
+                    .collect(Collectors.toList());
             applicantEducationIntentionRepository.saveAll(applicantEducationIntentionMapper.toEntity(updatedIntentions));
         }
     }

@@ -18,4 +18,5 @@ public final class CoreMessageCode {
 
     public static final String MEDIA_ID_IS_NOT_EXIST = "Media id is not exist";
     public static final String PROVIDER_PROFILE_IS_NOT_EXIST = "Provider profile is not exist";
+    public static final String SCHOLARSHIP_IS_NOT_EXIST = "Scholarship is not exist";
 }
