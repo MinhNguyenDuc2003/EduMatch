@@ -9,6 +9,10 @@ function useHasPermission(permission: string) {
       FunctionID: '1',
     },
     {
+      FunctionCode: 'profile',
+      FunctionID: '3',
+    },
+    {
       FunctionCode: 'formScholarship',
       FunctionID: '2',
     },

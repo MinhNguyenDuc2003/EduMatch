@@ -22,12 +22,9 @@ import {
   NavigationMenuTrigger,
 } from '@/lib/cus/navigation-menu';
 import { NavigationMenuItem } from '../share/NavigationMenuItem';
-import { useTranslations } from 'next-intl';
-import LanguageSwitcher from '../share/LanguageSwitcher';
 
 const Header = () => {
   const [isMounted, setIsMounted] = useState(false);
-  const t = useTranslations('header');
 
   useEffect(() => {
     setIsMounted(true);
@@ -45,7 +42,12 @@ const Header = () => {
 
           {/* Logo */}
           <Link className="flex items-center" href={SegUrl.User}>
-            <Image src={'/logo.svg'} alt="logo" width={75} height={75} />
+            <Image
+              src={'https://es5urvh1np.ufs.sh/f/DHR6tEJ9PQozF4xgrm8xYeQBLvSq5K1DUnpHR8VwMIEazuhg'}
+              alt="logo"
+              width={75}
+              height={75}
+            />
             <span className="ml-2.5 text-2xl">Edu</span>
             <span className="text-2xl text-primary-brand font-bold ">Match</span>
           </Link>
@@ -54,9 +56,7 @@ const Header = () => {
         <NavigationMenu className="hidden lg:flex items-center space-x-6 ">
           <NavigationMenuList>
             <NavMenuItem>
-              <NavigationMenuTrigger className="text-md">
-                {t('navMenu.title1')}
-              </NavigationMenuTrigger>
+              <NavigationMenuTrigger className="text-md">Students</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <div className="grid w-[800px] grid-cols-2 gap-4 p-2">
                   {studentMenuItems.map((item, index) => (
@@ -68,7 +68,7 @@ const Header = () => {
 
             <NavMenuItem>
               <NavigationMenuTrigger className="text-md">
-                {t('navMenu.title2')}
+                Scholarship Providers
               </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <div className="grid w-[500px] grid-cols-1 gap-4 p-2">
@@ -83,7 +83,7 @@ const Header = () => {
 
         <div className="flex items-center space-x-2">
           <div className="hidden lg:flex items-center space-x-2">
-            <Link href='http://159.89.200.244/oauth2/authorization/keycloak'>
+            <Link href="http://159.89.200.244/oauth2/authorization/keycloak">
               <Button variant="outline" className="text-primary-brand text-lg p-4">
                 <RText>
                   Student <span className="font-bold">Login / Sign Up</span>
@@ -92,7 +92,7 @@ const Header = () => {
             </Link>
           </div>
 
-          <LanguageSwitcher />
+          {/* <LanguageSwitcher /> */}
 
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>

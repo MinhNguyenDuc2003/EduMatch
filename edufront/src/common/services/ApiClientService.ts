@@ -6,7 +6,8 @@ interface RequestOptions {
   body?: string;
 }
 
-const baseUrl = process.env.API_BASE_PATH || '';
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_PATH || '';
+const token = process.env.NEXT_PUBLIC_API_TOKEN || '';
 
 const sendRequest = async (
   method: string,
@@ -19,6 +20,7 @@ const sendRequest = async (
     method: method.toUpperCase(),
     headers: {
       'Content-type': contentType ?? defaultContentType,
+      Authorization: `Bearer ${token}`,
     },
   };
 
@@ -29,9 +31,7 @@ const sendRequest = async (
     requestOptions.body = data;
   }
 
-  const url = endpoint.startsWith('http')
-    ? endpoint
-    : `${baseUrl}${endpoint}`;
+  const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;
 
   try {
     const response = await fetch(url, method === 'GET' ? undefined : requestOptions);
@@ -41,7 +41,7 @@ const sendRequest = async (
       window.location.href = response.url;
     }
 
-     return await response.json();
+    return await response.json();
   } catch (error) {
     console.error('API call error:', error);
     throw error;
