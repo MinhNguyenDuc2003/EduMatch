@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 
 import java.util.Collection;
@@ -35,10 +36,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        RedirectServerAuthenticationSuccessHandler successHandler =
+                new RedirectServerAuthenticationSuccessHandler("/backoffice/home");
+
         return http
                 .authorizeExchange(auth -> auth
                         .pathMatchers("/health", "/actuator/prometheus", "/actuator/health/**").permitAll()
                         .anyExchange().hasAnyRole("ADMIN"))
+                .oauth2Login(oauth2 -> oauth2.authenticationSuccessHandler(successHandler))
                 .oauth2Login(Customizer.withDefaults())
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
@@ -94,4 +99,5 @@ public class SecurityConfig {
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
     }
+
 }

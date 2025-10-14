@@ -24,7 +24,7 @@ public class UaaContextHolder {
         return "system";
     }
 
-    public static Long getUserId() {
+    public static String getUserId() {
         if (ObjectUtils.isNotEmpty(getCustomInfo())
                 && ObjectUtils.isNotEmpty(getCustomInfo().getUserId())) {
             return getCustomInfo().getUserId();

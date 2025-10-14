@@ -12,4 +12,10 @@ public final class CoreMessageCode {
     public static final String USER_WITH_EMAIL_ALREADY_EXITED = "User with email already exited";
     public static final String UNAUTHENTICATED = "Unauthenticated";
     public static final String USER_ADDRESS_NOT_FOUND = "User address not found";
+    public static final String APPLICANT_ID_IS_NOT_EXIST = "Applicant id is not exist";
+    public static final String APPLICANT_IS_NOT_EXIST = "Applicant is not exist";
+    public static final String USER_PROFILE_ALREADY_EXISTED = "User profile already existed";
+
+    public static final String MEDIA_ID_IS_NOT_EXIST = "Media id is not exist";
+    public static final String PROVIDER_PROFILE_IS_NOT_EXIST = "Provider profile is not exist";
 }

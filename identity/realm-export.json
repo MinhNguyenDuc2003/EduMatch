@@ -47,7 +47,16 @@
     "realm": [
       {
         "id": "2006cd24-9bfb-417d-8e0b-81ef33fac6cf",
-        "name": "CUSTOMER",
+        "id": "2006cd24-9bfb-417d-8e0b-81ef33fac6cf",
+        "name": "APPLICANT",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "Yas",
+        "attributes": {}
+      },
+      {
+        "id": "3df4aa95-1093-49cf-ace8-a911a9dd0b92",
+        "name": "PROVIDER",
         "composite": false,
         "clientRole": false,
         "containerId": "Yas",
@@ -79,7 +88,7 @@
         "composites": {
           "realm": [
             "offline_access",
-            "CUSTOMER",
+            "APPLICANT",
             "uma_authorization"
           ]
         },
@@ -648,7 +657,10 @@
       "redirectUris": [
         "http://backoffice/*",
         "http://localhost:3000/*",
-        "http://localhost:8087/*"
+        "http://localhost:8087/*",
+        "http://160.30.113.224/*",
+        "http://139.59.251.181/*",
+        "http://159.89.200.244/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -989,7 +1001,10 @@
       "secret": "ZrU9I0q2uXBglBnmvyJdkl1lf0ncr8tn",
       "redirectUris": [
         "http://storefront/*",
-        "http://localhost:8087/*"
+        "http://localhost:8087/*",
+        "http://160.30.113.224/*",
+        "http://139.59.251.181/*",
+        "http://159.89.200.244/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -1138,7 +1153,10 @@
         "http://localhost:8085/*",
         "http://localhost:8084/*",
         "http://localhost:8086/*",
-        "http://localhost:8092/*"
+        "http://localhost:8092/*",
+        "http://160.30.113.224/*",
+        "http://139.59.251.181/*",
+        "http://159.89.200.244/*"
       ],
       "webOrigins": [
         "http://api.yas.local",
@@ -1153,7 +1171,10 @@
         "http://localhost:8090",
         "http://localhost:8093",
         "http://localhost:8081",
-        "http://localhost:8092"
+        "http://localhost:8092",
+        "http://160.30.113.224/*",
+        "http://139.59.251.181/*",
+        "http://159.89.200.244/*"
       ],
       "notBefore": 0,
       "bearerOnly": false,

@@ -1,133 +1,179 @@
-<#import "template.ftl" as layout>
-<#import "components/link/primary.ftl" as linkPrimary>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EduMatch | Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="${url.resourcesPath}/css/login.css" />
+    <style>
+        .error {
+            display: none;
+            color: #b00020;
+            background: #fff0f0;
+            border: 1px solid #f1c0c0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+        .disabled {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+<div class="register-container">
+    <div class="illustration">
+        <img src="${url.resourcesPath}/img/edumatch-illustration.png" alt="EduMatch illustration">
+    </div>
 
-<@layout.registrationLayout displayMessage=!messagesPerField.existsError('firstName','lastName','email','username','password','password-confirm'); section>
-    <#if section = "title">
-         ${msg("registerTitle",(realm.displayName!''))}
-    <#elseif section = "header">
-        <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet"/>
-        <script>
-            function togglePassword() {
-                var x = document.getElementById("password");
-                var v = document.getElementById("vi");
-                if (x.type === "password") {
-                    x.type = "text";
-                    v.src = "${url.resourcesPath}/img/eye.png";
-                } else {
-                    x.type = "password";
-                    v.src = "${url.resourcesPath}/img/eye-off.png";
-                }
-            }
-        </script>
-            <div class="logoyas">
-           <img class="logo" src="${url.resourcesPath}/img/yaslogo.png" alt="yas">
-        </div>
-    <#elseif section = "form">
-      <div class="box-container">
-            <div>
-                <p class="application-name">Welcome to Yas store</p>
-            </div>
-     
-        <form id="kc-register-form" class="form" onsubmit="return true;" action="${url.registrationAction}" method="post">
-           
-            <div class="input-group">                
-                    <input type="text" id="firstName" class="login-field" name="firstName" 
-                          placeholder="${msg("firstName")}"
-                           value="${(register.formData.firstName!'')}"
-                           aria-invalid="<#if messagesPerField.existsError('firstName')>true</#if>"
-                    />
-                    <#if messagesPerField.existsError('firstName')>
-                        <span id="input-error-firstname" class="error-message" aria-live="polite">
-                            ${kcSanitize(messagesPerField.get('firstName'))?no_esc}
-                        </span>
-                    </#if>
-            </div>
+    <div class="form-side">
+        <div class="form-box">
+            <img src="${url.resourcesPath}/img/edumatch-logo.png" alt="EduMatch logo" class="logo">
+            <p class="tagline">Join EduMatch – Unlock your scholarship opportunities 🚀</p>
 
-            <div class="input-group">       
-                    <input type="text" id="lastName" class="login-field" name="lastName" 
-                          placeholder="${msg("lastName")}" 
-                           value="${(register.formData.lastName!'')}"
-                           aria-invalid="<#if messagesPerField.existsError('lastName')>true</#if>"
-                    />
-                    <#if messagesPerField.existsError('lastName')>
-                        <span id="input-error-lastname" class="error-message" aria-live="polite">
-                            ${kcSanitize(messagesPerField.get('lastName'))?no_esc}
-                        </span>
-                    </#if>                
-            </div>
-
-            <div class="input-group">               
-                    <input type="text" id="email" class="login-field" name="email"
-                          placeholder="${msg("email")}"
-                           value="${(register.formData.email!'')}" autocomplete="email"
-                           aria-invalid="<#if messagesPerField.existsError('email')>true</#if>"
-                    />
-                    <#if messagesPerField.existsError('email')>
-                        <span id="input-error-email" class="error-message" aria-live="polite">
-                            ${kcSanitize(messagesPerField.get('email'))?no_esc}
-                        </span>
-                    </#if>        
-            </div>
-
-            <#if !realm.registrationEmailAsUsername>
-                <div class="input-group">                   
-                        <input type="text" id="username" class="login-field" name="username"
-                              placeholder="${msg("username")}"
-                               value="${(register.formData.username!'')}" autocomplete="username"
-                               aria-invalid="<#if messagesPerField.existsError('username')>true</#if>"
-                        />
-                        <#if messagesPerField.existsError('username')>
-                            <span id="input-error-username" class="error-message" aria-live="polite">
-                                ${kcSanitize(messagesPerField.get('username'))?no_esc}
-                            </span>
-                        </#if>
-                </div>
+            <!-- Server error top -->
+            <#if message?has_content>
+                <div id="server-error" class="error" style="display:block" aria-live="assertive">Username is already exist. Please choose another username.</div>
             </#if>
 
-            <#if passwordRequired??>
+            <form id="kc-register-form" action="${url.registrationAction}" method="post" novalidate>
+                <#if !realm.registrationEmailAsUsername>
                     <div class="input-group">
-                        <input type="password" id="password" class="login-field" name="password"
-                              placeholder="${msg("password")}"
-                               autocomplete="new-password"
-                               aria-invalid="<#if messagesPerField.existsError('password','password-confirm')>true</#if>"
-                        />
-                        <#if messagesPerField.existsError('password')>
-                            <span id="input-error-password" class="error-message" aria-live="polite">
-                                ${kcSanitize(messagesPerField.get('password'))?no_esc}
-                            </span>
+                        <label for="firstName">First Name</label>
+                        <div id="err-firstName" class="field-error">
+                            <#if message?has_content && message?contains("firstName")>
+                                ${message}
+                            </#if>
+                        </div>
+                        <input id="firstName" name="firstName" class="register-field" type="text"
+                               value="${(register.formData.firstName!'')}" placeholder="Enter first name" />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="lastName">Last Name</label>
+                        <div id="err-lastName" class="field-error">
+                            <#if message?has_content && message?contains("lastName")>
+                                ${message}
+                            </#if>
+                        </div>
+                        <input id="lastName" name="lastName" class="register-field" type="text"
+                               value="${(register.formData.lastName!'')}" placeholder="Enter last name" />
+                    </div>
+                </#if>
+
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <div id="err-email" class="field-error">
+                        <#if message?has_content && message?contains("email")>
+                            ${message}
                         </#if>
+                    </div>
+                    <input id="email" name="email" class="register-field" type="email"
+                           value="${(register.formData.email!'')}" placeholder="Enter email" />
+                </div>
+
+                <#if !realm.registrationEmailAsUsername>
+                    <div class="input-group">
+                        <label for="username">Username</label>
+                        <div id="err-username" class="field-error">
+                            <#if message?has_content && message?contains("username")>
+                                ${message}
+                            </#if>
+                        </div>
+                        <input id="username" name="username" class="register-field" type="text"
+                               value="${(register.formData.username!'')}" placeholder="Enter username" />
+                    </div>
+                </#if>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div id="err-password" class="field-error">
+                        <#if message?has_content && message?contains("password")>
+                            ${message}
+                        </#if>
+                    </div>
+                    <input id="password" name="password" class="register-field" type="password" placeholder="Enter password" />
                 </div>
 
                 <div class="input-group">
-                        <input type="password" id="password-confirm" class="login-field"
-                              placeholder="${msg("passwordConfirm")}"
-                               name="password-confirm"
-                               aria-invalid="<#if messagesPerField.existsError('password-confirm')>true</#if>"
-                        />
-                        <#if messagesPerField.existsError('password-confirm')>
-                            <span id="input-error-password-confirm" class="error-message" aria-live="polite">
-                                ${kcSanitize(messagesPerField.get('password-confirm'))?no_esc}
-                            </span>
+                    <label for="password-confirm">Confirm</label>
+                    <div id="err-password-confirm" class="field-error">
+                        <#if message?has_content && message?contains("confirm")>
+                            ${message}
                         </#if>
+                    </div>
+                    <input id="password-confirm" name="password-confirm" class="register-field" type="password" placeholder="Confirm password" />
                 </div>
-            </#if>
 
-            <#if recaptchaRequired??>
-                <div class="form-group">
-                        <div class="g-recaptcha" data-size="compact" data-sitekey="${recaptchaSiteKey}"></div>                    
-                </div>
-            </#if>
+                <button id="register-btn" type="submit" class="btn submit">Register</button>
+            </form>
 
-            <div class="wrapper-button">
-                <div id="kc-form-options" class="backtologin">
-                  <a class="" href="${url.loginUrl}">${kcSanitize(msg("backToLogin"))?no_esc}</a>
-                </div>
-                 <input class="register-submit" type="submit" value="${msg("doRegister")}"/>
+            <div class="form-footer">
+                <a href="${url.loginUrl}" class="login-link">Back to Login</a>
             </div>
-        </form>
 
-        <div>
-            <p class="copyright">&copy; copyright - yas.nashtech-garage ${.now?string('yyyy')}</p>
+            <p class="copyright">© EduMatch 2025</p>
         </div>
-    </#if>
-</@layout.registrationLayout>
+    </div>
+</div>
+
+<script>
+    (function(){
+        const form = document.getElementById('kc-register-form');
+        const btn = document.getElementById('register-btn');
+
+        const err = {
+            firstName: document.getElementById('err-firstName'),
+            lastName: document.getElementById('err-lastName'),
+            email: document.getElementById('err-email'),
+            username: document.getElementById('err-username'),
+            password: document.getElementById('err-password'),
+            confirm: document.getElementById('err-password-confirm'),
+            server: document.getElementById('server-error')
+        };
+
+        function showFieldError(el, msg) {
+            if (el) {
+                el.textContent = msg;
+                el.style.display = 'block';
+            }
+        }
+
+        function clearErrors(){
+            Object.values(err).forEach(e => { if(e){ e.style.display='none'; e.textContent=''; } });
+        }
+
+        form.addEventListener('submit', function(e){
+            clearErrors(); // reset errors
+
+            let ok = true;
+            const firstName = form.firstName ? form.firstName.value.trim() : '';
+            const lastName = form.lastName ? form.lastName.value.trim() : '';
+            const email = form.email.value.trim();
+            const username = form.username ? form.username.value.trim() : '';
+            const password = form.password.value.trim();
+            const confirm = form['password-confirm'].value.trim();
+
+            if(form.firstName && !firstName){ showFieldError(err.firstName,'First name is required'); ok=false; }
+            if(form.lastName && !lastName){ showFieldError(err.lastName,'Last name is required'); ok=false; }
+            if(!email){ showFieldError(err.email,'Email is required'); ok=false; }
+            else if(!/^[^@]+@[^@]+\.[^@]+$/.test(email)){ showFieldError(err.email,'Invalid email'); ok=false; }
+            if(form.username && !username){ showFieldError(err.username,'Username is required'); ok=false; }
+            if(!password){ showFieldError(err.password,'Password is required'); ok=false; }
+            else if(password.length < 6){ showFieldError(err.password,'Password must be at least 6 characters'); ok=false; }
+            if(!confirm){ showFieldError(err.confirm,'Please confirm password'); ok=false; }
+            else if(password !== confirm){ showFieldError(err.confirm,'Passwords do not match'); ok=false; }
+
+            if(!ok) {
+                e.preventDefault(); // stop submit nếu lỗi client
+                return;
+            }
+
+            btn.disabled = true;
+            btn.classList.add('disabled');
+        });
+    })();
+</script>
+</body>
+</html>

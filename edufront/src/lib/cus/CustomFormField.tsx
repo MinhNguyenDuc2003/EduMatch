@@ -9,8 +9,8 @@ import { Switch } from '@/lib/cus/switch';
 import { Edit, X, Plus } from 'lucide-react';
 
 interface FormFieldProps {
-  name: string;
-  label: string;
+  name?: string;
+  label: React.ReactNode;
   type?:
     | 'text'
     | 'email'
@@ -32,6 +32,8 @@ interface FormFieldProps {
   multiple?: boolean;
   isIcon?: boolean;
   initialValue?: string | number | boolean | string[];
+  inlineLabel?: boolean;
+  isBorder?: boolean
 }
 
 export const CustomFormField: React.FC<FormFieldProps> = ({
@@ -46,6 +48,9 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
   disabled = false,
   isIcon = false,
   initialValue,
+  inlineLabel,
+  isBorder
+  
 }) => {
   const { control } = useFormContext();
 
@@ -57,7 +62,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             placeholder={placeholder}
             {...field}
             rows={3}
-            className={`border-none bg-customgreys-darkGrey p-4 ${inputClassName}`}
+            className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
           />
         );
       case 'select':
@@ -68,11 +73,11 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             onValueChange={field.onChange}
           >
             <SelectTrigger
-              className={`w-full border-none bg-customgreys-primarybg p-4 ${inputClassName}`}
+              className={`w-full ${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-primarybg p-4 ${inputClassName}`}
             >
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
-            <SelectContent className="w-full bg-customgreys-primarybg border-customgreys-dirtyGrey shadow">
+            <SelectContent className="w-full bg-white border-customgreys-dirtyGrey shadow">
               {options?.map((option) => (
                 <SelectItem
                   key={option.value}
@@ -106,14 +111,14 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             type="number"
             placeholder={placeholder}
             {...field}
-            className={`border-none bg-customgreys-darkGrey p-4 ${inputClassName}`}
+            className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
             disabled={disabled}
           />
         );
       case 'multi-input':
         return (
           <MultiInputField
-            name={name}
+            name={name || ''}
             control={control}
             placeholder={placeholder}
             inputClassName={inputClassName}
@@ -125,7 +130,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             type={type}
             placeholder={placeholder}
             {...field}
-            className={`border-none bg-customgreys-primarybg p-4 ${inputClassName}`}
+            className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-primarybg p-4 ${inputClassName}`}
             disabled={disabled}
           />
         );
@@ -134,32 +139,41 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
 
   return (
     <FormField
-      control={control}
-      name={name}
-      defaultValue={initialValue}
-      render={({ field }) => (
-        <FormItem className={`${type !== 'switch' && 'rounded-md'} relative ${className}`}>
-          {type !== 'switch' && (
-            <div className="flex justify-between items-center">
-              <FormLabel className={`text-customgreys-dirtyGrey text-sm ${labelClassName}`}>
-                {label}
-              </FormLabel>
-
-              {!disabled && isIcon && type !== 'file' && type !== 'multi-input' && (
-                <Edit className="size-4 text-customgreys-dirtyGrey" />
-              )}
-            </div>
-          )}
-          <FormControl>
-            {renderFormControl({
-              ...field,
-              value: field.value ?? initialValue ?? '',
-            })}
-          </FormControl>
-          <FormMessage className="text-red-400" />
-        </FormItem>
+  control={control}
+  name={name || ''}
+  defaultValue={initialValue}
+  render={({ field }) => (
+    <FormItem
+      className={`${type !== 'switch' && 'rounded-md'} relative ${className} ${
+        inlineLabel ? 'flex   ' : ''
+      }`}
+    >
+      {type !== 'switch' && (
+        <FormLabel
+          className={`text-customgreys-dirtyGrey text-sm ${labelClassName} 
+          }`}
+        >
+          {label}
+        </FormLabel>
       )}
-    />
+
+      <div className="flex-1">
+        <FormControl>
+          {renderFormControl({
+            ...field,
+            value: field.value ?? initialValue ?? '',
+          })}
+        </FormControl>
+        <FormMessage className="text-red-400" />
+      </div>
+
+      {!disabled && isIcon && type !== 'file' && type !== 'multi-input' && !inlineLabel && (
+        <Edit className="size-4 text-customgreys-dirtyGrey" />
+      )}
+    </FormItem>
+  )}
+/>
+
   );
 };
 interface MultiInputFieldProps {

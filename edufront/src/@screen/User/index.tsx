@@ -2,6 +2,7 @@
 
 import { sStore } from '@/stores';
 import Context from './context';
+import { RText, Section } from '@/lib/by/Div';
 
 export default function User() {
   const ss = sStore();
@@ -15,7 +16,9 @@ export default function User() {
           console.log('data', data)
           return (
             <>
-              
+              <Section>
+                <RText>User</RText>
+              </Section>
             </>
           );
         }}

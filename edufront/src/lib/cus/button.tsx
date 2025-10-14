@@ -99,7 +99,7 @@ const buttonVariants = cva(
         cancel: 'bg-[#dee1e6] [&_.value]:text-[var(--text-primary)]',
         clarity:
           'bg-transparent border-0 shadow-none text-[var(--normal)] [&_.value]:w-full [&_.value]:text-center [&_.value]:justify-center',
-        ghost: 'bg-transparent border-0 shadow-none text-[var(--text-primary)] underline',
+        ghost: 'bg-transparent border-0 shadow-none text-[var(--text-primary)] ',
         outline:
           'border border-[var(--primary-brand)] text-[var(--whites)] bg-[var(--gadient-green-enable)] px-1.5 py-0.5 max-h-6 shadow-none',
         outline_secondary:

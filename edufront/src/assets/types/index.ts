@@ -10,6 +10,9 @@ declare global {
     ParentFunctionID?: string;
     IsShow?: boolean;
   };
-
+export const enum TaskType {
+  TRANSLATE = 'translate',
+  CURRENCY = 'currency',
+}
 }
 export {};

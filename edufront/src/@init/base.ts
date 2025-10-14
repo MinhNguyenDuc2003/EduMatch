@@ -1,4 +1,4 @@
-export const Root = `/`;
+export const Root = `/home`;
 //#region EFncID Danh sách tính năng
 export const EFncID = {
   P01: 'profile',
@@ -8,7 +8,7 @@ export const EFncID = {
 
 //#region SegUrl khai báo url khi cần dùng chuyển page
 export const SegUrl = {
-  Profile: `/${EFncID.P01}`,
-  User: `/${EFncID.U01}`,
+  Profile: `${Root}/${EFncID.P01}`,
+  User: `${Root}/${EFncID.U01}`,
 } as const;
 //#endregion

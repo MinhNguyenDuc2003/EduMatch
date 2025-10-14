@@ -2,10 +2,75 @@
   "form": {
     "title": "Thử "
   },
+  "header": {
+    "navMenu": {
+      "title1": "Sinh Viên",
+      "title2": "Nhà Cung Cấp Học Bổng"
+    }
+  },
   "home": {
     "title": "Trang chủ"
   },
   "profile": {
-    "ttt": "ffff"
+    "header": {
+      "matchedScholarships": "Học Bổng Phù Hợp",
+      "matchedResearchOpportunities": "Cơ Hội Nghiên Cứu Phù Hợp",
+      "scholarshipAmount": "Tổng Giá Trị Học Bổng"
+    },
+    "strength": {
+      "title": "Độ Hoàn Thiện Hồ Sơ",
+      "description": "Hồ sơ hoàn chỉnh mang lại kết quả tốt hơn.",
+      "instruction": "Điền đầy đủ các phần bên dưới để cải thiện chất lượng kết quả tìm kiếm học bổng."
+    },
+    "sections": {
+      "student": {
+        "title": "Thông Tin Sinh Viên",
+        "firstChoice": "Lựa Chọn 1/Đang Theo Học",
+        "alternateColleges": "Trường Dự Phòng",
+        "currentGrade": "Năm Học Hiện Tại",
+        "gpa": "Điểm Trung Bình",
+        "firstName": "Tên",
+        "lastName": "Họ",
+        "birthday": "Ngày Sinh",
+        "gender": "Giới Tính",
+        "hometown": "Quê Quán",
+        "country": "Quốc Gia",
+        "phone": "Số Điện Thoại",
+        "race": "Chủng Tộc",
+        "ethnicity": "Dân Tộc",
+        "religion": "Tôn Giáo"
+      },
+      "academic": {
+        "title": "Thông Tin Học Tập",
+        "majors": "Ngành Học Quan Tâm",
+        "highSchool": "Trường Trung Học",
+        "act": "ACT",
+        "sat": "SAT"
+      },
+      "account": {
+        "title": "Cài Đặt Tài Khoản",
+        "email": "Địa Chỉ Email",
+        "password": "Mật Khẩu"
+      },
+      "organization": {
+        "title": "Thông Tin Tổ Chức",
+        "honor": "Tổ Chức Danh Dự",
+        "student": "Tổ Chức Sinh Viên"
+      },
+      "artistic": {
+        "title": "Thông Tin Nghệ Thuật/Thể Thao",
+        "art": "Nghệ Thuật/Âm Nhạc/Sân Khấu",
+        "athletic": "Sở Thích Thể Thao"
+      },
+      "background": {
+        "title": "Thông Tin Nền",
+        "military": "Quan Tâm hoặc Liên Kết Quân Đội",
+        "interests": "Sở Thích/Nhóm/Thuộc Tính"
+      }
+    },
+    "actions": {
+      "edit": "Chỉnh Sửa",
+      "addInfo": "Thêm Thông Tin"
+    }
   }
 }

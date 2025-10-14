@@ -1,14 +1,24 @@
-"use client"
+'use client';
 
-import { includes, map } from "lodash";
-import { sStore } from "../stores";
- function useHasPermission(permission: string) {
-  const listFunstion = [{
-    FunctionCode: "user",
-    FunctionID: "1"
-  }]
+import { includes, map } from 'lodash';
+import { sStore } from '../stores';
+function useHasPermission(permission: string) {
+  const listFunstion = [
+    {
+      FunctionCode: 'user',
+      FunctionID: '1',
+    },
+    {
+      FunctionCode: 'profile',
+      FunctionID: '3',
+    },
+    {
+      FunctionCode: 'formScholarship',
+      FunctionID: '2',
+    },
+  ];
 
   return map(listFunstion, (item) => item.FunctionCode).includes(permission);
 }
 
-export default useHasPermission ;
+export default useHasPermission;

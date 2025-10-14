@@ -1,14 +1,20 @@
 package com.minh.customer.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.CoreMessageCode;
 import com.minh.customer.configuration.KeycloakPropsConfig;
-import com.minh.customer.viewmodel.customer.CustomerAdminVm;
-import com.minh.customer.viewmodel.customer.CustomerListVm;
-import com.minh.customer.viewmodel.customer.CustomerPostVm;
-import com.minh.customer.viewmodel.customer.CustomerProfileRequestVm;
-import com.minh.customer.viewmodel.customer.CustomerVm;
-import com.minh.customer.viewmodel.customer.GuestUserVm;
+import com.minh.customer.data.vo.ApplicantProfileVo;
+import com.minh.customer.data.vo.CustomerVo;
+import com.minh.customer.data.vo.ProviderProfileVo;
+import com.minh.customer.feign.ApplicantProfileFeign;
+import com.minh.customer.feign.ProviderProfileFeign;
+import com.minh.customer.viewmodel.address.ActiveAddressVm;
+import com.minh.customer.viewmodel.customer.*;
 import com.minh.exception.BusinessException;
+import com.minh.model.dto.profile.ProviderProfileDto;
+import com.minh.service.base.BaseService;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.core.Response;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -19,8 +25,10 @@ import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -28,13 +36,22 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class CustomerService {
+public class CustomerService extends BaseService {
 
     private static final String ERROR_FORMAT = "%s: Client %s don't have access right for this resource";
     private static final int USER_PER_PAGE = 10;
     private static final String GUEST = "GUEST";
     private final Keycloak keycloak;
     private final KeycloakPropsConfig keycloakPropsConfig;
+
+    @Autowired
+    private ApplicantProfileFeign profileFeign;
+    @Autowired
+    private ProviderProfileFeign providerFeign;
+    @Autowired
+    private UserAddressService userAddressService;
+    @Autowired
+    private LocationService locationService;
 
     public CustomerService(Keycloak keycloak, KeycloakPropsConfig keycloakPropsConfig) {
         this.keycloak = keycloak;
@@ -65,6 +82,7 @@ public class CustomerService {
         }
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public void updateCustomer(String id, CustomerProfileRequestVm requestVm) {
         UserRepresentation userRepresentation =
                 keycloak.realm(keycloakPropsConfig.getRealm()).users().get(id).toRepresentation();
@@ -80,6 +98,7 @@ public class CustomerService {
         }
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public void deleteCustomer(String id) {
         UserRepresentation userRepresentation =
                 keycloak.realm(keycloakPropsConfig.getRealm()).users().get(id).toRepresentation();
@@ -111,17 +130,28 @@ public class CustomerService {
         }
     }
 
-    public CustomerVm getCustomerProfile(String userId) {
+    public CustomerVo getCustomerProfile(String userId) {
         try {
-            return CustomerVm.fromUserRepresentation(
-                    keycloak.realm(keycloakPropsConfig.getRealm()).users().get(userId).toRepresentation());
+            CustomerVo vo = new CustomerVo();
 
+            CustomerVm customerVm = CustomerVm.fromUserRepresentation(
+                    keycloak.realm(keycloakPropsConfig.getRealm()).users().get(userId).toRepresentation());
+            vo.setCustomer(customerVm);
+
+            ApplicantProfileVo profileVo = this.parseResponse(profileFeign.getOneByUserId(userId));
+            vo.setApplicantProfile(profileVo);
+
+            List<ActiveAddressVm> addressList = userAddressService.getUserAddressList();
+            vo.setAddresses(addressList);
+
+            return vo;
         } catch (ForbiddenException exception) {
             throw new AccessDeniedException(
                     String.format(ERROR_FORMAT, exception.getMessage(), keycloakPropsConfig.getResource()));
         }
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public GuestUserVm createGuestUser() {
         // Get realm
         RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
@@ -158,6 +188,7 @@ public class CustomerService {
         return encoder.encodeToString(bytes);
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public CustomerVm create(CustomerPostVm customerPostVm) {
         // Get realm
         RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
@@ -201,5 +232,44 @@ public class CustomerService {
         // Search for users by email
         List<UserRepresentation> users = realmResource.users().search(null, null, null, email, 0, 1);
         return !users.isEmpty();
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public CustomerVo createCustomerProfile(CustomerVo customerVo) {
+        profileFeign.create(customerVo.getApplicantProfile());
+        userAddressService.createAddress(customerVo.getAddressPostVm());
+        return customerVo;
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public CustomerVo updateCustomerProfile(CustomerVo customerVo) {
+        profileFeign.update(customerVo.getApplicantProfile());
+        locationService.updateAddress(customerVo.getAddressPostVm());
+        return customerVo;
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public CustomerVo createProviderProfile(CustomerVo profile, MultipartFile logo, MultipartFile banner) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ProviderProfileDto providerProfileDto = this.parseResponse(providerFeign.create(objectMapper.writeValueAsString(profile.getProviderProfile()), logo, banner));
+        userAddressService.createProviderAddress(profile.getAddressPostVm(), providerProfileDto.getId());
+        return profile;
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public CustomerVo updateProviderProfile(CustomerVo customerVo, MultipartFile logo, MultipartFile banner) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        providerFeign.update(objectMapper.writeValueAsString(customerVo.getProviderProfile()), logo, banner);
+        locationService.updateAddress(customerVo.getAddressPostVm());
+        return customerVo;
+    }
+
+    public CustomerVo getProviderProfile() {
+        CustomerVo vo = new CustomerVo();
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerFeign.getMyProviderInfo());
+        vo.setProviderProfile(providerProfileVo);
+        List<ActiveAddressVm> addressList = userAddressService.getProviderAddressList(providerProfileVo.getId());
+        vo.setAddresses(addressList);
+        return vo;
     }
 }
