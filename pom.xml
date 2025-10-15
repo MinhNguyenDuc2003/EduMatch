@@ -24,6 +24,7 @@
         <module>registry</module>
         <module>media</module>
         <module>scholarship</module>
+        <module>notification</module>
     </modules>
 
     <properties>

@@ -1,11 +1,10 @@
-package com.minh.customer;
+package com.minh.notification;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.minh.customer.configuration.ServiceUrlConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -13,7 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -28,30 +26,28 @@ import javax.sql.DataSource;
 import java.time.Duration;
 
 @SpringBootApplication
-@EnableFeignClients("com.minh.customer.feign")
-@EntityScan("com.minh.customer.data.entity")
-@EnableJpaRepositories("com.minh.customer.data.repository")
+@EnableFeignClients("com.minh.notification.feign")
+@EntityScan("com.minh.notification.data.entity")
+@EnableJpaRepositories("com.minh.notification.data.repository")
 @ComponentScan(basePackages = {
-        "com.minh.customer.service",
+        "com.minh.notification.service",
         "com.minh.config",
-        "com.minh.customer.data",
-        "com.minh.customer.data.mapper",
-        "com.minh.customer.controller",
+        "com.minh.notification.data",
+        "com.minh.notification.data.mapper",
+        "com.minh.notification.controller",
         "com.minh.service",
-        "com.minh.customer.message",
-        "com.minh.customer.configuration",
+        "com.minh.notification.message",
+        "com.minh.notification.configuration",
 })
-@EnableConfigurationProperties({ServiceUrlConfig.class})
 @Slf4j
-public class CustomerApplication
-{
-    public static void main( String[] args )
-    {
-        SpringApplication.run(CustomerApplication.class, args);
-    }
+public class NotificationApplication {
 
     @Autowired
     private Environment env;
+
+    public static void main(String[] args) {
+        SpringApplication.run(NotificationApplication.class, args);
+    }
 
     @Bean
     public ObjectMapper objectMapper() {
@@ -87,4 +83,5 @@ public class CustomerApplication
         DataSourceBuilder ds = DataSourceBuilder.create();
         return ds.build();
     }
+
 }
