@@ -102,7 +102,9 @@ const HistoryCard = ({ edu }: HistoryCardProps) => {
         <DialogTrigger asChild>{cardContent}</DialogTrigger>
         <DialogContent className="sm:max-w-[500px] bg-[#FAFAF6]">
           <DialogTitle>History Details</DialogTitle>
-          <HistoryDetail edu={edu} />
+          <div className="max-h-[70vh] overflow-y-auto">
+            <HistoryDetail edu={edu} />
+          </div>
         </DialogContent>
       </Dialog>
     );
@@ -112,8 +114,10 @@ const HistoryCard = ({ edu }: HistoryCardProps) => {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>{cardContent}</DrawerTrigger>
       <DrawerContent className="bg-[#FAFAF6]">
-        <DrawerTitle>History Details</DrawerTitle>
-        <HistoryDetail edu={edu} />
+        <DrawerTitle className="px-4">History Details</DrawerTitle>
+        <div className="p-4 overflow-y-auto max-h-[80vh]">
+          <HistoryDetail edu={edu} />
+        </div>
       </DrawerContent>
     </Drawer>
   );

@@ -140,7 +140,7 @@ export default GenCtx({
     const loading = useState(false);
 
     const meds = {
-      async onPushDataToN8n(item : IListScholarshipOpportunities) {
+      async onPushDataToN8n(item: IListScholarshipOpportunities) {
         onSetLoading(true);
         const res = await fetch('/cv/CV_test.pdf');
         const blob = await res.blob();
@@ -173,13 +173,13 @@ export default GenCtx({
         }
       },
     };
+
     useEffect(() => {
       ss.setJointData({ ListScholarshipOpportunities });
     }, []);
 
     return {
       ss,
-
       meds,
       methods,
     };

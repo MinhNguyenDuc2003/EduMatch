@@ -88,6 +88,24 @@ export default function Profile() {
                   label: 'Last Name',
                   value: applicantProfile?.lastName,
                 },
+                // Address
+                {
+                  label: 'Address',
+                  value:
+                    addresses[0]?.addressLine1 +
+                    ', ' +
+                    addresses[0]?.districtName +
+                    ', ' +
+                    addresses[0]?.city +
+                    ', ' +
+                    addresses[0]?.countryName,
+                },
+
+                {
+                  label: 'Country',
+                  value: addresses[0]?.countryName,
+                },
+
                 {
                   label: 'Overall GPA',
                   value: applicantProfile?.overallGpa
@@ -228,8 +246,8 @@ export default function Profile() {
             />
           </div>
 
-          <Certificates certificates={applicantProfile.certificates} />
-          <Intentions intentions={applicantProfile.intentions} />
+          <Certificates certificates={applicantProfile?.certificates || []} />
+          <Intentions intentions={applicantProfile?.intentions || []} />
         </div>
       </div>
       <Footer />
