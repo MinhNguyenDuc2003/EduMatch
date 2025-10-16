@@ -7,6 +7,7 @@ import CardBigPic from '@/pattern/share/CardBigPic';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { compact, map } from 'lodash';
 import Context from './seg/context';
+import { Button } from '@/lib/cus/button';
 
 export default function HomePage() {
   return (
@@ -19,54 +20,32 @@ export default function HomePage() {
 
               <Header />
 
-              {/* <CustomFormField
-                name="Fields.User.name"
-                label="Name"
-                placeholder="Enter something..."
-                // className="flex"
-                labelClassName="mr-4 w-32"
-                inputClassName="w-64"
-              />
-              <CustomFormField
-                name="Fields.User.age"
-                label="Age"
-                placeholder="Enter something..."
-                // className="flex"
-                labelClassName="mr-4 w-32"
-                inputClassName="flex-1"
-              />
-              <CustomFormField
-                name="Fields.User.gmail"
-                label="Gmail"
-                placeholder="Enter something..."
-                // className="flex"
-                labelClassName="mr-4 w-32"
-                inputClassName="flex-1"
-              />
-              <CustomFormField
-                name="Fields.User.description"
-                label="Description"
-                placeholder="Enter something..."
-                // className="flex"
-                labelClassName="mr-4 w-32"
-                inputClassName="flex-1"
-              />
+              {/* Banner Section */}
+              <div className="lg:px-40 py-24 bg-[#fafaf6]">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                  {/* Left Section - Banner Content */}
+                  <div className="space-y-6">
+                    <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+                      Find Your Perfect Scholarship Match
+                    </h1>
+                    <p className="text-lg text-gray-600 leading-relaxed">
+                      Connect with thousands of scholarship opportunities tailored to your academic
+                      goals and aspirations. Our intelligent matching system helps you discover the
+                      perfect funding opportunities that align with your profile.
+                    </p>
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold rounded-lg">
+                      Explore Scholarships
+                    </Button>
+                  </div>
 
-              {watch('Fields.User.name')}
-              {watch('Fields.User.age')} */}
+                  {/* Right Section - Placeholder */}
+                  <div className="bg-gray-200 rounded-lg h-80 lg:h-96 flex items-center justify-center">
+                    <span className="text-gray-500 text-lg">Banner Image Placeholder</span>
+                  </div>
+                </div>
+              </div>
 
-              {/* <Button label="Push data to N8n" onClick={handleSubmit(meds.onPushDataToN8n)} /> */}
-              {/* <Button
-                variant={'Blue'}
-                label="Push data to N8n"
-                onClick={handleSubmit(meds.onPushDataToN8n)}
-              />
-              <Button
-                variant={'Gray'}
-                label="Push data to N8n"
-                onClick={handleSubmit(meds.onPushDataToN8n)}
-              /> */}
-              <div className="lg:px-40 py-4">
+              <div className="lg:px-40 py-24">
                 <Anchor className="grid grid-cols-3 gap-5">
                   {map(ss.Joint.ListScholarshipOpportunities, (item) => (
                     <CardSmalPic
