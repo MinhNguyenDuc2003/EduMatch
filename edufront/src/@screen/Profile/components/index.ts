@@ -9,3 +9,4 @@ export { default as SkillCard } from './SkillCard';
 export { default as IntentionCard } from './IntentionCard';
 export { default as IntentionDetail } from './IntentionDetail';
 export { default as Intentions } from './Intentions';
+export { default as StudentInformationDialog } from './StudentInformationDialog';

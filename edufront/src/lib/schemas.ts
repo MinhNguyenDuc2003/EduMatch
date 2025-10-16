@@ -1,14 +1,7 @@
-import { z } from 'zod';
-
-export function createSchema<T>(shape: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [K in keyof T]: any;
-}) {
-  return z.object(shape);
-}
+import * as z from 'zod';
 
 export const schemas = {
-  User: createSchema({
+  User: z.object({
     Fields: z.object({
       User: z.object({
         name: z
@@ -27,7 +20,7 @@ export const schemas = {
     Filters: z.object({}).optional(),
   }),
 
-  Admin: createSchema({
+  Admin: z.object({
     Fields: z.object({
       Provider: z.object({
         providerName: z.string().min(3, 'Tên provider tối thiểu 3 ký tự'),
@@ -37,7 +30,7 @@ export const schemas = {
     Filters: z.object({}).optional(),
   }),
 
-  Profile: createSchema({
+  Profile: z.object({
     Fields: z.object({
       applicantProfile: z.object({
         contactName: z.string().min(1, 'Tên liên hệ không được để trống'),
@@ -154,4 +147,6 @@ export const schemas = {
   }),
 };
 
+// Type definition for Profile schema
+export type IUserForm = z.infer<typeof schemas.User>;
 export type IProfileForm = z.infer<typeof schemas.Profile>;

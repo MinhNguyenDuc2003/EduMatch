@@ -34,7 +34,8 @@ const sendRequest = async (
   const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;
 
   try {
-    const response = await fetch(url, method === 'GET' ? undefined : requestOptions);
+    // const response = await fetch(url, method === 'GET' ? undefined : requestOptions);
+    const response = await fetch(url, requestOptions);
 
     // Workaround to manually redirect in case of CORS error
     if (response.type == 'cors' && response.redirected) {

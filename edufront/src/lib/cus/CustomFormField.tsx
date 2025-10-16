@@ -22,7 +22,7 @@ interface FormFieldProps {
     | 'file'
     | 'multi-input';
   placeholder?: string;
-  options?: { value: string; label: string }[];
+  options?: { value: string | number; label: string }[];
   accept?: string;
   className?: string;
   labelClassName?: string;
@@ -33,7 +33,7 @@ interface FormFieldProps {
   isIcon?: boolean;
   initialValue?: string | number | boolean | string[];
   inlineLabel?: boolean;
-  isBorder?: boolean
+  isBorder?: boolean;
 }
 
 export const CustomFormField: React.FC<FormFieldProps> = ({
@@ -49,8 +49,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
   isIcon = false,
   initialValue,
   inlineLabel,
-  isBorder
-  
+  isBorder,
 }) => {
   const { control } = useFormContext();
 
@@ -68,9 +67,13 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
       case 'select':
         return (
           <Select
-            value={field.value || (initialValue as string)}
-            defaultValue={field.value || (initialValue as string)}
-            onValueChange={field.onChange}
+            value={String(field.value || initialValue || '')}
+            defaultValue={String(field.value || initialValue || '')}
+            onValueChange={(value) => {
+              // Convert back to number if the original value was a number
+              const numValue = Number(value);
+              field.onChange(isNaN(numValue) ? value : numValue);
+            }}
           >
             <SelectTrigger
               className={`w-full ${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-primarybg p-4 ${inputClassName}`}
@@ -80,8 +83,8 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             <SelectContent className="w-full bg-white border-customgreys-dirtyGrey shadow">
               {options?.map((option) => (
                 <SelectItem
-                  key={option.value}
-                  value={option.value}
+                  key={String(option.value)}
+                  value={String(option.value)}
                   className={`cursor-pointer hover:!bg-gray-100 hover:!text-customgreys-darkGrey`}
                 >
                   {option.label}
@@ -139,41 +142,41 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
 
   return (
     <FormField
-  control={control}
-  name={name || ''}
-  defaultValue={initialValue}
-  render={({ field }) => (
-    <FormItem
-      className={`${type !== 'switch' && 'rounded-md'} relative ${className} ${
-        inlineLabel ? 'flex   ' : ''
-      }`}
-    >
-      {type !== 'switch' && (
-        <FormLabel
-          className={`text-customgreys-dirtyGrey text-sm ${labelClassName} 
+      control={control}
+      name={name || ''}
+      defaultValue={initialValue}
+      render={({ field }) => (
+        <FormItem
+          className={`${type !== 'switch' && 'rounded-md'} relative ${className} ${
+            inlineLabel ? 'flex items-center gap-3' : ''
           }`}
         >
-          {label}
-        </FormLabel>
+          {type !== 'switch' && (
+            <FormLabel
+              className={`text-customgreys-dirtyGrey text-sm ${labelClassName} ${
+                inlineLabel ? 'mb-0 w-20 flex-shrink-0' : ''
+              }`}
+            >
+              {label}
+            </FormLabel>
+          )}
+
+          <div className="flex-1">
+            <FormControl>
+              {renderFormControl({
+                ...field,
+                value: field.value ?? initialValue ?? '',
+              })}
+            </FormControl>
+            <FormMessage className="text-red-400" />
+          </div>
+
+          {!disabled && isIcon && type !== 'file' && type !== 'multi-input' && !inlineLabel && (
+            <Edit className="size-4 text-customgreys-dirtyGrey" />
+          )}
+        </FormItem>
       )}
-
-      <div className="flex-1">
-        <FormControl>
-          {renderFormControl({
-            ...field,
-            value: field.value ?? initialValue ?? '',
-          })}
-        </FormControl>
-        <FormMessage className="text-red-400" />
-      </div>
-
-      {!disabled && isIcon && type !== 'file' && type !== 'multi-input' && !inlineLabel && (
-        <Edit className="size-4 text-customgreys-dirtyGrey" />
-      )}
-    </FormItem>
-  )}
-/>
-
+    />
   );
 };
 interface MultiInputFieldProps {

@@ -1,7 +1,7 @@
 'use client';
 
 import apiClientService from '@/common/services/ApiClientService';
-import { schemas } from '@/lib/schemas';
+import { IUserForm, schemas } from '@/lib/schemas';
 import { GenCtx } from '@/provider/GeneralContext';
 import { sStore } from '@/stores';
 import { onSetLoading } from '@/utils/eventBus';
@@ -105,17 +105,17 @@ const ListScholarshipOpportunities = [
     UpdatedAt: '2025-09-13T08:00:00Z',
   },
 ];
-export type IUserForm = {
-  Fields: {
-    User: {
-      name: string;
-      age: number;
-      gmail: string;
-      description?: string;
-    };
-  };
-  Filters: object;
-};
+// export type IUserForm = {
+//   Fields: {
+//     User: {
+//       name: string;
+//       age: number;
+//       gmail: string;
+//       description?: string;
+//     };
+//   };
+//   Filters: object;
+// };
 
 export default GenCtx({
   useLogic() {

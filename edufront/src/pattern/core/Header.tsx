@@ -47,6 +47,7 @@ const Header = () => {
               alt="logo"
               width={75}
               height={75}
+              unoptimized
             />
             <span className="ml-2.5 text-2xl">Edu</span>
             <span className="text-2xl text-primary-brand font-bold ">Match</span>
