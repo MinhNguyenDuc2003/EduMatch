@@ -102,8 +102,15 @@ export function getPrimaryAddress(
 /**
  * Format date string to readable format
  */
-export function formatDate(dateString?: string): string {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+export function formatDate(dateInput?: string | number): string {
+  if (dateInput === undefined || dateInput === null || dateInput === '') return '';
+  const asNumber = typeof dateInput === 'string' ? Number(dateInput) : dateInput;
+  const timestamp = !isNaN(asNumber as number)
+    ? // Detect seconds vs milliseconds (treat < 10^12 as seconds)
+      (asNumber as number) < 1e12
+      ? (asNumber as number) * 1000
+      : (asNumber as number)
+    : Date.parse(String(dateInput));
+  const date = new Date(timestamp);
+  return date.toLocaleDateString('vi-VN', { month: 'short', day: 'numeric', year: 'numeric' });
 }

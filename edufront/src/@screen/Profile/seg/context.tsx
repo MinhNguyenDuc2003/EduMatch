@@ -8,188 +8,7 @@ import { onSetLoading } from '@/utils/eventBus';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ProfileApiResponse } from '../types';
 import { API_ENDPOINTS, DEFAULT_PROFILE_FORM_VALUES } from '../constants';
-
-const mockProfileData: ProfileApiResponse = {
-  customer: {
-    id: '1',
-    username: 'phan.bich.a',
-    email: 'PhanThiBichA@gmail.com',
-    firstName: 'Phan Thi',
-    lastName: 'Bich A',
-  },
-  applicantProfile: {
-    id: 1,
-    userId: '1',
-    contactName: 'Phan Thi Bich A',
-    firstName: 'Phan Thi',
-    lastName: 'Bich A',
-    religion: 'Buddhism',
-    hometown: 'Hanoi',
-    citizenshipStatus: 'Student Visa',
-    ethnicity: 'Asian',
-    race: 'Asian',
-    militaryFamilyHistory: false,
-    disabilities: '',
-    medicalConditions: 'None',
-    favoriteActivities: 'Piano, Painting, Theater Club',
-    sportsParticipated: 'Basketball, Swimming',
-    studentActivities: 'Debate Club, Math Olympiad Team',
-    organizationsJoined: 'National Honor Society, Student Council',
-    researchExperience: 'AI Research Assistant at University Lab',
-    careerGoals: 'Software Engineer specializing in AI and Machine Learning',
-    overallGpa: 3.2,
-    certificates: [
-      {
-        id: 1,
-        applicantId: 1,
-        certificateName: 'AWS Certified Developer',
-        issuedBy: 'Amazon Web Services',
-        issueDate: '2024-01-15T00:00:00.000Z',
-        expiryDate: '2027-01-15T00:00:00.000Z',
-        score: 'Pass',
-      },
-      {
-        id: 2,
-        applicantId: 1,
-        certificateName: 'Google Cloud Professional',
-        issuedBy: 'Google Cloud',
-        issueDate: '2023-06-20T00:00:00.000Z',
-        expiryDate: '2025-06-20T00:00:00.000Z',
-        score: '95/100',
-      },
-    ],
-    educationHistories: [
-      {
-        id: 1,
-        applicantId: 1,
-        institutionName: 'Rochester College',
-        institutionType: 'College',
-        state: 'Michigan',
-        country: 'USA',
-        degreeType: "Bachelor's",
-        majorCategory: 'Computer Science & Engineering',
-        majorName: 'Computer Science',
-        gpa: 3.2,
-        classRank: 'Top 15%',
-        classSize: 250,
-        enrollmentStartDate: '2024-09-01T00:00:00.000Z',
-        enrollmentEndDate: '2028-06-01T00:00:00.000Z',
-        graduationYear: 2029,
-        isDualEnrolled: false,
-        isTransfer: false,
-        isReturningStudent: false,
-        notes: "Dean's List Fall 2024",
-      },
-      {
-        id: 2,
-        applicantId: 1,
-        institutionName: 'Hanoi High School for Gifted Students',
-        institutionType: 'High School',
-        state: 'Hanoi',
-        country: 'Vietnam',
-        degreeType: 'High School Diploma',
-        majorCategory: 'Science',
-        majorName: 'Mathematics & Computer Science',
-        gpa: 3.8,
-        classRank: 'Valedictorian',
-        classSize: 300,
-        enrollmentStartDate: '2020-09-01T00:00:00.000Z',
-        enrollmentEndDate: '2024-06-01T00:00:00.000Z',
-        graduationYear: 2024,
-        isDualEnrolled: false,
-        isTransfer: false,
-        isReturningStudent: false,
-        notes: 'Perfect attendance, National Math Competition Winner',
-      },
-    ],
-    phoneNumbers: [
-      {
-        id: 1,
-        applicantId: 1,
-        phoneType: 'Mobile',
-        countryCode: '+84',
-        phoneNumber: '0982888860',
-        isInternational: true,
-      },
-      {
-        id: 2,
-        applicantId: 1,
-        phoneType: 'Home',
-        countryCode: '+1',
-        phoneNumber: '5551234567',
-        isInternational: false,
-      },
-    ],
-    skills: [
-      {
-        id: 1,
-        applicantId: 1,
-        skillName: 'JavaScript',
-        proficiencyLevel: 'Advanced',
-        yearsExperience: 3,
-      },
-      {
-        id: 2,
-        applicantId: 1,
-        skillName: 'React',
-        proficiencyLevel: 'Advanced',
-        yearsExperience: 2,
-      },
-      {
-        id: 3,
-        applicantId: 1,
-        skillName: 'Node.js',
-        proficiencyLevel: 'Intermediate',
-        yearsExperience: 2,
-      },
-      {
-        id: 4,
-        applicantId: 1,
-        skillName: 'Python',
-        proficiencyLevel: 'Intermediate',
-        yearsExperience: 1,
-      },
-    ],
-    intentions: [
-      {
-        id: 1,
-        applicantId: 1,
-        intendedInstitution: 'Rochester College',
-        intendedState: 'Michigan',
-        intendedCountry: 'USA',
-        degreeType: "Bachelor's",
-        intendedMajorCategory: 'Computer Science & Engineering',
-        intendedMajorName: 'Computer Science with AI Specialization',
-        academicClassification: 'College Freshman',
-        expectedStartDate: '2024-09-01T00:00:00.000Z',
-        expectedGraduationYear: 2029,
-        isTransferStudent: false,
-        isReturningStudent: false,
-        notes: 'Planning to pursue minor in Mathematics',
-      },
-    ],
-  },
-  providerProfile: null,
-  addresses: [
-    {
-      id: 1,
-      contactName: 'Phan Thi Bich A',
-      phone: '0982888860',
-      addressLine1: '123 Main St',
-      city: 'Hanoi',
-      zipCode: '100000',
-      districtId: 1,
-      districtName: 'Ba Dinh',
-      stateOrProvinceId: 1,
-      stateOrProvinceName: 'Hanoi',
-      countryId: 1,
-      countryName: 'Viet Nam',
-      isActive: true,
-    },
-  ],
-};
 
 export default GenCtx({
   useLogic() {
@@ -211,8 +30,10 @@ export default GenCtx({
           console.log('Updating student info with data:', data);
 
           // TODO: Implement actual API call to update student info
-          // await apiClientService.post('/api/student-info', data);
-
+          if (ss.Applicant.ApplicantProfile?.applicantProfile) {
+          } else {
+            await apiClientService.post(API_ENDPOINTS.CREATE_PROFILE, data.Fields);
+          }
           // For now, just update the local state
 
           // return ss.setJointData({ ListTest: data });
@@ -260,7 +81,7 @@ export default GenCtx({
             console.error('Error fetching states/provinces:', error);
           }
         },
-        [methods, ss]
+        [ss]
       ),
 
       onGetDistrict: useCallback(
@@ -276,23 +97,31 @@ export default GenCtx({
         },
         [ss]
       ),
+
+      onResetForm: useCallback(async () => {
+        if (ss.Applicant.ApplicantProfile) {
+          methods.reset({
+            Fields: {
+              applicantProfile: {
+                ...DEFAULT_PROFILE_FORM_VALUES.Fields.applicantProfile,
+                ...ss.Applicant.ApplicantProfile.applicantProfile,
+              },
+              addressPostVm: {
+                ...DEFAULT_PROFILE_FORM_VALUES.Fields.addressPostVm,
+                ...ss.Applicant.ApplicantProfile.addresses?.[0],
+              },
+            },
+            Filters: {},
+          });
+        }
+      }, [methods, ss]),
     };
 
     useEffect(() => {
       meds.onGetData();
       meds.onGetCountry();
 
-      if (ss.Applicant.ApplicantProfile) {
-        const resetData = {
-          Fields: {
-            applicantProfile: ss.Applicant.ApplicantProfile.applicantProfile,
-            addressPostVm: ss.Applicant.ApplicantProfile.addresses[0],
-          },
-          Filters: {},
-        };
-
-        methods.reset(resetData);
-      }
+      meds.onResetForm();
     }, [methods]);
 
     // Watch for country selection changes and automatically fetch states/provinces

@@ -50,7 +50,7 @@ export const schemas = {
         organizationsJoined: z.string().optional(),
         researchExperience: z.string().optional(),
         careerGoals: z.string().optional(),
-        overallGpa: z.number().min(0).max(4).optional(),
+        overallGpa: z.coerce.number<number>().min(0).max(4),
         certificates: z
           .array(
             z.object({
@@ -72,12 +72,20 @@ export const schemas = {
               degreeType: z.string().min(1, 'Loại bằng cấp không được để trống'),
               majorCategory: z.string().optional(),
               majorName: z.string().min(1, 'Chuyên ngành không được để trống'),
-              gpa: z.number().min(0).max(4).optional(),
+              gpa: z.coerce
+                .number<number>()
+                .min(0, 'GPA must be greater than 0')
+                .max(4, 'GPA must be less than 4')
+                .optional(),
               classRank: z.string().optional(),
-              classSize: z.number().min(1).optional(),
+              classSize: z.coerce
+                .number<number>()
+                .min(1, 'Class size must be greater than 0')
+                .max(10000, 'Class size must be less than 10000')
+                .optional(),
               enrollmentStartDate: z.union([z.string(), z.number()]),
               enrollmentEndDate: z.union([z.string(), z.number()]),
-              graduationYear: z.number().min(1900).max(2100).optional(),
+              graduationYear: z.coerce.number<number>().optional(),
               isDualEnrolled: z.boolean().optional(),
               isTransfer: z.boolean().optional(),
               isReturningStudent: z.boolean().optional(),
@@ -103,8 +111,11 @@ export const schemas = {
           .array(
             z.object({
               skillName: z.string().min(1, 'Tên kỹ năng không được để trống'),
-              proficiencyLevel: z.string().optional(),
-              yearsExperience: z.number().min(0).max(50).optional(),
+              proficiencyLevel: z.string().min(1, 'Cấp độ thành thạo không được để trống'),
+              yearsExperience: z.coerce
+                .number<number>()
+                .min(0, 'Số năm kinh nghiệm không được âm')
+                .max(50, 'Số năm kinh nghiệm không được vượt quá 50 năm'),
             })
           )
           .optional(),
@@ -138,9 +149,9 @@ export const schemas = {
         addressLine2: z.string().optional(),
         city: z.string().min(1, 'Thành phố không được để trống'),
         zipCode: z.string().min(1, 'Mã bưu điện không được để trống'),
-        districtId: z.number().min(1, 'ID quận/huyện phải lớn hơn 0'),
-        stateOrProvinceId: z.number().min(1, 'ID tỉnh/thành phố phải lớn hơn 0'),
-        countryId: z.number().min(1, 'ID quốc gia phải lớn hơn 0'),
+        districtId: z.number().min(1, 'Please select a district'),
+        stateOrProvinceId: z.number().min(1, 'Please select a state or province'),
+        countryId: z.number().min(1, 'Please select a country'),
       }),
     }),
     Filters: z.object({}).optional(),

@@ -7,6 +7,12 @@ import {
   InfoCard,
   ArrayInfoCard,
   StudentInformationDialog,
+  SkillsDialog,
+  PhoneNumbersDialog,
+  EducationHistoryDialog,
+  CertificatesDialog,
+  IntentionsDialog,
+  ActivitiesDialog,
 } from './components';
 import { transformProfileData } from './utils';
 import Certificates from './components/Certificates';
@@ -18,21 +24,34 @@ import Footer from '@/pattern/core/Footer';
 import Context from './seg/context';
 import { Form } from '@/lib/cus/form';
 import { IProfileForm } from '@/lib/schemas';
+import { CustomFormField } from '@/lib/cus/CustomFormField';
 
 export default function Profile() {
   const [isStudentInfoDialogOpen, setIsStudentInfoDialogOpen] = useState(false);
+  const [isSkillsDialogOpen, setIsSkillsDialogOpen] = useState(false);
+  const [isPhonesDialogOpen, setIsPhonesDialogOpen] = useState(false);
+  const [isEducationDialogOpen, setIsEducationDialogOpen] = useState(false);
+  const [isCertificatesDialogOpen, setIsCertificatesDialogOpen] = useState(false);
+  const [isIntentionsDialogOpen, setIsIntentionsDialogOpen] = useState(false);
+  const [isActivitiesDialogOpen, setIsActivitiesDialogOpen] = useState(false);
 
   const handleEdit = (section: string) => {
-    console.log(`Edit ${section}`);
     if (section === 'personal') {
       setIsStudentInfoDialogOpen(true);
+    } else if (section === 'skills') {
+      setIsSkillsDialogOpen(true);
+    } else if (section === 'phone-add') {
+      setIsPhonesDialogOpen(true);
+    } else if (section === 'education-add') {
+      setIsEducationDialogOpen(true);
+    } else if (section === 'certificate-add') {
+      setIsCertificatesDialogOpen(true);
+    } else if (section === 'intention-add') {
+      setIsIntentionsDialogOpen(true);
+    } else if (section === 'activities') {
+      setIsActivitiesDialogOpen(true);
     }
     // Implement edit functionality for other sections here
-  };
-
-  const handleStudentInfoCancel = () => {
-    console.log('Student Information cancelled');
-    // Handle cancellation here
   };
 
   return (
@@ -46,6 +65,12 @@ export default function Profile() {
             // Handle form submission here
             meds.onUpdateStudentInfo(data);
           };
+
+          const handleStudentInfoCancel = () => {
+            meds.onResetForm();
+          };
+
+          console.log(methods.watch('Fields.applicantProfile.favoriteActivities'));
 
           if (!profileData) {
             return (
@@ -243,15 +268,21 @@ export default function Profile() {
                     <ArrayInfoCard
                       title="Skills"
                       items={applicantProfile?.skills}
-                      onEdit={() => handleEdit('skill-add')}
+                      onEdit={() => handleEdit('skills')}
                       renderItem={(skill) => <SkillCard skill={skill} />}
                       emptyMessage="No skills added"
                       className="lg:col-start-3 lg:row-start-3 lg:row-span-2"
                     />
                   </div>
 
-                  <Certificates certificates={applicantProfile?.certificates || []} />
-                  <Intentions intentions={applicantProfile?.intentions || []} />
+                  <Certificates
+                    certificates={applicantProfile?.certificates || []}
+                    onEdit={() => handleEdit('certificate-add')}
+                  />
+                  <Intentions
+                    intentions={applicantProfile?.intentions || []}
+                    onEdit={() => handleEdit('intention-add')}
+                  />
                 </div>
               </div>
 
@@ -261,6 +292,54 @@ export default function Profile() {
               <StudentInformationDialog
                 open={isStudentInfoDialogOpen}
                 onOpenChange={setIsStudentInfoDialogOpen}
+                onSubmit={handleStudentInfoSubmit}
+                onCancel={handleStudentInfoCancel}
+              />
+
+              {/* Skills Dialog */}
+              <SkillsDialog
+                open={isSkillsDialogOpen}
+                onOpenChange={setIsSkillsDialogOpen}
+                onSubmit={handleStudentInfoSubmit}
+                onCancel={handleStudentInfoCancel}
+              />
+
+              {/* Phone Numbers Dialog */}
+              <PhoneNumbersDialog
+                open={isPhonesDialogOpen}
+                onOpenChange={setIsPhonesDialogOpen}
+                onSubmit={handleStudentInfoSubmit}
+                onCancel={handleStudentInfoCancel}
+              />
+
+              {/* Education History Dialog */}
+              <EducationHistoryDialog
+                open={isEducationDialogOpen}
+                onOpenChange={setIsEducationDialogOpen}
+                onSubmit={handleStudentInfoSubmit}
+                onCancel={handleStudentInfoCancel}
+              />
+
+              {/* Certificates Dialog */}
+              <CertificatesDialog
+                open={isCertificatesDialogOpen}
+                onOpenChange={setIsCertificatesDialogOpen}
+                onSubmit={handleStudentInfoSubmit}
+                onCancel={handleStudentInfoCancel}
+              />
+
+              {/* Intentions Dialog */}
+              <IntentionsDialog
+                open={isIntentionsDialogOpen}
+                onOpenChange={setIsIntentionsDialogOpen}
+                onSubmit={handleStudentInfoSubmit}
+                onCancel={handleStudentInfoCancel}
+              />
+
+              {/* Activities Dialog */}
+              <ActivitiesDialog
+                open={isActivitiesDialogOpen}
+                onOpenChange={setIsActivitiesDialogOpen}
                 onSubmit={handleStudentInfoSubmit}
                 onCancel={handleStudentInfoCancel}
               />

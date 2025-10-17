@@ -12,8 +12,8 @@ export interface Certificate {
   applicantId: number;
   certificateName: string;
   issuedBy: string;
-  issueDate: string;
-  expiryDate: string;
+  issueDate: number | string;
+  expiryDate: number | string;
   score: string;
 }
 
@@ -30,8 +30,8 @@ export interface EducationHistory {
   gpa: number;
   classRank: string;
   classSize: number;
-  enrollmentStartDate: string;
-  enrollmentEndDate: string;
+  enrollmentStartDate: number | string;
+  enrollmentEndDate: number | string;
   graduationYear: number;
   isDualEnrolled: boolean;
   isTransfer: boolean;
@@ -66,7 +66,7 @@ export interface Intention {
   intendedMajorCategory: string;
   intendedMajorName: string;
   academicClassification: string;
-  expectedStartDate: string;
+  expectedStartDate: number | string;
   expectedGraduationYear: number;
   isTransferStudent: boolean;
   isReturningStudent: boolean;

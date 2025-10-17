@@ -1,4 +1,5 @@
 import React from 'react';
+import { Edit3 } from 'lucide-react';
 
 interface SkillCardProps {
   skill: {
@@ -8,8 +9,10 @@ interface SkillCardProps {
 
 const SkillCard = ({ skill }: SkillCardProps) => {
   return (
-    <div className="space-y-1">
-      <div className="text-sm font-medium text-gray-900">{skill.skillName}</div>
+    <div className="space-y-1 group cursor-pointer">
+      <div className="flex justify-between items-start">
+        <div className="text-sm font-medium text-gray-900 flex-1">{skill.skillName}</div>
+      </div>
       <div className="flex justify-between text-xs text-gray-600">
         {skill.proficiencyLevel && (
           <div>

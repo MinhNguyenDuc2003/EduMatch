@@ -2,8 +2,21 @@
 
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/lib/cus/dialog';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from '@/lib/cus/drawer';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from '@/lib/cus/dialog';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+} from '@/lib/cus/drawer';
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
@@ -180,6 +193,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             placeholder="Contact Name"
             labelClassName="w-32 flex-shrink-0"
             inlineLabel
+            isBorder
           />
 
           <CustomFormField
@@ -188,6 +202,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             placeholder="Phone Number"
             labelClassName="w-32 flex-shrink-0"
             inlineLabel
+            isBorder
           />
 
           <CustomFormField
@@ -196,6 +211,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             placeholder="Street Address"
             labelClassName="w-32 flex-shrink-0"
             inlineLabel
+            isBorder
           />
 
           <CustomFormField
@@ -204,6 +220,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             placeholder="Apartment, Suite, etc. (Optional)"
             labelClassName="w-32 flex-shrink-0"
             inlineLabel
+            isBorder
           />
 
           <CustomFormField
@@ -212,6 +229,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             placeholder="City"
             labelClassName="w-32 flex-shrink-0"
             inlineLabel
+            isBorder
           />
 
           <CustomFormField
@@ -220,6 +238,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             placeholder="Zip Code"
             labelClassName="w-32 flex-shrink-0"
             inlineLabel
+            isBorder
           />
 
           <CustomFormField
@@ -235,6 +254,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             }
             labelClassName="w-32 flex-shrink-0"
             inlineLabel
+            isBorder
           />
 
           {watch('Fields.addressPostVm.countryId') > 0 && (
@@ -251,6 +271,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
                 })) || []
               }
               inlineLabel
+              isBorder
             />
           )}
           {watch('Fields.addressPostVm.stateOrProvinceId') > 0 && (
@@ -267,6 +288,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
                 })) || []
               }
               inlineLabel
+              isBorder
             />
           )}
         </div>
@@ -302,12 +324,13 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerContent className="max-h-[90vh]">
+      <Drawer open={open} onOpenChange={handleCancel}>
+        <DrawerContent className="min-h-[95vh]">
           <DrawerHeader className="border-b">
             <DrawerTitle className="text-xl font-semibold text-primary-brand">
               Student Information
             </DrawerTitle>
+            <DrawerDescription className="sr-only" />
           </DrawerHeader>
           <div className="flex-1 overflow-y-auto p-6">
             <Content />
@@ -320,12 +343,13 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="min-w-4xl max-h-[90vh] flex flex-col gap-2.5 overflow-y-auto">
+    <Dialog open={open} onOpenChange={handleCancel}>
+      <DialogContent className="lg:min-w-6xl md:min-w-4xl min-w-2xl max-h-[90vh] flex flex-col gap-2.5 overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-primary-brand">
             Student Information
           </DialogTitle>
+          <DialogDescription className="sr-only" />
         </DialogHeader>
         <div className="flex-1 overflow-y-auto border-t p-2.5 border-[#828282]">
           <Content />

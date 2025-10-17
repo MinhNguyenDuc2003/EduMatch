@@ -7,6 +7,42 @@ import { Textarea } from '@/lib/cus/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/cus/select';
 import { Switch } from '@/lib/cus/switch';
 import { Edit, X, Plus } from 'lucide-react';
+import MultipleSelector from './multi-select';
+import StringMultiSelect from './string-multi-select';
+
+// Helpers to convert between timestamp values and <input type="date"> value (yyyy-mm-dd)
+function toDateInputValue(value: unknown): string {
+  if (value === undefined || value === null || value === '') return '';
+  const isNumericString = typeof value === 'string' && /^\d+$/.test(value);
+  if (typeof value === 'number' || isNumericString) {
+    const numeric = typeof value === 'number' ? value : Number(value);
+    const ms = numeric < 1e12 ? numeric * 1000 : numeric; // seconds vs ms
+    try {
+      return new Date(ms).toISOString().slice(0, 10);
+    } catch {
+      return '';
+    }
+  }
+  if (typeof value === 'string') {
+    // If already yyyy-mm-dd, pass through; else try to parse
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+    const parsed = Date.parse(value);
+    if (!Number.isNaN(parsed)) return new Date(parsed).toISOString().slice(0, 10);
+  }
+  return '';
+}
+
+function fromDateInputValueToTimestamp(value: string): number | '' {
+  if (!value) return '';
+  const parsed = Date.parse(value);
+  return Number.isNaN(parsed) ? '' : parsed;
+}
+
+function isSecondsTimestamp(value: unknown): boolean {
+  const isNumericString = typeof value === 'string' && /^\d+$/.test(value);
+  const numeric = typeof value === 'number' || isNumericString ? Number(value) : NaN;
+  return Number.isFinite(numeric) && numeric > 0 && numeric < 1e12;
+}
 
 interface FormFieldProps {
   name?: string;
@@ -16,11 +52,13 @@ interface FormFieldProps {
     | 'email'
     | 'textarea'
     | 'number'
+    | 'date'
     | 'select'
     | 'switch'
     | 'password'
     | 'file'
-    | 'multi-input';
+    | 'multi-input'
+    | 'multi-select';
   placeholder?: string;
   options?: { value: string | number; label: string }[];
   accept?: string;
@@ -34,6 +72,7 @@ interface FormFieldProps {
   initialValue?: string | number | boolean | string[];
   inlineLabel?: boolean;
   isBorder?: boolean;
+  stringFormat?: 'comma' | 'json' | 'pipe';
 }
 
 export const CustomFormField: React.FC<FormFieldProps> = ({
@@ -50,6 +89,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
   initialValue,
   inlineLabel,
   isBorder,
+  stringFormat = 'comma',
 }) => {
   const { control } = useFormContext();
 
@@ -80,7 +120,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             >
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
-            <SelectContent className="w-full bg-white border-customgreys-dirtyGrey shadow">
+            <SelectContent className="w-full bg-white border-customgreys-dirtyGrey shadow max-h-64 overflow-y-auto">
               {options?.map((option) => (
                 <SelectItem
                   key={String(option.value)}
@@ -92,6 +132,21 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
               ))}
             </SelectContent>
           </Select>
+        );
+
+      case 'multi-select':
+        return (
+          <StringMultiSelect
+            value={field.value || ''}
+            onChange={field.onChange}
+            options={options || []}
+            placeholder={placeholder}
+            disabled={disabled}
+            className={inputClassName}
+            stringFormat={stringFormat}
+            hideClearAllButton
+            hidePlaceholderWhenSelected
+          />
         );
       case 'switch':
         return (
@@ -114,6 +169,28 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             type="number"
             placeholder={placeholder}
             {...field}
+            className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
+            disabled={disabled}
+          />
+        );
+      case 'date':
+        return (
+          <Input
+            type="date"
+            placeholder={placeholder}
+            value={toDateInputValue(field.value ?? initialValue)}
+            onChange={(e) => {
+              const inputValue = e.target.value;
+              const tsMs = fromDateInputValueToTimestamp(inputValue);
+              // Preserve the original unit: seconds if original looked like seconds, else ms
+              if (tsMs === '') {
+                field.onChange('');
+                return;
+              }
+              const original = field.value ?? initialValue;
+              const shouldUseSeconds = isSecondsTimestamp(original);
+              field.onChange(shouldUseSeconds ? Math.floor((tsMs as number) / 1000) : tsMs);
+            }}
             className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
             disabled={disabled}
           />

@@ -1,27 +1,31 @@
 import React from 'react';
 import type { Intention } from '../types';
-import { Plus } from 'lucide-react';
+import { Pencil, Plus } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import IntentionCard from './IntentionCard';
 
 interface IntentionsProps {
   intentions: Intention[];
+  onEdit?: () => void;
 }
 
-const Intentions = ({ intentions }: IntentionsProps) => {
+const Intentions = ({ intentions, onEdit }: IntentionsProps) => {
   return (
     <div className="space-y-4">
       {/* Header with Add button */}
       <div className="flex gap-2">
         <h2 className="text-primary-brand text-lg font-semibold">Edutional Intentions</h2>
 
-        <Button
-          variant="custom"
-          className="bg-green-500 text-white px-3 py-1 rounded-md text-xs font-medium flex items-center gap-1 hover:bg-green-600"
-        >
-          <Plus className="w-3 h-3" />
-          Add
-        </Button>
+        {onEdit && (
+          <Button
+            variant="custom"
+            className="bg-[#00B8D9] text-white px-3 py-1 rounded-md text-xs font-medium flex items-center gap-1 hover:bg-[#00A3C4]"
+            onClick={onEdit}
+          >
+            <Pencil className="w-3 h-3" />
+            Edit
+          </Button>
+        )}
       </div>
 
       {/* Certificate cards grid */}
