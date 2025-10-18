@@ -14,7 +14,7 @@ import org.springframework.web.server.WebFilter;
 
 @SpringBootApplication
 @EnableWebFluxSecurity
-public class Application {
+public class BackOfficeApplication {
 
     // TODO remove this bean after https://github.com/spring-projects/spring-security/issues/15989#issuecomment-2442660753 is fixed
     @Bean
@@ -38,6 +38,6 @@ public class Application {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(BackOfficeApplication.class, args);
     }
 }
