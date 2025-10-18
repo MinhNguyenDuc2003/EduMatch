@@ -30,20 +30,23 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getById(id));
     }
 
-    @Authorized
+    /*@Authorized*/
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<ScholarshipDto> create(@RequestPart("scholarship") String scholarship,
-                                              @RequestPart(value = "images", required = false) List<MultipartFile> images) throws JsonProcessingException {
-        ScholarshipDto scholarshipDto = new ObjectMapper().readValue(scholarship, ScholarshipDto.class);
-        return ApiResponse.ok(scholarshipService.create(scholarshipDto, images));
+    public ApiResponse<ScholarshipDto> create(
+            @RequestPart("scholarship") String scholarshipJson,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images
+    ) throws JsonProcessingException {
+
+        ScholarshipDto scholarship = new ObjectMapper().readValue(scholarshipJson, ScholarshipDto.class);
+
+        return ApiResponse.ok(scholarshipService.create(scholarship, images));
     }
 
-    @PutMapping()
-    public ApiResponse<ScholarshipDto> update(@RequestPart("scholarship") String scholarship,
-                                              @RequestPart(value = "images", required = false) List<MultipartFile> images) throws JsonProcessingException {
-        ScholarshipDto scholarshipDto = new ObjectMapper().readValue(scholarship, ScholarshipDto.class);
-        return ApiResponse.ok(scholarshipService.update(scholarshipDto, images));
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<ScholarshipDto> update(@RequestBody ScholarshipDto scholarship) {
+        return ApiResponse.ok(scholarshipService.update(scholarship, null));
     }
+
 
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) {

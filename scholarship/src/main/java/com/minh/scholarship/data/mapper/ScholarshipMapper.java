@@ -14,4 +14,5 @@ import org.mapstruct.*;
 
         })
 public interface ScholarshipMapper extends BaseMapper<ScholarshipEntity, ScholarshipDto> {
+        void updateEntityFromDto(ScholarshipDto dto, @MappingTarget ScholarshipEntity entity);
 }

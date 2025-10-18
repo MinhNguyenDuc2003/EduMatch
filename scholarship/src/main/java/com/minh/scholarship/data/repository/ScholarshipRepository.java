@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, Long> {
 
-    Optional<ScholarshipDto> findByIdAndActive(Long id, Boolean active);
+    Optional<ScholarshipEntity> findByIdAndActive(Long id, Boolean active);
 
     @Modifying
     @Query("UPDATE ScholarshipEntity SET active = :active WHERE id = :id")

@@ -37,8 +37,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public ScholarshipDto getById(Long id) {
-        return scholarshipRepository.findByIdAndActive(id, true)
+        ScholarshipEntity entity = scholarshipRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
+        return scholarshipMapper.toDto(entity);
     }
 
     @Override
@@ -54,15 +55,20 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ScholarshipDto update(ScholarshipDto scholarship, List<MultipartFile> images) {
-        scholarshipRepository.findByIdAndActive(scholarship.getId(), true)
+        ScholarshipEntity entity = scholarshipRepository.findByIdAndActive(scholarship.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
 
+        scholarshipMapper.updateEntityFromDto(scholarship, entity);
+
         if (ObjectUtils.isNotEmpty(images)) {
-            scholarshipMediaRepository.deleteAllByScholarshipId(scholarship.getId());
-            uploadImages(scholarship, images, scholarship.getId());
+            scholarshipMediaRepository.deleteAllByScholarshipId(entity.getId());
+            uploadImages(scholarship, images, entity.getId());
         }
-        return scholarshipMapper.toDto(scholarshipRepository.save(scholarshipMapper.toEntity(scholarship)));
+
+        ScholarshipEntity saved = scholarshipRepository.save(entity);
+        return scholarshipMapper.toDto(saved);
     }
+
 
     private void uploadImages(ScholarshipDto scholarship, List<MultipartFile> images, Long id) {
         images.forEach(image -> {

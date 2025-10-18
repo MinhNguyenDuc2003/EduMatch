@@ -14,4 +14,9 @@ import org.mapstruct.*;
 
         })
 public interface ApplicationMapper extends BaseMapper<ApplicationEntity, ApplicationDto> {
+        ApplicationDto toDto(ApplicationEntity entity);
+        ApplicationEntity toEntity(ApplicationDto dto);
+
+        @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+        void updateEntityFromDto(ApplicationDto dto, @MappingTarget ApplicationEntity entity);
 }
