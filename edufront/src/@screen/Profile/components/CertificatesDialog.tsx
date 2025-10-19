@@ -37,7 +37,7 @@ const CertificatesDialog = ({
   onCancel,
 }: CertificatesDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { handleSubmit, control } = useFormContext<IProfileForm>();
+  const { handleSubmit, control, watch } = useFormContext<IProfileForm>();
 
   const { fields, append, remove } = useFieldArray({
     control,

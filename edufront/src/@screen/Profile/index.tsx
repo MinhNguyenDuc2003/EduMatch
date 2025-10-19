@@ -60,17 +60,15 @@ export default function Profile() {
         {({ ss, methods, meds }) => {
           const profileData = ss.Applicant.ApplicantProfile;
 
-          const handleStudentInfoSubmit = (data: IProfileForm) => {
+          const handleStudentInfoSubmit = async (data: IProfileForm) => {
             // console.log('Student Information submitted:', data);
             // Handle form submission here
-            meds.onUpdateStudentInfo(data);
+            await meds.onUpdateStudentInfo(data);
           };
 
           const handleStudentInfoCancel = () => {
             meds.onResetForm();
           };
-
-          console.log(methods.watch('Fields.applicantProfile.favoriteActivities'));
 
           if (!profileData) {
             return (

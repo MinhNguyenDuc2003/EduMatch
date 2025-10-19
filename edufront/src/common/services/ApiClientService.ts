@@ -28,7 +28,7 @@ const sendRequest = async (
     if (data instanceof FormData) {
       delete requestOptions.headers['Content-type'];
     }
-    requestOptions.body = data;
+    requestOptions.body = JSON.stringify(data);
   }
 
   const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;

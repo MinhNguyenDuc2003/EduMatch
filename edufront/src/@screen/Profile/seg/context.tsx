@@ -29,16 +29,21 @@ export default GenCtx({
         try {
           console.log('Updating student info with data:', data);
 
-          // TODO: Implement actual API call to update student info
+          // Call API to update student info
           if (ss.Applicant.ApplicantProfile?.applicantProfile) {
+            await apiClientService.put(API_ENDPOINTS.UPDATE_PROFILE, data.Fields);
           } else {
             await apiClientService.post(API_ENDPOINTS.CREATE_PROFILE, data.Fields);
           }
-          // For now, just update the local state
 
-          // return ss.setJointData({ ListTest: data });
+          // Refresh data from server to ensure UI is updated with latest data
+          await meds.onGetData();
+
+          console.log('Student info updated successfully');
         } catch (error) {
-          console.error({ error });
+          console.error('Error updating student info:', error);
+          // You might want to show a toast notification here
+          throw error; // Re-throw to let the calling component handle the error
         } finally {
           onSetLoading(false);
         }
@@ -48,11 +53,10 @@ export default GenCtx({
         onSetLoading(true);
         try {
           const response = await apiClientService.get(API_ENDPOINTS.CUSTOMER_PROFILE);
-          //   return data;
 
           return ss.setApplicantProfileData(response.data);
         } catch (error) {
-          console.error({ error });
+          console.error('Error loading profile data:', error);
         } finally {
           onSetLoading(false);
         }
@@ -100,19 +104,23 @@ export default GenCtx({
 
       onResetForm: useCallback(async () => {
         if (ss.Applicant.ApplicantProfile) {
-          methods.reset({
+          const profileData = ss.Applicant.ApplicantProfile;
+
+          const formData = {
             Fields: {
               applicantProfile: {
                 ...DEFAULT_PROFILE_FORM_VALUES.Fields.applicantProfile,
-                ...ss.Applicant.ApplicantProfile.applicantProfile,
+                ...profileData.applicantProfile,
               },
               addressPostVm: {
                 ...DEFAULT_PROFILE_FORM_VALUES.Fields.addressPostVm,
-                ...ss.Applicant.ApplicantProfile.addresses?.[0],
+                ...profileData.addresses?.[0],
               },
             },
             Filters: {},
-          });
+          };
+
+          methods.reset(formData);
         }
       }, [methods, ss]),
     };
@@ -120,9 +128,14 @@ export default GenCtx({
     useEffect(() => {
       meds.onGetData();
       meds.onGetCountry();
+    }, []);
 
-      meds.onResetForm();
-    }, [methods]);
+    // Reset form when profile data is loaded
+    useEffect(() => {
+      if (ss.Applicant.ApplicantProfile) {
+        meds.onResetForm();
+      }
+    }, [ss.Applicant.ApplicantProfile, methods]);
 
     // Watch for country selection changes and automatically fetch states/provinces
     const countryId = methods.watch('Fields.addressPostVm.countryId');
