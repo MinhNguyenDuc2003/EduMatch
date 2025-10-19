@@ -52,14 +52,4 @@ public class ApplicationDto extends BaseDto {
 
     private String personalStatement;
 
-    private String status;
-
-    private String submittedAt;
-
-    private String reviewedAt;
-
-    private String reviewerId;
-
-    private String note;
-
 }

@@ -2,10 +2,10 @@ package com.minh.scholarship.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.scholarship.service.ScholarshipService;
-import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("EndPoint.SCHOLARSHIP.SCHOLARSHIPS")
+@RequestMapping(EndPoint.SCHOLARSHIP.SCHOLARSHIPS)
 public class ScholarshipController {
 
     private final ScholarshipService scholarshipService;
@@ -38,7 +38,6 @@ public class ScholarshipController {
     ) throws JsonProcessingException {
 
         ScholarshipDto scholarship = new ObjectMapper().readValue(scholarshipJson, ScholarshipDto.class);
-
         return ApiResponse.ok(scholarshipService.create(scholarship, images));
     }
 
@@ -46,7 +45,6 @@ public class ScholarshipController {
     public ApiResponse<ScholarshipDto> update(@RequestBody ScholarshipDto scholarship) {
         return ApiResponse.ok(scholarshipService.update(scholarship, null));
     }
-
 
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) {

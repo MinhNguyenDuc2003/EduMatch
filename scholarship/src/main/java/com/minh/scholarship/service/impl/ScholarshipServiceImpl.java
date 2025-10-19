@@ -1,20 +1,31 @@
 package com.minh.scholarship.service.impl;
 
 import com.minh.constants.CoreMessageCode;
+import com.minh.enumeration.notification.NotificationReferenceEnum;
+import com.minh.enumeration.notification.NotificationTemplateEnum;
+import com.minh.enumeration.notification.NotificationTopicEnum;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.media.MediaDto;
+import com.minh.model.dto.notification.NotificationTemplateDto;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
 import com.minh.scholarship.data.entity.junction.ScholarshipMediaEntity;
 import com.minh.scholarship.data.mapper.ScholarshipMapper;
 import com.minh.scholarship.data.repository.ScholarshipMediaRepository;
 import com.minh.scholarship.data.repository.ScholarshipRepository;
+import com.minh.scholarship.data.vo.NotificationVo;
+import com.minh.scholarship.data.vo.ProviderProfileVo;
 import com.minh.scholarship.feign.MediaFeign;
+import com.minh.scholarship.feign.NotificationTemplateFeign;
+import com.minh.scholarship.feign.ProviderProfileFeign;
+import com.minh.scholarship.message.KafkaProducer;
 import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.base.BaseService;
+import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +40,13 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     private final ScholarshipMapper scholarshipMapper;
     private final ScholarshipMediaRepository scholarshipMediaRepository;
     private final MediaFeign mediaFeign;
+    private final NotificationTemplateFeign notificationTemplateFeign;
+    private final KafkaProducer kafkaProducer;
+    private final ProviderProfileFeign providerProfileFeign;
+
+    @Value("${kafka.scholarship.new-event.topic}")
+    private String newEventScholarshipTopic;
+
 
     @Override
     public List<ScholarshipDto> getAll() {
@@ -49,6 +67,21 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         if (ObjectUtils.isNotEmpty(images)) {
             uploadImages(scholarship, images, savedScholarship.getId());
         }
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getOne(savedScholarship.getProviderId()));
+        NotificationTemplateDto notificationTemplateDto = this.parseResponse(notificationTemplateFeign.getNotificationTemplate(NotificationTemplateEnum.SCHOLARSHIP_NEW.getCode()));
+        NotificationVo notificationVo = NotificationVo.builder()
+                .topic(NotificationTopicEnum.SCHOLARSHIP_FOLLOWER)
+                .title(notificationTemplateDto.getTitle())
+                .content(notificationTemplateDto.getContent()
+                        .replace("{{providerName}}", providerProfileVo.getOrganizationName())
+                        .replace("{{scholarshipName}}", savedScholarship.getTitle()))
+                .isRead(false)
+                .referenceId(savedScholarship.getId())
+                .referenceType(NotificationReferenceEnum.SCHOLARSHIP.getCode())
+                .userId(UaaContextHolder.getUserId())
+                .build();
+        System.out.println("UserId = " + UaaContextHolder.getUserId());
+        kafkaProducer.convertToByteAndSend(newEventScholarshipTopic, notificationVo);
         return scholarshipMapper.toDto(savedScholarship);
     }
 
@@ -82,7 +115,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 throw new RuntimeException(e);
             }
             request.setIsPublic(true);
-            request.setFolderName("scholarship/" + scholarship.getId());
+            request.setFolderName("scholarship/" + id);
             MediaDto mediaDto = this.parseResponse(mediaFeign.create(request));
 
             ScholarshipMediaEntity entity = new ScholarshipMediaEntity();

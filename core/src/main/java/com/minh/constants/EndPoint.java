@@ -3,8 +3,9 @@ package com.minh.constants;
 public final class EndPoint {
 
     public static class NOTIFICATION {
-        public static final String USER_NOTIFICATIONS = "/user-notifications";
-        public static final String NOTIFICATION_TEMPLATES = "/notification-templates";
+        public static final String USER_NOTIFICATIONS = "/users";
+        public static final String NOTIFICATION_TEMPLATES = "/templates";
+        public static final String NOTIFICATION_CONNECTS = "/connects";
     }
 
     public static class MEDIA {
@@ -27,6 +28,7 @@ public final class EndPoint {
 
     public static class SCHOLARSHIP {
         public static final String SCHOLARSHIPS = "/scholarships";
+        public static final String APPLICATIONS = "/applications";
     }
 
 }

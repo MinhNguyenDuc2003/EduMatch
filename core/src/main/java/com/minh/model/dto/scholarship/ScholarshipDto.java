@@ -22,6 +22,8 @@ public class ScholarshipDto extends BaseDto {
 
     private Long id;
 
+    private Long providerId;
+
     private String title;
 
     private String slug;

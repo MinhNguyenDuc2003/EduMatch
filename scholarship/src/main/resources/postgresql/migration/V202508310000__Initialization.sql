@@ -20,11 +20,6 @@ CREATE TABLE IF NOT EXISTS scholarship.application (
     extracurricular TEXT,
     motivation TEXT,
     personal_statement TEXT,
-    status VARCHAR(50),
-    submitted_at VARCHAR(50),
-    reviewed_at VARCHAR(50),
-    reviewer_id VARCHAR(255),
-    note TEXT,
     CREATED_BY                      VARCHAR(32) DEFAULT '',
     UPDATED_BY                      VARCHAR(32) DEFAULT '',
     ACTIVE BOOLEAN NOT NULL DEFAULT TRUE,
@@ -65,6 +60,7 @@ CREATE TABLE IF NOT EXISTS scholarship.application_review (
 
 CREATE TABLE IF NOT EXISTS scholarship.scholarship (
     id BIGSERIAL PRIMARY KEY,
+    provider_id  BIGINT,
     title VARCHAR(255),
     slug VARCHAR(255),
     short_description TEXT,

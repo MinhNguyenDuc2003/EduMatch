@@ -14,7 +14,6 @@ import com.minh.scholarship.service.ApplicationService;
 import com.minh.service.base.BaseService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

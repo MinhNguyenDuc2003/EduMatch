@@ -1,8 +1,10 @@
 package com.minh.scholarship.controller;
 
+import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.scholarship.ApplicationDto;
 import com.minh.scholarship.service.ApplicationService;
+import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("EndPoint.SCHOLARSHIP.APPLICATIONS")
+@RequestMapping(EndPoint.SCHOLARSHIP.APPLICATIONS)
 public class ApplicationController {
 
     private final ApplicationService applicationService;
@@ -38,6 +40,7 @@ public class ApplicationController {
     }
     */
 
+    @Authorized
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<ApplicationDto> create(@RequestBody ApplicationDto application) {
         return ApiResponse.ok(applicationService.create(application));

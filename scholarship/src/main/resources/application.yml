@@ -14,7 +14,7 @@ app:
       maximum: '${env.db.pool.maximum:10}'
 
 server:
-  port: '${env.port:8085}'
+  port: '${env.port:8084}'
   servlet:
     context-path: /scholarship
   compression:
@@ -48,7 +48,7 @@ spring:
       matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: 'jdbc:postgresql://${app.db.endpoint}:${app.db.port}/${app.db.database}'
+    jdbc-url: 'jdbc:postgresql://${app.db.endpoint}:${app.db.port}/${app.db.database}'
     username: '${app.db.username}'
     password: '${app.db.password}'
     auto-commit: true
@@ -94,6 +94,8 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${env.issuer.uri:http://localhost:8080/realms/Yas}
+  kafka:
+    bootstrap-servers: ${kafka.bootstrap-server}
 
 management:
   tracing:
@@ -161,3 +163,18 @@ eureka:
     fetchRegistry: ${EUREKA_FETCH_REGISTRY:true}
     serviceUrl:
       defaultZone: '${app.url.eureka}'
+
+kafka:
+  enable: true
+  bootstrap-server: ${env.kafka.ip:localhost}:${env.kafka.port:29092}
+  scholarship:
+    new-event:
+      topic: ${app.environment:local}.scholarship.new-event
+      group: ${app.environment:local}.scholarship.new-event.group
+
+keycloak:
+  auth-server-url: ${env.keycloak.url:http://localhost:8080}
+  realm: ${env.keycloak.realm:Yas}
+  resource: ${env.keycloak.client-id:backoffice-bff}
+  credentials:
+    secret: ${env.keycloak.client-secret:TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF}

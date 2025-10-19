@@ -1,0 +1,27 @@
+package com.minh.enumeration.notification;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Arrays;
+
+@Getter
+@AllArgsConstructor
+public enum NotificationReferenceEnum {
+
+    SCHOLARSHIP("SCHOLARSHIP"),
+    INVALID("INVALID");
+
+    private final String code;
+
+    public static NotificationReferenceEnum of(String code) {
+        return (StringUtils.isBlank(code))
+                ? INVALID
+                : Arrays.stream(NotificationReferenceEnum.values())
+                .filter(z -> z.getCode().equals(code))
+                .findFirst()
+                .orElse(INVALID);
+    }
+
+}

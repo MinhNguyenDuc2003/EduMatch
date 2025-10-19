@@ -71,19 +71,4 @@ public class ApplicationEntity extends BaseEntity {
     @Column(name = "PERSONAL_STATEMENT")
     private String personalStatement;
 
-    @Column(name = "STATUS")
-    private String status;
-
-    @Column(name = "SUBMITTED_AT")
-    private String submittedAt;
-
-    @Column(name = "REVIEWED_AT")
-    private String reviewedAt;
-
-    @Column(name = "REVIEWER_ID")
-    private String reviewerId;
-
-    @Column(name = "NOTE")
-    private String note;
-
 }

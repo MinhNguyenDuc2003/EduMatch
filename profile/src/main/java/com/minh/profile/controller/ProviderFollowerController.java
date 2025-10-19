@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(EndPoint.PROFILES.FOLLOWERS)
@@ -16,6 +18,18 @@ public class ProviderFollowerController {
 
     @Autowired
     private ProviderFollowerService service;
+
+    @Authorized
+    @GetMapping("/all")
+    public ApiResponse<List<ProviderFollowerDto>> getAllFollowers(@RequestParam("userId") String userId) {
+        return ApiResponse.ok(service.getAllFollowers(userId));
+    }
+
+    @Authorized
+    @GetMapping("/providers")
+    public ApiResponse<List<ProviderFollowerDto>> getAllProviders() {
+        return ApiResponse.ok(service.getAllProviders());
+    }
 
     @Authorized
     @PostMapping("{id}")

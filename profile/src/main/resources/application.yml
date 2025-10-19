@@ -161,3 +161,10 @@ eureka:
     fetchRegistry: ${EUREKA_FETCH_REGISTRY:true}
     serviceUrl:
       defaultZone: '${app.url.eureka}'
+
+keycloak:
+  auth-server-url: ${env.keycloak.url:http://localhost:8080}
+  realm: ${env.keycloak.realm:Yas}
+  resource: ${env.keycloak.client-id:backoffice-bff}
+  credentials:
+    secret: ${env.keycloak.client-secret:TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF}

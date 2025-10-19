@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(schema = "notification", name = "USER_NOTIFICATION")
+@Table(schema = "notification", name = "NOTIFICATION_TEMPLATE")
 @Getter
 @Setter
 @NoArgsConstructor

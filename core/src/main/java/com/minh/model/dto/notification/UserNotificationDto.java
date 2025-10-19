@@ -12,6 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
+@Builder
 public class UserNotificationDto extends BaseDto {
 
     private Long id;
