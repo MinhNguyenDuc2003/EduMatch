@@ -13,6 +13,7 @@ import {
   CertificatesDialog,
   IntentionsDialog,
   ActivitiesDialog,
+  ProfileSkeleton,
 } from './components';
 import { transformProfileData } from './utils';
 import Certificates from './components/Certificates';
@@ -74,11 +75,7 @@ export default function Profile() {
             return (
               <>
                 <Header />
-                <div className="min-h-screen flex items-center justify-center bg-gray-50 py-8 px-4 lg:px-40">
-                  <div className="text-center">
-                    <p className="text-gray-500">Loading profile data...</p>
-                  </div>
-                </div>
+                <ProfileSkeleton />
                 <Footer />
               </>
             );
