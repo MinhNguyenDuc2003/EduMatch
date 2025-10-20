@@ -10,9 +10,9 @@ public interface ApplicationService {
 
     ApplicationDto getById(Long id);
 
-/*    ApplicationDto create(ApplicationDto application, List<MultipartFile> documents);
-
-    ApplicationDto update(ApplicationDto application, List<MultipartFile> documents);*/
+//    ApplicationDto create(ApplicationDto application, List<MultipartFile> documents);
+//
+//    ApplicationDto update(ApplicationDto application, List<MultipartFile> documents);
 
     ApplicationDto create(ApplicationDto application);
 

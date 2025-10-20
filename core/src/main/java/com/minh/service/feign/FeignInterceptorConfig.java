@@ -13,14 +13,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.request.RequestContextHolder;
 
 @Configuration
 @RequiredArgsConstructor
 public class FeignInterceptorConfig {
-
-    private final CustomFeignInterceptor customFeignInterceptor;
-    private final SystemFeignInterceptor systemFeignInterceptor;
 
     @Bean
     public Retryer retryer() {
@@ -29,10 +25,7 @@ public class FeignInterceptorConfig {
 
     @Bean
     public RequestInterceptor getRequestInterceptor() {
-        if (RequestContextHolder.getRequestAttributes() != null) {
-            return customFeignInterceptor;
-        }
-        return systemFeignInterceptor;
+        return new CustomFeignInterceptor();
     }
 
     @Bean

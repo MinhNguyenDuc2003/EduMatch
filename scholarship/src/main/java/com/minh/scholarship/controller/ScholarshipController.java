@@ -6,6 +6,7 @@ import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.scholarship.service.ScholarshipService;
+import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getById(id));
     }
 
-    /*@Authorized*/
+    @Authorized
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<ScholarshipDto> create(
             @RequestPart("scholarship") String scholarshipJson,

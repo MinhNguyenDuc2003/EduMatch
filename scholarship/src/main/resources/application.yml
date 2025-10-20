@@ -118,6 +118,10 @@ logging:
   pattern:
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
     org.flywaydb: DEBUG
+  level:
+    org.springframework.messaging: DEBUG
+    org.springframework.web.socket: DEBUG
+    org.springframework.web.socket.messaging: DEBUG
 
 springdoc:
   packages-to-scan: com.minh.scholarship
