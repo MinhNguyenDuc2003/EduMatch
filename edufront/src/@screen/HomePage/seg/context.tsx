@@ -176,7 +176,7 @@ export default GenCtx({
 
     useEffect(() => {
       ss.setJointData({ ListScholarshipOpportunities });
-    }, []);
+    }, [ss]);
 
     return {
       ss,
