@@ -227,3 +227,4 @@ volumes:
   postgres:
   pgadmin:
   redis:
+  esdata:
