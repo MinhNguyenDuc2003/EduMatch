@@ -3,13 +3,10 @@ import { RText } from '@/lib/by/Div';
 import { Button } from '@/lib/cus/button';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/lib/cus/sheet';
 import { Menu } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import React from 'react';
 
 const MobileNavigation = () => {
-  const t = useTranslations('header');
-
   return (
     <div className="lg:hidden">
       <Sheet modal={false}>
@@ -23,7 +20,7 @@ const MobileNavigation = () => {
         <SheetContent side="left" className=" overflow-auto">
           <div className="container px-4 py-4 space-y-4">
             <div className="space-y-2">
-              <h3 className="font-semibold text-foreground">{t('navMenu.title1')}</h3>
+              <h3 className="font-semibold text-foreground">Students</h3>
               <div className="grid grid-cols-1 gap-2 pl-4">
                 {studentMenuItems.map((item, index) => (
                   <a
@@ -52,7 +49,7 @@ const MobileNavigation = () => {
             </div>
 
             <div className="space-y-2">
-              <h3 className="font-semibold text-foreground">{t('navMenu.title2')}</h3>
+              <h3 className="font-semibold text-foreground">Scholarship Providers</h3>
               <div className="grid grid-cols-1 gap-2 pl-4">
                 {scholarshipProviderMenuItems.map((item, index) => (
                   <a

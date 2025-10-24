@@ -3,6 +3,7 @@ export const Root = `/home`;
 export const EFncID = {
   P01: 'profile',
   U01: 'user',
+  F01: 'formScholarship',
 } as const;
 //#endregion
 
@@ -10,5 +11,6 @@ export const EFncID = {
 export const SegUrl = {
   Profile: `${Root}/${EFncID.P01}`,
   User: `${Root}/${EFncID.U01}`,
+  FormScholarship: `${Root}/${EFncID.F01}`,
 } as const;
 //#endregion

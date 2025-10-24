@@ -6,12 +6,10 @@ import Header from '@/pattern/core/Header';
 import CardBigPic from '@/pattern/share/CardBigPic';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { compact, map } from 'lodash';
-import { useTranslations } from 'next-intl';
 import Context from './seg/context';
+import { CustomFormField } from '@/lib/cus/CustomFormField';
 
 export default function HomePage() {
-  const t = useTranslations('home');
-
   return (
     <Context.Provider>
       <Context.Consumer>

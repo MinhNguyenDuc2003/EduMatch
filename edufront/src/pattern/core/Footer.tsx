@@ -55,7 +55,13 @@ const Footer = () => {
           {/* Logo and Social Media */}
           <div className="space-y-6">
             <Link className="flex items-center" href={'/'}>
-              <Image src={'/logo.svg'} alt="logo" width={75} height={75} />
+              <Image
+                src={'https://es5urvh1np.ufs.sh/f/DHR6tEJ9PQozF4xgrm8xYeQBLvSq5K1DUnpHR8VwMIEazuhg'}
+                alt="logo"
+                width={75}
+                height={75}
+                unoptimized
+              />
               <span className="ml-2.5 text-2xl">Edu</span>
               <span className="text-2xl text-[#3D6CB9] font-bold ">Match</span>
             </Link>

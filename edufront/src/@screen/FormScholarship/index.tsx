@@ -1,24 +1,24 @@
-import React from 'react'
+import React from 'react';
 import Context from './seg/context';
 import { Section } from '@/lib/by/Div';
 import AddFiled from '@/pattern/share/AddFiled';
 
 const FormScholarship = () => {
   return (
- <Context.Provider>
+    <Context.Provider>
       <Context.Consumer>
-        {({  }) => {
+        {({}) => {
           return (
             <>
               <Section>
-               <AddFiled/>
+                <AddFiled />
               </Section>
             </>
           );
         }}
       </Context.Consumer>
     </Context.Provider>
-  )
-}
+  );
+};
 
-export default FormScholarship
+export default FormScholarship;

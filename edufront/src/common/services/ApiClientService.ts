@@ -6,7 +6,8 @@ interface RequestOptions {
   body?: string;
 }
 
-const baseUrl = process.env.API_BASE_PATH || '';
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_PATH || '';
+const token = process.env.NEXT_PUBLIC_API_TOKEN || '';
 
 const sendRequest = async (
   method: string,
@@ -19,6 +20,7 @@ const sendRequest = async (
     method: method.toUpperCase(),
     headers: {
       'Content-type': contentType ?? defaultContentType,
+      Authorization: `Bearer ${token}`,
     },
   };
 
@@ -26,22 +28,21 @@ const sendRequest = async (
     if (data instanceof FormData) {
       delete requestOptions.headers['Content-type'];
     }
-    requestOptions.body = data;
+    requestOptions.body = JSON.stringify(data);
   }
 
-  const url = endpoint.startsWith('http')
-    ? endpoint
-    : `${baseUrl}${endpoint}`;
+  const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;
 
   try {
-    const response = await fetch(url, method === 'GET' ? undefined : requestOptions);
+    // const response = await fetch(url, method === 'GET' ? undefined : requestOptions);
+    const response = await fetch(url, requestOptions);
 
     // Workaround to manually redirect in case of CORS error
     if (response.type == 'cors' && response.redirected) {
       window.location.href = response.url;
     }
 
-     return await response.json();
+    return await response.json();
   } catch (error) {
     console.error('API call error:', error);
     throw error;

@@ -1,0 +1,70 @@
+[
+  {
+    "value": "Buddhism",
+    "label": "Buddhism"
+  },
+  {
+    "value": "Christianity",
+    "label": "Christianity"
+  },
+  {
+    "value": "Islam",
+    "label": "Islam"
+  },
+  {
+    "value": "Hinduism",
+    "label": "Hinduism"
+  },
+  {
+    "value": "Judaism",
+    "label": "Judaism"
+  },
+  {
+    "value": "Sikhism",
+    "label": "Sikhism"
+  },
+  {
+    "value": "Taoism",
+    "label": "Taoism"
+  },
+  {
+    "value": "Confucianism",
+    "label": "Confucianism"
+  },
+  {
+    "value": "Shinto",
+    "label": "Shinto"
+  },
+  {
+    "value": "Jainism",
+    "label": "Jainism"
+  },
+  {
+    "value": "Bahá'í Faith",
+    "label": "Bahá'í Faith"
+  },
+  {
+    "value": "Zoroastrianism",
+    "label": "Zoroastrianism"
+  },
+  {
+    "value": "Agnostic",
+    "label": "Agnostic"
+  },
+  {
+    "value": "Atheist",
+    "label": "Atheist"
+  },
+  {
+    "value": "Spiritual but not religious",
+    "label": "Spiritual but not religious"
+  },
+  {
+    "value": "Other",
+    "label": "Other"
+  },
+  {
+    "value": "None",
+    "label": "No religion"
+  }
+]

@@ -3,8 +3,9 @@ import { devtools, persist, createJSONStorage } from 'zustand/middleware';
 import { reduce } from 'lodash';
 import { AuthSlice } from './slice/Auth';
 import { JointSlice } from './slice/Joint';
+import { ApplicantSlice } from './slice/Applicant';
 
-const sliceFunctions = [AuthSlice, JointSlice];
+const sliceFunctions = [AuthSlice, JointSlice, ApplicantSlice];
 
 type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
   k: infer I
@@ -12,7 +13,7 @@ type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) exten
   ? I
   : never;
 
-type State = UnionToIntersection<ReturnType<typeof sliceFunctions[number]>>;
+type State = UnionToIntersection<ReturnType<(typeof sliceFunctions)[number]>>;
 
 export const sStore = create<State>()(
   devtools(
@@ -38,8 +39,7 @@ export const sStore = create<State>()(
             removeItem: () => {},
           };
         }),
-        merge: (persistedState, currentState) =>
-          Object.assign(currentState, persistedState),
+        merge: (persistedState, currentState) => Object.assign(currentState, persistedState),
         partialize: ({ Auth }) => ({ Auth }),
       }
     )
