@@ -1,18 +1,18 @@
-package com.minh.scholarship.feign;
+package com.minh.search.feign;
 
 import com.minh.model.ApiResponse;
-import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.notification.NotificationTemplateDto;
+import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.service.feign.FeignInterceptorConfig;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+@FeignClient(name = "SCHOLARSHIP", path = "/scholarships", contextId = "scholarship-feign-client", configuration = FeignInterceptorConfig.class)
+public interface ScholarshipFeign {
 
-@FeignClient(name = "NOTIFICATION", path = "/notification", contextId = "notification-feign-client", configuration = FeignInterceptorConfig.class)
-public interface NotificationTemplateFeign {
-
-    @GetMapping("templates/type")
-    ApiResponse<NotificationTemplateDto> getNotificationTemplate(@RequestParam("type") String type);
+    @GetMapping("/{id}")
+    ApiResponse<ScholarshipDto> getById(@PathVariable Long id);
 
 }

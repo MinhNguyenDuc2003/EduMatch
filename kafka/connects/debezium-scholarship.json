@@ -1,0 +1,16 @@
+{
+  "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+  "topic.prefix": "dbscholarship",
+  "database.user": "admin",
+  "database.dbname": "scholarship",
+  "database.hostname": "postgres",
+  "database.password": "minh01672527656",
+  "database.port": "5432",
+  "key.converter.schemas.enable": "false",
+  "value.converter.schemas.enable": "false",
+  "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "schema.include.list": "public",
+  "table.include.list": "public.scholarship",
+  "slot.name": "scholarship_slot"
+}

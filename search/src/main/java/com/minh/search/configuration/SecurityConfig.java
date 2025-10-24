@@ -1,4 +1,4 @@
-package com.minh.profile.configuration;
+package com.minh.search.configuration;
 
 import com.minh.service.security.CustomJwtGrantedAuthoritiesConverter;
 import com.minh.service.security.JwtAuthenticationEntryPoint;

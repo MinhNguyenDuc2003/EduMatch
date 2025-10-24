@@ -8,21 +8,19 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableFeignClients("com.minh.profile.feign")
-@EntityScan("com.minh.profile.data.entity")
-@EnableJpaRepositories("com.minh.profile.data.repository")
+@EnableFeignClients("com.minh.search.feign")
 @ComponentScan(basePackages = {
-        "com.minh.profile.service",
+        "com.minh.search.service",
         "com.minh.config",
-        "com.minh.profile.data",
-        "com.minh.profile.data.mapper",
-        "com.minh.profile.controller",
+        "com.minh.search.data",
+        "com.minh.search.data.mapper",
+        "com.minh.search.controller",
         "com.minh.service",
-        "com.minh.profile.message",
-        "com.minh.profile.configuration",
+        "com.minh.search.message",
+        "com.minh.search.configuration",
 })
-public class ProfileApplication {
+public class SearchApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ProfileApplication.class, args);
+        SpringApplication.run(SearchApplication.class, args);
     }
 }

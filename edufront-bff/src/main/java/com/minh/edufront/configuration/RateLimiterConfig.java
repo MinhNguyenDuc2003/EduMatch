@@ -1,4 +1,4 @@
-package com.minh.backoffice.configuration;
+package com.minh.edufront.configuration;
 
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;

@@ -94,6 +94,11 @@ spring:
             - DedupeResponseHeader=Origin Access-Control-Request-Method Access-Control-Request-Headers
             - TokenRelay=
             - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+                key-resolver: "#{@ipKeyResolver}"
         - id: nextjs
           uri: http://160.30.113.224
           predicates:

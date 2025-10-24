@@ -26,6 +26,7 @@
         <module>scholarship</module>
         <module>notification</module>
         <module>subscription</module>
+        <module>search</module>
     </modules>
 
     <properties>

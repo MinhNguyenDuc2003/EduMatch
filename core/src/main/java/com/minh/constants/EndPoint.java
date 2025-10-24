@@ -2,6 +2,10 @@ package com.minh.constants;
 
 public final class EndPoint {
 
+    public static class SEARCH {
+        public static final String SCHOLARSHIPS = "/scholarships";
+    }
+
     public static class NOTIFICATION {
         public static final String USER_NOTIFICATIONS = "/users";
         public static final String NOTIFICATION_TEMPLATES = "/templates";

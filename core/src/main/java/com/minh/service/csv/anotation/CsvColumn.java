@@ -1,4 +1,4 @@
-package com.minh.csv.anotation;
+package com.minh.service.csv.anotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

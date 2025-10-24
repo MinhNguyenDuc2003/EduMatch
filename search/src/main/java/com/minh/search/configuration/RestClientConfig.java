@@ -1,4 +1,4 @@
-package com.minh.profile.configuration;
+package com.minh.search.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

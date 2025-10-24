@@ -1,4 +1,4 @@
-package com.minh.search.data.entity.base;
+package com.minh.search.data.entity;
 
 import jakarta.persistence.Id;
 import lombok.*;

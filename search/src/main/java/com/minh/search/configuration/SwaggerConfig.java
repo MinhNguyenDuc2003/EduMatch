@@ -1,13 +1,9 @@
-package com.minh.profile.configuration;
+package com.minh.search.configuration;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.security.OAuthFlow;
-import io.swagger.v3.oas.annotations.security.OAuthFlows;
-import io.swagger.v3.oas.annotations.security.OAuthScope;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.security.*;
 import io.swagger.v3.oas.annotations.servers.Server;
 
 @OpenAPIDefinition(info = @Info(title = "Profile Service API", description = "Profile API documentation",

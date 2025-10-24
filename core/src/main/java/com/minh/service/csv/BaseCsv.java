@@ -1,6 +1,6 @@
-package com.minh.csv;
+package com.minh.service.csv;
 
-import com.minh.csv.anotation.CsvColumn;
+import com.minh.service.csv.anotation.CsvColumn;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;

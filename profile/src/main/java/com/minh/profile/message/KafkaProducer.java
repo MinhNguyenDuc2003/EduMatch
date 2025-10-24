@@ -1,4 +1,4 @@
-package com.minh.location.message;
+package com.minh.profile.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
