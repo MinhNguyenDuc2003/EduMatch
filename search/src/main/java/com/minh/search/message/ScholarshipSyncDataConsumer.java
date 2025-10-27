@@ -29,8 +29,8 @@ public class ScholarshipSyncDataConsumer extends BaseCdcConsumer<ScholarshipMess
 
     @KafkaListener(
             id = "scholarship-sync-es",
-            groupId = "scholarship-sync-search",
-            topics = "${scholarship.topic.name}",
+            groupId = "${kafka.scholarship.cdc.group}",
+            topics = "${kafka.scholarship.cdc.topic}",
             containerFactory = SCHOLARSHIP_CDC_LISTENER_CONTAINER_FACTORY
     )
     @RetrySupportDql(listenerContainerFactory = SCHOLARSHIP_CDC_LISTENER_CONTAINER_FACTORY)
@@ -39,6 +39,7 @@ public class ScholarshipSyncDataConsumer extends BaseCdcConsumer<ScholarshipMess
             @Payload(required = false) @Valid ScholarshipCdcMessage scholarshipCdcMessage,
             @Headers MessageHeaders headers
     ) {
+        System.out.println("ScholarshipSyncDataConsumer processMessage");
         processMessage(key, scholarshipCdcMessage, headers, this::sync);
     }
 

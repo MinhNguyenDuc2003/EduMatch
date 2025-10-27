@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS scholarship.application (
     UPDATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS scholarship.application_preference (
+CREATE TABLE IF NOT EXISTS scholarship.scholarship_preference (
     id BIGSERIAL PRIMARY KEY,
-    application_id BIGINT,
+    scholarship_id BIGINT,
     type VARCHAR(100),
     value VARCHAR(255),
     weight DOUBLE PRECISION,

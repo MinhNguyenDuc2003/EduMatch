@@ -2,12 +2,7 @@ package com.minh.profile.data.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.minh.model.dto.profile.ApplicantCertificateDto;
-import com.minh.model.dto.profile.ApplicantEducationHistoryDto;
-import com.minh.model.dto.profile.ApplicantEducationIntentionDto;
-import com.minh.model.dto.profile.ApplicantPhoneNumberDto;
-import com.minh.model.dto.profile.ApplicantProfileDto;
-import com.minh.model.dto.profile.ApplicantSkillDto;
+import com.minh.model.dto.profile.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +21,7 @@ public class ApplicantProfileVo extends ApplicantProfileDto {
 
     private List<ApplicantCertificateDto> certificates = new ArrayList<>();
     private List<ApplicantEducationHistoryDto> educationHistories = new ArrayList<>();
-    private List<ApplicantPhoneNumberDto> phoneNumbers = new ArrayList<>();
+    private List<ApplicantPreferenceDto> applicantPreferences = new ArrayList<>();
     private List<ApplicantSkillDto> skills = new ArrayList<>();
     private List<ApplicantEducationIntentionDto> intentions = new ArrayList<>();
 

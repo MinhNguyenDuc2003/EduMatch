@@ -4,10 +4,10 @@ import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsAggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.search.data.entity.ScholarshipEntity;
 import com.minh.search.data.mapper.ScholarshipMapper;
+import com.minh.search.data.repository.ScholarshipRepository;
 import com.minh.search.data.vo.ScholarshipVo;
 import com.minh.search.model.constant.ScholarshipField;
 import com.minh.search.model.filter.ScholarshipFilter;
@@ -35,24 +35,23 @@ public class ScholarshipServiceImpl implements ScholarshipService {
 
     private final ElasticsearchOperations elasticsearchOperations;
     private final ScholarshipMapper scholarshipMapper;
+    private final ScholarshipRepository scholarshipRepository;
 
     @Override
     public ScholarshipVo findScholarshipAdvance(ScholarshipFilter criteria) {
         NativeQueryBuilder nativeQuery = NativeQuery.builder()
-                .withAggregation("countries", Aggregation.of(a -> a
+                .withAggregation("country", Aggregation.of(a -> a
                         .terms(ta -> ta.field(ScholarshipField.COUNTRY))))
-                .withAggregation("universities", Aggregation.of(a -> a
-                        .terms(ta -> ta.field(ScholarshipField.UNIVERSITY))))
-                .withAggregation("studyLevels", Aggregation.of(a -> a
+                .withAggregation("studyLevel", Aggregation.of(a -> a
                         .terms(ta -> ta.field(ScholarshipField.STUDY_LEVEL))))
                 .withQuery(q -> q
                         .bool(b -> {
                             if (StringUtils.hasText(criteria.getKeyword())) {
                                 b.should(s -> s
                                         .multiMatch(m -> m
-                                                .fields(ScholarshipField.TITLE, ScholarshipField.DESCRIPTION)
+                                                .fields(ScholarshipField.TITLE, ScholarshipField.UNIVERSITY)
                                                 .query(criteria.getKeyword())
-                                                .fuzziness(Fuzziness.ONE.asString())
+                                                .fuzziness(Fuzziness.AUTO.asString())
                                         )
                                 );
                             }
@@ -64,8 +63,8 @@ public class ScholarshipServiceImpl implements ScholarshipService {
         nativeQuery.withFilter(f -> f
                 .bool(b -> {
                     extractedTermsFilter(criteria.getCriteria().getCountry(), ScholarshipField.COUNTRY, b);
-                    extractedTermsFilter(criteria.getCriteria().getUniversity(), ScholarshipField.UNIVERSITY, b);
                     extractedTermsFilter(criteria.getCriteria().getStudyLevel(), ScholarshipField.STUDY_LEVEL, b);
+                    extractedTermsFilter(criteria.getCriteria().getScholarshipType(), ScholarshipField.SCHOLARSHIP_TYPE, b);
                     extractedRange(criteria.getMinGpa(), criteria.getMaxGpa(), b);
                     return b;
                 })
@@ -104,24 +103,24 @@ public class ScholarshipServiceImpl implements ScholarshipService {
         return scholarshipMapper.toDto(scholarships);
     }
 
-    private void extractedTermsFilter(String fieldValues, String scholarshipField, BoolQuery.Builder b) {
-        if (StringUtils.hasText(fieldValues)) {
-            return;
-        }
+    @Override
+    public List<ScholarshipDto> getAll() {
+        return scholarshipMapper.toDto(scholarshipRepository.findAll());
+    }
+
+    private void extractedTermsFilter(String fieldValues, String keywordField, BoolQuery.Builder boolBuilder) {
+        if (!StringUtils.hasText(fieldValues)) return;
+
         String[] valuesArray = fieldValues.split(",");
-        b.must(m -> {
-            BoolQuery.Builder innerBool = new BoolQuery.Builder();
-            for (String value : valuesArray) {
-                innerBool.should(s -> s
-                        .term(t -> t
-                                .field(scholarshipField)
-                                .value(value)
-                                .caseInsensitive(true)
-                        )
-                );
-            }
-            return new Query.Builder().bool(innerBool.build());
-        });
+        if (valuesArray.length == 0) return;
+
+        BoolQuery.Builder inner = new BoolQuery.Builder();
+        for (String value : valuesArray) {
+            if (!StringUtils.hasText(value)) continue;
+            inner.should(s -> s.term(t -> t.field(keywordField).value(value).caseInsensitive(false)));
+        }
+
+        boolBuilder.must(m -> m.bool(inner.build()));
     }
 
     private void extractedRange(Number min, Number max, BoolQuery.Builder bool) {

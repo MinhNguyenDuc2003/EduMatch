@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "SCHOLARSHIP", path = "/scholarships", contextId = "scholarship-feign-client", configuration = FeignInterceptorConfig.class)
+@FeignClient(name = "SCHOLARSHIP", path = "/scholarship", contextId = "scholarship-feign-client", configuration = FeignInterceptorConfig.class)
 public interface ScholarshipFeign {
 
-    @GetMapping("/{id}")
+    @GetMapping("/scholarships/{id}")
     ApiResponse<ScholarshipDto> getById(@PathVariable Long id);
 
 }

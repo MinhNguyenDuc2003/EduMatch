@@ -12,4 +12,5 @@ public interface ScholarshipService {
 
     List<ScholarshipDto> autoCompleteScholarshipName(String keyword);
 
+    List<ScholarshipDto> getAll();
 }

@@ -42,6 +42,9 @@ public class ApplicantProfileEntity extends BaseEntity {
     @Column(length = 100, name = "LAST_NAME")
     private String lastName;
 
+    @Column(name = "PHONE_NUMBER")
+    private String phoneNumber;
+
     @Column(length = 100, name = "RELIGION")
     private String religion;
 

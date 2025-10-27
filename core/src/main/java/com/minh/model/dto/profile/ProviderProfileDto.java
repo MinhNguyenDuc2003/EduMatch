@@ -44,4 +44,6 @@ public class ProviderProfileDto extends BaseDto {
 
     private Boolean verified;
 
+    private String country;
+
 }

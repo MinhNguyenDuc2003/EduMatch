@@ -18,6 +18,11 @@ public class ScholarshipSearchController {
 
     private final ScholarshipService scholarshipService;
 
+    @GetMapping("/all")
+    public ApiResponse<List<ScholarshipDto>> getAll() {
+        return ApiResponse.ok(scholarshipService.getAll());
+    }
+
     @PostMapping("/search")
     public ApiResponse<ScholarshipVo> searchScholarships(@RequestBody ScholarshipFilter criteria) {
         return ApiResponse.ok(scholarshipService.findScholarshipAdvance(criteria));

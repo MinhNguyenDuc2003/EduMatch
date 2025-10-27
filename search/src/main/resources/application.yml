@@ -14,7 +14,7 @@ app:
       maximum: '${env.db.pool.maximum:10}'
 
 server:
-  port: '${env.port:8091}'
+  port: '${env.port:8092}'
   servlet:
     context-path: /search
   compression:
@@ -53,6 +53,18 @@ spring:
           issuer-uri: ${env.issuer.uri:http://localhost:8080/realms/Yas}
   kafka:
     bootstrap-servers: ${kafka.bootstrap-server}
+    producer:
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+      batch-size: 16384
+      linger-ms: 1
+      buffer-memory: 33554432
+  elasticsearch:
+    uris: ${env.elasticsearch.url:localhost:9200}
+    username: ""
+    password: ""
 
 management:
   tracing:
@@ -79,6 +91,12 @@ logging:
     org.springframework.messaging: DEBUG
     org.springframework.web.socket: DEBUG
     org.springframework.web.socket.messaging: DEBUG
+    org.springframework.data.elasticsearch.client.elc: TRACE
+    org.elasticsearch.client.RestClient: TRACE
+    co.elastic.clients.transport.rest_client.RestClientTransport: TRACE
+    co.elastic.clients.transport: TRACE
+    co.elastic.clients.elasticsearch: TRACE
+    tracer: TRACE
 
 springdoc:
   packages-to-scan: com.minh.search
@@ -127,7 +145,7 @@ kafka:
       group: ${app.environment:local}.search.new-event.group
   scholarship:
     cdc:
-      topic: ${app.environment:local}.scholarship.cdc
+      topic: ${app.environment:local}.scholarship.cdc.scholarship.scholarship
       group: ${app.environment:local}.scholarship.cdc
 
 keycloak:
@@ -136,8 +154,3 @@ keycloak:
   resource: ${env.keycloak.client-id:backoffice-bff}
   credentials:
     secret: ${env.keycloak.client-secret:TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF}
-
-elasticsearch:
-  uris: ${env.elasticsearch.url:http://localhost:9200}
-  username: ""
-  password: ""

@@ -2,12 +2,10 @@ package com.minh.search;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication
 @EnableFeignClients("com.minh.search.feign")
 @ComponentScan(basePackages = {
         "com.minh.search.service",
@@ -19,6 +17,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         "com.minh.search.message",
         "com.minh.search.configuration",
 })
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class SearchApplication {
     public static void main(String[] args) {
         SpringApplication.run(SearchApplication.class, args);

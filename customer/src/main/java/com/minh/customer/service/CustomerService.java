@@ -9,7 +9,6 @@ import com.minh.customer.data.vo.CustomerVo;
 import com.minh.customer.data.vo.ProviderProfileVo;
 import com.minh.customer.feign.ApplicantProfileFeign;
 import com.minh.customer.feign.ProviderProfileFeign;
-import com.minh.customer.viewmodel.address.ActiveAddressVm;
 import com.minh.customer.viewmodel.customer.*;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.profile.ProviderProfileDto;
@@ -48,10 +47,6 @@ public class CustomerService extends BaseService {
     private ApplicantProfileFeign profileFeign;
     @Autowired
     private ProviderProfileFeign providerFeign;
-    @Autowired
-    private UserAddressService userAddressService;
-    @Autowired
-    private LocationService locationService;
 
     public CustomerService(Keycloak keycloak, KeycloakPropsConfig keycloakPropsConfig) {
         this.keycloak = keycloak;
@@ -140,10 +135,6 @@ public class CustomerService extends BaseService {
 
             ApplicantProfileVo profileVo = this.parseResponse(profileFeign.getOneByUserId(userId));
             vo.setApplicantProfile(profileVo);
-
-            List<ActiveAddressVm> addressList = userAddressService.getUserAddressList();
-            vo.setAddresses(addressList);
-
             return vo;
         } catch (ForbiddenException exception) {
             throw new AccessDeniedException(
@@ -237,14 +228,12 @@ public class CustomerService extends BaseService {
     @Transactional(rollbackOn = Exception.class)
     public CustomerVo createCustomerProfile(CustomerVo customerVo) {
         profileFeign.create(customerVo.getApplicantProfile());
-        userAddressService.createAddress(customerVo.getAddressPostVm());
         return customerVo;
     }
 
     @Transactional(rollbackOn = Exception.class)
     public CustomerVo updateCustomerProfile(CustomerVo customerVo) {
         profileFeign.update(customerVo.getApplicantProfile());
-        locationService.updateAddress(customerVo.getAddressPostVm());
         return customerVo;
     }
 
@@ -252,7 +241,6 @@ public class CustomerService extends BaseService {
     public CustomerVo createProviderProfile(CustomerVo profile, MultipartFile logo, MultipartFile banner) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ProviderProfileDto providerProfileDto = this.parseResponse(providerFeign.create(objectMapper.writeValueAsString(profile.getProviderProfile()), logo, banner));
-        userAddressService.createProviderAddress(profile.getAddressPostVm(), providerProfileDto.getId());
         return profile;
     }
 
@@ -260,7 +248,6 @@ public class CustomerService extends BaseService {
     public CustomerVo updateProviderProfile(CustomerVo customerVo, MultipartFile logo, MultipartFile banner) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         providerFeign.update(objectMapper.writeValueAsString(customerVo.getProviderProfile()), logo, banner);
-        locationService.updateAddress(customerVo.getAddressPostVm());
         return customerVo;
     }
 
@@ -268,8 +255,6 @@ public class CustomerService extends BaseService {
         CustomerVo vo = new CustomerVo();
         ProviderProfileVo providerProfileVo = this.parseResponse(providerFeign.getMyProviderInfo());
         vo.setProviderProfile(providerProfileVo);
-        List<ActiveAddressVm> addressList = userAddressService.getProviderAddressList(providerProfileVo.getId());
-        vo.setAddresses(addressList);
         return vo;
     }
 }
