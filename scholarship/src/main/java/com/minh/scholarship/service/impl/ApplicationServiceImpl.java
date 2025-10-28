@@ -41,33 +41,10 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
         return applicationMapper.toDto(entity);
     }
 
-    /*@Override
-    @Transactional(rollbackOn = Exception.class)
-    public ApplicationDto create(ApplicationDto application, List<MultipartFile> documents) {
-        ApplicationEntity savedApp = applicationRepository.save(applicationMapper.toEntity(application));
-        if (ObjectUtils.isNotEmpty(documents)) {
-            uploadDocuments(application, documents, savedApp.getId());
-        }
-        return applicationMapper.toDto(savedApp);
-    }*/
-
     public ApplicationDto create(ApplicationDto application) {
         ApplicationEntity savedEntity = applicationRepository.save(applicationMapper.toEntity(application));
         return applicationMapper.toDto(savedEntity);
     }
-
-//    @Override
-//    @Transactional(rollbackOn = Exception.class)
-//    public ApplicationDto update(ApplicationDto application, List<MultipartFile> documents) {
-//        applicationRepository.findByIdAndActive(application.getId(), true)
-//                .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST));
-//
-//        if (ObjectUtils.isNotEmpty(documents)) {
-//            applicationMediaRepository.deleteAllByApplicationId(application.getId());
-//            uploadDocuments(application, documents, application.getId());
-//        }
-//        return applicationMapper.toDto(applicationRepository.save(applicationMapper.toEntity(application)));
-//    }
 
     @Override
     @Transactional(rollbackOn = Exception.class)

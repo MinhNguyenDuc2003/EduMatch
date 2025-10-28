@@ -33,6 +33,12 @@ public final class EndPoint {
     public static class SCHOLARSHIP {
         public static final String SCHOLARSHIPS = "/scholarships";
         public static final String APPLICATIONS = "/applications";
+        public static final String APPLICATION_REVIEW = "/applications/review";
     }
 
+    public static class SUBSCRIPTION {
+        public static final String SUBSCRIPTIONS = "/subscription";
+        public static final String PLANS = "/subscription/subscription/plans";
+        public static final String PAYMENTS = "/subscription/payments";
+    }
 }

@@ -30,28 +30,11 @@ public class ApplicationController {
         return ApiResponse.ok(applicationService.getById(id));
     }
 
-//    @Authorized
-//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ApiResponse<ApplicationDto> create(
-//            @ModelAttribute ApplicationDto application,
-//            @RequestPart(value = "documents", required = false) List<MultipartFile> documents) {
-//
-//        return ApiResponse.ok(applicationService.create(application, documents));
-//    }
-
     @Authorized
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<ApplicationDto> create(@RequestBody ApplicationDto application) {
         return ApiResponse.ok(applicationService.create(application));
     }
-
-//    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ApiResponse<ApplicationDto> update(
-//            @ModelAttribute ApplicationDto application,
-//            @RequestPart(value = "documents", required = false) List<MultipartFile> documents) {
-//
-//        return ApiResponse.ok(applicationService.update(application, documents));
-//    }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<ApplicationDto> update(@RequestBody ApplicationDto application) {
