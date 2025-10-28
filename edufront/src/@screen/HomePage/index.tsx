@@ -21,7 +21,7 @@ export default function HomePage() {
               <Header />
 
               {/* Banner Section */}
-              <div className="lg:px-40 py-24 bg-[#fafaf6]">
+              <div className="lg:px-40 py-20 bg-[#fafaf6]">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                   {/* Left Section - Banner Content */}
                   <div className="space-y-6">
@@ -33,9 +33,10 @@ export default function HomePage() {
                       goals and aspirations. Our intelligent matching system helps you discover the
                       perfect funding opportunities that align with your profile.
                     </p>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold rounded-lg">
-                      Explore Scholarships
-                    </Button>
+                    <Button
+                      className="bg-[#3D6CB9] hover:bg-blue-700 text-white px-10 py-5 text-xl font-semibold rounded-lg"
+                      value={'Explore Scholarships'}
+                    />
                   </div>
 
                   {/* Right Section - Placeholder */}
@@ -49,28 +50,33 @@ export default function HomePage() {
                 <Anchor className="grid grid-cols-3 gap-5">
                   {map(ss.Joint.ListScholarshipOpportunities, (item) => (
                     <CardSmalPic
-                      key={item.OpportunityId}
+                      key={item.Id}
                       // picture="/default-avatar.png"
                       title={item.Title}
-                      amount={item?.FundingAmount ?? 0}
-                      deadline={item.Deadline}
-                      description={item.ShortDescription}
-                      tagName={compact([item?.Country, item?.FieldOfStudy])}
+                      amount={item?.Funding_amount ?? 0}
+                      deadline={item.End_date}
+                      description={item.Short_description}
+                      tagName={compact([item?.Country, item?.University, item?.Study_level])}
                       titleButton="Apply Now"
                       onClick={() => meds.onPushDataToN8n(item)}
+                      university={item.University}
+                      study_level={item.Study_level}
+                      scholarship_type={item.Scholarship_type}
+                      gpa_requirement={item.Gpa_requirement}
+                      country={item.Country}
                     />
                   ))}
                 </Anchor>
                 <Anchor className="grid grid-cols-4 gap-5 mt-7">
                   {map(ss.Joint.ListScholarshipOpportunities, (item) => (
                     <CardBigPic
-                      key={item.OpportunityId}
+                      key={item.Id}
                       // picture="/default-avatar.png"
                       title={item.Title}
-                      amount={item?.FundingAmount ?? 0}
-                      deadline={item.Deadline}
-                      description={item.ShortDescription}
-                      tagName={item?.Country}
+                      amount={item?.Funding_amount ?? 0}
+                      deadline={item.End_date}
+                      description={item.Short_description}
+                      tagName={item?.University}
                       titleButton="Apply Now"
                       onClick={() => console.log(`Apply for ${item.Title}`)}
                     />

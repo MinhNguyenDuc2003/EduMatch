@@ -11,7 +11,7 @@ export default async function LocaleLayout({
 }) {
   return (
     <html lang={'en'}>
-      <body className="">
+      <body>
         {children}
         <Loading />
       </body>

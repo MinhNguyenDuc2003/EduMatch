@@ -36,51 +36,53 @@ const Header = () => {
   return (
     <Begin className="px-4 lg:px-40 py-3 flex items-center border-b bg-[#fafaf6] sticky top-0 z-50">
       <div className="w-full flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          {/* Mobile menu */}
-          <MobileNavigation />
+        <div className="flex items-center gap-5">
+          <div className="flex items-center space-x-4">
+            {/* Mobile menu */}
+            <MobileNavigation />
 
-          {/* Logo */}
-          <Link className="flex items-center" href={SegUrl.User}>
-            <Image
-              src={'https://es5urvh1np.ufs.sh/f/DHR6tEJ9PQoz85HjSO62tcmI7ElP8Ygn01Oa3ze6iFwADrsH'}
-              alt="logo"
-              width={50}
-              height={30}
-              unoptimized
-            />
-            <span className="ml-2.5 text-base">Edu</span>
-            <span className="text-base text-primary-brand font-bold ">Match</span>
-          </Link>
+            {/* Logo */}
+            <Link className="flex items-center" href={SegUrl.User}>
+              <Image
+                src={'https://es5urvh1np.ufs.sh/f/DHR6tEJ9PQoz85HjSO62tcmI7ElP8Ygn01Oa3ze6iFwADrsH'}
+                alt="logo"
+                width={50}
+                height={30}
+                unoptimized
+              />
+              <span className="ml-2.5 text-base">Edu</span>
+              <span className="text-base text-primary-brand font-bold ">Match</span>
+            </Link>
+          </div>
+
+          <NavigationMenu className="hidden lg:flex items-center space-x-6 ">
+            <NavigationMenuList>
+              <NavMenuItem>
+                <NavigationMenuTrigger className="text-sm">Students</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="grid w-[800px] grid-cols-2 gap-4 p-2">
+                    {studentMenuItems.map((item, index) => (
+                      <NavigationMenuItem key={index} {...item} />
+                    ))}
+                  </div>
+                </NavigationMenuContent>
+              </NavMenuItem>
+
+              <NavMenuItem>
+                <NavigationMenuTrigger className="text-sm">
+                  Scholarship Providers
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="grid w-[500px] grid-cols-1 gap-4 p-2">
+                    {scholarshipProviderMenuItems.map((item, index) => (
+                      <NavigationMenuItem key={index} {...item} />
+                    ))}
+                  </div>
+                </NavigationMenuContent>
+              </NavMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
-
-        <NavigationMenu className="hidden lg:flex items-center space-x-6 ">
-          <NavigationMenuList>
-            <NavMenuItem>
-              <NavigationMenuTrigger className="text-sm">Students</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="grid w-[800px] grid-cols-2 gap-4 p-2">
-                  {studentMenuItems.map((item, index) => (
-                    <NavigationMenuItem key={index} {...item} />
-                  ))}
-                </div>
-              </NavigationMenuContent>
-            </NavMenuItem>
-
-            <NavMenuItem>
-              <NavigationMenuTrigger className="text-sm">
-                Scholarship Providers
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="grid w-[500px] grid-cols-1 gap-4 p-2">
-                  {scholarshipProviderMenuItems.map((item, index) => (
-                    <NavigationMenuItem key={index} {...item} />
-                  ))}
-                </div>
-              </NavigationMenuContent>
-            </NavMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
 
         <div className="flex items-center space-x-2">
           <div className="hidden lg:flex items-center space-x-2">
