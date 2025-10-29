@@ -20,6 +20,6 @@ public class ScholarshipFollowerEntity extends BaseEntity {
 
     @Id
     @Column(name = "USER_ID")
-    private Long userId;
+    private String userId;
 
 }

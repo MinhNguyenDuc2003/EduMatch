@@ -43,11 +43,9 @@ public class ApplicationReviewServiceImpl extends BaseService implements Applica
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ApplicationReviewDto update(ApplicationReviewDto dto) {
-        ApplicationReviewEntity existingEntity = repository.findByIdAndActive(dto.getId(), true)
+        repository.findByIdAndActive(dto.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICATION_REVIEW_NOT_FOUND));
-
-        mapper.updateEntityFromDto(dto, existingEntity);
-        ApplicationReviewEntity savedEntity = repository.save(existingEntity);
+        ApplicationReviewEntity savedEntity = repository.save(mapper.toEntity(dto));
         return mapper.toDto(savedEntity);
     }
 
@@ -59,4 +57,10 @@ public class ApplicationReviewServiceImpl extends BaseService implements Applica
         }
         repository.updateActiveById(id);
     }
+
+    @Override
+    public List<ApplicationReviewDto> getAllByApplicationId(Long applicationId) {
+        return mapper.toDto(repository.findByApplicationIdAndActive(applicationId, true));
+    }
+
 }

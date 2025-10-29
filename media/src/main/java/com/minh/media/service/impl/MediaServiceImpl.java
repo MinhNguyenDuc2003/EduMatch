@@ -9,6 +9,7 @@ import com.minh.media.service.MediaService;
 import com.minh.media.utils.AmazonS3Util;
 import com.minh.media.utils.S3UrlUtil;
 import com.minh.model.dto.media.MediaDto;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,13 +33,16 @@ public class MediaServiceImpl implements MediaService {
     @Transactional(rollbackFor = Exception.class)
     public MediaDto saveOne(MediaDto mediaDto) {
         ByteArrayInputStream data = new ByteArrayInputStream(mediaDto.getThumbnail());
-        String s3Key = amazonS3Util.uploadFile(mediaDto.getFolderName(),
-                mediaDto.getFileName(),
-                data,
-                mediaDto.getIsPublic());
-        MediaEntity mediaEntity = mediaMapper.toEntity(mediaDto);
-        mediaEntity.setS3Key(s3Key);
-        return mediaMapper.toDto(mediaRepository.save(mediaEntity));
+        if (ObjectUtils.isNotEmpty(data)) {
+            String s3Key = amazonS3Util.uploadFile(mediaDto.getFolderName(),
+                    mediaDto.getFileName(),
+                    data,
+                    mediaDto.getIsPublic());
+            MediaEntity mediaEntity = mediaMapper.toEntity(mediaDto);
+            mediaEntity.setS3Key(s3Key);
+            return mediaMapper.toDto(mediaRepository.save(mediaEntity));
+        }
+        return null;
     }
 
     @Override

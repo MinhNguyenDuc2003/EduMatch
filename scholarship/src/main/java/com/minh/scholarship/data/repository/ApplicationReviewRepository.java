@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,4 +16,6 @@ public interface ApplicationReviewRepository extends JpaRepository<ApplicationRe
     @Modifying
     @Query("UPDATE ApplicationReviewEntity a SET a.active = false WHERE a.id = :id")
     void updateActiveById(Long id);
+
+    List<ApplicationReviewEntity> findByApplicationIdAndActive(Long applicationId, boolean b);
 }

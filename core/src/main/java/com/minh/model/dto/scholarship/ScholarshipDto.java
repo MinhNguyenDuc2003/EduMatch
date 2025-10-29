@@ -62,4 +62,6 @@ public class ScholarshipDto extends BaseDto {
 
     private Double gpaRequirement;
 
+    private Boolean isDeleted;
+
 }

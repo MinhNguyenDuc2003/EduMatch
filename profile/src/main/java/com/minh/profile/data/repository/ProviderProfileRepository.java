@@ -8,5 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface ProviderProfileRepository extends JpaRepository<ProviderProfileEntity, Long> {
+
     Optional<ProviderProfileEntity> findByUserId(String userId);
+
 }

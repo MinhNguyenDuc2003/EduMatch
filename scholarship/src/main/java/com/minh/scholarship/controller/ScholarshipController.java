@@ -4,10 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
-import com.minh.model.dto.scholarship.ScholarshipDto;
+import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
+import com.minh.scholarship.data.vo.ScholarshipVo;
+import com.minh.scholarship.model.filter.ScholarshipFilter;
 import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,36 +24,55 @@ public class ScholarshipController {
 
     private final ScholarshipService scholarshipService;
 
-    @GetMapping("/all")
-    public ApiResponse<List<ScholarshipDto>> getAll() {
-        return ApiResponse.ok(scholarshipService.getAll());
+    @PostMapping("/page")
+    public ApiResponse<Page<ScholarshipVo>> getPage(@RequestBody ScholarshipFilter filter) {
+        return ApiResponse.ok(scholarshipService.getPage(filter));
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<ScholarshipDto> getById(@PathVariable Long id) {
+    public ApiResponse<ScholarshipVo> getById(@PathVariable Long id) {
         return ApiResponse.ok(scholarshipService.getById(id));
+    }
+
+    @GetMapping("/{id}/all")
+    public ApiResponse<ScholarshipVo> getByIdAll(@PathVariable Long id) {
+        return ApiResponse.ok(scholarshipService.getByIdAll(id));
     }
 
     @Authorized
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<ScholarshipDto> create(
+    public ApiResponse<ScholarshipVo> create(
             @RequestPart("scholarship") String scholarshipJson,
             @RequestPart(value = "images", required = false) List<MultipartFile> images
     ) throws JsonProcessingException {
-
-        ScholarshipDto scholarship = new ObjectMapper().readValue(scholarshipJson, ScholarshipDto.class);
+        ScholarshipVo scholarship = new ObjectMapper().readValue(scholarshipJson, ScholarshipVo.class);
         return ApiResponse.ok(scholarshipService.create(scholarship, images));
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ApiResponse<ScholarshipDto> update(@RequestBody ScholarshipDto scholarship) {
-        return ApiResponse.ok(scholarshipService.update(scholarship, null));
+    @Authorized
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<ScholarshipVo> update(
+            @RequestPart("scholarship") String scholarshipJson,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images
+    ) throws JsonProcessingException {
+        ScholarshipVo scholarship = new ObjectMapper().readValue(scholarshipJson, ScholarshipVo.class);
+        return ApiResponse.ok(scholarshipService.update(scholarship, images));
     }
 
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) {
         scholarshipService.delete(id);
         return ApiResponse.ok();
+    }
+
+    @PostMapping("/follow")
+    public ApiResponse<ScholarshipFollowerDto> createScholarshipFollower(@RequestBody ScholarshipFollowerDto dto) {
+        return ApiResponse.ok(scholarshipService.createScholarshipFollower(dto));
+    }
+
+    @DeleteMapping("/follow")
+    public ApiResponse<ScholarshipFollowerDto> deleteScholarshipFollower(@RequestBody ScholarshipFollowerDto dto) {
+        return ApiResponse.ok(scholarshipService.deleteScholarshipFollower(dto));
     }
 
 }

@@ -23,7 +23,7 @@ public class ScholarshipSyncDataServiceImpl extends BaseService implements Schol
 
     @Override
     public ScholarshipDto getScholarshipById(Long scholarshipId) {
-        return this.parseResponse(scholarshipFeign.getById(scholarshipId));
+        return this.parseResponse(scholarshipFeign.getByIdAll(scholarshipId));
     }
 
     @Override
@@ -37,6 +37,10 @@ public class ScholarshipSyncDataServiceImpl extends BaseService implements Schol
     public void update(Long scholarshipId) {
         ScholarshipDto scholarshipById = this.getScholarshipById(scholarshipId);
         if (ObjectUtils.isNotEmpty(scholarshipById)) {
+            if (scholarshipById.getIsDeleted()) {
+                deleteById(scholarshipId);
+                return;
+            }
             scholarshipRepository.deleteById(scholarshipId);
             scholarshipRepository.save(scholarshipMapper.toEntity(scholarshipById));
         }

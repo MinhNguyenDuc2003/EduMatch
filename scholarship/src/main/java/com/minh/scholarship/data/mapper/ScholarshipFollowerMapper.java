@@ -1,8 +1,8 @@
 package com.minh.scholarship.data.mapper;
 
 import com.minh.mapper.BaseMapper;
-import com.minh.model.dto.scholarship.ApplicationDto;
-import com.minh.scholarship.data.entity.ApplicationEntity;
+import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
+import com.minh.scholarship.data.entity.junction.ScholarshipFollowerEntity;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -13,5 +13,5 @@ import org.mapstruct.*;
         uses = {
 
         })
-public interface ApplicationMapper extends BaseMapper<ApplicationEntity, ApplicationDto> {
+public interface ScholarshipFollowerMapper extends BaseMapper<ScholarshipFollowerEntity, ScholarshipFollowerDto> {
 }

@@ -49,13 +49,9 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ApplicationDto update(ApplicationDto application) {
-        ApplicationEntity existingEntity = applicationRepository.findByIdAndActive(application.getId(), true)
+        applicationRepository.findByIdAndActive(application.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST));
-
-        applicationMapper.updateEntityFromDto(application, existingEntity);
-
-        ApplicationEntity savedEntity = applicationRepository.save(existingEntity);
-
+        ApplicationEntity savedEntity = applicationRepository.save(applicationMapper.toEntity(application));
         return applicationMapper.toDto(savedEntity);
     }
 

@@ -8,8 +8,6 @@ import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-// import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -46,4 +44,5 @@ public class ApplicationController {
         applicationService.delete(id);
         return ApiResponse.ok();
     }
+
 }

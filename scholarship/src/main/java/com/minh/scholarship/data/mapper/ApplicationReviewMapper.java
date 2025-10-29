@@ -1,20 +1,19 @@
 package com.minh.scholarship.data.mapper;
 
+import com.minh.mapper.BaseMapper;
 import com.minh.scholarship.data.entity.ApplicationReviewEntity;
 import com.minh.model.dto.scholarship.ApplicationReviewDto;
 import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
-public interface ApplicationReviewMapper {
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
+        componentModel = "spring",
+        uses = {
 
-    ApplicationReviewDto toDto(ApplicationReviewEntity entity);
-
-    ApplicationReviewEntity toEntity(ApplicationReviewDto dto);
-
-    List<ApplicationReviewDto> toDto(List<ApplicationReviewEntity> entities);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateEntityFromDto(ApplicationReviewDto dto, @MappingTarget ApplicationReviewEntity entity);
+        })
+public interface ApplicationReviewMapper extends BaseMapper<ApplicationReviewEntity, ApplicationReviewDto> {
 }

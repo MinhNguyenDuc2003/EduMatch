@@ -21,6 +21,11 @@ public class ApplicationReviewController {
         return ApiResponse.ok(service.getAll());
     }
 
+    @GetMapping("/all/application")
+    public ApiResponse<List<ApplicationReviewDto>> getAllByApplicationId(@RequestParam Long applicationId) {
+        return ApiResponse.ok(service.getAllByApplicationId(applicationId));
+    }
+
     @GetMapping("/{id}")
     public ApiResponse<ApplicationReviewDto> getById(@PathVariable Long id) {
         return ApiResponse.ok(service.getById(id));

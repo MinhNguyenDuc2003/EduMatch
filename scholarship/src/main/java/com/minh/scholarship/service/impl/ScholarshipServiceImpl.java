@@ -8,17 +8,25 @@ import com.minh.exception.BusinessException;
 import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.notification.NotificationTemplateDto;
 import com.minh.model.dto.scholarship.ScholarshipDto;
+import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
+import com.minh.model.dto.scholarship.ScholarshipPreferenceDto;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
 import com.minh.scholarship.data.entity.junction.ScholarshipMediaEntity;
+import com.minh.scholarship.data.mapper.ScholarshipFollowerMapper;
 import com.minh.scholarship.data.mapper.ScholarshipMapper;
+import com.minh.scholarship.data.mapper.ScholarshipPreferenceMapper;
+import com.minh.scholarship.data.repository.ScholarshipFollowerRepository;
 import com.minh.scholarship.data.repository.ScholarshipMediaRepository;
+import com.minh.scholarship.data.repository.ScholarshipPreferenceRepository;
 import com.minh.scholarship.data.repository.ScholarshipRepository;
 import com.minh.scholarship.data.vo.NotificationVo;
 import com.minh.scholarship.data.vo.ProviderProfileVo;
+import com.minh.scholarship.data.vo.ScholarshipVo;
 import com.minh.scholarship.feign.MediaFeign;
 import com.minh.scholarship.feign.NotificationTemplateFeign;
 import com.minh.scholarship.feign.ProviderProfileFeign;
 import com.minh.scholarship.message.KafkaProducer;
+import com.minh.scholarship.model.filter.ScholarshipFilter;
 import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.base.BaseService;
 import com.minh.utils.UaaContextHolder;
@@ -26,11 +34,13 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +53,10 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     private final NotificationTemplateFeign notificationTemplateFeign;
     private final KafkaProducer kafkaProducer;
     private final ProviderProfileFeign providerProfileFeign;
+    private final ScholarshipPreferenceRepository scholarshipPreferenceRepository;
+    private final ScholarshipPreferenceMapper scholarshipPreferenceMapper;
+    private final ScholarshipFollowerRepository scholarshipFollowerRepository;
+    private final ScholarshipFollowerMapper scholarshipFollowerMapper;
 
     @Value("${kafka.scholarship.new-event.topic}")
     private String newEventScholarshipTopic;
@@ -54,25 +68,45 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     }
 
     @Override
-    public ScholarshipDto getById(Long id) {
+    public ScholarshipVo getById(Long id) {
         ScholarshipEntity entity = scholarshipRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
-        return scholarshipMapper.toDto(entity);
+        List<ScholarshipPreferenceDto> preferences = scholarshipPreferenceMapper.toDto(scholarshipPreferenceRepository.findByScholarshipId(entity.getId()));
+        ScholarshipVo scholarshipVo = scholarshipMapper.entityToVo(entity);
+        scholarshipVo.setScholarshipPreferences(preferences);
+        return addScholarshipMedia(scholarshipVo);
+    }
+
+    private ScholarshipVo addScholarshipMedia(ScholarshipVo scholarshipVo) {
+        List<ScholarshipMediaEntity> mediaEntity = scholarshipMediaRepository.findByScholarshipId(scholarshipVo.getId());
+        if (ObjectUtils.isNotEmpty(mediaEntity)) {
+            List<MediaDto> medias = this.parseResponse(mediaFeign.getByIds(mediaEntity.stream().map(ScholarshipMediaEntity::getMediaId).collect(Collectors.toList())));
+            scholarshipVo.setScholarshipMedias(medias);
+        }
+        return scholarshipVo;
     }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public ScholarshipDto create(ScholarshipDto scholarship, List<MultipartFile> images) {
+    public ScholarshipVo create(ScholarshipVo scholarship, List<MultipartFile> images) {
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getMyProviderInfo());
+        if (ObjectUtils.isEmpty(providerProfileVo)) {
+            throw new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST);
+        }
+        scholarship.setProviderId(providerProfileVo.getId());
         ScholarshipEntity savedScholarship = scholarshipRepository.save(scholarshipMapper.toEntity(scholarship));
         if (ObjectUtils.isNotEmpty(images)) {
             uploadImages(scholarship, images, savedScholarship.getId());
         }
-        ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getOne(savedScholarship.getProviderId()));
+        List<ScholarshipPreferenceDto> scholarshipPreferences = scholarship.getScholarshipPreferences();
+        if (!scholarshipPreferences.isEmpty()) {
+            scholarshipPreferenceRepository.saveAll(scholarshipPreferenceMapper.toEntity(scholarshipPreferences));
+        }
         NotificationTemplateDto notificationTemplateDto = this.parseResponse(notificationTemplateFeign.getNotificationTemplate(NotificationTemplateEnum.SCHOLARSHIP_NEW.getCode()));
         NotificationVo notificationVo = NotificationVo.builder()
                 .topic(NotificationTopicEnum.SCHOLARSHIP_FOLLOWER)
                 .title(notificationTemplateDto.getTitle())
-                .content(notificationTemplateDto.getContent()
+                .content(notificationTemplateDto.getContent().replace("{{providerName}}", providerProfileVo.getOrganizationName())
                         .replace("{{providerName}}", providerProfileVo.getOrganizationName())
                         .replace("{{scholarshipName}}", savedScholarship.getTitle()))
                 .isRead(false)
@@ -80,26 +114,26 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 .referenceType(NotificationReferenceEnum.SCHOLARSHIP.getCode())
                 .userId(UaaContextHolder.getUserId())
                 .build();
-        System.out.println("UserId = " + UaaContextHolder.getUserId());
         kafkaProducer.convertToByteAndSend(newEventScholarshipTopic, notificationVo);
-        return scholarshipMapper.toDto(savedScholarship);
+        return scholarshipMapper.entityToVo(savedScholarship);
     }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public ScholarshipDto update(ScholarshipDto scholarship, List<MultipartFile> images) {
+    public ScholarshipVo update(ScholarshipVo scholarship, List<MultipartFile> images) {
         ScholarshipEntity entity = scholarshipRepository.findByIdAndActive(scholarship.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
-
-        scholarshipMapper.updateEntityFromDto(scholarship, entity);
-
+        scholarshipMediaRepository.deleteAllByScholarshipId(entity.getId());
         if (ObjectUtils.isNotEmpty(images)) {
-            scholarshipMediaRepository.deleteAllByScholarshipId(entity.getId());
             uploadImages(scholarship, images, entity.getId());
         }
-
-        ScholarshipEntity saved = scholarshipRepository.save(entity);
-        return scholarshipMapper.toDto(saved);
+        scholarshipPreferenceRepository.deleteAllByScholarshipId(entity.getId());
+        if (!scholarship.getScholarshipPreferences().isEmpty()) {
+            scholarshipPreferenceRepository.saveAll(scholarshipPreferenceMapper.toEntity(scholarship.getScholarshipPreferences()));
+        }
+        scholarshipRepository.deleteById(scholarship.getId());
+        scholarship.setId(entity.getId());
+        return scholarshipMapper.entityToVo(scholarshipRepository.save(scholarshipMapper.toEntity(scholarship)));
     }
 
 
@@ -133,4 +167,39 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         }
         scholarshipRepository.updateActiveById(id, false);
     }
+
+    @Override
+    public ScholarshipVo getByIdAll(Long id) {
+        ScholarshipEntity entity = scholarshipRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
+        List<ScholarshipPreferenceDto> preferences = scholarshipPreferenceMapper.toDto(scholarshipPreferenceRepository.findByScholarshipId(entity.getId()));
+        ScholarshipVo scholarshipVo = scholarshipMapper.entityToVo(entity);
+        scholarshipVo.setScholarshipPreferences(preferences);
+        return scholarshipVo;
+    }
+
+    @Override
+    public Page<ScholarshipVo> getPage(ScholarshipFilter filter) {
+        return scholarshipRepository.getPageable(filter.getPageable()).map(o -> {
+            ScholarshipVo scholarshipVo = scholarshipMapper.entityToVo(o);
+            return addScholarshipMedia(scholarshipVo);
+        });
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public ScholarshipFollowerDto createScholarshipFollower(ScholarshipFollowerDto dto) {
+        return scholarshipFollowerMapper.toDto(
+                scholarshipFollowerRepository.save(
+                        scholarshipFollowerMapper.toEntity(dto)));
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public ScholarshipFollowerDto deleteScholarshipFollower(ScholarshipFollowerDto dto) {
+        String userId = UaaContextHolder.getUserId();
+        scholarshipFollowerRepository.deleteByScholarshipIdAndUserId(dto.getScholarshipId(), userId);
+        return dto;
+    }
+
 }

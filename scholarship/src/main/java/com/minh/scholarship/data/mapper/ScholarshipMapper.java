@@ -3,6 +3,7 @@ package com.minh.scholarship.data.mapper;
 import com.minh.mapper.BaseMapper;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
+import com.minh.scholarship.data.vo.ScholarshipVo;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -14,5 +15,8 @@ import org.mapstruct.*;
 
         })
 public interface ScholarshipMapper extends BaseMapper<ScholarshipEntity, ScholarshipDto> {
-        void updateEntityFromDto(ScholarshipDto dto, @MappingTarget ScholarshipEntity entity);
+
+    @Named("entityToVo")
+    ScholarshipVo entityToVo(ScholarshipEntity entity);
+
 }
