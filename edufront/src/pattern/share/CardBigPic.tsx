@@ -6,6 +6,7 @@ import { isBoolean, isEqual } from 'lodash';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Amount_Deadline from './Amount_Deadline';
+import { Bookmark, Eye, Send } from 'lucide-react';
 
 type props = {
   pic?: string;
@@ -15,6 +16,7 @@ type props = {
   deadline?: string;
   titleButton?: string;
   onClick?: () => void;
+  onViewDetails?: () => void;
   tagName?: string;
 };
 const CardBigPic = ({
@@ -25,13 +27,25 @@ const CardBigPic = ({
   deadline,
   titleButton,
   onClick,
+  onViewDetails,
   tagName,
 }: props) => {
   const ss = sStore();
   const router = useRouter();
   const locale = ss.Auth?.Locale;
   return (
-    <Section className="flex bg-[#FAFAF6] flex-col gap-[10px] border border-solid border-[#D9D9D9] rounded-2xl">
+    <Section className="flex bg-[#FAFAF6] flex-col gap-[10px] border border-solid border-[#D9D9D9] rounded-2xl relative">
+      {/* Save Icon - Top Right */}
+      <button 
+        className="absolute top-3 right-3 z-40 p-2 rounded-full bg-white/90 hover:bg-white shadow-md hover:shadow-lg transition-all duration-200 group"
+        onClick={(e) => {
+          e.stopPropagation();
+          // Add save functionality here
+        }}
+      >
+        <Bookmark className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:fill-blue-600 transition-colors" />
+      </button>
+
       <Anchor className="relative z-0">
         <Block>
           {pic ? (
@@ -60,8 +74,22 @@ const CardBigPic = ({
         />
       </Anchor>
 
-      <Anchor className="w-full mt-auto p-[20px]">
-        <Button className="p-6 w-full " onClick={onClick}>
+      <Anchor className="p-3 w-full mt-auto border-t border-gray-200 flex gap-2">
+        {onViewDetails && (
+          <Button 
+            variant="outline" 
+            className='py-2 flex-1 gap-2 text-sm' 
+            onClick={onViewDetails}
+          >
+            <Eye className="w-4 h-4" />
+            View Details
+          </Button>
+        )}
+        <Button 
+          className='py-2 flex-1 gap-2 text-sm' 
+          onClick={onClick}
+        >
+          <Send className="w-4 h-4" />
           {titleButton}
         </Button>
       </Anchor>

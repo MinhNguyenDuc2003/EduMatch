@@ -1,15 +1,74 @@
-'use client';
+import { Target, Shield, Zap, BookOpen, Heart, Globe, Users, Search, Award } from 'lucide-react';
 
-import apiClientService from '@/common/services/ApiClientService';
-import { IUserForm, schemas } from '@/lib/schemas';
-import { GenCtx } from '@/provider/GeneralContext';
-import { sStore } from '@/stores';
-import { onSetLoading } from '@/utils/eventBus';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+// Features data
+export const featuresData = [
+  {
+    icon: Target,
+    title: 'Smart Matching',
+    description:
+      'AI-powered algorithm matches you with scholarships that fit your profile perfectly.',
+    color: 'from-blue-500 to-cyan-500',
+  },
+  {
+    icon: Shield,
+    title: 'Verified Opportunities',
+    description: 'Every scholarship is verified and vetted to ensure legitimacy and quality.',
+    color: 'from-emerald-500 to-teal-500',
+  },
+  {
+    icon: Zap,
+    title: 'Instant Applications',
+    description:
+      'Apply to multiple scholarships with one click using our streamlined process.',
+    color: 'from-violet-500 to-purple-500',
+  },
+  {
+    icon: BookOpen,
+    title: 'Expert Guidance',
+    description:
+      'Access resources and tips from scholarship experts to improve your chances.',
+    color: 'from-orange-500 to-red-500',
+  },
+  {
+    icon: Heart,
+    title: 'Personalized Dashboard',
+    description: 'Track your applications, deadlines, and progress all in one place.',
+    color: 'from-pink-500 to-rose-500',
+  },
+  {
+    icon: Globe,
+    title: 'Global Network',
+    description: 'Access scholarships from universities and organizations worldwide.',
+    color: 'from-indigo-500 to-blue-500',
+  },
+];
 
-const ListScholarshipOpportunities = [
+// How It Works steps
+export const howItWorksSteps = [
+  {
+    step: '01',
+    title: 'Create Your Profile',
+    description:
+      'Share your academic background, interests, and goals. Takes less than 5 minutes.',
+    icon: Users,
+  },
+  {
+    step: '02',
+    title: 'Get Matched',
+    description:
+      'Our AI analyzes thousands of scholarships and presents the best matches for you.',
+    icon: Search,
+  },
+  {
+    step: '03',
+    title: 'Apply & Win',
+    description: 'Submit applications with one click and track your progress until you win.',
+    icon: Award,
+  },
+];
+
+// Mock Scholarship data (for development/testing)
+export const mockScholarshipOpportunities = [
   {
     Id: 1,
     Provider_id: 1,
@@ -125,83 +184,4 @@ const ListScholarshipOpportunities = [
     Gpa_requirement: 3.0,
   },
 ];
-// export type IUserForm = {
-//   Fields: {
-//     User: {
-//       name: string;
-//       age: number;
-//       gmail: string;
-//       description?: string;
-//     };
-//   };
-//   Filters: object;
-// };
 
-export default GenCtx({
-  useLogic() {
-    const ss = sStore();
-    const methods = useForm<IUserForm>({
-      reValidateMode: 'onSubmit',
-      mode: 'onChange',
-      resolver: zodResolver(schemas.User),
-      defaultValues: {
-        Fields: {
-          User: {
-            name: '',
-            age: 0,
-            gmail: '',
-            description: '',
-          },
-        },
-        Filters: {},
-      },
-    });
-
-    const loading = useState(false);
-
-    const meds = {
-      async onPushDataToN8n(item: IListScholarshipOpportunities) {
-        onSetLoading(true);
-        const res = await fetch('/cv/CV_test.pdf');
-        const blob = await res.blob();
-        try {
-          const formData = new FormData();
-          formData.append('cv', blob, 'CV_DoMinhHieu.pdf');
-          formData.append('name', 'Nguyen Van A');
-          formData.append('email', 'test@example.com');
-          formData.append('skill', 'cooking, dancing, singing');
-          formData.append('description', 'testttt');
-          formData.append('scholarship', JSON.stringify(item));
-
-          const data = await apiClientService.post(
-            //Test xác nhận
-            'https://justindo.app.n8n.cloud/webhook-test/8c87db94-10db-4f9d-939b-d079bacb16c1',
-            //Production
-            // 'https://justindo.app.n8n.cloud/webhook/e6fe88d9-a50c-496d-ab2c-2097038d4e7c',
-            //Test meeting
-            // 'https://justindo.app.n8n.cloud/webhook-test/e6fe88d9-a50c-496d-ab2c-2097038d4e7c',
-            //Production
-            // 'https://justindo.app.n8n.cloud/webhook/8c87db94-10db-4f9d-939b-d079bacb16c1',
-            formData
-          );
-
-          // return ss.setJointData({ ListTest: data });
-        } catch (error) {
-          console.error({ error });
-        } finally {
-          onSetLoading(false);
-        }
-      },
-    };
-
-    useEffect(() => {
-      ss.setJointData({ ListScholarshipOpportunities });
-    }, []);
-
-    return {
-      ss,
-      meds,
-      methods,
-    };
-  },
-});

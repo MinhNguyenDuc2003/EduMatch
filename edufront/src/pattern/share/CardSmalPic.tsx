@@ -17,6 +17,7 @@ import {
   DollarSign,
   Building2,
   BookOpen,
+  Bookmark,
 } from 'lucide-react';
 import Amount_Deadline from './Amount_Deadline';
 import FooterCard from './FooterCard';
@@ -29,6 +30,7 @@ type CardScholarshipProps = {
   description?: string;
   tagName?: string[];
   onClick?: () => void;
+  onViewDetails?: () => void;
   icon?: React.ReactNode;
   titleButton?: string;
   university?: string;
@@ -47,6 +49,7 @@ export default function CardSmalPic({
   description,
   tagName,
   onClick,
+  onViewDetails,
   titleButton,
   icon,
   university,
@@ -86,13 +89,24 @@ export default function CardSmalPic({
   return (
     <Section
       className={cn(
-        'bg-white flex flex-col rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:border-blue-300',
+        'bg-white flex flex-col rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:border-blue-300 relative',
         className
       )}
     >
+      {/* Save Icon - Top Right */}
+      <button
+        className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm hover:shadow-md transition-all duration-200 group"
+        onClick={(e) => {
+          e.stopPropagation();
+          // Add save functionality here
+        }}
+      >
+        <Bookmark className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:fill-blue-600 transition-colors" />
+      </button>
+
       <Anchor className="flex flex-col p-4 flex-1 space-y-3">
         {/* Header with University Logo and Title */}
-        <Block className="flex gap-3 items-start">
+        <Block className="flex gap-3 items-start pr-8">
           <Card className="flex-shrink-0">
             {picture ? (
               <Image
@@ -166,7 +180,11 @@ export default function CardSmalPic({
         <Amount_Deadline amount={amount ?? 0} deadline={deadline ?? ''} isRow={true} />
       </Anchor>
 
-      <FooterCard onClick={() => onClick?.()} titleButton={titleButton ?? ''} />
+      <FooterCard
+        onClick={() => onClick?.()}
+        titleButton={titleButton ?? ''}
+        onViewDetails={onViewDetails}
+      />
     </Section>
   );
 }
