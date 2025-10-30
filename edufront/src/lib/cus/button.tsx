@@ -101,7 +101,7 @@ const buttonVariants = cva(
           'bg-transparent border-0 shadow-none text-[var(--normal)] [&_.value]:w-full [&_.value]:text-center [&_.value]:justify-center',
         ghost: 'bg-transparent border-0 shadow-none text-[var(--text-primary)] ',
         outline:
-          'border border-[var(--primary-brand)] text-[var(--whites)] bg-[var(--gadient-green-enable)] px-1.5 py-0.5 max-h-6 shadow-none',
+          'border border-[var(--primary-brand)] text-[var(--whites)] bg-[var(--gadient-green-enable)] px-1.5 py-0.5  shadow-none',
         outline_secondary:
           'border border-[var(--btn_submain)] bg-[var(--secondary-normal)] text-[var(--whites)]',
         boder_main:

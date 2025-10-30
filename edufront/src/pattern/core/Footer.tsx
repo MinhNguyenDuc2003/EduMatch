@@ -60,6 +60,7 @@ const Footer = () => {
                 alt="logo"
                 width={75}
                 height={75}
+                unoptimized
               />
               <span className="ml-2.5 text-2xl">Edu</span>
               <span className="text-2xl text-[#3D6CB9] font-bold ">Match</span>

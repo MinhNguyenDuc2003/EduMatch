@@ -1,7 +1,7 @@
 'use client';
 
 import apiClientService from '@/common/services/ApiClientService';
-import { schemas } from '@/lib/schemas';
+import { IUserForm, schemas } from '@/lib/schemas';
 import { GenCtx } from '@/provider/GeneralContext';
 import { sStore } from '@/stores';
 import { onSetLoading } from '@/utils/eventBus';
@@ -125,17 +125,17 @@ const ListScholarshipOpportunities = [
     Gpa_requirement: 3.0,
   },
 ];
-export type IUserForm = {
-  Fields: {
-    User: {
-      name: string;
-      age: number;
-      gmail: string;
-      description?: string;
-    };
-  };
-  Filters: object;
-};
+// export type IUserForm = {
+//   Fields: {
+//     User: {
+//       name: string;
+//       age: number;
+//       gmail: string;
+//       description?: string;
+//     };
+//   };
+//   Filters: object;
+// };
 
 export default GenCtx({
   useLogic() {
@@ -193,13 +193,13 @@ export default GenCtx({
         }
       },
     };
+
     useEffect(() => {
       ss.setJointData({ ListScholarshipOpportunities });
-    }, []);
+    }, [ss]);
 
     return {
       ss,
-
       meds,
       methods,
     };

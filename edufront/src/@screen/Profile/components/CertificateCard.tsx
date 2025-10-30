@@ -21,8 +21,9 @@ const CertificateCard = ({ certificate }: { certificate: Certificate }) => {
           className="w-full h-full object-cover"
         />
       </div>
+
       {/* Score badge */}
-      <div className="absolute top-5 right-5 bg-white rounded-lg px-2 py-2 border-2 border-cyan-400">
+      <div className="absolute top-5 right-5 bg-white rounded px-2 py-2 border-2 border-cyan-400">
         <span className="text-md font-bold text-cyan-500">{certificate.score}</span>
       </div>
 

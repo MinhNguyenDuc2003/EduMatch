@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import type { Intention } from '../types';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/lib/cus/dialog';
-import { Drawer, DrawerContent, DrawerTrigger } from '@/lib/cus/drawer';
+import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from '@/lib/cus/drawer';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import IntentionDetail from './IntentionDetail';
 
@@ -70,6 +70,7 @@ const IntentionCard = ({ intention }: IntentionCardProps) => {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>{cardContent}</DrawerTrigger>
       <DrawerContent className="bg-[#FAFAF6]">
+        <DrawerTitle className="px-5">Intention Details</DrawerTitle>
         <div className="p-4 overflow-y-auto max-h-[80vh]">
           <IntentionDetail intention={intention} />
         </div>
