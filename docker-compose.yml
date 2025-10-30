@@ -86,28 +86,21 @@ services:
     networks:
       - m-network
   customer:
-    image: registry.edumatch.space/edumatch/customer:1.0.0
-    volumes:
-      - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
-      - ./deployment/app-config:/app-config
-    networks:
-      - m-network
-  location:
-    image: registry.edumatch.space/edumatch/location:1.0.0
+    image: registry.edumatch.space/edumatch/customer:1.1.0
     volumes:
       - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
       - ./deployment/app-config:/app-config
     networks:
       - m-network
   profile:
-    image: registry.edumatch.space/edumatch/profile:1.0.0
+    image: registry.edumatch.space/edumatch/profile:1.1.0
     volumes:
       - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
       - ./deployment/app-config:/app-config
     networks:
       - m-network
   media:
-    image: registry.edumatch.space/edumatch/media:1.0.0
+    image: registry.edumatch.space/edumatch/media:1.1.0
     environment:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
@@ -119,7 +112,7 @@ services:
     networks:
       - m-network
   notification:
-    image: registry.edumatch.space/edumatch/notification:1.0.0
+    image: registry.edumatch.space/edumatch/notification:1.1.0
     environment:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
@@ -131,7 +124,19 @@ services:
     networks:
       - m-network
   scholarship:
-    image: registry.edumatch.space/edumatch/scholarship:1.0.0
+    image: registry.edumatch.space/edumatch/scholarship:1.1.0
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+      - AWS_BUCKET_NAME
+    volumes:
+      - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
+      - ./deployment/app-config:/app-config
+    networks:
+      - m-network
+  search:
+    image: registry.edumatch.space/edumatch/search:1.1.0
     environment:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY

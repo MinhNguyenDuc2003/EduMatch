@@ -47,7 +47,7 @@ public class ProviderProfileController {
     }
 
     @Authorized
-    @PutMapping
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<ProviderProfileDto> update(
             @RequestPart("profile") String profile,
             @RequestPart(value = "logo", required = false) MultipartFile logo,

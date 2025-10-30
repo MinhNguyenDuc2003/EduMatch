@@ -22,4 +22,6 @@ public interface ProviderProfileMapper extends BaseMapper<ProviderProfileEntity,
     @Named("voToEntity")
     ProviderProfileEntity voToEntity(ProviderProfileVo vo);
 
+    void updateEntityFromVo(ProviderProfileVo vo, @MappingTarget ProviderProfileEntity entity);
+    
 }

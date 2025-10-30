@@ -131,9 +131,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         if (!scholarship.getScholarshipPreferences().isEmpty()) {
             scholarshipPreferenceRepository.saveAll(scholarshipPreferenceMapper.toEntity(scholarship.getScholarshipPreferences()));
         }
-        scholarshipRepository.deleteById(scholarship.getId());
-        scholarship.setId(entity.getId());
-        return scholarshipMapper.entityToVo(scholarshipRepository.save(scholarshipMapper.toEntity(scholarship)));
+        scholarshipMapper.updateEntityFromVo(scholarship, entity);
+        return scholarshipMapper.entityToVo(scholarshipRepository.save(entity));
     }
 
 

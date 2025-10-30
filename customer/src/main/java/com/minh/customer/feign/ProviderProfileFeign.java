@@ -22,7 +22,7 @@ public interface ProviderProfileFeign {
             @RequestPart(value = "banner", required = false) MultipartFile banner
     );
 
-    @PutMapping("/providers")
+    @PutMapping(value = "/providers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ApiResponse<ProviderProfileDto> update(
             @RequestPart("profile") String profile,
             @RequestPart(value = "logo", required = false) MultipartFile logo,
