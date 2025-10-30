@@ -1,0 +1,163 @@
+import { useState } from 'react';
+import { Bookmark, Calendar, DollarSign } from 'lucide-react';
+import { Button } from '@/lib/cus/button';
+import Image from 'next/image';
+
+type ScholarshipData = {
+  Id?: number;
+  Provider_id?: number;
+  Title?: string;
+  Slug?: string;
+  Short_description?: string;
+  Description?: string;
+  Requirements?: string;
+  Benefits?: string;
+  Fields?: string;
+  Country?: string;
+  University?: string;
+  Study_level?: string;
+  Scholarship_type?: string;
+  Funding_amount?: number;
+  Start_date?: string;
+  End_date?: string;
+  Available_slots?: number;
+  Language_requirement?: string;
+  Gpa_requirement?: number;
+  Images?: string[];
+};
+
+type ScholarshipCardProps = {
+  scholarship: ScholarshipData;
+  onApply: (scholarship: ScholarshipData) => void;
+};
+
+export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCardProps) {
+  const [isSaved, setIsSaved] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  // Check if scholarship has images
+  const hasImages = scholarship.Images && scholarship.Images.length > 0;
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+      {/* Organization Header */}
+      <div className="p-4 border-b border-gray-100">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-base font-bold flex-shrink-0">
+              {scholarship.University?.charAt(0) || 'O'}
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 text-sm">
+                {scholarship.University || 'Organization Name'}
+              </h3>
+              <button
+                onClick={() => setIsFollowing(!isFollowing)}
+                className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+              >
+                {isFollowing ? 'Following' : 'Follow'}
+              </button>
+            </div>
+          </div>
+          <button
+            onClick={() => setIsSaved(!isSaved)}
+            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            <Bookmark
+              className={`w-5 h-5 transition-colors ${
+                isSaved ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
+              }`}
+            />
+          </button>
+        </div>
+      </div>
+
+      {/* Images Grid - Optional */}
+      {hasImages && (
+        <div
+          className={`grid ${
+            scholarship.Images!.length === 1 ? 'grid-cols-1' : 'grid-cols-2'
+          } gap-2 h-48 bg-gray-100`}
+        >
+          {scholarship.Images!.slice(0, 2).map((image, index) => (
+            <div key={index} className="relative">
+              <Image
+                src={image}
+                alt={`${scholarship.Title} image ${index + 1}`}
+                fill
+                className="object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Content */}
+      <div className="p-5">
+        {/* Title */}
+        <h2 className="text-lg font-bold text-gray-900 mb-2">{scholarship.Title}</h2>
+
+        {/* Description */}
+        <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-3">
+          {scholarship.Description || scholarship.Short_description}
+        </p>
+
+        {/* Tags */}
+        {(scholarship.Country || scholarship.Study_level || scholarship.Fields) && (
+          <div className="flex flex-wrap gap-2 mb-3">
+            {scholarship.Country && (
+              <span className="px-2.5 py-0.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
+                {scholarship.Country}
+              </span>
+            )}
+            {scholarship.Study_level && (
+              <span className="px-2.5 py-0.5 bg-purple-50 text-purple-700 text-xs font-medium rounded-full">
+                {scholarship.Study_level}
+              </span>
+            )}
+            {scholarship.Scholarship_type && (
+              <span className="px-2.5 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full">
+                {scholarship.Scholarship_type}
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+          {/* Left side - Date & Amount */}
+          <div className="flex items-center gap-4 text-xs text-gray-600">
+            {/* Date */}
+            <div className="flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5" />
+              <span className="font-semibold text-gray-900">
+                {scholarship.End_date
+                  ? new Date(scholarship.End_date).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })
+                  : 'No deadline'}
+              </span>
+            </div>
+
+            {/* Amount */}
+            <div className="flex items-center gap-1.5">
+              <DollarSign className="w-3.5 h-3.5" />
+              <span className="font-semibold text-gray-900">
+                ${scholarship.Funding_amount?.toLocaleString()}
+              </span>
+            </div>
+          </div>
+
+          {/* Right side - Apply Button */}
+          <Button
+            className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white px-6 py-1.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all [&_.value]:text-white text-sm"
+            value="Apply"
+            onClick={() => onApply(scholarship)}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

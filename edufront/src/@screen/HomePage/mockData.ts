@@ -18,15 +18,13 @@ export const featuresData = [
   {
     icon: Zap,
     title: 'Instant Applications',
-    description:
-      'Apply to multiple scholarships with one click using our streamlined process.',
+    description: 'Apply to multiple scholarships with one click using our streamlined process.',
     color: 'from-violet-500 to-purple-500',
   },
   {
     icon: BookOpen,
     title: 'Expert Guidance',
-    description:
-      'Access resources and tips from scholarship experts to improve your chances.',
+    description: 'Access resources and tips from scholarship experts to improve your chances.',
     color: 'from-orange-500 to-red-500',
   },
   {
@@ -48,15 +46,13 @@ export const howItWorksSteps = [
   {
     step: '01',
     title: 'Create Your Profile',
-    description:
-      'Share your academic background, interests, and goals. Takes less than 5 minutes.',
+    description: 'Share your academic background, interests, and goals. Takes less than 5 minutes.',
     icon: Users,
   },
   {
     step: '02',
     title: 'Get Matched',
-    description:
-      'Our AI analyzes thousands of scholarships and presents the best matches for you.',
+    description: 'Our AI analyzes thousands of scholarships and presents the best matches for you.',
     icon: Search,
   },
   {
@@ -76,7 +72,7 @@ export const mockScholarshipOpportunities = [
     Slug: 'global-leaders-scholarship',
     Short_description: 'Scholarship for future global leaders.',
     Description:
-      'This scholarship is designed for students who demonstrate outstanding leadership potential and academic excellence.',
+      'This scholarship is designed for students who demonstrate outstanding leadership potential and academic excellence. We support ambitious students who want to make a difference in the world.',
     Requirements:
       'Open to undergraduate students with leadership experience and a minimum GPA of 3.5.',
     Benefits: 'Full tuition coverage, mentorship program, networking opportunities',
@@ -91,6 +87,10 @@ export const mockScholarshipOpportunities = [
     Available_slots: 10,
     Language_requirement: 'IELTS 7.0 or TOEFL 100',
     Gpa_requirement: 3.5,
+    Images: [
+      'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80',
+      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80',
+    ],
   },
   {
     Id: 2,
@@ -99,7 +99,7 @@ export const mockScholarshipOpportunities = [
     Slug: 'stem-excellence-award',
     Short_description: 'Funding support for top STEM students.',
     Description:
-      'The STEM Excellence Award supports students in Science, Technology, Engineering, and Mathematics disciplines.',
+      'The STEM Excellence Award supports students in Science, Technology, Engineering, and Mathematics disciplines. We provide comprehensive support for innovative research projects.',
     Requirements:
       'Available to both undergraduate and graduate students pursuing STEM fields with GPA 3.2 or higher.',
     Benefits: 'Research funding, lab access, conference attendance',
@@ -184,4 +184,3 @@ export const mockScholarshipOpportunities = [
     Gpa_requirement: 3.0,
   },
 ];
-

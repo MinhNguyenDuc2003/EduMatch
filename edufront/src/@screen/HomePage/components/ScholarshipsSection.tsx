@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { Button } from '@/lib/cus/button';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { ArrowRight } from 'lucide-react';
@@ -36,6 +37,8 @@ export default function ScholarshipsSection({
   onApply,
   onViewDetails,
 }: ScholarshipsSectionProps) {
+  const router = useRouter();
+
   return (
     <section className="py-24 bg-gradient-to-b from-slate-50 to-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -51,6 +54,7 @@ export default function ScholarshipsSection({
             className="px-6 py-3 rounded-xl border-2 border-slate-300 text-primary hover:border-blue-600 hover:text-blue-600 transition-all"
             value="View All"
             iconRight={<ArrowRight className="w-4 h-4" />}
+            onClick={() => router.push('/home/scholarships')}
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

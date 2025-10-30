@@ -196,6 +196,7 @@ export default GenCtx({
 
     useEffect(() => {
       ss.setJointData({ ListScholarshipOpportunities });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return {
