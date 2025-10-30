@@ -135,6 +135,8 @@ services:
       - ./deployment/app-config:/app-config
     networks:
       - m-network
+    depends_on:
+      - elasticsearch
   backoffice-nextjs:
     image: registry.edumatch.space/edumatch/backoffice-nextjs:1.0.0
     networks:
