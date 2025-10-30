@@ -21,7 +21,7 @@ import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { IProfileForm } from '@/lib/schemas';
-import { sStore } from '@/stores';
+import { Country, StateOrProvince, District } from '@/@screen/Profile/types';
 import religions from '@/constants/religions.json';
 import ethnicities from '@/constants/ethnicities.json';
 import races from '@/constants/races.json';
@@ -32,6 +32,9 @@ interface StudentInformationDialogProps {
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: IProfileForm) => void;
   onCancel: () => void;
+  countries?: Country[];
+  statesOrProvinces?: StateOrProvince[];
+  districts?: District[];
 }
 
 const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
@@ -39,10 +42,12 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
   onOpenChange,
   onSubmit,
   onCancel,
+  countries,
+  statesOrProvinces,
+  districts,
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit, watch } = useFormContext<IProfileForm>();
-  const ss = sStore();
 
   const handleFormSubmit = (data: IProfileForm) => {
     onSubmit(data);
@@ -247,7 +252,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             type="select"
             placeholder="Select Country"
             options={
-              ss.Applicant.Countries?.map((country) => ({
+              countries?.map((country) => ({
                 value: country.id,
                 label: country.name,
               })) || []
@@ -265,7 +270,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
               type="select"
               labelClassName="w-32 flex-shrink-0"
               options={
-                ss.Applicant.StateOrProvinces?.map((state) => ({
+                statesOrProvinces?.map((state) => ({
                   value: state.id,
                   label: state.name,
                 })) || []
@@ -282,7 +287,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
               placeholder="Select District"
               labelClassName="w-32 flex-shrink-0"
               options={
-                ss.Applicant.Districts?.map((district) => ({
+                districts?.map((district) => ({
                   value: district.id,
                   label: district.name,
                 })) || []
