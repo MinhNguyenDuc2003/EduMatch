@@ -3,9 +3,9 @@
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
     "topic.prefix": "scholarship",
-    "database.hostname": "host.docker.internal",
+    "database.hostname": "postgres",
     "database.port": "5432",
-    "database.user": "postgres",
+    "database.user": "admin",
     "database.password": "minh01672527656",
     "database.dbname": "postgres",
     "plugin.name": "pgoutput",
