@@ -28,13 +28,11 @@ type ScholarshipItem = {
 
 type ScholarshipsSectionProps = {
   scholarships: ScholarshipItem[];
-  onApply: (item: ScholarshipItem) => void;
   onViewDetails: (item: ScholarshipItem) => void;
 };
 
 export default function ScholarshipsSection({
   scholarships,
-  onApply,
   onViewDetails,
 }: ScholarshipsSectionProps) {
   const router = useRouter();
@@ -67,7 +65,6 @@ export default function ScholarshipsSection({
               description={item.Short_description}
               tagName={compact([item?.Country, item?.University, item?.Study_level])}
               titleButton="Apply Now"
-              onClick={() => onApply(item)}
               onViewDetails={() => onViewDetails(item)}
               university={item.University}
               study_level={item.Study_level}

@@ -161,14 +161,14 @@ export default function ScholarshipsList() {
             </div>
 
             {/* Right Sidebar - Tabs & Stats (3 columns) */}
-            <div className="lg:col-span-3">
+            {/* <div className="lg:col-span-3">
               <RightSidebar
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 scholarshipsCount={filteredScholarships.length}
                 researchCount={0}
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

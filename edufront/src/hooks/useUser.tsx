@@ -16,6 +16,10 @@ function useHasPermission(permission: string) {
       FunctionCode: 'formScholarship',
       FunctionID: '2',
     },
+    {
+      FunctionCode: 'scholarships',
+      FunctionID: '2',
+    },
   ];
 
   return map(listFunstion, (item) => item.FunctionCode).includes(permission);

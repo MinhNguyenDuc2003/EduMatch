@@ -9,5 +9,5 @@ export const Screens: Record<string, React.ComponentType<object>> = {
   profile: Profile,
   formScholarship: FormScholarship,
   noPermission: NoPermission,
-  scholarshipsList: ScholarshipsList,
+  scholarships: ScholarshipsList,
 };

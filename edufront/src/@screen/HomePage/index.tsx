@@ -2,7 +2,7 @@
 
 import Footer from '@/pattern/core/Footer';
 import Header from '@/pattern/core/Header';
-import Context from './seg/context';
+
 import {
   BannerSection,
   FeaturesSection,
@@ -10,35 +10,27 @@ import {
   ScholarshipsSection,
   CTASection,
 } from './components';
+import { mockScholarshipOpportunities } from './mockData';
 
 export default function HomePage() {
+  const scholarships = mockScholarshipOpportunities;
   return (
-    <Context.Provider>
-      <Context.Consumer>
-        {({ ss, methods: { watch, getValues, setValue, handleSubmit }, meds }) => {
-          return (
-            <>
-              <Header />
+    <>
+      <Header />
 
-              <BannerSection />
+      <BannerSection />
 
-              <FeaturesSection />
+      <ScholarshipsSection
+        scholarships={scholarships || []}
+        onViewDetails={(item) => console.log('View Details:', item.Title)}
+      />
+      <FeaturesSection />
 
-              <HowItWorksSection />
+      <HowItWorksSection />
 
-              <ScholarshipsSection
-                scholarships={ss.Joint.ListScholarshipOpportunities || []}
-                onApply={(item) => meds.onPushDataToN8n(item)}
-                onViewDetails={(item) => console.log('View Details:', item.Title)}
-              />
+      <CTASection />
 
-              <CTASection />
-
-              <Footer />
-            </>
-          );
-        }}
-      </Context.Consumer>
-    </Context.Provider>
+      <Footer />
+    </>
   );
 }
