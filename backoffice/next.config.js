@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: true,
-    output: 'standalone',
-    basePath: '/backoffice',
+  reactStrictMode: true,
+  experimental: {
+    appDir: true,
+  },
 };
 
 module.exports = nextConfig;
