@@ -20,14 +20,14 @@ import {
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { IProfileForm } from '@/lib/schemas';
 import { Plus, Trash2, Wand2 } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
+import { IApplicantProfile } from '@/lib/schemas';
 
 interface SkillsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: IProfileForm) => void;
+  onSubmit: (data: IApplicantProfile) => void;
   onCancel: () => void;
 }
 
@@ -40,14 +40,14 @@ const PROFICIENCY_LEVELS = [
 
 const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { handleSubmit, control } = useFormContext<IProfileForm>();
+  const { handleSubmit, control } = useFormContext<IApplicantProfile>();
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'Fields.applicantProfile.skills',
+    name: 'applicantProfile.skills',
   });
 
-  const handleFormSubmit = (data: IProfileForm) => {
+  const handleFormSubmit = (data: IApplicantProfile) => {
     onSubmit(data);
     onOpenChange(false);
   };
@@ -101,7 +101,7 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
 
             <div className="grid grid-cols-1 md:grid-cols-10 gap-4 flex-1">
               <CustomFormField
-                name={`Fields.applicantProfile.skills.${index}.skillName`}
+                name={`applicantProfile.skills.${index}.skillName`}
                 label="Skill Name"
                 placeholder="Enter skill name"
                 className="md:col-span-10"
@@ -110,7 +110,7 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
               />
 
               <CustomFormField
-                name={`Fields.applicantProfile.skills.${index}.proficiencyLevel`}
+                name={`applicantProfile.skills.${index}.proficiencyLevel`}
                 label="Proficiency Level"
                 type="select"
                 placeholder="Select level"
@@ -121,7 +121,7 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
               />
 
               <CustomFormField
-                name={`Fields.applicantProfile.skills.${index}.yearsExperience`}
+                name={`applicantProfile.skills.${index}.yearsExperience`}
                 label="Years Experience"
                 type="number"
                 placeholder="0"
@@ -146,7 +146,7 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
           </div>
         ))}
 
-        {fields.length === 0 && (
+        {length === 0 && (
           <div className="text-center py-8 text-gray-500">
             <p>No skills added yet. Click "Add" to get started.</p>
           </div>

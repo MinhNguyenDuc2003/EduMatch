@@ -20,7 +20,6 @@ import {
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { IProfileForm } from '@/lib/schemas';
 import {
   FAVORITE_ACTIVITIES,
   SPORTS_PARTICIPATED,
@@ -29,19 +28,20 @@ import {
   RESEARCH_EXPERIENCE,
   CAREER_GOALS,
 } from '@/@screen/Profile/constants';
+import { IApplicantProfile } from '@/lib/schemas';
 
 interface ActivitiesDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: IProfileForm) => void;
+  onSubmit: (data: IApplicantProfile) => void;
   onCancel: () => void;
 }
 
 const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: ActivitiesDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { handleSubmit } = useFormContext<IProfileForm>();
+  const { handleSubmit } = useFormContext<IApplicantProfile>();
 
-  const handleFormSubmit = (data: IProfileForm) => {
+  const handleFormSubmit = (data: IApplicantProfile) => {
     onSubmit(data);
     onOpenChange(false);
   };
@@ -62,7 +62,7 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <CustomFormField
-          name="Fields.applicantProfile.favoriteActivities"
+          name="applicantProfile.favoriteActivities"
           label="Favorite Activities"
           type="multi-select"
           placeholder="e.g., Piano, Painting, Theater"
@@ -73,7 +73,7 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
         />
 
         <CustomFormField
-          name="Fields.applicantProfile.sportsParticipated"
+          name="applicantProfile.sportsParticipated"
           label="Sports Participated"
           type="multi-select"
           placeholder="e.g., Soccer, Basketball"
@@ -83,7 +83,7 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
         />
 
         <CustomFormField
-          name="Fields.applicantProfile.studentActivities"
+          name="applicantProfile.studentActivities"
           label="Student Activities"
           type="multi-select"
           placeholder="e.g., Debate Club, Student Council"
@@ -93,7 +93,7 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
         />
 
         <CustomFormField
-          name="Fields.applicantProfile.organizationsJoined"
+          name="applicantProfile.organizationsJoined"
           label="Organizations Joined"
           type="multi-select"
           placeholder="e.g., Red Cross, Coding Club"
@@ -103,7 +103,7 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
         />
 
         <CustomFormField
-          name="Fields.applicantProfile.researchExperience"
+          name="applicantProfile.researchExperience"
           label="Research Experience"
           type="multi-select"
           placeholder="e.g., AI Lab, Biology Research"
@@ -113,7 +113,7 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
         />
 
         <CustomFormField
-          name="Fields.applicantProfile.careerGoals"
+          name="applicantProfile.careerGoals"
           label="Career Goals"
           type="multi-select"
           placeholder="e.g., Software Engineer, Doctor"

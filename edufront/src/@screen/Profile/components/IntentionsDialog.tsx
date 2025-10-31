@@ -20,27 +20,27 @@ import {
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { IProfileForm } from '@/lib/schemas';
 import { Plus, Trash2, GraduationCap, Calendar, MapPin } from 'lucide-react';
 import { DEGREE_TYPES, MAJOR_CATEGORIES, GRADUATION_YEARS } from '../constants';
+import { IApplicantProfile } from '@/lib/schemas';
 
 interface IntentionsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: IProfileForm) => void;
+  onSubmit: (data: IApplicantProfile) => void;
   onCancel: () => void;
 }
 
 const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: IntentionsDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { handleSubmit, control } = useFormContext<IProfileForm>();
+  const { handleSubmit, control } = useFormContext<IApplicantProfile>();
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'Fields.applicantProfile.intentions',
+    name: 'applicantProfile.intentions',
   });
 
-  const handleFormSubmit = (data: IProfileForm) => {
+  const handleFormSubmit = (data: IApplicantProfile) => {
     onSubmit(data);
     onOpenChange(false);
   };
@@ -124,7 +124,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
-                  name={`Fields.applicantProfile.intentions.${index}.intendedInstitution`}
+                  name={`applicantProfile.intentions.${index}.intendedInstitution`}
                   label="Intended Institution"
                   placeholder="Enter institution name"
                   inlineLabel
@@ -132,7 +132,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.intentions.${index}.degreeType`}
+                  name={`applicantProfile.intentions.${index}.degreeType`}
                   label="Degree Type"
                   type="select"
                   placeholder="Select degree type"
@@ -142,7 +142,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.intentions.${index}.intendedState`}
+                  name={`applicantProfile.intentions.${index}.intendedState`}
                   label="State/Province"
                   placeholder="Enter state or province"
                   inlineLabel
@@ -150,7 +150,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.intentions.${index}.intendedCountry`}
+                  name={`applicantProfile.intentions.${index}.intendedCountry`}
                   label="Country"
                   placeholder="Enter country"
                   inlineLabel
@@ -167,7 +167,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
-                  name={`Fields.applicantProfile.intentions.${index}.intendedMajorCategory`}
+                  name={`applicantProfile.intentions.${index}.intendedMajorCategory`}
                   label="Major Category"
                   type="select"
                   placeholder="Select major category"
@@ -177,7 +177,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.intentions.${index}.intendedMajorName`}
+                  name={`applicantProfile.intentions.${index}.intendedMajorName`}
                   label="Major Name"
                   placeholder="Enter major name"
                   inlineLabel
@@ -185,7 +185,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.intentions.${index}.academicClassification`}
+                  name={`applicantProfile.intentions.${index}.academicClassification`}
                   label="Academic Classification"
                   placeholder="e.g., Freshman, Sophomore"
                   inlineLabel
@@ -202,7 +202,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
-                  name={`Fields.applicantProfile.intentions.${index}.expectedStartDate`}
+                  name={`applicantProfile.intentions.${index}.expectedStartDate`}
                   label="Expected Start Date"
                   type="date"
                   inlineLabel
@@ -210,7 +210,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.intentions.${index}.expectedGraduationYear`}
+                  name={`applicantProfile.intentions.${index}.expectedGraduationYear`}
                   label="Expected Graduation Year"
                   type="select"
                   placeholder="Select graduation year"
@@ -226,7 +226,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
               <h5 className="font-medium text-gray-900">Additional Information</h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
-                  name={`Fields.applicantProfile.intentions.${index}.isTransferStudent`}
+                  name={`applicantProfile.intentions.${index}.isTransferStudent`}
                   label="Transfer Student"
                   type="switch"
                   inlineLabel
@@ -234,7 +234,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.intentions.${index}.isReturningStudent`}
+                  name={`applicantProfile.intentions.${index}.isReturningStudent`}
                   label="Returning Student"
                   type="switch"
                   inlineLabel
@@ -243,7 +243,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
               </div>
 
               <CustomFormField
-                name={`Fields.applicantProfile.intentions.${index}.notes`}
+                name={`applicantProfile.intentions.${index}.notes`}
                 label="Notes"
                 type="textarea"
                 placeholder="Additional notes about this intention..."
@@ -255,7 +255,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
           </div>
         ))}
 
-        {fields.length === 0 && (
+        {length === 0 && (
           <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
             <GraduationCap className="h-12 w-12 mx-auto mb-4 text-gray-400" />
             <p className="text-lg font-medium mb-2">No intentions added yet</p>

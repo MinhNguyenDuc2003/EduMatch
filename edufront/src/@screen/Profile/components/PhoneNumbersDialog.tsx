@@ -20,14 +20,14 @@ import {
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { IProfileForm } from '@/lib/schemas';
 import { Plus, Trash2 } from 'lucide-react';
 import { COUNTRY_CODES, PHONE_TYPES } from '../constants';
+import { IApplicantProfile } from '@/lib/schemas';
 
 interface PhoneNumbersDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: IProfileForm) => void;
+  onSubmit: (data: IApplicantProfile) => void;
   onCancel: () => void;
 }
 
@@ -38,14 +38,14 @@ const PhoneNumbersDialog = ({
   onCancel,
 }: PhoneNumbersDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { handleSubmit, control, watch } = useFormContext<IProfileForm>();
+  const { handleSubmit, control, watch } = useFormContext<IApplicantProfile>();
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'Fields.applicantProfile.phoneNumbers',
+    name: 'applicantProfile.phoneNumbers',
   });
 
-  const handleFormSubmit = (data: IProfileForm) => {
+  const handleFormSubmit = (data: IApplicantProfile) => {
     onSubmit(data);
     onOpenChange(false);
   };
@@ -98,7 +98,7 @@ const PhoneNumbersDialog = ({
 
             <div className="grid grid-cols-1 md:grid-cols-10 gap-4 flex-1">
               <CustomFormField
-                name={`Fields.applicantProfile.phoneNumbers.${index}.phoneNumber`}
+                name={`applicantProfile.phoneNumbers.${index}.phoneNumber`}
                 label="Phone Number"
                 placeholder="Enter phone number"
                 inlineLabel
@@ -107,7 +107,7 @@ const PhoneNumbersDialog = ({
               />
 
               <CustomFormField
-                name={`Fields.applicantProfile.phoneNumbers.${index}.isInternational`}
+                name={`applicantProfile.phoneNumbers.${index}.isInternational`}
                 label="International"
                 type="switch"
                 inlineLabel
@@ -116,7 +116,7 @@ const PhoneNumbersDialog = ({
               />
 
               <CustomFormField
-                name={`Fields.applicantProfile.phoneNumbers.${index}.phoneType`}
+                name={`applicantProfile.phoneNumbers.${index}.phoneType`}
                 label="Phone Type"
                 type="select"
                 placeholder="Select type"
@@ -127,7 +127,7 @@ const PhoneNumbersDialog = ({
               />
 
               <CustomFormField
-                name={`Fields.applicantProfile.phoneNumbers.${index}.countryCode`}
+                name={`applicantProfile.phoneNumbers.${index}.countryCode`}
                 label="Country Code"
                 type="select"
                 placeholder="Select code"
@@ -153,7 +153,7 @@ const PhoneNumbersDialog = ({
           </div>
         ))}
 
-        {fields.length === 0 && (
+        {length === 0 && (
           <div className="text-center py-8 text-gray-500">
             <p>No phone numbers added yet. Click "Add" to get started.</p>
           </div>
