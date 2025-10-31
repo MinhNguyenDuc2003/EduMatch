@@ -1,7 +1,7 @@
 $REGISTRY = "registry.edumatch.space"
 $PROJECT  = "edumatch"
 $SERVICE  = "media"
-$VERSION  = "1.0.0"
+$VERSION  = "1.1.0"
 
 docker build -t "$($SERVICE):$($VERSION)" .
 docker tag "$($SERVICE):$($VERSION)" "$($REGISTRY)/$($PROJECT)/$($SERVICE):$($VERSION)"

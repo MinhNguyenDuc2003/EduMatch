@@ -1,6 +1,6 @@
 $REGISTRY = "registry.edumatch.space"
 $PROJECT  = "edumatch"
-$SERVICE  = "notification"
+$SERVICE  = "search"
 $VERSION  = "1.1.0"
 
 docker build -t "$($SERVICE):$($VERSION)" .

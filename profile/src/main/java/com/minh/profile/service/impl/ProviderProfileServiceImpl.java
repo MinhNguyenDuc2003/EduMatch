@@ -102,10 +102,11 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ProviderProfileDto update(ProviderProfileVo profile, MultipartFile logo, MultipartFile banner) throws IOException {
-        providerProfileRepository
+        ProviderProfileEntity existing = providerProfileRepository
                 .findById(profile.getId())
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
-        ProviderProfileEntity savedProfile = providerProfileRepository.save(providerProfileMapper.voToEntity(profile));
+        providerProfileMapper.updateEntityFromVo(profile, existing);
+        ProviderProfileEntity savedProfile = providerProfileRepository.save(existing);
         List<ProviderContactDto> providerContactDtos = profile.getProviderContactDtos();
         providerContactRepository.saveAll(providerContactMapper.toEntity(providerContactDtos));
 
