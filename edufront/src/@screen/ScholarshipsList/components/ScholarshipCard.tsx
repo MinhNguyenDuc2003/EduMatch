@@ -1,42 +1,15 @@
 import { useState } from 'react';
 import { Bookmark, Calendar, DollarSign } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
-import Image from 'next/image';
-
-type ScholarshipData = {
-  Id?: number;
-  Provider_id?: number;
-  Title?: string;
-  Slug?: string;
-  Short_description?: string;
-  Description?: string;
-  Requirements?: string;
-  Benefits?: string;
-  Fields?: string;
-  Country?: string;
-  University?: string;
-  Study_level?: string;
-  Scholarship_type?: string;
-  Funding_amount?: number;
-  Start_date?: string;
-  End_date?: string;
-  Available_slots?: number;
-  Language_requirement?: string;
-  Gpa_requirement?: number;
-  Images?: string[];
-};
 
 type ScholarshipCardProps = {
-  scholarship: ScholarshipData;
-  onApply: (scholarship: ScholarshipData) => void;
+  scholarship: Scholarship;
+  onApply: (scholarship: Scholarship) => void;
 };
 
 export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCardProps) {
   const [isSaved, setIsSaved] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-
-  // Check if scholarship has images
-  const hasImages = scholarship.Images && scholarship.Images.length > 0;
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
@@ -45,11 +18,11 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-base font-bold flex-shrink-0">
-              {scholarship.University?.charAt(0) || 'O'}
+              {scholarship.university?.charAt(0) || 'O'}
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 text-sm">
-                {scholarship.University || 'Organization Name'}
+                {scholarship.university || 'Organization Name'}
               </h3>
               <button
                 onClick={() => setIsFollowing(!isFollowing)}
@@ -72,52 +45,32 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
         </div>
       </div>
 
-      {/* Images Grid - Optional */}
-      {hasImages && (
-        <div
-          className={`grid ${
-            scholarship.Images!.length === 1 ? 'grid-cols-1' : 'grid-cols-2'
-          } gap-2 h-48 bg-gray-100`}
-        >
-          {scholarship.Images!.slice(0, 2).map((image, index) => (
-            <div key={index} className="relative">
-              <Image
-                src={image}
-                alt={`${scholarship.Title} image ${index + 1}`}
-                fill
-                className="object-cover"
-              />
-            </div>
-          ))}
-        </div>
-      )}
-
       {/* Content */}
       <div className="p-5">
         {/* Title */}
-        <h2 className="text-lg font-bold text-gray-900 mb-2">{scholarship.Title}</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-2">{scholarship.title}</h2>
 
         {/* Description */}
         <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-3">
-          {scholarship.Description || scholarship.Short_description}
+          {scholarship.description || scholarship.shortDescription}
         </p>
 
         {/* Tags */}
-        {(scholarship.Country || scholarship.Study_level || scholarship.Fields) && (
+        {(scholarship.country || scholarship.studyLevel || scholarship.fields) && (
           <div className="flex flex-wrap gap-2 mb-3">
-            {scholarship.Country && (
+            {scholarship.country && (
               <span className="px-2.5 py-0.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
-                {scholarship.Country}
+                {scholarship.country}
               </span>
             )}
-            {scholarship.Study_level && (
+            {scholarship.studyLevel && (
               <span className="px-2.5 py-0.5 bg-purple-50 text-purple-700 text-xs font-medium rounded-full">
-                {scholarship.Study_level}
+                {scholarship.studyLevel}
               </span>
             )}
-            {scholarship.Scholarship_type && (
+            {scholarship.scholarshipType && (
               <span className="px-2.5 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full">
-                {scholarship.Scholarship_type}
+                {scholarship.scholarshipType}
               </span>
             )}
           </div>
@@ -131,8 +84,8 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
             <div className="flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5" />
               <span className="font-semibold text-gray-900">
-                {scholarship.End_date
-                  ? new Date(scholarship.End_date).toLocaleDateString('en-US', {
+                {scholarship.endDate
+                  ? new Date(scholarship.endDate).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
                       year: 'numeric',
@@ -145,7 +98,9 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
             <div className="flex items-center gap-1.5">
               <DollarSign className="w-3.5 h-3.5" />
               <span className="font-semibold text-gray-900">
-                ${scholarship.Funding_amount?.toLocaleString()}
+                {scholarship.fundingAmount
+                  ? scholarship.fundingAmount.replace(/[^0-9.,]/g, '')
+                  : '$0'}
               </span>
             </div>
           </div>

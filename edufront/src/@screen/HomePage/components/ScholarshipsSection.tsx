@@ -4,31 +4,9 @@ import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { ArrowRight } from 'lucide-react';
 import { compact, map } from 'lodash';
 
-type ScholarshipItem = {
-  Id?: number;
-  Title?: string;
-  Funding_amount?: number;
-  End_date?: string;
-  Short_description?: string;
-  Country?: string;
-  University?: string;
-  Study_level?: string;
-  Scholarship_type?: string;
-  Gpa_requirement?: number;
-  Provider_id?: number;
-  Slug?: string;
-  Description?: string;
-  Requirements?: string;
-  Benefits?: string;
-  Fields?: string;
-  Start_date?: string;
-  Available_slots?: number;
-  Language_requirement?: string;
-};
-
 type ScholarshipsSectionProps = {
-  scholarships: ScholarshipItem[];
-  onViewDetails: (item: ScholarshipItem) => void;
+  scholarships: Scholarship[];
+  onViewDetails: (item: Scholarship) => void;
 };
 
 export default function ScholarshipsSection({
@@ -56,23 +34,32 @@ export default function ScholarshipsSection({
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {map(scholarships?.slice(0, 4), (item) => (
-            <CardSmalPic
-              key={item.Id}
-              title={item.Title}
-              amount={item?.Funding_amount ?? 0}
-              deadline={item.End_date}
-              description={item.Short_description}
-              tagName={compact([item?.Country, item?.University, item?.Study_level])}
-              titleButton="Apply Now"
-              onViewDetails={() => onViewDetails(item)}
-              university={item.University}
-              study_level={item.Study_level}
-              scholarship_type={item.Scholarship_type}
-              gpa_requirement={item.Gpa_requirement}
-              country={item.Country}
-            />
-          ))}
+          {map(scholarships?.slice(0, 4), (item) => {
+            // Parse fundingAmount to number for display
+            const amountNumber = item.fundingAmount
+              ? parseFloat(item.fundingAmount.replace(/[^0-9.]/g, ''))
+              : 0;
+            // Format endDate timestamp to ISO string
+            const endDateISO = item.endDate ? new Date(item.endDate).toISOString() : '';
+
+            return (
+              <CardSmalPic
+                key={item.id}
+                title={item.title}
+                amount={amountNumber}
+                deadline={endDateISO}
+                description={item.shortDescription}
+                tagName={compact([item?.country, item?.university, item?.studyLevel])}
+                titleButton="Apply Now"
+                onViewDetails={() => onViewDetails(item)}
+                university={item.university}
+                study_level={item.studyLevel}
+                scholarship_type={item.scholarshipType}
+                gpa_requirement={item.gpaRequirement}
+                country={item.country}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

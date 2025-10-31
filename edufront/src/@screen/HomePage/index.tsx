@@ -20,7 +20,7 @@ export default function HomePage() {
 
       <ScholarshipsSection
         scholarships={scholarships || []}
-        onViewDetails={(item) => console.log('View Details:', item.Title)}
+        onViewDetails={(item) => console.log('View Details:', item.title)}
       />
       <FeaturesSection />
 

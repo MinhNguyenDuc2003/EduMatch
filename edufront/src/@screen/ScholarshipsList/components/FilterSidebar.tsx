@@ -6,16 +6,22 @@ import { FilterState } from '../index';
 type FilterSidebarProps = {
   filters: FilterState;
   setFilters: (filters: FilterState) => void;
-  scholarships: any[];
+  scholarships: Scholarship[];
+  isMobile?: boolean;
+  onClose?: () => void;
 };
 
-export default function FilterSidebar({ filters, setFilters, scholarships }: FilterSidebarProps) {
-  const [expandedSections, setExpandedSections] = useState<string[]>([
-    'search',
-    'country',
-    'studyLevel',
-    'type',
-  ]);
+export default function FilterSidebar({
+  filters,
+  setFilters,
+  scholarships,
+  isMobile = false,
+  onClose,
+}: FilterSidebarProps) {
+  const [expandedSections, setExpandedSections] = useState<string[]>(
+    isMobile ? ['country', 'studyLevel', 'university'] : ['search', 'country', 'studyLevel', 'university']
+  );
+  const [universitySearchQuery, setUniversitySearchQuery] = useState('');
 
   const toggleSection = (section: string) => {
     if (expandedSections.includes(section)) {
@@ -27,102 +33,102 @@ export default function FilterSidebar({ filters, setFilters, scholarships }: Fil
 
   // Extract unique values from scholarships
   const uniqueCountries = Array.from(
-    new Set(scholarships.map((s) => s.Country).filter(Boolean))
+    new Set(scholarships.map((s) => s.country).filter(Boolean))
   ).sort();
   const uniqueStudyLevels = Array.from(
-    new Set(scholarships.map((s) => s.Study_level).filter(Boolean))
-  ).sort();
-  const uniqueTypes = Array.from(
-    new Set(scholarships.map((s) => s.Scholarship_type).filter(Boolean))
-  ).sort();
-  const uniqueFields = Array.from(
-    new Set(
-      scholarships.flatMap((s) => s.Fields?.split(',').map((f: string) => f.trim())).filter(Boolean)
-    )
+    new Set(scholarships.map((s) => s.studyLevel).filter(Boolean))
   ).sort();
 
-  const handleCheckboxChange = (field: keyof FilterState, value: string) => {
-    const currentValues = filters[field] as string[];
-    if (currentValues.includes(value)) {
-      setFilters({
-        ...filters,
-        [field]: currentValues.filter((v) => v !== value),
-      });
-    } else {
-      setFilters({
-        ...filters,
-        [field]: [...currentValues, value],
-      });
-    }
+  const handleFilterChange = (field: keyof FilterState, value: string) => {
+    setFilters({
+      ...filters,
+      [field]: value,
+      page: 0, // Reset to first page when filter changes
+    });
   };
 
   const clearAllFilters = () => {
     setFilters({
-      searchQuery: '',
-      countries: [],
-      studyLevels: [],
-      scholarshipTypes: [],
-      minAmount: 0,
-      maxAmount: 100000,
+      keyword: '',
+      country: '',
+      studyLevel: '',
+      university: '',
       minGpa: 0,
-      maxGpa: 4.0,
-      fields: [],
+      maxGpa: 10,
+      page: 0,
+      size: 100,
     });
   };
 
   const activeFiltersCount =
-    filters.countries.length +
-    filters.studyLevels.length +
-    filters.scholarshipTypes.length +
-    filters.fields.length +
-    (filters.searchQuery ? 1 : 0);
+    (filters.keyword ? 1 : 0) +
+    (filters.country ? 1 : 0) +
+    (filters.studyLevel ? 1 : 0) +
+    (filters.university ? 1 : 0) +
+    (filters.minGpa > 0 ? 1 : 0) +
+    (filters.maxGpa < 10 ? 1 : 0);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sticky top-24">
+    <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-4 ${!isMobile ? 'sticky top-24' : ''}`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900">Filters</h2>
-        {activeFiltersCount > 0 && (
-          <button
-            onClick={clearAllFilters}
-            className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
-          >
-            <X className="w-4 h-4" />
-            Clear All ({activeFiltersCount})
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          {activeFiltersCount > 0 && (
+            <button
+              onClick={clearAllFilters}
+              className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+            >
+              <X className="w-4 h-4" />
+              Clear All ({activeFiltersCount})
+            </button>
+          )}
+          {isMobile && onClose && (
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-gray-100 rounded transition-colors"
+              aria-label="Close filters"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="space-y-6">
-        {/* Search */}
-        <div className="space-y-3">
-          <button
-            onClick={() => toggleSection('search')}
-            className="flex items-center justify-between w-full text-left"
-          >
-            <h3 className="text-sm font-semibold text-gray-900">Search</h3>
-            {expandedSections.includes('search') ? (
-              <ChevronUp className="w-4 h-4 text-gray-500" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-gray-500" />
-            )}
-          </button>
+        {/* Search - Only show on Desktop */}
+        {!isMobile && (
+          <>
+            <div className="space-y-3">
+              <button
+                onClick={() => toggleSection('search')}
+                className="flex items-center justify-between w-full text-left"
+              >
+                <h3 className="text-sm font-semibold text-gray-900">Search</h3>
+                {expandedSections.includes('search') ? (
+                  <ChevronUp className="w-4 h-4 text-gray-500" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-gray-500" />
+                )}
+              </button>
 
-          {expandedSections.includes('search') && (
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search scholarships..."
-                value={filters.searchQuery}
-                onChange={(e) => setFilters({ ...filters, searchQuery: e.target.value })}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+              {expandedSections.includes('search') && (
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search scholarships..."
+                    value={filters.keyword}
+                    onChange={(e) => setFilters({ ...filters, keyword: e.target.value, page: 0 })}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        <div className="border-t border-gray-200" />
+            <div className="border-t border-gray-200" />
+          </>
+        )}
 
         {/* Country Filter */}
         <div className="space-y-3">
@@ -131,7 +137,7 @@ export default function FilterSidebar({ filters, setFilters, scholarships }: Fil
             className="flex items-center justify-between w-full text-left"
           >
             <h3 className="text-sm font-semibold text-gray-900">
-              Country {filters.countries.length > 0 && `(${filters.countries.length})`}
+              Country {filters.country && '(1)'}
             </h3>
             {expandedSections.includes('country') ? (
               <ChevronUp className="w-4 h-4 text-gray-500" />
@@ -142,13 +148,24 @@ export default function FilterSidebar({ filters, setFilters, scholarships }: Fil
 
           {expandedSections.includes('country') && (
             <div className="space-y-2 max-h-48 overflow-y-auto">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="country"
+                  checked={filters.country === ''}
+                  onChange={() => handleFilterChange('country', '')}
+                  className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                />
+                <span className="text-sm text-gray-700">All Countries</span>
+              </label>
               {uniqueCountries.map((country) => (
                 <label key={country} className="flex items-center gap-2 cursor-pointer">
                   <input
-                    type="checkbox"
-                    checked={filters.countries.includes(country)}
-                    onChange={() => handleCheckboxChange('countries', country)}
-                    className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                    type="radio"
+                    name="country"
+                    checked={filters.country === country}
+                    onChange={() => handleFilterChange('country', country)}
+                    className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                   />
                   <span className="text-sm text-gray-700">{country}</span>
                 </label>
@@ -166,7 +183,7 @@ export default function FilterSidebar({ filters, setFilters, scholarships }: Fil
             className="flex items-center justify-between w-full text-left"
           >
             <h3 className="text-sm font-semibold text-gray-900">
-              Study Level {filters.studyLevels.length > 0 && `(${filters.studyLevels.length})`}
+              Study Level {filters.studyLevel && '(1)'}
             </h3>
             {expandedSections.includes('studyLevel') ? (
               <ChevronUp className="w-4 h-4 text-gray-500" />
@@ -177,13 +194,24 @@ export default function FilterSidebar({ filters, setFilters, scholarships }: Fil
 
           {expandedSections.includes('studyLevel') && (
             <div className="space-y-2">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="studyLevel"
+                  checked={filters.studyLevel === ''}
+                  onChange={() => handleFilterChange('studyLevel', '')}
+                  className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                />
+                <span className="text-sm text-gray-700">All Levels</span>
+              </label>
               {uniqueStudyLevels.map((level) => (
                 <label key={level} className="flex items-center gap-2 cursor-pointer">
                   <input
-                    type="checkbox"
-                    checked={filters.studyLevels.includes(level)}
-                    onChange={() => handleCheckboxChange('studyLevels', level)}
-                    className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                    type="radio"
+                    name="studyLevel"
+                    checked={filters.studyLevel === level}
+                    onChange={() => handleFilterChange('studyLevel', level)}
+                    className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                   />
                   <span className="text-sm text-gray-700">{level}</span>
                 </label>
@@ -194,84 +222,66 @@ export default function FilterSidebar({ filters, setFilters, scholarships }: Fil
 
         <div className="border-t border-gray-200" />
 
-        {/* Scholarship Type Filter */}
+        {/* University Filter */}
         <div className="space-y-3">
           <button
-            onClick={() => toggleSection('type')}
+            onClick={() => toggleSection('university')}
             className="flex items-center justify-between w-full text-left"
           >
             <h3 className="text-sm font-semibold text-gray-900">
-              Type {filters.scholarshipTypes.length > 0 && `(${filters.scholarshipTypes.length})`}
+              University {filters.university && '(1)'}
             </h3>
-            {expandedSections.includes('type') ? (
+            {expandedSections.includes('university') ? (
               <ChevronUp className="w-4 h-4 text-gray-500" />
             ) : (
               <ChevronDown className="w-4 h-4 text-gray-500" />
             )}
           </button>
 
-          {expandedSections.includes('type') && (
-            <div className="space-y-2">
-              {uniqueTypes.map((type) => (
-                <label key={type} className="flex items-center gap-2 cursor-pointer">
+          {expandedSections.includes('university') && (
+            <div className="space-y-2 max-h-48 overflow-y-auto">
+              <input
+                type="text"
+                placeholder="Search university..."
+                value={universitySearchQuery}
+                onChange={(e) => setUniversitySearchQuery(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              />
+              <div className="space-y-1 max-h-40 overflow-y-auto">
+                <label className="flex items-center gap-2 cursor-pointer">
                   <input
-                    type="checkbox"
-                    checked={filters.scholarshipTypes.includes(type)}
-                    onChange={() => handleCheckboxChange('scholarshipTypes', type)}
-                    className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                    type="radio"
+                    name="university"
+                    checked={filters.university === ''}
+                    onChange={() => {
+                      handleFilterChange('university', '');
+                      setUniversitySearchQuery('');
+                    }}
+                    className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                   />
-                  <span className="text-sm text-gray-700">{type}</span>
+                  <span className="text-sm text-gray-700">All Universities</span>
                 </label>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="border-t border-gray-200" />
-
-        {/* Funding Amount Filter */}
-        <div className="space-y-3">
-          <button
-            onClick={() => toggleSection('amount')}
-            className="flex items-center justify-between w-full text-left"
-          >
-            <h3 className="text-sm font-semibold text-gray-900">Funding Amount</h3>
-            {expandedSections.includes('amount') ? (
-              <ChevronUp className="w-4 h-4 text-gray-500" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-gray-500" />
-            )}
-          </button>
-
-          {expandedSections.includes('amount') && (
-            <div className="space-y-3">
-              <div>
-                <label className="text-xs text-gray-600">
-                  Min: ${filters.minAmount.toLocaleString()}
-                </label>
-                <input
-                  type="range"
-                  min="0"
-                  max="100000"
-                  step="1000"
-                  value={filters.minAmount}
-                  onChange={(e) => setFilters({ ...filters, minAmount: parseInt(e.target.value) })}
-                  className="w-full"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-gray-600">
-                  Max: ${filters.maxAmount.toLocaleString()}
-                </label>
-                <input
-                  type="range"
-                  min="0"
-                  max="100000"
-                  step="1000"
-                  value={filters.maxAmount}
-                  onChange={(e) => setFilters({ ...filters, maxAmount: parseInt(e.target.value) })}
-                  className="w-full"
-                />
+                {Array.from(new Set(scholarships.map((s) => s.university).filter(Boolean)))
+                  .filter((uni) =>
+                    !universitySearchQuery || uni?.toLowerCase().includes(universitySearchQuery.toLowerCase())
+                  )
+                  .sort()
+                  .slice(0, 10)
+                  .map((university) => (
+                    <label key={university} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="university"
+                        checked={filters.university === university}
+                        onChange={() => {
+                          handleFilterChange('university', university);
+                          setUniversitySearchQuery('');
+                        }}
+                        className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                      />
+                      <span className="text-sm text-gray-700">{university}</span>
+                    </label>
+                  ))}
               </div>
             </div>
           )}
@@ -300,10 +310,10 @@ export default function FilterSidebar({ filters, setFilters, scholarships }: Fil
                 <input
                   type="range"
                   min="0"
-                  max="4"
+                  max="10"
                   step="0.1"
                   value={filters.minGpa}
-                  onChange={(e) => setFilters({ ...filters, minGpa: parseFloat(e.target.value) })}
+                  onChange={(e) => setFilters({ ...filters, minGpa: parseFloat(e.target.value), page: 0 })}
                   className="w-full"
                 />
               </div>
@@ -312,10 +322,10 @@ export default function FilterSidebar({ filters, setFilters, scholarships }: Fil
                 <input
                   type="range"
                   min="0"
-                  max="4"
+                  max="10"
                   step="0.1"
                   value={filters.maxGpa}
-                  onChange={(e) => setFilters({ ...filters, maxGpa: parseFloat(e.target.value) })}
+                  onChange={(e) => setFilters({ ...filters, maxGpa: parseFloat(e.target.value), page: 0 })}
                   className="w-full"
                 />
               </div>
@@ -323,40 +333,6 @@ export default function FilterSidebar({ filters, setFilters, scholarships }: Fil
           )}
         </div>
 
-        <div className="border-t border-gray-200" />
-
-        {/* Fields Filter */}
-        <div className="space-y-3">
-          <button
-            onClick={() => toggleSection('fields')}
-            className="flex items-center justify-between w-full text-left"
-          >
-            <h3 className="text-sm font-semibold text-gray-900">
-              Fields of Study {filters.fields.length > 0 && `(${filters.fields.length})`}
-            </h3>
-            {expandedSections.includes('fields') ? (
-              <ChevronUp className="w-4 h-4 text-gray-500" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-gray-500" />
-            )}
-          </button>
-
-          {expandedSections.includes('fields') && (
-            <div className="space-y-2 max-h-48 overflow-y-auto">
-              {uniqueFields.map((field) => (
-                <label key={field} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={filters.fields.includes(field)}
-                    onChange={() => handleCheckboxChange('fields', field)}
-                    className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                  />
-                  <span className="text-sm text-gray-700">{field}</span>
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );
