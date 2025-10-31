@@ -12,9 +12,13 @@ import {
 } from 'lucide-react';
 import Amount_Deadline from './Amount_Deadline';
 import FooterCard from './FooterCard';
+import { Anchor, Block, Card, RText, Section } from '@/lib/by/Div';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import { sStore } from '@/stores';
 type CardScholarshipProps = {
   className?: string;
-  picture?: string | StaticImport;
+  picture?: string;
   title?: string;
   amount?: number;
   deadline?: string;

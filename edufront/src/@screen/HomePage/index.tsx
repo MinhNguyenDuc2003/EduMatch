@@ -16,8 +16,6 @@ export default function HomePage() {
   const scholarships = mockScholarshipOpportunities;
   return (
     <>
-      <Header />
-
       <BannerSection />
 
       <ScholarshipsSection
@@ -29,8 +27,6 @@ export default function HomePage() {
       <HowItWorksSection />
 
       <CTASection />
-
-      <Footer />
     </>
   );
 }

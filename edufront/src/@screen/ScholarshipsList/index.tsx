@@ -124,8 +124,6 @@ export default function ScholarshipsList() {
 
   return (
     <>
-      <Header />
-
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 py-8">
         {/* Main Content - 3 Columns */}
         <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
@@ -172,8 +170,6 @@ export default function ScholarshipsList() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 }
