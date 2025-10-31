@@ -76,24 +76,6 @@ const MobileNavigation = () => {
                 ))}
               </div>
             </div>
-
-            <div className="pt-4 border-t flex items-center space-x-4">
-              <Link href={'/'}>
-                <Button variant="outline" className="text-primary-brand text-lg p-4">
-                  <RText>
-                    Student <span className="font-bold">Login</span>
-                  </RText>
-                </Button>
-              </Link>
-
-              <Link href={'/'}>
-                <Button className=" bg-primary-brand text-white rounded-lg  hover:bg-[#2c4e8a] text-lg p-4">
-                  <RText>
-                    Student <span className="font-bold">Sign Up</span>
-                  </RText>
-                </Button>
-              </Link>
-            </div>
           </div>
         </SheetContent>
       </Sheet>

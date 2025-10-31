@@ -42,7 +42,7 @@ const Header = () => {
             <MobileNavigation />
 
             {/* Logo */}
-            <Link className="flex items-center" href={SegUrl.User}>
+            <Link className="flex items-center" href={'/home'}>
               <Image
                 src={'https://es5urvh1np.ufs.sh/f/DHR6tEJ9PQoz85HjSO62tcmI7ElP8Ygn01Oa3ze6iFwADrsH'}
                 alt="logo"
@@ -83,7 +83,7 @@ const Header = () => {
 
               <NavMenuItem className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background bg-transparent px-4 py-2 text-sm font-medium hover:bg-zinc-200 hover:text-accent-foreground focus:bg-zinc-200 focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-zinc-200 data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-accent data-[state=open]:bg-accent/50 focus-visible:ring-ring/50 outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1">
                 <Link
-                  href="/home/scholarships"
+                  href="/scholarships"
                   className="text-sm font-medium hover:text-primary transition-colors"
                 >
                   Scholarships
@@ -94,7 +94,7 @@ const Header = () => {
         </div>
 
         <div className="flex items-center space-x-2">
-          <div className="hidden lg:flex items-center space-x-2">
+          <div className="flex items-center space-x-2">
             <Link href="http://159.89.200.244/oauth2/authorization/keycloak">
               <Button variant="outline" className="text-primary-brand text-lg p-4 shadow-none">
                 <RText>
@@ -114,7 +114,7 @@ const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="" align="end" forceMount>
               <DropdownMenuItem asChild>
-                <Link href="/user/profile">Profile</Link>
+                <Link href="/applicant/profile">Profile</Link>
               </DropdownMenuItem>
 
               <DropdownMenuItem onClick={() => {}}>Logout</DropdownMenuItem>
