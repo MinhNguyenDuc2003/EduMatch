@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Bookmark, Calendar, DollarSign } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Bookmark, Calendar, DollarSign, Eye } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 
 type ScholarshipCardProps = {
@@ -8,6 +9,7 @@ type ScholarshipCardProps = {
 };
 
 export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCardProps) {
+  const router = useRouter();
   const [isSaved, setIsSaved] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
@@ -48,7 +50,12 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
       {/* Content */}
       <div className="p-5">
         {/* Title */}
-        <h2 className="text-lg font-bold text-gray-900 mb-2">{scholarship.title}</h2>
+        <h2
+          className="text-lg font-bold text-gray-900 mb-2 cursor-pointer hover:text-blue-600 transition-colors"
+          onClick={() => router.push(`/scholarships/${scholarship.id}`)}
+        >
+          {scholarship.title}
+        </h2>
 
         {/* Description */}
         <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-3">
@@ -77,13 +84,13 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-          {/* Left side - Date & Amount */}
+        <div className="pt-3 border-t border-gray-100 space-y-3">
+          {/* Date & Amount */}
           <div className="flex items-center gap-4 text-xs text-gray-600">
             {/* Date */}
             <div className="flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5" />
-              <span className="font-semibold text-gray-900">
+              <span className="text- font-semibold text-gray-900">
                 {scholarship.endDate
                   ? new Date(scholarship.endDate).toLocaleDateString('en-US', {
                       month: 'short',
@@ -105,12 +112,21 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
             </div>
           </div>
 
-          {/* Right side - Apply Button */}
-          <Button
-            className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white px-6 py-1.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all [&_.value]:text-white text-sm"
-            value="Apply"
-            onClick={() => onApply(scholarship)}
-          />
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="flex-1 px-4 py-1.5 rounded-lg font-semibold text-sm border-gray-300 hover:bg-gray-50 [&_.value]:text-gray-700"
+              value="Details"
+              iconLeft={<Eye className="w-4 h-4 text-primary" />}
+              onClick={() => router.push(`/scholarships/${scholarship.id}`)}
+            />
+            <Button
+              className="flex-1 bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white px-4 py-1.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all [&_.value]:text-white text-sm"
+              value="Apply"
+              onClick={() => onApply(scholarship)}
+            />
+          </div>
         </div>
       </div>
     </div>
