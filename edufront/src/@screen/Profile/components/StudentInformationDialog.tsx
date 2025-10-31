@@ -20,17 +20,17 @@ import {
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { IProfileForm } from '@/lib/schemas';
 import { Country, StateOrProvince, District } from '@/@screen/Profile/types';
 import religions from '@/constants/religions.json';
 import ethnicities from '@/constants/ethnicities.json';
 import races from '@/constants/races.json';
 import citizenshipStatus from '@/constants/citizenshipStatus.json';
+import { IApplicantProfile } from '@/lib/schemas';
 
 interface StudentInformationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: IProfileForm) => void;
+  onSubmit: (data: IApplicantProfile) => void;
   onCancel: () => void;
   countries?: Country[];
   statesOrProvinces?: StateOrProvince[];
@@ -47,9 +47,9 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
   districts,
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { handleSubmit, watch } = useFormContext<IProfileForm>();
+  const { handleSubmit, watch } = useFormContext<IApplicantProfile>();
 
-  const handleFormSubmit = (data: IProfileForm) => {
+  const handleFormSubmit = (data: IApplicantProfile) => {
     onSubmit(data);
     onOpenChange(false);
   };
@@ -74,7 +74,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Full Name */}
           <CustomFormField
-            name="Fields.applicantProfile.firstName"
+            name="applicantProfile.firstName"
             label="First Name"
             placeholder="First Name"
             inlineLabel
@@ -82,7 +82,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.applicantProfile.lastName"
+            name="applicantProfile.lastName"
             label="Last Name"
             placeholder="Last Name"
             inlineLabel
@@ -90,7 +90,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.applicantProfile.contactName"
+            name="applicantProfile.contactName"
             label="Contact Name"
             placeholder="Add Info"
             inlineLabel
@@ -98,7 +98,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.applicantProfile.religion"
+            name="applicantProfile.religion"
             label="Religion"
             type="select"
             placeholder="Select Religion"
@@ -108,7 +108,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.applicantProfile.overallGpa"
+            name="applicantProfile.overallGpa"
             label="Overall GPA"
             type="number"
             placeholder="3.8"
@@ -117,7 +117,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.applicantProfile.ethnicity"
+            name="applicantProfile.ethnicity"
             label="Ethnicity"
             type="select"
             placeholder="Select Ethnicity"
@@ -127,7 +127,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.applicantProfile.race"
+            name="applicantProfile.race"
             label="Race"
             type="select"
             placeholder="Select Race"
@@ -137,7 +137,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.applicantProfile.hometown"
+            name="applicantProfile.hometown"
             label="Hometown"
             placeholder="Add Info"
             inlineLabel
@@ -145,7 +145,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.applicantProfile.citizenshipStatus"
+            name="applicantProfile.citizenshipStatus"
             label="Citizenship Status"
             type="select"
             placeholder="Select Citizenship Status"
@@ -155,7 +155,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.applicantProfile.disabilities"
+            name="applicantProfile.disabilities"
             label="Disabilities"
             placeholder="Add Info"
             inlineLabel
@@ -163,14 +163,14 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.applicantProfile.medicalConditions"
+            name="applicantProfile.medicalConditions"
             label="Medical Conditions"
             placeholder="Add Info"
             inlineLabel
             isBorder
           />
           <CustomFormField
-            name="Fields.applicantProfile.militaryFamilyHistory"
+            name="applicantProfile.militaryFamilyHistory"
             label="Military Family History"
             type="switch"
             className="mb-4 "
@@ -193,7 +193,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomFormField
-            name="Fields.addressPostVm.contactName"
+            name="addressPostVm.contactName"
             label="Contact Name"
             placeholder="Contact Name"
             labelClassName="w-32 flex-shrink-0"
@@ -202,7 +202,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.addressPostVm.phone"
+            name="addressPostVm.phone"
             label="Phone"
             placeholder="Phone Number"
             labelClassName="w-32 flex-shrink-0"
@@ -211,7 +211,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.addressPostVm.addressLine1"
+            name="addressPostVm.addressLine1"
             label="Address Line 1"
             placeholder="Street Address"
             labelClassName="w-32 flex-shrink-0"
@@ -220,7 +220,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.addressPostVm.addressLine2"
+            name="addressPostVm.addressLine2"
             label="Address Line 2"
             placeholder="Apartment, Suite, etc. (Optional)"
             labelClassName="w-32 flex-shrink-0"
@@ -229,7 +229,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.addressPostVm.city"
+            name="addressPostVm.city"
             label="City"
             placeholder="City"
             labelClassName="w-32 flex-shrink-0"
@@ -238,7 +238,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.addressPostVm.zipCode"
+            name="addressPostVm.zipCode"
             label="Zip Code"
             placeholder="Zip Code"
             labelClassName="w-32 flex-shrink-0"
@@ -247,7 +247,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
           />
 
           <CustomFormField
-            name="Fields.addressPostVm.countryId"
+            name="addressPostVm.countryId"
             label="Country"
             type="select"
             placeholder="Select Country"
@@ -262,9 +262,9 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             isBorder
           />
 
-          {watch('Fields.addressPostVm.countryId') > 0 && (
+          {watch('addressPostVm.countryId') > 0 && (
             <CustomFormField
-              name="Fields.addressPostVm.stateOrProvinceId"
+              name="addressPostVm.stateOrProvinceId"
               label="State/Province"
               placeholder="Select State/Province"
               type="select"
@@ -279,9 +279,9 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
               isBorder
             />
           )}
-          {watch('Fields.addressPostVm.stateOrProvinceId') > 0 && (
+          {watch('addressPostVm.stateOrProvinceId') > 0 && (
             <CustomFormField
-              name="Fields.addressPostVm.districtId"
+              name="addressPostVm.districtId"
               label="District"
               type="select"
               placeholder="Select District"

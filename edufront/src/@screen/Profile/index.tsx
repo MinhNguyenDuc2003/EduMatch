@@ -23,7 +23,7 @@ import SkillCard from './components/SkillCard';
 import Header from '@/pattern/core/Header';
 import Footer from '@/pattern/core/Footer';
 import { Form } from '@/lib/cus/form';
-import { IProfileForm, schemas } from '@/lib/schemas';
+import { applicantProfileSchema, IApplicantProfile } from '@/lib/schemas';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DEFAULT_PROFILE_FORM_VALUES } from './constants';
@@ -52,16 +52,16 @@ export default function Profile() {
   const [updateProfile] = useUpdateProfileMutation();
 
   // Form setup
-  const methods = useForm<IProfileForm>({
+  const methods = useForm<IApplicantProfile>({
     reValidateMode: 'onSubmit',
     mode: 'onChange',
-    resolver: zodResolver(schemas.Profile),
+    resolver: zodResolver(applicantProfileSchema),
     defaultValues: DEFAULT_PROFILE_FORM_VALUES,
   });
 
   // Watch for country and state selection changes
-  const countryId = methods.watch('Fields.addressPostVm.countryId');
-  const stateOrProvinceId = methods.watch('Fields.addressPostVm.stateOrProvinceId');
+  const countryId = methods.watch('addressPostVm.countryId');
+  const stateOrProvinceId = methods.watch('addressPostVm.stateOrProvinceId');
 
   // Lazy queries for states and districts
   const { data: statesOrProvinces } = useGetStateOrProvincesQuery(countryId, {
@@ -75,17 +75,14 @@ export default function Profile() {
   useEffect(() => {
     if (profileData) {
       const formData = {
-        Fields: {
-          applicantProfile: {
-            ...DEFAULT_PROFILE_FORM_VALUES.Fields.applicantProfile,
-            ...profileData.applicantProfile,
-          },
-          addressPostVm: {
-            ...DEFAULT_PROFILE_FORM_VALUES.Fields.addressPostVm,
-            ...profileData.addresses?.[0],
-          },
+        applicantProfile: {
+          ...DEFAULT_PROFILE_FORM_VALUES.applicantProfile,
+          ...profileData.applicantProfile,
         },
-        Filters: {},
+        addressPostVm: {
+          ...DEFAULT_PROFILE_FORM_VALUES.addressPostVm,
+          ...profileData.addresses?.[0],
+        },
       };
       methods.reset(formData);
     }
@@ -109,13 +106,13 @@ export default function Profile() {
     }
   };
 
-  const handleStudentInfoSubmit = async (data: IProfileForm) => {
+  const handleStudentInfoSubmit = async (data: IApplicantProfile) => {
     try {
       // Call API to update or create student info
       if (profileData?.applicantProfile) {
-        await updateProfile(data.Fields).unwrap();
+        await updateProfile(data).unwrap();
       } else {
-        await createProfile(data.Fields).unwrap();
+        await createProfile(data).unwrap();
       }
     } catch (error) {
       console.error('Error updating student info:', error);
@@ -126,17 +123,14 @@ export default function Profile() {
   const handleStudentInfoCancel = () => {
     if (profileData) {
       const formData = {
-        Fields: {
-          applicantProfile: {
-            ...DEFAULT_PROFILE_FORM_VALUES.Fields.applicantProfile,
-            ...profileData.applicantProfile,
-          },
-          addressPostVm: {
-            ...DEFAULT_PROFILE_FORM_VALUES.Fields.addressPostVm,
-            ...profileData.addresses?.[0],
-          },
+        applicantProfile: {
+          ...DEFAULT_PROFILE_FORM_VALUES.applicantProfile,
+          ...profileData.applicantProfile,
         },
-        Filters: {},
+        addressPostVm: {
+          ...DEFAULT_PROFILE_FORM_VALUES.addressPostVm,
+          ...profileData.addresses?.[0],
+        },
       };
       methods.reset(formData);
     }

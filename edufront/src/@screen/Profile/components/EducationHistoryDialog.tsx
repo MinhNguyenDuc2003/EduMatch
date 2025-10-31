@@ -20,15 +20,15 @@ import {
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { IProfileForm } from '@/lib/schemas';
 import { Plus, Trash2, Calendar, GraduationCap } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
 import { DEGREE_TYPES, INSTITUTION_TYPES, MAJOR_CATEGORIES, GRADUATION_YEARS } from '../constants';
+import { IApplicantProfile } from '@/lib/schemas';
 
 interface EducationHistoryDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: IProfileForm) => void;
+  onSubmit: (data: IApplicantProfile) => void;
   onCancel: () => void;
 }
 
@@ -39,14 +39,14 @@ const EducationHistoryDialog = ({
   onCancel,
 }: EducationHistoryDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { handleSubmit, control, watch } = useFormContext<IProfileForm>();
+  const { handleSubmit, control, watch } = useFormContext<IApplicantProfile>();
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'Fields.applicantProfile.educationHistories',
+    name: 'applicantProfile.educationHistories',
   });
 
-  const handleFormSubmit = (data: IProfileForm) => {
+  const handleFormSubmit = (data: IApplicantProfile) => {
     onSubmit(data);
     onOpenChange(false);
   };
@@ -140,7 +140,7 @@ const EducationHistoryDialog = ({
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.institutionName`}
+                  name={`applicantProfile.educationHistories.${index}.institutionName`}
                   label="Institution Name"
                   placeholder="Enter institution name"
                   inlineLabel
@@ -148,7 +148,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.institutionType`}
+                  name={`applicantProfile.educationHistories.${index}.institutionType`}
                   label="Institution Type"
                   type="select"
                   placeholder="Select institution type"
@@ -158,7 +158,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.state`}
+                  name={`applicantProfile.educationHistories.${index}.state`}
                   label="State/Province"
                   placeholder="Enter state or province"
                   inlineLabel
@@ -166,7 +166,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.country`}
+                  name={`applicantProfile.educationHistories.${index}.country`}
                   label="Country"
                   placeholder="Enter country"
                   inlineLabel
@@ -183,7 +183,7 @@ const EducationHistoryDialog = ({
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.degreeType`}
+                  name={`applicantProfile.educationHistories.${index}.degreeType`}
                   label="Degree Type"
                   type="select"
                   placeholder="Select degree type"
@@ -193,7 +193,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.majorCategory`}
+                  name={`applicantProfile.educationHistories.${index}.majorCategory`}
                   label="Major Category"
                   type="select"
                   placeholder="Select major category"
@@ -203,7 +203,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.majorName`}
+                  name={`applicantProfile.educationHistories.${index}.majorName`}
                   label="Major Name"
                   placeholder="Enter major name"
                   inlineLabel
@@ -211,7 +211,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.gpa`}
+                  name={`applicantProfile.educationHistories.${index}.gpa`}
                   label="GPA"
                   type="number"
                   placeholder="3.8"
@@ -220,7 +220,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.classRank`}
+                  name={`applicantProfile.educationHistories.${index}.classRank`}
                   label="Class Rank"
                   placeholder="e.g., 1st, 2nd, Top 10%"
                   inlineLabel
@@ -228,7 +228,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.classSize`}
+                  name={`applicantProfile.educationHistories.${index}.classSize`}
                   label="Class Size"
                   type="number"
                   placeholder="200"
@@ -246,7 +246,7 @@ const EducationHistoryDialog = ({
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.enrollmentStartDate`}
+                  name={`applicantProfile.educationHistories.${index}.enrollmentStartDate`}
                   label="Start Date"
                   type="date"
                   inlineLabel
@@ -254,7 +254,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.enrollmentEndDate`}
+                  name={`applicantProfile.educationHistories.${index}.enrollmentEndDate`}
                   label="End Date"
                   type="date"
                   inlineLabel
@@ -262,7 +262,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.graduationYear`}
+                  name={`applicantProfile.educationHistories.${index}.graduationYear`}
                   label="Graduation Year"
                   type="select"
                   placeholder="Select graduation year"
@@ -278,7 +278,7 @@ const EducationHistoryDialog = ({
               <h5 className="font-medium text-gray-900">Additional Information</h5>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.isDualEnrolled`}
+                  name={`applicantProfile.educationHistories.${index}.isDualEnrolled`}
                   label="Dual Enrolled"
                   type="switch"
                   inlineLabel
@@ -286,7 +286,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.isTransfer`}
+                  name={`applicantProfile.educationHistories.${index}.isTransfer`}
                   label="Transfer Student"
                   type="switch"
                   inlineLabel
@@ -294,7 +294,7 @@ const EducationHistoryDialog = ({
                 />
 
                 <CustomFormField
-                  name={`Fields.applicantProfile.educationHistories.${index}.isReturningStudent`}
+                  name={`applicantProfile.educationHistories.${index}.isReturningStudent`}
                   label="Returning Student"
                   type="switch"
                   inlineLabel
@@ -303,7 +303,7 @@ const EducationHistoryDialog = ({
               </div>
 
               <CustomFormField
-                name={`Fields.applicantProfile.educationHistories.${index}.notes`}
+                name={`applicantProfile.educationHistories.${index}.notes`}
                 label="Notes"
                 type="textarea"
                 placeholder="Additional notes about this education..."
@@ -315,7 +315,7 @@ const EducationHistoryDialog = ({
           </div>
         ))}
 
-        {fields.length === 0 && (
+        {length === 0 && (
           <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
             <GraduationCap className="h-12 w-12 mx-auto mb-4 text-gray-400" />
             <p className="text-lg font-medium mb-2">No education history added yet</p>
