@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customBaseQuery from './custombaseQuery';
 import { ProfileApiResponse, Country, StateOrProvince, District } from '@/@screen/Profile/types';
-import { IProfileForm } from '@/lib/schemas';
+import { IApplicantProfile } from '@/lib/schemas';
 
 // API Endpoints
 const API_ENDPOINTS = {
@@ -43,7 +43,7 @@ export const apiApplicant = createApi({
     }),
 
     // Create profile
-    createProfile: build.mutation<ProfileApiResponse, IProfileForm['Fields']>({
+    createProfile: build.mutation<ProfileApiResponse, IApplicantProfile>({
       query: (data) => ({
         url: API_ENDPOINTS.CREATE_PROFILE,
         method: 'POST',
@@ -53,7 +53,7 @@ export const apiApplicant = createApi({
     }),
 
     // Update profile
-    updateProfile: build.mutation<ProfileApiResponse, IProfileForm['Fields']>({
+    updateProfile: build.mutation<ProfileApiResponse, IApplicantProfile>({
       query: (data) => ({
         url: API_ENDPOINTS.UPDATE_PROFILE,
         method: 'PUT',
