@@ -1,12 +1,3 @@
-import useTranslate from '@/hooks/useTranslate';
-import { Anchor, Block, Card, RText, Section } from '@/lib/by/Div';
-import { Button } from '@/lib/cus/button';
-import { cn } from '@/lib/utils';
-import { sStore } from '@/stores';
-import { isBoolean, isEqual, map } from 'lodash';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import {
   GraduationCap,

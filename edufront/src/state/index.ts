@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface InitialStateTypes {}
+type InitialStateTypes = Record<string, never>;
 
 export const initialState: InitialStateTypes = {};
 
