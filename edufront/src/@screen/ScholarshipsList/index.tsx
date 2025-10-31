@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Header from '@/pattern/core/Header';
-import Footer from '@/pattern/core/Footer';
 import { FilterSidebar, ScholarshipCard, RightSidebar } from './components';
 import { mockScholarshipOpportunities } from '@/@screen/HomePage/mockData';
 

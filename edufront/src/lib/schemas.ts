@@ -8,6 +8,7 @@ export const applicantProfileSchema = z.object({
     contactName: z.string().min(1, 'Contact name is required'),
     firstName: z.string().min(1, 'First name is required'),
     lastName: z.string().min(1, 'Last name is required'),
+    phoneNumber: z.string().optional(),
     religion: z.string().optional(),
     hometown: z.string().optional(),
     citizenshipStatus: z.string().optional(),
@@ -40,6 +41,7 @@ export const applicantProfileSchema = z.object({
         z
           .object({
             id: z.number().optional(),
+            applicantId: z.number().optional(),
             institutionName: z.string().min(1, 'Institution name is required'),
             institutionType: z.string().min(1, 'Institution type is required'),
             state: z.string().min(1, 'State/Province is required'),
@@ -76,19 +78,18 @@ export const applicantProfileSchema = z.object({
           })
       )
       .optional(),
-    phoneNumbers: z
+    applicantPreferences: z
       .array(
         z.object({
           id: z.number().optional(),
           applicantId: z.number().optional(),
-          phoneType: z.string().min(1, 'Phone type is required'),
-          countryCode: z.string().min(1, 'Country code is required'),
-          phoneNumber: z
-            .string()
-            .min(10, 'Phone number must have at least 10 digits')
-            .max(15, 'Phone number cannot exceed 15 digits')
-            .regex(/^[0-9]+$/, 'Phone number can only contain numbers'),
-          isInternational: z.boolean().optional(),
+          type: z.string().min(1, 'Preference type is required'),
+          value: z.string().min(1, 'Preference value is required'),
+          weight: z.coerce
+            .number<number>()
+            .min(0, 'Weight must be at least 0')
+            .max(10, 'Weight cannot exceed 10'),
+          note: z.string().optional(),
         })
       )
       .optional(),
@@ -110,6 +111,7 @@ export const applicantProfileSchema = z.object({
       .array(
         z.object({
           id: z.number().optional(),
+          applicantId: z.number().optional(),
           intendedInstitution: z.string().min(1, 'Intended institution is required'),
           intendedState: z.string().min(1, 'Intended state/province is required'),
           intendedCountry: z.string().min(1, 'Intended country is required'),
@@ -118,7 +120,7 @@ export const applicantProfileSchema = z.object({
           intendedMajorName: z.string().min(1, 'Intended major name is required'),
           academicClassification: z.string().optional(),
           expectedStartDate: z.union([z.string(), z.number()]),
-          expectedGraduationYear: z.number().min(1900).max(2100).optional(),
+          expectedGraduationYear: z.coerce.number<number>().min(1900).max(2100).optional(),
           isTransferStudent: z.boolean().optional(),
           isReturningStudent: z.boolean().optional(),
           notes: z.string().optional(),
@@ -126,22 +128,45 @@ export const applicantProfileSchema = z.object({
       )
       .optional(),
   }),
-  addressPostVm: z.object({
-    id: z.number().optional(),
-    contactName: z.string().min(1, 'Address contact name is required'),
-    phone: z
-      .string()
-      .min(10, 'Phone number must have at least 10 digits')
-      .max(15, 'Phone number cannot exceed 15 digits')
-      .regex(/^[0-9]+$/, 'Phone number can only contain numbers'),
-    addressLine1: z.string().min(1, 'Address line 1 is required'),
-    addressLine2: z.string().optional(),
-    city: z.string().min(1, 'City is required'),
-    zipCode: z.string().min(1, 'Zip code is required'),
-    districtId: z.number().min(1, 'Please select a district'),
-    stateOrProvinceId: z.number().min(1, 'Please select a state or province'),
-    countryId: z.number().min(1, 'Please select a country'),
-  }),
 });
 
 export type IApplicantProfile = z.infer<typeof applicantProfileSchema>;
+
+// Provider Profile Schema
+export const providerProfileSchema = z.object({
+  providerProfile: z.object({
+    id: z.number().optional(),
+    userId: z.string().optional(),
+    organizationName: z.string().min(1, 'Organization name is required'),
+    organizationType: z.string().min(1, 'Organization type is required'),
+    website: z.string().url('Invalid website URL').optional().or(z.literal('')),
+    email: z.string().email('Invalid email address'),
+    phone: z.string().min(1, 'Phone number is required'),
+    addressSummary: z.string().optional(),
+    description: z.string().optional(),
+    yearEstablished: z.coerce
+      .number<number>()
+      .min(1800, 'Year established must be after 1800')
+      .max(new Date().getFullYear(), 'Year established cannot be in the future')
+      .optional(),
+    accreditation: z.string().optional(),
+    specialization: z.string().optional(),
+    verified: z.boolean().optional(),
+    country: z.string().min(1, 'Country is required'),
+    providerContactDtos: z
+      .array(
+        z.object({
+          id: z.number().optional(),
+          providerId: z.number().optional(),
+          contactName: z.string().min(1, 'Contact name is required'),
+          roleTitle: z.string().min(1, 'Role title is required'),
+          email: z.string().email('Invalid email address'),
+          phone: z.string().min(1, 'Phone number is required'),
+          linkedinUrl: z.string().url('Invalid LinkedIn URL').optional().or(z.literal('')),
+        })
+      )
+      .optional(),
+  }),
+});
+
+export type IProviderProfile = z.infer<typeof providerProfileSchema>;

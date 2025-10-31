@@ -40,10 +40,6 @@ export function calculateProfileStrength(profile: ProfileApiResponse): number {
   if (applicant.careerGoals) filledFields++;
   if (applicant.certificates?.length > 0) filledFields += 2;
 
-  // Contact
-  if (applicant.phoneNumbers?.length > 0) filledFields += 2;
-  if (profile.addresses?.length > 0) filledFields += 2;
-
   // Background
   if (applicant.disabilities) filledFields++;
   if (applicant.medicalConditions) filledFields++;

@@ -110,9 +110,15 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             value={String(field.value || initialValue || '')}
             defaultValue={String(field.value || initialValue || '')}
             onValueChange={(value) => {
-              // Convert back to number if the original value was a number
-              const numValue = Number(value);
-              field.onChange(isNaN(numValue) ? value : numValue);
+              // Try to match the type of the option value
+              const option = options?.find((opt) => String(opt.value) === value);
+              if (option) {
+                field.onChange(option.value);
+              } else {
+                // Fallback: try to preserve original type
+                const numValue = Number(value);
+                field.onChange(isNaN(numValue) ? value : numValue);
+              }
             }}
           >
             <SelectTrigger

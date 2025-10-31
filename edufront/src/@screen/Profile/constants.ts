@@ -5,6 +5,7 @@ export const DEFAULT_PROFILE_FORM_VALUES: IApplicantProfile = {
     contactName: '',
     firstName: '',
     lastName: '',
+    phoneNumber: '',
     religion: '',
     hometown: '',
     citizenshipStatus: '',
@@ -22,20 +23,9 @@ export const DEFAULT_PROFILE_FORM_VALUES: IApplicantProfile = {
     overallGpa: 0,
     certificates: [],
     educationHistories: [],
-    phoneNumbers: [],
+    applicantPreferences: [],
     skills: [],
     intentions: [],
-  },
-  addressPostVm: {
-    contactName: '',
-    phone: '',
-    addressLine1: '',
-    addressLine2: '',
-    city: '',
-    zipCode: '',
-    districtId: 0,
-    stateOrProvinceId: 0,
-    countryId: 0,
   },
 };
 
@@ -102,12 +92,6 @@ export const MAJOR_CATEGORIES = [
   { value: 'Social Sciences', label: 'Social Sciences' },
   { value: 'Other', label: 'Other' },
 ];
-
-// Graduation year options from 2100 down to 1900
-export const GRADUATION_YEARS = Array.from({ length: 201 }, (_, i) => 2100 - i).map((year) => ({
-  value: year,
-  label: String(year),
-}));
 
 // Activities and Interests Options
 export const FAVORITE_ACTIVITIES = [
