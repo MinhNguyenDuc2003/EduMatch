@@ -3,7 +3,6 @@ package com.minh.notification.feign;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.profile.ProviderFollowerDto;
 import com.minh.service.feign.FeignInterceptorConfig;
-import com.minh.service.feign.SystemFeignInterceptor;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
