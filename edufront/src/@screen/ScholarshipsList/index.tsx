@@ -226,7 +226,7 @@ export default function ScholarshipsList() {
               <PremiumBanner />
 
               {/* Search Bar - Desktop only */}
-              <div className="mb-6">
+              <div className="mb-4">
                 <SearchBar
                   placeholder="Search scholarships..."
                   value={filters.keyword}

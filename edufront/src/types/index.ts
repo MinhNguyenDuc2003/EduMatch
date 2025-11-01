@@ -30,6 +30,8 @@ declare global {
     languageRequirement: string;
     gpaRequirement: number;
     scholarshipMedias?: ScholarshipMedia[];
+    imageUrl?: string; // Direct image URL
+    imageUrls?: string[]; // Multiple image URLs
   };
 }
 

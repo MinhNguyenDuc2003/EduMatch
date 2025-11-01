@@ -97,6 +97,9 @@ export const mockScholarshipOpportunities: Scholarship[] = [
         url: 'https://edumatch.s3.ap-southeast-1.amazonaws.com/public/scholarship/10/',
       },
     ],
+    imageUrls: [
+      'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=400&fit=crop&auto=format',
+    ],
   },
   {
     id: 1,
@@ -140,6 +143,11 @@ export const mockScholarshipOpportunities: Scholarship[] = [
         url: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80',
       },
     ],
+    imageUrls: [
+      'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=400&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=400&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800&h=400&fit=crop&auto=format',
+    ],
   },
   {
     id: 2,
@@ -164,6 +172,10 @@ export const mockScholarshipOpportunities: Scholarship[] = [
     languageRequirement: 'IELTS 6.5 or TOEFL 90',
     gpaRequirement: 3.2,
     scholarshipMedias: [],
+    imageUrls: [
+      'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=400&fit=crop&auto=format',
+    ],
   },
   {
     id: 3,
@@ -235,5 +247,8 @@ export const mockScholarshipOpportunities: Scholarship[] = [
     languageRequirement: 'IELTS 6.5 or TOEFL 90',
     gpaRequirement: 3.0,
     scholarshipMedias: [],
+    imageUrls: [
+      'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=400&fit=crop&auto=format',
+    ],
   },
 ];

@@ -10,7 +10,7 @@ export default function PremiumBanner() {
   };
 
   return (
-    <div className="mb-6 relative overflow-hidden rounded-xl p-4 md:p-6 border-2 border-white/20">
+    <div className="mb-4 relative overflow-hidden rounded-xl p-4 md:p-6 border-2 border-white/20 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer">
       {/* Static gradient background */}
       <div className="absolute inset-0 bg-gradient-to-r from-slate-800 via-blue-700 to-slate-800"></div>
 
@@ -101,9 +101,6 @@ export default function PremiumBanner() {
           <>
             {/* After Upgrade - Mobile */}
             <div className="md:hidden text-center space-y-3">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full mx-auto">
-                <Zap className="w-8 h-8 text-white" />
-              </div>
               <h3 className="text-white font-bold text-xl">
                 We Found {recommendedCount} Perfect Matches!
               </h3>
@@ -113,11 +110,8 @@ export default function PremiumBanner() {
             </div>
 
             {/* After Upgrade - Desktop */}
-            <div className="hidden md:flex items-center justify-center gap-4">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full">
-                <Zap className="w-8 h-8 text-white" />
-              </div>
-              <div className="text-center">
+            <div className="hidden md:flex items-center gap-4">
+              <div>
                 <h3 className="text-white font-bold text-xl mb-1">
                   We Found {recommendedCount} Perfect Matches!
                 </h3>
