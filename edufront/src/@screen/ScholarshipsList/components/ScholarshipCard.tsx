@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Bookmark, Calendar, DollarSign, Eye } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
+import ScholarshipCardImages from './ScholarshipCardImages';
 
 type ScholarshipCardProps = {
   scholarship: Scholarship;
@@ -16,69 +17,17 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  // Get images array
-  const images =
-    scholarship.imageUrls && scholarship.imageUrls.length > 0
-      ? scholarship.imageUrls
-      : scholarship.imageUrl
-        ? [scholarship.imageUrl]
-        : [];
+  // Get images array - only from imageUrls
+  const images = scholarship.imageUrls || [];
 
   return (
     <>
-      {/* Full Screen Image Modal */}
-      {isImageZoomed && images.length > 0 && (
-        <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
-          onClick={() => setIsImageZoomed(false)}
-        >
-          <div className="relative max-w-7xl max-h-full">
-            <Image
-              src={images[selectedImageIndex]}
-              alt={scholarship.title}
-              width={1200}
-              height={800}
-              className="max-w-full max-h-[90vh] object-contain"
-              onClick={(e) => e.stopPropagation()}
-            />
-            <button
-              onClick={() => setIsImageZoomed(false)}
-              className="absolute top-4 right-4 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
-            >
-              ×
-            </button>
-            {images.length > 1 && (
-              <>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedImageIndex((prev) => (prev - 1 + images.length) % images.length);
-                  }}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
-                >
-                  ‹
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedImageIndex((prev) => (prev + 1) % images.length);
-                  }}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
-                >
-                  ›
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
         {/* Organization Header */}
         <div className="p-4 border-b border-gray-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+              <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
                 {scholarship.university?.charAt(0) || 'O'}
               </div>
               <div>
@@ -107,82 +56,14 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
         </div>
 
         {/* Image */}
-        {images.length > 0 ? (
-          <div className="w-full bg-gray-100 px-1 pt-1">
-            {images.length === 1 ? (
-              <div
-                className="w-full relative overflow-hidden cursor-pointer"
-                onClick={() => {
-                  setIsImageZoomed(true);
-                  setSelectedImageIndex(0);
-                }}
-              >
-                <div className="w-full h-48 relative bg-gray-200">
-                  <Image
-                    src={images[0]}
-                    alt={scholarship.title}
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              </div>
-            ) : images.length === 2 ? (
-              <div
-                className="w-full relative overflow-hidden cursor-pointer"
-                onClick={() => {
-                  setIsImageZoomed(true);
-                  setSelectedImageIndex(0);
-                }}
-              >
-                <div className="grid grid-cols-2 gap-0.5 h-48">
-                  {images.map((img, idx) => (
-                    <div key={idx} className="relative bg-gray-200">
-                      <Image
-                        src={img}
-                        alt={`${scholarship.title} ${idx + 1}`}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : images.length >= 3 ? (
-              <div
-                className="w-full relative overflow-hidden cursor-pointer"
-                onClick={() => {
-                  setIsImageZoomed(true);
-                  setSelectedImageIndex(0);
-                }}
-              >
-                <div className="grid grid-cols-2 grid-rows-2 gap-0.5 h-48">
-                  {images.slice(0, 3).map((img, idx) => (
-                    <div
-                      key={idx}
-                      className={`relative bg-gray-200 ${idx === 2 ? 'col-span-1' : 'col-span-1'}`}
-                    >
-                      <Image
-                        src={img}
-                        alt={`${scholarship.title} ${idx + 1}`}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-300"
-                      />
-                      {idx === 2 && images.length > 3 && (
-                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                          <span className="text-white text-2xl font-bold">
-                            +{images.length - 3}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </div>
-        ) : (
-          <div className="w-full h-32 bg-gray-200"></div>
-        )}
+        <ScholarshipCardImages
+          images={images}
+          title={scholarship.title}
+          onImageClick={(index) => {
+            setSelectedImageIndex(index);
+            setIsImageZoomed(true);
+          }}
+        />
 
         {/* Content */}
         <div className="p-5">
@@ -269,6 +150,53 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
             </div>
           </div>
         </div>
+
+        {/* Full Screen Image Modal */}
+        {isImageZoomed && images.length > 0 && (
+          <div
+            className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+            onClick={() => setIsImageZoomed(false)}
+          >
+            <div className="relative max-w-7xl max-h-full">
+              <Image
+                src={images[selectedImageIndex]}
+                alt={`${scholarship.title} ${selectedImageIndex + 1}`}
+                width={1200}
+                height={800}
+                className="max-w-full max-h-[90vh] object-contain"
+                onClick={(e) => e.stopPropagation()}
+              />
+              <button
+                onClick={() => setIsImageZoomed(false)}
+                className="absolute top-4 right-4 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
+              >
+                ×
+              </button>
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedImageIndex((prev) => (prev - 1 + images.length) % images.length);
+                    }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedImageIndex((prev) => (prev + 1) % images.length);
+                    }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
+                  >
+                    ›
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

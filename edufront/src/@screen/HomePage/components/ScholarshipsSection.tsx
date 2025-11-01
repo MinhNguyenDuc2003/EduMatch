@@ -40,7 +40,13 @@ export default function ScholarshipsSection({
               ? parseFloat(item.fundingAmount.replace(/[^0-9.]/g, ''))
               : 0;
             // Format endDate timestamp to ISO string
-            const endDateISO = item.endDate ? new Date(item.endDate).toISOString() : '';
+            const endDateISO = item.endDate
+              ? new Date(item.endDate).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })
+              : '';
 
             return (
               <CardSmalPic

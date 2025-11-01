@@ -80,7 +80,7 @@ export default function FilterSidebar({
 
   return (
     <div
-      className={`bg-[#FAFAF6] rounded-lg shadow-sm border border-gray-200 p-4 ${!isMobile ? 'sticky top-20' : ''}`}
+      className={`bg-white rounded-lg shadow-sm border border-gray-200 p-4 ${!isMobile ? 'sticky top-20' : ''}`}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-6">

@@ -145,6 +145,8 @@ export const mockScholarshipOpportunities: Scholarship[] = [
     ],
     imageUrls: [
       'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=400&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=400&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=400&fit=crop&auto=format',
       'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=400&fit=crop&auto=format',
       'https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800&h=400&fit=crop&auto=format',
     ],

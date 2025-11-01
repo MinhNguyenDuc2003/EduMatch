@@ -1,7 +1,7 @@
 import { Anchor } from '@/lib/by/Div';
 import React from 'react';
 import { Button } from '@/lib/cus/button';
-import { Eye, Send } from 'lucide-react';
+import { Eye } from 'lucide-react';
 
 const FooterCard = ({
   onClick,
@@ -17,17 +17,17 @@ const FooterCard = ({
       {onViewDetails && (
         <Button
           variant="outline"
-          className="py-2 flex-1 gap-2 text-sm text-primary"
+          className="flex-1 px-4 py-1.5 rounded-lg font-semibold text-sm bg-white border-gray-300 hover:bg-gray-50 [&_.value]:text-gray-700"
+          value="Details"
+          iconLeft={<Eye className="w-4 h-4 text-primary" />}
           onClick={onViewDetails}
-        >
-          <Eye className="w-4 h-4" />
-          View Details
-        </Button>
+        />
       )}
-      <Button className="py-2 flex-1 gap-2 text-sm" onClick={onClick}>
-        <Send className="w-4 h-4" />
-        {titleButton}
-      </Button>
+      <Button
+        className="flex-1 bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white px-4 py-1.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all [&_.value]:text-white text-sm"
+        value={titleButton}
+        onClick={onClick}
+      />
     </Anchor>
   );
 };

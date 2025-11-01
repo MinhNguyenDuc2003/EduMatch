@@ -10,7 +10,13 @@ export default function PremiumBanner() {
   };
 
   return (
-    <div className="mb-4 relative overflow-hidden rounded-xl p-4 md:p-6 border-2 border-white/20 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer">
+    <div
+      className={`mb-4 relative overflow-hidden rounded-xl p-4 md:p-6 border-2 border-white/20 ${
+        isUpgraded
+          ? 'transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer'
+          : ''
+      }`}
+    >
       {/* Static gradient background */}
       <div className="absolute inset-0 bg-gradient-to-r from-slate-800 via-blue-700 to-slate-800"></div>
 
@@ -91,7 +97,7 @@ export default function PremiumBanner() {
               </div>
               <button
                 onClick={handleUpgrade}
-                className="flex items-center gap-2 bg-white text-blue-900 font-semibold py-2.5 px-6 rounded-lg hover:bg-gray-100 transition-all duration-200 shadow-lg whitespace-nowrap"
+                className="flex items-center gap-2 bg-white text-blue-900 font-semibold py-2.5 px-6 rounded-lg hover:cursor-pointer hover:bg-gray-100 transition-all duration-200 shadow-lg whitespace-nowrap"
               >
                 Upgrade Now
               </button>
