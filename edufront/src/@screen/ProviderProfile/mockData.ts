@@ -17,6 +17,9 @@ export const mockProviderProfileData: ProviderProfileApiResponse = {
     website: 'https://globaleducation.org',
     email: 'info@globaleducation.org',
     phone: '+1-555-0123',
+    logoUrl: 'https://iptime.com.vn/wp-content/uploads/2018/12/logo-fpt.jpg',
+    bannerUrl:
+      'https://tse3.mm.bing.net/th/id/OIP.H7B2zQa6tyItU1JR6pPcngHaEE?rs=1&pid=ImgDetMain&o=7&rm=3',
     addressSummary: '123 Education Street, New York, NY 10001, USA',
     description:
       'We are dedicated to providing educational opportunities to students worldwide through scholarships and grants.',

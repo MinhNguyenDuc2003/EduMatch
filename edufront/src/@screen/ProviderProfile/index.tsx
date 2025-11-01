@@ -7,15 +7,22 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DEFAULT_PROVIDER_FORM_VALUES, ORGANIZATION_TYPES, COUNTRIES } from './constants';
 import { mockProviderProfileData } from './mockData';
-import { Mail, Phone, Globe, Building2, Plus, Trash2 } from 'lucide-react';
+import { Mail, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { YEARS } from '@/constants/Common';
+import ProfileHeader from './components/ProfileHeader';
+import { useCreateProfileMutation, useGetProfileQuery } from '@/state/apiProvider';
+import type { ProviderProfile } from './types';
 
 export default function ProviderProfile() {
   // For now, use mock data. Replace with API call later
-  const profileData = mockProviderProfileData;
-  const isLoadingProfile = false;
+  const [bannerUrl, setBannerUrl] = useState<File | null>(null);
+  const [profileUrl, setProfileUrl] = useState<File | null>(null);
+
+  const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
+
+  const [createProfile] = useCreateProfileMutation();
 
   // Form setup
   const methods = useForm<IProviderProfile>({
@@ -28,17 +35,36 @@ export default function ProviderProfile() {
   const { watch, setValue } = methods;
   const currentData = watch('providerProfile');
 
+  // Handle image uploads
+  const handleBannerUpload = async (file: File) => {
+    try {
+      console.log('Uploading banner:', file);
+      // TODO: Call API to upload banner image
+      setBannerUrl(file);
+    } catch (error) {
+      console.error('Error uploading banner:', error);
+    }
+  };
+
+  const handleProfileUpload = async (file: File) => {
+    try {
+      console.log('Uploading profile image:', file);
+      // TODO: Call API to upload profile image
+      setProfileUrl(file);
+    } catch (error) {
+      console.error('Error uploading profile image:', error);
+    }
+  };
+
   // Reset form when profile data is loaded
   useEffect(() => {
-    if (profileData?.providerProfile) {
+    if (profileData) {
       const formData = {
         providerProfile: {
           ...DEFAULT_PROVIDER_FORM_VALUES.providerProfile,
           ...profileData.providerProfile,
         },
       };
-
-      console.log(formData);
       methods.reset(formData);
     }
   }, [profileData, methods]);
@@ -48,6 +74,17 @@ export default function ProviderProfile() {
       // TODO: Call API to update or create provider profile
       console.log('Submitting provider profile:', data);
       // await updateProviderProfile(data).unwrap();
+
+      const formData = new FormData();
+      formData.append('profile', JSON.stringify(data));
+      if (bannerUrl) {
+        formData.append('banner', bannerUrl);
+      }
+      if (profileUrl) {
+        formData.append('logo', profileUrl);
+      }
+
+      await createProfile(formData).unwrap();
     } catch (error) {
       console.error('Error updating organization info:', error);
       throw error;
@@ -76,66 +113,30 @@ export default function ProviderProfile() {
     );
   };
 
-  if (isLoadingProfile || !profileData) {
+  if (isLoadingProfile) {
     return <div className="min-h-screen bg-gray-50 py-8 px-4 lg:px-40">Loading...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6 bg-white">
       {/* Header Section with Profile Info Display */}
-      <div className="relative">
-        {/* Checkered pattern background */}
-        <div
-          className="h-32 w-full"
-          style={{
-            background: `
-              repeating-conic-gradient(#8B8B8B 0% 25%, #A8A8A8 0% 50%) 
-              50% / 40px 40px
-            `,
-          }}
-        />
-
-        {/* Blue header section */}
-        <div className="bg-[#3D6CB9] px-8 py-6 shadow-md">
-          <div className="max-w-4xl mx-auto flex items-center gap-8">
-            {/* Profile Picture */}
-            <div className="w-32 h-32 bg-gray-300 rounded-lg flex-shrink-0 border-4 border-white -mt-16" />
-
-            {/* Profile Info */}
-            <div className="text-white">
-              <h1 className="text-2xl font-bold mb-3">
-                {currentData?.organizationName || 'Organization Name'}
-              </h1>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  <span className="text-sm">{currentData?.email || 'N/A'}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  <span className="text-sm">{currentData?.phone || 'N/A'}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Globe className="w-4 h-4" />
-                  <span className="text-sm">{currentData?.website || 'N/A'}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ProfileHeader
+        currentData={currentData as ProviderProfile}
+        onBannerUpload={handleBannerUpload}
+        onProfileUpload={handleProfileUpload}
+        isEdit
+      />
 
       {/* Form Section */}
-      <div className="max-w-7xl mx-auto  px-8 py-8">
+      <div className="py-8">
         <Form {...methods}>
           <form
             onSubmit={methods.handleSubmit(onSubmit)}
             className="space-y-8 grid grid-cols-1 lg:grid-cols-2 gap-6 auto-rows-fr"
           >
             {/* Organization Information */}
-            <div className="space-y-6 rounded-lg border border-[#828282] p-6">
-              <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-                <Building2 className="w-6 h-6" />
+            <div className="space-y-6 ">
+              <h2 className="text-2xl font-semibold text-gray-900 flex items-center">
                 Organization Information
               </h2>
 
@@ -250,7 +251,7 @@ export default function ProviderProfile() {
             </div>
 
             {/* Contact Information */}
-            <div className="space-y-6 rounded-lg border border-[#828282] p-6">
+            <div className="space-y-6 ">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-semibold text-gray-900">Contact Persons</h2>
                 <Button

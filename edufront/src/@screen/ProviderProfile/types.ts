@@ -25,6 +25,8 @@ export interface ProviderProfile {
   website: string;
   email: string;
   phone: string;
+  logoUrl: string;
+  bannerUrl: string;
   addressSummary: string;
   description: string;
   yearEstablished: number;

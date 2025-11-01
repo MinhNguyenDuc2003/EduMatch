@@ -41,33 +41,8 @@ export const apiApplicant = createApi({
       }),
       invalidatesTags: ['Profile'],
     }),
-
-    // Create provider profile
-    createProviderProfile: build.mutation<ProviderProfileApiResponse, IProviderProfile>({
-      query: (data) => ({
-        url: API_ENDPOINTS.CREATE_PROFILE,
-        method: 'POST',
-        body: data,
-      }),
-      invalidatesTags: ['Profile'],
-    }),
-
-    // Update provider profile
-    updateProviderProfile: build.mutation<ProviderProfileApiResponse, IProviderProfile>({
-      query: (data) => ({
-        url: API_ENDPOINTS.UPDATE_PROFILE,
-        method: 'PUT',
-        body: data,
-      }),
-      invalidatesTags: ['Profile'],
-    }),
   }),
 });
 
-export const {
-  useGetProfileQuery,
-  useCreateProfileMutation,
-  useUpdateProfileMutation,
-  useCreateProviderProfileMutation,
-  useUpdateProviderProfileMutation,
-} = apiApplicant;
+export const { useGetProfileQuery, useCreateProfileMutation, useUpdateProfileMutation } =
+  apiApplicant;
