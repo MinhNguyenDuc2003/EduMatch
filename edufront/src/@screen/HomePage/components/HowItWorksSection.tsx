@@ -2,7 +2,7 @@ import { howItWorksSteps } from '../mockData';
 
 export default function HowItWorksSection() {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">How It Works</h2>

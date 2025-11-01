@@ -3,8 +3,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import Header from '@/pattern/core/Header';
 import Footer from '@/pattern/core/Footer';
-import { FilterSidebar, ScholarshipCard, RightSidebar } from './components';
-import { Search, Filter } from 'lucide-react';
+import { FilterSidebar, ScholarshipCard, RightSidebar, PremiumBanner } from './components';
+import { Filter } from 'lucide-react';
+import SearchBar from '@/pattern/share/SearchBar';
 import { mockScholarshipOpportunities } from '@/@screen/HomePage/mockData';
 
 export type FilterState = {
@@ -28,7 +29,7 @@ export default function ScholarshipsList() {
     studyLevel: '',
     university: '',
     minGpa: 0,
-    maxGpa: 10,
+    maxGpa: 4,
     page: 0,
     size: 100,
   });
@@ -63,9 +64,11 @@ export default function ScholarshipsList() {
       filtered = filtered.filter((item) => item.studyLevel === filters.studyLevel);
     }
 
-    // University filter (single value, matching API criteria.university)
+    // University filter (search mode)
     if (filters.university) {
-      filtered = filtered.filter((item) => item.university === filters.university);
+      filtered = filtered.filter((item) =>
+        item.university?.toLowerCase().includes(filters.university.toLowerCase())
+      );
     }
 
     // GPA filter (matching API minGpa and maxGpa)
@@ -92,7 +95,7 @@ export default function ScholarshipsList() {
       size: filters.size,
       keyword: filters.keyword || undefined,
       minGpa: filters.minGpa > 0 ? filters.minGpa : undefined,
-      maxGpa: filters.maxGpa !== 10 ? filters.maxGpa : undefined,
+      maxGpa: filters.maxGpa !== 4 ? filters.maxGpa : undefined,
     };
 
     // Remove undefined values from criteria
@@ -143,7 +146,7 @@ export default function ScholarshipsList() {
     if (filters.studyLevel) count++;
     if (filters.university) count++;
     if (filters.minGpa > 0) count++;
-    if (filters.maxGpa < 10) count++;
+    if (filters.maxGpa < 4) count++;
     return count;
   }, [filters]);
 
@@ -153,20 +156,12 @@ export default function ScholarshipsList() {
       <div className="lg:hidden fixed top-[60px] left-0 right-0 z-50 bg-white shadow-md border-b border-gray-200 px-4 py-3">
         <div className="flex flex-row items-center gap-3">
           {/* Search Bar - Always visible */}
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 z-10" />
-            <input
-              type="text"
+          <div className="flex-1">
+            <SearchBar
               placeholder="Search scholarships..."
               value={filters.keyword}
-              onChange={(e) => setFilters({ ...filters, keyword: e.target.value, page: 0 })}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  // Reset to first page when searching
-                  setFilters({ ...filters, keyword: e.currentTarget.value, page: 0 });
-                }
-              }}
-              className="w-full pl-10 pr-4 py-2.5 h-11 bg-gray-50 border border-gray-200 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all"
+              onChange={(value) => setFilters({ ...filters, keyword: value, page: 0 })}
+              inputClassName="h-11 rounded-full bg-gray-50"
             />
           </div>
 
@@ -227,6 +222,18 @@ export default function ScholarshipsList() {
 
             {/* Middle Content - Scholarship Cards (6 columns desktop, full width mobile) */}
             <div className="lg:col-span-6 lg:col-start-4">
+              {/* Premium Upgrade Banner */}
+              <PremiumBanner />
+
+              {/* Search Bar - Desktop only */}
+              <div className="mb-6">
+                <SearchBar
+                  placeholder="Search scholarships..."
+                  value={filters.keyword}
+                  onChange={(value) => setFilters({ ...filters, keyword: value, page: 0 })}
+                />
+              </div>
+
               <div className="space-y-4">
                 {isLoading ? (
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">

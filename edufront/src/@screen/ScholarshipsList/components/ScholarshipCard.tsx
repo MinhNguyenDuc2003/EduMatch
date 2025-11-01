@@ -14,7 +14,7 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
   const [isFollowing, setIsFollowing] = useState(false);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+    <div className="bg-[#FAFAF6] rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
       {/* Organization Header */}
       <div className="p-4 border-b border-gray-100">
         <div className="flex items-center justify-between">
@@ -116,7 +116,7 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
-              className="flex-1 px-4 py-1.5 rounded-lg font-semibold text-sm border-gray-300 hover:bg-gray-50 [&_.value]:text-gray-700"
+              className="flex-1 px-4 py-1.5 rounded-lg font-semibold text-sm bg-white border-gray-300 hover:bg-gray-50 [&_.value]:text-gray-700"
               value="Details"
               iconLeft={<Eye className="w-4 h-4 text-primary" />}
               onClick={() => router.push(`/scholarships/${scholarship.id}`)}

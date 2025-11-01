@@ -16,7 +16,7 @@ export default function ScholarshipsSection({
   const router = useRouter();
 
   return (
-    <section className="py-24 bg-gradient-to-b from-slate-50 to-white">
+    <section className="py-12 bg-gradient-to-b from-slate-50 to-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between mb-12">
           <div>
