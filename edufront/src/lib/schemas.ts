@@ -136,7 +136,6 @@ export type IApplicantProfile = z.infer<typeof applicantProfileSchema>;
 export const providerProfileSchema = z.object({
   providerProfile: z.object({
     id: z.number().optional(),
-    userId: z.string().optional(),
     organizationName: z.string().min(1, 'Organization name is required'),
     organizationType: z.string().min(1, 'Organization type is required'),
     website: z.string().url('Invalid website URL').optional().or(z.literal('')),
@@ -156,8 +155,6 @@ export const providerProfileSchema = z.object({
     providerContactDtos: z
       .array(
         z.object({
-          id: z.number().optional(),
-          providerId: z.number().optional(),
           contactName: z.string().min(1, 'Contact name is required'),
           roleTitle: z.string().min(1, 'Role title is required'),
           email: z.string().email('Invalid email address'),

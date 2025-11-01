@@ -25,7 +25,16 @@ export const apiProvider = createApi({
         body: formData,
       }),
     }),
+
+    updateProfile: build.mutation<ProviderProfileApiResponse, FormData>({
+      query: (formData) => ({
+        url: API_ENDPOINTS.PROVIDER_PROFILE,
+        method: 'PUT',
+        body: formData,
+      }),
+    }),
   }),
 });
 
-export const { useGetProfileQuery, useCreateProfileMutation } = apiProvider;
+export const { useGetProfileQuery, useCreateProfileMutation, useUpdateProfileMutation } =
+  apiProvider;

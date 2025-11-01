@@ -2,6 +2,7 @@ import { Camera, Globe, Mail, Phone } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { IProviderProfile } from '@/lib/schemas';
 import { ProviderProfile } from '../types';
+import { Skeleton } from '@/lib/cus/skeleton';
 
 interface ProfileHeaderProps {
   currentData?: ProviderProfile;
@@ -9,6 +10,35 @@ interface ProfileHeaderProps {
   onProfileUpload?: (file: File) => void;
   isEdit?: boolean;
 }
+
+export const ProfileHeaderSkeleton = () => {
+  return (
+    <div className="relative">
+      {/* Banner background */}
+      <Skeleton className="h-32 w-full rounded-t-lg" />
+
+      {/* Profile image */}
+      <div className="absolute left-1/2 -translate-x-1/2 md:-translate-x-0 top-16 md:left-16">
+        <Skeleton className="w-32 h-32 rounded-lg border-4 border-white" />
+      </div>
+
+      {/* Blue header section */}
+      <div className="bg-gradient-to-r from-[#1B3053] to-[#3D6CB9] md:px-64 md:py-6 px-8 pb-6 pt-16 rounded-b-lg">
+        <div className="flex items-center md:justify-start justify-center">
+          {/* Profile Info */}
+          <div className="text-white w-full">
+            <Skeleton className="h-8 w-64 mb-3 bg-white/20" />
+            <div className="space-y-2 grid grid-cols-1 md:grid-cols-2 gap-2">
+              <Skeleton className="h-5 w-48 bg-white/20" />
+              <Skeleton className="h-5 w-48 bg-white/20" />
+              <Skeleton className="h-5 w-48 bg-white/20" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const ProfileHeader = ({
   currentData,

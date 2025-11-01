@@ -23,7 +23,6 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { Plus, Trash2, Calendar, GraduationCap } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
 import { DEGREE_TYPES, INSTITUTION_TYPES, MAJOR_CATEGORIES } from '../constants';
-import { YEARS } from '@/constants/Common';
 import { IApplicantProfile } from '@/lib/schemas';
 
 interface EducationHistoryDialogProps {
@@ -265,9 +264,8 @@ const EducationHistoryDialog = ({
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.graduationYear`}
                   label="Graduation Year"
-                  type="select"
-                  placeholder="Select graduation year"
-                  options={YEARS}
+                  type="number"
+                  placeholder="Enter graduation year"
                   inlineLabel
                   isBorder
                 />

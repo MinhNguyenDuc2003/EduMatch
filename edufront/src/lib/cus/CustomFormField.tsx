@@ -60,7 +60,7 @@ interface FormFieldProps {
     | 'multi-input'
     | 'multi-select';
   placeholder?: string;
-  options?: { value: string | number; label: string }[];
+  options?: { value: string; label: string }[];
   accept?: string;
   className?: string;
   labelClassName?: string;
@@ -107,19 +107,9 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
       case 'select':
         return (
           <Select
-            value={String(field.value || initialValue || '')}
-            defaultValue={String(field.value || initialValue || '')}
-            onValueChange={(value) => {
-              // Try to match the type of the option value
-              const option = options?.find((opt) => String(opt.value) === value);
-              if (option) {
-                field.onChange(option.value);
-              } else {
-                // Fallback: try to preserve original type
-                const numValue = Number(value);
-                field.onChange(isNaN(numValue) ? value : numValue);
-              }
-            }}
+            value={field.value || (initialValue as string)}
+            defaultValue={field.value || (initialValue as string)}
+            onValueChange={field.onChange}
           >
             <SelectTrigger
               className={`w-full ${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-primarybg p-4 ${inputClassName}`}
