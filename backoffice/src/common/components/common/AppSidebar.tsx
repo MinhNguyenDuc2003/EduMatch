@@ -67,7 +67,7 @@ const AppSidebar = () => {
 
       {/* Content */}
       <SidebarContent>
-        <SidebarMenu className="mt-4 space-y-1">
+        <SidebarMenu className="mt-4 space-y-1 p-3">
           {navLinks.Admin.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -87,8 +87,8 @@ const AppSidebar = () => {
                       className={cn(
                         'w-5 h-5 transition-transform duration-200',
                         isActive
-                          ? 'text-white scale-110'
-                          : 'text-gray-500 group-hover:text-blue-600'
+                          ? 'text-black scale-110'
+                          : 'text-black group-hover:text-black'
                       )}
                     />
                     <span className="group-data-[collapsible=icon]:hidden">

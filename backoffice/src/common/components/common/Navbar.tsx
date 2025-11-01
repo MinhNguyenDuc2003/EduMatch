@@ -20,23 +20,7 @@ const Navbar = () => {
             <SidebarTrigger className="text-customgreys-dirtyGrey hover:text-white-50 transition-colors" />
           </div>
           <div className="flex items-center gap-4">
-            <div className="relative group">
-              <Link
-                scroll={false}
-                href="/search"
-                className={cn(
-                  "bg-customgreys-primarybg pl-10 sm:pl-14 pr-6 sm:pr-20 py-3 sm:py-4 rounded-xl text-customgreys-dirtyGrey hover:text-white-50 hover:bg-customgreys-darkerGrey transition-all duration-300 text-sm sm:text-base",
-                 
-                )}
-              >
-                <span className="hidden sm:inline">Search Courses</span>
-                <span className="sm:hidden">Search</span>
-              </Link>
-              <BookOpen
-                className="absolute left-3 sm:left-5 top-1/2 transform -translate-y-1/2 text-customgreys-dirtyGrey transition-all duration-300"
-                size={18}
-              />
-            </div>
+           
           </div>
         </div>
         <div className="flex items-center gap-3 sm:gap-6">
