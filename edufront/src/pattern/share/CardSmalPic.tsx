@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  GraduationCap,
-  MapPin,
-  Award,
-  Star,
-  Calendar,
-  DollarSign,
-  Building2,
-  BookOpen,
-  Bookmark,
-} from 'lucide-react';
+import { GraduationCap, MapPin, Star, Building2, Bookmark } from 'lucide-react';
 import Amount_Deadline from './Amount_Deadline';
 import FooterCard from './FooterCard';
 import { Anchor, Block, Card, RText, Section } from '@/lib/by/Div';
@@ -55,32 +45,6 @@ export default function CardSmalPic({
 }: CardScholarshipProps) {
   const ss = sStore();
 
-  const getScholarshipTypeColor = (type?: string) => {
-    switch (type?.toLowerCase()) {
-      case 'full':
-        return 'bg-green-50 text-green-700 border-green-200';
-      case 'partial':
-        return 'bg-blue-50 text-blue-700 border-blue-200';
-      case 'merit':
-        return 'bg-purple-50 text-purple-700 border-purple-200';
-      default:
-        return 'bg-gray-50 text-gray-700 border-gray-200';
-    }
-  };
-
-  const getStudyLevelIcon = (level?: string) => {
-    switch (level?.toLowerCase()) {
-      case 'bachelor':
-        return <GraduationCap className="w-3 h-3" />;
-      case 'master':
-        return <BookOpen className="w-3 h-3" />;
-      case 'phd':
-        return <Award className="w-3 h-3" />;
-      default:
-        return <GraduationCap className="w-3 h-3" />;
-    }
-  };
-
   return (
     <Section
       className={cn(
@@ -125,14 +89,13 @@ export default function CardSmalPic({
           </Card>
         </Block>
 
-        {/* Description */}
-        <Block className="text-gray-600 text-sm leading-relaxed">
+        {/* Description - Fixed height */}
+        <Block className="text-gray-600 text-sm leading-relaxed min-h-[40px]">
           <p className="line-clamp-2">{description}</p>
         </Block>
 
-        {/* Info Row */}
-        <Block className="space-y-2">
-          {/* Location and Study Level */}
+        {/* Info Row - Fixed height */}
+        <Block className="min-h-[48px]">
           <Block className="flex items-center gap-4 text-xs text-gray-600">
             {country && (
               <span className="flex items-center gap-1">
@@ -142,32 +105,16 @@ export default function CardSmalPic({
             )}
             {study_level && (
               <span className="flex items-center gap-1">
-                {getStudyLevelIcon(study_level)}
+                <GraduationCap className="w-3 h-3" />
                 {study_level}
               </span>
             )}
           </Block>
-
-          {/* GPA Requirement */}
           {gpa_requirement && (
-            <Block className="flex items-center gap-1 text-xs text-gray-600">
+            <Block className="flex items-center gap-1 text-xs text-gray-600 mt-1">
               <Star className="w-3 h-3" />
               <span>GPA {gpa_requirement}+</span>
             </Block>
-          )}
-        </Block>
-
-        {/* Tags */}
-        <Block className="flex flex-wrap gap-1">
-          {scholarship_type && (
-            <span
-              className={cn(
-                'inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border',
-                getScholarshipTypeColor(scholarship_type)
-              )}
-            >
-              {scholarship_type}
-            </span>
           )}
         </Block>
 

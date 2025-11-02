@@ -104,8 +104,6 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* <LanguageSwitcher /> */}
-
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="shadow-none rounded-full">

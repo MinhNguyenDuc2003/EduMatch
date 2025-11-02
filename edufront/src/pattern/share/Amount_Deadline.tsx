@@ -21,16 +21,11 @@ const Amount_Deadline = ({
 
   return (
     <Block
-      className={cn(
-        `flex ${isRow ? 'flex-row gap-6' : 'flex-col gap-3'} items-start`,
-        className
-      )}
+      className={cn(`flex ${isRow ? 'flex-row gap-6' : 'flex-col gap-3'} items-start`, className)}
     >
       {/* Amount */}
       <Card className="flex items-center gap-2">
-        <Block className="flex items-center justify-center w-8 h-8 rounded-lg bg-green-50">
-          <DollarSign className="w-4 h-4 text-green-600" />
-        </Block>
+        <DollarSign className="w-4 h-4 text-gray-600" />
         <Block>
           {isRow && <RText className="text-xs text-gray-500">Amount</RText>}
           <RText className="text-sm font-semibold text-gray-900">${amount.toLocaleString()}</RText>
@@ -39,9 +34,7 @@ const Amount_Deadline = ({
 
       {/* Deadline */}
       <Card className="flex items-center gap-2">
-        <Block className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50">
-          <Calendar className="w-4 h-4 text-blue-600" />
-        </Block>
+        <Calendar className="w-4 h-4 text-gray-600" />
         <Block>
           {isRow && <RText className="text-xs text-gray-500">Deadline</RText>}
           <RText className="text-sm font-semibold text-gray-900">{deadline}</RText>

@@ -10,8 +10,11 @@ import {
   Star,
   Users,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function BannerSection() {
+  const router = useRouter();
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-200">
       {/* Background Pattern */}
@@ -70,6 +73,7 @@ export default function BannerSection() {
                 variant="custom"
                 className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all [&_.value]:text-white"
                 value="Explore Scholarships"
+                onClick={() => router.push('/scholarships')}
               />
               <Button
                 variant="custom"
