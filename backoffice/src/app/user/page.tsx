@@ -1,8 +1,12 @@
+'use client';
+import { useState } from "react";
 import CustomDataTable from "src/common/components/common/CustomDataTable";
 import StatisticGrid from "src/common/components/common/StatisticGrid";
-import { Users, GraduationCap, ShieldCheck, School, UserCheck } from "lucide-react";
+import { Users, GraduationCap, ShieldCheck, School } from "lucide-react";
 
 export default function User() {
+  const [filterText, setFilterText] = useState("");
+
   const users = [
     {
       id: 1,
@@ -46,27 +50,41 @@ export default function User() {
     },
   ];
 
-  // ✅ Tính toán thống kê
   const totalUsers = users.length;
   const activeUsers = users.filter((u) => u.status === "Đang hoạt động").length;
   const sponsors = users.filter((u) => u.role === "Nhà tài trợ").length;
   const students = users.filter((u) => u.role === "Sinh viên").length;
 
-  // ✅ Dữ liệu cho component thống kê
   const stats = [
-    { title: "Tổng người dùng", value: totalUsers, icon: <Users />, color: "text-blue-600" },
-    { title: "Đang hoạt động", value: activeUsers, icon: <ShieldCheck />, color: "text-green-600" },
-    { title: "Nhà tài trợ", value: sponsors, icon: <GraduationCap />, color: "text-purple-600" },
-    { title: "Sinh viên", value: students, icon: <School />, color: "text-yellow-600" },
+    { title: "Tổng người dùng", value: totalUsers, icon: <Users />, color: "text-blue-600", filterName : '' },
+    { title: "Đang hoạt động", value: activeUsers, icon: <ShieldCheck />, color: "text-green-600", filterName: 'Đang hoạt động' },
+    { title: "Nhà tài trợ", value: sponsors, icon: <GraduationCap />, color: "text-purple-600", filterName: 'Nhà tài trợ' },
+    { title: "Sinh viên", value: students, icon: <School />, color: "text-yellow-600" , filterName: 'Sinh viên'},
   ];
+
+  const handleFilterSelect = (filterKey: string) => {
+    setFilterText(filterKey);
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 p-6">
-      {/* Các ô thống kê */}
-      <StatisticGrid stats={stats} />
+      <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
-      {/* Bảng người dùng */}
-      <CustomDataTable title="Danh sách người dùng" data={users as any} />
+      <CustomDataTable
+        title="Danh sách người dùng"
+        data={users as any}
+        customTitles={[
+          "ID",
+          "Họ và tên",
+          "Vai trò",
+          "Trường học",
+          "Email",
+          "Số học bổng",
+          "Ngày tham gia",
+          "Trạng thái",
+        ]}
+        externalFilterText={filterText} // truyền xuống bảng
+      />
     </div>
   );
 }

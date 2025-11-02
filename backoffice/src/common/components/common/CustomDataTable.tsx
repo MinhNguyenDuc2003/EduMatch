@@ -1,50 +1,46 @@
 'use client';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import * as XLSX from 'xlsx';
 import { motion } from 'framer-motion';
-import { ChevronDown ,ChevronUp} from 'lucide-react';
+import { Search, FileSpreadsheet } from 'lucide-react';
 
-const CustomDataTable = ({ title = 'Data Table', data = [] }) => {
-  const [filterText, setFilterText] = useState('');
+interface CustomDataTableProps {
+  title?: string;
+  data?: any[];
+  customTitles?: string[];
+  externalFilterText?: string;
+}
+
+const CustomDataTable = ({
+  title = 'Data Table',
+  data = [],
+  customTitles = [],
+  externalFilterText = '',
+}: CustomDataTableProps) => {
+  const [filterText, setFilterText] = useState(externalFilterText);
+
+  useEffect(() => {
+    setFilterText(externalFilterText);
+  }, [externalFilterText]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
 
   // Cột hiển thị dữ liệu
   const baseColumns = useMemo(() => {
     if (!data || data.length === 0) return [];
-    return Object.keys(data[0]).map((key) => ({
-      name: key.charAt(0).toUpperCase() + key.slice(1),
-      selector: (row) => row[key],
+    return Object.keys(data[0]).map((key, index) => ({
+      name: (customTitles as string[])[index] || key.charAt(0).toUpperCase() + key.slice(1),
+      selector: (row: any) => row[key],
       sortable: true,
-      cell: (row) => (
+      cell: (row: any) => (
         <div className="truncate max-w-[250px]" title={row[key]}>
-          {row[key]}
+          {' '}
+          {row[key]}{' '}
         </div>
       ),
     }));
-  }, [data]);
-
-  // ✅ Thêm cột cuối chứa nút mở rộng
-  const columns = [
-    ...baseColumns,
-    {
-      name: '',
-      button: true,
-      width: '60px',
-      cell: (row) => (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setExpandedRow(expandedRow === row.id ? null : row.id);
-          }}
-          className="flex justify-center items-center w-full text-gray-500 hover:text-blue-600 transition"
-        >
-          {expandedRow === row.id ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
-        </button>
-      ),
-    },
-  ];
+  }, [data, customTitles]);
 
   // Lọc dữ liệu
   const filteredData = useMemo(() => {
@@ -67,7 +63,7 @@ const CustomDataTable = ({ title = 'Data Table', data = [] }) => {
     XLSX.writeFile(wb, `${title.replace(/\s+/g, '_')}.xlsx`);
   };
 
-  // Hàng mở rộng chi tiết
+  // Component hiển thị chi tiết khi expand
   const ExpandedRow = ({ data }: { data: any }) => (
     <motion.div
       className="bg-gray-50 border-t border-gray-200 rounded-b-2xl p-5 shadow-inner"
@@ -76,10 +72,6 @@ const CustomDataTable = ({ title = 'Data Table', data = [] }) => {
       exit={{ opacity: 0, y: -8 }}
       transition={{ duration: 0.25 }}
     >
-      <div className="flex items-center gap-2 mb-3">
-        <h3 className="text-lg font-semibold text-gray-700">Thông tin chi tiết</h3>
-      </div>
-
       <div className="divide-y divide-gray-200 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         {Object.entries(data).map(([key, value], index) => (
           <div
@@ -89,7 +81,7 @@ const CustomDataTable = ({ title = 'Data Table', data = [] }) => {
             } hover:bg-blue-50 transition-colors duration-150`}
           >
             <span className="text-sm font-medium text-gray-600 w-1/3">
-              {key.charAt(0).toUpperCase() + key.slice(1)}:
+              {(customTitles as string[])[index] || key.charAt(0).toUpperCase() + key.slice(1)}:
             </span>
             <span className="text-sm text-gray-800 w-2/3 text-right break-words">
               {String(value) || '—'}
@@ -107,45 +99,49 @@ const CustomDataTable = ({ title = 'Data Table', data = [] }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      {/* Thanh tìm kiếm và xuất Excel */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-5 gap-3">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <h2 className="text-2xl font-bold text-gray-700">{title}</h2>
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <input
-            type="text"
-            placeholder="🔍 Tìm kiếm..."
-            className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all w-full md:w-64"
-            value={filterText}
-            onChange={(e) => setFilterText(e.target.value)}
-          />
-          <button
+
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="relative w-full md:w-72">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <input
+              type="text"
+              placeholder="Tìm kiếm..."
+              className="w-full border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm hover:shadow-md"
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+            />
+          </div>
+
+          <motion.button
             onClick={handleExportExcel}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg transition-all shadow-sm"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-green-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition-all"
           >
-            📤 Xuất Excel
-          </button>
+            <FileSpreadsheet size={18} />
+            <span>Xuất Excel</span>
+          </motion.button>
         </div>
       </div>
 
       {/* Bảng dữ liệu */}
       <DataTable
-        columns={columns}
+        columns={baseColumns}
         data={filteredData}
         pagination
         highlightOnHover
         striped
         dense
-        expandableIcon={{
-          collapsed: <></>,
-          expanded: <></>,
-        }}
         selectableRows
-        onSelectedRowsChange={({ selectedRows }) => setSelectedRows(selectedRows)}
+        onSelectedRowsChange={({ selectedRows }) => setSelectedRows(selectedRows as any)}
         paginationPerPage={10}
         paginationRowsPerPageOptions={[5, 10, 15]}
         expandableRows
         expandableRowExpanded={(row) => expandedRow === row.id}
         expandableRowsComponent={({ data }) => <ExpandedRow data={data} />}
+        onRowClicked={(row) => setExpandedRow(expandedRow === row.id ? null : row.id)}
         customStyles={{
           table: { style: { minWidth: '100%', whiteSpace: 'nowrap' } },
           headCells: {
