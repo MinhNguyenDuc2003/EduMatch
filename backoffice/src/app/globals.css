@@ -50,6 +50,9 @@
 .sc-ggWZvA.sc-hwkwBN.hWOHFS.kRmeht {
   display: none !important;
 }
+.sc-fVHBlr.kOdnNV{
+  overflow: visible !important;
+}
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

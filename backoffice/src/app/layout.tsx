@@ -1,7 +1,6 @@
 import { SidebarProvider } from "@commonServices/components/ui/sidebar";
 import AnimatedContainer from "src/common/components/common/AnimatedContainer";
 import AppSidebar from "src/common/components/common/AppSidebar";
-import Navbar from "src/common/components/common/Navbar";
 import "./globals.css";
 export const metadata = {
   title: 'EduMatch Dashboard',
@@ -20,8 +19,7 @@ export default function RootLayout({
           <div className="min-h-screen w-full bg-customgreys-primarybg flex ml-5">
             <AppSidebar />
             <AnimatedContainer>
-              <Navbar />
-              <main className="px-8 py-4">{children}</main>
+              <main className="ml-5">{children}</main>
             </AnimatedContainer>
           </div>
         </SidebarProvider>

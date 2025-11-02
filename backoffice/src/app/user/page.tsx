@@ -83,7 +83,7 @@ export default function User() {
           "Ngày tham gia",
           "Trạng thái",
         ]}
-        externalFilterText={filterText} // truyền xuống bảng
+        externalFilterText={filterText} 
       />
     </div>
   );
