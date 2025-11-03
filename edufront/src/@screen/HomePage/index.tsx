@@ -16,7 +16,7 @@ import { mockScholarshipOpportunities } from './mockData';
 export default function HomePage() {
   const router = useRouter();
   const scholarships = mockScholarshipOpportunities;
-  
+
   return (
     <>
       <BannerSection />

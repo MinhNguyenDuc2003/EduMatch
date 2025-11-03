@@ -14,23 +14,23 @@ export default function ScholarshipMetadata({
   onToggleSave,
 }: ScholarshipMetadataProps) {
   return (
-    <div className="flex flex-wrap items-center gap-6 mb-8">
+    <div className="flex flex-wrap items-center gap-6">
       {/* Date */}
       <div className="flex items-center gap-2 text-gray-600">
-        <Calendar className="w-5 h-5" />
+        <Calendar className="size-5" />
         <span className="font-medium">{formattedDate}</span>
       </div>
 
       {/* Amount */}
       <div className="flex items-center gap-2 text-gray-600">
-        <DollarSign className="w-5 h-5" />
-        <span className="font-medium">${amount}</span>
+        <DollarSign className="size-5" />
+        <span className="font-medium">{amount}</span>
       </div>
 
       {/* Bookmark */}
       <button
         onClick={onToggleSave}
-        className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+        className="flex items-center p-2 gap-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors"
         aria-label="Save scholarship"
       >
         <Bookmark
@@ -38,8 +38,8 @@ export default function ScholarshipMetadata({
             isSaved ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
           }`}
         />
+        <span className="font-medium">Save</span>
       </button>
     </div>
   );
 }
-

@@ -1,54 +1,55 @@
-import useCurrency from '@/hooks/useCurrency';
-import { Block, Card, Group, RText } from '@/lib/by/Div';
+import { Block, Card, RText } from '@/lib/by/Div';
 import { cn } from '@/lib/utils';
-import { sStore } from '@/stores';
 import { DollarSign, Calendar } from 'lucide-react';
 
-const Amount_Deadline = ({
-  amount,
-  deadline,
-  isRow,
-  className,
-}: {
-  amount: number;
-  deadline: string;
+type Amount_DeadlineProps = {
+  amount: string;
+  deadline: number;
   isRow?: boolean;
   className?: string;
-}) => {
-  const ss = sStore();
-  const locale = ss.Auth?.Locale;
-  const { Currency, currencyd, loading, error } = useCurrency();
+};
+
+// Helper function to parse funding amount to number
+const parseFundingAmount = (fundingAmount: string): number => {
+  if (!fundingAmount) return 0;
+  return parseFloat(fundingAmount.replace(/[^0-9.]/g, '')) || 0;
+};
+
+// Helper function to format end date
+const formatEndDate = (endDate: number): string => {
+  if (!endDate) return '';
+  return new Date(endDate).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};
+
+const Amount_Deadline = ({ amount, deadline, isRow, className }: Amount_DeadlineProps) => {
+  const formattedDate = formatEndDate(deadline);
+  const formattedAmount = parseFundingAmount(amount).toLocaleString('en-US');
 
   return (
     <Block
-      className={cn(`flex ${isRow ? 'flex-row gap-6' : 'flex-col gap-3'} items-start`, className)}
+      className={cn(`flex ${isRow ? 'flex-row gap-6' : 'flex-col gap-3'} items-center`, className)}
     >
       {/* Amount */}
-      <Card className="flex items-center gap-2">
-        <DollarSign className="w-4 h-4 text-gray-600" />
-        <Block>
+      <Card className="flex flex-col">
+        <Block className="flex items-center gap-2">
+          <DollarSign className="w-4 h-4 text-gray-600" />
           {isRow && <RText className="text-xs text-gray-500">Amount</RText>}
-          <RText className="text-sm font-semibold text-gray-900">${amount.toLocaleString()}</RText>
         </Block>
+        <RText className="text-sm font-semibold text-gray-900 mt-1">{formattedAmount}</RText>
       </Card>
 
       {/* Deadline */}
-      <Card className="flex items-center gap-2">
-        <Calendar className="w-4 h-4 text-gray-600" />
-        <Block>
+      <Card className="flex flex-col">
+        <Block className="flex items-center gap-2">
+          <Calendar className="w-4 h-4 text-gray-600" />
           {isRow && <RText className="text-xs text-gray-500">Deadline</RText>}
-          <RText className="text-sm font-semibold text-gray-900">{deadline}</RText>
         </Block>
+        <RText className="text-sm font-semibold text-gray-900 mt-1">{formattedDate}</RText>
       </Card>
-
-      {/* Currency Translation (if available) */}
-      {error && <p className="text-red-500 text-xs">{error}</p>}
-      {currencyd && (
-        <Card className="bg-[#F9FAFB] border border-[#E5E7EB] p-2 rounded-lg mt-2 w-full">
-          <RText className="text-xs font-semibold text-[#3D6CB9] mb-1">Bản dịch:</RText>
-          <p className="text-xs text-[#333] leading-relaxed">{currencyd}</p>
-        </Card>
-      )}
     </Block>
   );
 };
