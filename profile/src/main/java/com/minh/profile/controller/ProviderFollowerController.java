@@ -3,6 +3,7 @@ package com.minh.profile.controller;
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.profile.ProviderFollowerDto;
+import com.minh.profile.data.vo.ProviderProfileVo;
 import com.minh.profile.service.ProviderFollowerService;
 import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,12 @@ public class ProviderFollowerController {
     @GetMapping("/all")
     public ApiResponse<List<ProviderFollowerDto>> getAllFollowers(@RequestParam("userId") String userId) {
         return ApiResponse.ok(service.getAllFollowers(userId));
+    }
+
+    @Authorized
+    @GetMapping("/my-follow")
+    public ApiResponse<List<ProviderProfileVo>> getAllMyFollowers() {
+        return ApiResponse.ok(service.getAllMyFollowers());
     }
 
     @Authorized

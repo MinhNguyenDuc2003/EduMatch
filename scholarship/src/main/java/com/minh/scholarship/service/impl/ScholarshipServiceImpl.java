@@ -11,6 +11,7 @@ import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
 import com.minh.model.dto.scholarship.ScholarshipPreferenceDto;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
+import com.minh.scholarship.data.entity.junction.ScholarshipFollowerEntity;
 import com.minh.scholarship.data.entity.junction.ScholarshipMediaEntity;
 import com.minh.scholarship.data.mapper.ScholarshipFollowerMapper;
 import com.minh.scholarship.data.mapper.ScholarshipMapper;
@@ -39,7 +40,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,6 +77,10 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         List<ScholarshipPreferenceDto> preferences = scholarshipPreferenceMapper.toDto(scholarshipPreferenceRepository.findByScholarshipId(entity.getId()));
         ScholarshipVo scholarshipVo = scholarshipMapper.entityToVo(entity);
         scholarshipVo.setScholarshipPreferences(preferences);
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getOne(entity.getProviderId()));
+        if (ObjectUtils.isNotEmpty(providerProfileVo)) {
+            scholarshipVo.setProviderProfileVo(providerProfileVo);
+        }
         return addScholarshipMedia(scholarshipVo);
     }
 
@@ -89,6 +96,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ScholarshipVo create(ScholarshipVo scholarship, List<MultipartFile> images) {
+        if (scholarshipRepository.isExistSlug(scholarship.getSlug())) {
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_SLUG_IS_ALREADY_EXIST);
+        }
         ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getMyProviderInfo());
         if (ObjectUtils.isEmpty(providerProfileVo)) {
             throw new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST);
@@ -199,6 +209,37 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         String userId = UaaContextHolder.getUserId();
         scholarshipFollowerRepository.deleteByScholarshipIdAndUserId(dto.getScholarshipId(), userId);
         return dto;
+    }
+
+    @Override
+    public List<ScholarshipVo> getMyScholarship() {
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getMyProviderInfo());
+        List<ScholarshipEntity> scholarshipEntities = scholarshipRepository.getAllByProviderId(providerProfileVo.getId());
+        List<ScholarshipVo> scholarshipVos = new ArrayList<>();
+        scholarshipEntities.forEach(entity -> {
+            scholarshipVos.add(this.getById(entity.getId()));
+        });
+        return scholarshipVos;
+    }
+
+    @Override
+    public List<ScholarshipVo> getScholarshipFollow() {
+        List<ScholarshipVo> scholarshipVos = new ArrayList<>();
+        String userId = UaaContextHolder.getUserId();
+        List<ScholarshipFollowerEntity> scholarshipFollowerEntities = scholarshipFollowerRepository.getByUserId(userId);
+        if (ObjectUtils.isNotEmpty(scholarshipFollowerEntities)) {
+            List<ScholarshipEntity> scholarshipEntities = scholarshipRepository.findByIdIn(scholarshipFollowerEntities.stream().map(ScholarshipFollowerEntity::getScholarshipId).collect(Collectors.toList()));
+            scholarshipEntities.forEach(entity -> {
+                scholarshipVos.add(this.getById(entity.getId()));
+            });
+        }
+        return scholarshipVos;
+    }
+
+    @Override
+    public ScholarshipVo getBySlug(String slug) {
+        Optional<ScholarshipEntity> entity = scholarshipRepository.findBySlug(slug);
+        return entity.map(scholarshipEntity -> this.getById(scholarshipEntity.getId())).orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
     }
 
 }

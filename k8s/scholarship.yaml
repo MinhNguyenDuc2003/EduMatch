@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edumatch-scholarship-deployment
+  namespace: edumatch
+  labels:
+    app: edumatch-scholarship
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edumatch-scholarship
+  template:
+    metadata:
+      labels:
+        app: edumatch-scholarship
+    spec:
+      containers:
+        - name: edumatch-scholarship
+          image: registry.edumatch.space/edumatch/scholarship:1.1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: edumatch-registry-secret
+      volumes:
+        - name: scholarship-config-volume
+          configMap:
+            name: edumatch-scholarship-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edumatch-scholarship-service
+  namespace: edumatch
+spec:
+  selector:
+    app: edumatch-scholarship
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: edumatch-scholarship-ingress
+  namespace: edumatch
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: scholarship.edumatch.devopseduvn.live
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: edumatch-scholarship-service
+                port:
+                  number: 80

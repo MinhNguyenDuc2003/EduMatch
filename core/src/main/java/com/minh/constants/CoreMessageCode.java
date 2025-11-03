@@ -28,4 +28,5 @@ public final class CoreMessageCode {
     public static final String SUBSCRIPTION_PLAN_NOT_FOUND = "Subscription plan is not exist";
     public static final String SUBSCRIPTION_NOT_FOUND = "Subscription is not exist";
     public static final String PAYMENT_NOT_FOUND = "Payment is not exist";
+    public static final String SCHOLARSHIP_SLUG_IS_ALREADY_EXIST = "Scholarship slug is already exist";
 }

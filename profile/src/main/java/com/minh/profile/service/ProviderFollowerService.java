@@ -1,6 +1,7 @@
 package com.minh.profile.service;
 
 import com.minh.model.dto.profile.ProviderFollowerDto;
+import com.minh.profile.data.vo.ProviderProfileVo;
 
 import java.util.List;
 
@@ -13,4 +14,7 @@ public interface ProviderFollowerService {
     List<ProviderFollowerDto> getAllFollowers(String userId);
 
     List<ProviderFollowerDto> getAllProviders();
+
+    List<ProviderProfileVo> getAllMyFollowers();
+
 }

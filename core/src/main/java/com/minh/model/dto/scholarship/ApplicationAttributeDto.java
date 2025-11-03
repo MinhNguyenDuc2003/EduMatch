@@ -16,6 +16,8 @@ public class ApplicationAttributeDto extends BaseDto {
 
     private Long id;
 
+    private String applicationId;
+
     private String key;
 
     private String value;

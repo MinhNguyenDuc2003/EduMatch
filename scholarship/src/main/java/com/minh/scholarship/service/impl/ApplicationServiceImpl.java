@@ -1,17 +1,20 @@
 package com.minh.scholarship.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.CoreMessageCode;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.scholarship.ApplicationAttributeDto;
+import com.minh.scholarship.data.entity.ApplicationAttributeEntity;
 import com.minh.scholarship.data.entity.ApplicationEntity;
 import com.minh.scholarship.data.entity.junction.ApplicationMediaEntity;
+import com.minh.scholarship.data.mapper.ApplicationAttributeMapper;
 import com.minh.scholarship.data.mapper.ApplicationMapper;
-import com.minh.scholarship.data.repository.ApplicationRepository;
-import com.minh.scholarship.data.repository.ApplicationMediaRepository;
 import com.minh.scholarship.data.repository.ApplicationAttributeRepository;
+import com.minh.scholarship.data.repository.ApplicationMediaRepository;
+import com.minh.scholarship.data.repository.ApplicationRepository;
 import com.minh.scholarship.data.vo.ApplicationVo;
 import com.minh.scholarship.feign.MediaFeign;
 import com.minh.scholarship.model.filter.ApplicationFilter;
@@ -38,6 +41,7 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     private final ApplicationAttributeRepository applicationAttributeRepository;
     private final MediaFeign mediaFeign;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ApplicationAttributeMapper applicationAttributeMapper;
 
     @Override
     public List<ApplicationVo> getAll() {
@@ -74,19 +78,15 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public ApplicationVo create(ApplicationVo applicationVo, List<MultipartFile> mediaFiles, String attributesJson) {
+    public ApplicationVo create(ApplicationVo applicationVo, List<MultipartFile> mediaFiles, String attributesJson) throws JsonProcessingException {
         ApplicationEntity entity = applicationRepository.save(applicationMapper.toEntity(applicationVo));
 
         if (ObjectUtils.isNotEmpty(attributesJson)) {
-            try {
-                List<ApplicationAttributeDto> attrs =
-                        objectMapper.readValue(attributesJson, new TypeReference<List<ApplicationAttributeDto>>() {});
-                applicationAttributeRepository.saveAll(
-                        applicationMapper.toAttributeEntity(attrs)
-                );
-            } catch (IOException e) {
-                throw new RuntimeException("Invalid attributes JSON", e);
-            }
+            List<ApplicationAttributeDto> attrs = objectMapper.readValue(attributesJson, new TypeReference<List<ApplicationAttributeDto>>() {
+            });
+            List<ApplicationAttributeEntity> attributeEntities = applicationAttributeMapper.toEntity(attrs);
+            attributeEntities.forEach(o -> o.setApplicationId(entity.getId()));
+            applicationAttributeRepository.saveAll(attributeEntities);
         }
 
         if (ObjectUtils.isNotEmpty(mediaFiles)) {
@@ -98,31 +98,27 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public ApplicationVo update(Long id, ApplicationVo applicationVo, List<MultipartFile> mediaFiles, String attributesJson) {
+    public ApplicationVo update(Long id, ApplicationVo applicationVo, List<MultipartFile> mediaFiles, String attributesJson) throws JsonProcessingException {
         ApplicationEntity entity = applicationRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST));
+
+        applicationMapper.updateEntityFromVo(applicationVo, entity);
+        ApplicationEntity saved = applicationRepository.save(entity);
 
         applicationMediaRepository.deleteAllByApplicationId(id);
         applicationAttributeRepository.deleteAllByApplicationId(id);
 
         if (ObjectUtils.isNotEmpty(attributesJson)) {
-            try {
-                List<ApplicationAttributeDto> attrs =
-                        objectMapper.readValue(attributesJson, new TypeReference<List<ApplicationAttributeDto>>() {});
-                applicationAttributeRepository.saveAll(
-                        applicationMapper.toAttributeEntity(attrs)
-                );
-            } catch (IOException e) {
-                throw new RuntimeException("Invalid attributes JSON", e);
-            }
+            List<ApplicationAttributeDto> attrs = objectMapper.readValue(attributesJson, new TypeReference<List<ApplicationAttributeDto>>() {
+            });
+            List<ApplicationAttributeEntity> attributeEntities = applicationAttributeMapper.toEntity(attrs);
+            attributeEntities.forEach(o -> o.setApplicationId(saved.getId()));
+            applicationAttributeRepository.saveAll(attributeEntities);
         }
 
         if (ObjectUtils.isNotEmpty(mediaFiles)) {
             uploadImages(mediaFiles, id);
         }
-
-        applicationMapper.updateEntityFromVo(applicationVo, entity);
-        applicationRepository.save(entity);
         return getById(id);
     }
 

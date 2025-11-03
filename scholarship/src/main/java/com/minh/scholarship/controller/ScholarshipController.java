@@ -34,9 +34,20 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getById(id));
     }
 
+    @GetMapping("/slug")
+    public ApiResponse<ScholarshipVo> getBySlug(@RequestParam String slug) {
+        return ApiResponse.ok(scholarshipService.getBySlug(slug));
+    }
+
     @GetMapping("/{id}/all")
     public ApiResponse<ScholarshipVo> getByIdAll(@PathVariable Long id) {
         return ApiResponse.ok(scholarshipService.getByIdAll(id));
+    }
+
+    @Authorized
+    @GetMapping("/my-scholarship")
+    public ApiResponse<List<ScholarshipVo>> getMyScholarship() {
+        return ApiResponse.ok(scholarshipService.getMyScholarship());
     }
 
     @Authorized
@@ -63,6 +74,11 @@ public class ScholarshipController {
     public ApiResponse<Void> delete(@PathVariable Long id) {
         scholarshipService.delete(id);
         return ApiResponse.ok();
+    }
+
+    @GetMapping("/follow")
+    public ApiResponse<List<ScholarshipVo>> getScholarshipFollow() {
+        return ApiResponse.ok(scholarshipService.getScholarshipFollow());
     }
 
     @PostMapping("/follow")

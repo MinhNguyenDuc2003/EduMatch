@@ -1,6 +1,6 @@
 package com.minh.scholarship.service;
 
-import com.minh.model.dto.scholarship.ApplicationDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.minh.scholarship.data.vo.ApplicationVo;
 import com.minh.scholarship.model.filter.ApplicationFilter;
 import org.springframework.data.domain.Page;
@@ -18,12 +18,12 @@ public interface ApplicationService {
 
     ApplicationVo create(ApplicationVo applicationVo,
                          List<MultipartFile> mediaFiles,
-                         String attributesJson);
+                         String attributesJson) throws JsonProcessingException;
 
     ApplicationVo update(Long id,
                          ApplicationVo applicationVo,
                          List<MultipartFile> mediaFiles,
-                         String attributesJson);
+                         String attributesJson) throws JsonProcessingException;
 
     void delete(Long id);
 }

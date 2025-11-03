@@ -28,8 +28,8 @@ public interface ApplicationMapper extends BaseMapper<ApplicationEntity, Applica
         void updateEntityFromVo(ApplicationVo applicationVo, @MappingTarget ApplicationEntity entity);
 
         // VO -> Entity (khi create)
-        @Named("toEntity")
-        ApplicationEntity toEntity(ApplicationVo vo);
+        @Named("voToEntity")
+        ApplicationEntity voToEntity(ApplicationVo vo);
 
         // ---------------- ATTRIBUTE MAPPING ----------------
 
