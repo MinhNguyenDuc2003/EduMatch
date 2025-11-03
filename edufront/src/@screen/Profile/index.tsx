@@ -8,7 +8,6 @@ import {
   ArrayInfoCard,
   StudentInformationDialog,
   SkillsDialog,
-  PhoneNumbersDialog,
   EducationHistoryDialog,
   CertificatesDialog,
   IntentionsDialog,
@@ -20,6 +19,7 @@ import Certificates from './components/Certificates';
 import Intentions from './components/Intentions';
 import HistoryCard from './components/HistoryCard';
 import SkillCard from './components/SkillCard';
+import PreferenceCard from './components/PreferenceCard';
 import Header from '@/pattern/core/Header';
 import Footer from '@/pattern/core/Footer';
 import { Form } from '@/lib/cus/form';
@@ -29,9 +29,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { DEFAULT_PROFILE_FORM_VALUES } from './constants';
 import {
   useGetProfileQuery,
-  useGetCountriesQuery,
-  useGetStateOrProvincesQuery,
-  useGetDistrictsQuery,
   useCreateProfileMutation,
   useUpdateProfileMutation,
 } from '@/state/apiApplicant';
@@ -39,15 +36,14 @@ import {
 export default function Profile() {
   const [isStudentInfoDialogOpen, setIsStudentInfoDialogOpen] = useState(false);
   const [isSkillsDialogOpen, setIsSkillsDialogOpen] = useState(false);
-  const [isPhonesDialogOpen, setIsPhonesDialogOpen] = useState(false);
   const [isEducationDialogOpen, setIsEducationDialogOpen] = useState(false);
   const [isCertificatesDialogOpen, setIsCertificatesDialogOpen] = useState(false);
   const [isIntentionsDialogOpen, setIsIntentionsDialogOpen] = useState(false);
   const [isActivitiesDialogOpen, setIsActivitiesDialogOpen] = useState(false);
+  const [isPreferencesDialogOpen, setIsPreferencesDialogOpen] = useState(false);
 
   // RTK Query hooks
   const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
-  const { data: countries } = useGetCountriesQuery();
   const [createProfile] = useCreateProfileMutation();
   const [updateProfile] = useUpdateProfileMutation();
 
@@ -59,18 +55,6 @@ export default function Profile() {
     defaultValues: DEFAULT_PROFILE_FORM_VALUES,
   });
 
-  // Watch for country and state selection changes
-  const countryId = methods.watch('addressPostVm.countryId');
-  const stateOrProvinceId = methods.watch('addressPostVm.stateOrProvinceId');
-
-  // Lazy queries for states and districts
-  const { data: statesOrProvinces } = useGetStateOrProvincesQuery(countryId, {
-    skip: !countryId || countryId <= 0,
-  });
-  const { data: districts } = useGetDistrictsQuery(stateOrProvinceId, {
-    skip: !stateOrProvinceId || stateOrProvinceId <= 0,
-  });
-
   // Reset form when profile data is loaded
   useEffect(() => {
     if (profileData) {
@@ -78,10 +62,6 @@ export default function Profile() {
         applicantProfile: {
           ...DEFAULT_PROFILE_FORM_VALUES.applicantProfile,
           ...profileData.applicantProfile,
-        },
-        addressPostVm: {
-          ...DEFAULT_PROFILE_FORM_VALUES.addressPostVm,
-          ...profileData.addresses?.[0],
         },
       };
       methods.reset(formData);
@@ -93,8 +73,6 @@ export default function Profile() {
       setIsStudentInfoDialogOpen(true);
     } else if (section === 'skills') {
       setIsSkillsDialogOpen(true);
-    } else if (section === 'phone-add') {
-      setIsPhonesDialogOpen(true);
     } else if (section === 'education-add') {
       setIsEducationDialogOpen(true);
     } else if (section === 'certificate-add') {
@@ -103,6 +81,8 @@ export default function Profile() {
       setIsIntentionsDialogOpen(true);
     } else if (section === 'activities') {
       setIsActivitiesDialogOpen(true);
+    } else if (section === 'preferences') {
+      setIsPreferencesDialogOpen(true);
     }
   };
 
@@ -127,31 +107,20 @@ export default function Profile() {
           ...DEFAULT_PROFILE_FORM_VALUES.applicantProfile,
           ...profileData.applicantProfile,
         },
-        addressPostVm: {
-          ...DEFAULT_PROFILE_FORM_VALUES.addressPostVm,
-          ...profileData.addresses?.[0],
-        },
       };
       methods.reset(formData);
     }
   };
 
   if (isLoadingProfile || !profileData) {
-    return (
-      <>
-        <Header />
-        <ProfileSkeleton />
-        <Footer />
-      </>
-    );
+    return <ProfileSkeleton />;
   }
 
   const uiData = transformProfileData(profileData);
-  const { customer, applicantProfile, addresses } = profileData;
+  const { customer, applicantProfile } = profileData;
 
   return (
     <Form {...methods}>
-      <Header />
       <div className="min-h-screen bg-gray-50 py-8 px-4 lg:px-40">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Profile Header */}
@@ -187,13 +156,8 @@ export default function Profile() {
                   value: applicantProfile?.lastName,
                 },
                 {
-                  label: 'Address',
-                  value:
-                    addresses && addresses.length > 0
-                      ? `${addresses[0].addressLine1 || ''}, ${addresses[0].districtName || ''}, ${addresses[0].city || ''}, ${addresses[0].countryName || ''}`
-                          .replace(/,\s*,/g, ',')
-                          .replace(/^,\s*|,\s*$/g, '')
-                      : undefined,
+                  label: 'Phone Number',
+                  value: applicantProfile?.phoneNumber,
                 },
                 {
                   label: 'Overall GPA',
@@ -278,27 +242,14 @@ export default function Profile() {
               className="lg:row-span-2"
             />
 
+            {/* Applicant Preferences Section */}
             <ArrayInfoCard
-              title="Phone Numbers"
-              items={applicantProfile?.phoneNumbers}
-              onEdit={() => handleEdit('phone-add')}
-              renderItem={(phone) => (
-                <div className="space-y-1 flex justify-between">
-                  <div className="text-sm font-medium text-gray-900">
-                    {phone.phoneType}{' '}
-                    {phone.isInternational && (
-                      <span className="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded">
-                        International
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {phone.countryCode} {phone.phoneNumber}
-                  </div>
-                </div>
-              )}
-              emptyMessage="No phone numbers added"
-              className="lg:col-start-2 lg:row-start-3"
+              title="Applicant Preferences"
+              items={applicantProfile?.applicantPreferences}
+              onEdit={() => handleEdit('preferences')}
+              renderItem={(preference) => <PreferenceCard preference={preference} />}
+              emptyMessage="No preferences added"
+              className="lg:col-start-2 lg:row-start-3 "
             />
 
             <InfoCard
@@ -346,31 +297,18 @@ export default function Profile() {
         </div>
       </div>
 
-      <Footer />
-
       {/* Student Information Dialog */}
       <StudentInformationDialog
         open={isStudentInfoDialogOpen}
         onOpenChange={setIsStudentInfoDialogOpen}
         onSubmit={handleStudentInfoSubmit}
         onCancel={handleStudentInfoCancel}
-        countries={countries}
-        statesOrProvinces={statesOrProvinces}
-        districts={districts}
       />
 
       {/* Skills Dialog */}
       <SkillsDialog
         open={isSkillsDialogOpen}
         onOpenChange={setIsSkillsDialogOpen}
-        onSubmit={handleStudentInfoSubmit}
-        onCancel={handleStudentInfoCancel}
-      />
-
-      {/* Phone Numbers Dialog */}
-      <PhoneNumbersDialog
-        open={isPhonesDialogOpen}
-        onOpenChange={setIsPhonesDialogOpen}
         onSubmit={handleStudentInfoSubmit}
         onCancel={handleStudentInfoCancel}
       />

@@ -21,7 +21,7 @@ import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { Plus, Trash2, GraduationCap, Calendar, MapPin } from 'lucide-react';
-import { DEGREE_TYPES, MAJOR_CATEGORIES, GRADUATION_YEARS } from '../constants';
+import { DEGREE_TYPES, MAJOR_CATEGORIES } from '../constants';
 import { IApplicantProfile } from '@/lib/schemas';
 
 interface IntentionsDialogProps {
@@ -212,9 +212,8 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.expectedGraduationYear`}
                   label="Expected Graduation Year"
-                  type="select"
-                  placeholder="Select graduation year"
-                  options={GRADUATION_YEARS}
+                  type="number"
+                  placeholder="Enter graduation year"
                   inlineLabel
                   isBorder
                 />

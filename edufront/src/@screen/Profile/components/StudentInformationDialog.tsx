@@ -20,7 +20,6 @@ import {
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { Country, StateOrProvince, District } from '@/@screen/Profile/types';
 import religions from '@/constants/religions.json';
 import ethnicities from '@/constants/ethnicities.json';
 import races from '@/constants/races.json';
@@ -32,9 +31,6 @@ interface StudentInformationDialogProps {
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: IApplicantProfile) => void;
   onCancel: () => void;
-  countries?: Country[];
-  statesOrProvinces?: StateOrProvince[];
-  districts?: District[];
 }
 
 const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
@@ -42,12 +38,9 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
   onOpenChange,
   onSubmit,
   onCancel,
-  countries,
-  statesOrProvinces,
-  districts,
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { handleSubmit, watch } = useFormContext<IApplicantProfile>();
+  const { handleSubmit } = useFormContext<IApplicantProfile>();
 
   const handleFormSubmit = (data: IApplicantProfile) => {
     onSubmit(data);
@@ -61,10 +54,10 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 
   const Content = () => (
     <div className="space-y-6">
-      {/* I. Personal Section */}
+      {/* Personal Section */}
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">I. Personal</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Student Information</h3>
           <p className="text-sm text-gray-600 mb-4">
             Provide your personal details and academic background to help us understand your
             qualifications.
@@ -93,6 +86,14 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             name="applicantProfile.contactName"
             label="Contact Name"
             placeholder="Add Info"
+            inlineLabel
+            isBorder
+          />
+
+          <CustomFormField
+            name="applicantProfile.phoneNumber"
+            label="Phone Number"
+            placeholder="+1 234 567 8900"
             inlineLabel
             isBorder
           />
@@ -177,125 +178,6 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             inlineLabel
             isBorder
           />
-        </div>
-      </div>
-
-      {/* II. Address Section */}
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">II. Address</h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Provide your address information for contact and correspondence purposes.
-          </p>
-        </div>
-
-        {/* Address Information */}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <CustomFormField
-            name="addressPostVm.contactName"
-            label="Contact Name"
-            placeholder="Contact Name"
-            labelClassName="w-32 flex-shrink-0"
-            inlineLabel
-            isBorder
-          />
-
-          <CustomFormField
-            name="addressPostVm.phone"
-            label="Phone"
-            placeholder="Phone Number"
-            labelClassName="w-32 flex-shrink-0"
-            inlineLabel
-            isBorder
-          />
-
-          <CustomFormField
-            name="addressPostVm.addressLine1"
-            label="Address Line 1"
-            placeholder="Street Address"
-            labelClassName="w-32 flex-shrink-0"
-            inlineLabel
-            isBorder
-          />
-
-          <CustomFormField
-            name="addressPostVm.addressLine2"
-            label="Address Line 2"
-            placeholder="Apartment, Suite, etc. (Optional)"
-            labelClassName="w-32 flex-shrink-0"
-            inlineLabel
-            isBorder
-          />
-
-          <CustomFormField
-            name="addressPostVm.city"
-            label="City"
-            placeholder="City"
-            labelClassName="w-32 flex-shrink-0"
-            inlineLabel
-            isBorder
-          />
-
-          <CustomFormField
-            name="addressPostVm.zipCode"
-            label="Zip Code"
-            placeholder="Zip Code"
-            labelClassName="w-32 flex-shrink-0"
-            inlineLabel
-            isBorder
-          />
-
-          <CustomFormField
-            name="addressPostVm.countryId"
-            label="Country"
-            type="select"
-            placeholder="Select Country"
-            options={
-              countries?.map((country) => ({
-                value: country.id,
-                label: country.name,
-              })) || []
-            }
-            labelClassName="w-32 flex-shrink-0"
-            inlineLabel
-            isBorder
-          />
-
-          {watch('addressPostVm.countryId') > 0 && (
-            <CustomFormField
-              name="addressPostVm.stateOrProvinceId"
-              label="State/Province"
-              placeholder="Select State/Province"
-              type="select"
-              labelClassName="w-32 flex-shrink-0"
-              options={
-                statesOrProvinces?.map((state) => ({
-                  value: state.id,
-                  label: state.name,
-                })) || []
-              }
-              inlineLabel
-              isBorder
-            />
-          )}
-          {watch('addressPostVm.stateOrProvinceId') > 0 && (
-            <CustomFormField
-              name="addressPostVm.districtId"
-              label="District"
-              type="select"
-              placeholder="Select District"
-              labelClassName="w-32 flex-shrink-0"
-              options={
-                districts?.map((district) => ({
-                  value: district.id,
-                  label: district.name,
-                })) || []
-              }
-              inlineLabel
-              isBorder
-            />
-          )}
         </div>
       </div>
 

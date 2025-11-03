@@ -39,13 +39,13 @@ export interface EducationHistory {
   notes: string;
 }
 
-export interface PhoneNumber {
+export interface ApplicantPreference {
   id: number;
   applicantId: number;
-  phoneType: string;
-  countryCode: string;
-  phoneNumber: string;
-  isInternational: boolean;
+  type: string;
+  value: string;
+  weight: number;
+  note: string;
 }
 
 export interface Skill {
@@ -79,6 +79,7 @@ export interface ApplicantProfile {
   contactName: string;
   firstName: string;
   lastName: string;
+  phoneNumber: string;
   religion: string;
   hometown: string;
   citizenshipStatus: string;
@@ -96,44 +97,15 @@ export interface ApplicantProfile {
   overallGpa: number;
   certificates: Certificate[];
   educationHistories: EducationHistory[];
-  phoneNumbers: PhoneNumber[];
+  applicantPreferences: ApplicantPreference[];
   skills: Skill[];
   intentions: Intention[];
-}
-
-export interface Address {
-  id: number;
-  contactName: string;
-  phone: string;
-  addressLine1: string;
-  city: string;
-  zipCode: string;
-  districtId: number;
-  districtName: string;
-  stateOrProvinceId: number;
-  stateOrProvinceName: string;
-  countryId: number;
-  countryName: string;
-  isActive: boolean;
-}
-
-export interface AddressPostVm {
-  contactName: string;
-  phone: string;
-  addressLine1: string;
-  city: string;
-  zipCode: string;
-  districtId: number;
-  stateOrProvinceId: number;
-  countryId: number;
-  id: number;
 }
 
 export interface ProfileApiResponse {
   customer: Customer;
   applicantProfile?: ApplicantProfile;
   providerProfile: null;
-  addresses: Address[];
 }
 
 // UI Component Types
@@ -149,29 +121,4 @@ export interface ProfileData {
   avatarUrl?: string;
   stats: ProfileStats;
   profileStrength: number;
-}
-
-export interface Country {
-  id: number;
-  code2: string;
-  name: string;
-  code3: string;
-  isBillingEnabled: boolean;
-  isShippingEnabled: boolean;
-  isCityEnabled: boolean;
-  isZipCodeEnabled: boolean;
-  isDistrictEnabled: boolean;
-}
-
-export interface StateOrProvince {
-  id: number;
-  name: string;
-  code: string;
-  type: string;
-  countryId: number;
-}
-
-export interface District {
-  id: number;
-  name: string;
 }

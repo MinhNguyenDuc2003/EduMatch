@@ -3,9 +3,8 @@ import { devtools, persist, createJSONStorage } from 'zustand/middleware';
 import { reduce } from 'lodash';
 import { AuthSlice } from './slice/Auth';
 import { JointSlice } from './slice/Joint';
-import { ApplicantSlice } from './slice/Applicant';
 
-const sliceFunctions = [AuthSlice, JointSlice, ApplicantSlice];
+const sliceFunctions = [AuthSlice, JointSlice];
 
 type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
   k: infer I

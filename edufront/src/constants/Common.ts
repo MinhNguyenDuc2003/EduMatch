@@ -124,3 +124,8 @@ export const scholarshipProviderMenuItems = [
     href: '/provider/guidelines',
   },
 ];
+
+export const YEARS = Array.from({ length: 201 }, (_, i) => 2100 - i).map((year) => ({
+  value: year,
+  label: String(year),
+}));

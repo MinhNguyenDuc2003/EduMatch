@@ -6,13 +6,14 @@ declare global {
     FunctionDescription?: null;
     Module?: string;
     FunctionType?: string;
-    Permissions?: string ;
+    Permissions?: string;
     ParentFunctionID?: string;
     IsShow?: boolean;
   };
-export const enum TaskType {
-  TRANSLATE = 'translate',
-  CURRENCY = 'currency',
-}
+
+  export const enum TaskType {
+    TRANSLATE = 'translate',
+    CURRENCY = 'currency',
+  }
 }
 export {};
