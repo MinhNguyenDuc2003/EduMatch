@@ -1,10 +1,12 @@
 package com.minh.model.dto.scholarship;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.minh.model.dto.BaseDto;
+import com.minh.utils.StringUtil;
 import com.minh.utils.serializer.DateToTimestamp;
 import com.minh.utils.serializer.TimestampToDate;
 import lombok.*;
@@ -63,5 +65,14 @@ public class ScholarshipDto extends BaseDto {
     private Double gpaRequirement;
 
     private Boolean isDeleted;
+
+    @JsonIgnore
+    public void beautify() {
+        this.university = StringUtil.normalize(this.university);
+        this.country = StringUtil.normalize(this.country);
+        this.scholarshipType = StringUtil.normalize(this.scholarshipType);
+        this.studyLevel = StringUtil.normalize(this.studyLevel);
+
+    }
 
 }

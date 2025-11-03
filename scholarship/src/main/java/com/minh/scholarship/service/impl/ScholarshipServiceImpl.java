@@ -188,6 +188,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public Page<ScholarshipVo> getPage(ScholarshipFilter filter) {
+        filter.beautify();
         return scholarshipRepository.getPageable(filter.getPageable(), filter.getCriteria().getUniversity(),
                 filter.getCriteria().getCountry(), filter.getCriteria().getScholarshipType(),
                 filter.getCriteria().getStudyLevel()).map(o -> {
