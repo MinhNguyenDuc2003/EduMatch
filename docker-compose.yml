@@ -112,7 +112,7 @@ services:
     networks:
       - m-network
   subscription:
-    image: registry.edumatch.space/edumatch/subscription:1.1.0
+    image: registry.edumatch.space/edumatch/subscription:1.0.0
     environment:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
