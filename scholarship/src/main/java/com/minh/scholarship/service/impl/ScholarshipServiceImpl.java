@@ -64,7 +64,6 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Value("${kafka.scholarship.new-event.topic}")
     private String newEventScholarshipTopic;
 
-
     @Override
     public List<ScholarshipDto> getAll() {
         return scholarshipMapper.toDto(scholarshipRepository.findAll());
@@ -240,6 +239,16 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     public ScholarshipVo getBySlug(String slug) {
         Optional<ScholarshipEntity> entity = scholarshipRepository.findBySlug(slug);
         return entity.map(scholarshipEntity -> this.getById(scholarshipEntity.getId())).orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
+    }
+
+    @Override
+    public List<ScholarshipVo> getScholarshipByProviderId(Long id) {
+        List<ScholarshipEntity> entities = scholarshipRepository.getAllByProviderId(id);
+        List<ScholarshipVo> scholarshipVos = new ArrayList<>();
+        entities.forEach(entity -> {
+            scholarshipVos.add(this.getById(entity.getId()));
+        });
+        return scholarshipVos;
     }
 
 }

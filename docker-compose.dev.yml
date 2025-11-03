@@ -42,6 +42,8 @@ services:
     environment:
       - SPRING_DATA_REDIS_HOST
       - SPRING_DATA_REDIS_PORT
+    ports:
+      - "6379:6379"
     volumes:
       - redis:/data
     networks:

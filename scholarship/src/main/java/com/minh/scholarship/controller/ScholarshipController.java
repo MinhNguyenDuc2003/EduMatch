@@ -34,6 +34,11 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getById(id));
     }
 
+    @GetMapping("/provider/{id}")
+    public ApiResponse<List<ScholarshipVo>> getScholarshipByProviderId(@PathVariable Long id) {
+        return ApiResponse.ok(scholarshipService.getScholarshipByProviderId(id));
+    }
+
     @GetMapping("/slug")
     public ApiResponse<ScholarshipVo> getBySlug(@RequestParam String slug) {
         return ApiResponse.ok(scholarshipService.getBySlug(slug));

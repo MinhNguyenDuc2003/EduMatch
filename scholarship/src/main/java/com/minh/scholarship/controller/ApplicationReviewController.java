@@ -46,4 +46,5 @@ public class ApplicationReviewController {
         service.delete(id);
         return ApiResponse.ok();
     }
+
 }
