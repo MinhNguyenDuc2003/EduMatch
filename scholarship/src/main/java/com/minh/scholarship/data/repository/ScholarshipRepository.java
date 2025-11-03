@@ -21,12 +21,6 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     @Query("UPDATE ScholarshipEntity SET active = :active WHERE id = :id")
     void updateActiveById(Long id, Boolean active);
 
-    @Query("SELECT s " +
-            "FROM ScholarshipEntity s " +
-            "WHERE s.active = true " +
-            "ORDER BY s.createdDate DESC ")
-    Page<ScholarshipEntity> getPageable(Pageable pageable);
-
     List<ScholarshipEntity> getAllByProviderId(Long id);
 
     List<ScholarshipEntity> findByIdIn(List<Long> collect);
@@ -36,4 +30,17 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     @Query("SELECT COUNT(s) > 0 FROM ScholarshipEntity s WHERE s.active = true AND s.slug = :slug")
     boolean isExistSlug(@Param("slug") String slug);
 
+    @Query("SELECT s " +
+            "FROM ScholarshipEntity s " +
+            "WHERE s.active = true " +
+            "AND UPPER(COALESCE(s.university, '')) LIKE UPPER(CONCAT('%', :university, '%')) " +
+            "AND UPPER(COALESCE(s.country, '')) LIKE UPPER(CONCAT('%', :country, '%')) " +
+            "AND UPPER(COALESCE(s.scholarshipType, '')) LIKE UPPER(CONCAT('%', :scholarshipType, '%')) " +
+            "AND UPPER(COALESCE(s.studyLevel, '')) LIKE UPPER(CONCAT('%', :studyLevel, '%')) " +
+            "ORDER BY s.createdDate DESC ")
+    Page<ScholarshipEntity> getPageable(Pageable pageable,
+                                        @Param("university") String university,
+                                        @Param("country") String country,
+                                        @Param("scholarshipType") String scholarshipType,
+                                        @Param("studyLevel") String studyLevel);
 }
