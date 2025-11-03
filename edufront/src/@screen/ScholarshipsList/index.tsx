@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import Header from '@/pattern/core/Header';
+import Header from '@/pattern/core/Navbar';
 import Footer from '@/pattern/core/Footer';
 import { FilterSidebar, ScholarshipCard, RightSidebar, PremiumBanner } from './components';
 import { Filter } from 'lucide-react';

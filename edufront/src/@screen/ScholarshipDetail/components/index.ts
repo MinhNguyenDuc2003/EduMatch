@@ -1,5 +1,3 @@
-export { default as BreadcrumbHeader } from './BreadcrumbHeader';
 export { default as ScholarshipMetadata } from './ScholarshipMetadata';
 export { default as ScholarshipContent } from './ScholarshipContent';
 export { default as ScholarshipSidebar } from './ScholarshipSidebar';
-

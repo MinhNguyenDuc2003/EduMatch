@@ -1,15 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/lib/cus/button';
 import { mockScholarshipOpportunities } from '@/@screen/HomePage/mockData';
-import {
-  BreadcrumbHeader,
-  ScholarshipMetadata,
-  ScholarshipContent,
-  ScholarshipSidebar,
-} from './components';
+import { ScholarshipMetadata, ScholarshipContent, ScholarshipSidebar } from './components';
+import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 
 type ScholarshipDetailProps = {
   scholarshipId: number;
@@ -17,33 +13,11 @@ type ScholarshipDetailProps = {
 
 export default function ScholarshipDetail({ scholarshipId }: ScholarshipDetailProps) {
   const router = useRouter();
-  const pathname = usePathname();
   const [isSaved, setIsSaved] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
   // Find scholarship by ID
   const scholarship = mockScholarshipOpportunities.find((s) => s.id === scholarshipId);
-
-  // Generate breadcrumbs from pathname
-  const getBreadcrumbPath = () => {
-    const paths = pathname.split('/').filter(Boolean);
-
-    // Find the parent path (before the dynamic ID)
-    if (paths.length >= 1 && paths[0] === 'scholarships') {
-      return {
-        parentLabel: 'Scholarships',
-        parentHref: '/scholarships',
-      };
-    }
-
-    // Fallback for other paths
-    return {
-      parentLabel: paths[0] ? paths[0].charAt(0).toUpperCase() + paths[0].slice(1) : 'Home',
-      parentHref: paths[0] ? `/${paths[0]}` : '/',
-    };
-  };
-
-  const breadcrumbPath = getBreadcrumbPath();
 
   if (!scholarship) {
     return (
@@ -87,9 +61,7 @@ export default function ScholarshipDetail({ scholarshipId }: ScholarshipDetailPr
     <div className="min-h-screen bg-white">
       {/* Breadcrumbs Header */}
       <BreadcrumbHeader
-        parentLabel={breadcrumbPath.parentLabel}
-        parentHref={breadcrumbPath.parentHref}
-        currentTitle={scholarship.title}
+        items={[{ label: 'Scholarships', href: '/scholarships' }, { label: scholarship.title }]}
       />
 
       {/* Main Content */}

@@ -5,7 +5,7 @@ import { Form } from '@/lib/cus/form';
 import { providerProfileSchema, IProviderProfile } from '@/lib/schemas';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DEFAULT_PROVIDER_FORM_VALUES, ORGANIZATION_TYPES, COUNTRIES } from './constants';
+import { DEFAULT_PROVIDER_FORM_VALUES, ORGANIZATION_TYPES } from './constants';
 import { Mail, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
@@ -17,6 +17,7 @@ import {
   useUpdateProfileMutation,
 } from '@/state/apiProvider';
 import type { ProviderProfile } from './types';
+import { COUNTRIES } from '@/constants/Common';
 
 export default function ProviderProfile() {
   // For now, use mock data. Replace with API call later
@@ -127,7 +128,7 @@ export default function ProviderProfile() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6 bg-white">
+    <div className="p-6 lg:p-8 space-y-6 bg-white">
       {/* Header Section with Profile Info Display */}
       <ProfileHeader
         currentData={currentData as ProviderProfile}

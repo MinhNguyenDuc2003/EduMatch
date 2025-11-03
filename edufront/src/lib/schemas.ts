@@ -167,3 +167,56 @@ export const providerProfileSchema = z.object({
 });
 
 export type IProviderProfile = z.infer<typeof providerProfileSchema>;
+
+// Scholarship Schema
+export const scholarshipSchema = z.object({
+  id: z.number().optional(),
+  title: z.string().min(1, 'Title is required'),
+  slug: z.string().min(1, 'Slug is required'),
+  shortDescription: z.string().min(1, 'Short description is required'),
+  description: z.string().min(1, 'Description is required'),
+  requirements: z.string().min(1, 'Requirements is required'),
+  benefits: z.string().min(1, 'Benefits is required'),
+  fields: z.string().min(1, 'Fields is required'),
+  country: z.string().min(1, 'Country is required'),
+  university: z.string().min(1, 'University is required'),
+  studyLevel: z.string().min(1, 'Study level is required'),
+  scholarshipType: z.string().min(1, 'Scholarship type is required'),
+  fundingAmount: z.string().min(1, 'Funding amount is required'),
+  startDate: z
+    .union([z.string(), z.number()])
+    .refine((data) => Number(data) > new Date().getTime(), {
+      message: 'start date must be in the future',
+    }),
+  endDate: z.union([z.string(), z.number()]).refine((data) => Number(data) > new Date().getTime(), {
+    message: 'end date must be in the future',
+  }),
+  availableSlots: z.coerce
+    .number<number>()
+    .min(1, 'Available slots must be greater than 0')
+    .max(10000, 'Available slots must be less than 10000')
+    .optional(),
+  languageRequirement: z.string().min(1, 'Language requirement is required'),
+  gpaRequirement: z.coerce
+    .number<number>()
+    .min(0, 'GPA must be greater than 0')
+    .max(4, 'GPA must be less than 4')
+    .optional(),
+  scholarshipPreferences: z
+    .array(
+      z.object({
+        id: z.number().optional(),
+        scholarshipId: z.number().optional(),
+        type: z.string().min(1, 'Type is required'),
+        value: z.string().min(1, 'Value is required'),
+        weight: z.coerce
+          .number<number>()
+          .min(0, 'Weight must be at least 0')
+          .max(1, 'Weight cannot exceed 1'),
+        note: z.string().optional(),
+      })
+    )
+    .optional(),
+});
+
+export type IScholarship = z.infer<typeof scholarshipSchema>;

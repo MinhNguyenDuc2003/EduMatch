@@ -9,9 +9,18 @@ declare global {
     url: string;
   };
 
+  type ScholarshipPreference = {
+    id: number;
+    scholarshipId: number;
+    type: string;
+    value: string;
+    weight: number;
+    note: string;
+  };
+
   type Scholarship = {
     id: number;
-    providerId: number;
+    providerId?: number;
     title: string;
     slug: string;
     shortDescription: string;
@@ -24,14 +33,13 @@ declare global {
     studyLevel: string;
     scholarshipType: string;
     fundingAmount: string;
-    startDate: number; // timestamp
-    endDate: number; // timestamp
+    startDate: number;
+    endDate: number;
     availableSlots: number;
     languageRequirement: string;
     gpaRequirement: number;
+    scholarshipPreferences?: ScholarshipPreference[];
     scholarshipMedias?: ScholarshipMedia[];
-    imageUrl?: string; // Direct image URL
-    imageUrls?: string[]; // Multiple image URLs
   };
 }
 

@@ -18,7 +18,7 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   // Get images array - only from imageUrls
-  const images = scholarship.imageUrls || [];
+  const images = scholarship.scholarshipMedias?.map((media: ScholarshipMedia) => media.url) || [];
 
   return (
     <>
@@ -133,7 +133,7 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
               </div>
             </div>
 
-            {/* Action Buttons */}
+            {/* Action Buttons
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
@@ -147,7 +147,7 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
                 value="Apply"
                 onClick={() => onApply(scholarship)}
               />
-            </div>
+            </div> */}
           </div>
         </div>
 

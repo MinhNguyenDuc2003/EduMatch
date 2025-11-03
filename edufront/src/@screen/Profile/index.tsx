@@ -20,8 +20,9 @@ import Intentions from './components/Intentions';
 import HistoryCard from './components/HistoryCard';
 import SkillCard from './components/SkillCard';
 import PreferenceCard from './components/PreferenceCard';
-import Header from '@/pattern/core/Header';
+import Header from '@/pattern/core/Navbar';
 import Footer from '@/pattern/core/Footer';
+import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 import { Form } from '@/lib/cus/form';
 import { applicantProfileSchema, IApplicantProfile } from '@/lib/schemas';
 import { useForm } from 'react-hook-form';
@@ -121,6 +122,11 @@ export default function Profile() {
 
   return (
     <Form {...methods}>
+      {/* Breadcrumb Navigation */}
+      <BreadcrumbHeader
+        items={[{ label: 'Applicant', href: '/applicant' }, { label: 'Profile' }]}
+      />
+
       <div className="min-h-screen bg-gray-50 py-8 px-4 lg:px-40">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Profile Header */}

@@ -1,5 +1,5 @@
 import { Camera, Globe, Mail, Phone } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { IProviderProfile } from '@/lib/schemas';
 import { ProviderProfile } from '../types';
 import { Skeleton } from '@/lib/cus/skeleton';
@@ -9,6 +9,7 @@ interface ProfileHeaderProps {
   onBannerUpload?: (file: File) => void;
   onProfileUpload?: (file: File) => void;
   isEdit?: boolean;
+  rightElement?: ReactNode;
 }
 
 export const ProfileHeaderSkeleton = () => {
@@ -45,6 +46,7 @@ const ProfileHeader = ({
   onBannerUpload,
   onProfileUpload,
   isEdit = false,
+  rightElement,
 }: ProfileHeaderProps) => {
   const [bannerPreview, setBannerPreview] = useState<string | null>(currentData?.bannerUrl || null);
   const [profilePreview, setProfilePreview] = useState<string | null>(currentData?.logoUrl || null);
@@ -167,8 +169,8 @@ const ProfileHeader = ({
       </div>
 
       {/* Blue header section */}
-      <div className="bg-gradient-to-r from-[#1B3053] to-[#3D6CB9] md:px-64 md:py-6 px-8 pb-6 pt-16 rounded-b-lg">
-        <div className="flex items-center md:justify-start justify-center">
+      <div className="bg-gradient-to-r from-[#1B3053] to-[#3D6CB9] md:pl-64 md:pr-8 md:py-6 px-8 pb-6 pt-16 rounded-b-lg">
+        <div className="flex flex-col gap-2 items-center md:justify-between md:flex-row">
           {/* Profile Info */}
           <div className="text-white">
             <h1 className="text-2xl font-bold mb-3 line-clamp-1">
@@ -189,6 +191,7 @@ const ProfileHeader = ({
               </div>
             </div>
           </div>
+          {rightElement && <div>{rightElement}</div>}
         </div>
       </div>
     </div>
