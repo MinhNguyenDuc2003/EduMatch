@@ -34,12 +34,23 @@ public class ApplicationController {
         return ApiResponse.ok(applicationService.getAll());
     }
 
+    @Authorized
+    @GetMapping("/my-application")
+    public ApiResponse<List<ApplicationVo>> getAllMyApplication() {
+        return ApiResponse.ok(applicationService.getAllMyApplication());
+    }
+
+    @GetMapping("/scholarship/{id}")
+    public ApiResponse<List<ApplicationVo>> getApplicationByScholarshipId(@PathVariable Long id) {
+        return ApiResponse.ok(applicationService.getApplicationByScholarshipId(id));
+    }
+
     @GetMapping("/{id}")
     public ApiResponse<ApplicationDto> getById(@PathVariable Long id) {
         return ApiResponse.ok(applicationService.getById(id));
     }
 
-    /*@Authorized*/
+    @Authorized
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<ApplicationVo> create(
             @RequestPart("application") String applicationJson,

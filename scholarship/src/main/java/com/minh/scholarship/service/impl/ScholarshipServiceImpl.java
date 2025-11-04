@@ -23,6 +23,7 @@ import com.minh.scholarship.data.repository.ScholarshipRepository;
 import com.minh.scholarship.data.vo.NotificationVo;
 import com.minh.scholarship.data.vo.ProviderProfileVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
+import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
 import com.minh.scholarship.feign.MediaFeign;
 import com.minh.scholarship.feign.NotificationTemplateFeign;
 import com.minh.scholarship.feign.ProviderProfileFeign;
@@ -30,6 +31,7 @@ import com.minh.scholarship.message.KafkaProducer;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.base.BaseService;
+import com.minh.utils.SecurityUtil;
 import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -189,17 +191,27 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     public Page<ScholarshipVo> getPage(ScholarshipFilter filter) {
         filter.beautify();
-        return scholarshipRepository.getPageable(filter.getPageable(), filter.getCriteria().getUniversity(),
+        String userId = SecurityUtil.getCurrentUserId();
+        return scholarshipRepository.getPageableAuthorized(filter.getPageable(), filter.getCriteria().getUniversity(),
                 filter.getCriteria().getCountry(), filter.getCriteria().getScholarshipType(),
-                filter.getCriteria().getStudyLevel()).map(o -> {
-            ScholarshipVo scholarshipVo = scholarshipMapper.entityToVo(o);
+                filter.getCriteria().getStudyLevel(), userId).map(o -> {
+            ScholarshipVo scholarshipVo = scholarshipMapper.proToVo(o);
             return addScholarshipMedia(scholarshipVo);
         });
     }
 
     @Override
+    public List<ScholarshipVo> getByIds(List<Long> ids) {
+        String userId = SecurityUtil.getCurrentUserId();
+        System.out.println("UserId:" + userId);
+        List<ScholarshipProjection> allVoByIds = scholarshipRepository.getAllVoByIds(ids, userId);
+        return scholarshipMapper.prosToVos(allVoByIds);
+    }
+
+    @Override
     @Transactional(rollbackOn = Exception.class)
     public ScholarshipFollowerDto createScholarshipFollower(ScholarshipFollowerDto dto) {
+        dto.setUserId(UaaContextHolder.getUserId());
         return scholarshipFollowerMapper.toDto(
                 scholarshipFollowerRepository.save(
                         scholarshipFollowerMapper.toEntity(dto)));

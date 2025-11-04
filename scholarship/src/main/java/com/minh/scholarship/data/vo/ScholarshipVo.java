@@ -25,5 +25,6 @@ public class ScholarshipVo extends ScholarshipDto {
     private List<ScholarshipPreferenceDto> scholarshipPreferences;
     private List<MediaDto> scholarshipMedias;
     private List<ApplicationAttributeDto> applicationAttributes;
+    private int isFollow;
 
 }

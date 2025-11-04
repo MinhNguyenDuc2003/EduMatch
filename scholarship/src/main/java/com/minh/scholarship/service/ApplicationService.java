@@ -26,4 +26,9 @@ public interface ApplicationService {
                          String attributesJson) throws JsonProcessingException;
 
     void delete(Long id);
+
+    List<ApplicationVo> getAllMyApplication();
+
+    List<ApplicationVo> getApplicationByScholarshipId(Long id);
+
 }

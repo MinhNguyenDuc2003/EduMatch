@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(schema = "scholarship", name = "APPLICATION_FOLLOWER")
+@Table(schema = "scholarship", name = "SCHOLARSHIP_FOLLOWER")
 @Getter
 @Setter
 @NoArgsConstructor

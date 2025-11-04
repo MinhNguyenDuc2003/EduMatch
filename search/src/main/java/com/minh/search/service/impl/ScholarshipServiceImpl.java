@@ -9,9 +9,11 @@ import com.minh.search.data.entity.ScholarshipEntity;
 import com.minh.search.data.mapper.ScholarshipMapper;
 import com.minh.search.data.repository.ScholarshipRepository;
 import com.minh.search.data.vo.ScholarshipVo;
+import com.minh.search.feign.ScholarshipFeign;
 import com.minh.search.model.constant.ScholarshipField;
 import com.minh.search.model.filter.ScholarshipFilter;
 import com.minh.search.service.ScholarshipService;
+import com.minh.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.springframework.data.domain.PageRequest;
@@ -31,11 +33,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ScholarshipServiceImpl implements ScholarshipService {
+public class ScholarshipServiceImpl extends BaseService implements ScholarshipService {
 
     private final ElasticsearchOperations elasticsearchOperations;
     private final ScholarshipMapper scholarshipMapper;
     private final ScholarshipRepository scholarshipRepository;
+    private final ScholarshipFeign scholarshipFeign;
 
     @Override
     public ScholarshipVo findScholarshipAdvance(ScholarshipFilter criteria) {
@@ -74,7 +77,7 @@ public class ScholarshipServiceImpl implements ScholarshipService {
         SearchPage<ScholarshipEntity> searchPage = SearchHitSupport.searchPageFor(searchHits, nativeQuery.getPageable());
         List<ScholarshipEntity> searchHitsResult = searchPage.stream().map(SearchHit::getContent).collect(Collectors.toList());
         ScholarshipVo scholarshipVo = new ScholarshipVo();
-        scholarshipVo.setScholarship(scholarshipMapper.toDto(searchHitsResult));
+        scholarshipVo.setScholarship(this.parseResponse(scholarshipFeign.getByIds(searchHitsResult.stream().map(ScholarshipEntity::getId).collect(Collectors.toList()))));
         scholarshipVo.setPageNum(criteria.getPage());
         scholarshipVo.setPageSize(criteria.getSize());
         scholarshipVo.setTotalPages(searchPage.getTotalPages());

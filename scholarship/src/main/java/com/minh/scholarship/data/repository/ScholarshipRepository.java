@@ -1,6 +1,7 @@
 package com.minh.scholarship.data.repository;
 
 import com.minh.scholarship.data.entity.ScholarshipEntity;
+import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
 import feign.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,4 +44,27 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
                                         @Param("country") String country,
                                         @Param("scholarshipType") String scholarshipType,
                                         @Param("studyLevel") String studyLevel);
+
+    @Query(value = "SELECT s.*, case when f.user_id is not null then 1 end as isFollow " +
+            "            FROM scholarship.scholarship s " +
+            "            LEFT join scholarship.scholarship_follower f on s.id = f.scholarship_id and f.user_id = :userId " +
+            "            WHERE s.active = true " +
+            "            AND UPPER(COALESCE(s.university, '')) LIKE UPPER(CONCAT('%', :university, '%')) " +
+            "            AND UPPER(COALESCE(s.country, '')) LIKE UPPER(CONCAT('%', :country, '%')) " +
+            "            AND UPPER(COALESCE(s.scholarship_type, '')) LIKE UPPER(CONCAT('%', :scholarshipType, '%')) " +
+            "            AND UPPER(COALESCE(s.study_level, '')) LIKE UPPER(CONCAT('%', :studyLevel, '%'))" +
+            "            ORDER BY s.created_datetime DESC ", nativeQuery = true)
+    Page<ScholarshipProjection> getPageableAuthorized(Pageable pageable,
+                                                      @Param("university") String university,
+                                                      @Param("country") String country,
+                                                      @Param("scholarshipType") String scholarshipType,
+                                                      @Param("studyLevel") String studyLevel,
+                                                      @Param("userId") String userId);
+
+    @Query(value = "SELECT s.*, case when f.user_id is not null then 1 end as isFollow " +
+            "            FROM scholarship.scholarship s " +
+            "            LEFT join scholarship.scholarship_follower f on s.id = f.scholarship_id and f.user_id = :userId " +
+            "            WHERE s.active = true and s.id IN :ids " +
+            "            ORDER BY s.created_datetime DESC ", nativeQuery = true)
+    List<ScholarshipProjection> getAllVoByIds(List<Long> ids, String userId);
 }

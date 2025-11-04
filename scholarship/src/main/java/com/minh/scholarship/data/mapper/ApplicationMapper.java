@@ -6,6 +6,7 @@ import com.minh.model.dto.scholarship.ApplicationDto;
 import com.minh.scholarship.data.entity.ApplicationAttributeEntity;
 import com.minh.scholarship.data.entity.ApplicationEntity;
 import com.minh.scholarship.data.vo.ApplicationVo;
+import com.minh.scholarship.data.vo.projection.ApplicationProjection;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -20,29 +21,41 @@ import java.util.stream.Collectors;
 )
 public interface ApplicationMapper extends BaseMapper<ApplicationEntity, ApplicationDto> {
 
-        @Named("entityToVo")
-        ApplicationVo entityToVo(ApplicationEntity entity);
+    @Named("entityToVo")
+    ApplicationVo entityToVo(ApplicationEntity entity);
 
-        void updateEntityFromVo(ApplicationVo applicationVo, @MappingTarget ApplicationEntity entity);
+    void updateEntityFromVo(ApplicationVo applicationVo, @MappingTarget ApplicationEntity entity);
 
-        @Named("voToEntity")
-        ApplicationEntity voToEntity(ApplicationVo vo);
+    @Named("voToEntity")
+    ApplicationEntity voToEntity(ApplicationVo vo);
 
-        // ---------------- ATTRIBUTE MAPPING ----------------
+    // ---------------- ATTRIBUTE MAPPING ----------------
 
-        @Named("toAttributeDto")
-        ApplicationAttributeDto toAttributeDto(ApplicationAttributeEntity entity);
+    @Named("toAttributeDto")
+    ApplicationAttributeDto toAttributeDto(ApplicationAttributeEntity entity);
 
-        @Named("toAttributeEntity")
-        default List<ApplicationAttributeEntity> toAttributeEntity(List<ApplicationAttributeDto> dtos) {
-                if (dtos == null) {
-                        return null;
-                }
-                return dtos.stream().map(dto -> ApplicationAttributeEntity.builder()
-                        .key(dto.getKey())
-                        .value(dto.getValue())
-                        .note(dto.getNote())
-                        .build()
-                ).collect(Collectors.toList());
+    @Named("toAttributeEntity")
+    default List<ApplicationAttributeEntity> toAttributeEntity(List<ApplicationAttributeDto> dtos) {
+        if (dtos == null) {
+            return null;
         }
+        return dtos.stream().map(dto -> ApplicationAttributeEntity.builder()
+                .key(dto.getKey())
+                .value(dto.getValue())
+                .note(dto.getNote())
+                .build()
+        ).collect(Collectors.toList());
+    }
+
+    @Named("entitiesToVos")
+    @IterableMapping(qualifiedByName = "entityToVo")
+    List<ApplicationVo> entitiesToVos(List<ApplicationEntity> entity);
+
+    @Named("proToVo")
+    ApplicationVo proToVo(ApplicationProjection projection);
+
+    @IterableMapping(qualifiedByName = "proToVo")
+    @Named("prosToVos")
+    List<ApplicationVo> prosToVos(List<ApplicationProjection> projection);
+
 }

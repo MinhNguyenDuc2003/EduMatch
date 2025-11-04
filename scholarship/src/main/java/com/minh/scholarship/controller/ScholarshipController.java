@@ -34,6 +34,11 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getById(id));
     }
 
+    @PostMapping("/ids")
+    public ApiResponse<List<ScholarshipVo>> getByIds(@RequestBody List<Long> ids) {
+        return ApiResponse.ok(scholarshipService.getByIds(ids));
+    }
+
     @GetMapping("/provider/{id}")
     public ApiResponse<List<ScholarshipVo>> getScholarshipByProviderId(@PathVariable Long id) {
         return ApiResponse.ok(scholarshipService.getScholarshipByProviderId(id));
@@ -81,16 +86,19 @@ public class ScholarshipController {
         return ApiResponse.ok();
     }
 
+    @Authorized
     @GetMapping("/follow")
     public ApiResponse<List<ScholarshipVo>> getScholarshipFollow() {
         return ApiResponse.ok(scholarshipService.getScholarshipFollow());
     }
 
+    @Authorized
     @PostMapping("/follow")
     public ApiResponse<ScholarshipFollowerDto> createScholarshipFollower(@RequestBody ScholarshipFollowerDto dto) {
         return ApiResponse.ok(scholarshipService.createScholarshipFollower(dto));
     }
 
+    @Authorized
     @DeleteMapping("/follow")
     public ApiResponse<ScholarshipFollowerDto> deleteScholarshipFollower(@RequestBody ScholarshipFollowerDto dto) {
         return ApiResponse.ok(scholarshipService.deleteScholarshipFollower(dto));

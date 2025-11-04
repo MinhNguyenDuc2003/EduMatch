@@ -9,17 +9,20 @@ import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.scholarship.ApplicationAttributeDto;
 import com.minh.scholarship.data.entity.ApplicationAttributeEntity;
 import com.minh.scholarship.data.entity.ApplicationEntity;
+import com.minh.scholarship.data.entity.ApplicationScholarshipEntity;
 import com.minh.scholarship.data.entity.junction.ApplicationMediaEntity;
 import com.minh.scholarship.data.mapper.ApplicationAttributeMapper;
 import com.minh.scholarship.data.mapper.ApplicationMapper;
 import com.minh.scholarship.data.repository.ApplicationAttributeRepository;
 import com.minh.scholarship.data.repository.ApplicationMediaRepository;
 import com.minh.scholarship.data.repository.ApplicationRepository;
+import com.minh.scholarship.data.repository.ApplicationScholarshipRepository;
 import com.minh.scholarship.data.vo.ApplicationVo;
 import com.minh.scholarship.feign.MediaFeign;
 import com.minh.scholarship.model.filter.ApplicationFilter;
 import com.minh.scholarship.service.ApplicationService;
 import com.minh.service.base.BaseService;
+import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
@@ -39,6 +42,7 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     private final ApplicationMapper applicationMapper;
     private final ApplicationMediaRepository applicationMediaRepository;
     private final ApplicationAttributeRepository applicationAttributeRepository;
+    private final ApplicationScholarshipRepository applicationScholarshipRepository;
     private final MediaFeign mediaFeign;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ApplicationAttributeMapper applicationAttributeMapper;
@@ -79,6 +83,8 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ApplicationVo create(ApplicationVo applicationVo, List<MultipartFile> mediaFiles, String attributesJson) throws JsonProcessingException {
+        String userId = UaaContextHolder.getUserId();
+        applicationVo.setUserId(userId);
         ApplicationEntity entity = applicationRepository.save(applicationMapper.toEntity(applicationVo));
 
         if (ObjectUtils.isNotEmpty(attributesJson)) {
@@ -99,6 +105,8 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ApplicationVo update(Long id, ApplicationVo applicationVo, List<MultipartFile> mediaFiles, String attributesJson) throws JsonProcessingException {
+        String userId = UaaContextHolder.getUserId();
+        applicationVo.setUserId(userId);
         ApplicationEntity entity = applicationRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST));
 
@@ -154,10 +162,26 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     }
 
     @Override
+    public List<ApplicationVo> getAllMyApplication() {
+        String userId = UaaContextHolder.getUserId();
+        List<ApplicationVo> vos = applicationMapper.entitiesToVos(applicationRepository.findAllByUserIdAndActive(userId, true));
+        vos.forEach(this::addAttributesAndMedia);
+        return vos;
+    }
+
+    @Override
+    public List<ApplicationVo> getApplicationByScholarshipId(Long id) {
+        List<ApplicationScholarshipEntity> applicationScholarshipEntities = applicationScholarshipRepository.findAllByScholarshipId(id);
+        List<ApplicationVo> vos = applicationMapper.entitiesToVos(applicationRepository.findAllById(applicationScholarshipEntities.stream().map(ApplicationScholarshipEntity::getApplicationId).collect((Collectors.toList()))));
+        vos.forEach(this::addAttributesAndMedia);
+        return vos;
+    }
+
+    @Override
     public Page<ApplicationVo> getPage(ApplicationFilter filter) {
         return applicationRepository.getPageable(filter.getPageable()).map(o -> {
             ApplicationVo applicationVo = applicationMapper.entityToVo(o);
-            return addApplicationMedia(applicationVo);
+            return addAttributesAndMedia(applicationVo);
         });
     }
 
