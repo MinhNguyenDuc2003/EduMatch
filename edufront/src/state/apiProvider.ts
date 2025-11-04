@@ -1,16 +1,16 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customBaseQuery from './custombaseQuery';
-import { ProviderProfileApiResponse } from '@/@screen/ProviderProfile/types';
 
 // API Endpoints
 const API_ENDPOINTS = {
   PROVIDER_PROFILE: '/customer/storefront/provider/profile',
+  SCHOLARSHIP: '/scholarship/scholarships',
 } as const;
 
 export const apiProvider = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiProvider',
-  tagTypes: ['Profile', 'Countries', 'StateOrProvinces', 'Districts'],
+  tagTypes: ['Profile', 'Scholarships'],
   endpoints: (build) => ({
     // Get customer profile (works for both applicant and provider)
     getProfile: build.query<ProviderProfileApiResponse, void>({
@@ -33,8 +33,40 @@ export const apiProvider = createApi({
         body: formData,
       }),
     }),
+
+    // Create scholarship
+    createScholarship: build.mutation<Scholarship, FormData>({
+      query: (formData) => ({
+        url: API_ENDPOINTS.SCHOLARSHIP,
+        method: 'POST',
+        body: formData,
+      }),
+    }),
+
+    getScholarshipsById: build.query<Scholarship, string>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/${id}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, id) => [{ type: 'Scholarships', id }],
+    }),
+
+    updateScholarship: build.mutation<Scholarship, FormData>({
+      query: (formData) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: ['Scholarships'],
+    }),
   }),
 });
 
-export const { useGetProfileQuery, useCreateProfileMutation, useUpdateProfileMutation } =
-  apiProvider;
+export const {
+  useGetProfileQuery,
+  useCreateProfileMutation,
+  useUpdateProfileMutation,
+  useCreateScholarshipMutation,
+  useGetScholarshipsByIdQuery,
+  useUpdateScholarshipMutation,
+} = apiProvider;

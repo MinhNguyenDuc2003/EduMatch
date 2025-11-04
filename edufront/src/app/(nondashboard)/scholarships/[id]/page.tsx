@@ -1,14 +1,15 @@
-import ScholarshipDetail from '@/@screen/ScholarshipDetail';
+import ScholarshipDetail from '@/@screen/(nondashboard)/ScholarshipDetail';
 import React from 'react';
 
 type PageProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 const page = async ({ params }: PageProps) => {
-  const scholarshipId = parseInt(params.id, 10);
+  const { id } = await params;
+  const scholarshipId = parseInt(id, 10);
 
   return <ScholarshipDetail scholarshipId={scholarshipId} />;
 };

@@ -1,5 +1,5 @@
 import Footer from '@/pattern/core/Footer';
-import Header from '@/pattern/core/Header';
+import Header from '@/pattern/core/Navbar';
 import React from 'react';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

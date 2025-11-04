@@ -53,6 +53,7 @@ interface FormFieldProps {
     | 'textarea'
     | 'number'
     | 'date'
+    | 'range'
     | 'select'
     | 'switch'
     | 'password'
@@ -73,6 +74,9 @@ interface FormFieldProps {
   inlineLabel?: boolean;
   isBorder?: boolean;
   stringFormat?: 'comma' | 'json' | 'pipe';
+  min?: number;
+  max?: number;
+  step?: number;
 }
 
 export const CustomFormField: React.FC<FormFieldProps> = ({
@@ -90,6 +94,9 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
   inlineLabel,
   isBorder,
   stringFormat = 'comma',
+  min,
+  max,
+  step,
 }) => {
   const { control } = useFormContext();
 
@@ -190,6 +197,24 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
             disabled={disabled}
           />
+        );
+      case 'range':
+        return (
+          <div className="flex items-center space-x-2">
+            <Input
+              type="range"
+              placeholder={placeholder}
+              {...field}
+              min={min}
+              max={max}
+              step={step}
+              className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-primarybg p-4 ${inputClassName}`}
+              disabled={disabled}
+            />
+            <FormLabel className={labelClassName} htmlFor={name}>
+              {field.value}
+            </FormLabel>
+          </div>
         );
       case 'multi-input':
         return (

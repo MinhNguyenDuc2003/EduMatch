@@ -1,8 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customBaseQuery from './custombaseQuery';
-import { ProfileApiResponse } from '@/@screen/Profile/types';
-import { ProviderProfileApiResponse } from '@/@screen/ProviderProfile/types';
-import { IApplicantProfile, IProviderProfile } from '@/lib/schemas';
+import { ProfileApiResponse } from '@/@screen/(dashboard)/applicant/Profile/types';
+import { IApplicantProfile } from '@/lib/schemas';
 
 // API Endpoints
 const API_ENDPOINTS = {
