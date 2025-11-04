@@ -1,4 +1,4 @@
-package com.minh.model.dto.subscription;
+package com.minh.model.dto.scholarship;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,7 +8,6 @@ import com.minh.model.dto.BaseDto;
 import com.minh.utils.serializer.DateToTimestamp;
 import com.minh.utils.serializer.TimestampToDate;
 import lombok.*;
-import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -17,25 +16,25 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class SubscriptionDto extends BaseDto {
+public class ApplicationScholarshipDto extends BaseDto {
 
     private Long id;
 
-    private String userId;
+    private Long applicationId;
 
-    private String userType;
-
-    private Long planId;
-
-    @JsonSerialize(using = DateToTimestamp.class)
-    @JsonDeserialize(using = TimestampToDate.class)
-    private LocalDateTime startDate;
-
-    @JsonSerialize(using = DateToTimestamp.class)
-    @JsonDeserialize(using = TimestampToDate.class)
-    private LocalDateTime endDate;
+    private Long scholarshipId;
 
     private String status;
 
-    private Boolean autoRenew;
+    @JsonSerialize(using = DateToTimestamp.class)
+    @JsonDeserialize(using = TimestampToDate.class)
+    private String appliedAt;
+
+    private String reviewedId;
+
+    @JsonSerialize(using = DateToTimestamp.class)
+    @JsonDeserialize(using = TimestampToDate.class)
+    private String reviewedAt;
+
+    private String note;
 }

@@ -63,6 +63,8 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
 
         subscriptionMapper.updateEntityFromDto(subscription, existingEntity);
 
+        existingEntity.setActive(true);
+
         SubscriptionEntity savedEntity = subscriptionRepository.save(existingEntity);
         return subscriptionMapper.toDto(savedEntity);
     }

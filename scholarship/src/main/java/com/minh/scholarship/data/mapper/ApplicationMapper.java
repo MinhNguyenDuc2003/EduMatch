@@ -20,14 +20,11 @@ import java.util.stream.Collectors;
 )
 public interface ApplicationMapper extends BaseMapper<ApplicationEntity, ApplicationDto> {
 
-        // Entity -> VO
         @Named("entityToVo")
         ApplicationVo entityToVo(ApplicationEntity entity);
 
-        // Update từ VO sang Entity
         void updateEntityFromVo(ApplicationVo applicationVo, @MappingTarget ApplicationEntity entity);
 
-        // VO -> Entity (khi create)
         @Named("voToEntity")
         ApplicationEntity voToEntity(ApplicationVo vo);
 
