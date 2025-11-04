@@ -181,7 +181,7 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     public Page<ApplicationVo> getPage(ApplicationFilter filter) {
         return applicationRepository.getPageable(filter.getPageable()).map(o -> {
             ApplicationVo applicationVo = applicationMapper.entityToVo(o);
-            return addAttributesAndMedia(applicationVo);
+            return addApplicationMedia(applicationVo);
         });
     }
 
