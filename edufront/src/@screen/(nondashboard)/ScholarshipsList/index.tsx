@@ -4,11 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { FilterSidebar, ScholarshipCard, RightSidebar, PremiumBanner } from './components';
 import { Filter } from 'lucide-react';
 import SearchBar from '@/pattern/share/SearchBar';
-<<<<<<< HEAD:edufront/src/@screen/ScholarshipsList/index.tsx
-import { mockScholarshipOpportunities } from '@/@screen/HomePage/mockData';
-=======
 import { mockScholarshipOpportunities } from '@/@screen/(nondashboard)/HomePage/mockData';
->>>>>>> 11c78245f3b6094544953edbb1ed7fa66cb4375b:edufront/src/@screen/(nondashboard)/ScholarshipsList/index.tsx
 
 export type FilterState = {
   keyword: string;
@@ -141,6 +137,15 @@ export default function ScholarshipsList() {
     // TODO: Implement apply logic
   };
 
+  const handleToggleTracking = (scholarshipId: number) => {
+    setScholarships((prevScholarships) =>
+      prevScholarships.map((item) =>
+        item.id === scholarshipId ? { ...item, isTracking: !item.isTracking } : item
+      )
+    );
+    // TODO: Call API to update tracking state on server
+  };
+
   const activeFiltersCount = useMemo(() => {
     let count = 0;
     if (filters.keyword) count++;
@@ -254,6 +259,7 @@ export default function ScholarshipsList() {
                         key={scholarship.id}
                         scholarship={scholarship}
                         onApply={handleApply}
+                        onToggleTracking={handleToggleTracking}
                       />
                     ))}
                     {totalElements > filteredScholarships.length && (

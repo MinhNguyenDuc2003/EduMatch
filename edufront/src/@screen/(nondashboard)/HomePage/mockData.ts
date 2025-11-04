@@ -97,10 +97,7 @@ export const mockScholarshipOpportunities: Scholarship[] = [
         url: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=400&fit=crop&auto=format',
       },
     ],
-<<<<<<< HEAD:edufront/src/@screen/HomePage/mockData.ts
     isTracking: true,
-=======
->>>>>>> 11c78245f3b6094544953edbb1ed7fa66cb4375b:edufront/src/@screen/(nondashboard)/HomePage/mockData.ts
   },
   {
     id: 1,
@@ -171,10 +168,7 @@ export const mockScholarshipOpportunities: Scholarship[] = [
         url: 'https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800&h=400&fit=crop&auto=format',
       },
     ],
-<<<<<<< HEAD:edufront/src/@screen/HomePage/mockData.ts
     isTracking: true,
-=======
->>>>>>> 11c78245f3b6094544953edbb1ed7fa66cb4375b:edufront/src/@screen/(nondashboard)/HomePage/mockData.ts
   },
   {
     id: 2,
@@ -198,7 +192,6 @@ export const mockScholarshipOpportunities: Scholarship[] = [
     availableSlots: 15,
     languageRequirement: 'IELTS 6.5 or TOEFL 90',
     gpaRequirement: 3.2,
-<<<<<<< HEAD:edufront/src/@screen/HomePage/mockData.ts
     scholarshipMedias: [
       {
         id: 20,
@@ -220,9 +213,6 @@ export const mockScholarshipOpportunities: Scholarship[] = [
       },
     ],
     isTracking: true,
-=======
-    scholarshipMedias: [],
->>>>>>> 11c78245f3b6094544953edbb1ed7fa66cb4375b:edufront/src/@screen/(nondashboard)/HomePage/mockData.ts
   },
   {
     id: 3,
@@ -293,7 +283,6 @@ export const mockScholarshipOpportunities: Scholarship[] = [
     availableSlots: 12,
     languageRequirement: 'IELTS 6.5 or TOEFL 90',
     gpaRequirement: 3.0,
-<<<<<<< HEAD:edufront/src/@screen/HomePage/mockData.ts
     scholarshipMedias: [
       {
         id: 50,
@@ -305,9 +294,6 @@ export const mockScholarshipOpportunities: Scholarship[] = [
         url: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=400&fit=crop&auto=format',
       },
     ],
-=======
-    scholarshipMedias: [],
->>>>>>> 11c78245f3b6094544953edbb1ed7fa66cb4375b:edufront/src/@screen/(nondashboard)/HomePage/mockData.ts
   },
   {
     id: 21,

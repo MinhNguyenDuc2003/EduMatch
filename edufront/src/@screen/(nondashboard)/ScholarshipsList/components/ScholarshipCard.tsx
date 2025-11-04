@@ -9,22 +9,20 @@ import { getScholarshipImages } from '@/utils/scholarshipHelpers';
 type ScholarshipCardProps = {
   scholarship: Scholarship;
   onApply: (scholarship: Scholarship) => void;
+  onToggleTracking?: (scholarshipId: number) => void;
 };
 
-export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCardProps) {
+export default function ScholarshipCard({
+  scholarship,
+  onApply,
+  onToggleTracking,
+}: ScholarshipCardProps) {
   const router = useRouter();
-  const [isSaved, setIsSaved] = useState(Boolean(scholarship.isTracking));
   const [isFollowing, setIsFollowing] = useState(false);
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-<<<<<<< HEAD:edufront/src/@screen/ScholarshipsList/components/ScholarshipCard.tsx
-  // Get images array from scholarship medias
   const images = getScholarshipImages(scholarship);
-=======
-  // Get images array - only from imageUrls
-  const images = scholarship.scholarshipMedias?.map((media: ScholarshipMedia) => media.url) || [];
->>>>>>> 11c78245f3b6094544953edbb1ed7fa66cb4375b:edufront/src/@screen/(nondashboard)/ScholarshipsList/components/ScholarshipCard.tsx
 
   return (
     <>
@@ -49,12 +47,13 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
               </div>
             </div>
             <button
-              onClick={() => setIsSaved(!isSaved)}
+              onClick={() => onToggleTracking?.(scholarship.id)}
               className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              aria-label={scholarship.isTracking ? 'Untrack scholarship' : 'Track scholarship'}
             >
               <Flag
                 className={`w-5 h-5 transition-colors ${
-                  isSaved ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
+                  scholarship.isTracking ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
                 }`}
               />
             </button>
