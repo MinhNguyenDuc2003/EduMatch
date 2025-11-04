@@ -19,7 +19,6 @@ public class ApplicationAttributeEntity {
     @Column(name = "APPLICATION_ID")
     private Long applicationId;
 
-
     @Column(name = "KEY")
     private String key;
 
