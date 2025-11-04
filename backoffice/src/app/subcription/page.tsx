@@ -5,7 +5,8 @@ import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import { CreditCard, CheckCircle, Clock, XCircle } from 'lucide-react';
 
-export default function Transaction() {
+
+export default function Subcription() {
   const [filterText, setFilterText] = useState('');
 
   const transactions = [
@@ -15,7 +16,7 @@ export default function Transaction() {
   ];
 
   // 📊 Thống kê
-  const totalTransactions = transactions.length;
+  const totalSubcriptions = transactions.length;
   const success = transactions.filter(t => t.status === 'Thành công').length;
   const pending = transactions.filter(t => t.status === 'Đang xử lý').length;
   const failed = transactions.filter(t => t.status === 'Thất bại').length;
@@ -24,7 +25,7 @@ export default function Transaction() {
   const stats = [
     {
       title: 'Tổng giao dịch',
-      value: totalTransactions,
+      value: totalSubcriptions,
       icon: <CreditCard />,
       color: 'text-blue-600',
       filterName: '', // hiển thị tất cả

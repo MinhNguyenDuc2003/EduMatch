@@ -2,9 +2,9 @@
 import { useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
-import { Users, GraduationCap, ShieldCheck, School } from 'lucide-react';
+import { User, GraduationCap, ShieldCheck, School } from 'lucide-react';
 
-export default function User() {
+export default function SubcriptionPlan() {
   const [filterText, setFilterText] = useState('');
 
   const users = [
@@ -50,22 +50,22 @@ export default function User() {
     },
   ];
 
-  const totalUsers = users.length;
-  const activeUsers = users.filter((u) => u.status === 'Đang hoạt động').length;
+  const totalSubcriptionPlans = users.length;
+  const activeSubcriptionPlans = users.filter((u) => u.status === 'Đang hoạt động').length;
   const sponsors = users.filter((u) => u.role === 'Nhà tài trợ').length;
   const students = users.filter((u) => u.role === 'Sinh viên').length;
 
   const stats = [
     {
       title: 'Tổng người dùng',
-      value: totalUsers,
-      icon: <Users />,
+      value: totalSubcriptionPlans,
+      icon: <User />,
       color: 'text-blue-600',
       filterName: '',
     },
     {
       title: 'Đang hoạt động',
-      value: activeUsers,
+      value: activeSubcriptionPlans,
       icon: <ShieldCheck />,
       color: 'text-green-600',
       filterName: 'Đang hoạt động',
