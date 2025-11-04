@@ -35,4 +35,5 @@ public interface ScholarshipService {
 
     ScholarshipVo getBySlug(String slug);
 
+    List<ScholarshipVo> getScholarshipByProviderId(Long id);
 }

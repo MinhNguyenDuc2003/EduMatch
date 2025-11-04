@@ -39,7 +39,7 @@ public class ApplicationController {
         return ApiResponse.ok(applicationService.getById(id));
     }
 
-  /*  @Authorized*/
+    @Authorized
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<ApplicationVo> create(
             @RequestPart("application") String applicationJson,
@@ -50,7 +50,7 @@ public class ApplicationController {
         return ApiResponse.ok(applicationService.create(application, mediaFiles, attributesJson));
     }
 
-    /*@Authorized*/
+    @Authorized
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<ApplicationVo> update(
             @PathVariable Long id,
