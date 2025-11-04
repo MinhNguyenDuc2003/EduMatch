@@ -1,4 +1,4 @@
-import { Building2, Bookmark } from 'lucide-react';
+import { Building2, Flag } from 'lucide-react';
 import Amount_Deadline from './Amount_Deadline';
 import { Anchor, Block, Card, RText, Section } from '@/lib/by/Div';
 import Image from 'next/image';
@@ -29,13 +29,13 @@ export default function CardSmalPic({
 
   return (
     <Section className="bg-white flex flex-col rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:border-blue-300 relative">
-      {/* Save Icon - Top Right */}
+      {/* Track Icon - Top Right */}
       <button
         className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm hover:shadow-md transition-all duration-200 group"
         onClick={handleBookmarkClick}
-        aria-label="Save scholarship"
+        aria-label="Track scholarship"
       >
-        <Bookmark className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:fill-blue-600 transition-colors" />
+        <Flag className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:fill-blue-600 transition-colors" />
       </button>
 
       <Block className="flex flex-col p-4 flex-1 space-y-3">

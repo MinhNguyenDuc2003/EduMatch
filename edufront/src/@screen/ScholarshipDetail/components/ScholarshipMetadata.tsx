@@ -1,4 +1,4 @@
-import { Bookmark, Calendar, DollarSign } from 'lucide-react';
+import { Flag, Calendar, DollarSign } from 'lucide-react';
 
 type ScholarshipMetadataProps = {
   formattedDate: string;
@@ -27,18 +27,18 @@ export default function ScholarshipMetadata({
         <span className="font-medium">{amount}</span>
       </div>
 
-      {/* Bookmark */}
+      {/* Track */}
       <button
         onClick={onToggleSave}
         className="flex items-center p-2 gap-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors"
-        aria-label="Save scholarship"
+        aria-label="Track scholarship"
       >
-        <Bookmark
+        <Flag
           className={`w-5 h-5 transition-colors ${
             isSaved ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
           }`}
         />
-        <span className="font-medium">Save</span>
+        <span className="font-medium">Track</span>
       </button>
     </div>
   );

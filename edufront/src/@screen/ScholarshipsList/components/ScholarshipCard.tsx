@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Bookmark, Calendar, DollarSign, Eye } from 'lucide-react';
+import { Flag, Calendar, DollarSign } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
+import { getScholarshipImages } from '@/utils/scholarshipHelpers';
 
 type ScholarshipCardProps = {
   scholarship: Scholarship;
@@ -12,13 +13,13 @@ type ScholarshipCardProps = {
 
 export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCardProps) {
   const router = useRouter();
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(Boolean(scholarship.isTracking));
   const [isFollowing, setIsFollowing] = useState(false);
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  // Get images array - only from imageUrls
-  const images = scholarship.imageUrls || [];
+  // Get images array from scholarship medias
+  const images = getScholarshipImages(scholarship);
 
   return (
     <>
@@ -46,7 +47,7 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
               onClick={() => setIsSaved(!isSaved)}
               className="p-2 rounded-full hover:bg-gray-100 transition-colors"
             >
-              <Bookmark
+              <Flag
                 className={`w-5 h-5 transition-colors ${
                   isSaved ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
                 }`}
@@ -67,18 +68,21 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
 
         {/* Content */}
         <div className="p-5">
-          {/* Title */}
-          <h2
-            className="text-lg font-bold text-gray-900 mb-2 cursor-pointer hover:text-blue-600 transition-colors"
+          {/* Title & Description - Clickable Area */}
+          <div
+            className="cursor-pointer group"
             onClick={() => router.push(`/scholarships/${scholarship.id}`)}
           >
-            {scholarship.title}
-          </h2>
+            {/* Title */}
+            <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+              {scholarship.title}
+            </h2>
 
-          {/* Description */}
-          <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-3">
-            {scholarship.description || scholarship.shortDescription}
-          </p>
+            {/* Description */}
+            <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-3">
+              {scholarship.description || scholarship.shortDescription}
+            </p>
+          </div>
 
           {/* Info Tags */}
           {(scholarship.university || scholarship.scholarshipType || scholarship.studyLevel) && (
@@ -105,13 +109,13 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
           )}
 
           {/* Footer */}
-          <div className="pt-3 border-t border-gray-100 space-y-3">
+          <div className="flex justify-between items-center pt-3 border-t border-gray-100">
             {/* Date & Amount */}
-            <div className="flex items-center gap-4 text-xs text-gray-600">
+            <div className="flex items-center gap-4 text-sm text-gray-600">
               {/* Date */}
               <div className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5" />
-                <span className="text- font-semibold text-gray-900">
+                <Calendar className="w-4 h-4" />
+                <span className=" font-semibold text-gray-900">
                   {scholarship.endDate
                     ? new Date(scholarship.endDate).toLocaleDateString('en-US', {
                         month: 'short',
@@ -124,7 +128,7 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
 
               {/* Amount */}
               <div className="flex items-center gap-1.5">
-                <DollarSign className="w-3.5 h-3.5" />
+                <DollarSign className="w-4 h-4" />
                 <span className="font-semibold text-gray-900">
                   {scholarship.fundingAmount
                     ? scholarship.fundingAmount.replace(/[^0-9.,]/g, '')
@@ -136,14 +140,7 @@ export default function ScholarshipCard({ scholarship, onApply }: ScholarshipCar
             {/* Action Buttons */}
             <div className="flex items-center gap-2">
               <Button
-                variant="outline"
-                className="flex-1 px-4 py-1.5 rounded-lg font-semibold text-sm bg-white border-gray-300 hover:bg-gray-50 [&_.value]:text-gray-700"
-                value="Details"
-                iconLeft={<Eye className="w-4 h-4 text-primary" />}
-                onClick={() => router.push(`/scholarships/${scholarship.id}`)}
-              />
-              <Button
-                className="flex-1 bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white px-4 py-1.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all [&_.value]:text-white text-sm"
+                className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white px-4 py-1.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all [&_.value]:text-white text-sm"
                 value="Apply"
                 onClick={() => onApply(scholarship)}
               />
