@@ -1,5 +1,3 @@
-import { ProviderProfileApiResponse } from './types';
-
 export const mockProviderProfileData: ProviderProfileApiResponse = {
   customer: {
     id: '1',

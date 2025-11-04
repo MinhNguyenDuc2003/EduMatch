@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/lib/cus/button';
-import { mockScholarshipOpportunities } from '@/@screen/HomePage/mockData';
+import { mockScholarshipOpportunities } from '@/@screen/(nondashboard)/HomePage/mockData';
 import { ScholarshipMetadata, ScholarshipContent, ScholarshipSidebar } from './components';
 import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 

@@ -8,7 +8,6 @@ import {
   LogIn,
   Search,
 } from 'lucide-react';
-import { title } from 'process';
 
 export const ToastVariant = {
   SUCCESS: 'success',
@@ -40,30 +39,6 @@ export const STATE_OR_PROVINCE_URL = '/location/state-or-provinces';
 export const DEFAULT_PAGE_SIZE = 10;
 export const DEFAULT_PAGE_NUMBER = 0;
 export const FORMAT_DATE_YYYY_MM_DD_HH_MM = 'YYYYMMDDHHmmss';
-
-//Column header to export for product
-export const mappingExportingProductColumnNames = {
-  id: 'Id',
-  name: 'Product Name',
-  shortDescription: 'Short Description',
-  description: 'Description',
-  specification: 'Specification',
-  sku: 'SKU',
-  gtin: 'GTIN',
-  slug: 'Slug',
-  isAllowedToOrder: 'Allowed Order',
-  isPublished: 'Published',
-  isFeatured: 'Featured',
-  isVisible: 'Visible',
-  stockTrackingEnabled: 'Stock Tracking Enabled',
-
-  price: 'Price',
-  brandId: 'Brand Id',
-  brandName: 'Brand Name',
-  metaTitle: 'Meta Title',
-  metaKeyword: 'Meta Keyword',
-  metaDescription: 'Meta Description',
-};
 
 export const studentMenuItems = [
   {
@@ -387,4 +362,18 @@ export const COUNTRIES = [
   { value: 'Yemen', label: 'Yemen' },
   { value: 'Zambia', label: 'Zambia' },
   { value: 'Zimbabwe', label: 'Zimbabwe' },
+];
+
+export const STUDY_LEVELS = [
+  { value: 'Undergraduate', label: 'Undergraduate' },
+  { value: 'Master', label: 'Master' },
+  { value: 'PhD', label: 'PhD' },
+  { value: 'Postdoctoral', label: 'Postdoctoral' },
+  { value: 'Certificate', label: 'Certificate' },
+  { value: 'Diploma', label: 'Diploma' },
+];
+
+export const SCHOLARSHIP_TYPES = [
+  { value: 'Scholarship', label: 'Scholarship' },
+  { value: 'Research Lab', label: 'Research Lab' },
 ];

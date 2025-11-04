@@ -5,10 +5,14 @@ import { IScholarship } from '@/lib/schemas';
 import Header from '@/pattern/share/Header';
 import { useRouter } from 'next/navigation';
 import ScholarshipForm from '@/pattern/share/ScholarshipForm';
+import { useCreateScholarshipMutation } from '@/state/apiProvider';
 
 const ScholarshipCreatePage = () => {
   const router = useRouter();
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+
+  const [createScholarship, { isLoading: isLoadingCreateScholarship }] =
+    useCreateScholarshipMutation();
 
   const onSubmit = async (data: IScholarship) => {
     try {
@@ -22,6 +26,8 @@ const ScholarshipCreatePage = () => {
       uploadedImages.forEach((image) => {
         formData.append('images', image);
       });
+
+      await createScholarship(formData).unwrap();
 
       // Navigate back to scholarships list after successful creation
       router.push('/provider/scholarships');
@@ -39,7 +45,11 @@ const ScholarshipCreatePage = () => {
     <div className="p-6 lg:p-8 space-y-6 bg-white">
       <Header subtitle="Create a new scholarship program" title="New Scholarship" />
 
-      <ScholarshipForm onSubmit={onSubmit} onImagesChange={handleImagesChange} />
+      <ScholarshipForm
+        onSubmit={onSubmit}
+        onImagesChange={handleImagesChange}
+        isLoading={isLoadingCreateScholarship}
+      />
     </div>
   );
 };

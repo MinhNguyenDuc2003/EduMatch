@@ -1,4 +1,4 @@
-import ScholarshipDetail from '@/@screen/(nondashboard)/ScholarshipDetail';
+import ScholarshipUpdate from '@/@screen/(dashboard)/provider/ScholarshipUpdate';
 import React from 'react';
 
 type PageProps = {
@@ -9,9 +9,8 @@ type PageProps = {
 
 const page = async ({ params }: PageProps) => {
   const { id } = await params;
-  const scholarshipId = parseInt(id, 10);
 
-  return <ScholarshipDetail scholarshipId={scholarshipId} />;
+  return <ScholarshipUpdate scholarshipId={id} />;
 };
 
 export default page;

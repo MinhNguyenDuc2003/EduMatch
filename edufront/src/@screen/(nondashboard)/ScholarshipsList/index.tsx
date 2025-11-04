@@ -1,12 +1,10 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import Header from '@/pattern/core/Navbar';
-import Footer from '@/pattern/core/Footer';
 import { FilterSidebar, ScholarshipCard, RightSidebar, PremiumBanner } from './components';
 import { Filter } from 'lucide-react';
 import SearchBar from '@/pattern/share/SearchBar';
-import { mockScholarshipOpportunities } from '@/@screen/HomePage/mockData';
+import { mockScholarshipOpportunities } from '@/@screen/(nondashboard)/HomePage/mockData';
 
 export type FilterState = {
   keyword: string;

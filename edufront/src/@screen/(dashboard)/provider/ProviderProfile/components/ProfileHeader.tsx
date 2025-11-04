@@ -1,7 +1,6 @@
 import { Camera, Globe, Mail, Phone } from 'lucide-react';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { IProviderProfile } from '@/lib/schemas';
-import { ProviderProfile } from '../types';
 import { Skeleton } from '@/lib/cus/skeleton';
 
 interface ProfileHeaderProps {

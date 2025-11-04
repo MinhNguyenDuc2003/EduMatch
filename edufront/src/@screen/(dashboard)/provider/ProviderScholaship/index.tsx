@@ -16,7 +16,7 @@ const ProviderScholaship = () => {
   const mockData: ApiResponse = {
     content: [
       {
-        id: 10,
+        id: 2,
         providerId: 2,
         title: 'Fullbright Scholarship 2025',
         slug: 'fullbright-scholarship-2025',

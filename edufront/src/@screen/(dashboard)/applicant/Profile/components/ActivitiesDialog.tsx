@@ -27,7 +27,7 @@ import {
   ORGANIZATIONS_JOINED,
   RESEARCH_EXPERIENCE,
   CAREER_GOALS,
-} from '@/@screen/Profile/constants';
+} from '@/@screen/(dashboard)/applicant/Profile/constants';
 import { IApplicantProfile } from '@/lib/schemas';
 
 interface ActivitiesDialogProps {

@@ -1,4 +1,4 @@
-import ProviderScholaship from '@/@screen/ProviderScholaship';
+import ProviderScholaship from '@/@screen/(dashboard)/provider/ProviderScholaship';
 import React from 'react';
 
 const ScholarshipsPage = () => {

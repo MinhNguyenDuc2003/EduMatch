@@ -16,7 +16,6 @@ import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from '@/state/apiProvider';
-import type { ProviderProfile } from './types';
 import { COUNTRIES } from '@/constants/Common';
 
 export default function ProviderProfile() {

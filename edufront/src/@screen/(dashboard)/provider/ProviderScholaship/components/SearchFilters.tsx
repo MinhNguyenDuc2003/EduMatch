@@ -20,11 +20,13 @@ export const SearchFilters = ({ searchQuery, onSearchChange }: SearchFiltersProp
           className="pl-10 pr-4"
         />
       </div>
-      <Button variant="outline" className="gap-2">
+      <Button
+        variant="outline"
+        className="gap-2 bg-primary-brand text-white hover:bg-primary-brand/90"
+      >
         <Filter className="w-4 h-4" />
         Filters
       </Button>
     </div>
   );
 };
-

@@ -20,17 +20,3 @@ export const DEFAULT_SCHOLARSHIP_FORM_VALUES: IScholarship = {
   gpaRequirement: undefined,
   scholarshipPreferences: [],
 };
-
-export const STUDY_LEVELS = [
-  { value: 'Undergraduate', label: 'Undergraduate' },
-  { value: 'Master', label: 'Master' },
-  { value: 'PhD', label: 'PhD' },
-  { value: 'Postdoctoral', label: 'Postdoctoral' },
-  { value: 'Certificate', label: 'Certificate' },
-  { value: 'Diploma', label: 'Diploma' },
-];
-
-export const SCHOLARSHIP_TYPES = [
-  { value: 'Scholarship', label: 'Scholarship' },
-  { value: 'Research Lab', label: 'Research Lab' },
-];

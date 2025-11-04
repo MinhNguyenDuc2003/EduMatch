@@ -38,6 +38,7 @@ declare global {
     availableSlots: number;
     languageRequirement: string;
     gpaRequirement: number;
+    providerProfileVo?: ProviderProfile;
     scholarshipPreferences?: ScholarshipPreference[];
     scholarshipMedias?: ScholarshipMedia[];
   };

@@ -1,8 +1,5 @@
-import {
-  DEFAULT_SCHOLARSHIP_FORM_VALUES,
-  SCHOLARSHIP_TYPES,
-  STUDY_LEVELS,
-} from '@/@screen/ScholarshipCreate/constants';
+import { DEFAULT_SCHOLARSHIP_FORM_VALUES } from '@/@screen/(dashboard)/provider/ScholarshipCreate/constants';
+import { SCHOLARSHIP_TYPES, STUDY_LEVELS } from '@/constants/Common';
 import { COUNTRIES } from '@/constants/Common';
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
@@ -11,6 +8,7 @@ import { IScholarship, scholarshipSchema } from '@/lib/schemas';
 import { generateSlug } from '@/utils/generateSlug';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus, Trash2, Image as ImageIcon, X } from 'lucide-react';
+import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -19,11 +17,13 @@ const ScholarshipForm = ({
   onSubmit,
   onImagesChange,
   onDeletedImagesChange,
+  isLoading = false,
 }: {
   scholarship?: Scholarship;
   onSubmit: (data: IScholarship) => void;
   onImagesChange?: (images: File[]) => void;
   onDeletedImagesChange?: (deletedIds: number[]) => void;
+  isLoading?: boolean;
 }) => {
   // Form setup
   const methods = useForm<IScholarship>({
@@ -60,6 +60,8 @@ const ScholarshipForm = ({
         id: media.id,
       }));
       setImagePreviews(initialImages);
+
+      // Transform initial images to files and set uploaded images
     }
   }, [scholarship]);
 
@@ -136,7 +138,7 @@ const ScholarshipForm = ({
       {
         type: '',
         value: '',
-        weight: 1,
+        weight: 0,
         note: '',
       },
     ]);
@@ -260,9 +262,12 @@ const ScholarshipForm = ({
                       key={preview.type === 'existing' ? preview.id : index}
                       className="relative group aspect-video rounded-lg overflow-hidden border-2 border-gray-200"
                     >
-                      <img
+                      <Image
                         src={preview.url}
                         alt={`Scholarship image ${index + 1}`}
+                        width={100}
+                        height={100}
+                        unoptimized
                         className="w-full h-full object-cover"
                       />
                       {preview.type === 'existing' && (
@@ -300,6 +305,7 @@ const ScholarshipForm = ({
                 type="select"
                 placeholder="Select country"
                 options={COUNTRIES}
+                initialValue={scholarship?.country}
                 isBorder={true}
               />
 
@@ -326,6 +332,7 @@ const ScholarshipForm = ({
                 type="select"
                 placeholder="Select study level"
                 options={STUDY_LEVELS}
+                initialValue={scholarship?.studyLevel}
                 isBorder={true}
               />
 
@@ -336,6 +343,7 @@ const ScholarshipForm = ({
                 type="select"
                 placeholder="Select scholarship type"
                 options={SCHOLARSHIP_TYPES}
+                initialValue={scholarship?.scholarshipType}
                 isBorder={true}
               />
             </div>
@@ -388,23 +396,29 @@ const ScholarshipForm = ({
           <div className="space-y-6">
             <h2 className="text-2xl font-semibold text-gray-900">Academic Requirements</h2>
 
-            {/* Language Requirement */}
-            <CustomFormField
-              name="languageRequirement"
-              label="Language Requirement *"
-              type="text"
-              placeholder="e.g., IELTS 7.0, TOEFL 95, English proficiency certificate"
-              isBorder={true}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Language Requirement */}
+              <CustomFormField
+                name="languageRequirement"
+                label="Language Requirement *"
+                type="text"
+                placeholder="e.g., IELTS 7.0, TOEFL 95, English proficiency certificate"
+                isBorder={true}
+              />
 
-            {/* GPA Requirement */}
-            <CustomFormField
-              name="gpaRequirement"
-              label="GPA Requirement"
-              type="number"
-              placeholder="Enter minimum GPA (0-4 scale)"
-              isBorder={true}
-            />
+              {/* GPA Requirement */}
+
+              <CustomFormField
+                name="gpaRequirement"
+                label="GPA Requirement"
+                type="range"
+                placeholder="Enter minimum GPA (0-4 scale)"
+                isBorder={true}
+                min={0}
+                max={4}
+                step={0.1}
+              />
+            </div>
           </div>
 
           {/* Scholarship Preferences */}
@@ -465,9 +479,12 @@ const ScholarshipForm = ({
                   <CustomFormField
                     name={`scholarshipPreferences.${index}.weight`}
                     label="Weight *"
-                    type="number"
-                    placeholder="Enter weight (1-10)"
+                    type="range"
+                    placeholder="Enter weight (0-1)"
                     isBorder={true}
+                    min={0}
+                    max={1}
+                    step={0.1}
                   />
 
                   <CustomFormField
@@ -494,8 +511,9 @@ const ScholarshipForm = ({
             <Button
               type="submit"
               className="flex-1 bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
+              disabled={isLoading}
             >
-              Create Scholarship
+              {isLoading ? 'Submitting...' : 'Submit'}
             </Button>
           </div>
         </div>
