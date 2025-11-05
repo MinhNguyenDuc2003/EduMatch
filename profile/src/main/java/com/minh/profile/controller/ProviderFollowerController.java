@@ -20,7 +20,6 @@ public class ProviderFollowerController {
     @Autowired
     private ProviderFollowerService service;
 
-    @Authorized
     @GetMapping("/all")
     public ApiResponse<List<ProviderFollowerDto>> getAllFollowers(@RequestParam("userId") String userId) {
         return ApiResponse.ok(service.getAllFollowers(userId));
