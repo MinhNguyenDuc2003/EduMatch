@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { FileQuestion, CheckCircle2, Users } from 'lucide-react';
 import { type ShortlistTab } from '../types';
 
@@ -41,38 +40,14 @@ export default function EmptyState({ tab }: EmptyStateProps) {
   const Icon = config.icon;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50/50 px-8 py-20 text-center"
-    >
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-        className="mb-6 rounded-full bg-white p-6 shadow-sm"
-      >
+    <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50/50 px-8 py-20 text-center">
+      <div className="mb-6 rounded-full bg-white p-6 shadow-sm">
         <Icon className="h-12 w-12 text-slate-400" />
-      </motion.div>
+      </div>
 
-      <motion.h2
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className="mb-3 text-xl font-bold text-slate-800"
-      >
-        {config.title}
-      </motion.h2>
+      <h2 className="mb-3 text-xl font-bold text-slate-800">{config.title}</h2>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className="max-w-md text-sm leading-relaxed text-slate-600"
-      >
-        {config.description}
-      </motion.p>
-    </motion.div>
+      <p className="max-w-md text-sm leading-relaxed text-slate-600">{config.description}</p>
+    </div>
   );
 }

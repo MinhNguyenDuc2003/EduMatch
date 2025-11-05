@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Calendar, DollarSign, MapPin, GraduationCap, Flag, X } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
@@ -44,13 +43,7 @@ export default function TrackedScholarshipCard({
   const fundingLabel = scholarship.fundingAmount || '—';
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.3, delay: index * 0.05 }}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
-    >
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
       {/* Untrack Button */}
       {onUntrack && (
         <button
@@ -184,7 +177,7 @@ export default function TrackedScholarshipCard({
           </div>
         )}
       </div>
-    </motion.article>
+    </article>
   );
 }
 

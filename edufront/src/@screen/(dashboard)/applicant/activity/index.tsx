@@ -6,7 +6,7 @@ import { mockScholarshipOpportunities } from '@/@screen/(nondashboard)/HomePage/
 import { HeroSection, TabSwitcher, TrackedScholarshipCard, EmptyState } from './components';
 import { type ShortlistTab, TAB_CONFIGS } from './types';
 
-export default function Shortlist() {
+export default function ActivityManagement() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<ShortlistTab>('tracking');
 

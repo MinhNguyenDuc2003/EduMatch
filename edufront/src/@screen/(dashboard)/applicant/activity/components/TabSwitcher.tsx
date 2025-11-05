@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { type ShortlistTab, type TabConfig } from '../types';
 
 type TabSwitcherProps = {
@@ -23,16 +22,9 @@ export default function TabSwitcher({ tabs, activeTab, onTabChange, counts }: Ta
             type="button"
             onClick={() => onTabChange(tab.key)}
             className={`relative px-6 py-3 text-sm font-semibold transition-all rounded-xl ${
-              isActive ? 'text-slate-900' : 'text-slate-500 hover:text-slate-700'
+              isActive ? 'text-slate-900 bg-white shadow-sm' : 'text-slate-500 hover:text-slate-700'
             }`}
           >
-            {isActive && (
-              <motion.div
-                layoutId="activeTab"
-                className="absolute inset-0 rounded-xl bg-white shadow-sm"
-                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-              />
-            )}
             <span className="relative z-10 flex items-center gap-2">
               {tab.label}
               {count > 0 && (
