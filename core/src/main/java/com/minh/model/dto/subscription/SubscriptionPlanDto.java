@@ -28,8 +28,6 @@ public class SubscriptionPlanDto extends BaseDto {
 
     private String currency;
 
-    @JsonSerialize(using = DateToTimestamp.class)
-    @JsonDeserialize(using = TimestampToDate.class)
     private Integer durationDays;
 
     private String targetType;
