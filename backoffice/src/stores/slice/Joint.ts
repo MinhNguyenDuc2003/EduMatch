@@ -1,8 +1,10 @@
+import { ISubscriptionPlanList } from "src/assets/types/SubscriptionPlanList";
 import { StateCreator } from "zustand";
 
 type State = {
   Joint: {
-    ScholarshipList?: ScholarshipList[];
+    ScholarshipList?: IScholarshipList[];
+    SubscriptionPlanList?: ISubscriptionPlanList[];
     formFocusID?: string;
   };
   setJointData(Obj: State["Joint"]): void;

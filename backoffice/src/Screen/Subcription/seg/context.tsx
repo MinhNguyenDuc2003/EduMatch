@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import apiClientService from 'src/apiController/ApiClientService';
@@ -35,12 +34,37 @@ export default GenCtx({
       async onGetData() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get('/subscription/subscription/all' );
+          const data = await apiClientService.post('/scholarship/scholarships/page', {
+            criteria: {
+              country: '',
+              university: '',
+              studyLevel: '',
+              scholarshipType: '',
+            },
+            sortBy: 'id',
+            sortDirection: 'DESC',
+            page: 0,
+            size: 50,
+          });
           if (data) {
-           ss.Joint.ScholarshipList = data;
-           console.log('first', data)
+            ss.setJointData({
+              ScholarshipList: data || [],
+            });
+            console.log('first', data);
           }
-          return 
+          return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+
+      async onGetByID(id: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get(`/scholarship/scholarships/${id}`);
+          return data.data;
         } catch (error) {
           console.error({ error });
         } finally {
@@ -51,7 +75,7 @@ export default GenCtx({
 
     useEffect(() => {
       meds.onGetData();
-    }, [])
+    }, []);
     return {
       ss,
       data,

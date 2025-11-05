@@ -33,8 +33,8 @@ const AppSidebar = () => {
       { icon: BookOpen, label: 'Scholarship', href: '/scholarship' },
       { icon: Package, label: 'Application Scholarship', href: '/applicationScholarship' },
       { icon: Bell, label: 'Payment', href: '/payment' },
-      { icon: Package, label: 'Subcription', href: '/subcription' },
-      { icon: Bell, label: 'Subcription Plan', href: '/subcriptionPlan' },
+      { icon: Package, label: 'Subcription', href: '/subscription' },
+      { icon: Bell, label: 'Subcription Plan', href: '/subscriptionPlan' },
       { icon: Bell, label: 'News', href: '/news' },
     ],
   };

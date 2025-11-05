@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import apiClientService from 'src/apiController/ApiClientService';
@@ -8,7 +7,6 @@ import { GenCtx } from 'src/apiController/GeneralContext';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
 
-const data = 'ffffff';
 export default GenCtx({
   useLogic() {
     type IForm = {
@@ -35,12 +33,29 @@ export default GenCtx({
       async onGetData() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.post('/scholarship/scholarships/page', {} );
+          const data = await apiClientService.get(
+            '/subscription/subscription/subscription/plans/all'
+          );
           if (data) {
-           ss.Joint.ScholarshipList = data;
-           console.log('first', data)
+            ss.setJointData({
+              SubscriptionPlanList: data || [],
+            });
+            console.log('first', data);
           }
-          return 
+          return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+
+      async onGetByID(id: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get(`/subscription/subscription/subscription/plans/${id}`);
+          console.log('data.data', data.data)
+          return data.data;
         } catch (error) {
           console.error({ error });
         } finally {
@@ -51,10 +66,9 @@ export default GenCtx({
 
     useEffect(() => {
       meds.onGetData();
-    }, [])
+    }, []);
     return {
       ss,
-      data,
       meds,
     };
   },

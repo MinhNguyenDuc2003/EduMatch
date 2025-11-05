@@ -10,7 +10,7 @@ declare global {
     url?: string;
   };
 
-  type ScholarshipList = {
+  type IScholarshipList = {
     id?: number;
     providerId?: number;
     title?: string;
@@ -35,7 +35,7 @@ declare global {
 
   type ScholarshipResponse = {
     data?: {
-      content?: ScholarshipList[];
+      content?: IScholarshipList[];
       totalElements?: number;
       totalPages?: number;
       number?: number;
