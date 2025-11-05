@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/lib/cus/button';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { ArrowRight } from 'lucide-react';
-import { compact, map } from 'lodash';
+import { map } from 'lodash';
 
 type ScholarshipsSectionProps = {
   scholarships: Scholarship[];
@@ -33,39 +33,19 @@ export default function ScholarshipsSection({
             onClick={() => router.push('/scholarships')}
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {map(scholarships?.slice(0, 4), (item) => {
-            // Parse fundingAmount to number for display
-            const amountNumber = item.fundingAmount
-              ? parseFloat(item.fundingAmount.replace(/[^0-9.]/g, ''))
-              : 0;
-            // Format endDate timestamp to ISO string
-            const endDateISO = item.endDate
-              ? new Date(item.endDate).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
-                })
-              : '';
-
-            return (
-              <CardSmalPic
-                key={item.id}
-                title={item.title}
-                amount={amountNumber}
-                deadline={endDateISO}
-                description={item.shortDescription}
-                tagName={compact([item?.country, item?.university, item?.studyLevel])}
-                titleButton="Apply Now"
-                onViewDetails={() => onViewDetails(item)}
-                university={item.university}
-                study_level={item.studyLevel}
-                scholarship_type={item.scholarshipType}
-                gpa_requirement={item.gpaRequirement}
-                country={item.country}
-              />
-            );
-          })}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {map(scholarships?.slice(0, 3), (item) => (
+            <CardSmalPic
+              key={item.id}
+              picture={item.organizationLogoUrl}
+              title={item.title}
+              amount={item.fundingAmount}
+              deadline={item.endDate}
+              description={item.shortDescription}
+              university={item.university}
+              onViewDetails={() => onViewDetails(item)}
+            />
+          ))}
         </div>
       </div>
     </section>

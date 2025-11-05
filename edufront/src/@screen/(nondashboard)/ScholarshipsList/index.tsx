@@ -137,6 +137,15 @@ export default function ScholarshipsList() {
     // TODO: Implement apply logic
   };
 
+  const handleToggleTracking = (scholarshipId: number) => {
+    setScholarships((prevScholarships) =>
+      prevScholarships.map((item) =>
+        item.id === scholarshipId ? { ...item, isTracking: !item.isTracking } : item
+      )
+    );
+    // TODO: Call API to update tracking state on server
+  };
+
   const activeFiltersCount = useMemo(() => {
     let count = 0;
     if (filters.keyword) count++;
@@ -250,6 +259,7 @@ export default function ScholarshipsList() {
                         key={scholarship.id}
                         scholarship={scholarship}
                         onApply={handleApply}
+                        onToggleTracking={handleToggleTracking}
                       />
                     ))}
                     {totalElements > filteredScholarships.length && (

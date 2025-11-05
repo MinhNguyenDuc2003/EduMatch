@@ -114,6 +114,15 @@ const Header = () => {
               <DropdownMenuItem asChild>
                 <Link href="/applicant/profile">Profile</Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/applicant/shortlist?tab=tracking">Shortlist</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/applicant/shortlist?tab=applied">Applied</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/applicant/shortlist?tab=following">Following</Link>
+              </DropdownMenuItem>
 
               <DropdownMenuItem onClick={() => {}}>Logout</DropdownMenuItem>
             </DropdownMenuContent>

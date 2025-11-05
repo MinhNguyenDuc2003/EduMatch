@@ -41,6 +41,8 @@ declare global {
     providerProfileVo?: ProviderProfile;
     scholarshipPreferences?: ScholarshipPreference[];
     scholarshipMedias?: ScholarshipMedia[];
+    organizationLogoUrl?: string; // Organization/company logo URL
+    isTracking?: boolean; // Whether user is tracking/following this scholarship
   };
 }
 

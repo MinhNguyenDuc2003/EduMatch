@@ -89,10 +89,10 @@ export default function FilterSidebar({
           {activeFiltersCount > 0 && (
             <button
               onClick={clearAllFilters}
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+              className="text-xs bg-blue-50 text-primary-brand hover:bg-blue-100 px-3 py-1.5 rounded-full font-medium flex items-center gap-1.5 transition-colors"
             >
-              <X className="w-4 h-4" />
-              Clear All ({activeFiltersCount})
+              <span>{activeFiltersCount} applied</span>
+              <X className="w-3.5 h-3.5" />
             </button>
           )}
           {isMobile && onClose && (

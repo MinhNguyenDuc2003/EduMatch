@@ -48,15 +48,6 @@ export default function ScholarshipDetail({ scholarshipId }: ScholarshipDetailPr
     ? scholarship.fundingAmount.replace(/[^0-9.]/g, '')
     : '0';
 
-  // Mock organization data (in real app, this would come from API)
-  const organization = {
-    name: scholarship.university || 'Organization Name',
-    email: 'emailexample@edu.vn',
-    phone: '0882789833',
-    address: `${scholarship.country || 'Thu Duc'}, Ho Chi Minh city`,
-    website: 'https://www.figma.com',
-  };
-
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumbs Header */}
@@ -68,9 +59,9 @@ export default function ScholarshipDetail({ scholarshipId }: ScholarshipDetailPr
       <div className="mx-auto px-4 lg:px-40 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Main Content */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 flex flex-col gap-4">
             {/* Title */}
-            <h1 className="text-4xl font-bold text-gray-900 mb-6">{scholarship.title}</h1>
+            <h1 className="text-4xl font-bold text-gray-900">{scholarship.title}</h1>
 
             {/* Metadata Row */}
             <ScholarshipMetadata
@@ -85,12 +76,22 @@ export default function ScholarshipDetail({ scholarshipId }: ScholarshipDetailPr
           </div>
 
           {/* Right Column - Sidebar */}
-          <div className="lg:col-span-1">
-            <ScholarshipSidebar
-              organization={organization}
-              isFollowing={isFollowing}
-              onToggleFollow={() => setIsFollowing(!isFollowing)}
-            />
+          <div className="lg:col-span-1 ">
+            <div className="sticky top-24 flex flex-col gap-4">
+              <ScholarshipSidebar
+                scholarship={scholarship}
+                isFollowing={isFollowing}
+                onToggleFollow={() => setIsFollowing(!isFollowing)}
+              />
+              {/* Action Button */}
+              <Button
+                value="Apply Now"
+                variant="ok"
+                size="lg"
+                full
+                className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
+              />
+            </div>
           </div>
         </div>
       </div>
