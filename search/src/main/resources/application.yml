@@ -145,8 +145,8 @@ kafka:
       group: ${app.environment:local}.search.new-event.group
   scholarship:
     cdc:
-      topic: ${app.environment:local}.scholarship.cdc.scholarship.scholarship
-      group: ${app.environment:local}.scholarship.cdc
+      topic: scholarship.scholarship.scholarship
+      group: scholarship
 
 keycloak:
   auth-server-url: ${env.keycloak.url:http://localhost:8080}

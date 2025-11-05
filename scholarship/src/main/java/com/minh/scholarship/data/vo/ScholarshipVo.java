@@ -21,8 +21,10 @@ import java.util.List;
 @NoArgsConstructor
 public class ScholarshipVo extends ScholarshipDto {
 
+    private ProviderProfileVo providerProfileVo;
     private List<ScholarshipPreferenceDto> scholarshipPreferences;
     private List<MediaDto> scholarshipMedias;
     private List<ApplicationAttributeDto> applicationAttributes;
+    private int isFollow;
 
 }

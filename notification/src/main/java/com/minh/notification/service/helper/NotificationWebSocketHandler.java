@@ -27,7 +27,7 @@ public class NotificationWebSocketHandler {
     public void sendToUser(String userId, NotificationVo payload) {
         try {
             String msg = objectMapper.writeValueAsString(payload);
-            System.out.println("📤 Sending PRIVATE message to userId = " + userId);
+            System.out.println("Sending PRIVATE message to userId = " + userId);
             messagingTemplate.convertAndSendToUser(userId, "/queue/private", msg);
         } catch (Exception e) {
             throw new RuntimeException("Error sending to user " + userId, e);

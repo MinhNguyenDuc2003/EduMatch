@@ -1,0 +1,109 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: edumatch-registry-server-configmap
+  namespace: edumatch
+data:
+  application.yml: |
+    spring:
+      application:
+        name: discovery-server
+
+    server:
+      port: 8761
+
+    eureka:
+      instance:
+        hostname: edumatch-registry-server-service.edumatch.svc.cluster.local
+        prefer-ip-address: false
+      client:
+        register-with-eureka: false
+        fetch-registry: false
+      server:
+        enable-self-preservation: false
+        peer-node-read-timeout-ms: 1000
+        peer-node-connect-timeout-ms: 1000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edumatch-registry-server-deployment
+  namespace: edumatch
+  labels:
+    app: edumatch-registry-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edumatch-registry-server
+  template:
+    metadata:
+      labels:
+        app: edumatch-registry-server
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: master
+      containers:
+        - name: edumatch-registry-server
+          image: registry.edumatch.space/edumatch/registry:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8761
+              name: http
+          volumeMounts:
+            - name: registry-config
+              mountPath: /app/src/main/resources/application.yml
+              subPath: application.yml
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+      volumes:
+        - name: registry-config
+          configMap:
+            name: edumatch-registry-server-configmap
+      imagePullSecrets:
+        - name: edumatch-secret
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: edumatch-registry-server-service
+  namespace: edumatch
+spec:
+  selector:
+    app: edumatch-registry-server
+  ports:
+    - name: http
+      port: 8761
+      targetPort: 8761
+  type: ClusterIP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: edumatch-registry-server-ingress
+  namespace: edumatch
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: edumatch-registry-server-service
+                port:
+                  number: 8761

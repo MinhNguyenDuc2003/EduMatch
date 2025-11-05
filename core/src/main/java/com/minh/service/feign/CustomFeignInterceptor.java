@@ -11,7 +11,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Component
 @Slf4j
-@Order(1)
 public class CustomFeignInterceptor implements RequestInterceptor {
 
     @Override

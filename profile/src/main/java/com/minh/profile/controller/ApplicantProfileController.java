@@ -9,6 +9,12 @@ import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(EndPoint.PROFILES.APPLICANTS)

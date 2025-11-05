@@ -8,12 +8,15 @@ import com.minh.profile.data.entity.junction.ProviderFollowerEntity;
 import com.minh.profile.data.mapper.ProviderFollowerMapper;
 import com.minh.profile.data.repository.ProviderFollowerRepository;
 import com.minh.profile.data.repository.ProviderProfileRepository;
+import com.minh.profile.data.vo.ProviderProfileVo;
 import com.minh.profile.service.ProviderFollowerService;
+import com.minh.profile.service.ProviderProfileService;
 import com.minh.utils.UaaContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +29,8 @@ public class ProviderFollowerServiceImpl implements ProviderFollowerService {
     private ProviderProfileRepository providerProfileRepository;
     @Autowired
     private ProviderFollowerMapper providerFollowerMapper;
+    @Autowired
+    private ProviderProfileService profileService;
 
     @Override
     public ProviderFollowerDto create(Long id) {
@@ -55,6 +60,17 @@ public class ProviderFollowerServiceImpl implements ProviderFollowerService {
     public List<ProviderFollowerDto> getAllProviders() {
         String userId = UaaContextHolder.getUserId();
         return providerFollowerMapper.toDto(providerFollowerRepository.findByUserId(userId));
+    }
+
+    @Override
+    public List<ProviderProfileVo> getAllMyFollowers() {
+        String userId = UaaContextHolder.getUserId();
+        List<ProviderProfileVo> vos = new ArrayList<>();
+        List<ProviderFollowerEntity> providerFollowerEntities = providerFollowerRepository.findByUserId(userId);
+        providerFollowerEntities.forEach(providerFollower -> {
+            vos.add(profileService.getById(providerFollower.getProviderId()));
+        });
+        return vos;
     }
 
 }

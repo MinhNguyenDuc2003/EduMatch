@@ -14,4 +14,9 @@ import lombok.extern.log4j.Log4j2;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class ScholarshipFilter extends ApiFilter<ScholarshipVo> {
+
+    public void beautify() {
+        this.getCriteria().beautify();
+    }
+
 }

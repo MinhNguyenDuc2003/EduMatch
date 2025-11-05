@@ -16,6 +16,9 @@ public class ApplicationAttributeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "APPLICATION_ID")
+    private Long applicationId;
+
     @Column(name = "KEY")
     private String key;
 

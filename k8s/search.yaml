@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edumatch-search-deployment
+  namespace: edumatch
+  labels:
+    app: edumatch-search
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edumatch-search
+  template:
+    metadata:
+      labels:
+        app: edumatch-search
+    spec:
+      containers:
+        - name: edumatch-search
+          image: registry.edumatch.space/edumatch/search:1.1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: edumatch-registry-secret
+      volumes:
+        - name: search-config-volume
+          configMap:
+            name: edumatch-search-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edumatch-search-service
+  namespace: edumatch
+spec:
+  selector:
+    app: edumatch-search
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: edumatch-search-ingress
+  namespace: edumatch
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: search.edumatch.devopseduvn.live
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: edumatch-search-service
+                port:
+                  number: 80

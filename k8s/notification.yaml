@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edumatch-notification-deployment
+  namespace: edumatch
+  labels:
+    app: edumatch-notification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edumatch-notification
+  template:
+    metadata:
+      labels:
+        app: edumatch-notification
+    spec:
+      containers:
+        - name: edumatch-notification
+          image: registry.edumatch.space/edumatch/notification:1.1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: edumatch-registry-secret
+      volumes:
+        - name: notification-config-volume
+          configMap:
+            name: edumatch-notification-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edumatch-notification-service
+  namespace: edumatch
+spec:
+  selector:
+    app: edumatch-notification
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: edumatch-notification-ingress
+  namespace: edumatch
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: notification.edumatch.devopseduvn.live
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: edumatch-notification-service
+                port:
+                  number: 80

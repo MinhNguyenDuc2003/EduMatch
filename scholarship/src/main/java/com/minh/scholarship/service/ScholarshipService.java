@@ -29,4 +29,14 @@ public interface ScholarshipService {
 
     ScholarshipFollowerDto deleteScholarshipFollower(ScholarshipFollowerDto dto);
 
+    List<ScholarshipVo> getMyScholarship();
+
+    List<ScholarshipVo> getScholarshipFollow();
+
+    ScholarshipVo getBySlug(String slug);
+
+    List<ScholarshipVo> getScholarshipByProviderId(Long id);
+
+    List<ScholarshipVo> getByIds(List<Long> ids);
+
 }

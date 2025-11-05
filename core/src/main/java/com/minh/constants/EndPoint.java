@@ -34,6 +34,7 @@ public final class EndPoint {
         public static final String SCHOLARSHIPS = "/scholarships";
         public static final String APPLICATIONS = "/applications";
         public static final String APPLICATION_REVIEW = "/applications/review";
+        public static final String APPLICATION_SCHOLARSHIP = "/applications-scholarship";
     }
 
     public static class SUBSCRIPTION {

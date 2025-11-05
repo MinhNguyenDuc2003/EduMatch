@@ -11,6 +11,7 @@ import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
 import com.minh.model.dto.scholarship.ScholarshipPreferenceDto;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
+import com.minh.scholarship.data.entity.junction.ScholarshipFollowerEntity;
 import com.minh.scholarship.data.entity.junction.ScholarshipMediaEntity;
 import com.minh.scholarship.data.mapper.ScholarshipFollowerMapper;
 import com.minh.scholarship.data.mapper.ScholarshipMapper;
@@ -22,6 +23,7 @@ import com.minh.scholarship.data.repository.ScholarshipRepository;
 import com.minh.scholarship.data.vo.NotificationVo;
 import com.minh.scholarship.data.vo.ProviderProfileVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
+import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
 import com.minh.scholarship.feign.MediaFeign;
 import com.minh.scholarship.feign.NotificationTemplateFeign;
 import com.minh.scholarship.feign.ProviderProfileFeign;
@@ -29,6 +31,7 @@ import com.minh.scholarship.message.KafkaProducer;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.base.BaseService;
+import com.minh.utils.SecurityUtil;
 import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +42,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,7 +66,6 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Value("${kafka.scholarship.new-event.topic}")
     private String newEventScholarshipTopic;
 
-
     @Override
     public List<ScholarshipDto> getAll() {
         return scholarshipMapper.toDto(scholarshipRepository.findAll());
@@ -74,6 +78,10 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         List<ScholarshipPreferenceDto> preferences = scholarshipPreferenceMapper.toDto(scholarshipPreferenceRepository.findByScholarshipId(entity.getId()));
         ScholarshipVo scholarshipVo = scholarshipMapper.entityToVo(entity);
         scholarshipVo.setScholarshipPreferences(preferences);
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getOne(entity.getProviderId()));
+        if (ObjectUtils.isNotEmpty(providerProfileVo)) {
+            scholarshipVo.setProviderProfileVo(providerProfileVo);
+        }
         return addScholarshipMedia(scholarshipVo);
     }
 
@@ -89,6 +97,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ScholarshipVo create(ScholarshipVo scholarship, List<MultipartFile> images) {
+        if (scholarshipRepository.isExistSlug(scholarship.getSlug())) {
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_SLUG_IS_ALREADY_EXIST);
+        }
         ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getMyProviderInfo());
         if (ObjectUtils.isEmpty(providerProfileVo)) {
             throw new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST);
@@ -179,15 +190,28 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public Page<ScholarshipVo> getPage(ScholarshipFilter filter) {
-        return scholarshipRepository.getPageable(filter.getPageable()).map(o -> {
-            ScholarshipVo scholarshipVo = scholarshipMapper.entityToVo(o);
+        filter.beautify();
+        String userId = SecurityUtil.getCurrentUserId();
+        return scholarshipRepository.getPageableAuthorized(filter.getPageable(), filter.getCriteria().getUniversity(),
+                filter.getCriteria().getCountry(), filter.getCriteria().getScholarshipType(),
+                filter.getCriteria().getStudyLevel(), userId).map(o -> {
+            ScholarshipVo scholarshipVo = scholarshipMapper.proToVo(o);
             return addScholarshipMedia(scholarshipVo);
         });
     }
 
     @Override
+    public List<ScholarshipVo> getByIds(List<Long> ids) {
+        String userId = SecurityUtil.getCurrentUserId();
+        System.out.println("UserId:" + userId);
+        List<ScholarshipProjection> allVoByIds = scholarshipRepository.getAllVoByIds(ids, userId);
+        return scholarshipMapper.prosToVos(allVoByIds);
+    }
+
+    @Override
     @Transactional(rollbackOn = Exception.class)
     public ScholarshipFollowerDto createScholarshipFollower(ScholarshipFollowerDto dto) {
+        dto.setUserId(UaaContextHolder.getUserId());
         return scholarshipFollowerMapper.toDto(
                 scholarshipFollowerRepository.save(
                         scholarshipFollowerMapper.toEntity(dto)));
@@ -199,6 +223,47 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         String userId = UaaContextHolder.getUserId();
         scholarshipFollowerRepository.deleteByScholarshipIdAndUserId(dto.getScholarshipId(), userId);
         return dto;
+    }
+
+    @Override
+    public List<ScholarshipVo> getMyScholarship() {
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getMyProviderInfo());
+        List<ScholarshipEntity> scholarshipEntities = scholarshipRepository.getAllByProviderId(providerProfileVo.getId());
+        List<ScholarshipVo> scholarshipVos = new ArrayList<>();
+        scholarshipEntities.forEach(entity -> {
+            scholarshipVos.add(this.getById(entity.getId()));
+        });
+        return scholarshipVos;
+    }
+
+    @Override
+    public List<ScholarshipVo> getScholarshipFollow() {
+        List<ScholarshipVo> scholarshipVos = new ArrayList<>();
+        String userId = UaaContextHolder.getUserId();
+        List<ScholarshipFollowerEntity> scholarshipFollowerEntities = scholarshipFollowerRepository.getByUserId(userId);
+        if (ObjectUtils.isNotEmpty(scholarshipFollowerEntities)) {
+            List<ScholarshipEntity> scholarshipEntities = scholarshipRepository.findByIdIn(scholarshipFollowerEntities.stream().map(ScholarshipFollowerEntity::getScholarshipId).collect(Collectors.toList()));
+            scholarshipEntities.forEach(entity -> {
+                scholarshipVos.add(this.getById(entity.getId()));
+            });
+        }
+        return scholarshipVos;
+    }
+
+    @Override
+    public ScholarshipVo getBySlug(String slug) {
+        Optional<ScholarshipEntity> entity = scholarshipRepository.findBySlug(slug);
+        return entity.map(scholarshipEntity -> this.getById(scholarshipEntity.getId())).orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
+    }
+
+    @Override
+    public List<ScholarshipVo> getScholarshipByProviderId(Long id) {
+        List<ScholarshipEntity> entities = scholarshipRepository.getAllByProviderId(id);
+        List<ScholarshipVo> scholarshipVos = new ArrayList<>();
+        entities.forEach(entity -> {
+            scholarshipVos.add(this.getById(entity.getId()));
+        });
+        return scholarshipVos;
     }
 
 }

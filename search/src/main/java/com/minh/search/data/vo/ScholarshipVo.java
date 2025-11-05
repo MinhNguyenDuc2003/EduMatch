@@ -18,14 +18,15 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScholarshipVo implements Serializable {
+public class ScholarshipVo extends ScholarshipDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<ScholarshipDto> scholarship;
+    private List<ScholarshipVo> scholarship;
     private int pageNum;
     private int pageSize;
     private int totalPages;
     private long totalElements;
     Map<String, Map<String, Long>> aggregations;
+    private int isFollow;
 }

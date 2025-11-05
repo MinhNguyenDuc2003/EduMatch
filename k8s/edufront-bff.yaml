@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edufront-bff-deployment
+  namespace: edumatch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edufront-bff
+  template:
+    metadata:
+      labels:
+        app: edufront-bff
+    spec:
+      containers:
+        - name: edufront-bff
+          image: registry.edumatch.space/edumatch/edufront:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      volumes:
+        - name: edufront-bff-config-volume
+          configMap:
+            name: edufront-bff-config
+      imagePullSecrets:
+        - name: edumatch-registry-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edufront-bff-service
+  namespace: edumatch
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: edufront-bff
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: edufront-bff-ingress
+  namespace: edumatch
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: 159.89.200.244
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: edufront-bff-service
+                port:
+                  number: 80
