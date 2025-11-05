@@ -7,6 +7,7 @@ type FilterSidebarProps = {
   filters: FilterState;
   setFilters: (filters: FilterState) => void;
   scholarships: Scholarship[];
+  aggregations?: ScholarshipSearchAggregations;
   isMobile?: boolean;
   onClose?: () => void;
 };
@@ -15,6 +16,7 @@ export default function FilterSidebar({
   filters,
   setFilters,
   scholarships,
+  aggregations,
   isMobile = false,
   onClose,
 }: FilterSidebarProps) {

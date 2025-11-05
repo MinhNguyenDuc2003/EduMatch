@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { FilterSidebar, ScholarshipCard, RightSidebar, PremiumBanner } from './components';
+import ScholarshipCardSkeleton from './components/ScholarshipCardSkeleton';
 import { Filter } from 'lucide-react';
 import SearchBar from '@/pattern/share/SearchBar';
-import { mockScholarshipOpportunities } from '@/@screen/(nondashboard)/HomePage/mockData';
+import { useSearchScholarshipsAdvancedQuery } from '@/state/apiScholarship';
 
 export type FilterState = {
   keyword: string;
@@ -27,110 +28,50 @@ export default function ScholarshipsList() {
     studyLevel: '',
     university: '',
     minGpa: 0,
-    maxGpa: 4,
+    maxGpa: 10,
     page: 0,
     size: 100,
   });
 
-  const [scholarships, setScholarships] = useState<Scholarship[]>(mockScholarshipOpportunities);
-  const [filteredScholarships, setFilteredScholarships] = useState<Scholarship[]>(
-    mockScholarshipOpportunities
-  );
-  const [isLoading] = useState(false);
+  // Prepare API request body
+  const requestBody = useMemo(() => {
+    const criteria: ScholarshipAdvancedSearchCriteria = {};
+    if (filters.country) criteria.country = filters.country;
+    if (filters.studyLevel) criteria.studyLevel = filters.studyLevel;
+    if (filters.university) criteria.university = filters.university;
 
-  // Filter scholarships locally (matching API request format)
-  useEffect(() => {
-    let filtered = [...scholarships];
-
-    // Keyword search (matching API keyword parameter)
-    if (filters.keyword) {
-      filtered = filtered.filter(
-        (item) =>
-          item.title?.toLowerCase().includes(filters.keyword.toLowerCase()) ||
-          item.shortDescription?.toLowerCase().includes(filters.keyword.toLowerCase()) ||
-          item.description?.toLowerCase().includes(filters.keyword.toLowerCase())
-      );
-    }
-
-    // Country filter (single value, matching API criteria.country)
-    if (filters.country) {
-      filtered = filtered.filter((item) => item.country === filters.country);
-    }
-
-    // Study level filter (single value, matching API criteria.studyLevel)
-    if (filters.studyLevel) {
-      filtered = filtered.filter((item) => item.studyLevel === filters.studyLevel);
-    }
-
-    // University filter (search mode)
-    if (filters.university) {
-      filtered = filtered.filter((item) =>
-        item.university?.toLowerCase().includes(filters.university.toLowerCase())
-      );
-    }
-
-    // GPA filter (matching API minGpa and maxGpa)
-    filtered = filtered.filter(
-      (item) =>
-        (item.gpaRequirement || 0) >= filters.minGpa && (item.gpaRequirement || 0) <= filters.maxGpa
-    );
-
-    // Apply pagination (matching API page and size)
-    const startIndex = filters.page * filters.size;
-    const endIndex = startIndex + filters.size;
-    const paginated = filtered.slice(startIndex, endIndex);
-
-    setFilteredScholarships(paginated);
-
-    // Log request params (for API integration later)
-    const requestParams = {
-      criteria: {
-        studyLevel: filters.studyLevel || undefined,
-        country: filters.country || undefined,
-        university: filters.university || undefined,
-      },
+    const body: ScholarshipAdvancedSearchRequest = {
+      criteria,
       page: filters.page,
       size: filters.size,
       keyword: filters.keyword || undefined,
       minGpa: filters.minGpa > 0 ? filters.minGpa : undefined,
-      maxGpa: filters.maxGpa !== 4 ? filters.maxGpa : undefined,
+      maxGpa: filters.maxGpa !== 10 ? filters.maxGpa : undefined,
     };
 
-    // Remove undefined values from criteria
-    Object.keys(requestParams.criteria).forEach((key) => {
-      if (requestParams.criteria[key as keyof typeof requestParams.criteria] === undefined) {
-        delete requestParams.criteria[key as keyof typeof requestParams.criteria];
-      }
-    });
+    // Remove undefined values
+    if (!body.keyword) delete body.keyword;
+    if (!body.minGpa) delete body.minGpa;
+    if (!body.maxGpa) delete body.maxGpa;
 
-    console.log('API Request Params:', requestParams);
-  }, [filters, scholarships]);
+    return body;
+  }, [filters]);
 
-  const totalElements = useMemo(() => {
-    // In real API, this would come from response.totalElements
-    let filtered = [...scholarships];
-    if (filters.keyword) {
-      filtered = filtered.filter(
-        (item) =>
-          item.title?.toLowerCase().includes(filters.keyword.toLowerCase()) ||
-          item.shortDescription?.toLowerCase().includes(filters.keyword.toLowerCase())
-      );
-    }
-    if (filters.country) {
-      filtered = filtered.filter((item) => item.country === filters.country);
-    }
-    if (filters.studyLevel) {
-      filtered = filtered.filter((item) => item.studyLevel === filters.studyLevel);
-    }
-    if (filters.university) {
-      filtered = filtered.filter((item) => item.university === filters.university);
-    }
-    filtered = filtered.filter(
-      (item) =>
-        (item.gpaRequirement || 0) >= filters.minGpa && (item.gpaRequirement || 0) <= filters.maxGpa
-    );
-    return filtered.length;
-  }, [filters, scholarships]);
+  // Call API
+  const { data: response, isLoading, isError } = useSearchScholarshipsAdvancedQuery(requestBody);
+
+  // Extract scholarships and pagination info from response
+  const scholarships = useMemo(() => {
+    const items = response?.scholarship || [];
+    // Ensure each scholarship has scholarshipMedias array (required by Scholarship type)
+    return items.map((item) => ({
+      ...item,
+      scholarshipMedias: item.scholarshipMedias || [],
+    }));
+  }, [response]);
+
+  const totalElements = response?.totalElements || 0;
+  const totalPages = response?.totalPages || 0;
 
   const handleApply = (scholarship: Scholarship) => {
     console.log('Apply to:', scholarship.title);
@@ -138,12 +79,8 @@ export default function ScholarshipsList() {
   };
 
   const handleToggleTracking = (scholarshipId: number) => {
-    setScholarships((prevScholarships) =>
-      prevScholarships.map((item) =>
-        item.id === scholarshipId ? { ...item, isTracking: !item.isTracking } : item
-      )
-    );
     // TODO: Call API to update tracking state on server
+    console.log('Toggle tracking for scholarship:', scholarshipId);
   };
 
   const activeFiltersCount = useMemo(() => {
@@ -153,9 +90,12 @@ export default function ScholarshipsList() {
     if (filters.studyLevel) count++;
     if (filters.university) count++;
     if (filters.minGpa > 0) count++;
-    if (filters.maxGpa < 4) count++;
+    if (filters.maxGpa < 10) count++;
     return count;
   }, [filters]);
+
+  // Extract aggregations from response for filter options
+  const aggregations = response?.aggregations;
 
   return (
     <>
@@ -205,6 +145,7 @@ export default function ScholarshipsList() {
                 filters={filters}
                 setFilters={setFilters}
                 scholarships={scholarships}
+                aggregations={aggregations}
                 onClose={() => setIsMobileFilterOpen(false)}
                 isMobile={true}
               />
@@ -223,6 +164,7 @@ export default function ScholarshipsList() {
                 filters={filters}
                 setFilters={setFilters}
                 scholarships={scholarships}
+                aggregations={aggregations}
                 isMobile={false}
               />
             </div>
@@ -243,10 +185,18 @@ export default function ScholarshipsList() {
 
               <div className="space-y-4">
                 {isLoading ? (
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-                    <p className="text-gray-500 text-lg">Loading scholarships...</p>
+                  <>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <ScholarshipCardSkeleton key={index} />
+                    ))}
+                  </>
+                ) : isError ? (
+                  <div className="bg-white rounded-xl shadow-sm border border-red-200 p-12 text-center">
+                    <p className="text-red-600 text-lg">
+                      Failed to load scholarships. Please try again later.
+                    </p>
                   </div>
-                ) : filteredScholarships.length === 0 ? (
+                ) : scholarships.length === 0 ? (
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
                     <p className="text-gray-500 text-lg">
                       No scholarships found matching your criteria.
@@ -254,7 +204,7 @@ export default function ScholarshipsList() {
                   </div>
                 ) : (
                   <>
-                    {filteredScholarships.map((scholarship) => (
+                    {scholarships.map((scholarship) => (
                       <ScholarshipCard
                         key={scholarship.id}
                         scholarship={scholarship}
@@ -262,12 +212,35 @@ export default function ScholarshipsList() {
                         onToggleTracking={handleToggleTracking}
                       />
                     ))}
-                    {totalElements > filteredScholarships.length && (
+                    {totalPages > 1 && (
                       <div className="text-center pt-4">
                         <p className="text-gray-500 text-sm">
-                          Showing {filteredScholarships.length} of {totalElements} scholarships
-                          {filters.page > 0 && ` (Page ${filters.page + 1})`}
+                          Showing {scholarships.length} of {totalElements} scholarships
+                          {filters.page > 0 && ` (Page ${filters.page + 1} of ${totalPages})`}
                         </p>
+                        <div className="flex justify-center gap-2 mt-4">
+                          <button
+                            onClick={() =>
+                              setFilters({ ...filters, page: Math.max(0, filters.page - 1) })
+                            }
+                            disabled={filters.page === 0}
+                            className="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Previous
+                          </button>
+                          <button
+                            onClick={() =>
+                              setFilters({
+                                ...filters,
+                                page: Math.min(totalPages - 1, filters.page + 1),
+                              })
+                            }
+                            disabled={filters.page >= totalPages - 1}
+                            className="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Next
+                          </button>
+                        </div>
                       </div>
                     )}
                   </>

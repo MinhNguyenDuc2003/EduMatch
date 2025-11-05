@@ -8,19 +8,25 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import globalReducer from '@/state';
 import { apiApplicant } from './apiApplicant';
 import { apiProvider } from './apiProvider';
+import { apiScholarship } from './apiScholarship';
 
 /* REDUX STORE */
 const rootReducer = combineReducers({
   global: globalReducer,
   [apiApplicant.reducerPath]: apiApplicant.reducer,
   [apiProvider.reducerPath]: apiProvider.reducer,
+  [apiScholarship.reducerPath]: apiScholarship.reducer,
 });
 
 export const makeStore = () => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(apiApplicant.middleware, apiProvider.middleware),
+      getDefaultMiddleware().concat(
+        apiApplicant.middleware,
+        apiProvider.middleware,
+        apiScholarship.middleware
+      ),
   });
 };
 

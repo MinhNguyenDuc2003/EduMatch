@@ -28,23 +28,23 @@ export default function CardSmalPic({
   };
 
   return (
-    <Section className="bg-white flex flex-col rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:border-blue-300 relative">
+    <Section className="group bg-white flex flex-col rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:border-[#3D6CB9] relative h-full">
       {/* Track Icon - Top Right */}
       <button
-        className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm hover:shadow-md transition-all duration-200 group"
+        className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm hover:shadow-md transition-all duration-200 "
         onClick={handleBookmarkClick}
         aria-label="Track scholarship"
       >
-        <Flag className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:fill-blue-600 transition-colors" />
+        <Flag className="w-5 h-5 text-gray-400 hover:text-[#3D6CB9] hover:fill-[#3D6CB9] transition-colors" />
       </button>
 
-      <Block className="flex flex-col p-4 flex-1 space-y-3">
+      <Block className="flex flex-col p-4 flex-1 h-full">
         {/* Header with University Logo and Title - Clickable */}
         <Anchor
-          className="flex gap-3 items-center pr-9 cursor-pointer hover:opacity-80 transition-opacity"
+          className="flex gap-3 items-start pr-9 cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0 mb-3"
           onClick={onViewDetails}
         >
-          <Card className="flex-shrink-0 w-12 h-12 relative aspect-square">
+          <Card className="flex-shrink-0 w-16 h-16 relative aspect-square">
             {picture ? (
               <Image
                 src={picture}
@@ -53,26 +53,50 @@ export default function CardSmalPic({
                 className="rounded-lg object-contain bg-white p-2"
               />
             ) : (
-              <Card className="bg-gradient-to-br from-blue-500 to-purple-600 w-full h-full rounded-lg flex items-center justify-center">
-                <Building2 className="w-5 h-5 text-white" />
+              <Card className="border border-gray-200 w-full h-full rounded-lg flex items-center justify-center relative">
+                <Image
+                  src={
+                    'https://es5urvh1np.ufs.sh/f/DHR6tEJ9PQoz85HjSO62tcmI7ElP8Ygn01Oa3ze6iFwADrsH'
+                  }
+                  alt={'logo'}
+                  fill
+                  className="rounded-lg object-contain bg-white p-2"
+                />
               </Card>
             )}
           </Card>
-          <Card className="flex-1 min-w-0">
-            <RText className="text-base font-semibold text-gray-900 leading-tight">{title}</RText>
-            <RText className="text-sm text-gray-600">{university}</RText>
+          <Card className="flex-1 min-w-0 flex flex-col">
+            <RText className="text-base font-semibold text-gray-900 leading-tight line-clamp-2 group-hover:text-[#3D6CB9] transition-colors">
+              {title || ''}
+            </RText>
+            <RText className="text-sm text-gray-600 mt-1 line-clamp-1">{university || ''}</RText>
           </Card>
         </Anchor>
-        {/* Description */}
-        {description && (
-          <Block className="text-gray-600 text-sm">
+
+        {/* Description - Fixed height */}
+        <Block className="text-gray-600 text-sm flex-shrink-0 min-h-[1.25rem] mb-3">
+          {description ? (
             <p className="line-clamp-1">{description}</p>
-          </Block>
-        )}
-        {/* Amount and Deadline */}
-        {(amount || deadline) && (
-          <Amount_Deadline amount={amount || '0'} deadline={deadline || 0} isRow={true} />
-        )}
+          ) : (
+            <p className="invisible line-clamp-1">Placeholder</p>
+          )}
+        </Block>
+
+        {/* Spacer - takes remaining space to push Amount_Deadline to bottom */}
+        <div className="flex-1"></div>
+
+        {/* Amount and Deadline - Always at bottom */}
+        <Block className="flex-shrink-0">
+          {amount || deadline ? (
+            <Amount_Deadline amount={amount || '0'} deadline={deadline || 0} isRow={true} />
+          ) : (
+            <div className="h-[3rem] flex items-center">
+              <div className="invisible">
+                <Amount_Deadline amount="0" deadline={0} isRow={true} />
+              </div>
+            </div>
+          )}
+        </Block>
       </Block>
     </Section>
   );
