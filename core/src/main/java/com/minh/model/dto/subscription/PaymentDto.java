@@ -2,7 +2,11 @@ package com.minh.model.dto.subscription;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.minh.model.dto.BaseDto;
+import com.minh.utils.serializer.DateToTimestamp;
+import com.minh.utils.serializer.TimestampToDate;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -32,5 +36,7 @@ public class PaymentDto extends BaseDto {
 
     private String status;
 
+    @JsonSerialize(using = DateToTimestamp.class)
+    @JsonDeserialize(using = TimestampToDate.class)
     private LocalDateTime paidAt;
 }

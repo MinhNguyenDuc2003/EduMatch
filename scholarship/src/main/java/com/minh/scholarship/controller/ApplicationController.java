@@ -50,7 +50,7 @@ public class ApplicationController {
         return ApiResponse.ok(applicationService.getById(id));
     }
 
-    @Authorized
+//    @Authorized
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<ApplicationVo> create(
             @RequestPart("application") String applicationJson,
