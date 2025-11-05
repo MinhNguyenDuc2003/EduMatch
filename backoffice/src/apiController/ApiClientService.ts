@@ -6,7 +6,7 @@ interface RequestOptions {
   body?: string;
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_PATH || 'http://159.89.200.244/api';
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_PATH || '';
 const token = process.env.NEXT_PUBLIC_API_TOKEN || '';
 
 const sendRequest = async (

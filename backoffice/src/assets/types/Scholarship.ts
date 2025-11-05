@@ -32,6 +32,19 @@ declare global {
     gpaRequirement?: number;
     scholarshipMedias?: ScholarshipMedia[];
   };
+
+  type ScholarshipResponse = {
+    data?: {
+      content?: ScholarshipList[];
+      totalElements?: number;
+      totalPages?: number;
+      number?: number;
+      size?: number;
+    };
+    success?: boolean;
+    status?: number;
+    ts?: number;
+  };
 }
 
 export {};

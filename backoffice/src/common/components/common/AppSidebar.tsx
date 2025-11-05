@@ -35,6 +35,7 @@ const AppSidebar = () => {
       { icon: Bell, label: 'Payment', href: '/payment' },
       { icon: Package, label: 'Subcription', href: '/subcription' },
       { icon: Bell, label: 'Subcription Plan', href: '/subcriptionPlan' },
+      { icon: Bell, label: 'News', href: '/news' },
     ],
   };
 

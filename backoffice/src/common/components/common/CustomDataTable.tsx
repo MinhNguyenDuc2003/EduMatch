@@ -1,11 +1,20 @@
 'use client';
-import React, { useEffect, useMemo, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import * as XLSX from 'xlsx';
 import { motion } from 'framer-motion';
-import { Search, FileSpreadsheet, MoreHorizontal, Edit, Trash2, Plus } from 'lucide-react';
-import CustomModal from './CustomModal';
+import {
+  Edit,
+  FileSpreadsheet,
+  MoreHorizontal,
+  Plus,
+  Search,
+  SearchIcon,
+  Trash2,
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import * as XLSX from 'xlsx-js-style';
 import CustomConfirm from './CustomConfirm';
+import CustomModal from './CustomModal';
 
 interface CustomDataTableProps {
   title?: string;
@@ -15,6 +24,8 @@ interface CustomDataTableProps {
   onCreate?: () => void;
   onEdit?: (row: any) => void;
   onDelete?: (row: any) => void;
+  onView?: (row: any) => void;
+  detailPath?: string;
 }
 
 const CustomDataTable = ({
@@ -25,12 +36,14 @@ const CustomDataTable = ({
   onCreate,
   onEdit,
   onDelete,
+  onView,
+  detailPath,
 }: CustomDataTableProps) => {
+  const router = useRouter();
   const [filterText, setFilterText] = useState(externalFilterText);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-
   // modal & confirm
   const [showModal, setShowModal] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -57,9 +70,16 @@ const CustomDataTable = ({
     setShowConfirm(true);
   };
 
+  const handleView = (row: any) => {
+    if (onView) return onView(row);
+    if (detailPath && row?.id !== undefined && row?.id !== null) {
+      const id = encodeURIComponent(String(row.id));
+      router.push(`${detailPath.replace(/\/$/, '')}/${id}`);
+    }
+  };
+
   const baseColumns = useMemo(() => {
     if (!data || data.length === 0) return [];
-
     const dataCols = Object.keys(data[0]).map((key, index) => ({
       name: (customTitles as string[])[index] || key.charAt(0).toUpperCase() + key.slice(1),
       selector: (row: any) => row[key],
@@ -72,7 +92,7 @@ const CustomDataTable = ({
     }));
 
     const actionCol = {
-      name: 'Hành động',
+      name: 'Actions',
       button: true,
       cell: (row: any) => (
         <div className="relative">
@@ -88,24 +108,32 @@ const CustomDataTable = ({
 
           {openDropdown === row.id && (
             <motion.div
-              className="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-200 z-10"
+              className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border border-gray-200 z-10"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
             >
               <button
+                onClick={() => handleView(row)}
+                className="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-blue-50"
+              >
+                <span className="mr-2">
+                  <SearchIcon size={16} className="text-blue-600" />
+                </span>
+                View Details
+              </button>
+
+              <button
                 onClick={() => handleEdit(row)}
                 className="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-blue-50"
               >
-                <Edit size={16} className="mr-2 text-blue-600" />
-                Chỉnh sửa
+                <Edit size={16} className="mr-2 text-blue-600" /> Edit
               </button>
               <button
                 onClick={() => handleDelete(row)}
                 className="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-red-50"
               >
-                <Trash2 size={16} className="mr-2 text-red-600" />
-                Xóa
+                <Trash2 size={16} className="mr-2 text-red-600" /> Delete
               </button>
             </motion.div>
           )}
@@ -124,15 +152,56 @@ const CustomDataTable = ({
     );
   }, [data, filterText]);
 
+  // Excel export with style
   const handleExportExcel = () => {
-    if (selectedRows.length === 0) {
-      alert('Vui lòng chọn ít nhất một dòng để xuất!');
-      return;
+    if (!data || data.length === 0) return;
+
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    const headerStyle = {
+      font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 13 },
+      fill: { fgColor: { rgb: '4472C4' } },
+      alignment: { horizontal: 'center', vertical: 'center' },
+      border: {
+        top: { style: 'thin', color: { rgb: '000000' } },
+        bottom: { style: 'thin', color: { rgb: '000000' } },
+        left: { style: 'thin', color: { rgb: '000000' } },
+        right: { style: 'thin', color: { rgb: '000000' } },
+      },
+    };
+
+    const bodyStyle = {
+      font: { sz: 12 },
+      alignment: { horizontal: 'left', vertical: 'center' },
+      border: {
+        top: { style: 'thin', color: { rgb: '000000' } },
+        bottom: { style: 'thin', color: { rgb: '000000' } },
+        left: { style: 'thin', color: { rgb: '000000' } },
+        right: { style: 'thin', color: { rgb: '000000' } },
+      },
+    };
+
+    const range = XLSX.utils.decode_range(ws['!ref'] || 'A1');
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (ws[cellAddress]) ws[cellAddress].s = headerStyle;
     }
-    const ws = XLSX.utils.json_to_sheet(selectedRows);
+
+    for (let R = 1; R <= range.e.r; ++R) {
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+        if (ws[cellAddress]) ws[cellAddress].s = bodyStyle;
+      }
+    }
+
+    const colWidths = Object.keys(data[0]).map((key) => ({
+      wch: Math.max(key.length, 60),
+    }));
+    ws['!cols'] = colWidths;
+
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Data');
-    XLSX.writeFile(wb, `${title.replace(/\s+/g, '_')}.xlsx`);
+    XLSX.utils.book_append_sheet(wb, ws, title || 'Data List');
+    XLSX.writeFile(wb, `${title || 'data'}.xlsx`);
   };
 
   const ExpandedRow = ({ data }: { data: any }) => (
@@ -152,7 +221,7 @@ const CustomDataTable = ({
             } hover:bg-blue-50 transition-colors duration-150`}
           >
             <span className="text-sm font-medium text-gray-600 w-1/3">
-              {(customTitles as string[])[index] || key.charAt(0).toUpperCase() + key.slice(1)}:
+              {(customTitles as string[])[index] || key.charAt(0).toUpperCase() + key.slice(1)}:{' '}
             </span>
             <span className="text-sm text-gray-800 w-2/3 text-right break-words">
               {String(value) || '—'}
@@ -176,10 +245,13 @@ const CustomDataTable = ({
 
           <div className="flex items-center gap-3 w-full md:w-auto">
             <div className="relative w-full md:w-72">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                size={18}
+              />
               <input
                 type="text"
-                placeholder="Tìm kiếm..."
+                placeholder="Search..."
                 className="w-full border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm hover:shadow-md"
                 value={filterText}
                 onChange={(e) => setFilterText(e.target.value)}
@@ -193,7 +265,7 @@ const CustomDataTable = ({
               className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition-all"
             >
               <Plus size={18} />
-              <span>Tạo mới</span>
+              <span>Create</span>
             </motion.button>
 
             <motion.button
@@ -203,7 +275,7 @@ const CustomDataTable = ({
               className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-green-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition-all"
             >
               <FileSpreadsheet size={18} />
-              <span>Xuất Excel</span>
+              <span>Export Excel</span>
             </motion.button>
           </div>
         </div>
@@ -227,47 +299,40 @@ const CustomDataTable = ({
             table: { style: { minWidth: '100%', whiteSpace: 'nowrap' } },
             headCells: {
               style: {
-                backgroundColor: '#f8fafc',
+                backgroundColor: '#38578a',
                 fontWeight: '600',
-                color: '#334155',
+                color: 'white',
                 borderBottom: '2px solid #e2e8f0',
               },
             },
-            rows: {
-              style: {
-                borderBottom: '1px solid #f1f5f9',
-                cursor: 'pointer',
-              },
-            },
+            rows: { style: { borderBottom: '1px solid #f1f5f9', cursor: 'pointer' } },
           }}
         />
       </motion.div>
 
-      {/* Modal Create/Edit */}
       {modalType && (
         <CustomModal
           open={showModal}
-          title={modalType === 'create' ? 'Tạo mới bản ghi' : 'Chỉnh sửa bản ghi'}
+          title={modalType === 'create' ? 'Create New Record' : 'Edit Record'}
           onClose={() => setShowModal(false)}
           onConfirm={() => {
             if (modalType === 'create') onCreate?.();
             else if (modalType === 'edit') onEdit?.(selectedRow);
             setShowModal(false);
           }}
-          confirmText="Lưu"
+          confirmText="Save"
         >
           <p className="text-sm text-gray-600">
             {modalType === 'create'
-              ? 'Bạn đang tạo một bản ghi mới.'
-              : `Chỉnh sửa thông tin cho ID: ${selectedRow?.id || ''}`}
+              ? 'You are creating a new record.'
+              : `Edit information for ID: ${selectedRow?.id || ''}`}
           </p>
         </CustomModal>
       )}
 
-      {/* Confirm Delete */}
       <CustomConfirm
         open={showConfirm}
-        message="Bạn có chắc muốn xóa bản ghi này?"
+        message="Are you sure you want to delete this record?"
         onCancel={() => setShowConfirm(false)}
         onConfirm={() => {
           setShowConfirm(false);
@@ -277,14 +342,13 @@ const CustomDataTable = ({
         }}
       />
 
-      {/* Modal hiển thị sau khi xác nhận */}
       {showModal && !modalType && (
         <CustomModal
           open={showModal}
-          title="Thông tin bản ghi đã xác nhận"
+          title="Confirmed Record Information"
           onClose={() => setShowModal(false)}
           onConfirm={() => setShowModal(false)}
-          confirmText="Đóng"
+          confirmText="Confirm"
         >
           {selectedRow ? (
             <div className="space-y-2 text-gray-700">
@@ -295,11 +359,11 @@ const CustomDataTable = ({
                 </div>
               ))}
               <div className="pt-2 text-green-600 font-semibold">
-                ✅ Đã xác nhận thành công!
+                ✅ Successfully confirmed!
               </div>
             </div>
           ) : (
-            <p>Không có dữ liệu để hiển thị.</p>
+            <p>No data to display.</p>
           )}
         </CustomModal>
       )}

@@ -99,6 +99,7 @@ export default function User() {
       <CustomDataTable
         title="Danh sách người dùng"
         data={users as any}
+          detailPath="/subcription" 
         customTitles={[
           'ID',
           'Họ và tên',

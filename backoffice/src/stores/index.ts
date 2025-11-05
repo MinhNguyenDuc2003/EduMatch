@@ -20,7 +20,7 @@ export const sStore = create<State>()(
       (...a) =>
         reduce(
           sliceFunctions,
-          (prev : any, cur: any) => ({
+          (prev: any, cur: any) => ({
             ...prev,
             ...cur(...a),
           }),
@@ -30,7 +30,7 @@ export const sStore = create<State>()(
         name: 'store',
         storage: createJSONStorage(() => {
           if (typeof window !== 'undefined') {
-            return sessionStorage;
+            return sessionStorage; // hoặc localStorage nếu muốn giữ khi đóng tab
           }
           return {
             getItem: () => null,
@@ -38,8 +38,14 @@ export const sStore = create<State>()(
             removeItem: () => {},
           };
         }),
-        merge: (persistedState, currentState) => Object.assign(currentState, persistedState),
-        partialize: ({ Auth }) => ({ Auth }),
+        merge: (persistedState, currentState) =>
+          Object.assign(currentState, persistedState),
+
+        // 🔥 Sửa ở đây: lưu cả Auth & Joint
+        partialize: (state) => ({
+          Auth: state.Auth,
+          Joint: state.Joint,
+        }),
       }
     )
   )
