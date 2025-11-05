@@ -1,11 +1,11 @@
 import React from 'react';
 import { GraduationCap, MapPin, Star, Building2, Bookmark } from 'lucide-react';
-import Amount_Deadline from './Amount_Deadline';
 import FooterCard from './FooterCard';
 import { Anchor, Block, Card, RText, Section } from '@/lib/by/Div';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { sStore } from '@/stores';
+import Amount_Deadline from './Amount_Deadline';
 type CardScholarshipProps = {
   className?: string;
   picture?: string;
@@ -119,7 +119,11 @@ export default function CardSmalPic({
         </Block>
 
         {/* Amount and Deadline */}
-        <Amount_Deadline amount={amount ?? 0} deadline={deadline ?? ''} isRow={true} />
+        <Amount_Deadline
+          amount={amount ? amount.toString() : '0'}
+          deadline={deadline ? new Date(deadline).getTime() : 0}
+          isRow={true}
+        />
       </Anchor>
 
       <FooterCard

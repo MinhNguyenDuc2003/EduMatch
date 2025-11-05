@@ -1,5 +1,4 @@
 import { Button } from '@/lib/cus/button';
-import { Badge } from '@/lib/cus/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,15 +9,13 @@ import {
   MoreVertical,
   Edit,
   Trash2,
-  Eye,
   Calendar,
   MapPin,
   GraduationCap,
   DollarSign,
   Users,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
+
 import Link from 'next/link';
 import { Scholarship } from '../types';
 
@@ -57,15 +54,6 @@ export const ScholarshipCard = ({ scholarship, onDelete }: ScholarshipCardProps)
               <DropdownMenuItem asChild className="cursor-pointer">
                 <Link
                   href={`/provider/scholarships/${scholarship.id}`}
-                  className="flex items-center gap-2"
-                >
-                  <Eye className="w-4 h-4" />
-                  <span>View Details</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <Link
-                  href={`/provider/scholarships/${scholarship.id}/edit`}
                   className="flex items-center gap-2"
                 >
                   <Edit className="w-4 h-4" />
