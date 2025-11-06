@@ -43,6 +43,7 @@ public class KafkaConsumer extends BaseService {
                     .referenceId(notificationVo.getReferenceId())
                     .referenceType(notificationVo.getReferenceType())
                     .isRead(false)
+                    .content(notificationVo.getContent())
                     .notificationId(notificationVo.getUserNotificationId()).build();
             userNotificationService.createOne(notification);
             notificationVo.setUserNotificationId(notification.getId());

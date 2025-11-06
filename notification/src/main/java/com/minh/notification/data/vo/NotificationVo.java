@@ -30,4 +30,6 @@ public class NotificationVo {
 
     private String content;
 
+    private String slug;
+
 }

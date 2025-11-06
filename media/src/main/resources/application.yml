@@ -165,3 +165,6 @@ keycloak:
   credentials:
     secret: ${env.keycloak.client-secret:TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF}
 
+aws:
+  email: edumatch.space.scholarship@gmail.com
+

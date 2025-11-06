@@ -21,10 +21,16 @@ public class UserNotificationDto extends BaseDto {
 
     private String userId;
 
+    private String scholarshipId;
+
     private Boolean isRead;
 
     private String referenceType;
 
     private Long referenceId;
+
+    private String content;
+
+    private String slug;
 
 }

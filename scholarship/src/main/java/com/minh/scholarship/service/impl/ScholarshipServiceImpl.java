@@ -116,13 +116,14 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         NotificationTemplateDto notificationTemplateDto = this.parseResponse(notificationTemplateFeign.getNotificationTemplate(NotificationTemplateEnum.SCHOLARSHIP_NEW.getCode()));
         NotificationVo notificationVo = NotificationVo.builder()
                 .topic(NotificationTopicEnum.SCHOLARSHIP_FOLLOWER)
-                .title(notificationTemplateDto.getTitle())
+                .title(notificationTemplateDto.getTitle().replace("{{providerName}}", providerProfileVo.getOrganizationName()))
                 .content(notificationTemplateDto.getContent().replace("{{providerName}}", providerProfileVo.getOrganizationName())
                         .replace("{{providerName}}", providerProfileVo.getOrganizationName())
                         .replace("{{scholarshipName}}", savedScholarship.getTitle()))
                 .isRead(false)
                 .referenceId(savedScholarship.getId())
                 .referenceType(NotificationReferenceEnum.SCHOLARSHIP.getCode())
+                .slug(savedScholarship.getSlug())
                 .userId(UaaContextHolder.getUserId())
                 .build();
         kafkaProducer.convertToByteAndSend(newEventScholarshipTopic, notificationVo);
@@ -196,6 +197,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 filter.getCriteria().getCountry(), filter.getCriteria().getScholarshipType(),
                 filter.getCriteria().getStudyLevel(), userId).map(o -> {
             ScholarshipVo scholarshipVo = scholarshipMapper.proToVo(o);
+            scholarshipVo.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(scholarshipVo.getProviderId())));
             return addScholarshipMedia(scholarshipVo);
         });
     }
@@ -203,9 +205,12 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     public List<ScholarshipVo> getByIds(List<Long> ids) {
         String userId = SecurityUtil.getCurrentUserId();
-        System.out.println("UserId:" + userId);
         List<ScholarshipProjection> allVoByIds = scholarshipRepository.getAllVoByIds(ids, userId);
-        return scholarshipMapper.prosToVos(allVoByIds);
+        List<ScholarshipVo> scholarshipVos = scholarshipMapper.prosToVos(allVoByIds);
+        scholarshipVos.forEach(o -> {
+            o.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(o.getId())));
+        });
+        return scholarshipVos;
     }
 
     @Override
@@ -228,7 +233,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     public List<ScholarshipVo> getMyScholarship() {
         ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getMyProviderInfo());
-        List<ScholarshipEntity> scholarshipEntities = scholarshipRepository.getAllByProviderId(providerProfileVo.getId());
+        List<ScholarshipEntity> scholarshipEntities = scholarshipRepository.getAllByProviderIdAndActive(providerProfileVo.getId(), true);
         List<ScholarshipVo> scholarshipVos = new ArrayList<>();
         scholarshipEntities.forEach(entity -> {
             scholarshipVos.add(this.getById(entity.getId()));

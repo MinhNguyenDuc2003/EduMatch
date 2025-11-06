@@ -17,13 +17,11 @@ public interface ApplicationService {
     Page<ApplicationVo> getPage(ApplicationFilter filter);
 
     ApplicationVo create(ApplicationVo applicationVo,
-                         List<MultipartFile> mediaFiles,
-                         String attributesJson) throws JsonProcessingException;
+                         List<MultipartFile> mediaFiles) throws JsonProcessingException;
 
     ApplicationVo update(Long id,
                          ApplicationVo applicationVo,
-                         List<MultipartFile> mediaFiles,
-                         String attributesJson) throws JsonProcessingException;
+                         List<MultipartFile> mediaFiles) throws JsonProcessingException;
 
     void delete(Long id);
 

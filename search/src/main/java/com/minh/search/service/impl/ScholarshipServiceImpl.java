@@ -9,6 +9,7 @@ import com.minh.search.data.entity.ScholarshipEntity;
 import com.minh.search.data.mapper.ScholarshipMapper;
 import com.minh.search.data.repository.ScholarshipRepository;
 import com.minh.search.data.vo.ScholarshipVo;
+import com.minh.search.feign.ProviderProfileFeign;
 import com.minh.search.feign.ScholarshipFeign;
 import com.minh.search.model.constant.ScholarshipField;
 import com.minh.search.model.filter.ScholarshipFilter;

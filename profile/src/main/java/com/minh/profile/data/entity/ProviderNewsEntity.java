@@ -22,6 +22,9 @@ public class ProviderNewsEntity extends BaseEntity {
     @Column(name = "PROVIDER_ID")
     private Long providerId;
 
+    @Column(name = "SCHOLARSHIP_ID")
+    private Long scholarshipId;
+
     @Column(name = "TITLE")
     private String title;
 

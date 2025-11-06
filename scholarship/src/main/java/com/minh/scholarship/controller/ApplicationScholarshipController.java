@@ -3,6 +3,7 @@ package com.minh.scholarship.controller;
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
+import com.minh.scholarship.data.vo.ApplicationScholarshipVo;
 import com.minh.scholarship.service.ApplicationScholarshipService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class ApplicationScholarshipController {
     }
 
     @GetMapping("/by-scholarship")
-    public ApiResponse<List<ApplicationScholarshipDto>> getByScholarshipId(@RequestParam Long scholarshipId) {
+    public ApiResponse<List<ApplicationScholarshipVo>> getByScholarshipId(@RequestParam Long scholarshipId) {
         return ApiResponse.ok(service.getAllByScholarshipId(scholarshipId));
     }
 
