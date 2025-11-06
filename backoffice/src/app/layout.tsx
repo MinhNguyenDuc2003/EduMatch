@@ -19,7 +19,7 @@ export default function RootLayout({
           <div className="min-h-screen w-full bg-customgreys-primarybg flex ml-5">
             <AppSidebar />
             <AnimatedContainer>
-              <main className="ml-5">{children}</main>
+              <main className="ml-16">{children}</main>
             </AnimatedContainer>
           </div>
         </SidebarProvider>

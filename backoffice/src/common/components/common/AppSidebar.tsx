@@ -12,6 +12,7 @@ import {
 import {
   Bell,
   BookOpen,
+  ChartBar,
   LayoutDashboard,
   LogOut,
   Package,
@@ -27,10 +28,14 @@ const AppSidebar = () => {
 
   const navLinks = {
     Admin: [
-      { icon: User, label: 'Users', href: '/' },
+      { icon: ChartBar, label: 'Dashboard', href: '/' },
+      { icon: User, label: 'Users', href: '/user' },
       { icon: BookOpen, label: 'Scholarship', href: '/scholarship' },
-      { icon: Package, label: 'Transaction', href: '/transaction' },
-      { icon: Bell, label: 'Request', href: '/request' },
+      { icon: Package, label: 'Application Scholarship', href: '/applicationScholarship' },
+      { icon: Bell, label: 'Payment', href: '/payment' },
+      { icon: Package, label: 'Subcription', href: '/subscription' },
+      { icon: Bell, label: 'Subcription Plan', href: '/subscriptionPlan' },
+      { icon: Bell, label: 'News', href: '/news' },
     ],
   };
 

@@ -125,6 +125,11 @@ public class CustomerService extends BaseService {
         }
     }
 
+    public CustomerVm getCustomerById(String userId) {
+        return CustomerVm.fromUserRepresentation(
+                keycloak.realm(keycloakPropsConfig.getRealm()).users().get(userId).toRepresentation());
+    }
+
     public CustomerVo getCustomerProfile(String userId) {
         try {
             CustomerVo vo = new CustomerVo();

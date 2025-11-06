@@ -2,6 +2,7 @@ package com.minh.customer.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.minh.customer.data.vo.AuthenticationVo;
 import com.minh.customer.data.vo.CustomerVo;
 import com.minh.customer.service.CustomerService;
 import com.minh.customer.viewmodel.customer.*;
@@ -10,6 +11,7 @@ import com.minh.utils.SecurityUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -114,6 +116,19 @@ public class CustomerController {
     public ApiResponse<CustomerVo> getProviderProfile() {
         return ApiResponse.ok(
                 customerService.getProviderProfile());
+    }
+
+    @GetMapping("/authenticated")
+    public ApiResponse<AuthenticationVo> getAuthenticated() {
+        String userId = SecurityUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            return ApiResponse.ok(AuthenticationVo.builder().isAuthenticated(false).build());
+        } else {
+            AuthenticationVo vo = new AuthenticationVo();
+            vo.setIsAuthenticated(true);
+            vo.setCustomer(customerService.getCustomerById(userId));
+            return ApiResponse.ok(vo);
+        }
     }
 
 }
