@@ -7,9 +7,14 @@ import CardSmalPicSkeleton from './CardSmalPicSkeleton';
 import { ArrowRight } from 'lucide-react';
 import { map } from 'lodash';
 import Pagination from './Pagination';
+import {
+  useFollowScholarshipMutation,
+  useUnfollowScholarshipMutation,
+} from '@/state/apiScholarship';
+import { useGetProfileQuery } from '@/state/apiApplicant';
 
 type ScholarshipsSectionProps = {
-  scholarships: Scholarship[];
+  scholarships: ScholarshipWithDetails[];
   isLoading?: boolean;
   isError?: boolean;
   onViewDetails: (item: Scholarship) => void;
@@ -26,6 +31,12 @@ export default function ScholarshipsSection({
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
 
+  const { data: profile } = useGetProfileQuery();
+  const [followScholarship] = useFollowScholarshipMutation();
+  const [unfollowScholarship] = useUnfollowScholarshipMutation();
+
+  const userId = profile?.customer?.id;
+
   const totalItems = scholarships?.length || 0;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const startIndex = currentPage * ITEMS_PER_PAGE;
@@ -34,6 +45,33 @@ export default function ScholarshipsSection({
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+  };
+
+  const handleToggleTracking = async (scholarshipId: number) => {
+    if (!userId) {
+      console.error('User ID not available');
+      return;
+    }
+
+    // Find the scholarship to check if it's already tracked
+    const scholarship = currentScholarships.find((s) => s.id === scholarshipId);
+    const isTracked = scholarship?.isFollow === 1;
+
+    try {
+      if (isTracked) {
+        await unfollowScholarship({
+          scholarshipId,
+          userId,
+        }).unwrap();
+      } else {
+        await followScholarship({
+          scholarshipId,
+          userId,
+        }).unwrap();
+      }
+    } catch (error) {
+      console.error('Failed to toggle tracking:', error);
+    }
   };
 
   return (
@@ -56,7 +94,6 @@ export default function ScholarshipsSection({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
           {isLoading ? (
-            // Show 9 skeleton cards (3x3 grid)
             Array.from({ length: 9 }).map((_, index) => <CardSmalPicSkeleton key={index} />)
           ) : isError ? (
             <div className="col-span-full flex items-center justify-center py-20">
@@ -68,13 +105,9 @@ export default function ScholarshipsSection({
             map(currentScholarships, (item) => (
               <CardSmalPic
                 key={item.id}
-                picture={item.scholarshipMedias?.[0]?.url}
-                title={item.title}
-                amount={item.fundingAmount}
-                deadline={item.endDate}
-                description={item.shortDescription}
-                university={item.university}
+                scholarship={item}
                 onViewDetails={() => onViewDetails(item)}
+                onToggleTracking={handleToggleTracking}
               />
             ))
           ) : (

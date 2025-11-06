@@ -5,6 +5,11 @@ import { Flag, Calendar, DollarSign } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
+import {
+  useFollowProviderMutation,
+  useUnfollowProviderMutation,
+  useGetFollowedProvidersQuery,
+} from '@/state/apiProvider';
 
 type ScholarshipCardProps = {
   scholarship: Scholarship;
@@ -18,11 +23,34 @@ export default function ScholarshipCard({
   onToggleTracking,
 }: ScholarshipCardProps) {
   const router = useRouter();
-  const [isFollowing, setIsFollowing] = useState(false);
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const images = getScholarshipImages(scholarship);
+
+  // Get followed providers
+  const { data: followedProviders } = useGetFollowedProvidersQuery();
+  const [followProvider] = useFollowProviderMutation();
+  const [unfollowProvider] = useUnfollowProviderMutation();
+
+  // Check if provider is followed
+  const isFollowing =
+    followedProviders?.some((fp) => fp.providerId === scholarship.providerId) || false;
+
+  // Handle follow/unfollow provider
+  const handleFollowProvider = async () => {
+    try {
+      if (isFollowing) {
+        // If already following, unfollow
+        await unfollowProvider(scholarship.providerId).unwrap();
+      } else {
+        // If not following, follow
+        await followProvider(scholarship.providerId).unwrap();
+      }
+    } catch (error) {
+      console.error('Failed to toggle follow provider:', error);
+    }
+  };
 
   return (
     <>
@@ -39,7 +67,7 @@ export default function ScholarshipCard({
                   {scholarship.university || 'Organization Name'}
                 </h3>
                 <button
-                  onClick={() => setIsFollowing(!isFollowing)}
+                  onClick={handleFollowProvider}
                   className="text-xs text-blue-600 hover:text-blue-700 font-medium"
                 >
                   {isFollowing ? 'Following' : 'Follow'}
@@ -49,11 +77,11 @@ export default function ScholarshipCard({
             <button
               onClick={() => onToggleTracking?.(scholarship.id)}
               className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-              aria-label={scholarship.isTracking ? 'Untrack scholarship' : 'Track scholarship'}
+              aria-label={scholarship.isFollow === 1 ? 'Untrack scholarship' : 'Track scholarship'}
             >
               <Flag
                 className={`w-5 h-5 transition-colors ${
-                  scholarship.isTracking ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
+                  scholarship.isFollow === 1 ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
                 }`}
               />
             </button>

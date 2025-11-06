@@ -5,21 +5,14 @@ import { FilterSidebar, ScholarshipCard, RightSidebar, PremiumBanner } from './c
 import ScholarshipCardSkeleton from './components/ScholarshipCardSkeleton';
 import { Filter } from 'lucide-react';
 import SearchBar from '@/pattern/share/SearchBar';
-import { useSearchScholarshipsAdvancedQuery } from '@/state/apiScholarship';
-
-export type FilterState = {
-  keyword: string;
-  country: string;
-  studyLevel: string;
-  university: string;
-  minGpa: number;
-  maxGpa: number;
-  page: number;
-  size: number;
-};
+import {
+  useSearchScholarshipsAdvancedQuery,
+  useFollowScholarshipMutation,
+  useUnfollowScholarshipMutation,
+} from '@/state/apiScholarship';
+import { useGetProfileQuery } from '@/state/apiApplicant';
 
 export default function ScholarshipsList() {
-  const [activeTab, setActiveTab] = useState<'scholarships' | 'research'>('scholarships');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   const [filters, setFilters] = useState<FilterState>({
@@ -28,37 +21,36 @@ export default function ScholarshipsList() {
     studyLevel: '',
     university: '',
     minGpa: 0,
-    maxGpa: 10,
+    maxGpa: 4,
     page: 0,
     size: 100,
   });
 
   // Prepare API request body
   const requestBody = useMemo(() => {
-    const criteria: ScholarshipAdvancedSearchCriteria = {};
-    if (filters.country) criteria.country = filters.country;
-    if (filters.studyLevel) criteria.studyLevel = filters.studyLevel;
-    if (filters.university) criteria.university = filters.university;
-
     const body: ScholarshipAdvancedSearchRequest = {
-      criteria,
+      criteria: {
+        studyLevel: filters.studyLevel || '',
+        country: filters.country || '',
+        university: filters.university || '',
+      },
       page: filters.page,
       size: filters.size,
-      keyword: filters.keyword || undefined,
-      minGpa: filters.minGpa > 0 ? filters.minGpa : undefined,
-      maxGpa: filters.maxGpa !== 10 ? filters.maxGpa : undefined,
+      keyword: filters.keyword || '',
+      minGpa: filters.minGpa,
+      maxGpa: filters.maxGpa,
     };
-
-    // Remove undefined values
-    if (!body.keyword) delete body.keyword;
-    if (!body.minGpa) delete body.minGpa;
-    if (!body.maxGpa) delete body.maxGpa;
 
     return body;
   }, [filters]);
 
   // Call API
   const { data: response, isLoading, isError } = useSearchScholarshipsAdvancedQuery(requestBody);
+  const { data: profile } = useGetProfileQuery();
+  const userId = profile?.customer?.id;
+
+  const [followScholarship] = useFollowScholarshipMutation();
+  const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
   // Extract scholarships and pagination info from response
   const scholarships = useMemo(() => {
@@ -78,9 +70,29 @@ export default function ScholarshipsList() {
     // TODO: Implement apply logic
   };
 
-  const handleToggleTracking = (scholarshipId: number) => {
-    // TODO: Call API to update tracking state on server
-    console.log('Toggle tracking for scholarship:', scholarshipId);
+  const handleToggleTracking = async (scholarshipId: number) => {
+    if (!userId) {
+      console.error('User ID not available');
+      return;
+    }
+    const scholarship = scholarships.find((s) => s.id === scholarshipId);
+    const isTracked = scholarship?.isFollow === 1;
+
+    try {
+      if (isTracked) {
+        await unfollowScholarship({
+          scholarshipId,
+          userId,
+        }).unwrap();
+      } else {
+        await followScholarship({
+          scholarshipId,
+          userId,
+        }).unwrap();
+      }
+    } catch (error) {
+      console.error('Failed to toggle tracking:', error);
+    }
   };
 
   const activeFiltersCount = useMemo(() => {

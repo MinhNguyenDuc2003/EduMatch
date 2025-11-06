@@ -3,15 +3,15 @@ import { Flag, Calendar, DollarSign } from 'lucide-react';
 type ScholarshipMetadataProps = {
   formattedDate: string;
   amount: string;
-  isSaved: boolean;
-  onToggleSave: () => void;
+  isTracked: boolean;
+  onToggleTracking: () => void;
 };
 
 export default function ScholarshipMetadata({
   formattedDate,
   amount,
-  isSaved,
-  onToggleSave,
+  isTracked,
+  onToggleTracking,
 }: ScholarshipMetadataProps) {
   return (
     <div className="flex flex-wrap items-center gap-6">
@@ -29,16 +29,16 @@ export default function ScholarshipMetadata({
 
       {/* Track */}
       <button
-        onClick={onToggleSave}
+        onClick={onToggleTracking}
         className="flex items-center p-2 gap-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors"
-        aria-label="Track scholarship"
+        aria-label={isTracked ? 'Untrack scholarship' : 'Track scholarship'}
       >
         <Flag
           className={`w-5 h-5 transition-colors ${
-            isSaved ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
+            isTracked ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
           }`}
         />
-        <span className="font-medium">Track</span>
+        <span className="font-medium">{isTracked ? 'Tracked' : 'Track'}</span>
       </button>
     </div>
   );

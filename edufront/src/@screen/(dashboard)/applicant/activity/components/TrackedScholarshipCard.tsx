@@ -16,11 +16,13 @@ type TrackedScholarshipCardProps = {
 
 const fallbackImage = '/static/images/default-fallback-image.png';
 
-const formatDeadline = (timestamp?: number) => {
-  if (!timestamp) return 'No deadline';
-  
+const formatDeadline = (endDate?: number) => {
+  if (!endDate) return 'No deadline';
+
   try {
-    return new Date(timestamp).toLocaleDateString('en-US', {
+    const date = new Date(endDate);
+    if (isNaN(date.getTime())) return 'No deadline';
+    return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -60,10 +62,7 @@ export default function TrackedScholarshipCard({
       )}
 
       {/* Image Section */}
-      <div
-        className="relative h-48 w-full cursor-pointer overflow-hidden"
-        onClick={onViewDetails}
-      >
+      <div className="relative h-48 w-full cursor-pointer overflow-hidden" onClick={onViewDetails}>
         <Image
           src={imageSrc}
           alt={scholarship.title}
@@ -72,7 +71,7 @@ export default function TrackedScholarshipCard({
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent" />
-        
+
         {/* Tags on Image */}
         <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
           <div className="flex flex-wrap gap-2">
@@ -180,4 +179,3 @@ export default function TrackedScholarshipCard({
     </article>
   );
 }
-

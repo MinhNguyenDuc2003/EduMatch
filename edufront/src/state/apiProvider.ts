@@ -5,6 +5,8 @@ import customBaseQuery from './custombaseQuery';
 const API_ENDPOINTS = {
   PROVIDER_PROFILE: '/customer/storefront/provider/profile',
   SCHOLARSHIP: '/scholarship/scholarships',
+  FOLLOW_PROVIDER: '/profile/followers',
+  GET_FOLLOWED_PROVIDERS: '/profile/followers/providers',
 } as const;
 
 export const apiProvider = createApi({
@@ -59,6 +61,35 @@ export const apiProvider = createApi({
       }),
       invalidatesTags: ['Scholarships'],
     }),
+
+    // Follow provider
+    followProvider: build.mutation<{ userId: string; providerId: number }, number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.FOLLOW_PROVIDER}/${id}`,
+        method: 'POST',
+        body: { id },
+      }),
+      invalidatesTags: ['Profile', 'Scholarships'],
+    }),
+
+    // Unfollow provider
+    unfollowProvider: build.mutation<void, number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.FOLLOW_PROVIDER}/${id}`,
+        method: 'DELETE',
+        body: { id },
+      }),
+      invalidatesTags: ['Profile', 'Scholarships'],
+    }),
+
+    // Get followed providers
+    getFollowedProviders: build.query<{ userId: string; providerId: number }[], void>({
+      query: () => ({
+        url: API_ENDPOINTS.GET_FOLLOWED_PROVIDERS,
+        method: 'GET',
+      }),
+      providesTags: ['Profile'],
+    }),
   }),
 });
 
@@ -69,4 +100,7 @@ export const {
   useCreateScholarshipMutation,
   useGetScholarshipsByIdQuery,
   useUpdateScholarshipMutation,
+  useFollowProviderMutation,
+  useUnfollowProviderMutation,
+  useGetFollowedProvidersQuery,
 } = apiProvider;

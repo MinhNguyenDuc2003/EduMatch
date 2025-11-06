@@ -1,25 +1,105 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/lib/cus/button';
-import { mockScholarshipOpportunities } from '@/@screen/(nondashboard)/HomePage/mockData';
+import {
+  useGetScholarshipByIdQuery,
+  useFollowScholarshipMutation,
+  useUnfollowScholarshipMutation,
+  useCheckIsTrackedScholarshipQuery,
+} from '@/state/apiScholarship';
+import {
+  useFollowProviderMutation,
+  useUnfollowProviderMutation,
+  useGetFollowedProvidersQuery,
+} from '@/state/apiProvider';
+import { useGetProfileQuery } from '@/state/apiApplicant';
 import { ScholarshipMetadata, ScholarshipContent, ScholarshipSidebar } from './components';
 import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
+import { Skeleton } from '@/lib/cus/skeleton';
 
-type ScholarshipDetailProps = {
-  scholarshipId: number;
-};
-
-export default function ScholarshipDetail({ scholarshipId }: ScholarshipDetailProps) {
+export default function ScholarshipDetail({ scholarshipId }: { scholarshipId: number }) {
   const router = useRouter();
-  const [isSaved, setIsSaved] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
 
-  // Find scholarship by ID
-  const scholarship = mockScholarshipOpportunities.find((s) => s.id === scholarshipId);
+  const { data: scholarship, isLoading, isError } = useGetScholarshipByIdQuery(scholarshipId);
+  const { data: profile } = useGetProfileQuery();
+  const userId = profile?.customer?.id;
+  const { data: followedProviders } = useGetFollowedProvidersQuery();
+  const [followProvider] = useFollowProviderMutation();
+  const [unfollowProvider] = useUnfollowProviderMutation();
+  const [followScholarship] = useFollowScholarshipMutation();
+  const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
-  if (!scholarship) {
+  const { data: trackedData } = useCheckIsTrackedScholarshipQuery(scholarshipId, {
+    skip: !scholarshipId, // Skip if no scholarshipId
+  });
+  const isTracked = !!trackedData; // If trackedData exists, scholarship is tracked
+  const isFollowing = scholarship?.providerProfileVo?.id
+    ? followedProviders?.some((fp) => fp.providerId === scholarship.providerProfileVo.id) || false
+    : false;
+
+  // Handle track/untrack scholarship
+  const handleToggleTracking = async () => {
+    if (!userId) {
+      console.error('User ID not available');
+      return;
+    }
+    try {
+      if (isTracked) {
+        await unfollowScholarship({
+          scholarshipId,
+          userId,
+        }).unwrap();
+      } else {
+        await followScholarship({
+          scholarshipId,
+          userId,
+        }).unwrap();
+      }
+    } catch (error) {
+      console.error('Failed to toggle tracking:', error);
+    }
+  };
+
+  // Handle follow/unfollow provider
+  const handleToggleFollow = async () => {
+    if (!scholarship?.providerProfileVo?.id) return;
+
+    try {
+      if (isFollowing) {
+        await unfollowProvider(scholarship.providerProfileVo.id).unwrap();
+      } else {
+        await followProvider(scholarship.providerProfileVo.id).unwrap();
+      }
+    } catch (error) {
+      console.error('Failed to toggle follow provider:', error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <BreadcrumbHeader
+          items={[{ label: 'Scholarships', href: '/scholarships' }, { label: 'Loading...' }]}
+        />
+        <div className="mx-auto px-4 lg:px-40 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 flex flex-col gap-4">
+              <Skeleton className="h-12 w-3/4" />
+              <Skeleton className="h-6 w-1/2" />
+              <Skeleton className="h-64 w-full" />
+            </div>
+            <div className="lg:col-span-1">
+              <Skeleton className="h-48 w-full rounded-lg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (isError || !scholarship) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
@@ -34,13 +114,21 @@ export default function ScholarshipDetail({ scholarshipId }: ScholarshipDetailPr
     );
   }
 
-  // Format date
+  // Format date from timestamp (endDate is timestamp number)
   const formattedDate = scholarship.endDate
-    ? new Date(scholarship.endDate).toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      })
+    ? (() => {
+        try {
+          const date = new Date(scholarship.endDate);
+          if (isNaN(date.getTime())) return 'No deadline';
+          return date.toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+          });
+        } catch {
+          return 'No deadline';
+        }
+      })()
     : 'No deadline';
 
   // Parse amount
@@ -67,8 +155,8 @@ export default function ScholarshipDetail({ scholarshipId }: ScholarshipDetailPr
             <ScholarshipMetadata
               formattedDate={formattedDate}
               amount={amount}
-              isSaved={isSaved}
-              onToggleSave={() => setIsSaved(!isSaved)}
+              isTracked={isTracked}
+              onToggleTracking={handleToggleTracking}
             />
 
             {/* Content Sections */}
@@ -81,7 +169,7 @@ export default function ScholarshipDetail({ scholarshipId }: ScholarshipDetailPr
               <ScholarshipSidebar
                 scholarship={scholarship}
                 isFollowing={isFollowing}
-                onToggleFollow={() => setIsFollowing(!isFollowing)}
+                onToggleFollow={handleToggleFollow}
               />
               {/* Action Button */}
               <Button

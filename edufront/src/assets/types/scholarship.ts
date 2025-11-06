@@ -7,6 +7,7 @@ declare global {
     folderName: string;
     fileName: string;
     isPublic: boolean;
+    thumbnail?: string;
     url: string;
   };
 
@@ -16,6 +17,14 @@ declare global {
     type: string;
     value: string;
     weight: number;
+    note: string;
+  };
+
+  type ApplicationAttribute = {
+    id: number;
+    applicationId: string;
+    key: string;
+    value: string;
     note: string;
   };
 
@@ -34,16 +43,27 @@ declare global {
     studyLevel: string;
     scholarshipType: string;
     fundingAmount: string;
-    startDate: number;
-    endDate: number;
+    startDate: number; // Timestamp (number)
+    endDate: number; // Timestamp (number)
     availableSlots: number;
     languageRequirement: string;
     gpaRequirement: number;
+    isDeleted?: boolean;
     scholarshipMedias: ScholarshipMedia[];
-    isFollow: number; // Whether user is following this scholarship (0 or 1)
+    isFollow: number;
   };
 
-  // API Request Types
+  type ScholarshipWithDetails = Scholarship & {
+    providerProfileVo?: ProviderProfile;
+    scholarshipPreferences?: ScholarshipPreference[];
+    applicationAttributes?: ApplicationAttribute[];
+  };
+
+  type ScholarshipDetail = ScholarshipWithDetails & {
+    providerProfileVo: ProviderProfile;
+    scholarshipPreferences: ScholarshipPreference[];
+  };
+
   type ScholarshipSearchCriteria = {
     country?: string;
     university?: string;
@@ -59,49 +79,8 @@ declare global {
     size: number;
   };
 
-  // API Response Types
-  type Pageable = {
-    pageNumber: number;
-    pageSize: number;
-    sort: {
-      sorted: boolean;
-      empty: boolean;
-      unsorted: boolean;
-    };
-    offset: number;
-    paged: boolean;
-    unpaged: boolean;
-  };
-
-  type Sort = {
-    sorted: boolean;
-    empty: boolean;
-    unsorted: boolean;
-  };
-
-  type ScholarshipPageResponse = {
-    content: Scholarship[];
-    pageable: Pageable;
-    totalPages: number;
-    totalElements: number;
-    last: boolean;
-    numberOfElements: number;
-    first: boolean;
-    size: number;
-    number: number;
-    sort: Sort;
-    empty: boolean;
-  };
-
-  // Advanced Search API Request Types
-  type ScholarshipAdvancedSearchCriteria = {
-    studyLevel?: string;
-    country?: string;
-    university?: string;
-  };
-
   type ScholarshipAdvancedSearchRequest = {
-    criteria: ScholarshipAdvancedSearchCriteria;
+    criteria: Pick<ScholarshipSearchCriteria, 'country' | 'university' | 'studyLevel'>;
     page: number;
     size: number;
     keyword?: string;
@@ -109,28 +88,33 @@ declare global {
     maxGpa?: number;
   };
 
-  // Advanced Search API Response Types
-  type ScholarshipSearchItem = Scholarship & {
-    pageNum?: number;
-    pageSize?: number;
-    totalPages?: number;
-    totalElements?: number;
+  type ScholarshipPageResponse = {
+    content: ScholarshipWithDetails[];
   };
 
   type ScholarshipSearchAggregations = {
     country?: Record<string, number>;
     studyLevel?: Record<string, number>;
+    [key: string]: Record<string, number> | undefined;
   };
 
   type ScholarshipSearchResponse = {
-    availableSlots: number;
-    scholarship: ScholarshipSearchItem[];
-    pageNum: number;
-    pageSize: number;
-    totalPages: number;
+    scholarship: Scholarship[];
     totalElements: number;
+    totalPages: number;
     aggregations?: ScholarshipSearchAggregations;
-    isFollow: number;
+  };
+
+  // Search Filters (for UI state management)
+  type FilterState = {
+    keyword: string;
+    country: string;
+    studyLevel: string;
+    university: string;
+    minGpa: number;
+    maxGpa: number;
+    page: number;
+    size: number;
   };
 }
 

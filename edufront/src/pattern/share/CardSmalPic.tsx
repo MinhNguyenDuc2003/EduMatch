@@ -4,28 +4,32 @@ import { Anchor, Block, Card, RText, Section } from '@/lib/by/Div';
 import Image from 'next/image';
 
 type CardSmalPicProps = {
-  picture?: string;
-  title?: string;
-  amount?: string;
-  deadline?: number;
-  description?: string;
+  scholarship?: ScholarshipWithDetails;
   onViewDetails?: () => void;
-  university?: string;
+  onToggleTracking?: (scholarshipId: number) => void;
 };
 
 export default function CardSmalPic({
-  picture,
-  title,
-  amount,
-  deadline,
-  description,
-  university,
   onViewDetails,
+  onToggleTracking,
+  scholarship,
 }: CardSmalPicProps) {
   const handleBookmarkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    // Add save functionality here
+    if (scholarship?.id && onToggleTracking) {
+      onToggleTracking(scholarship.id);
+    }
   };
+  const isFollow = scholarship?.isFollow === 1;
+  const logoUrl = scholarship?.providerProfileVo?.logoUrl;
+  const organizationName = scholarship?.providerProfileVo?.organizationName;
+  const title = scholarship?.title;
+  const shortDescription = scholarship?.shortDescription;
+  const university = scholarship?.university;
+  const deadline = scholarship?.endDate || 0;
+  const amount = scholarship?.fundingAmount
+    ? scholarship.fundingAmount.replace(/[^0-9.,]/g, '')
+    : '0';
 
   return (
     <Section className="group bg-white flex flex-col rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:border-[#3D6CB9] relative h-full">
@@ -35,7 +39,13 @@ export default function CardSmalPic({
         onClick={handleBookmarkClick}
         aria-label="Track scholarship"
       >
-        <Flag className="w-5 h-5 text-gray-400 hover:text-[#3D6CB9] hover:fill-[#3D6CB9] transition-colors" />
+        <Flag
+          className={`w-5 h-5 transition-colors ${
+            isFollow
+              ? 'fill-[#3D6CB9] text-[#3D6CB9]'
+              : 'text-gray-400 hover:text-[#3D6CB9] hover:fill-[#3D6CB9]'
+          }`}
+        />
       </button>
 
       <Block className="flex flex-col p-4 flex-1 h-full">
@@ -45,12 +55,12 @@ export default function CardSmalPic({
           onClick={onViewDetails}
         >
           <Card className="flex-shrink-0 w-16 h-16 relative aspect-square">
-            {picture ? (
+            {logoUrl ? (
               <Image
-                src={picture}
-                alt={title || 'Scholarship logo'}
+                src={logoUrl}
+                alt={organizationName || 'Organization logo'}
                 fill
-                className="rounded-lg object-contain bg-white p-2"
+                className="rounded-lg object-cover bg-white p-2"
               />
             ) : (
               <Card className="border border-gray-200 w-full h-full rounded-lg flex items-center justify-center relative">
@@ -75,8 +85,8 @@ export default function CardSmalPic({
 
         {/* Description - Fixed height */}
         <Block className="text-gray-600 text-sm flex-shrink-0 min-h-[1.25rem] mb-3">
-          {description ? (
-            <p className="line-clamp-1">{description}</p>
+          {shortDescription ? (
+            <p className="line-clamp-1">{shortDescription}</p>
           ) : (
             <p className="invisible line-clamp-1">Placeholder</p>
           )}
