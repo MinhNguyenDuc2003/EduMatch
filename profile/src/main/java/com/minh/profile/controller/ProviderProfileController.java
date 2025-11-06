@@ -23,7 +23,6 @@ public class ProviderProfileController {
     @Autowired
     private ProviderProfileService providerProfileService;
 
-    @Authorized
     @GetMapping("/{id}")
     public ApiResponse<ProviderProfileVo> getOne(@PathVariable Long id) {
         return ApiResponse.ok(providerProfileService.getById(id));

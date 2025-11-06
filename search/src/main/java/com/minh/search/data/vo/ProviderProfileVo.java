@@ -2,15 +2,14 @@ package com.minh.search.data.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.minh.model.dto.scholarship.ScholarshipDto;
+import com.minh.model.dto.profile.ProviderContactDto;
+import com.minh.model.dto.profile.ProviderProfileDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -18,16 +17,11 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScholarshipVo extends ScholarshipDto implements Serializable {
+public class ProviderProfileVo extends ProviderProfileDto {
 
-    private static final long serialVersionUID = 1L;
-
-    private List<ScholarshipVo> scholarship;
+    List<ProviderContactDto> providerContactDtos;
     private ProviderProfileVo providerProfileVo;
-    private int pageNum;
-    private int pageSize;
-    private int totalPages;
-    private long totalElements;
-    Map<String, Map<String, Long>> aggregations;
-    private int isFollow;
+    private String logoUrl;
+    private String bannerUrl;
+
 }

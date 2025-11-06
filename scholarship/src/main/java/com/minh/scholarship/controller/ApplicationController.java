@@ -54,11 +54,10 @@ public class ApplicationController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<ApplicationVo> create(
             @RequestPart("application") String applicationJson,
-            @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles,
-            @RequestPart(value = "attributesJson", required = false) String attributesJson
+            @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles
     ) throws JsonProcessingException {
         ApplicationVo application = new ObjectMapper().readValue(applicationJson, ApplicationVo.class);
-        return ApiResponse.ok(applicationService.create(application, mediaFiles, attributesJson));
+        return ApiResponse.ok(applicationService.create(application, mediaFiles));
     }
 
     @Authorized
@@ -66,11 +65,10 @@ public class ApplicationController {
     public ApiResponse<ApplicationVo> update(
             @PathVariable Long id,
             @RequestPart("application") String applicationJson,
-            @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles,
-            @RequestPart(value = "attributesJson", required = false) String attributesJson
+            @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles
     ) throws JsonProcessingException {
         ApplicationVo application = new ObjectMapper().readValue(applicationJson, ApplicationVo.class);
-        return ApiResponse.ok(applicationService.update(id, application, mediaFiles, attributesJson));
+        return ApiResponse.ok(applicationService.update(id, application, mediaFiles));
     }
 
     @DeleteMapping("/{id}")

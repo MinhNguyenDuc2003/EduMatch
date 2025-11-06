@@ -67,4 +67,6 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
             "            WHERE s.active = true and s.id IN :ids " +
             "            ORDER BY s.created_datetime DESC ", nativeQuery = true)
     List<ScholarshipProjection> getAllVoByIds(List<Long> ids, String userId);
+
+    List<ScholarshipEntity> getAllByProviderIdAndActive(Long id, boolean b);
 }

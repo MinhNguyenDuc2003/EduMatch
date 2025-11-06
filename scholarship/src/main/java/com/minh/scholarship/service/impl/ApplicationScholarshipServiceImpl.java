@@ -6,7 +6,10 @@ import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
 import com.minh.scholarship.data.entity.ApplicationScholarshipEntity;
 import com.minh.scholarship.data.mapper.ApplicationScholarshipMapper;
 import com.minh.scholarship.data.repository.ApplicationScholarshipRepository;
+import com.minh.scholarship.data.vo.ApplicationScholarshipVo;
 import com.minh.scholarship.service.ApplicationScholarshipService;
+import com.minh.scholarship.service.ApplicationService;
+import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.base.BaseService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,9 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
 
     private final ApplicationScholarshipRepository repository;
     private final ApplicationScholarshipMapper mapper;
+    private final ApplicationScholarshipMapper applicationScholarshipMapper;
+    private final ApplicationService applicationService;
+    private final ScholarshipService scholarshipService;
 
     @Override
     public List<ApplicationScholarshipDto> getAll() {
@@ -64,8 +70,14 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     }
 
     @Override
-    public List<ApplicationScholarshipDto> getAllByScholarshipId(Long scholarshipId) {
-        return mapper.toDto(repository.findByScholarshipIdAndActive(scholarshipId, true));
+    public List<ApplicationScholarshipVo> getAllByScholarshipId(Long scholarshipId) {
+        List<ApplicationScholarshipDto> dto = mapper.toDto(repository.findByScholarshipIdAndActive(scholarshipId, true));
+        List<ApplicationScholarshipVo> vos = applicationScholarshipMapper.dtoToVos(dto);
+        vos.forEach(o -> {
+            o.setApplicationVo(applicationService.getById(o.getApplicationId()));
+            o.setScholarshipVo(scholarshipService.getById(o.getScholarshipId()));
+        });
+        return vos;
     }
 
     @Override

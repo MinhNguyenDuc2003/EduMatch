@@ -21,6 +21,9 @@ public class ProviderNewsEntity {
     @Column(name = "PROVIDER_ID")
     private Long providerId;
 
+    @Column(name = "SCHOLARSHIP_ID")
+    private Long scholarshipId;
+
     @Column(name = "TITLE")
     private String title;
 

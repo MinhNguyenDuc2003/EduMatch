@@ -1,12 +1,10 @@
 package com.minh.scholarship.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.CoreMessageCode;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.media.MediaDto;
-import com.minh.model.dto.scholarship.ApplicationAttributeDto;
 import com.minh.scholarship.data.entity.ApplicationAttributeEntity;
 import com.minh.scholarship.data.entity.ApplicationEntity;
 import com.minh.scholarship.data.entity.ApplicationScholarshipEntity;
@@ -44,7 +42,6 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     private final ApplicationAttributeRepository applicationAttributeRepository;
     private final ApplicationScholarshipRepository applicationScholarshipRepository;
     private final MediaFeign mediaFeign;
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final ApplicationAttributeMapper applicationAttributeMapper;
 
     @Override
@@ -67,7 +64,7 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
         vo.setApplicationAttributes(
                 applicationAttributeRepository.findAllByApplicationId(vo.getId())
                         .stream()
-                        .map(a -> applicationMapper.toAttributeDto(a))
+                        .map(applicationMapper::toAttributeDto)
                         .collect(Collectors.toList())
         );
 
@@ -82,15 +79,13 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public ApplicationVo create(ApplicationVo applicationVo, List<MultipartFile> mediaFiles, String attributesJson) throws JsonProcessingException {
+    public ApplicationVo create(ApplicationVo applicationVo, List<MultipartFile> mediaFiles) throws JsonProcessingException {
         String userId = UaaContextHolder.getUserId();
         applicationVo.setUserId(userId);
         ApplicationEntity entity = applicationRepository.save(applicationMapper.toEntity(applicationVo));
 
-        if (ObjectUtils.isNotEmpty(attributesJson)) {
-            List<ApplicationAttributeDto> attrs = objectMapper.readValue(attributesJson, new TypeReference<List<ApplicationAttributeDto>>() {
-            });
-            List<ApplicationAttributeEntity> attributeEntities = applicationAttributeMapper.toEntity(attrs);
+        if (ObjectUtils.isNotEmpty(applicationVo.getApplicationAttributes())) {
+            List<ApplicationAttributeEntity> attributeEntities = applicationAttributeMapper.toEntity(applicationVo.getApplicationAttributes());
             attributeEntities.forEach(o -> o.setApplicationId(entity.getId()));
             applicationAttributeRepository.saveAll(attributeEntities);
         }
@@ -104,7 +99,7 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public ApplicationVo update(Long id, ApplicationVo applicationVo, List<MultipartFile> mediaFiles, String attributesJson) throws JsonProcessingException {
+    public ApplicationVo update(Long id, ApplicationVo applicationVo, List<MultipartFile> mediaFiles) throws JsonProcessingException {
         String userId = UaaContextHolder.getUserId();
         applicationVo.setUserId(userId);
         ApplicationEntity entity = applicationRepository.findByIdAndActive(id, true)
@@ -116,10 +111,8 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
         applicationMediaRepository.deleteAllByApplicationId(id);
         applicationAttributeRepository.deleteAllByApplicationId(id);
 
-        if (ObjectUtils.isNotEmpty(attributesJson)) {
-            List<ApplicationAttributeDto> attrs = objectMapper.readValue(attributesJson, new TypeReference<List<ApplicationAttributeDto>>() {
-            });
-            List<ApplicationAttributeEntity> attributeEntities = applicationAttributeMapper.toEntity(attrs);
+        if (ObjectUtils.isNotEmpty(applicationVo.getApplicationAttributes())) {
+            List<ApplicationAttributeEntity> attributeEntities = applicationAttributeMapper.toEntity(applicationVo.getApplicationAttributes());
             attributeEntities.forEach(o -> o.setApplicationId(saved.getId()));
             applicationAttributeRepository.saveAll(attributeEntities);
         }
