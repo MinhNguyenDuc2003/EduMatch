@@ -34,7 +34,12 @@ export const apiProvider = createApi({
       }),
     }),
 
-    // Create scholarship
+    // Scholarships
+    getScholarships: build.query<Scholarship[], void>({
+      query: () => `${API_ENDPOINTS.SCHOLARSHIP}/my-scholarship`,
+      providesTags: ['Scholarships'],
+    }),
+
     createScholarship: build.mutation<Scholarship, FormData>({
       query: (formData) => ({
         url: API_ENDPOINTS.SCHOLARSHIP,
@@ -66,6 +71,7 @@ export const {
   useGetProfileQuery,
   useCreateProfileMutation,
   useUpdateProfileMutation,
+  useGetScholarshipsQuery,
   useCreateScholarshipMutation,
   useGetScholarshipsByIdQuery,
   useUpdateScholarshipMutation,

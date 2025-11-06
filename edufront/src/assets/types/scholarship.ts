@@ -44,6 +44,22 @@ declare global {
     organizationLogoUrl?: string; // Organization/company logo URL
     isTracking?: boolean; // Whether user is tracking/following this scholarship
   };
+
+  type ApiGetScholarshipResponse = {
+    content: Scholarship[];
+    pageable: {
+      pageNumber: number;
+      pageSize: number;
+      offset: number;
+    };
+    totalPages: number;
+    totalElements: number;
+    size: number;
+    number: number;
+    first: boolean;
+    last: boolean;
+    empty: boolean;
+  };
 }
 
 export {};
