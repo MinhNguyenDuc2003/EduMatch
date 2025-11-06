@@ -19,9 +19,7 @@ public interface ApplicationService {
     ApplicationVo create(ApplicationVo applicationVo,
                          List<MultipartFile> mediaFiles) throws JsonProcessingException;
 
-    ApplicationVo update(Long id,
-                         ApplicationVo applicationVo,
-                         List<MultipartFile> mediaFiles) throws JsonProcessingException;
+    ApplicationVo update(Long id, ApplicationVo applicationVo);
 
     void delete(Long id);
 
@@ -29,4 +27,7 @@ public interface ApplicationService {
 
     List<ApplicationVo> getApplicationByScholarshipId(Long id);
 
+    Boolean addImagesToApplication(Long id, List<MultipartFile> mediaFiles);
+
+    Boolean deleteImagesToApplication(Long id, List<Long> mediaIds);
 }

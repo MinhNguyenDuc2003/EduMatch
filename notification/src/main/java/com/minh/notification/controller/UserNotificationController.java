@@ -4,6 +4,8 @@ import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.notification.UserNotificationDto;
 import com.minh.notification.service.UserNotificationService;
+import com.minh.service.aspect.Authorized;
+import com.minh.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,12 @@ public class UserNotificationController {
     @GetMapping("/user")
     public ApiResponse<List<UserNotificationDto>> getByUser() {
         return ApiResponse.ok(userNotificationService.getByUser());
+    }
+
+    @Authorized
+    @GetMapping("/token")
+    public ApiResponse<String> getToken() {
+        return ApiResponse.ok("Bearer" + SecurityUtil.getRawToken());
     }
 
     @PostMapping

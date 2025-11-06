@@ -71,13 +71,21 @@ public class ScholarshipController {
     }
 
     @Authorized
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<ScholarshipVo> update(
-            @RequestPart("scholarship") String scholarshipJson,
-            @RequestPart(value = "images", required = false) List<MultipartFile> images
-    ) throws JsonProcessingException {
-        ScholarshipVo scholarship = new ObjectMapper().readValue(scholarshipJson, ScholarshipVo.class);
-        return ApiResponse.ok(scholarshipService.update(scholarship, images));
+    @PutMapping
+    public ApiResponse<ScholarshipVo> update(@RequestBody ScholarshipVo scholarship) {
+        return ApiResponse.ok(scholarshipService.update(scholarship));
+    }
+
+    @Authorized
+    @PutMapping(value = "/{id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Boolean> addImagesToScholarship(@PathVariable Long id, @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles) {
+        return ApiResponse.ok(scholarshipService.addImagesToScholarship(id, mediaFiles));
+    }
+
+    @Authorized
+    @DeleteMapping(value = "/{id}/images")
+    public ApiResponse<Boolean> deleteImagesToScholarship(@PathVariable Long id, @RequestBody List<Long> mediaIds) {
+        return ApiResponse.ok(scholarshipService.deleteImagesToScholarship(id, mediaIds));
     }
 
     @DeleteMapping("/{id}")
@@ -90,6 +98,12 @@ public class ScholarshipController {
     @GetMapping("/follow")
     public ApiResponse<List<ScholarshipVo>> getScholarshipFollow() {
         return ApiResponse.ok(scholarshipService.getScholarshipFollow());
+    }
+
+    @Authorized
+    @GetMapping("/follow/{id}")
+    public ApiResponse<ScholarshipFollowerDto> getMyScholarshipFollower(@PathVariable Long id) {
+        return ApiResponse.ok(scholarshipService.getScholarshipFollower(id));
     }
 
     @Authorized

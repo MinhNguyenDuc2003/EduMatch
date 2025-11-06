@@ -10,16 +10,14 @@ import com.minh.profile.data.mapper.ProviderNewsMapper;
 import com.minh.profile.data.repository.ProviderNewsMediaRepository;
 import com.minh.profile.data.repository.ProviderNewsRepository;
 import com.minh.profile.data.repository.ProviderProfileRepository;
-import com.minh.profile.service.ProviderNewsService;
 import com.minh.profile.feign.MediaFeign;
-import com.minh.service.aspect.Authorized;
+import com.minh.profile.service.ProviderNewsService;
 import com.minh.service.base.BaseService;
 import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -74,29 +72,11 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
 
     @Override
     @Transactional
-    public ProviderNewsDto update(Long id, ProviderNewsDto dto, List<MultipartFile> images) {
+    public ProviderNewsDto update(Long id, ProviderNewsDto dto) {
         ProviderNewsEntity entity = providerNewsRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_NEWS_IS_NOT_EXIST));
-
         providerNewsMapper.updateEntityFromDto(dto, entity);
-
-        if (entity.getActive() == null) {
-            entity.setActive(true);
-        }
-
-        String userId = UaaContextHolder.getUserId();
-        Long providerId = providerProfileRepository.findByUserId(userId)
-                .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_NOT_FOUND))
-                .getId();
-        entity.setProviderId(providerId);
-
         ProviderNewsEntity saved = providerNewsRepository.save(entity);
-
-        providerNewsMediaRepository.deleteAllByProviderNewsId(id);
-
-        if (ObjectUtils.isNotEmpty(images)) {
-            uploadImages(saved.getId(), images);
-        }
 
         return getById(saved.getId());
     }
@@ -108,6 +88,20 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
             throw new BusinessException(CoreMessageCode.PROVIDER_NEWS_IS_NOT_EXIST);
         }
         providerNewsRepository.updateActiveById(id);
+    }
+
+    @Override
+    public Boolean addImagesToNews(Long id, List<MultipartFile> mediaFiles) {
+        this.uploadImages(id, mediaFiles);
+        return true;
+    }
+
+    @Override
+    public Boolean deleteImagesToNews(Long id, List<Long> mediaIds) {
+        mediaIds.forEach(mediaId -> {
+            providerNewsMediaRepository.deleteByProviderNewsIdAndMediaId(id, mediaId);
+        });
+        return true;
     }
 
     private void uploadImages(Long providerNewsId, List<MultipartFile> images) {

@@ -8,7 +8,6 @@ import com.minh.profile.service.ProviderNewsService;
 import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,13 +42,21 @@ public class ProviderNewsController {
     }
 
     @Authorized
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<ProviderNewsDto> update(
-            @RequestPart("news") String news,
-            @RequestPart(value = "images", required = false) List<MultipartFile> images
-    ) throws IOException {
-        ProviderNewsDto newsDto = new ObjectMapper().readValue(news, ProviderNewsDto.class);
-        return ApiResponse.ok(providerNewsService.update(newsDto.getId(), newsDto, images));
+    @PutMapping
+    public ApiResponse<ProviderNewsDto> update(@RequestBody ProviderNewsDto news) {
+        return ApiResponse.ok(providerNewsService.update(news.getId(), news));
+    }
+
+    @Authorized
+    @PutMapping(value = "/{id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Boolean> addImagesToNews(@PathVariable Long id, @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles) {
+        return ApiResponse.ok(providerNewsService.addImagesToNews(id, mediaFiles));
+    }
+
+    @Authorized
+    @DeleteMapping(value = "/{id}/images")
+    public ApiResponse<Boolean> deleteImagesToNews(@PathVariable Long id, @RequestBody List<Long> mediaIds) {
+        return ApiResponse.ok(providerNewsService.deleteImagesToNews(id, mediaIds));
     }
 
     @DeleteMapping("/{id}")

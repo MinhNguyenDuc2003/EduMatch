@@ -33,10 +33,13 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     }
 
     @Override
-    public ApplicationScholarshipDto getById(Long id) {
+    public ApplicationScholarshipVo getById(Long id) {
         ApplicationScholarshipEntity entity = repository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICATION_SCHOLARSHIP_NOT_FOUND));
-        return mapper.toDto(entity);
+        ApplicationScholarshipVo vo = mapper.entityToVo(entity);
+        vo.setApplicationVo(applicationService.getById(vo.getApplicationId()));
+        vo.setScholarshipVo(scholarshipService.getById(vo.getScholarshipId()));
+        return vo;
     }
 
     @Override

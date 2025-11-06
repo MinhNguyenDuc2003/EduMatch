@@ -17,7 +17,7 @@ public interface ScholarshipService {
 
     ScholarshipVo create(ScholarshipVo scholarship, List<MultipartFile> images);
 
-    ScholarshipVo update(ScholarshipVo scholarship, List<MultipartFile> images);
+    ScholarshipVo update(ScholarshipVo scholarship);
 
     void delete(Long id);
 
@@ -38,5 +38,11 @@ public interface ScholarshipService {
     List<ScholarshipVo> getScholarshipByProviderId(Long id);
 
     List<ScholarshipVo> getByIds(List<Long> ids);
+
+    Boolean addImagesToScholarship(Long id, List<MultipartFile> mediaFiles);
+
+    Boolean deleteImagesToScholarship(Long id, List<Long> mediaIds);
+
+    ScholarshipFollowerDto getScholarshipFollower(Long id);
 
 }

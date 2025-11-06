@@ -9,7 +9,7 @@ public interface ApplicationScholarshipService {
 
     List<ApplicationScholarshipDto> getAll();
 
-    ApplicationScholarshipDto getById(Long id);
+    ApplicationScholarshipVo getById(Long id);
 
     ApplicationScholarshipDto create(ApplicationScholarshipDto dto);
 

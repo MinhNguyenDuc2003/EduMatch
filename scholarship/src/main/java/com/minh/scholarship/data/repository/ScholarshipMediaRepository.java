@@ -12,4 +12,7 @@ public interface ScholarshipMediaRepository extends JpaRepository<ScholarshipMed
     void deleteAllByScholarshipId(Long scholarshipId);
 
     List<ScholarshipMediaEntity> findByScholarshipId(Long id);
+
+    void deleteByScholarshipIdAndMediaId(Long scholarshipId, Long mediaId);
+
 }

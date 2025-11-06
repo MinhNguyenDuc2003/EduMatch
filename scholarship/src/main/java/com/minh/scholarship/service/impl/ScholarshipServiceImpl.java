@@ -107,7 +107,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         scholarship.setProviderId(providerProfileVo.getId());
         ScholarshipEntity savedScholarship = scholarshipRepository.save(scholarshipMapper.toEntity(scholarship));
         if (ObjectUtils.isNotEmpty(images)) {
-            uploadImages(scholarship, images, savedScholarship.getId());
+            uploadImages(images, savedScholarship.getId());
         }
         List<ScholarshipPreferenceDto> scholarshipPreferences = scholarship.getScholarshipPreferences();
         if (!scholarshipPreferences.isEmpty()) {
@@ -132,13 +132,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public ScholarshipVo update(ScholarshipVo scholarship, List<MultipartFile> images) {
+    public ScholarshipVo update(ScholarshipVo scholarship) {
         ScholarshipEntity entity = scholarshipRepository.findByIdAndActive(scholarship.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
-        scholarshipMediaRepository.deleteAllByScholarshipId(entity.getId());
-        if (ObjectUtils.isNotEmpty(images)) {
-            uploadImages(scholarship, images, entity.getId());
-        }
         scholarshipPreferenceRepository.deleteAllByScholarshipId(entity.getId());
         if (!scholarship.getScholarshipPreferences().isEmpty()) {
             scholarshipPreferenceRepository.saveAll(scholarshipPreferenceMapper.toEntity(scholarship.getScholarshipPreferences()));
@@ -147,8 +143,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         return scholarshipMapper.entityToVo(scholarshipRepository.save(entity));
     }
 
-
-    private void uploadImages(ScholarshipDto scholarship, List<MultipartFile> images, Long id) {
+    private void uploadImages(List<MultipartFile> images, Long id) {
         images.forEach(image -> {
             MediaDto request = new MediaDto();
             request.setFileName(image.getOriginalFilename());
@@ -208,9 +203,30 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         List<ScholarshipProjection> allVoByIds = scholarshipRepository.getAllVoByIds(ids, userId);
         List<ScholarshipVo> scholarshipVos = scholarshipMapper.prosToVos(allVoByIds);
         scholarshipVos.forEach(o -> {
-            o.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(o.getId())));
+            o.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(o.getProviderId())));
         });
         return scholarshipVos;
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public Boolean addImagesToScholarship(Long id, List<MultipartFile> mediaFiles) {
+        uploadImages(mediaFiles, id);
+        return true;
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public Boolean deleteImagesToScholarship(Long id, List<Long> mediaIds) {
+        mediaIds.forEach(mediaId -> {
+            scholarshipMediaRepository.deleteByScholarshipIdAndMediaId(id, mediaId);
+        });
+        return true;
+    }
+
+    @Override
+    public ScholarshipFollowerDto getScholarshipFollower(Long id) {
+        return scholarshipFollowerMapper.toDto(scholarshipFollowerRepository.findByUserIdAndScholarshipId(UaaContextHolder.getUserId(), id));
     }
 
     @Override

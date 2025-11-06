@@ -61,14 +61,21 @@ public class ApplicationController {
     }
 
     @Authorized
-    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<ApplicationVo> update(
-            @PathVariable Long id,
-            @RequestPart("application") String applicationJson,
-            @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles
-    ) throws JsonProcessingException {
-        ApplicationVo application = new ObjectMapper().readValue(applicationJson, ApplicationVo.class);
-        return ApiResponse.ok(applicationService.update(id, application, mediaFiles));
+    @PutMapping
+    public ApiResponse<ApplicationVo> update(@RequestBody ApplicationVo application) {
+        return ApiResponse.ok(applicationService.update(application.getId(), application));
+    }
+
+    @Authorized
+    @PutMapping(value = "/{id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Boolean> addImagesToApplication(@PathVariable Long id, @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles) {
+        return ApiResponse.ok(applicationService.addImagesToApplication(id, mediaFiles));
+    }
+
+    @Authorized
+    @DeleteMapping(value = "/{id}/images")
+    public ApiResponse<Boolean> deleteImagesToApplication(@PathVariable Long id, @RequestBody List<Long> mediaIds) {
+        return ApiResponse.ok(applicationService.deleteImagesToApplication(id, mediaIds));
     }
 
     @DeleteMapping("/{id}")

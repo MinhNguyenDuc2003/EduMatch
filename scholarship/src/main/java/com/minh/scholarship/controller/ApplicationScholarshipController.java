@@ -23,7 +23,7 @@ public class ApplicationScholarshipController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<ApplicationScholarshipDto> getById(@PathVariable Long id) {
+    public ApiResponse<ApplicationScholarshipVo> getById(@PathVariable Long id) {
         return ApiResponse.ok(service.getById(id));
     }
 

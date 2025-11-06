@@ -13,7 +13,11 @@ public interface ProviderNewsService {
 
     ProviderNewsDto create(ProviderNewsDto dto, List<MultipartFile> images);
 
-    ProviderNewsDto update(Long id, ProviderNewsDto dto, List<MultipartFile> images);
+    ProviderNewsDto update(Long id, ProviderNewsDto dto);
 
     void delete(Long id);
+
+    Boolean addImagesToNews(Long id, List<MultipartFile> mediaFiles);
+
+    Boolean deleteImagesToNews(Long id, List<Long> mediaIds);
 }

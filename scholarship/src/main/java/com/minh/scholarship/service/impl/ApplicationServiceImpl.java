@@ -1,7 +1,6 @@
 package com.minh.scholarship.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.CoreMessageCode;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.media.MediaDto;
@@ -99,7 +98,7 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public ApplicationVo update(Long id, ApplicationVo applicationVo, List<MultipartFile> mediaFiles) throws JsonProcessingException {
+    public ApplicationVo update(Long id, ApplicationVo applicationVo) {
         String userId = UaaContextHolder.getUserId();
         applicationVo.setUserId(userId);
         ApplicationEntity entity = applicationRepository.findByIdAndActive(id, true)
@@ -108,17 +107,12 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
         applicationMapper.updateEntityFromVo(applicationVo, entity);
         ApplicationEntity saved = applicationRepository.save(entity);
 
-        applicationMediaRepository.deleteAllByApplicationId(id);
         applicationAttributeRepository.deleteAllByApplicationId(id);
 
         if (ObjectUtils.isNotEmpty(applicationVo.getApplicationAttributes())) {
             List<ApplicationAttributeEntity> attributeEntities = applicationAttributeMapper.toEntity(applicationVo.getApplicationAttributes());
             attributeEntities.forEach(o -> o.setApplicationId(saved.getId()));
             applicationAttributeRepository.saveAll(attributeEntities);
-        }
-
-        if (ObjectUtils.isNotEmpty(mediaFiles)) {
-            uploadImages(mediaFiles, id);
         }
         return getById(id);
     }
@@ -168,6 +162,22 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
         List<ApplicationVo> vos = applicationMapper.entitiesToVos(applicationRepository.findAllById(applicationScholarshipEntities.stream().map(ApplicationScholarshipEntity::getApplicationId).collect((Collectors.toList()))));
         vos.forEach(this::addAttributesAndMedia);
         return vos;
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public Boolean addImagesToApplication(Long id, List<MultipartFile> mediaFiles) {
+        this.uploadImages(mediaFiles, id);
+        return true;
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public Boolean deleteImagesToApplication(Long id, List<Long> mediaIds) {
+        mediaIds.forEach(mediaId -> {
+            applicationMediaRepository.deleteByApplicationIdAndMediaId(id, mediaId);
+        });
+        return true;
     }
 
     @Override

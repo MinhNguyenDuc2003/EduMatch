@@ -12,4 +12,7 @@ public interface ProviderNewsMediaRepository extends JpaRepository<ProviderNewsM
     List<ProviderNewsMediaEntity> findAllByProviderNewsId(Long providerNewsId);
 
     void deleteAllByProviderNewsId(Long providerNewsId);
+
+    void deleteByProviderNewsIdAndMediaId(Long id, Long mediaId);
+    
 }
