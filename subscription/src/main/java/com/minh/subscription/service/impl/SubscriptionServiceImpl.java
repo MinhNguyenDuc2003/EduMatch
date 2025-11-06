@@ -77,4 +77,11 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
         }
         subscriptionRepository.updateActiveById(id, false);
     }
+
+    @Override
+    public SubscriptionDto getCurrentSubscriptionByUser(String userId) {
+        SubscriptionEntity entity = subscriptionRepository.findCurrentSubscription(userId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND));
+        return subscriptionMapper.toDto(entity);
+    }
 }

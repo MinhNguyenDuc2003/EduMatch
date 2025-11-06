@@ -41,4 +41,9 @@ public class SubscriptionController {
         subscriptionService.delete(id);
         return ApiResponse.ok();
     }
+
+    @GetMapping("/current/{userId}")
+    public ApiResponse<SubscriptionDto> getCurrentSubscription(@PathVariable String userId) {
+        return ApiResponse.ok(subscriptionService.getCurrentSubscriptionByUser(userId));
+    }
 }
