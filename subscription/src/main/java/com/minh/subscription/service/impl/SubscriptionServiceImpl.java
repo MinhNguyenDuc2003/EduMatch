@@ -10,11 +10,14 @@ import com.minh.subscription.data.mapper.SubscriptionMapper;
 import com.minh.subscription.data.repository.SubscriptionRepository;
 import com.minh.subscription.data.repository.SubscriptionPlanRepository;
 import com.minh.subscription.service.SubscriptionService;
+import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +42,9 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
     @Override
     @Transactional(rollbackOn = Exception.class)
     public SubscriptionDto create(SubscriptionDto subscription) {
+        String userId = UaaContextHolder.getUserId();
+        subscription.setUserId(userId);
+
         SubscriptionPlanEntity plan = subscriptionPlanRepository.findById(subscription.getPlanId())
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_PLAN_NOT_FOUND));
 
@@ -46,8 +52,10 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
         entity.setPlan(plan);
 
         SubscriptionEntity savedEntity = subscriptionRepository.save(entity);
+
         return subscriptionMapper.toDto(savedEntity);
     }
+
 
     @Override
     @Transactional(rollbackOn = Exception.class)
@@ -78,10 +86,14 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
         subscriptionRepository.updateActiveById(id, false);
     }
 
-    @Override
-    public SubscriptionDto getCurrentSubscriptionByUser(String userId) {
-        SubscriptionEntity entity = subscriptionRepository.findCurrentSubscription(userId)
-                .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND));
-        return subscriptionMapper.toDto(entity);
+    public List<SubscriptionDto> getAllSubscriptionsByUserId(String userId) {
+        List<SubscriptionEntity> list = subscriptionRepository.findAllByUserId(userId);
+        if (list.isEmpty()) {
+            throw new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND);
+        }
+        return list.stream()
+                .map(subscriptionMapper::toDto)
+                .collect(Collectors.toList());
     }
+
 }

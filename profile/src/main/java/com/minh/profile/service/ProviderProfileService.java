@@ -5,6 +5,7 @@ import com.minh.profile.data.vo.ProviderProfileVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface ProviderProfileService {
 
@@ -15,4 +16,8 @@ public interface ProviderProfileService {
     ProviderProfileVo getById(Long id);
 
     ProviderProfileVo getMyProviderInfo();
+
+    List<ProviderProfileDto> getUnverifiedProviders();
+
+    void changeVerifiedStatus(Long providerId, Boolean verified);
 }
