@@ -29,8 +29,8 @@ const Notifications = ({ notifications }: { notifications: UserNotification[] })
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
-      onConnect: (frame) => {
-        console.log('WebSocket Connected', frame);
+      onConnect: () => {
+        console.log('WebSocket Connected');
 
         // Subscribe to private notifications
         client.subscribe('/user/queue/private', (message: IMessage) => {

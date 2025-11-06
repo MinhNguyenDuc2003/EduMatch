@@ -8,12 +8,13 @@ const API_ENDPOINTS = {
   CUSTOMER_PROFILE: '/customer/storefront/customer/profile',
   CREATE_PROFILE: '/customer/storefront/customer/profile',
   UPDATE_PROFILE: '/customer/storefront/customer/profile',
+  APPLICATION: '/scholarship/applications',
 } as const;
 
 export const apiApplicant = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiApplicant',
-  tagTypes: ['Profile', 'Countries', 'StateOrProvinces', 'Districts'],
+  tagTypes: ['Profile', 'Application'],
   endpoints: (build) => ({
     // Get customer profile (works for both applicant and provider)
     getProfile: build.query<ProfileApiResponse, void>({
@@ -40,8 +41,22 @@ export const apiApplicant = createApi({
       }),
       invalidatesTags: ['Profile'],
     }),
+
+    // Create application
+    createApplication: build.mutation<Application, FormData>({
+      query: (data) => ({
+        url: API_ENDPOINTS.APPLICATION,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Application'],
+    }),
   }),
 });
 
-export const { useGetProfileQuery, useCreateProfileMutation, useUpdateProfileMutation } =
-  apiApplicant;
+export const {
+  useGetProfileQuery,
+  useCreateProfileMutation,
+  useUpdateProfileMutation,
+  useCreateApplicationMutation,
+} = apiApplicant;

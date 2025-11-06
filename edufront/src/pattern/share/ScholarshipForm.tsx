@@ -1,6 +1,6 @@
-import { DEFAULT_SCHOLARSHIP_FORM_VALUES } from '@/@screen/(dashboard)/provider/ScholarshipCreate/constants';
 import { SCHOLARSHIP_TYPES, STUDY_LEVELS } from '@/constants/Common';
 import { COUNTRIES } from '@/constants/Common';
+import { DEFAULT_SCHOLARSHIP_FORM_VALUES } from '@/constants/DefaultValues';
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { Form } from '@/lib/cus/form';
@@ -16,13 +16,11 @@ const ScholarshipForm = ({
   scholarship,
   onSubmit,
   onImagesChange,
-  onDeletedImagesChange,
   isLoading = false,
 }: {
   scholarship?: Scholarship;
   onSubmit: (data: IScholarship) => void;
   onImagesChange?: (images: File[]) => void;
-  onDeletedImagesChange?: (deletedIds: number[]) => void;
   isLoading?: boolean;
 }) => {
   // Form setup
@@ -48,7 +46,6 @@ const ScholarshipForm = ({
   const [imagePreviews, setImagePreviews] = useState<
     Array<{ url: string; type: 'existing' | 'new'; id?: number }>
   >([]);
-  const [deletedImageIds, setDeletedImageIds] = useState<number[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load initial images from scholarship
@@ -100,13 +97,6 @@ const ScholarshipForm = ({
   const handleRemoveImage = (index: number) => {
     const imageToRemove = imagePreviews[index];
 
-    // If it's an existing image, track it for deletion
-    if (imageToRemove.type === 'existing' && imageToRemove.id) {
-      const newDeletedIds = [...deletedImageIds, imageToRemove.id!];
-      setDeletedImageIds(newDeletedIds);
-      onDeletedImagesChange?.(newDeletedIds);
-    }
-
     // If it's a new image, remove from uploadedImages
     if (imageToRemove.type === 'new') {
       const newImageIndex = imagePreviews
@@ -121,11 +111,6 @@ const ScholarshipForm = ({
     const newPreviews = imagePreviews.filter((_, i) => i !== index);
     setImagePreviews(newPreviews);
   };
-
-  // Update deleted images when deletedImageIds changes
-  useEffect(() => {
-    onDeletedImagesChange?.(deletedImageIds);
-  }, [deletedImageIds, onDeletedImagesChange]);
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
