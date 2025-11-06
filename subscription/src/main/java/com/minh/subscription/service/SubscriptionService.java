@@ -9,6 +9,6 @@ public interface SubscriptionService {
     SubscriptionDto create(SubscriptionDto subscription);
     SubscriptionDto update(SubscriptionDto subscription);
     void delete(Long id);
-//    SubscriptionDto getCurrentSubscriptionByUser();
-List<SubscriptionDto> getAllSubscriptionsByUserId(String userId);
+    SubscriptionDto getCurrentSubscriptionByUser();
+    List<SubscriptionDto> getAllSubscriptionsByUserId(String userId);
 }

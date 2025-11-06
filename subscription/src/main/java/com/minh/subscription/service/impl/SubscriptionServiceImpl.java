@@ -96,4 +96,13 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public SubscriptionDto getCurrentSubscriptionByUser() {
+        String userId = UaaContextHolder.getUserId();
+
+        SubscriptionEntity entity = subscriptionRepository.findCurrentSubscription(userId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND));
+
+        return subscriptionMapper.toDto(entity);
+    }
 }

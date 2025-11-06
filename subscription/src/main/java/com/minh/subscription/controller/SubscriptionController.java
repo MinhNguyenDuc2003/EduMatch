@@ -45,10 +45,10 @@ public class SubscriptionController {
         return ApiResponse.ok();
     }
 
-//    @GetMapping("/current")
-//    public ApiResponse<SubscriptionDto> getCurrentSubscription() {
-//        return ApiResponse.ok(subscriptionService.getCurrentSubscriptionByUser());
-//    }
+    @GetMapping("/current")
+    public ApiResponse<SubscriptionDto> getCurrentSubscription() {
+        return ApiResponse.ok(subscriptionService.getCurrentSubscriptionByUser());
+    }
 
     @GetMapping("/user/{userId}")
     public ApiResponse<List<SubscriptionDto>> getAllSubscriptionsByUserId(@PathVariable String userId) {

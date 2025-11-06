@@ -209,6 +209,4 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
         entity.setVerified(verified);
         providerProfileRepository.save(entity);
     }
-
-
 }
