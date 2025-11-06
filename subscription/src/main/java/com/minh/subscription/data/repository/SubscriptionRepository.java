@@ -4,6 +4,9 @@ import com.minh.subscription.data.entity.SubscriptionEntity;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,4 +17,12 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
     @Modifying
     @Query("UPDATE SubscriptionEntity s SET s.active = :active WHERE s.id = :id")
     void updateActiveById(@Param("id") Long id, @Param("active") boolean active);
+
+    @Query("""
+    SELECT s
+    FROM SubscriptionEntity s
+    WHERE s.userId = :userId
+    """)
+    List<SubscriptionEntity> findAllByUserId(@Param("userId") String userId);
+
 }

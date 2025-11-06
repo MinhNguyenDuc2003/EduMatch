@@ -195,4 +195,20 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
         return vo;
     }
 
+    @Override
+    public List<ProviderProfileDto> getUnverifiedProviders() {
+        List<ProviderProfileEntity> entities = providerProfileRepository.findByVerifiedFalse();
+        return providerProfileMapper.toDto(entities);
+    }
+
+    @Override
+    @Transactional
+    public void changeVerifiedStatus(Long providerId, Boolean verified) {
+        ProviderProfileEntity entity = providerProfileRepository.findById(providerId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
+        entity.setVerified(verified);
+        providerProfileRepository.save(entity);
+    }
+
+
 }
