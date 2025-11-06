@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>STOMP WebSocket Multi-Topic Test</title>
+  </head>
+
+  <body>
+    <h2>🔔 Test STOMP WebSocket - Global & Private Topics</h2>
+
+    <button id="connect">Connect</button>
+    <button id="disconnect">Disconnect</button>
+    <button id="sendGlobal">Send Global</button>
+    <button id="sendPrivate">Send Private</button>
+
+    <pre id="messages"></pre>
+
+    <!-- ✅ SockJS & STOMP -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+    <script>
+      let stompClient = null;
+      const userId = 'fbb5a8e9-edcc-468c-81b5-987d7b4325b9';
+
+      function log(msg) {
+        document.getElementById('messages').innerText += msg + '\n';
+      }
+
+      document.getElementById('connect').onclick = () => {
+        const token =
+          'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJkd3RQV2xmMmhNRVFYV0VUS3o2RW9CRHc5QUNhb0hOdXI1U3pRM3NIS2g4In0.eyJleHAiOjE3NjIzOTAyODYsImlhdCI6MTc2MjM1NDI4NiwiYXV0aF90aW1lIjoxNzYyMzU0Mjg2LCJqdGkiOiI5MGNlOTg4Yy04Yzg4LTRlYWEtYTA1Ny1lNWUzZGE1NGYyNGYiLCJpc3MiOiJodHRwOi8vMTYwLjMwLjExMy4yMjQvaWRlbnRpdHkvcmVhbG1zL1lhcyIsInN1YiI6IjcyZDkxZjFmLTE2OGEtNDU2OC1iOWI4LTJiNTNmNjU1MDEzOSIsInR5cCI6IkJlYXJlciIsImF6cCI6InN3YWdnZXItdWkiLCJzaWQiOiIzYTQ2ZjQ5Ny04MTY0LTQ5MDItODk0ZC01Y2E0ZDBiNGVhYjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2FwaS55YXMubG9jYWwiLCJodHRwOi8vMTU5Ljg5LjIwMC4yNDQvKiIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4OCIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4OSIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4NCIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MyIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4NiIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4NSIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA5MSIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA5MCIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA5MyIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MSIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA5MiIsImh0dHA6Ly8xNjAuMzAuMTEzLjIyNC8qIiwiaHR0cDovLzEzOS41OS4yNTEuMTgxLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMteWFzIiwiQVBQTElDQU5UIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoiTWluaCBOZ3V5ZW4iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtaW5oIiwiZ2l2ZW5fbmFtZSI6Ik1pbmgiLCJmYW1pbHlfbmFtZSI6Ik5ndXllbiIsImVtYWlsIjoiZHVjbTQwODc3QGdtYWlsLmNvbSJ9.QxaPjC2MPd4nFi_I5Ow5yFzlg3Ltr7DyxknSnVnKpVKKOYGeGF3DdPhs6klkiT5Lli-Xi3O27S86_32b6NzsxnbnfAyYVWqvkLKmVv4DnmU4ewvs7YowdCvdbVV6MIm5TvH18uhKBFD_0CYBSzahlfwgRcZ-NVVGLGokQ0I31ZiV0Dg1U6BSljjfG8lcWvvmgRjL1bCp9e23vbjJ_C1-PBBky2ahN9N1QIzW9EGnV9y-vLWKVH0M5s-3nRcpx_GxylyrbKJ9HQOLV77i2erM0hoOwD2Ybmcjw135D3rNaZgkmNbDjpgf69ABueeNPLBTbq8feIoEoryDaN-hO3x8zA';
+        const socket = new WebSocket(
+          `ws://160.30.113.224/notification/ws?token=${encodeURIComponent(token)}`
+        );
+        const stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, (frame) => {
+          console.log('✅ Connected:', frame);
+          stompClient.subscribe('/user/queue/private', (msg) => console.log(msg.body));
+        });
+
+        stompClient.subscribe('/topic/global', (msg) => {
+          console.log('🌍 Global:', msg.body);
+        });
+      };
+
+      document.getElementById('disconnect').onclick = () => {
+        if (stompClient && stompClient.connected) {
+          stompClient.disconnect(() => log('🔌 Disconnected'));
+        }
+      };
+
+      // 🔸 Send message to global topic
+      document.getElementById('sendGlobal').onclick = () => {
+        if (stompClient && stompClient.connected) {
+          stompClient.send(
+            '/app/notify/global',
+            {},
+            JSON.stringify({
+              title: 'Hello everyone!',
+              message: 'This is a global announcement',
+              timestamp: new Date(),
+            })
+          );
+          log('📤 Sent global message!');
+        } else {
+          alert('Not connected!');
+        }
+      };
+
+      // 🔸 Send private message (to current user)
+      document.getElementById('sendPrivate').onclick = () => {
+        if (stompClient && stompClient.connected) {
+          stompClient.send(
+            '/app/notify/private',
+            {},
+            JSON.stringify({
+              userId: userId,
+              title: 'Private hello!',
+              message: 'This is a private message to you',
+              timestamp: new Date(),
+            })
+          );
+          log('📤 Sent private message to ' + userId);
+        } else {
+          alert('Not connected!');
+        }
+      };
+    </script>
+  </body>
+</html>
