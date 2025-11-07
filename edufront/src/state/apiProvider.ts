@@ -7,6 +7,7 @@ const API_ENDPOINTS = {
   SCHOLARSHIP: '/scholarship/scholarships',
   FOLLOW_PROVIDER: '/profile/followers',
   GET_FOLLOWED_PROVIDERS: '/profile/followers/providers',
+  GET_PROVIDER_BY_ID: '/profile/providers',
 } as const;
 
 export const apiProvider = createApi({
@@ -90,6 +91,15 @@ export const apiProvider = createApi({
       }),
       providesTags: ['Profile'],
     }),
+
+    // Get provider profile by ID
+    getProviderProfileById: build.query<ProviderProfile, number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.GET_PROVIDER_BY_ID}/${id}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, id) => [{ type: 'Profile', id: String(id) }],
+    }),
   }),
 });
 
@@ -103,4 +113,5 @@ export const {
   useFollowProviderMutation,
   useUnfollowProviderMutation,
   useGetFollowedProvidersQuery,
+  useGetProviderProfileByIdQuery,
 } = apiProvider;

@@ -1,129 +1,116 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { mockScholarshipOpportunities } from '@/@screen/(nondashboard)/HomePage/mockData';
-import { HeroSection, TabSwitcher, TrackedScholarshipCard, EmptyState } from './components';
+import { HeroSection, TabSwitcher, EmptyState, ProviderCard } from './components';
+import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { type ShortlistTab, TAB_CONFIGS } from './types';
+import { useGetFollowedProvidersQuery, useUnfollowProviderMutation } from '@/state/apiProvider';
+import {
+  useGetTrackedScholarshipsQuery,
+  useUnfollowScholarshipMutation,
+} from '@/state/apiScholarship';
+import { useGetProfileQuery } from '@/state/apiApplicant';
 
 export default function ActivityManagement() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<ShortlistTab>('tracking');
+  const [appliedScholarships, setAppliedScholarships] = useState<Scholarship[]>([]);
 
-  // Handle tab change
+  const { data: trackedScholarshipsData } = useGetTrackedScholarshipsQuery();
+  const { data: followedProvidersData } = useGetFollowedProvidersQuery();
+  const { data: profile } = useGetProfileQuery();
+  const [unfollowScholarship] = useUnfollowScholarshipMutation();
+  const [unfollowProvider] = useUnfollowProviderMutation();
+
   const handleTabChange = (tab: ShortlistTab) => {
     setActiveTab(tab);
   };
 
-  // Mock data - In production, these would come from API/state management
-  const [trackedScholarships, setTrackedScholarships] = useState<Scholarship[]>(() =>
-    mockScholarshipOpportunities.filter((item) => item.isTracking)
-  );
-  const [appliedScholarships, setAppliedScholarships] = useState<Scholarship[]>([]);
-  const [followingProviders, setFollowingProviders] = useState<Scholarship[]>(
-    mockScholarshipOpportunities.slice(0, 6)
-  );
+  const trackedScholarships: ScholarshipWithDetails[] = trackedScholarshipsData || [];
+  const followedProviders = followedProvidersData || [];
+  const isFollowingTab = activeTab === 'following';
+  const isTrackedTab = activeTab === 'tracking';
+  const userId = profile?.customer?.id;
 
-  // Get displayed items based on active tab
-  const displayedItems = useMemo(() => {
-    switch (activeTab) {
-      case 'tracking':
-        return trackedScholarships;
-      case 'applied':
-        return appliedScholarships;
-      case 'following':
-        return followingProviders;
-      default:
-        return [];
-    }
-  }, [activeTab, trackedScholarships, appliedScholarships, followingProviders]);
-
-  // Count for each tab
-  const counts = useMemo(
-    () => ({
-      tracking: trackedScholarships.length,
-      applied: appliedScholarships.length,
-      following: followingProviders.length,
-    }),
-    [trackedScholarships, appliedScholarships, followingProviders]
-  );
-
-  // Handlers
   const handleViewDetails = (scholarshipId: number) => {
     router.push(`/scholarships/${scholarshipId}`);
   };
 
-  const handleApply = (scholarship: Scholarship) => {
-    console.log('Apply to:', scholarship.title);
-
-    // Move from tracking to applied
-    if (activeTab === 'tracking') {
-      setAppliedScholarships((prev) => {
-        if (prev.some((item) => item.id === scholarship.id)) return prev;
-        return [...prev, scholarship];
-      });
-      setTrackedScholarships((prev) => prev.filter((item) => item.id !== scholarship.id));
-    }
-    // TODO: Implement apply API call
-  };
-
-  const handleUntrack = (scholarshipId: number) => {
+  const handleUntrack = async (id: number) => {
     switch (activeTab) {
-      case 'tracking':
-        setTrackedScholarships((prev) => prev.filter((item) => item.id !== scholarshipId));
+      case 'tracking': {
+        if (!userId) {
+          console.error('User ID not available');
+          return;
+        }
+        try {
+          await unfollowScholarship({
+            scholarshipId: id,
+            userId,
+          }).unwrap();
+        } catch (error) {
+          console.error('Failed to untrack scholarship:', error);
+        }
         break;
+      }
       case 'applied':
-        setAppliedScholarships((prev) => prev.filter((item) => item.id !== scholarshipId));
+        setAppliedScholarships((prev) => prev.filter((item) => item.id !== id));
         break;
-      case 'following':
-        setFollowingProviders((prev) => prev.filter((item) => item.id !== scholarshipId));
+      case 'following': {
+        try {
+          await unfollowProvider(id).unwrap();
+        } catch (error) {
+          console.error('Failed to unfollow provider:', error);
+        }
         break;
+      }
     }
-    // TODO: Implement untrack API call
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-      {/* Hero Section */}
       <HeroSection />
 
-      {/* Main Content */}
       <section className="relative z-10 -mt-16 pb-20">
         <div className="mx-auto w-full px-6 sm:px-10 lg:px-40">
-          {/* Container with glass effect */}
+          {/* Container */}
           <div className="overflow-hidden rounded-3xl border border-white/60 bg-white/80 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] backdrop-blur-sm">
-            {/* Tab Switcher */}
-            <div className="border-b border-slate-100 bg-white/50 p-6">
-              <TabSwitcher
-                tabs={TAB_CONFIGS}
-                activeTab={activeTab}
-                onTabChange={handleTabChange}
-                counts={counts}
-              />
+            <div className=" border-slate-100 bg-white/50 p-6 pb-0">
+              <TabSwitcher tabs={TAB_CONFIGS} activeTab={activeTab} onTabChange={handleTabChange} />
             </div>
-
-            {/* Content Area */}
             <div className="p-6">
-              {displayedItems.length === 0 ? (
+              {isTrackedTab && trackedScholarships.length === 0 ? (
                 <EmptyState tab={activeTab} />
-              ) : (
+              ) : isFollowingTab && followedProviders.length === 0 ? (
+                <EmptyState tab={activeTab} />
+              ) : isTrackedTab ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {displayedItems.map((scholarship, index) => (
-                    <TrackedScholarshipCard
+                  {trackedScholarships.map((scholarship) => (
+                    <CardSmalPic
                       key={scholarship.id}
                       scholarship={scholarship}
                       onViewDetails={() => handleViewDetails(scholarship.id)}
-                      onApply={
-                        activeTab === 'tracking' || activeTab === 'following'
-                          ? () => handleApply(scholarship)
-                          : undefined
-                      }
-                      onUntrack={() => handleUntrack(scholarship.id)}
-                      showActions={activeTab !== 'applied'}
-                      index={index}
+                      onToggleTracking={() => handleUntrack(scholarship.id)}
                     />
                   ))}
                 </div>
+              ) : isFollowingTab ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {followedProviders.map((provider, index) => (
+                    <ProviderCard
+                      key={provider.providerId}
+                      providerId={provider.providerId}
+                      onViewDetails={() => {
+                        // TODO: Navigate to provider profile page
+                        console.log('View provider:', provider.providerId);
+                      }}
+                      onUnfollow={() => handleUntrack(provider.providerId)}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <EmptyState tab={activeTab} />
               )}
             </div>
           </div>
