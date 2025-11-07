@@ -26,4 +26,7 @@ public interface ApplicationScholarshipRepository extends JpaRepository<Applicat
 
     List<ApplicationScholarshipEntity> findAllByScholarshipId(Long id);
 
+    boolean existsByApplicationIdAndActive(Long applicationId, boolean active);
+    boolean existsByScholarshipIdAndActive(Long scholarshipId, boolean active);
+
 }

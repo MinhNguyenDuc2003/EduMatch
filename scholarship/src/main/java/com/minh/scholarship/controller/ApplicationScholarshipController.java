@@ -18,7 +18,7 @@ public class ApplicationScholarshipController {
     private final ApplicationScholarshipService service;
 
     @GetMapping
-    public ApiResponse<List<ApplicationScholarshipDto>> getAll() {
+    public ApiResponse<List<ApplicationScholarshipVo>> getAll() {
         return ApiResponse.ok(service.getAll());
     }
 
@@ -28,7 +28,7 @@ public class ApplicationScholarshipController {
     }
 
     @GetMapping("/by-application")
-    public ApiResponse<List<ApplicationScholarshipDto>> getByApplicationId(@RequestParam Long applicationId) {
+    public ApiResponse<List<ApplicationScholarshipVo>> getByApplicationId(@RequestParam Long applicationId) {
         return ApiResponse.ok(service.getAllByApplicationId(applicationId));
     }
 

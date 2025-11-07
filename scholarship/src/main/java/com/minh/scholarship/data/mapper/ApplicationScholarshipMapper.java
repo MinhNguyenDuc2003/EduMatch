@@ -26,4 +26,6 @@ public interface ApplicationScholarshipMapper extends BaseMapper<ApplicationScho
 
     @Named("entityToVo")
     ApplicationScholarshipVo entityToVo(ApplicationScholarshipEntity entity);
+
+    List<ApplicationScholarshipVo> entitiesToVos(List<ApplicationScholarshipEntity> entities);
 }

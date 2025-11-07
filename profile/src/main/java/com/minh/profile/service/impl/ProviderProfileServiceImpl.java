@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -55,7 +56,14 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ProviderProfileDto create(ProviderProfileVo profile, MultipartFile logo, MultipartFile banner) throws IOException {
-        profile.setUserId(UaaContextHolder.getUserId());
+        String userId = UaaContextHolder.getUserId();
+        profile.setUserId(userId);
+
+        Optional<ProviderProfileEntity> existingProfile = providerProfileRepository.findByUserId(userId);
+        if (existingProfile.isPresent()) {
+            throw new BusinessException(CoreMessageCode.PROVIDER_PROFILE_ALREADY_EXISTS);
+        }
+
         ProviderProfileEntity savedProfile = providerProfileRepository.save(providerProfileMapper.voToEntity(profile));
         List<ProviderContactDto> providerContactDtos = profile.getProviderContactDtos();
         providerContactDtos.forEach(pc -> {

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ApplicationScholarshipService {
 
-    List<ApplicationScholarshipDto> getAll();
+    List<ApplicationScholarshipVo> getAll();
 
     ApplicationScholarshipVo getById(Long id);
 
@@ -17,7 +17,7 @@ public interface ApplicationScholarshipService {
 
     void delete(Long id);
 
-    List<ApplicationScholarshipDto> getAllByApplicationId(Long applicationId);
+    List<ApplicationScholarshipVo> getAllByApplicationId(Long applicationId);
 
     List<ApplicationScholarshipVo> getAllByScholarshipId(Long scholarshipId);
 

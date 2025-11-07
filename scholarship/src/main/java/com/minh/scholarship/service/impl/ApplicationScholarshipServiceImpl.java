@@ -5,7 +5,9 @@ import com.minh.exception.BusinessException;
 import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
 import com.minh.scholarship.data.entity.ApplicationScholarshipEntity;
 import com.minh.scholarship.data.mapper.ApplicationScholarshipMapper;
+import com.minh.scholarship.data.repository.ApplicationRepository;
 import com.minh.scholarship.data.repository.ApplicationScholarshipRepository;
+import com.minh.scholarship.data.repository.ScholarshipRepository;
 import com.minh.scholarship.data.vo.ApplicationScholarshipVo;
 import com.minh.scholarship.service.ApplicationScholarshipService;
 import com.minh.scholarship.service.ApplicationService;
@@ -28,8 +30,14 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     private final ScholarshipService scholarshipService;
 
     @Override
-    public List<ApplicationScholarshipDto> getAll() {
-        return mapper.toDto(repository.findAll());
+    public List<ApplicationScholarshipVo> getAll() {
+        List<ApplicationScholarshipEntity> entities = repository.findAll();
+        List<ApplicationScholarshipVo> vos = mapper.entitiesToVos(entities);
+        vos.forEach(vo -> {
+            vo.setApplicationVo(applicationService.getById(vo.getApplicationId()));
+            vo.setScholarshipVo(scholarshipService.getById(vo.getScholarshipId()));
+        });
+        return vos;
     }
 
     @Override
@@ -45,6 +53,14 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ApplicationScholarshipDto create(ApplicationScholarshipDto dto) {
+        if (dto.getApplicationId() == null || applicationService.getById(dto.getApplicationId()) == null) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST);
+        }
+
+        if (dto.getScholarshipId() == null || scholarshipService.getById(dto.getScholarshipId()) == null) {
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
+        }
+
         ApplicationScholarshipEntity saved = repository.save(mapper.toEntity(dto));
         return mapper.toDto(saved);
     }
@@ -54,6 +70,15 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     public ApplicationScholarshipDto update(ApplicationScholarshipDto dto) {
         repository.findByIdAndActive(dto.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICATION_SCHOLARSHIP_NOT_FOUND));
+
+        if (dto.getApplicationId() == null || applicationService.getById(dto.getApplicationId()) == null) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST);
+        }
+
+        if (dto.getScholarshipId() == null || scholarshipService.getById(dto.getScholarshipId()) == null) {
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
+        }
+
         ApplicationScholarshipEntity saved = repository.save(mapper.toEntity(dto));
         return mapper.toDto(saved);
     }
@@ -68,12 +93,28 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     }
 
     @Override
-    public List<ApplicationScholarshipDto> getAllByApplicationId(Long applicationId) {
-        return mapper.toDto(repository.findByApplicationIdAndActive(applicationId, true));
+    public List<ApplicationScholarshipVo> getAllByApplicationId(Long applicationId) {
+        boolean exists = repository.existsByApplicationIdAndActive(applicationId, true);
+        if (applicationId == null || !exists) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST);
+        }
+        List<ApplicationScholarshipEntity> entities =
+                repository.findByApplicationIdAndActive(applicationId, true);
+        List<ApplicationScholarshipVo> vos = mapper.entitiesToVos(entities);
+        vos.forEach(vo -> {
+            vo.setApplicationVo(applicationService.getById(vo.getApplicationId()));
+            vo.setScholarshipVo(scholarshipService.getById(vo.getScholarshipId()));
+        });
+        return vos;
     }
 
     @Override
     public List<ApplicationScholarshipVo> getAllByScholarshipId(Long scholarshipId) {
+        boolean exists = repository.existsByScholarshipIdAndActive(scholarshipId, true);
+        if (scholarshipId == null || !exists) {
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
+        }
+
         List<ApplicationScholarshipDto> dto = mapper.toDto(repository.findByScholarshipIdAndActive(scholarshipId, true));
         List<ApplicationScholarshipVo> vos = applicationScholarshipMapper.dtoToVos(dto);
         vos.forEach(o -> {

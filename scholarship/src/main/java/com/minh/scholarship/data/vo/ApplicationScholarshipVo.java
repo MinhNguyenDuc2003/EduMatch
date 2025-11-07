@@ -16,6 +16,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ApplicationScholarshipVo extends ApplicationScholarshipDto {
 
+    private Long applicationId;
+    private Long scholarshipId;
+
     private ApplicationVo applicationVo;
     private ScholarshipVo scholarshipVo;
 

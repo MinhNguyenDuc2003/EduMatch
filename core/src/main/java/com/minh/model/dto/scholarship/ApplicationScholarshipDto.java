@@ -9,6 +9,8 @@ import com.minh.utils.serializer.DateToTimestamp;
 import com.minh.utils.serializer.TimestampToDate;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
@@ -28,13 +30,13 @@ public class ApplicationScholarshipDto extends BaseDto {
 
     @JsonSerialize(using = DateToTimestamp.class)
     @JsonDeserialize(using = TimestampToDate.class)
-    private String appliedAt;
+    private LocalDateTime appliedAt;
 
     private String reviewedId;
 
     @JsonSerialize(using = DateToTimestamp.class)
     @JsonDeserialize(using = TimestampToDate.class)
-    private String reviewedAt;
+    private LocalDateTime reviewedAt;
 
     private String note;
 }
