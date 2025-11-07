@@ -4,7 +4,7 @@ import { Anchor, Block, Card, RText, Section } from '@/lib/by/Div';
 import Image from 'next/image';
 
 type CardSmalPicProps = {
-  scholarship?: Scholarship;
+  scholarship: Scholarship;
   onViewDetails?: () => void;
   onToggleTracking?: (scholarshipId: number) => void;
 };
