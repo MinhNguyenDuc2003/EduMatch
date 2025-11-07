@@ -69,30 +69,6 @@ export const INSTITUTION_TYPES = [
   { value: 'International School', label: 'International School' },
 ];
 
-export const DEGREE_TYPES = [
-  { value: 'High School Diploma', label: 'High School Diploma' },
-  { value: 'Associate Degree', label: 'Associate Degree' },
-  { value: 'Bachelor Degree', label: 'Bachelor Degree' },
-  { value: 'Master Degree', label: 'Master Degree' },
-  { value: 'Doctoral Degree', label: 'Doctoral Degree' },
-  { value: 'Certificate', label: 'Certificate' },
-  { value: 'Diploma', label: 'Diploma' },
-  { value: 'Other', label: 'Other' },
-];
-
-export const MAJOR_CATEGORIES = [
-  { value: 'Business', label: 'Business' },
-  { value: 'Engineering', label: 'Engineering' },
-  { value: 'Computer Science', label: 'Computer Science' },
-  { value: 'Medicine', label: 'Medicine' },
-  { value: 'Law', label: 'Law' },
-  { value: 'Arts', label: 'Arts' },
-  { value: 'Sciences', label: 'Sciences' },
-  { value: 'Education', label: 'Education' },
-  { value: 'Social Sciences', label: 'Social Sciences' },
-  { value: 'Other', label: 'Other' },
-];
-
 // Activities and Interests Options
 export const FAVORITE_ACTIVITIES = [
   { value: 'Piano', label: 'Piano' },

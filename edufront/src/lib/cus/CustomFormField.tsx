@@ -9,6 +9,7 @@ import { Switch } from '@/lib/cus/switch';
 import { Edit, X, Plus } from 'lucide-react';
 import MultipleSelector from './multi-select';
 import StringMultiSelect from './string-multi-select';
+import InputSelect from './input-select';
 
 // Helpers to convert between timestamp values and <input type="date"> value (yyyy-mm-dd)
 function toDateInputValue(value: unknown): string {
@@ -52,7 +53,9 @@ interface FormFieldProps {
     | 'email'
     | 'textarea'
     | 'number'
+    | 'date-of-birth'
     | 'date'
+    | 'input-select'
     | 'range'
     | 'select'
     | 'switch'
@@ -165,11 +168,29 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             </FormLabel>
           </div>
         );
+      case 'input-select':
+        return (
+          <InputSelect
+            options={options || []}
+            value={field.value || ''}
+            onValueChange={field.onChange}
+          />
+        );
 
       case 'number':
         return (
           <Input
             type="number"
+            placeholder={placeholder}
+            {...field}
+            className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
+            disabled={disabled}
+          />
+        );
+      case 'date-of-birth':
+        return (
+          <Input
+            type="date"
             placeholder={placeholder}
             {...field}
             className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}

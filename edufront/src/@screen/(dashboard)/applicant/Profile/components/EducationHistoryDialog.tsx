@@ -22,8 +22,9 @@ import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { Plus, Trash2, Calendar, GraduationCap } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
-import { DEGREE_TYPES, INSTITUTION_TYPES, MAJOR_CATEGORIES } from '../constants';
+import { INSTITUTION_TYPES } from '../constants';
 import { IApplicantProfile } from '@/lib/schemas';
+import { MAJOR_CATEGORIES, MAJOR_NAMES, STUDY_LEVELS } from '@/constants/Common';
 
 interface EducationHistoryDialogProps {
   open: boolean;
@@ -187,7 +188,7 @@ const EducationHistoryDialog = ({
                   label="Degree Type"
                   type="select"
                   placeholder="Select degree type"
-                  options={DEGREE_TYPES}
+                  options={STUDY_LEVELS}
                   inlineLabel
                   isBorder
                 />
@@ -195,7 +196,7 @@ const EducationHistoryDialog = ({
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.majorCategory`}
                   label="Major Category"
-                  type="select"
+                  type="input-select"
                   placeholder="Select major category"
                   options={MAJOR_CATEGORIES}
                   inlineLabel
@@ -205,7 +206,9 @@ const EducationHistoryDialog = ({
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.majorName`}
                   label="Major Name"
-                  placeholder="Enter major name"
+                  type="input-select"
+                  placeholder="Select major name"
+                  options={MAJOR_NAMES}
                   inlineLabel
                   isBorder
                 />

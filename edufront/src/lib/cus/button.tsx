@@ -240,7 +240,7 @@ export function Button({
     >
       {iconLeft && <span className="mr-1">{iconLeft}</span>}
       {(value || children || label) && (
-        <span className="value flex items-center gap-2 font-semibold leading-none transition-all w-max">
+        <span className="value flex items-center justify-center gap-2 font-semibold leading-none transition-all w-full">
           {value || children || label}
         </span>
       )}

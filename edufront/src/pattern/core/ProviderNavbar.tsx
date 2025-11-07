@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/lib/cus/button';
 import { SidebarTrigger } from '@/lib/cus/sidebar';
 import {
   Breadcrumb,
@@ -10,19 +9,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/lib/cus/breadcrumb';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/lib/cus/dropdown-menu';
-import { Bell } from 'lucide-react';
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
+import Notifications from '../share/Notifications';
 
 const ProviderNavbar = () => {
   const pathname = usePathname();
@@ -40,31 +30,38 @@ const ProviderNavbar = () => {
   const breadcrumbs = generateBreadcrumbs();
 
   // Mock notifications
-  const notifications = [
+  const notifications: UserNotification[] = [
     {
       id: 1,
+      userId: '1',
+      isRead: false,
+      referenceType: 'application',
+      referenceId: '1',
+      topic: 'application',
       title: 'New Application Received',
-      message: 'John Doe applied for Computer Science Scholarship',
-      time: '5 min ago',
-      unread: true,
+      content: 'John Doe applied for Computer Science Scholarship',
     },
     {
       id: 2,
+      userId: '2',
+      isRead: false,
+      referenceType: 'application',
+      referenceId: '2',
+      topic: 'application',
       title: 'Scholarship Approved',
-      message: 'Your Engineering Excellence Award has been approved',
-      time: '1 hour ago',
-      unread: true,
+      content: 'Your Engineering Excellence Award has been approved',
     },
     {
       id: 3,
+      userId: '3',
+      isRead: false,
+      referenceType: 'application',
+      referenceId: '3',
+      topic: 'application',
       title: 'Application Review Due',
-      message: '3 applications need your review this week',
-      time: '2 hours ago',
-      unread: false,
+      content: '3 applications need your review this week',
     },
   ];
-
-  const unreadCount = notifications.filter((n) => n.unread).length;
 
   return (
     <nav className="sticky top-0 w-full h-16 px-4 sm:px-6 lg:px-8 z-20 flex items-center border-b border-gray-200 bg-white/80 backdrop-blur-md">
@@ -103,58 +100,7 @@ const ProviderNavbar = () => {
         </div>
 
         {/* Right Section - Actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Notifications Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="relative w-9 h-9 text-gray-600 shadow-none hover:text-gray-900 hover:bg-gray-100"
-              >
-                <Bell className="w-5 h-5" />
-                {unreadCount > 0 && (
-                  <span className="absolute top-1 right-1 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-red-500 rounded-full ring-2 ring-white">
-                    {unreadCount}
-                  </span>
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80">
-              <DropdownMenuLabel className="flex items-center justify-between">
-                <span className="font-semibold">Notifications</span>
-                {unreadCount > 0 && (
-                  <span className="text-xs font-normal text-primary-brand">{unreadCount} new</span>
-                )}
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <div className="max-h-96 flex flex-col gap-1 overflow-y-auto">
-                {notifications.map((notification) => (
-                  <DropdownMenuItem
-                    key={notification.id}
-                    className={cn(
-                      'flex flex-col items-start gap-1 p-3 cursor-pointer',
-                      notification.unread && 'bg-primary-light'
-                    )}
-                  >
-                    <div className="flex items-start justify-between w-full">
-                      <p className="font-semibold text-sm text-gray-900">{notification.title}</p>
-                      {notification.unread && (
-                        <span className="w-2 h-2 bg-primary-brand rounded-full mt-1"></span>
-                      )}
-                    </div>
-                    <p className="text-xs text-gray-600 line-clamp-2">{notification.message}</p>
-                    <p className="text-xs text-gray-400 mt-1">{notification.time}</p>
-                  </DropdownMenuItem>
-                ))}
-              </div>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-center justify-center text-primary-brand font-medium cursor-pointer">
-                View all notifications
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <Notifications notifications={notifications} />
       </div>
     </nav>
   );

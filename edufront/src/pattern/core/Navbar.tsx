@@ -22,17 +22,9 @@ import {
   NavigationMenuTrigger,
 } from '@/lib/cus/navigation-menu';
 import { NavigationMenuItem } from '../share/NavigationMenuItem';
+import Notifications from '../share/Notifications';
 
 const Header = () => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
   return (
     <Begin className="px-4 lg:px-40 py-3 flex items-center border-b bg-[#fafaf6] sticky top-0 z-50">
       <div className="w-full flex items-center justify-between">
@@ -93,7 +85,7 @@ const Header = () => {
           </NavigationMenu>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 gap-1">
           <div className="flex items-center space-x-2">
             <Link href="http://159.89.200.244/oauth2/authorization/keycloak">
               <Button variant="outline" className="text-primary-brand text-lg p-4 shadow-none">
@@ -104,10 +96,12 @@ const Header = () => {
             </Link>
           </div>
 
+          <Notifications notifications={[]} />
+
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="shadow-none rounded-full">
-                <CircleUserRound className="size-6" />
+              <Button variant="ghost" className="shadow-none rounded-full p-0">
+                <CircleUserRound className="size-5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="" align="end" forceMount>

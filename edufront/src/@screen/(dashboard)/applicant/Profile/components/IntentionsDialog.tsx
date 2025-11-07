@@ -21,8 +21,8 @@ import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { Plus, Trash2, GraduationCap, Calendar, MapPin } from 'lucide-react';
-import { DEGREE_TYPES, MAJOR_CATEGORIES } from '../constants';
 import { IApplicantProfile } from '@/lib/schemas';
+import { MAJOR_CATEGORIES, MAJOR_NAMES, STUDY_LEVELS } from '@/constants/Common';
 
 interface IntentionsDialogProps {
   open: boolean;
@@ -136,7 +136,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                   label="Degree Type"
                   type="select"
                   placeholder="Select degree type"
-                  options={DEGREE_TYPES}
+                  options={STUDY_LEVELS}
                   inlineLabel
                   isBorder
                 />
@@ -169,7 +169,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.intendedMajorCategory`}
                   label="Major Category"
-                  type="select"
+                  type="input-select"
                   placeholder="Select major category"
                   options={MAJOR_CATEGORIES}
                   inlineLabel
@@ -180,6 +180,8 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                   name={`applicantProfile.intentions.${index}.intendedMajorName`}
                   label="Major Name"
                   placeholder="Enter major name"
+                  type="input-select"
+                  options={MAJOR_NAMES}
                   inlineLabel
                   isBorder
                 />

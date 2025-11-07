@@ -116,6 +116,22 @@ declare global {
     page: number;
     size: number;
   };
+
+  type ApiGetScholarshipResponse = {
+    content: Scholarship[];
+    pageable: {
+      pageNumber: number;
+      pageSize: number;
+      offset: number;
+    };
+    totalPages: number;
+    totalElements: number;
+    size: number;
+    number: number;
+    first: boolean;
+    last: boolean;
+    empty: boolean;
+  };
 }
 
 export {};
