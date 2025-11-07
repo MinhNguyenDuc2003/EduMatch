@@ -6,11 +6,10 @@ import ScholarshipCardSkeleton from './components/ScholarshipCardSkeleton';
 import { Filter } from 'lucide-react';
 import SearchBar from '@/pattern/share/SearchBar';
 import {
-  useSearchScholarshipsAdvancedQuery,
   useFollowScholarshipMutation,
+  useSearchScholarshipsAdvancedQuery,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
-import { useGetProfileQuery } from '@/state/apiApplicant';
 
 export default function ScholarshipsList() {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -46,22 +45,11 @@ export default function ScholarshipsList() {
 
   // Call API
   const { data: response, isLoading, isError } = useSearchScholarshipsAdvancedQuery(requestBody);
-  const { data: profile } = useGetProfileQuery();
-  const userId = profile?.customer?.id;
 
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
-  // Extract scholarships and pagination info from response
-  const scholarships = useMemo(() => {
-    const items = response?.scholarship || [];
-    // Ensure each scholarship has scholarshipMedias array (required by Scholarship type)
-    return items.map((item) => ({
-      ...item,
-      scholarshipMedias: item.scholarshipMedias || [],
-    }));
-  }, [response]);
-
+  const scholarships = response?.scholarship || [];
   const totalElements = response?.totalElements || 0;
   const totalPages = response?.totalPages || 0;
 
@@ -71,10 +59,6 @@ export default function ScholarshipsList() {
   };
 
   const handleToggleTracking = async (scholarshipId: number) => {
-    if (!userId) {
-      console.error('User ID not available');
-      return;
-    }
     const scholarship = scholarships.find((s) => s.id === scholarshipId);
     const isTracked = scholarship?.isFollow === 1;
 
@@ -82,12 +66,10 @@ export default function ScholarshipsList() {
       if (isTracked) {
         await unfollowScholarship({
           scholarshipId,
-          userId,
         }).unwrap();
       } else {
         await followScholarship({
           scholarshipId,
-          userId,
         }).unwrap();
       }
     } catch (error) {

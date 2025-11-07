@@ -7,8 +7,8 @@ import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
 import {
   useFollowProviderMutation,
-  useUnfollowProviderMutation,
   useGetFollowedProvidersQuery,
+  useUnfollowProviderMutation,
 } from '@/state/apiProvider';
 
 type ScholarshipCardProps = {
@@ -35,7 +35,9 @@ export default function ScholarshipCard({
 
   // Check if provider is followed
   const isFollowing =
-    followedProviders?.some((fp) => fp.providerId === scholarship.providerId) || false;
+    followedProviders?.some(
+      (fp: { providerId: number }) => fp.providerId === scholarship.providerId
+    ) || false;
 
   // Handle follow/unfollow provider
   const handleFollowProvider = async () => {
@@ -55,8 +57,8 @@ export default function ScholarshipCard({
   const handleViewProvider = (providerId: number) => {
     router.push(`/applicant/providers/${providerId}`);
   };
-  const handleViewScholarship = (scholarshipId: number) => {
-    router.push(`/scholarships/${scholarshipId}`);
+  const handleViewScholarship = (slug: string) => {
+    router.push(`/scholarships/${slug}`);
   };
 
   return (
@@ -116,7 +118,7 @@ export default function ScholarshipCard({
           {/* Title & Description - Clickable Area */}
           <div
             className="cursor-pointer group"
-            onClick={() => handleViewScholarship(scholarship.id)}
+            onClick={() => handleViewScholarship(scholarship.slug)}
           >
             {/* Title */}
             <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">

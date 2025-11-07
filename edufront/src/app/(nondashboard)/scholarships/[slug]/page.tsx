@@ -3,15 +3,14 @@ import React from 'react';
 
 type PageProps = {
   params: Promise<{
-    id: string;
+    slug: string;
   }>;
 };
 
 const page = async ({ params }: PageProps) => {
-  const { id } = await params;
-  const scholarshipId = parseInt(id, 10);
+  const { slug } = await params;
 
-  return <ScholarshipDetail scholarshipId={scholarshipId} />;
+  return <ScholarshipDetail slug={slug} />;
 };
 
 export default page;

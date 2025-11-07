@@ -47,10 +47,7 @@ export const apiScholarship = createApi({
     }),
 
     // Track/Follow scholarship
-    followScholarship: build.mutation<
-      { scholarshipId: number; userId: string },
-      { scholarshipId: number; userId: string }
-    >({
+    followScholarship: build.mutation<void, { scholarshipId: number }>({
       query: (data) => ({
         url: API_ENDPOINTS.SCHOLARSHIP_FOLLOW,
         method: 'POST',
@@ -63,7 +60,7 @@ export const apiScholarship = createApi({
     }),
 
     // Untrack/Unfollow scholarship
-    unfollowScholarship: build.mutation<void, { scholarshipId: number; userId: string }>({
+    unfollowScholarship: build.mutation<void, { scholarshipId: number }>({
       query: (data) => ({
         url: API_ENDPOINTS.SCHOLARSHIP_FOLLOW,
         method: 'DELETE',
@@ -86,17 +83,20 @@ export const apiScholarship = createApi({
 
     // Check if scholarship is tracked/followed
     checkIsTrackedScholarship: build.query<
-      { scholarshipId: number; userId: string } | null,
+      { scholarshipId: number; userId: string },
       number | string
     >({
       query: (id) => ({
         url: `${API_ENDPOINTS.SCHOLARSHIP_FOLLOW}/${id}`,
         method: 'GET',
       }),
-      providesTags: (result, error, id) => [
-        'Scholarships',
-        { type: 'Scholarships', id: `tracked-${id}` },
-      ],
+    }),
+
+    getScholarshipBySlug: build.query<ScholarshipDetail, string>({
+      query: (slug) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP_DETAIL}/slug?slug=${slug}`,
+        method: 'GET',
+      }),
     }),
   }),
 });
@@ -109,4 +109,5 @@ export const {
   useUnfollowScholarshipMutation,
   useGetTrackedScholarshipsQuery,
   useCheckIsTrackedScholarshipQuery,
+  useGetScholarshipBySlugQuery,
 } = apiScholarship;

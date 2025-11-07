@@ -17,7 +17,6 @@ import {
   useGetTrackedScholarshipsQuery,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
-import { useGetProfileQuery } from '@/state/apiApplicant';
 
 export default function ActivityManagement() {
   const router = useRouter();
@@ -28,7 +27,6 @@ export default function ActivityManagement() {
     useGetTrackedScholarshipsQuery();
   const { data: followedProvidersData, isLoading: isLoadingFollowedProviders } =
     useGetFollowedProvidersQuery();
-  const { data: profile } = useGetProfileQuery();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
@@ -40,10 +38,9 @@ export default function ActivityManagement() {
   const followedProviders = followedProvidersData || [];
   const isFollowingTab = activeTab === 'following';
   const isTrackedTab = activeTab === 'tracking';
-  const userId = profile?.customer?.id;
 
-  const handleViewDetails = (scholarshipId: number) => {
-    router.push(`/scholarships/${scholarshipId}`);
+  const handleViewDetails = (slug: string) => {
+    router.push(`/scholarships/${slug}`);
   };
 
   const handleViewProvider = (providerId: number) => {
@@ -53,14 +50,9 @@ export default function ActivityManagement() {
   const handleUntrack = async (id: number) => {
     switch (activeTab) {
       case 'tracking': {
-        if (!userId) {
-          console.error('User ID not available');
-          return;
-        }
         try {
           await unfollowScholarship({
             scholarshipId: id,
-            userId,
           }).unwrap();
         } catch (error) {
           console.error('Failed to untrack scholarship:', error);
@@ -116,7 +108,7 @@ export default function ActivityManagement() {
                     <CardSmalPic
                       key={scholarship.id}
                       scholarship={scholarship}
-                      onViewDetails={() => handleViewDetails(scholarship.id)}
+                      onViewDetails={() => handleViewDetails(scholarship.slug)}
                       onToggleTracking={() => handleUntrack(scholarship.id)}
                     />
                   ))}

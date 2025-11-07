@@ -11,7 +11,6 @@ import {
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
-import { useGetProfileQuery } from '@/state/apiApplicant';
 
 type ScholarshipsSectionProps = {
   scholarships: ScholarshipWithDetails[];
@@ -31,11 +30,8 @@ export default function ScholarshipsSection({
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { data: profile } = useGetProfileQuery();
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
-
-  const userId = profile?.customer?.id;
 
   const totalItems = scholarships?.length || 0;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
@@ -48,11 +44,6 @@ export default function ScholarshipsSection({
   };
 
   const handleToggleTracking = async (scholarshipId: number) => {
-    if (!userId) {
-      console.error('User ID not available');
-      return;
-    }
-
     // Find the scholarship to check if it's already tracked
     const scholarship = currentScholarships.find((s) => s.id === scholarshipId);
     const isTracked = scholarship?.isFollow === 1;
@@ -61,12 +52,10 @@ export default function ScholarshipsSection({
       if (isTracked) {
         await unfollowScholarship({
           scholarshipId,
-          userId,
         }).unwrap();
       } else {
         await followScholarship({
           scholarshipId,
-          userId,
         }).unwrap();
       }
     } catch (error) {

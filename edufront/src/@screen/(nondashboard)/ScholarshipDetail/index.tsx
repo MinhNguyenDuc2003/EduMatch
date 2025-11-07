@@ -1,27 +1,30 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/lib/cus/button';
 import {
-  useGetScholarshipByIdQuery,
-  useFollowScholarshipMutation,
-  useUnfollowScholarshipMutation,
   useCheckIsTrackedScholarshipQuery,
+  useFollowScholarshipMutation,
+  useGetScholarshipBySlugQuery,
+  useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
 import {
   useFollowProviderMutation,
-  useUnfollowProviderMutation,
   useGetFollowedProvidersQuery,
+  useUnfollowProviderMutation,
 } from '@/state/apiProvider';
 import { useGetProfileQuery } from '@/state/apiApplicant';
 import { ScholarshipMetadata, ScholarshipContent, ScholarshipSidebar } from './components';
 import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 import { Skeleton } from '@/lib/cus/skeleton';
+import SubmitApplicationDialog from '@/pattern/share/SubmitApplicationDialog';
 
-export default function ScholarshipDetail({ scholarshipId }: { scholarshipId: number }) {
+export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { data: scholarship, isLoading, isError } = useGetScholarshipByIdQuery(scholarshipId);
+  const { data: scholarship, isLoading, isError } = useGetScholarshipBySlugQuery(slug);
   const { data: profile } = useGetProfileQuery();
   const userId = profile?.customer?.id;
   const { data: followedProviders } = useGetFollowedProvidersQuery();
@@ -30,9 +33,14 @@ export default function ScholarshipDetail({ scholarshipId }: { scholarshipId: nu
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
-  const { data: trackedData } = useCheckIsTrackedScholarshipQuery(scholarshipId, {
-    skip: !scholarshipId, // Skip if no scholarshipId
+  // All hooks must be called before any conditional returns
+  const { data: trackedData } = useCheckIsTrackedScholarshipQuery(scholarship?.id || 0, {
+    skip: !scholarship?.id,
   });
+
+  if (!scholarship && !isLoading) {
+    return <div>Scholarship not found</div>;
+  }
   const isTracked = !!trackedData; // If trackedData exists, scholarship is tracked
   const isFollowing = scholarship?.providerProfileVo?.id
     ? followedProviders?.some((fp) => fp.providerId === scholarship.providerProfileVo.id) || false
@@ -40,20 +48,18 @@ export default function ScholarshipDetail({ scholarshipId }: { scholarshipId: nu
 
   // Handle track/untrack scholarship
   const handleToggleTracking = async () => {
-    if (!userId) {
-      console.error('User ID not available');
+    if (!userId || !scholarship?.id) {
+      console.error('User ID or Scholarship ID not available');
       return;
     }
     try {
       if (isTracked) {
         await unfollowScholarship({
-          scholarshipId,
-          userId,
+          scholarshipId: scholarship.id,
         }).unwrap();
       } else {
         await followScholarship({
-          scholarshipId,
-          userId,
+          scholarshipId: scholarship.id,
         }).unwrap();
       }
     } catch (error) {
@@ -80,12 +86,22 @@ export default function ScholarshipDetail({ scholarshipId }: { scholarshipId: nu
     router.push(`/applicant/providers/${providerId}`);
   };
 
+  const handleApplyNow = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleSubmitApplication = async (applicationId: number) => {
+    // TODO: Implement API call to submit application to scholarship
+    console.log('Submitting application', applicationId, 'to scholarship', scholarship?.id);
+    // You can add the API call here when the endpoint is available
+    // Example:
+    // await submitApplicationToScholarship({ applicationId, scholarshipId: scholarship.id }).unwrap();
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white">
-        <BreadcrumbHeader
-          items={[{ label: 'Scholarships', href: '/scholarships' }, { label: 'Loading...' }]}
-        />
+        <BreadcrumbHeader items={[{ label: 'Scholarships', href: '/scholarships' }]} />
         <div className="mx-auto px-4 lg:px-40 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 flex flex-col gap-4">
@@ -182,12 +198,24 @@ export default function ScholarshipDetail({ scholarshipId }: { scholarshipId: nu
                 variant="ok"
                 size="lg"
                 full
+                onClick={handleApplyNow}
                 className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
               />
             </div>
           </div>
         </div>
       </div>
+
+      {/* Submit Application Dialog */}
+      {scholarship && (
+        <SubmitApplicationDialog
+          open={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          scholarshipId={scholarship.id}
+          scholarshipTitle={scholarship.title}
+          onSubmit={handleSubmitApplication}
+        />
+      )}
     </div>
   );
 }

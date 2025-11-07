@@ -4,7 +4,7 @@ import { Anchor, Block, Card, RText, Section } from '@/lib/by/Div';
 import Image from 'next/image';
 
 type CardSmalPicProps = {
-  scholarship?: ScholarshipWithDetails;
+  scholarship: ScholarshipWithDetails;
   onViewDetails?: () => void;
   onToggleTracking?: (scholarshipId: number) => void;
 };
@@ -20,12 +20,10 @@ export default function CardSmalPic({
       onToggleTracking(scholarship.id);
     }
   };
-  const isFollow = scholarship?.isFollow === 1;
+
+  const { title, shortDescription, university, isFollow } = scholarship;
   const logoUrl = scholarship?.providerProfileVo?.logoUrl;
   const organizationName = scholarship?.providerProfileVo?.organizationName;
-  const title = scholarship?.title;
-  const shortDescription = scholarship?.shortDescription;
-  const university = scholarship?.university;
   const deadline = scholarship?.endDate || 0;
   const amount = scholarship?.fundingAmount
     ? scholarship.fundingAmount.replace(/[^0-9.,]/g, '')
@@ -41,7 +39,7 @@ export default function CardSmalPic({
       >
         <Flag
           className={`w-5 h-5 transition-colors ${
-            isFollow
+            isFollow === 1
               ? 'fill-[#3D6CB9] text-[#3D6CB9]'
               : 'text-gray-400 hover:text-[#3D6CB9] hover:fill-[#3D6CB9]'
           }`}

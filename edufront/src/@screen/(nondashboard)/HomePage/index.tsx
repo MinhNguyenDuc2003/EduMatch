@@ -43,7 +43,7 @@ export default function HomePage() {
         scholarships={scholarships || []}
         isLoading={isLoading}
         isError={isError}
-        onViewDetails={(item) => router.push(`/scholarships/${item.id}`)}
+        onViewDetails={(item) => router.push(`/scholarships/${item.slug}`)}
       />
       <FeaturesSection />
 
