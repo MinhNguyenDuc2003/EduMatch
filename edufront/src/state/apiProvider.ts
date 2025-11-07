@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customBaseQuery from './custombaseQuery';
+import { IScholarship } from '@/lib/schemas';
 
 // API Endpoints
 const API_ENDPOINTS = {
@@ -46,6 +47,7 @@ export const apiProvider = createApi({
         method: 'POST',
         body: formData,
       }),
+      invalidatesTags: ['Scholarships'],
     }),
 
     getScholarshipsById: build.query<Scholarship, string>({
@@ -56,13 +58,43 @@ export const apiProvider = createApi({
       providesTags: (result, error, id) => [{ type: 'Scholarships', id }],
     }),
 
-    updateScholarship: build.mutation<Scholarship, FormData>({
+    updateScholarship: build.mutation<Scholarship, IScholarship>({
       query: (formData) => ({
         url: `${API_ENDPOINTS.SCHOLARSHIP}`,
         method: 'PUT',
         body: formData,
       }),
       invalidatesTags: ['Scholarships'],
+    }),
+
+    deleteScholarship: build.mutation<null, number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Scholarships'],
+    }),
+
+    uploadImages: build.mutation<boolean, { scholarshipId: string; formData: FormData }>({
+      query: ({ scholarshipId, formData }) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/${scholarshipId}/images`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: (result, error, { scholarshipId }) => [
+        { type: 'Scholarships', id: scholarshipId! },
+      ],
+    }),
+
+    deleteImage: build.mutation<boolean, { scholarshipId: string; imagesId: number[] }>({
+      query: ({ scholarshipId, imagesId }) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/${scholarshipId}/images`,
+        method: 'DELETE',
+        body: imagesId,
+      }),
+      invalidatesTags: (result, error, { scholarshipId }) => [
+        { type: 'Scholarships', id: scholarshipId! },
+      ],
     }),
   }),
 });
@@ -75,4 +107,7 @@ export const {
   useCreateScholarshipMutation,
   useGetScholarshipsByIdQuery,
   useUpdateScholarshipMutation,
+  useDeleteScholarshipMutation,
+  useUploadImagesMutation,
+  useDeleteImageMutation,
 } = apiProvider;

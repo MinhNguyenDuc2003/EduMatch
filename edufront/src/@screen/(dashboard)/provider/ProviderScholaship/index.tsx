@@ -6,23 +6,29 @@ import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import { SearchFilters, ScholarshipCard, EmptyState, Pagination } from './components';
 import { useRouter } from 'next/navigation';
-import { useGetScholarshipsQuery } from '@/state/apiProvider';
+import { useDeleteScholarshipMutation, useGetScholarshipsQuery } from '@/state/apiProvider';
 import { ScholarshipCardSkeleton } from './components/ScholarshipCard';
+import { toast } from 'sonner';
 
 const ProviderScholaship = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
 
   const { data: scholarships, isLoading } = useGetScholarshipsQuery();
+  const [deleteScholarship, { isLoading: isDeleting }] = useDeleteScholarshipMutation();
 
-  const handleDeleteScholarship = (id: number) => {
+  const handleDeleteScholarship = async (id: number) => {
     // TODO: Implement delete logic
     console.log('Delete scholarship:', id);
-  };
 
-  const handleCreateScholarship = () => {
-    // TODO: Navigate to create page
-    console.log('Create new scholarship');
+    await deleteScholarship(id)
+      .unwrap()
+      .then(() => {
+        toast.success('Scholarship deleted successfully');
+      })
+      .catch(() => {
+        toast.error('Failed to delete scholarship');
+      });
   };
 
   return (

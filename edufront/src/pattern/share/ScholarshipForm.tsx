@@ -16,11 +16,13 @@ const ScholarshipForm = ({
   scholarship,
   onSubmit,
   onImagesChange,
+  onDeleteImage,
   isLoading = false,
 }: {
   scholarship?: Scholarship;
   onSubmit: (data: IScholarship) => void;
   onImagesChange?: (images: File[]) => void;
+  onDeleteImage?: (imageId: number) => void;
   isLoading?: boolean;
 }) => {
   // Form setup
@@ -43,9 +45,7 @@ const ScholarshipForm = ({
   const { watch, setValue } = methods;
   const titleValue = watch('title');
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<
-    Array<{ url: string; type: 'existing' | 'new'; id?: number }>
-  >([]);
+  const [imagePreviews, setImagePreviews] = useState<Array<{ url: string; id?: number }>>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load initial images from scholarship
@@ -57,8 +57,6 @@ const ScholarshipForm = ({
         id: media.id,
       }));
       setImagePreviews(initialImages);
-
-      // Transform initial images to files and set uploaded images
     }
   }, [scholarship]);
 
@@ -98,18 +96,11 @@ const ScholarshipForm = ({
     const imageToRemove = imagePreviews[index];
 
     // If it's a new image, remove from uploadedImages
-    if (imageToRemove.type === 'new') {
-      const newImageIndex = imagePreviews
-        .slice(0, index)
-        .filter((img) => img.type === 'new').length;
-      const newImages = uploadedImages.filter((_, i) => i !== newImageIndex);
-      setUploadedImages(newImages);
-      onImagesChange?.(newImages);
+    if (imageToRemove.id) {
+      onDeleteImage?.(imageToRemove.id);
     }
 
-    // Remove from previews
-    const newPreviews = imagePreviews.filter((_, i) => i !== index);
-    setImagePreviews(newPreviews);
+    setImagePreviews(imagePreviews.filter((_, i) => i !== index));
   };
 
   const handleImageClick = () => {
@@ -244,7 +235,7 @@ const ScholarshipForm = ({
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {imagePreviews.map((preview, index) => (
                     <div
-                      key={preview.type === 'existing' ? preview.id : index}
+                      key={index}
                       className="relative group aspect-video rounded-lg overflow-hidden border-2 border-gray-200"
                     >
                       <Image
@@ -255,11 +246,7 @@ const ScholarshipForm = ({
                         unoptimized
                         className="w-full h-full object-cover"
                       />
-                      {preview.type === 'existing' && (
-                        <span className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">
-                          Existing
-                        </span>
-                      )}
+
                       <button
                         type="button"
                         onClick={() => handleRemoveImage(index)}

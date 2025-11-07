@@ -31,6 +31,11 @@ const customBaseQuery = async (args: string | FetchArgs, api: BaseQueryApi, extr
       if (successMessage) toast.success(successMessage);
     }
 
+    const isDeleteRequest = (args as FetchArgs).method === 'DELETE';
+    if (isDeleteRequest) {
+      return { data: null };
+    }
+
     if (result.data) {
       result.data = result.data.data;
     } else if (result.error?.status === 204 || result.meta?.response?.status === 24) {

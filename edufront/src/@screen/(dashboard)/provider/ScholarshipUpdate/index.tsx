@@ -4,37 +4,32 @@ import { IScholarship } from '@/lib/schemas';
 import Header from '@/pattern/share/Header';
 import { Loading } from '@/pattern/share/Loading';
 import ScholarshipForm from '@/pattern/share/ScholarshipForm';
-import { useGetScholarshipsByIdQuery, useUpdateScholarshipMutation } from '@/state/apiProvider';
+import {
+  useDeleteImageMutation,
+  useGetScholarshipsByIdQuery,
+  useUpdateScholarshipMutation,
+  useUploadImagesMutation,
+} from '@/state/apiProvider';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const ScholarshipUpdate = ({ scholarshipId }: { scholarshipId: string }) => {
   const router = useRouter();
-  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [updateScholarship, { isLoading: isLoadingUpdateScholarship }] =
     useUpdateScholarshipMutation();
 
   const { data: scholarship, isLoading: isLoadingScholarship } =
     useGetScholarshipsByIdQuery(scholarshipId);
 
+  const [uploadImages, { isLoading: isLoadingUploadImages }] = useUploadImagesMutation();
+  const [deleteImage, { isLoading: isLoadingDeleteImage }] = useDeleteImageMutation();
+
   const onSubmit = async (data: IScholarship) => {
     try {
       // TODO: Call API to create scholarship
       console.log('Submitting scholarship:', data);
-      // await createScholarship(data).unwrap();
-      const formData = new FormData();
-      formData.append('scholarship', JSON.stringify(data));
 
-      console.log(uploadedImages);
-
-      if (uploadedImages.length > 0) {
-        // Append images to FormData
-        uploadedImages.forEach((image) => {
-          formData.append('images', image);
-        });
-      }
-
-      await updateScholarship(formData).unwrap();
+      await updateScholarship(data).unwrap();
 
       // Navigate back to scholarships list after successful creation
       router.push('/provider/scholarships');
@@ -44,8 +39,17 @@ const ScholarshipUpdate = ({ scholarshipId }: { scholarshipId: string }) => {
     }
   };
 
-  const handleImagesChange = (images: File[]) => {
-    setUploadedImages(images);
+  const handleImagesChange = async (images: File[]) => {
+    const formData = new FormData();
+    images.forEach((image) => {
+      formData.append('mediaFiles', image);
+    });
+    await uploadImages({ scholarshipId, formData }).unwrap();
+  };
+
+  const handleDeleteImage = async (imageId: number) => {
+    console.log('Deleting image:', imageId);
+    await deleteImage({ scholarshipId, imagesId: [imageId] }).unwrap();
   };
 
   if (isLoadingScholarship) {
@@ -63,6 +67,7 @@ const ScholarshipUpdate = ({ scholarshipId }: { scholarshipId: string }) => {
       <ScholarshipForm
         onSubmit={onSubmit}
         onImagesChange={handleImagesChange}
+        onDeleteImage={handleDeleteImage}
         scholarship={scholarship}
         isLoading={isLoadingUpdateScholarship}
       />

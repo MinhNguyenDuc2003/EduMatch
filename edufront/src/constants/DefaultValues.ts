@@ -1,6 +1,7 @@
 import { IApplication, IProviderProfile, IScholarship } from '@/lib/schemas';
 
 export const DEFAULT_SCHOLARSHIP_FORM_VALUES: IScholarship = {
+  id: undefined,
   title: '',
   slug: '',
   shortDescription: '',

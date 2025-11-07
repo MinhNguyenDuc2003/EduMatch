@@ -19,7 +19,7 @@ const ApplicationsPage = () => {
 
       // Append images to FormData
       uploadedImages.forEach((image) => {
-        formData.append('images', image);
+        formData.append('mediaFiles', image);
       });
 
       await createApplication(formData).unwrap();
