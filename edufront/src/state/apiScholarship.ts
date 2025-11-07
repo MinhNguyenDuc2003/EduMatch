@@ -38,7 +38,7 @@ export const apiScholarship = createApi({
     }),
 
     // Get scholarship detail by id (returns unwrapped inner data)
-    getScholarshipById: build.query<ScholarshipDetail, number | string>({
+    getScholarshipById: build.query<Scholarship, number | string>({
       query: (id) => ({
         url: `${API_ENDPOINTS.SCHOLARSHIP_DETAIL}/${id}`,
         method: 'GET',
@@ -76,7 +76,7 @@ export const apiScholarship = createApi({
     }),
 
     // Get tracked scholarships
-    getTrackedScholarships: build.query<ScholarshipWithDetails[], void>({
+    getTrackedScholarships: build.query<Scholarship[], void>({
       query: () => ({
         url: API_ENDPOINTS.SCHOLARSHIP_FOLLOW,
         method: 'GET',

@@ -36,7 +36,7 @@ export default function ActivityManagement() {
     setActiveTab(tab);
   };
 
-  const trackedScholarships: ScholarshipWithDetails[] = trackedScholarshipsData || [];
+  const trackedScholarships: Scholarship[] = trackedScholarshipsData || [];
   const followedProviders = followedProvidersData || [];
   const isFollowingTab = activeTab === 'following';
   const isTrackedTab = activeTab === 'tracking';
