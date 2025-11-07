@@ -233,6 +233,12 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Transactional(rollbackOn = Exception.class)
     public ScholarshipFollowerDto createScholarshipFollower(ScholarshipFollowerDto dto) {
         dto.setUserId(UaaContextHolder.getUserId());
+
+        boolean exists = scholarshipRepository.existsById(dto.getScholarshipId());
+        if (!exists) {
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
+        }
+
         return scholarshipFollowerMapper.toDto(
                 scholarshipFollowerRepository.save(
                         scholarshipFollowerMapper.toEntity(dto)));
