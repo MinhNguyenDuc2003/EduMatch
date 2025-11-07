@@ -53,7 +53,6 @@ const ScholarshipForm = ({
     if (scholarship?.scholarshipMedias && scholarship.scholarshipMedias.length > 0) {
       const initialImages = scholarship.scholarshipMedias.map((media) => ({
         url: media.url,
-        type: 'existing' as const,
         id: media.id,
       }));
       setImagePreviews(initialImages);

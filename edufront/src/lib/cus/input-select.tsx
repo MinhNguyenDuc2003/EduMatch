@@ -65,7 +65,7 @@ const InputSelect = ({
           {selectedValue ? (
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center px-3 text-foreground">
-                {options.find((v) => v.value === selectedValue)?.label}
+                {options.find((v) => v.value === selectedValue)?.value}
               </div>
               <div className="flex items-center justify-between">
                 {selectedValue && (

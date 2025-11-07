@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customBaseQuery from './custombaseQuery';
 import { ProfileApiResponse } from '@/@screen/(dashboard)/applicant/Profile/types';
-import { IApplicantProfile } from '@/lib/schemas';
+import { IApplicantProfile, IApplication } from '@/lib/schemas';
 
 // API Endpoints
 const API_ENDPOINTS = {
@@ -42,11 +42,30 @@ export const apiApplicant = createApi({
       invalidatesTags: ['Profile'],
     }),
 
+    // Get application by id
+    getApplicationById: build.query<Application, string | number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.APPLICATION}/${id}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, id) => [{ type: 'Application', id: String(id) }],
+    }),
+
     // Create application
     createApplication: build.mutation<Application, FormData>({
       query: (data) => ({
         url: API_ENDPOINTS.APPLICATION,
         method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Application'],
+    }),
+
+    // Update application
+    updateApplication: build.mutation<Application, IApplication>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.APPLICATION}`,
+        method: 'PUT',
         body: data,
       }),
       invalidatesTags: ['Application'],
@@ -78,7 +97,9 @@ export const {
   useGetProfileQuery,
   useCreateProfileMutation,
   useUpdateProfileMutation,
+  useGetApplicationByIdQuery,
   useCreateApplicationMutation,
+  useUpdateApplicationMutation,
   useUploadImagesMutation,
   useDeleteImagesMutation,
 } = apiApplicant;

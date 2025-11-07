@@ -172,7 +172,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
         return (
           <InputSelect
             options={options || []}
-            value={field.value || ''}
+            value={field.value || (initialValue as string)}
             onValueChange={field.onChange}
           />
         );

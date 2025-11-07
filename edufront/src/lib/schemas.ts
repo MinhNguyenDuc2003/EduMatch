@@ -219,6 +219,7 @@ export const scholarshipSchema = z
 export type IScholarship = z.infer<typeof scholarshipSchema>;
 
 export const applicationSchema = z.object({
+  id: z.number().optional(),
   fullName: z.string().min(1, 'Full name is required'),
   gender: z.string().min(1, 'Gender is required'),
   dateOfBirth: z.string().min(1, 'Date of birth is required'),

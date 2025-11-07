@@ -23,6 +23,7 @@ export const DEFAULT_SCHOLARSHIP_FORM_VALUES: IScholarship = {
 };
 
 export const DEFAULT_APPLICATION_FORM_VALUES: IApplication = {
+  id: undefined,
   fullName: '',
   gender: '',
   dateOfBirth: '',

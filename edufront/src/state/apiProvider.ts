@@ -53,7 +53,7 @@ export const apiProvider = createApi({
       invalidatesTags: ['Scholarships'],
     }),
 
-    getScholarshipsById: build.query<Scholarship, number>({
+    getScholarshipsById: build.query<Scholarship, number | string>({
       query: (id) => ({
         url: `${API_ENDPOINTS.SCHOLARSHIP}/${id}`,
         method: 'GET',
@@ -99,6 +99,7 @@ export const apiProvider = createApi({
         { type: 'Scholarships', id: scholarshipId! },
       ],
     }),
+
     // Follow provider
     followProvider: build.mutation<{ userId: string; providerId: number }, number>({
       query: (id) => ({

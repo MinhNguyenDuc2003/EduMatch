@@ -20,14 +20,6 @@ declare global {
     note: string;
   };
 
-  type ApplicationAttribute = {
-    id: number;
-    applicationId: string;
-    key: string;
-    value: string;
-    note: string;
-  };
-
   type Scholarship = {
     id: number;
     providerId: number;

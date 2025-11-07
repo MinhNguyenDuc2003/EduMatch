@@ -1,4 +1,4 @@
-import ApplicationsPage from '@/@screen/(dashboard)/applicant/Applications/page';
+import ApplicationsPage from '@/@screen/(dashboard)/applicant/Applications';
 import React from 'react';
 
 const page = () => {

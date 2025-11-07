@@ -11,7 +11,7 @@ import {
   useUploadImagesMutation,
 } from '@/state/apiProvider';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 
 const ScholarshipUpdate = ({ scholarshipId }: { scholarshipId: string }) => {
   const router = useRouter();
@@ -34,8 +34,7 @@ const ScholarshipUpdate = ({ scholarshipId }: { scholarshipId: string }) => {
       // Navigate back to scholarships list after successful creation
       router.push('/provider/scholarships');
     } catch (error) {
-      console.error('Error creating scholarship:', error);
-      throw error;
+      console.log('Error creating scholarship:', error);
     }
   };
 
@@ -48,7 +47,6 @@ const ScholarshipUpdate = ({ scholarshipId }: { scholarshipId: string }) => {
   };
 
   const handleDeleteImage = async (imageId: number) => {
-    console.log('Deleting image:', imageId);
     await deleteImage({ scholarshipId, imagesId: [imageId] }).unwrap();
   };
 
