@@ -41,19 +41,10 @@ declare global {
     languageRequirement: string;
     gpaRequirement: number;
     isDeleted?: boolean;
+    providerProfileVo: ProviderProfile;
+    scholarshipPreferences?: ScholarshipPreference[];
     scholarshipMedias: ScholarshipMedia[];
     isFollow: number;
-  };
-
-  type ScholarshipWithDetails = Scholarship & {
-    providerProfileVo?: ProviderProfile;
-    scholarshipPreferences?: ScholarshipPreference[];
-    applicationAttributes?: ApplicationAttribute[];
-  };
-
-  type ScholarshipDetail = ScholarshipWithDetails & {
-    providerProfileVo: ProviderProfile;
-    scholarshipPreferences: ScholarshipPreference[];
   };
 
   type ScholarshipSearchCriteria = {
@@ -81,7 +72,7 @@ declare global {
   };
 
   type ScholarshipPageResponse = {
-    content: ScholarshipWithDetails[];
+    content: Scholarship[];
   };
 
   type ScholarshipSearchAggregations = {

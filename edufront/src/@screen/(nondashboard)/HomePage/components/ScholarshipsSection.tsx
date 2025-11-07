@@ -13,7 +13,7 @@ import {
 } from '@/state/apiScholarship';
 
 type ScholarshipsSectionProps = {
-  scholarships: ScholarshipWithDetails[];
+  scholarships: Scholarship[];
   isLoading?: boolean;
   isError?: boolean;
   onViewDetails: (item: Scholarship) => void;

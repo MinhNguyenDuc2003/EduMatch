@@ -4,7 +4,7 @@ import { Card } from '@/lib/by/Div';
 import Image from 'next/image';
 
 type ScholarshipSidebarProps = {
-  scholarship: ScholarshipDetail;
+  scholarship: Scholarship;
   isFollowing: boolean;
   onToggleFollow: () => void;
   onViewProvider: (providerId: number) => void;
