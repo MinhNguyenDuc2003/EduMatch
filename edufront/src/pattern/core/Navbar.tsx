@@ -1,8 +1,6 @@
 'use client';
-import { SegUrl } from '@/@init/base';
 import { Begin, RText } from '@/lib/by/Div';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { Button } from '../../lib/cus/button';
 import Image from 'next/image';
 import { scholarshipProviderMenuItems, studentMenuItems } from '@/constants/Common';
@@ -23,8 +21,11 @@ import {
 } from '@/lib/cus/navigation-menu';
 import { NavigationMenuItem } from '../share/NavigationMenuItem';
 import Notifications from '../share/Notifications';
+import { useAuth } from '@/hooks/useAuth';
 
 const Header = () => {
+  const { isAuthenticated, isLoading } = useAuth();
+
   return (
     <Begin className="px-4 lg:px-40 py-3 flex items-center border-b bg-[#fafaf6] sticky top-0 z-50">
       <div className="w-full flex items-center justify-between">
@@ -85,7 +86,7 @@ const Header = () => {
           </NavigationMenu>
         </div>
 
-        <div className="flex items-center space-x-2 gap-1">
+        {!isAuthenticated && !isLoading && (
           <div className="flex items-center space-x-2">
             <Link href="http://159.89.200.244/oauth2/authorization/keycloak">
               <Button variant="outline" className="text-primary-brand text-lg p-4 shadow-none">
@@ -95,33 +96,37 @@ const Header = () => {
               </Button>
             </Link>
           </div>
+        )}
 
-          <Notifications notifications={[]} />
+        {!isLoading && isAuthenticated && (
+          <div className="flex items-center space-x-2 gap-1">
+            <Notifications notifications={[]} />
 
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="shadow-none rounded-full p-0">
-                <CircleUserRound className="size-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="" align="end" forceMount>
-              <DropdownMenuItem asChild>
-                <Link href="/applicant/profile">Profile</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/applicant/shortlist?tab=tracking">Shortlist</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/applicant/shortlist?tab=applied">Applied</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/applicant/shortlist?tab=following">Following</Link>
-              </DropdownMenuItem>
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="shadow-none rounded-full p-0">
+                  <CircleUserRound className="size-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="" align="end" forceMount>
+                <DropdownMenuItem asChild>
+                  <Link href="/applicant/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/applicant/shortlist?tab=tracking">Shortlist</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/applicant/shortlist?tab=applied">Applied</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/applicant/shortlist?tab=following">Following</Link>
+                </DropdownMenuItem>
 
-              <DropdownMenuItem onClick={() => {}}>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+                <DropdownMenuItem onClick={() => {}}>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
       </div>
     </Begin>
   );

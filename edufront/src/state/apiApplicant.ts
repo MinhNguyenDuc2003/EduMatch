@@ -51,6 +51,26 @@ export const apiApplicant = createApi({
       }),
       invalidatesTags: ['Application'],
     }),
+
+    // Upload Images for application
+    uploadImages: build.mutation<boolean, { applicationId: string; formData: FormData }>({
+      query: ({ applicationId, formData }) => ({
+        url: `${API_ENDPOINTS.APPLICATION}/${applicationId}/images`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: ['Application'],
+    }),
+
+    // Delete Images for application
+    deleteImages: build.mutation<boolean, { applicationId: string; imagesId: number[] }>({
+      query: ({ applicationId, imagesId }) => ({
+        url: `${API_ENDPOINTS.APPLICATION}/${applicationId}/images`,
+        method: 'DELETE',
+        body: imagesId,
+      }),
+      invalidatesTags: ['Application'],
+    }),
   }),
 });
 
@@ -59,4 +79,6 @@ export const {
   useCreateProfileMutation,
   useUpdateProfileMutation,
   useCreateApplicationMutation,
+  useUploadImagesMutation,
+  useDeleteImagesMutation,
 } = apiApplicant;

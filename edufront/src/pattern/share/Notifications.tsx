@@ -44,7 +44,7 @@ const Notifications = ({ notifications }: { notifications: UserNotification[] })
               </div>
             ));
           } catch (error) {
-            console.error('Error parsing private notification:', error);
+            console.log('Error parsing private notification:', error);
           }
         });
 
@@ -69,10 +69,10 @@ const Notifications = ({ notifications }: { notifications: UserNotification[] })
         console.log('WebSocket Disconnected');
       },
       onStompError: (frame) => {
-        console.error('STOMP Error:', frame);
+        console.log('STOMP Error:', frame);
       },
       onWebSocketError: (event) => {
-        console.error('WebSocket Error:', event);
+        console.log('WebSocket Error:', event);
       },
     });
 

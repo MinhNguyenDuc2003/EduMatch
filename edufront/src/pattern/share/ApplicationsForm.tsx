@@ -36,11 +36,11 @@ const ApplicationsForm = ({
     defaultValues: DEFAULT_APPLICATION_FORM_VALUES,
   });
 
-  const { watch, setValue, reset } = methods;
+  const { watch, setValue } = methods;
 
   useEffect(() => {
     if (application) {
-      reset({
+      methods.reset({
         ...DEFAULT_APPLICATION_FORM_VALUES,
         ...application,
       });

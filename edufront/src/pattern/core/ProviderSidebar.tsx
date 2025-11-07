@@ -36,8 +36,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/lib/cus/dropdown-menu';
+import { useAuth } from '@/hooks/useAuth';
 
 const ProviderSidebar = () => {
+  const { user } = useAuth();
   const pathname = usePathname();
   const { state } = useSidebar();
 
@@ -148,20 +150,27 @@ const ProviderSidebar = () => {
             <div className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer group-data-[collapsible=icon]:justify-center">
               <Avatar className="w-9 h-9 ring-2 ring-[#52c0b0]/20">
                 <AvatarImage src="https://github.com/shadcn.png" alt="Provider" />
-                <AvatarFallback className="bg-primary-brand text-white">PV</AvatarFallback>
+                <AvatarFallback className="bg-primary-brand text-white">
+                  {user?.firstName?.[0]}
+                </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-                <p className="text-sm font-semibold text-gray-900 truncate">Provider Name</p>
-                <p className="text-xs text-gray-500 truncate">provider@edumatch.com</p>
+                <p className="text-sm font-semibold text-gray-900 truncate">
+                  {user?.firstName} {user?.lastName}
+                </p>
+                <p className="text-xs text-gray-500 truncate">{user?.email}</p>
               </div>
+
               <ChevronRight className="w-4 h-4 text-gray-400 group-data-[collapsible=icon]:hidden" />
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" side="right" className="w-56 mb-2">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-semibold text-gray-900">Provider Name</p>
-                <p className="text-xs text-gray-500">provider@edumatch.com</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {user?.firstName} {user?.lastName}
+                </p>
+                <p className="text-xs text-gray-500">{user?.email}</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
