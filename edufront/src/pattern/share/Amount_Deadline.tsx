@@ -4,7 +4,7 @@ import { DollarSign, Calendar } from 'lucide-react';
 
 type Amount_DeadlineProps = {
   amount: string;
-  deadline: number;
+  deadline: number; // Timestamp (number)
   isRow?: boolean;
   className?: string;
 };
@@ -15,14 +15,20 @@ const parseFundingAmount = (fundingAmount: string): number => {
   return parseFloat(fundingAmount.replace(/[^0-9.]/g, '')) || 0;
 };
 
-// Helper function to format end date
+// Helper function to format end date from timestamp
 const formatEndDate = (endDate: number): string => {
   if (!endDate) return '';
-  return new Date(endDate).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
+  try {
+    const date = new Date(endDate);
+    if (isNaN(date.getTime())) return '';
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  } catch {
+    return '';
+  }
 };
 
 const Amount_Deadline = ({ amount, deadline, isRow, className }: Amount_DeadlineProps) => {

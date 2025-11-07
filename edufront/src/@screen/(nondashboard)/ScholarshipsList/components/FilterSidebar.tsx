@@ -1,53 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import { FilterState } from '../index';
-import SearchBar from '@/pattern/share/SearchBar';
+import { COUNTRIES, STUDY_LEVELS } from '@/constants/Common';
 
 type FilterSidebarProps = {
   filters: FilterState;
   setFilters: (filters: FilterState) => void;
   scholarships: Scholarship[];
+  aggregations?: ScholarshipSearchAggregations;
   isMobile?: boolean;
   onClose?: () => void;
 };
+
+const STUDY_LEVEL_OPTIONS = STUDY_LEVELS.map((item) => item.value);
+const COUNTRY_OPTIONS = COUNTRIES.map((item) => item.label).sort();
 
 export default function FilterSidebar({
   filters,
   setFilters,
   scholarships,
+  aggregations,
   isMobile = false,
   onClose,
 }: FilterSidebarProps) {
-  const [countrySearchQuery, setCountrySearchQuery] = useState('');
-  const [studyLevelSearchQuery, setStudyLevelSearchQuery] = useState('');
-
-  // Extract unique values from scholarships
-  const countries = [
-    'Vietnam',
-    'Singapore',
-    'Thailand',
-    'Malaysia',
-    'Indonesia',
-    'Philippines',
-    'Japan',
-    'South Korea',
-    'China',
-    'India',
-    'United States',
-    'United Kingdom',
-    'Canada',
-    'Australia',
-    'Germany',
-    'France',
-    'Netherlands',
-    'Sweden',
-    'Switzerland',
-    'New Zealand',
-  ];
-  const uniqueCountries = Array.from(new Set(countries)).sort();
-  const uniqueStudyLevels = Array.from(
-    new Set(scholarships.map((s) => s.studyLevel).filter(Boolean))
-  ).sort();
+  // Local state for university input with debounce
+  const [universityInput, setUniversityInput] = useState(filters.university);
 
   const handleFilterChange = (field: keyof FilterState, value: string) => {
     setFilters({
@@ -56,6 +32,23 @@ export default function FilterSidebar({
       page: 0,
     });
   };
+
+  // Debounce university input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (universityInput !== filters.university) {
+        handleFilterChange('university', universityInput);
+      }
+    }, 500); // 500ms debounce
+
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [universityInput]);
+
+  // Sync local state when filters change externally
+  useEffect(() => {
+    setUniversityInput(filters.university);
+  }, [filters.university]);
 
   const clearAllFilters = () => {
     setFilters({
@@ -113,14 +106,7 @@ export default function FilterSidebar({
           <h3 className="text-sm font-semibold text-gray-900">
             Study Level {filters.studyLevel && '(1)'}
           </h3>
-          <SearchBar
-            placeholder="Search study level..."
-            value={studyLevelSearchQuery}
-            onChange={setStudyLevelSearchQuery}
-            iconSize="w-4 h-4"
-            inputClassName="text-sm py-2 pl-10 pr-4 border-gray-300 h-auto"
-          />
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="radio"
@@ -131,36 +117,49 @@ export default function FilterSidebar({
               />
               <span className="text-sm text-gray-700">All Levels</span>
             </label>
-            {uniqueStudyLevels
-              .filter(
-                (level) =>
-                  !studyLevelSearchQuery ||
-                  level.toLowerCase().includes(studyLevelSearchQuery.toLowerCase())
-              )
-              .map((level) => (
-                <label key={level} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="studyLevel"
-                    checked={filters.studyLevel === level}
-                    onChange={() => handleFilterChange('studyLevel', level)}
-                    className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                  />
-                  <span className="text-sm text-gray-700">{level}</span>
-                </label>
-              ))}
+            {STUDY_LEVEL_OPTIONS.map((level) => (
+              <label key={level} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="studyLevel"
+                  checked={filters.studyLevel === level}
+                  onChange={() => handleFilterChange('studyLevel', level)}
+                  className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                />
+                <span className="text-sm text-gray-700">{level}</span>
+              </label>
+            ))}
           </div>
         </div>
 
-        {/* University Filter - Search Only */}
+        {/* Country Filter - Dropdown */}
+        <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+          <h3 className="text-sm font-semibold text-gray-900">
+            Country {filters.country && '(1)'}
+          </h3>
+          <select
+            value={filters.country}
+            onChange={(e) => handleFilterChange('country', e.target.value)}
+            className="w-full text-sm py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+          >
+            <option value="">All Countries</option>
+            {COUNTRY_OPTIONS.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* University Filter - Search Input with Debounce */}
         <div className="border border-gray-200 rounded-lg p-4 space-y-3">
           <h3 className="text-sm font-semibold text-gray-900">University</h3>
-          <SearchBar
-            placeholder="Search university..."
-            value={filters.university}
-            onChange={(value) => handleFilterChange('university', value)}
-            iconSize="w-4 h-4"
-            inputClassName="text-sm py-2 pl-10 pr-4 border-gray-300 h-auto"
+          <input
+            type="text"
+            placeholder="Enter university name..."
+            value={universityInput}
+            onChange={(e) => setUniversityInput(e.target.value)}
+            className="w-full text-sm py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
@@ -253,50 +252,6 @@ export default function FilterSidebar({
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Country Filter - Moved to last */}
-        <div className="border border-gray-200 rounded-lg p-4 space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900">
-            Country {filters.country && '(1)'}
-          </h3>
-          <SearchBar
-            placeholder="Search country..."
-            value={countrySearchQuery}
-            onChange={setCountrySearchQuery}
-            iconSize="w-4 h-4"
-            inputClassName="text-sm py-2 pl-10 pr-4 border-gray-300 h-auto"
-          />
-          <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="country"
-                checked={filters.country === ''}
-                onChange={() => handleFilterChange('country', '')}
-                className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-              />
-              <span className="text-sm text-gray-700">All Countries</span>
-            </label>
-            {uniqueCountries
-              .filter(
-                (country) =>
-                  !countrySearchQuery ||
-                  country.toLowerCase().includes(countrySearchQuery.toLowerCase())
-              )
-              .map((country) => (
-                <label key={country} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="country"
-                    checked={filters.country === country}
-                    onChange={() => handleFilterChange('country', country)}
-                    className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                  />
-                  <span className="text-sm text-gray-700">{country}</span>
-                </label>
-              ))}
           </div>
         </div>
       </div>

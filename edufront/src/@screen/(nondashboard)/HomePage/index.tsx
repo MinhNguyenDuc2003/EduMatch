@@ -11,11 +11,29 @@ import {
   ScholarshipsSection,
   CTASection,
 } from './components';
-import { mockScholarshipOpportunities } from './mockData';
+import { useSearchScholarshipsQuery } from '@/state/apiScholarship';
 
 export default function HomePage() {
   const router = useRouter();
-  const scholarships = mockScholarshipOpportunities;
+
+  const {
+    data: response,
+    isLoading,
+    isError,
+  } = useSearchScholarshipsQuery({
+    criteria: {
+      country: '',
+      university: '',
+      studyLevel: '',
+      scholarshipType: '',
+    },
+    sortBy: 'id',
+    sortDirection: 'DESC',
+    page: 0,
+    size: 50,
+  });
+
+  const scholarships = response?.content || [];
 
   return (
     <>
@@ -23,6 +41,8 @@ export default function HomePage() {
 
       <ScholarshipsSection
         scholarships={scholarships || []}
+        isLoading={isLoading}
+        isError={isError}
         onViewDetails={(item) => router.push(`/scholarships/${item.id}`)}
       />
       <FeaturesSection />

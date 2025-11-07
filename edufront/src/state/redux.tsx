@@ -9,6 +9,7 @@ import globalReducer from '@/state';
 import { apiApplicant } from './apiApplicant';
 import { apiProvider } from './apiProvider';
 import { apiAuth } from './apiAuth';
+import { apiScholarship } from './apiScholarship';
 
 /* REDUX STORE */
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   [apiApplicant.reducerPath]: apiApplicant.reducer,
   [apiProvider.reducerPath]: apiProvider.reducer,
   [apiAuth.reducerPath]: apiAuth.reducer,
+  [apiScholarship.reducerPath]: apiScholarship.reducer,
 });
 
 export const makeStore = () => {
@@ -25,7 +27,8 @@ export const makeStore = () => {
       getDefaultMiddleware().concat(
         apiApplicant.middleware,
         apiProvider.middleware,
-        apiAuth.middleware
+        apiAuth.middleware,
+        apiScholarship.middleware
       ),
   });
 };

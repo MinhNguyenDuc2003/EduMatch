@@ -11,7 +11,7 @@ export type TabConfig = {
 export const TAB_CONFIGS: TabConfig[] = [
   {
     key: 'tracking',
-    label: 'Shortlist',
+    label: 'Tracked',
     title: 'Scholarships You Are Tracking',
     description:
       'Keep every opportunity you are monitoring in one place. Review benefits, follow deadlines, and be ready to apply when the timing is right.',

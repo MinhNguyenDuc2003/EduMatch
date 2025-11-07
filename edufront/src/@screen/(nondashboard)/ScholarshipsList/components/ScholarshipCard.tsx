@@ -5,6 +5,11 @@ import { Flag, Calendar, DollarSign } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
+import {
+  useFollowProviderMutation,
+  useUnfollowProviderMutation,
+  useGetFollowedProvidersQuery,
+} from '@/state/apiProvider';
 
 type ScholarshipCardProps = {
   scholarship: Scholarship;
@@ -18,11 +23,41 @@ export default function ScholarshipCard({
   onToggleTracking,
 }: ScholarshipCardProps) {
   const router = useRouter();
-  const [isFollowing, setIsFollowing] = useState(false);
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const images = getScholarshipImages(scholarship);
+
+  // Get followed providers
+  const { data: followedProviders } = useGetFollowedProvidersQuery();
+  const [followProvider] = useFollowProviderMutation();
+  const [unfollowProvider] = useUnfollowProviderMutation();
+
+  // Check if provider is followed
+  const isFollowing =
+    followedProviders?.some((fp) => fp.providerId === scholarship.providerId) || false;
+
+  // Handle follow/unfollow provider
+  const handleFollowProvider = async () => {
+    try {
+      if (isFollowing) {
+        // If already following, unfollow
+        await unfollowProvider(scholarship.providerId).unwrap();
+      } else {
+        // If not following, follow
+        await followProvider(scholarship.providerId).unwrap();
+      }
+    } catch (error) {
+      console.error('Failed to toggle follow provider:', error);
+    }
+  };
+
+  const handleViewProvider = (providerId: number) => {
+    router.push(`/applicant/providers/${providerId}`);
+  };
+  const handleViewScholarship = (scholarshipId: number) => {
+    router.push(`/scholarships/${scholarshipId}`);
+  };
 
   return (
     <>
@@ -31,15 +66,21 @@ export default function ScholarshipCard({
         <div className="p-4 border-b border-gray-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+              <div
+                className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 cursor-pointer"
+                onClick={() => handleViewProvider(scholarship.providerId)}
+              >
                 {scholarship.university?.charAt(0) || 'O'}
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 text-sm">
+                <h3
+                  className="font-semibold text-gray-900 text-sm transition-colors cursor-pointer hover:underline"
+                  onClick={() => handleViewProvider(scholarship.providerId)}
+                >
                   {scholarship.university || 'Organization Name'}
                 </h3>
                 <button
-                  onClick={() => setIsFollowing(!isFollowing)}
+                  onClick={handleFollowProvider}
                   className="text-xs text-blue-600 hover:text-blue-700 font-medium"
                 >
                   {isFollowing ? 'Following' : 'Follow'}
@@ -49,11 +90,11 @@ export default function ScholarshipCard({
             <button
               onClick={() => onToggleTracking?.(scholarship.id)}
               className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-              aria-label={scholarship.isTracking ? 'Untrack scholarship' : 'Track scholarship'}
+              aria-label={scholarship.isFollow === 1 ? 'Untrack scholarship' : 'Track scholarship'}
             >
               <Flag
                 className={`w-5 h-5 transition-colors ${
-                  scholarship.isTracking ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
+                  scholarship.isFollow === 1 ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
                 }`}
               />
             </button>
@@ -75,7 +116,7 @@ export default function ScholarshipCard({
           {/* Title & Description - Clickable Area */}
           <div
             className="cursor-pointer group"
-            onClick={() => router.push(`/scholarships/${scholarship.id}`)}
+            onClick={() => handleViewScholarship(scholarship.id)}
           >
             {/* Title */}
             <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">

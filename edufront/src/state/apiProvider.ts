@@ -6,6 +6,9 @@ import { IScholarship } from '@/lib/schemas';
 const API_ENDPOINTS = {
   PROVIDER_PROFILE: '/customer/storefront/provider/profile',
   SCHOLARSHIP: '/scholarship/scholarships',
+  FOLLOW_PROVIDER: '/profile/followers',
+  GET_FOLLOWED_PROVIDERS: '/profile/followers/providers',
+  GET_PROVIDER_BY_ID: '/profile/providers',
 } as const;
 
 export const apiProvider = createApi({
@@ -50,7 +53,7 @@ export const apiProvider = createApi({
       invalidatesTags: ['Scholarships'],
     }),
 
-    getScholarshipsById: build.query<Scholarship, string>({
+    getScholarshipsById: build.query<Scholarship, number>({
       query: (id) => ({
         url: `${API_ENDPOINTS.SCHOLARSHIP}/${id}`,
         method: 'GET',
@@ -96,6 +99,54 @@ export const apiProvider = createApi({
         { type: 'Scholarships', id: scholarshipId! },
       ],
     }),
+    // Follow provider
+    followProvider: build.mutation<{ userId: string; providerId: number }, number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.FOLLOW_PROVIDER}/${id}`,
+        method: 'POST',
+        body: { id },
+      }),
+      invalidatesTags: ['Profile', 'Scholarships'],
+    }),
+
+    // Unfollow provider
+    unfollowProvider: build.mutation<void, number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.FOLLOW_PROVIDER}/${id}`,
+        method: 'DELETE',
+        body: { id },
+      }),
+      invalidatesTags: ['Profile', 'Scholarships'],
+    }),
+
+    // Get followed providers
+    getFollowedProviders: build.query<{ userId: string; providerId: number }[], void>({
+      query: () => ({
+        url: API_ENDPOINTS.GET_FOLLOWED_PROVIDERS,
+        method: 'GET',
+      }),
+      providesTags: ['Profile'],
+    }),
+
+    // Get provider profile by ID
+    getProviderProfileById: build.query<ProviderProfile, number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.GET_PROVIDER_BY_ID}/${id}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, id) => [{ type: 'Profile', id: String(id) }],
+    }),
+
+    // Get all scholarships by provider ID
+    getScholarshipsByProviderId: build.query<Scholarship[], number>({
+      query: (providerId) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/provider/${providerId}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, providerId) => [
+        { type: 'Scholarships', id: `provider-${providerId}` },
+      ],
+    }),
   }),
 });
 
@@ -110,4 +161,9 @@ export const {
   useDeleteScholarshipMutation,
   useUploadImagesMutation,
   useDeleteImageMutation,
+  useFollowProviderMutation,
+  useUnfollowProviderMutation,
+  useGetFollowedProvidersQuery,
+  useGetProviderProfileByIdQuery,
+  useGetScholarshipsByProviderIdQuery,
 } = apiProvider;
