@@ -5,7 +5,7 @@ import ApplicationsForm from '@/pattern/share/ApplicationsForm';
 import { useCreateApplicationMutation } from '@/state/apiApplicant';
 import React, { useState } from 'react';
 
-const ApplicationsPage = () => {
+const ApplicationCreatePage = () => {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
 
   const [createApplication, { isLoading }] = useCreateApplicationMutation();
@@ -44,4 +44,4 @@ const ApplicationsPage = () => {
   );
 };
 
-export default ApplicationsPage;
+export default ApplicationCreatePage;
