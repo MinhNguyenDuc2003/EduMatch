@@ -52,6 +52,13 @@ export default function ScholarshipCard({
     }
   };
 
+  const handleViewProvider = (providerId: number) => {
+    router.push(`/applicant/providers/${providerId}`);
+  };
+  const handleViewScholarship = (scholarshipId: number) => {
+    router.push(`/scholarships/${scholarshipId}`);
+  };
+
   return (
     <>
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
@@ -59,11 +66,17 @@ export default function ScholarshipCard({
         <div className="p-4 border-b border-gray-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+              <div
+                className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 cursor-pointer"
+                onClick={() => handleViewProvider(scholarship.providerId)}
+              >
                 {scholarship.university?.charAt(0) || 'O'}
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 text-sm">
+                <h3
+                  className="font-semibold text-gray-900 text-sm transition-colors cursor-pointer hover:underline"
+                  onClick={() => handleViewProvider(scholarship.providerId)}
+                >
                   {scholarship.university || 'Organization Name'}
                 </h3>
                 <button
@@ -103,7 +116,7 @@ export default function ScholarshipCard({
           {/* Title & Description - Clickable Area */}
           <div
             className="cursor-pointer group"
-            onClick={() => router.push(`/scholarships/${scholarship.id}`)}
+            onClick={() => handleViewScholarship(scholarship.id)}
           >
             {/* Title */}
             <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">

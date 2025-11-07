@@ -76,6 +76,10 @@ export default function ScholarshipDetail({ scholarshipId }: { scholarshipId: nu
     }
   };
 
+  const handleViewProvider = (providerId: number) => {
+    router.push(`/applicant/providers/${providerId}`);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white">
@@ -167,6 +171,7 @@ export default function ScholarshipDetail({ scholarshipId }: { scholarshipId: nu
           <div className="lg:col-span-1 ">
             <div className="sticky top-24 flex flex-col gap-4">
               <ScholarshipSidebar
+                onViewProvider={handleViewProvider}
                 scholarship={scholarship}
                 isFollowing={isFollowing}
                 onToggleFollow={handleToggleFollow}

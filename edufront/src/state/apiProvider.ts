@@ -51,7 +51,7 @@ export const apiProvider = createApi({
       }),
     }),
 
-    getScholarshipsById: build.query<Scholarship, string>({
+    getScholarshipsById: build.query<Scholarship, number>({
       query: (id) => ({
         url: `${API_ENDPOINTS.SCHOLARSHIP}/${id}`,
         method: 'GET',
@@ -105,6 +105,17 @@ export const apiProvider = createApi({
       }),
       providesTags: (result, error, id) => [{ type: 'Profile', id: String(id) }],
     }),
+
+    // Get all scholarships by provider ID
+    getScholarshipsByProviderId: build.query<Scholarship[], number>({
+      query: (providerId) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/provider/${providerId}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, providerId) => [
+        { type: 'Scholarships', id: `provider-${providerId}` },
+      ],
+    }),
   }),
 });
 
@@ -120,4 +131,5 @@ export const {
   useUnfollowProviderMutation,
   useGetFollowedProvidersQuery,
   useGetProviderProfileByIdQuery,
+  useGetScholarshipsByProviderIdQuery,
 } = apiProvider;

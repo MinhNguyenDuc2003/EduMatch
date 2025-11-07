@@ -55,7 +55,7 @@ export default function ProviderCard({ providerId, onViewDetails, onUnfollow }: 
       </div>
 
       <div
-        className="absolute hover:cursor-pointer flex items-end gap-3 left-5 z-10"
+        className="absolute h-16 hover:cursor-pointer flex items-end gap-3 left-5 z-10"
         style={{ top: 'calc(0.5rem + 5rem - 2rem)' }}
         onClick={onViewDetails}
       >
@@ -84,7 +84,7 @@ export default function ProviderCard({ providerId, onViewDetails, onUnfollow }: 
       </div>
 
       {/* Content Section */}
-      <div className={`flex flex-1 flex-col p-5 ${providerProfile?.logoUrl ? 'pt-16' : 'pt-5'}`}>
+      <div className={`flex flex-1 flex-col p-5 pt-16`}>
         {/* Phone */}
         {phone && (
           <div className="mb-3 flex items-center gap-2">

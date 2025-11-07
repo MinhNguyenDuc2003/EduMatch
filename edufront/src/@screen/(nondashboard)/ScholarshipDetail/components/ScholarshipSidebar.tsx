@@ -7,9 +7,11 @@ type ScholarshipSidebarProps = {
   scholarship: ScholarshipDetail;
   isFollowing: boolean;
   onToggleFollow: () => void;
+  onViewProvider: (providerId: number) => void;
 };
 
 export default function ScholarshipSidebar({
+  onViewProvider,
   scholarship,
   isFollowing,
   onToggleFollow,
@@ -23,7 +25,10 @@ export default function ScholarshipSidebar({
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-4">
             {/* University Icon with Verified Badge */}
-            <Card className="flex-shrink-0 border border-gray-200 rounded-lg w-12 h-12 relative aspect-square">
+            <Card
+              className="flex-shrink-0 border border-gray-200 rounded-lg w-12 h-12 relative aspect-square cursor-pointer"
+              onClick={() => onViewProvider(provider.id)}
+            >
               {provider.logoUrl ? (
                 <Image
                   src={provider.logoUrl}
@@ -51,8 +56,10 @@ export default function ScholarshipSidebar({
               )}
             </Card>
             {/* University Name */}
-            <div className="flex-1">
-              <h3 className="font-semibold text-gray-900">{scholarship.university}</h3>
+            <div className="flex-1 cursor-pointer" onClick={() => onViewProvider(provider.id)}>
+              <h3 className="font-semibold text-gray-900 hover:text-blue-600 transition-colors">
+                {scholarship.university}
+              </h3>
             </div>
             {/* Follow Button */}
             <Button

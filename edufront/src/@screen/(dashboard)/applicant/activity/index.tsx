@@ -46,6 +46,10 @@ export default function ActivityManagement() {
     router.push(`/scholarships/${scholarshipId}`);
   };
 
+  const handleViewProvider = (providerId: number) => {
+    router.push(`/applicant/providers/${providerId}`);
+  };
+
   const handleUntrack = async (id: number) => {
     switch (activeTab) {
       case 'tracking': {
@@ -123,10 +127,7 @@ export default function ActivityManagement() {
                     <ProviderCard
                       key={provider.providerId}
                       providerId={provider.providerId}
-                      onViewDetails={() => {
-                        // TODO: Navigate to provider profile page
-                        console.log('View provider:', provider.providerId);
-                      }}
+                      onViewDetails={() => handleViewProvider(provider.providerId)}
                       onUnfollow={() => handleUntrack(provider.providerId)}
                     />
                   ))}
