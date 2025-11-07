@@ -22,10 +22,10 @@ export default function ProviderCard({ providerId, onViewDetails, onUnfollow }: 
   const phone = providerProfile?.phone || providerProfile?.providerContactDtos?.[0]?.phone || '';
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-lg p-2">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-lg">
       {/* Banner Section */}
       <div
-        className="relative rounded-lg h-18 w-full overflow-hidden bg-slate-50 hover:cursor-pointer"
+        className="relative h-18 w-full overflow-hidden bg-slate-50 hover:cursor-pointer"
         onClick={onViewDetails}
       >
         {providerProfile?.bannerUrl ? (
@@ -84,7 +84,7 @@ export default function ProviderCard({ providerId, onViewDetails, onUnfollow }: 
       </div>
 
       {/* Content Section */}
-      <div className={`flex flex-1 flex-col p-2 ${providerProfile?.logoUrl ? 'pt-16' : 'pt-5'}`}>
+      <div className={`flex flex-1 flex-col p-5 ${providerProfile?.logoUrl ? 'pt-16' : 'pt-5'}`}>
         {/* Phone */}
         {phone && (
           <div className="mb-3 flex items-center gap-2">

@@ -2,7 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { HeroSection, TabSwitcher, EmptyState, ProviderCard } from './components';
+import {
+  HeroSection,
+  TabSwitcher,
+  EmptyState,
+  ProviderCard,
+  ProviderCardSkeleton,
+  CardSmalPicSkeleton,
+} from './components';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { type ShortlistTab, TAB_CONFIGS } from './types';
 import { useGetFollowedProvidersQuery, useUnfollowProviderMutation } from '@/state/apiProvider';
@@ -17,8 +24,10 @@ export default function ActivityManagement() {
   const [activeTab, setActiveTab] = useState<ShortlistTab>('tracking');
   const [appliedScholarships, setAppliedScholarships] = useState<Scholarship[]>([]);
 
-  const { data: trackedScholarshipsData } = useGetTrackedScholarshipsQuery();
-  const { data: followedProvidersData } = useGetFollowedProvidersQuery();
+  const { data: trackedScholarshipsData, isLoading: isLoadingTrackedScholarships } =
+    useGetTrackedScholarshipsQuery();
+  const { data: followedProvidersData, isLoading: isLoadingFollowedProviders } =
+    useGetFollowedProvidersQuery();
   const { data: profile } = useGetProfileQuery();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
@@ -80,7 +89,20 @@ export default function ActivityManagement() {
               <TabSwitcher tabs={TAB_CONFIGS} activeTab={activeTab} onTabChange={handleTabChange} />
             </div>
             <div className="p-6">
-              {isTrackedTab && trackedScholarships.length === 0 ? (
+              {/* Loading Skeletons */}
+              {isTrackedTab && isLoadingTrackedScholarships ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {[...Array(6)].map((_, index) => (
+                    <CardSmalPicSkeleton key={`skeleton-tracked-${index}`} />
+                  ))}
+                </div>
+              ) : isFollowingTab && isLoadingFollowedProviders ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {[...Array(6)].map((_, index) => (
+                    <ProviderCardSkeleton key={`skeleton-provider-${index}`} />
+                  ))}
+                </div>
+              ) : isTrackedTab && trackedScholarships.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isFollowingTab && followedProviders.length === 0 ? (
                 <EmptyState tab={activeTab} />
