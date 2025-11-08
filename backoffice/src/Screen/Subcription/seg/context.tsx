@@ -4,20 +4,15 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import apiClientService from 'src/apiController/ApiClientService';
 import { GenCtx } from 'src/apiController/GeneralContext';
+import { ISubcriptionList } from 'src/assets/types/SubcriptionList';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
 
-const data = 'ffffff';
 export default GenCtx({
   useLogic() {
     type IForm = {
       fields: {
-        User: {
-          name: string;
-          age: number;
-          gmail: string;
-          description: string;
-        };
+        Subscription: ISubcriptionList;
       };
       filters: object;
     };
@@ -34,21 +29,12 @@ export default GenCtx({
       async onGetData() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.post('/scholarship/scholarships/page', {
-            criteria: {
-              country: '',
-              university: '',
-              studyLevel: '',
-              scholarshipType: '',
-            },
-            sortBy: 'id',
-            sortDirection: 'DESC',
-            page: 0,
-            size: 50,
-          });
+          const data = await apiClientService.get(
+            '/subscription/subscription/all'
+          );
           if (data) {
             ss.setJointData({
-              ScholarshipList: data || [],
+              SubcriptionList: data || [],
             });
             console.log('first', data);
           }
@@ -63,7 +49,8 @@ export default GenCtx({
       async onGetByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/scholarship/scholarships/${id}`);
+          const data = await apiClientService.get(`/subscription/subscription/${id}`);
+          console.log('data.data', data.data)
           return data.data;
         } catch (error) {
           console.error({ error });
@@ -78,8 +65,8 @@ export default GenCtx({
     }, []);
     return {
       ss,
-      data,
       meds,
+      methods,
     };
   },
 });

@@ -7,7 +7,6 @@ import { GenCtx } from 'src/apiController/GeneralContext';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
 
-const data = 'ffffff';
 export default GenCtx({
   useLogic() {
     type IForm = {
@@ -34,21 +33,12 @@ export default GenCtx({
       async onGetData() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.post('/scholarship/scholarships/page', {
-            criteria: {
-              country: '',
-              university: '',
-              studyLevel: '',
-              scholarshipType: '',
-            },
-            sortBy: 'id',
-            sortDirection: 'DESC',
-            page: 0,
-            size: 50,
-          });
+          const data = await apiClientService.get(
+            '/scholarship/applications-scholarship'
+          );
           if (data) {
             ss.setJointData({
-              ScholarshipList: data || [],
+              SubscriptionPlanList: data || [],
             });
             console.log('first', data);
           }
@@ -63,7 +53,8 @@ export default GenCtx({
       async onGetByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/scholarship/scholarships/${id}`);
+          const data = await apiClientService.get(`/scholarship/applications-scholarship/${id}`);
+          console.log('data.data', data.data)
           return data.data;
         } catch (error) {
           console.error({ error });
@@ -78,9 +69,7 @@ export default GenCtx({
     }, []);
     return {
       ss,
-      data,
       meds,
-      methods
     };
   },
 });

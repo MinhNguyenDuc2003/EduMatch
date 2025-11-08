@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import apiClientService from 'src/apiController/ApiClientService';
 import { GenCtx } from 'src/apiController/GeneralContext';
+import { ISubscriptionPlanList } from 'src/assets/types/SubscriptionPlanList';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
 
@@ -11,12 +12,7 @@ export default GenCtx({
   useLogic() {
     type IForm = {
       fields: {
-        User: {
-          name: string;
-          age: number;
-          gmail: string;
-          description: string;
-        };
+      SubcriptionPlan : ISubscriptionPlanList
       };
       filters: object;
     };
@@ -70,6 +66,7 @@ export default GenCtx({
     return {
       ss,
       meds,
+      methods
     };
   },
 });
