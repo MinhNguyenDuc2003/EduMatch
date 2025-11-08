@@ -1,4 +1,4 @@
-import mitt from "mitt";
+import mitt from 'mitt';
 
 type Events = {
   Loading: boolean;
@@ -12,7 +12,7 @@ export const onSetLoading = (status: boolean) => {
   if (status) {
     if (timeoutId) clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
-      eventBus.emit("Loading", false);
+      eventBus.emit('Loading', false);
       timeoutId = null;
     }, 5000);
   } else {
@@ -22,5 +22,5 @@ export const onSetLoading = (status: boolean) => {
     }
   }
 
-  eventBus.emit("Loading", status);
+  eventBus.emit('Loading', status);
 };

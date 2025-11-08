@@ -1,17 +1,13 @@
-import { SidebarProvider } from "@commonServices/components/ui/sidebar";
-import AnimatedContainer from "src/common/components/common/AnimatedContainer";
-import AppSidebar from "src/common/components/common/AppSidebar";
-import "./globals.css";
+import { SidebarProvider } from '@commonServices/components/ui/sidebar';
+import AnimatedContainer from 'src/common/components/common/AnimatedContainer';
+import AppSidebar from 'src/common/components/common/AppSidebar';
+import './globals.css';
 export const metadata = {
   title: 'EduMatch Dashboard',
   description: 'Dashboard layout',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>

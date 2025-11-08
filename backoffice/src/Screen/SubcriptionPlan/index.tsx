@@ -73,7 +73,7 @@ const SubscriptionPlanPage = () => {
               <CustomDataTable
                 title="Subscription Plan List"
                 data={plans as any}
-                detailPath='/subscriptionPlan'
+                detailPath="/subscriptionPlan"
                 customTitles={[
                   'ID',
                   'Plan Name',

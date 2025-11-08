@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import apiClientService from 'src/apiController/ApiClientService';
@@ -35,12 +34,12 @@ export default GenCtx({
       async onGetData() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.post('/scholarship/scholarships/page', {} );
+          const data = await apiClientService.post('/scholarship/scholarships/page', {});
           if (data) {
-           ss.Joint.ScholarshipList = data;
-           console.log('first', data)
+            ss.Joint.ScholarshipList = data;
+            console.log('first', data);
           }
-          return 
+          return;
         } catch (error) {
           console.error({ error });
         } finally {
@@ -51,7 +50,7 @@ export default GenCtx({
 
     useEffect(() => {
       meds.onGetData();
-    }, [])
+    }, []);
     return {
       ss,
       data,

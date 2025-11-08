@@ -1,12 +1,12 @@
-import React from 'react'
-import SongDetailPage from 'src/Screen/Subcription/slug'
+import React from 'react';
+import SongDetailPage from 'src/Screen/Subcription/slug';
 
 const SubcriptionDetail = () => {
   return (
     <div>
-        <SongDetailPage/>
+      <SongDetailPage />
     </div>
-  )
-}
+  );
+};
 
-export default SubcriptionDetail
+export default SubcriptionDetail;

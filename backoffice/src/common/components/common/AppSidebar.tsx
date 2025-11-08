@@ -83,22 +83,17 @@ const AppSidebar = () => {
                   className={cn(
                     'relative flex items-center gap-4 p-4 rounded-lg mx-3 transition-all duration-300',
                     'text-gray-600 hover:bg-gray-100 hover:text-blue-600',
-                    isActive &&
-                      'bg-blue-600 text-white shadow-sm shadow-blue-400'
+                    isActive && 'bg-blue-600 text-white shadow-sm shadow-blue-400'
                   )}
                 >
                   <Link href={link.href} scroll={false}>
                     <link.icon
                       className={cn(
                         'w-5 h-5 transition-transform duration-200',
-                        isActive
-                          ? 'text-black scale-110'
-                          : 'text-black group-hover:text-black'
+                        isActive ? 'text-black scale-110' : 'text-black group-hover:text-black'
                       )}
                     />
-                    <span className="group-data-[collapsible=icon]:hidden">
-                      {link.label}
-                    </span>
+                    <span className="group-data-[collapsible=icon]:hidden">{link.label}</span>
                     {isActive && (
                       <span className="absolute right-0 top-0 h-full w-[4px] bg-blue-400 rounded-l-md" />
                     )}
@@ -120,9 +115,7 @@ const AppSidebar = () => {
             >
               <button className="flex items-center text-gray-600 hover:text-blue-600">
                 <LogOut className="mr-2 h-5 w-5" />
-                <span className="group-data-[collapsible=icon]:hidden">
-                  Sign out
-                </span>
+                <span className="group-data-[collapsible=icon]:hidden">Sign out</span>
               </button>
             </SidebarMenuButton>
           </SidebarMenuItem>

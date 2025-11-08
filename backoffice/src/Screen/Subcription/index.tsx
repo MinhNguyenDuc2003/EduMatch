@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { CheckCircle, Clock, GraduationCap, XCircle, RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';

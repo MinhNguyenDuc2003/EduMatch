@@ -16,7 +16,7 @@ const ScholarshipPage = () => {
       <Context.Consumer>
         {({ ss }) => {
           const list = (ss?.Joint?.ScholarshipList as any)?.data?.content || [];
-          console.log('list', list)
+          console.log('list', list);
           const scholarships =
             list?.map((item: any) => ({
               id: item.id,
@@ -28,8 +28,8 @@ const ScholarshipPage = () => {
                 Date.now() < item.startDate
                   ? 'Not Open Yet'
                   : Date.now() > item.endDate
-                  ? 'Closed'
-                  : 'Open',
+                    ? 'Closed'
+                    : 'Open',
             })) || [];
 
           const total = scholarships.length;
@@ -75,7 +75,7 @@ const ScholarshipPage = () => {
               <CustomDataTable
                 title="Scholarship List"
                 data={scholarships as any}
-                detailPath='/scholarship'
+                detailPath="/scholarship"
                 customTitles={[
                   'ID',
                   'Scholarship Name',

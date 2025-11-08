@@ -80,7 +80,7 @@ export default GenCtx({
       ss,
       data,
       meds,
-      methods
+      methods,
     };
   },
 });

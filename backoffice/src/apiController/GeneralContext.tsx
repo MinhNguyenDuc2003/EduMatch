@@ -1,8 +1,8 @@
-import { get } from "lodash";
-import React, { createContext, PropsWithChildren, useContext } from "react";
-import { FormProvider, UseFormReturn } from "react-hook-form";
+import { get } from 'lodash';
+import React, { createContext, PropsWithChildren, useContext } from 'react';
+import { FormProvider, UseFormReturn } from 'react-hook-form';
 
-if (typeof document === "undefined") {
+if (typeof document === 'undefined') {
   React.useLayoutEffect = React.useEffect;
 }
 
@@ -15,14 +15,10 @@ export function GenCtx<V, D>({ useLogic }: { useLogic: (props: D) => V }) {
 
   function Provider({ ...props }: PropsWithChildren<D>) {
     const valueCtx = useLogic(props);
-    const methods = get(valueCtx, "methods") as UseFormReturn;
+    const methods = get(valueCtx, 'methods') as UseFormReturn;
     return (
       <Ctx.Provider value={valueCtx}>
-        {methods ? (
-          <FormProvider {...methods}>{props?.children}</FormProvider>
-        ) : (
-          props?.children
-        )}
+        {methods ? <FormProvider {...methods}>{props?.children}</FormProvider> : props?.children}
       </Ctx.Provider>
     );
   }

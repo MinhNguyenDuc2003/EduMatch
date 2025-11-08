@@ -78,7 +78,7 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
             <Pencil size={18} /> Edit
           </button>
         ) : ( */}
-          {/* <div className="flex gap-3">
+        {/* <div className="flex gap-3">
             <button
               onClick={handleSave}
               disabled={loading}
@@ -119,12 +119,42 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
       {/* Basic Info */}
       <div className="grid md:grid-cols-2 gap-6">
         <CustomFormField label="Title" initialValue={form.title} disabled={!isEditing} isBorder />
-        <CustomFormField label="University" initialValue={form.university} disabled={!isEditing} isBorder />
-        <CustomFormField label="Country" initialValue={form.country} disabled={!isEditing} isBorder />
-        <CustomFormField label="Study Level" initialValue={form.studyLevel} disabled={!isEditing} isBorder />
-        <CustomFormField label="Scholarship Type" initialValue={form.scholarshipType} disabled={!isEditing} isBorder />
-        <CustomFormField label="Funding Amount" initialValue={form.fundingAmount} disabled={!isEditing} isBorder />
-        <CustomFormField label="Available Slots" initialValue={form.availableSlots} disabled={!isEditing} isBorder />
+        <CustomFormField
+          label="University"
+          initialValue={form.university}
+          disabled={!isEditing}
+          isBorder
+        />
+        <CustomFormField
+          label="Country"
+          initialValue={form.country}
+          disabled={!isEditing}
+          isBorder
+        />
+        <CustomFormField
+          label="Study Level"
+          initialValue={form.studyLevel}
+          disabled={!isEditing}
+          isBorder
+        />
+        <CustomFormField
+          label="Scholarship Type"
+          initialValue={form.scholarshipType}
+          disabled={!isEditing}
+          isBorder
+        />
+        <CustomFormField
+          label="Funding Amount"
+          initialValue={form.fundingAmount}
+          disabled={!isEditing}
+          isBorder
+        />
+        <CustomFormField
+          label="Available Slots"
+          initialValue={form.availableSlots}
+          disabled={!isEditing}
+          isBorder
+        />
         <CustomFormField label="Fields" initialValue={form.fields} disabled={!isEditing} isBorder />
       </div>
 
@@ -198,7 +228,11 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
               <h3 className="text-lg font-semibold text-gray-800">{provider.organizationName}</h3>
               <p className="text-gray-600 text-sm">{provider.organizationType}</p>
               <p className="text-gray-600 text-sm">{provider.addressSummary}</p>
-              <a href={provider.website} target="_blank" className="text-blue-600 hover:underline text-sm">
+              <a
+                href={provider.website}
+                target="_blank"
+                className="text-blue-600 hover:underline text-sm"
+              >
                 {provider.website}
               </a>
             </div>

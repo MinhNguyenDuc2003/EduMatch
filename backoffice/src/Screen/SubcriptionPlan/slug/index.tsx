@@ -63,9 +63,7 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
     );
 
   const featureList =
-    typeof data?.features === 'string'
-      ? data.features.split(',').map((f: string) => f.trim())
-      : [];
+    typeof data?.features === 'string' ? data.features.split(',').map((f: string) => f.trim()) : [];
 
   return (
     <FormProvider {...methods}>
@@ -147,7 +145,7 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
           <label className="block text-gray-700 font-medium mb-2">Description</label>
           {isEditing ? (
             <CustomFormField
-             label="Description"
+              label="Description"
               name="fields.SubcriptionPlan.description"
               type="textarea"
               disabled={!isEditing}

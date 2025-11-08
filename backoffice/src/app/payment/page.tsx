@@ -92,8 +92,6 @@ export default function Payment() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 p-6">
-     
-
       <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
       <CustomDataTable

@@ -221,7 +221,8 @@ const CustomDataTable = ({
             } hover:bg-blue-50 transition-colors duration-150`}
           >
             <span className="text-sm font-medium text-gray-600 w-1/3">
-              {(customTitles as string[])[index] || key.charAt(0).toUpperCase() + key.slice(1)}:{' '}
+              {(customTitles as string[])[index] || key.charAt(0).toUpperCase() + key.slice(1)}
+              :{' '}
             </span>
             <span className="text-sm text-gray-800 w-2/3 text-right break-words">
               {String(value) || '—'}
@@ -358,9 +359,7 @@ const CustomDataTable = ({
                   <span>{String(value) || '—'}</span>
                 </div>
               ))}
-              <div className="pt-2 text-green-600 font-semibold">
-                ✅ Successfully confirmed!
-              </div>
+              <div className="pt-2 text-green-600 font-semibold">✅ Successfully confirmed!</div>
             </div>
           ) : (
             <p>No data to display.</p>

@@ -29,9 +29,7 @@ export default GenCtx({
       async onGetData() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(
-            '/subscription/subscription/all'
-          );
+          const data = await apiClientService.get('/subscription/subscription/all');
           if (data) {
             ss.setJointData({
               SubcriptionList: data || [],
@@ -50,7 +48,7 @@ export default GenCtx({
         onSetLoading(true);
         try {
           const data = await apiClientService.get(`/subscription/subscription/${id}`);
-          console.log('data.data', data.data)
+          console.log('data.data', data.data);
           return data.data;
         } catch (error) {
           console.error({ error });

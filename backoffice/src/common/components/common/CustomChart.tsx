@@ -1,28 +1,42 @@
 'use client';
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, LineChart, Line, PieChart, Pie, Cell, Legend } from "recharts";
-import React from "react";
-import { Card } from "src/lib/by/Div";
-import { CardContent, CardHeader, CardTitle } from "@commonServices/components/ui/card";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from 'recharts';
+import React from 'react';
+import { Card } from 'src/lib/by/Div';
+import { CardContent, CardHeader, CardTitle } from '@commonServices/components/ui/card';
 
 interface CustomChartProps {
   title?: string;
   data: any[];
-  type?: "bar" | "line" | "pie";
+  type?: 'bar' | 'line' | 'pie';
   dataKey?: string;
   xKey?: string;
   color?: string;
   height?: number;
 }
 
-const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#8b5cf6"];
+const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
 
 export default function CustomChart({
   title,
   data,
-  type = "bar",
-  dataKey = "value",
-  xKey = "name",
-  color = "#3b82f6",
+  type = 'bar',
+  dataKey = 'value',
+  xKey = 'name',
+  color = '#3b82f6',
   height = 300,
 }: CustomChartProps) {
   return (
@@ -33,7 +47,7 @@ export default function CustomChart({
       <CardContent>
         <div className="w-full" style={{ height }}>
           <ResponsiveContainer width="100%" height="100%">
-            {type === "bar" && (
+            {type === 'bar' && (
               <BarChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey={xKey} />
@@ -43,17 +57,23 @@ export default function CustomChart({
               </BarChart>
             )}
 
-            {type === "line" && (
+            {type === 'line' && (
               <LineChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey={xKey} />
                 <YAxis />
                 <Tooltip />
-                <Line type="monotone" dataKey={dataKey} stroke={color} strokeWidth={3} dot={{ r: 5 }} />
+                <Line
+                  type="monotone"
+                  dataKey={dataKey}
+                  stroke={color}
+                  strokeWidth={3}
+                  dot={{ r: 5 }}
+                />
               </LineChart>
             )}
 
-            {type === "pie" && (
+            {type === 'pie' && (
               <PieChart>
                 <Pie
                   data={data}

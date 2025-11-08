@@ -77,127 +77,124 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
   };
 
   return (
-  <FormProvider {...methods}>
-    <form
-      onSubmit={handleSave}
-      className="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-md border border-gray-100 space-y-10"
-    >
-      {/* Header */}
-      <div className="flex justify-between items-center pb-4 border-b border-gray-200">
-        <h2 className="text-2xl font-semibold text-gray-800">
-          {isEditing ? 'Edit Subscription Detail' : 'Subscription Detail'}
-        </h2>
+    <FormProvider {...methods}>
+      <form
+        onSubmit={handleSave}
+        className="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-md border border-gray-100 space-y-10"
+      >
+        {/* Header */}
+        <div className="flex justify-between items-center pb-4 border-b border-gray-200">
+          <h2 className="text-2xl font-semibold text-gray-800">
+            {isEditing ? 'Edit Subscription Detail' : 'Subscription Detail'}
+          </h2>
+        </div>
 
-       
-        
-      </div>
-
-      {/* Fields */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <CustomFormField
-          name="fields.Subscription.id"
-          label="Subscription ID"
-          type="text"
-          disabled
-          isBorder
-        />
-        <CustomFormField
-          name="fields.Subscription.userType"
-          label="User Type"
-          type="text"
-          disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          name="fields.Subscription.status"
-          label="Status"
-          type="text"
-          disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          name="fields.Subscription.autoRenew"
-          label="Auto Renew"
-          type="switch"
-          disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          name="fields.Subscription.startDate"
-          label="Start Date"
-          type="text"
-          disabled
-          isBorder
-        />
-        <CustomFormField
-          name="fields.Subscription.endDate"
-          label="End Date"
-          type="text"
-          disabled
-          isBorder
-        />
-      </div>
-
-      {/* Plan Info */}
-      <div className="border-t pt-6">
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">Plan Information</h3>
+        {/* Fields */}
         <div className="grid md:grid-cols-2 gap-6">
           <CustomFormField
-            name="fields.Subscription.plan.name"
-            label="Subcription Name"
+            name="fields.Subscription.id"
+            label="Subscription ID"
+            type="text"
+            disabled
+            isBorder
+          />
+          <CustomFormField
+            name="fields.Subscription.userType"
+            label="User Type"
             type="text"
             disabled={!isEditing}
             isBorder
           />
           <CustomFormField
-            name="fields.Subscription.plan.price"
-            label="Price"
-            type="number"
-            disabled={!isEditing}
-            isBorder
-          />
-          <CustomFormField
-            name="fields.Subscription.plan.currency"
-            label="Currency"
+            name="fields.Subscription.status"
+            label="Status"
             type="text"
             disabled={!isEditing}
             isBorder
           />
           <CustomFormField
-            name="fields.Subscription.plan.durationDays"
-            label="Duration (Days)"
-            type="number"
+            name="fields.Subscription.autoRenew"
+            label="Auto Renew"
+            type="switch"
             disabled={!isEditing}
             isBorder
           />
           <CustomFormField
-            name="fields.Subscription.plan.targetType"
-            label="Target Type"
+            name="fields.Subscription.startDate"
+            label="Start Date"
             type="text"
-            disabled={!isEditing}
+            disabled
+            isBorder
+          />
+          <CustomFormField
+            name="fields.Subscription.endDate"
+            label="End Date"
+            type="text"
+            disabled
             isBorder
           />
         </div>
 
-        <CustomFormField
-          name="fields.Subscription.plan.description"
-          label="Description"
-          type="textarea"
-          disabled={!isEditing}
-          isBorder
-        />
+        {/* Plan Info */}
+        <div className="border-t pt-6">
+          <h3 className="text-lg font-semibold text-gray-700 mb-4">Plan Information</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <CustomFormField
+              name="fields.Subscription.plan.name"
+              label="Subcription Name"
+              type="text"
+              disabled={!isEditing}
+              isBorder
+            />
+            <CustomFormField
+              name="fields.Subscription.plan.price"
+              label="Price"
+              type="number"
+              disabled={!isEditing}
+              isBorder
+            />
+            <CustomFormField
+              name="fields.Subscription.plan.currency"
+              label="Currency"
+              type="text"
+              disabled={!isEditing}
+              isBorder
+            />
+            <CustomFormField
+              name="fields.Subscription.plan.durationDays"
+              label="Duration (Days)"
+              type="number"
+              disabled={!isEditing}
+              isBorder
+            />
+            <CustomFormField
+              name="fields.Subscription.plan.targetType"
+              label="Target Type"
+              type="text"
+              disabled={!isEditing}
+              isBorder
+            />
+          </div>
 
-        <div>
           <CustomFormField
-            name="fields.Subscription.plan.features"
-            label="Features"
-            type="text"
+            name="fields.Subscription.plan.description"
+            label="Description"
+            type="textarea"
             disabled={!isEditing}
             isBorder
           />
+
+          <div>
+            <CustomFormField
+              name="fields.Subscription.plan.features"
+              label="Features"
+              type="text"
+              disabled={!isEditing}
+              isBorder
+            />
+          </div>
         </div>
-      </div>
-    </form>
-  </FormProvider>
-);
+      </form>
+    </FormProvider>
+  );
 }

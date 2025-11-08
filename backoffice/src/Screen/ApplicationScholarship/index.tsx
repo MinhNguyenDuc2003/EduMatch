@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const ApplicantScholarshipPage = () => {
-  return (
-    <div>ApplicantScholarshipPage</div>
-  )
-}
+  return <div>ApplicantScholarshipPage</div>;
+};
 
-export default ApplicantScholarshipPage
+export default ApplicantScholarshipPage;

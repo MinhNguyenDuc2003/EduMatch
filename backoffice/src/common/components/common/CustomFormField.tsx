@@ -109,7 +109,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
           <Select
             value={String(field.value || initialValue || '')}
             defaultValue={String(field.value || initialValue || '')}
-            onValueChange={(value : any) => {
+            onValueChange={(value: any) => {
               // Convert back to number if the original value was a number
               const numValue = Number(value);
               field.onChange(isNaN(numValue) ? value : numValue);

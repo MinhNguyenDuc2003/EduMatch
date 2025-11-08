@@ -12,7 +12,7 @@ export default GenCtx({
   useLogic() {
     type IForm = {
       fields: {
-      SubcriptionPlan : ISubscriptionPlanList
+        SubcriptionPlan: ISubscriptionPlanList;
       };
       filters: object;
     };
@@ -49,8 +49,10 @@ export default GenCtx({
       async onGetByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/subscription/subscription/subscription/plans/${id}`);
-          console.log('data.data', data.data)
+          const data = await apiClientService.get(
+            `/subscription/subscription/subscription/plans/${id}`
+          );
+          console.log('data.data', data.data);
           return data.data;
         } catch (error) {
           console.error({ error });
@@ -66,7 +68,7 @@ export default GenCtx({
     return {
       ss,
       meds,
-      methods
+      methods,
     };
   },
 });
