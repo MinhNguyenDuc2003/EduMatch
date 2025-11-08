@@ -127,6 +127,14 @@ public class CustomerController {
             AuthenticationVo vo = new AuthenticationVo();
             vo.setIsAuthenticated(true);
             vo.setCustomer(customerService.getCustomerById(userId));
+            try {
+                CustomerVo providerProfile = customerService.getProviderProfile();
+                if (providerProfile != null) {
+                    vo.setIsProvider(true);
+                }
+            } catch (Exception e) {
+                vo.setIsProvider(false);
+            }
             return ApiResponse.ok(vo);
         }
     }

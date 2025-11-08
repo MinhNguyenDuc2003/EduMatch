@@ -20,5 +20,6 @@ public class AuthenticationVo implements Serializable {
 
     private CustomerVm customer;
     private Boolean isAuthenticated;
+    private Boolean isProvider;
 
 }

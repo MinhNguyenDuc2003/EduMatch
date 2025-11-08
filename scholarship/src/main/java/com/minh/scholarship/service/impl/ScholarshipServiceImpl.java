@@ -111,6 +111,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         }
         List<ScholarshipPreferenceDto> scholarshipPreferences = scholarship.getScholarshipPreferences();
         if (!scholarshipPreferences.isEmpty()) {
+            scholarshipPreferences.forEach(o -> {
+                o.setScholarshipId(savedScholarship.getId());
+            });
             scholarshipPreferenceRepository.saveAll(scholarshipPreferenceMapper.toEntity(scholarshipPreferences));
         }
         NotificationTemplateDto notificationTemplateDto = this.parseResponse(notificationTemplateFeign.getNotificationTemplate(NotificationTemplateEnum.SCHOLARSHIP_NEW.getCode()));

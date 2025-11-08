@@ -9,7 +9,6 @@ import com.minh.search.data.entity.ScholarshipEntity;
 import com.minh.search.data.mapper.ScholarshipMapper;
 import com.minh.search.data.repository.ScholarshipRepository;
 import com.minh.search.data.vo.ScholarshipVo;
-import com.minh.search.feign.ProviderProfileFeign;
 import com.minh.search.feign.ScholarshipFeign;
 import com.minh.search.model.constant.ScholarshipField;
 import com.minh.search.model.filter.ScholarshipFilter;
@@ -48,31 +47,41 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                         .terms(ta -> ta.field(ScholarshipField.COUNTRY))))
                 .withAggregation("studyLevel", Aggregation.of(a -> a
                         .terms(ta -> ta.field(ScholarshipField.STUDY_LEVEL))))
-                .withQuery(q -> q
-                        .bool(b -> {
-                            if (StringUtils.hasText(criteria.getKeyword())) {
-                                b.should(s -> s
-                                        .multiMatch(m -> m
-                                                .fields(ScholarshipField.TITLE, ScholarshipField.UNIVERSITY)
-                                                .query(criteria.getKeyword())
-                                                .fuzziness(Fuzziness.AUTO.asString())
-                                        )
-                                );
-                            }
-                            return b;
-                        })
-                )
                 .withPageable(PageRequest.of(criteria.getPage(), criteria.getSize()));
 
-        nativeQuery.withFilter(f -> f
-                .bool(b -> {
-                    extractedTermsFilter(criteria.getCriteria().getCountry(), ScholarshipField.COUNTRY, b);
-                    extractedTermsFilter(criteria.getCriteria().getStudyLevel(), ScholarshipField.STUDY_LEVEL, b);
-                    extractedTermsFilter(criteria.getCriteria().getScholarshipType(), ScholarshipField.SCHOLARSHIP_TYPE, b);
-                    extractedRange(criteria.getMinGpa(), criteria.getMaxGpa(), b);
-                    return b;
-                })
-        );
+        boolean hasKeyword = StringUtils.hasText(criteria.getKeyword());
+        boolean hasCountry = criteria.getCriteria().getCountry() != null && !criteria.getCriteria().getCountry().isEmpty();
+        boolean hasStudyLevel = criteria.getCriteria().getStudyLevel() != null && !criteria.getCriteria().getStudyLevel().isEmpty();
+        boolean hasScholarshipType = criteria.getCriteria().getScholarshipType() != null && !criteria.getCriteria().getScholarshipType().isEmpty();
+        boolean hasGpa = criteria.getMinGpa() != null || criteria.getMaxGpa() != null;
+
+        if (hasKeyword) {
+            nativeQuery.withQuery(q -> q
+                    .bool(b -> {
+                        b.should(s -> s
+                                .multiMatch(m -> m
+                                        .fields(ScholarshipField.TITLE, ScholarshipField.UNIVERSITY)
+                                        .query(criteria.getKeyword())
+                                        .fuzziness(Fuzziness.AUTO.asString())
+                                )
+                        );
+                        return b;
+                    })
+            );
+        }
+
+        if (hasCountry || hasStudyLevel || hasScholarshipType || hasGpa) {
+            nativeQuery.withFilter(f -> f
+                    .bool(b -> {
+                        if (hasCountry) extractedTermsFilter(criteria.getCriteria().getCountry(), ScholarshipField.COUNTRY, b);
+                        if (hasStudyLevel) extractedTermsFilter(criteria.getCriteria().getStudyLevel(), ScholarshipField.STUDY_LEVEL, b);
+                        if (hasScholarshipType) extractedTermsFilter(criteria.getCriteria().getScholarshipType(), ScholarshipField.SCHOLARSHIP_TYPE, b);
+                        if (hasGpa) extractedRange(criteria.getMinGpa(), criteria.getMaxGpa(), b);
+                        return b;
+                    })
+            );
+        }
+
         nativeQuery.withSort(criteria.getSort());
         SearchHits<ScholarshipEntity> searchHits = elasticsearchOperations.search(nativeQuery.build(), ScholarshipEntity.class);
         SearchPage<ScholarshipEntity> searchPage = SearchHitSupport.searchPageFor(searchHits, nativeQuery.getPageable());

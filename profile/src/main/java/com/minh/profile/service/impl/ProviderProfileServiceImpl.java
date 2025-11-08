@@ -13,9 +13,11 @@ import com.minh.profile.data.mapper.ProviderNewsMapper;
 import com.minh.profile.data.mapper.ProviderProfileMapper;
 import com.minh.profile.data.repository.*;
 import com.minh.profile.data.vo.ProviderProfileVo;
+import com.minh.profile.data.vo.projection.ProviderProfileProjection;
 import com.minh.profile.feign.MediaFeign;
 import com.minh.profile.service.ProviderProfileService;
 import com.minh.service.base.BaseService;
+import com.minh.utils.SecurityUtil;
 import com.minh.utils.UaaContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -160,10 +162,10 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
 
     @Override
     public ProviderProfileVo getById(Long id) {
-        ProviderProfileEntity providerProfileEntity = providerProfileRepository
-                .findById(id)
+        ProviderProfileProjection providerProfile = providerProfileRepository
+                .getDetail(id, SecurityUtil.getCurrentUserId())
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
-        ProviderProfileVo vo = providerProfileMapper.toVo(providerProfileEntity);
+        ProviderProfileVo vo = providerProfileMapper.proToVo(providerProfile);
         List<ProviderContactEntity> contacts = providerContactRepository.findByProviderId(id);
         vo.setProviderContactDtos(providerContactMapper.toDto(contacts));
         List<ProviderMediaEntity> medias = providerMediaRepository.findByProviderId(id);
