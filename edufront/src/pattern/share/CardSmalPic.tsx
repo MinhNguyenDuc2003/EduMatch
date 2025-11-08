@@ -1,107 +1,113 @@
-import useTranslate from '@/hooks/useTranslate';
-import { Anchor, Block, Card, RText, Section } from '@/lib/by/Div';
-import { Button } from '@/lib/cus/button';
-import { cn } from '@/lib/utils';
-import { sStore } from '@/stores';
-import { isBoolean, isEqual, map } from 'lodash';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+import { Building2, Flag } from 'lucide-react';
 import Amount_Deadline from './Amount_Deadline';
-import FooterCard from './FooterCard';
-type CardScholarshipProps = {
-  className?: string;
-  picture?: string | StaticImport;
-  title?: string;
-  amount?: number;
-  deadline?: string;
-  description?: string;
-  tagName?: string[];
-  onClick?: () => void;
-  icon?: React.ReactNode;
-  titleButton?: string;
+import { Anchor, Block, Card, RText, Section } from '@/lib/by/Div';
+import Image from 'next/image';
+
+type CardSmalPicProps = {
+  scholarship?: Scholarship;
+  onViewDetails?: () => void;
+  onToggleTracking?: (scholarshipId: number) => void;
 };
 
 export default function CardSmalPic({
-  className,
-  picture,
-  title,
-  amount,
-  deadline,
-  description,
-
-  tagName,
-
-  onClick,
-  titleButton,
-  icon,
-}: CardScholarshipProps) {
-  const ss = sStore();
-  const router = useRouter();
-  const { translate, translated, loading, error } = useTranslate();
-  const locale = ss.Auth?.Locale;
+  onViewDetails,
+  onToggleTracking,
+  scholarship,
+}: CardSmalPicProps) {
+  const handleBookmarkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (scholarship?.id && onToggleTracking) {
+      onToggleTracking(scholarship.id);
+    }
+  };
+  const isFollow = scholarship?.isFollow === 1;
+  const logoUrl = scholarship?.providerProfileVo?.logoUrl;
+  const organizationName = scholarship?.providerProfileVo?.organizationName;
+  const title = scholarship?.title;
+  const shortDescription = scholarship?.shortDescription;
+  const university = scholarship?.university;
+  const deadline = scholarship?.endDate || 0;
+  const amount = scholarship?.fundingAmount
+    ? scholarship.fundingAmount.replace(/[^0-9.,]/g, '')
+    : '0';
 
   return (
-    <Section
-      className={cn(
-        'bg-[#FAFAF6] flex flex-col rounded-2xl border border-solid border-[#D9D9D9]',
-        className
-      )}
-    >
-      <Anchor className="flex flex-col gap-[10px] p-[10px] flex-1">
-        <Block className="flex gap-[10px] justify-start items-center">
-          <Card className="p-[10px]">
-            {picture ? (
+    <Section className="group bg-white flex flex-col rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:border-[#3D6CB9] relative h-full">
+      {/* Track Icon - Top Right */}
+      <button
+        className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm hover:shadow-md transition-all duration-200 "
+        onClick={handleBookmarkClick}
+        aria-label="Track scholarship"
+      >
+        <Flag
+          className={`w-5 h-5 transition-colors ${
+            isFollow
+              ? 'fill-[#3D6CB9] text-[#3D6CB9]'
+              : 'text-gray-400 hover:text-[#3D6CB9] hover:fill-[#3D6CB9]'
+          }`}
+        />
+      </button>
+
+      <Block className="flex flex-col p-4 flex-1 h-full">
+        {/* Header with University Logo and Title - Clickable */}
+        <Anchor
+          className="flex gap-3 items-start pr-9 cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0 mb-3"
+          onClick={onViewDetails}
+        >
+          <Card className="flex-shrink-0 w-16 h-16 relative aspect-square">
+            {logoUrl ? (
               <Image
-                src={picture ?? '/default-avatar.png'}
-                alt={title ?? ''}
-                width={64}
-                height={64}
-                className="rounded-full"
+                src={logoUrl}
+                alt={organizationName || 'Organization logo'}
+                fill
+                className="rounded-lg object-cover bg-white p-2"
               />
             ) : (
-              <Card className="bg-gray-600 border border-gray-200 w-[64px] h-[64px] rounded-full" />
+              <Card className="border border-gray-200 w-full h-full rounded-lg flex items-center justify-center relative">
+                <Image
+                  src={
+                    'https://es5urvh1np.ufs.sh/f/DHR6tEJ9PQoz85HjSO62tcmI7ElP8Ygn01Oa3ze6iFwADrsH'
+                  }
+                  alt={'logo'}
+                  fill
+                  className="rounded-lg object-contain bg-white p-2"
+                />
+              </Card>
             )}
           </Card>
-          <Card className=" ">
-            <RText className="text-sm font-medium">{title}</RText>
+          <Card className="flex-1 min-w-0 flex flex-col">
+            <RText className="text-base font-semibold text-gray-900 leading-tight line-clamp-2 group-hover:text-[#3D6CB9] transition-colors">
+              {title || ''}
+            </RText>
+            <RText className="text-sm text-gray-600 mt-1 line-clamp-1">{university || ''}</RText>
           </Card>
-        </Block>
+        </Anchor>
 
-        <Amount_Deadline amount={amount ?? 0} deadline={deadline ?? ''} isRow={true} />
-
-        <Block className="p-[10px] text-[#4F4F4F] space-y-3">
-          <p className=" text-[#4F4F4F] ">{description}</p>
-          {isEqual(locale, 'vi') && (
-            <Button
-              onClick={() => translate(description ?? '', locale ?? 'vi')}
-              disabled={!isBoolean(translated || loading)}
-              className="px-4 py-2 bg-[#3D6CB9] text-white rounded-lg text-sm hover:bg-[#2c4e8a] disabled:opacity-50"
-            >
-              {loading ? 'Đang dịch...' : 'Dịch sang Tiếng Việt'}
-            </Button>
-          )}
-
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          {translated && (
-            <Card className="bg-[#F9FAFB] border border-[#E5E7EB] p-3 rounded-lg">
-              <RText className="text-sm font-semibold text-[#3D6CB9] mb-1">Bản dịch:</RText>
-              <p className="text-sm text-[#333] leading-relaxed">{translated}</p>
-            </Card>
+        {/* Description - Fixed height */}
+        <Block className="text-gray-600 text-sm flex-shrink-0 min-h-[1.25rem] mb-3">
+          {shortDescription ? (
+            <p className="line-clamp-1">{shortDescription}</p>
+          ) : (
+            <p className="invisible line-clamp-1">Placeholder</p>
           )}
         </Block>
 
-        <Block className="p-[10px] flex gap-[10px] flex-wrap">
-          {map(tagName, (tag) => (
-            <Card key={tag}>
-              <RText className="text-sm font-medium bg-white">#{tag}</RText>
-            </Card>
-          ))}
-        </Block>
-      </Anchor>
+        {/* Spacer - takes remaining space to push Amount_Deadline to bottom */}
+        <div className="flex-1"></div>
 
-      <FooterCard onClick={() => onClick?.()} titleButton={titleButton ?? ''} />
+        {/* Amount and Deadline - Always at bottom */}
+        <Block className="flex-shrink-0">
+          {amount || deadline ? (
+            <Amount_Deadline amount={amount || '0'} deadline={deadline || 0} isRow={true} />
+          ) : (
+            <div className="h-[3rem] flex items-center">
+              <div className="invisible">
+                <Amount_Deadline amount="0" deadline={0} isRow={true} />
+              </div>
+            </div>
+          )}
+        </Block>
+      </Block>
     </Section>
   );
 }

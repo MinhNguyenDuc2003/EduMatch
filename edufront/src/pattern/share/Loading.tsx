@@ -1,16 +1,15 @@
-"use client";
-import { Box, Core, RText } from "@/lib/by/Div";
-import { eventBus } from "@/utils/eventBus";
-import { delay } from "lodash";
-import { useEffect, useState } from "react";
+'use client';
+import { Box, Core, RText } from '@/lib/by/Div';
+import { eventBus } from '@/utils/eventBus';
+import { delay } from 'lodash';
+import { useEffect, useState } from 'react';
 
-const root = "Loading";
+const root = 'Loading';
 
 export function Loading() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handler = (data: any) => setLoading(data);
     eventBus.on(root, handler);
 

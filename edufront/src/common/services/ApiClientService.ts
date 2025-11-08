@@ -6,7 +6,7 @@ interface RequestOptions {
   body?: string;
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_PATH || '';
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 const token = process.env.NEXT_PUBLIC_API_TOKEN || '';
 
 const sendRequest = async (

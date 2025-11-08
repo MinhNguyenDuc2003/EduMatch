@@ -1,13 +1,16 @@
-export {};
 declare global {
-  type IUser = {
-    AccountID?: number;
-    UserName?: string;
-    Permissions?: Record<string, unknown>;
-    PhoneNumber?: string;
-  } & {
-    IsBlock?: boolean;
+  type Customer = {
+    id: string;
+    username: string;
+    email: string;
+    firstName: string;
+    lastName: string;
   };
-  type IPermission = Record<string, number>;
 
+  type AuthResponse = {
+    customer?: Customer;
+    isAuthenticated: boolean;
+    isProvider?: boolean;
+  };
 }
+export {};

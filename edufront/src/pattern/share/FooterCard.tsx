@@ -1,22 +1,35 @@
-import { Anchor, Card } from '@/lib/by/Div'
-import Image from 'next/image'
-import React from 'react'
-import heart from '@/assets/icon/heart.svg';
-import trophy from '@/assets/icon/trophy.svg';
+import { Anchor } from '@/lib/by/Div';
+import React from 'react';
 import { Button } from '@/lib/cus/button';
+import { Eye } from 'lucide-react';
 
-const FooterCard = ({onClick, titleButton} : {onClick: () => void, titleButton: string}) => {
+const FooterCard = ({
+  onClick,
+  titleButton,
+  onViewDetails,
+}: {
+  onClick: () => void;
+  titleButton: string;
+  onViewDetails?: () => void;
+}) => {
   return (
-   <Anchor className="flex gap-[40px] justify-between p-[20px] w-full mt-auto border-t border-[#eee]">
-        <Card className="flex-1 flex justify-around">
-          <Image src={heart} alt="heart" width={24} height={24} />
-          <Image src={trophy} alt="trophy" width={24} height={24} />
-        </Card>
-        <Card className="flex-1">
-          <Button className='p-6 w-full' onClick={onClick}>{titleButton}</Button>
-        </Card>
-      </Anchor>
-  )
-}
+    <Anchor className="p-3 w-full mt-auto border-t border-gray-200 flex gap-2">
+      {onViewDetails && (
+        <Button
+          variant="outline"
+          className="flex-1 px-4 py-1.5 rounded-lg font-semibold text-sm bg-white border-gray-300 hover:bg-gray-50 [&_.value]:text-gray-700"
+          value="Details"
+          iconLeft={<Eye className="w-4 h-4 text-primary" />}
+          onClick={onViewDetails}
+        />
+      )}
+      <Button
+        className="flex-1 bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white px-4 py-1.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all [&_.value]:text-white text-sm"
+        value={titleButton}
+        onClick={onClick}
+      />
+    </Anchor>
+  );
+};
 
-export default FooterCard
+export default FooterCard;

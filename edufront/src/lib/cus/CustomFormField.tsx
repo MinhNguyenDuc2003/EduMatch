@@ -9,6 +9,7 @@ import { Switch } from '@/lib/cus/switch';
 import { Edit, X, Plus } from 'lucide-react';
 import MultipleSelector from './multi-select';
 import StringMultiSelect from './string-multi-select';
+import InputSelect from './input-select';
 
 // Helpers to convert between timestamp values and <input type="date"> value (yyyy-mm-dd)
 function toDateInputValue(value: unknown): string {
@@ -52,7 +53,10 @@ interface FormFieldProps {
     | 'email'
     | 'textarea'
     | 'number'
+    | 'date-of-birth'
     | 'date'
+    | 'input-select'
+    | 'range'
     | 'select'
     | 'switch'
     | 'password'
@@ -60,7 +64,7 @@ interface FormFieldProps {
     | 'multi-input'
     | 'multi-select';
   placeholder?: string;
-  options?: { value: string | number; label: string }[];
+  options?: { value: string; label: string }[];
   accept?: string;
   className?: string;
   labelClassName?: string;
@@ -73,6 +77,9 @@ interface FormFieldProps {
   inlineLabel?: boolean;
   isBorder?: boolean;
   stringFormat?: 'comma' | 'json' | 'pipe';
+  min?: number;
+  max?: number;
+  step?: number;
 }
 
 export const CustomFormField: React.FC<FormFieldProps> = ({
@@ -90,6 +97,9 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
   inlineLabel,
   isBorder,
   stringFormat = 'comma',
+  min,
+  max,
+  step,
 }) => {
   const { control } = useFormContext();
 
@@ -107,13 +117,9 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
       case 'select':
         return (
           <Select
-            value={String(field.value || initialValue || '')}
-            defaultValue={String(field.value || initialValue || '')}
-            onValueChange={(value) => {
-              // Convert back to number if the original value was a number
-              const numValue = Number(value);
-              field.onChange(isNaN(numValue) ? value : numValue);
-            }}
+            value={field.value || (initialValue as string)}
+            defaultValue={field.value || (initialValue as string)}
+            onValueChange={field.onChange}
           >
             <SelectTrigger
               className={`w-full ${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-primarybg p-4 ${inputClassName}`}
@@ -162,11 +168,29 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             </FormLabel>
           </div>
         );
+      case 'input-select':
+        return (
+          <InputSelect
+            options={options || []}
+            value={field.value || (initialValue as string)}
+            onValueChange={field.onChange}
+          />
+        );
 
       case 'number':
         return (
           <Input
             type="number"
+            placeholder={placeholder}
+            {...field}
+            className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
+            disabled={disabled}
+          />
+        );
+      case 'date-of-birth':
+        return (
+          <Input
+            type="date"
             placeholder={placeholder}
             {...field}
             className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
@@ -194,6 +218,24 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
             disabled={disabled}
           />
+        );
+      case 'range':
+        return (
+          <div className="flex items-center space-x-2">
+            <Input
+              type="range"
+              placeholder={placeholder}
+              {...field}
+              min={min}
+              max={max}
+              step={step}
+              className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-primarybg p-4 ${inputClassName}`}
+              disabled={disabled}
+            />
+            <FormLabel className={labelClassName} htmlFor={name}>
+              {field.value}
+            </FormLabel>
+          </div>
         );
       case 'multi-input':
         return (

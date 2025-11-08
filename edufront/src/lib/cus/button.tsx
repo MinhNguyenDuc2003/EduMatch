@@ -1,7 +1,6 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { sStore } from '@/stores';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { isObject } from 'lodash';
@@ -205,7 +204,6 @@ export function Button({
   ...props
 }: ButtonProps) {
   const Comp = asChild ? Slot : 'button';
-  const formFocusID = sStore((state) => state.Joint.formFocusID);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -216,9 +214,6 @@ export function Button({
     <Comp
       type="button"
       onClick={handleClick}
-      onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
-        if (e.key === 'Enter' && formFocusID) handleClick(e as any);
-      }}
       className={cn(
         buttonVariants({
           variant,
@@ -240,7 +235,7 @@ export function Button({
     >
       {iconLeft && <span className="mr-1">{iconLeft}</span>}
       {(value || children || label) && (
-        <span className="value flex items-center gap-2 font-semibold leading-none transition-all w-max">
+        <span className="value flex items-center justify-center gap-2 font-semibold leading-none transition-all w-full">
           {value || children || label}
         </span>
       )}

@@ -1,0 +1,63 @@
+import { IApplication, IProviderProfile, IScholarship } from '@/lib/schemas';
+
+export const DEFAULT_SCHOLARSHIP_FORM_VALUES: IScholarship = {
+  id: undefined,
+  title: '',
+  slug: '',
+  shortDescription: '',
+  description: '',
+  requirements: '',
+  benefits: '',
+  fields: '',
+  country: '',
+  university: '',
+  studyLevel: '',
+  scholarshipType: '',
+  fundingAmount: '',
+  startDate: new Date().getTime(),
+  endDate: new Date().getTime(),
+  availableSlots: undefined,
+  languageRequirement: '',
+  gpaRequirement: undefined,
+  scholarshipPreferences: [],
+};
+
+export const DEFAULT_APPLICATION_FORM_VALUES: IApplication = {
+  id: undefined,
+  fullName: '',
+  gender: '',
+  dateOfBirth: '',
+  email: '',
+  phone: '',
+  address: '',
+  nationality: '',
+  educationLevel: '',
+  schoolName: '',
+  major: '',
+  gpa: 0,
+  graduationYear: '',
+  skills: '',
+  achievements: '',
+  extracurricular: '',
+  motivation: '',
+  personalStatement: '',
+  applicationAttributes: [],
+};
+
+export const DEFAULT_PROVIDER_FORM_VALUES: IProviderProfile = {
+  providerProfile: {
+    organizationName: '',
+    organizationType: '',
+    website: '',
+    email: '',
+    phone: '',
+    addressSummary: '',
+    description: '',
+    yearEstablished: undefined,
+    accreditation: '',
+    specialization: '',
+    verified: false,
+    country: '',
+    providerContactDtos: [],
+  },
+};
