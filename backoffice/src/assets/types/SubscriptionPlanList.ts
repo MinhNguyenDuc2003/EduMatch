@@ -1,11 +1,4 @@
-export interface ISubscriptionPlanList {
-  ts?: number;
-  status?: number;
-  success?: boolean;
-  data?: Array<IData>;
-  fields?: Array<unknown>;
-}
-export type IData = {
+export type ISubscriptionPlanList = {
   id?: number;
   name?: string;
   description?: string;
