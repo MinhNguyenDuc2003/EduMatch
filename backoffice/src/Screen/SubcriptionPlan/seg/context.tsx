@@ -18,13 +18,15 @@ export default GenCtx({
     };
     const ss = sStore();
     const methods = useForm<IForm>({
-      mode: 'onSubmit',
+      mode: 'onChange',
+      reValidateMode: 'onSubmit',
       defaultValues: {
         fields: {},
         filters: {},
       },
     });
     const loading = useState(false);
+    const { getValues } = methods;
     const meds = {
       async onGetData() {
         onSetLoading(true);
@@ -53,6 +55,30 @@ export default GenCtx({
             `/subscription/subscription/subscription/plans/${id}`
           );
           console.log('data.data', data.data);
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+
+      async onCreate(plan: ISubscriptionPlanList) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.post(
+            `/subscription/subscription/subscription/plans`,
+            {
+              name: plan.name,
+              description: plan.description,
+              currency: plan.currency,
+              price: plan.price,
+              durationDays: plan.durationDays,
+              targetType: plan.targetType,
+              features: plan.features,
+            }
+          );
+          console.log('Created plan:', data.data);
           return data.data;
         } catch (error) {
           console.error({ error });

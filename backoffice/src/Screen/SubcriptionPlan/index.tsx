@@ -4,10 +4,11 @@ import { useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
+import { useRouter } from 'next/navigation';
 
 const SubscriptionPlanPage = () => {
   const [filterText, setFilterText] = useState('');
-
+const router = useRouter();
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
@@ -73,6 +74,8 @@ const SubscriptionPlanPage = () => {
               <CustomDataTable
                 title="Subscription Plan List"
                 data={plans as any}
+                onCreate={() => router.push('/subscriptionPlan/create')}
+
                 detailPath="/subscriptionPlan"
                 customTitles={[
                   'ID',

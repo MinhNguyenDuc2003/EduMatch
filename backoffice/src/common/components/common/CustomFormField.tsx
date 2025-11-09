@@ -73,6 +73,7 @@ interface FormFieldProps {
   inlineLabel?: boolean;
   isBorder?: boolean;
   stringFormat?: 'comma' | 'json' | 'pipe';
+    rules?: any; 
 }
 
 export const CustomFormField: React.FC<FormFieldProps> = ({
@@ -89,6 +90,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
   initialValue,
   inlineLabel,
   isBorder,
+  rules,
   stringFormat = 'comma',
 }) => {
   const { control } = useFormContext();
@@ -223,6 +225,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
       control={control}
       name={name || ''}
       defaultValue={initialValue}
+       rules={rules}
       render={({ field }) => (
         <FormItem
           className={`${type !== 'switch' && 'rounded-md'} relative ${className} ${

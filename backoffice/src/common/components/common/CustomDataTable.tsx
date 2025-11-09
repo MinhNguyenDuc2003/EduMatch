@@ -154,16 +154,13 @@ const CustomDataTable = ({
 
   // Excel export with style
   const handleExportExcel = () => {
-    const exportData = selectedRows.length > 0 ? selectedRows : data;
-    if (!exportData || exportData.length === 0) {
-      alert('No data selected to export.');
-      return;
-    }
+    if (!data || data.length === 0) return;
 
-    const ws = XLSX.utils.json_to_sheet(exportData);
+    const ws = XLSX.utils.json_to_sheet(data);
+
     const headerStyle = {
       font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 13 },
-      fill: { fgColor: { rgb: '#38578a' } },
+      fill: { fgColor: { rgb: '4472C4' } },
       alignment: { horizontal: 'center', vertical: 'center' },
       border: {
         top: { style: 'thin', color: { rgb: '000000' } },
@@ -197,7 +194,7 @@ const CustomDataTable = ({
       }
     }
 
-    const colWidths = Object.keys(exportData[0]).map((key) => ({
+    const colWidths = Object.keys(data[0]).map((key) => ({
       wch: Math.max(key.length, 60),
     }));
     ws['!cols'] = colWidths;
@@ -265,7 +262,7 @@ const CustomDataTable = ({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.97 }}
-              onClick={handleCreate}
+              onClick={onCreate}
               className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition-all"
             >
               <Plus size={18} />
@@ -314,25 +311,7 @@ const CustomDataTable = ({
         />
       </motion.div>
 
-      {modalType && (
-        <CustomModal
-          open={showModal}
-          title={modalType === 'create' ? 'Create New Record' : 'Edit Record'}
-          onClose={() => setShowModal(false)}
-          onConfirm={() => {
-            if (modalType === 'create') onCreate?.();
-            else if (modalType === 'edit') onEdit?.(selectedRow);
-            setShowModal(false);
-          }}
-          confirmText="Save"
-        >
-          <p className="text-sm text-gray-600">
-            {modalType === 'create'
-              ? 'You are creating a new record.'
-              : `Edit information for ID: ${selectedRow?.id || ''}`}
-          </p>
-        </CustomModal>
-      )}
+     
 
       <CustomConfirm
         open={showConfirm}
