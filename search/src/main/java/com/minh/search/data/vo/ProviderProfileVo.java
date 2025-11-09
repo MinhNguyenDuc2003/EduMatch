@@ -23,5 +23,6 @@ public class ProviderProfileVo extends ProviderProfileDto {
     private ProviderProfileVo providerProfileVo;
     private String logoUrl;
     private String bannerUrl;
+    private int isFollow;
 
 }

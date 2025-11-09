@@ -25,6 +25,7 @@ public final class CoreMessageCode {
     public static final String PROVIDER_NEWS_IS_NOT_EXIST = "Provider New is not exist";
     public static final String UPLOAD_IMAGE_FAILED = "Upload Image Failed";
     public static final String SCHOLARSHIP_IS_NOT_EXIST = "Scholarship is not exist";
+    public static final String SCHOLARSHIP_IS_NOT_EXIST_OR_INACTIVE = "Scholarship is not exist or inactive";
     public static final String APPLICATION_IS_NOT_EXIST = "Application is not exist";
     public static final String APPLICATION_REVIEW_NOT_FOUND = "Application review is not exist";
     public static final String APPLICATION_SCHOLARSHIP_NOT_FOUND = "Application Scholarship is not exist";

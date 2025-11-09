@@ -237,10 +237,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     public ScholarshipFollowerDto createScholarshipFollower(ScholarshipFollowerDto dto) {
         dto.setUserId(UaaContextHolder.getUserId());
 
-        boolean exists = scholarshipRepository.existsById(dto.getScholarshipId());
-        if (!exists) {
-            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
-        }
+        ScholarshipEntity scholarship = scholarshipRepository.findByIdAndActive(dto.getScholarshipId(), true)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST_OR_INACTIVE));
 
         return scholarshipFollowerMapper.toDto(
                 scholarshipFollowerRepository.save(
