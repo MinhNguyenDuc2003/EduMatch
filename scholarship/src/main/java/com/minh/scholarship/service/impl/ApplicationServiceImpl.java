@@ -146,6 +146,8 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
             throw new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST);
         }
         applicationRepository.updateActiveById(id, false);
+
+        applicationScholarshipRepository.softDeleteByScholarshipId(id);
     }
 
     @Override

@@ -16,10 +16,7 @@ import com.minh.scholarship.data.entity.junction.ScholarshipMediaEntity;
 import com.minh.scholarship.data.mapper.ScholarshipFollowerMapper;
 import com.minh.scholarship.data.mapper.ScholarshipMapper;
 import com.minh.scholarship.data.mapper.ScholarshipPreferenceMapper;
-import com.minh.scholarship.data.repository.ScholarshipFollowerRepository;
-import com.minh.scholarship.data.repository.ScholarshipMediaRepository;
-import com.minh.scholarship.data.repository.ScholarshipPreferenceRepository;
-import com.minh.scholarship.data.repository.ScholarshipRepository;
+import com.minh.scholarship.data.repository.*;
 import com.minh.scholarship.data.vo.NotificationVo;
 import com.minh.scholarship.data.vo.ProviderProfileVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
@@ -54,6 +51,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     private final ScholarshipRepository scholarshipRepository;
     private final ScholarshipMapper scholarshipMapper;
     private final ScholarshipMediaRepository scholarshipMediaRepository;
+    private final ApplicationScholarshipRepository applicationScholarshipRepository;
     private final MediaFeign mediaFeign;
     private final NotificationTemplateFeign notificationTemplateFeign;
     private final KafkaProducer kafkaProducer;
@@ -175,6 +173,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
             throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
         }
         scholarshipRepository.updateActiveById(id, false);
+
+        applicationScholarshipRepository.softDeleteByApplicationId(id);
     }
 
     @Override

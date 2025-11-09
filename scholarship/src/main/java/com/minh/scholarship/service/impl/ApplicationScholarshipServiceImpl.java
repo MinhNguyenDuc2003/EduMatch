@@ -31,7 +31,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
 
     @Override
     public List<ApplicationScholarshipVo> getAll() {
-        List<ApplicationScholarshipEntity> entities = repository.findAll();
+        List<ApplicationScholarshipEntity> entities = repository.findByActive(true);
         List<ApplicationScholarshipVo> vos = mapper.entitiesToVos(entities);
         vos.forEach(vo -> {
             vo.setApplicationVo(applicationService.getById(vo.getApplicationId()));
