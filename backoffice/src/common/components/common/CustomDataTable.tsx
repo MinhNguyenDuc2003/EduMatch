@@ -154,13 +154,16 @@ const CustomDataTable = ({
 
   // Excel export with style
   const handleExportExcel = () => {
-    if (!data || data.length === 0) return;
+    const exportData = selectedRows.length > 0 ? selectedRows : data;
+    if (!exportData || exportData.length === 0) {
+      alert('No data selected to export.');
+      return;
+    }
 
-    const ws = XLSX.utils.json_to_sheet(data);
-
+    const ws = XLSX.utils.json_to_sheet(exportData);
     const headerStyle = {
       font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 13 },
-      fill: { fgColor: { rgb: '4472C4' } },
+      fill: { fgColor: { rgb: '#38578a' } },
       alignment: { horizontal: 'center', vertical: 'center' },
       border: {
         top: { style: 'thin', color: { rgb: '000000' } },
@@ -194,7 +197,7 @@ const CustomDataTable = ({
       }
     }
 
-    const colWidths = Object.keys(data[0]).map((key) => ({
+    const colWidths = Object.keys(exportData[0]).map((key) => ({
       wch: Math.max(key.length, 60),
     }));
     ws['!cols'] = colWidths;
