@@ -5,21 +5,18 @@ import { Flag, Calendar, DollarSign } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
-import {
-  useFollowProviderMutation,
-  useGetFollowedProvidersQuery,
-  useUnfollowProviderMutation,
-} from '@/state/apiProvider';
 
 type ScholarshipCardProps = {
   scholarship: Scholarship;
   onApply: (scholarship: Scholarship) => void;
   onToggleTracking?: (scholarshipId: number) => void;
+  onFollowProvider?: (scholarshipId: number) => void;
 };
 
 export default function ScholarshipCard({
   scholarship,
   onApply,
+  onFollowProvider,
   onToggleTracking,
 }: ScholarshipCardProps) {
   const router = useRouter();
@@ -27,32 +24,6 @@ export default function ScholarshipCard({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const images = getScholarshipImages(scholarship);
-
-  // Get followed providers
-  const { data: followedProviders } = useGetFollowedProvidersQuery();
-  const [followProvider] = useFollowProviderMutation();
-  const [unfollowProvider] = useUnfollowProviderMutation();
-
-  // Check if provider is followed
-  const isFollowing =
-    followedProviders?.some(
-      (fp: { providerId: number }) => fp.providerId === scholarship.providerId
-    ) || false;
-
-  // Handle follow/unfollow provider
-  const handleFollowProvider = async () => {
-    try {
-      if (isFollowing) {
-        // If already following, unfollow
-        await unfollowProvider(scholarship.providerId).unwrap();
-      } else {
-        // If not following, follow
-        await followProvider(scholarship.providerId).unwrap();
-      }
-    } catch (error) {
-      console.error('Failed to toggle follow provider:', error);
-    }
-  };
 
   const handleViewProvider = (providerId: number) => {
     router.push(`/applicant/providers/${providerId}`);
@@ -82,10 +53,10 @@ export default function ScholarshipCard({
                   {scholarship.university || 'Organization Name'}
                 </h3>
                 <button
-                  onClick={handleFollowProvider}
+                  onClick={() => onFollowProvider?.(scholarship.id)}
                   className="text-xs text-blue-600 hover:text-blue-700 font-medium"
                 >
-                  {isFollowing ? 'Following' : 'Follow'}
+                  {scholarship.providerProfileVo?.isFollow === 1 ? 'Following' : 'Follow'}
                 </button>
               </div>
             </div>

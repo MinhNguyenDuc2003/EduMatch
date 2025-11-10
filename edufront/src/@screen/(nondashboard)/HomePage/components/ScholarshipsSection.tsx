@@ -44,7 +44,6 @@ export default function ScholarshipsSection({
   };
 
   const handleToggleTracking = async (scholarshipId: number) => {
-    // Find the scholarship to check if it's already tracked
     const scholarship = currentScholarships.find((s) => s.id === scholarshipId);
     const isTracked = scholarship?.isFollow === 1;
 

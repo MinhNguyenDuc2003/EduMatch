@@ -33,7 +33,6 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
-  // All hooks must be called before any conditional returns
   const { data: trackedData } = useCheckIsTrackedScholarshipQuery(scholarship?.id || 0, {
     skip: !scholarship?.id,
   });
@@ -41,7 +40,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
   if (!scholarship && !isLoading) {
     return <div>Scholarship not found</div>;
   }
-  const isTracked = !!trackedData; // If trackedData exists, scholarship is tracked
+  const isTracked = !!trackedData;
   const isFollowing = scholarship?.providerProfileVo?.id
     ? followedProviders?.some((fp) => fp.providerId === scholarship.providerProfileVo.id) || false
     : false;

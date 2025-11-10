@@ -7,9 +7,10 @@ import { Filter } from 'lucide-react';
 import SearchBar from '@/pattern/share/SearchBar';
 import {
   useFollowScholarshipMutation,
-  useSearchScholarshipsAdvancedQuery,
+  useSearchScholarshipsQuery,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
+import { useFollowProviderMutation, useUnfollowProviderMutation } from '@/state/apiProvider';
 
 export default function ScholarshipsList() {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -27,7 +28,7 @@ export default function ScholarshipsList() {
 
   // Prepare API request body
   const requestBody = useMemo(() => {
-    const body: ScholarshipAdvancedSearchRequest = {
+    const body: ScholarshipSearchRequest = {
       criteria: {
         studyLevel: filters.studyLevel || '',
         country: filters.country || '',
@@ -44,12 +45,13 @@ export default function ScholarshipsList() {
   }, [filters]);
 
   // Call API
-  const { data: response, isLoading, isError } = useSearchScholarshipsAdvancedQuery(requestBody);
-
+  const { data: response, isLoading, isError } = useSearchScholarshipsQuery(requestBody);
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
+  const [followProvider] = useFollowProviderMutation();
+  const [unfollowProvider] = useUnfollowProviderMutation();
 
-  const scholarships = response?.scholarship || [];
+  const scholarships = response?.scholarships || [];
   const totalElements = response?.totalElements || 0;
   const totalPages = response?.totalPages || 0;
 
@@ -74,6 +76,24 @@ export default function ScholarshipsList() {
       }
     } catch (error) {
       console.error('Failed to toggle tracking:', error);
+    }
+  };
+
+  // Handle follow/unfollow provider
+  const handleFollowProvider = async (scholarshipId: number) => {
+    const scholarship = scholarships.find((s) => s.id === scholarshipId);
+    if (!scholarship) {
+      return;
+    }
+    const isFollowing = scholarship.providerProfileVo?.isFollow === 1;
+    try {
+      if (isFollowing) {
+        await unfollowProvider(scholarship.providerId).unwrap();
+      } else {
+        await followProvider(scholarship.providerId).unwrap();
+      }
+    } catch (error) {
+      console.log('Failed to toggle follow provider:', error);
     }
   };
 
@@ -204,6 +224,7 @@ export default function ScholarshipsList() {
                         scholarship={scholarship}
                         onApply={handleApply}
                         onToggleTracking={handleToggleTracking}
+                        onFollowProvider={handleFollowProvider}
                       />
                     ))}
                     {totalPages > 1 && (

@@ -22,8 +22,7 @@ export default function CardSmalPic({
   };
 
   const { title, shortDescription, university, isFollow } = scholarship;
-  const logoUrl = scholarship?.providerProfileVo?.logoUrl;
-  const organizationName = scholarship?.providerProfileVo?.organizationName;
+  const { logoUrl, organizationName } = scholarship.providerProfileVo;
   const deadline = scholarship?.endDate || 0;
   const amount = scholarship?.fundingAmount
     ? scholarship.fundingAmount.replace(/[^0-9.,]/g, '')

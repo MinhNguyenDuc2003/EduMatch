@@ -101,7 +101,7 @@ export const apiProvider = createApi({
     }),
 
     // Follow provider
-    followProvider: build.mutation<{ userId: string; providerId: number }, number>({
+    followProvider: build.mutation<void, number>({
       query: (id) => ({
         url: `${API_ENDPOINTS.FOLLOW_PROVIDER}/${id}`,
         method: 'POST',

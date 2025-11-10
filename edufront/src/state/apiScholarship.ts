@@ -14,8 +14,8 @@ export const apiScholarship = createApi({
   reducerPath: 'apiScholarship',
   tagTypes: ['Scholarships'],
   endpoints: (build) => ({
-    // Search scholarships with pagination
-    searchScholarships: build.query<ScholarshipPageResponse, ScholarshipSearchRequest>({
+    // page scholarships with pagination
+    pageScholarships: build.query<Scholarship[], ScholarshipPageRequest>({
       query: (data) => ({
         url: API_ENDPOINTS.SCHOLARSHIPS_PAGE,
         method: 'POST',
@@ -24,11 +24,8 @@ export const apiScholarship = createApi({
       providesTags: ['Scholarships'],
     }),
 
-    // Advanced search scholarships with filters
-    searchScholarshipsAdvanced: build.query<
-      ScholarshipSearchResponse,
-      ScholarshipAdvancedSearchRequest
-    >({
+    // search scholarships with filters
+    searchScholarships: build.query<ScholarshipSearchResponse, ScholarshipSearchRequest>({
       query: (data) => ({
         url: API_ENDPOINTS.SCHOLARSHIPS_SEARCH,
         method: 'POST',
@@ -92,18 +89,19 @@ export const apiScholarship = createApi({
       }),
     }),
 
-    getScholarshipBySlug: build.query<ScholarshipDetail, string>({
+    getScholarshipBySlug: build.query<Scholarship, string>({
       query: (slug) => ({
         url: `${API_ENDPOINTS.SCHOLARSHIP_DETAIL}/slug?slug=${slug}`,
         method: 'GET',
       }),
+      providesTags: ['Scholarships'],
     }),
   }),
 });
 
 export const {
+  usePageScholarshipsQuery,
   useSearchScholarshipsQuery,
-  useSearchScholarshipsAdvancedQuery,
   useGetScholarshipByIdQuery,
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,

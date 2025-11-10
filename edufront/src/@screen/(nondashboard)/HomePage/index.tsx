@@ -1,8 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Footer from '@/pattern/core/Footer';
-import Header from '@/pattern/core/Navbar';
 
 import {
   BannerSection,
@@ -11,16 +9,16 @@ import {
   ScholarshipsSection,
   CTASection,
 } from './components';
-import { useSearchScholarshipsQuery } from '@/state/apiScholarship';
+import { usePageScholarshipsQuery } from '@/state/apiScholarship';
 
 export default function HomePage() {
   const router = useRouter();
 
   const {
-    data: response,
+    data: scholarships,
     isLoading,
     isError,
-  } = useSearchScholarshipsQuery({
+  } = usePageScholarshipsQuery({
     criteria: {
       country: '',
       university: '',
@@ -30,10 +28,8 @@ export default function HomePage() {
     sortBy: 'id',
     sortDirection: 'DESC',
     page: 0,
-    size: 50,
+    size: 9,
   });
-
-  const scholarships = response?.content || [];
 
   return (
     <>
