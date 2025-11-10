@@ -23,7 +23,7 @@ public class SubscriptionPlanServiceImpl extends BaseService implements Subscrip
 
     @Override
     public List<SubscriptionPlanDto> getAll() {
-        return subscriptionPlanMapper.toDto(subscriptionPlanRepository.findAll());
+        return subscriptionPlanMapper.toDto(subscriptionPlanRepository.findByActiveTrue());
     }
 
     @Override

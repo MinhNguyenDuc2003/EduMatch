@@ -2,8 +2,8 @@ package com.minh.subscription.controller;
 
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
-import com.minh.model.dto.subscription.PaymentDto;
-import com.minh.subscription.service.PaymentService;
+import com.minh.model.dto.subscription.OrderDto;
+import com.minh.subscription.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -13,27 +13,27 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(EndPoint.SUBSCRIPTION.PAYMENTS)
-public class PaymentController {
+public class OrderController {
 
-    private final PaymentService paymentService;
+    private final OrderService paymentService;
 
     @GetMapping("/all")
-    public ApiResponse<List<PaymentDto>> getAll() {
+    public ApiResponse<List<OrderDto>> getAll() {
         return ApiResponse.ok(paymentService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<PaymentDto> getById(@PathVariable Long id) {
+    public ApiResponse<OrderDto> getById(@PathVariable Long id) {
         return ApiResponse.ok(paymentService.getById(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ApiResponse<PaymentDto> create(@RequestBody PaymentDto payment) {
+    public ApiResponse<OrderDto> create(@RequestBody OrderDto payment) {
         return ApiResponse.ok(paymentService.create(payment));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ApiResponse<PaymentDto> update(@RequestBody PaymentDto payment) {
+    public ApiResponse<OrderDto> update(@RequestBody OrderDto payment) {
         return ApiResponse.ok(paymentService.update(payment));
     }
 

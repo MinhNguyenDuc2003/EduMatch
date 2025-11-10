@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,5 +18,7 @@ public interface SubscriptionPlanRepository extends JpaRepository<SubscriptionPl
     @Modifying
     @Query("UPDATE SubscriptionPlanEntity s SET s.active = :active WHERE s.id = :id")
     void updateActiveById(@Param("id") Long id, @Param("active") boolean active);
+
+    List<SubscriptionPlanEntity> findByActiveTrue();
 
 }

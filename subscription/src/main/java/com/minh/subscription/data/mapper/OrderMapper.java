@@ -1,23 +1,23 @@
 package com.minh.subscription.data.mapper;
 
-import com.minh.model.dto.subscription.PaymentDto;
+import com.minh.model.dto.subscription.OrderDto;
 import com.minh.subscription.data.entity.PaymentEntity;
 import org.mapstruct.*;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface PaymentMapper {
+public interface OrderMapper {
 
     @Mapping(target = "subscriptionId", source = "subscription.id")
-    PaymentDto toDto(PaymentEntity entity);
+    OrderDto toDto(PaymentEntity entity);
 
     @Mapping(target = "subscription.id", source = "subscriptionId")
-    PaymentEntity toEntity(PaymentDto dto);
+    PaymentEntity toEntity(OrderDto dto);
 
-    List<PaymentDto> toDto(List<PaymentEntity> entities);
+    List<OrderDto> toDto(List<PaymentEntity> entities);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "subscription.id", source = "subscriptionId")
-    void updateEntityFromDto(PaymentDto dto, @MappingTarget PaymentEntity entity);
+    void updateEntityFromDto(OrderDto dto, @MappingTarget PaymentEntity entity);
 }

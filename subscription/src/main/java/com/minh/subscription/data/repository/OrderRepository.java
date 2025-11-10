@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 @Repository
-public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
+public interface OrderRepository extends JpaRepository<PaymentEntity, Long> {
 
     Optional<PaymentEntity> findByIdAndActive(Long id, Boolean active);
 

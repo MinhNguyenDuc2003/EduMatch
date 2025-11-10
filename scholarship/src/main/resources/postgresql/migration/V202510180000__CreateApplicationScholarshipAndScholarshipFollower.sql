@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS scholarship.APPLICATION_SCHOLARSHIP (
     id BIGSERIAL PRIMARY KEY,
+    application_scholarship_name VARCHAR(255) DEFAULT '',
     scholarship_id BIGINT,
     application_id BIGINT,
     status VARCHAR(100),
