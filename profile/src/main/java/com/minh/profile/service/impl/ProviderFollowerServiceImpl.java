@@ -68,9 +68,14 @@ public class ProviderFollowerServiceImpl implements ProviderFollowerService {
     }
 
     @Override
-    public List<ProviderFollowerDto> getAllProviders() {
+    public List<ProviderProfileVo> getAllProviders() {
         String userId = UaaContextHolder.getUserId();
-        return providerFollowerMapper.toDto(providerFollowerRepository.findByUserId(userId));
+        List<ProviderProfileVo> vos = new ArrayList<>();
+        List<ProviderFollowerEntity> providerFollowerEntities = providerFollowerRepository.findByUserId(userId);
+        providerFollowerEntities.forEach(providerFollower -> {
+            vos.add(profileService.getById(providerFollower.getProviderId()));
+        });
+        return vos;
     }
 
     @Override

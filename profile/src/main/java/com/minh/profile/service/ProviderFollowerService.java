@@ -13,7 +13,7 @@ public interface ProviderFollowerService {
 
     List<ProviderFollowerDto> getAllFollowers(String userId);
 
-    List<ProviderFollowerDto> getAllProviders();
+    List<ProviderProfileVo> getAllProviders();
 
     List<ProviderProfileVo> getAllMyFollowers();
 
