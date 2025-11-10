@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS subscription.subscription (
     updated_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS subscription.payment (
+CREATE TABLE IF NOT EXISTS subscription."order" (
     id BIGSERIAL PRIMARY KEY,
     subscription_id BIGINT REFERENCES subscription.subscription(id),
     user_id VARCHAR(100),

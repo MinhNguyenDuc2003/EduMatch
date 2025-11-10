@@ -32,7 +32,7 @@ public class PaymentServiceImpl extends BaseService implements PaymentService {
     @Override
     public PaymentDto getById(Long id) {
         PaymentEntity entity = paymentRepository.findByIdAndActive(id, true)
-                .orElseThrow(() -> new BusinessException(CoreMessageCode.PAYMENT_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
         return paymentMapper.toDto(entity);
     }
 
@@ -56,11 +56,10 @@ public class PaymentServiceImpl extends BaseService implements PaymentService {
     @Transactional(rollbackOn = Exception.class)
     public PaymentDto update(PaymentDto payment) {
         PaymentEntity existingEntity = paymentRepository.findByIdAndActive(payment.getId(), true)
-                .orElseThrow(() -> new BusinessException(CoreMessageCode.PAYMENT_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
 
         paymentMapper.updateEntityFromDto(payment, existingEntity);
 
-        // Gắn lại Subscription nếu cần
         if (payment.getSubscriptionId() != null) {
             SubscriptionEntity subscription = subscriptionRepository.findById(payment.getSubscriptionId())
                     .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND));
@@ -75,7 +74,7 @@ public class PaymentServiceImpl extends BaseService implements PaymentService {
     @Transactional(rollbackOn = Exception.class)
     public void delete(Long id) {
         if (!paymentRepository.existsById(id)) {
-            throw new BusinessException(CoreMessageCode.PAYMENT_NOT_FOUND);
+            throw new BusinessException(CoreMessageCode.ORDER_NOT_FOUND);
         }
         paymentRepository.updateActiveById(id);
     }

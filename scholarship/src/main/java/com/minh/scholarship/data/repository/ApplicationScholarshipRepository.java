@@ -42,4 +42,7 @@ public interface ApplicationScholarshipRepository extends JpaRepository<Applicat
     void softDeleteByScholarshipId(@Param("scholarshipId") Long scholarshipId);
 
     List<ApplicationScholarshipEntity> findByActive(boolean active);
+
+    boolean existsByApplicationIdAndScholarshipId(Long applicationId, Long scholarshipId);
+
 }

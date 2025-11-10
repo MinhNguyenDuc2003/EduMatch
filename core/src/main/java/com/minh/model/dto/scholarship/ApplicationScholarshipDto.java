@@ -1,5 +1,6 @@
 package com.minh.model.dto.scholarship;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -27,12 +28,6 @@ public class ApplicationScholarshipDto extends BaseDto {
     private Long scholarshipId;
 
     private String status;
-
-    @JsonSerialize(using = DateToTimestamp.class)
-    @JsonDeserialize(using = TimestampToDate.class)
-    private LocalDateTime appliedAt;
-
-    private String reviewedId;
 
     @JsonSerialize(using = DateToTimestamp.class)
     @JsonDeserialize(using = TimestampToDate.class)

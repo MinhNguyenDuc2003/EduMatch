@@ -61,6 +61,10 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
             throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
         }
 
+        if (repository.existsByApplicationIdAndScholarshipId(dto.getApplicationId(), dto.getScholarshipId())) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_ALREADY_SUBMITTED);
+        }
+
         ApplicationScholarshipEntity saved = repository.save(mapper.toEntity(dto));
         return mapper.toDto(saved);
     }

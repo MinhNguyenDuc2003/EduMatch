@@ -30,11 +30,12 @@ public final class CoreMessageCode {
     public static final String APPLICATION_REVIEW_NOT_FOUND = "Application review is not exist";
     public static final String APPLICATION_SCHOLARSHIP_NOT_FOUND = "Application Scholarship is not exist";
     public static final String APPLICATION_PREFERENCE_NOT_FOUND = "Application preference is not exist";
+    public static final String APPLICATION_ALREADY_SUBMITTED = "Application Already Submitted";
 
     public static final String NOTIFICATION_TEMPLATE_TYPE_NOT_FOUND = "Notification template type not found";
 
     public static final String SUBSCRIPTION_PLAN_NOT_FOUND = "Subscription plan is not exist";
     public static final String SUBSCRIPTION_NOT_FOUND = "Subscription is not exist";
-    public static final String PAYMENT_NOT_FOUND = "Payment is not exist";
+    public static final String ORDER_NOT_FOUND = "Order is not exist";
     public static final String SCHOLARSHIP_SLUG_IS_ALREADY_EXIST = "Scholarship slug is already exist";
 }
