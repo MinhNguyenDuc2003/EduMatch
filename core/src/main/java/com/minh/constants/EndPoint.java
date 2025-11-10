@@ -14,6 +14,7 @@ public final class EndPoint {
 
     public static class MEDIA {
         public static final String MEDIA = "/medias";
+        public static final String MAIL = "/mail";
     }
 
     public static class PROFILES {

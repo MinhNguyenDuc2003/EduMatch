@@ -20,12 +20,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
 import java.time.Duration;
 
 @SpringBootApplication
+@EnableScheduling
 @EnableFeignClients("com.minh.scholarship.feign")
 @EntityScan("com.minh.scholarship.data.entity")
 @EnableJpaRepositories("com.minh.scholarship.data.repository")
@@ -38,6 +40,7 @@ import java.time.Duration;
         "com.minh.service",
         "com.minh.scholarship.message",
         "com.minh.scholarship.configuration",
+        "com.minh.scholarship.quartzjob",
 })
 @Slf4j
 public class ScholarshipApplication {
