@@ -18,7 +18,7 @@ import {
 interface ScholarshipCarouselProps {
   value?: number | null;
   isLoading?: boolean;
-  onSelectAction: (value: number | null) => void;
+  onSelectAction: (scholarship: Scholarship | null) => void;
   scholarships: Scholarship[];
 }
 
@@ -65,7 +65,7 @@ const ScholarshipCarousel = ({
               <CarouselItem
                 key={scholarship.id}
                 className="basis-auto"
-                onClick={() => onSelectAction(scholarship.id)}
+                onClick={() => onSelectAction(scholarship)}
               >
                 <ScholarshipCard
                   scholarship={scholarship}

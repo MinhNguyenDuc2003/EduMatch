@@ -9,12 +9,13 @@ const API_ENDPOINTS = {
   FOLLOW_PROVIDER: '/profile/followers',
   GET_FOLLOWED_PROVIDERS: '/profile/followers/providers',
   GET_PROVIDER_BY_ID: '/profile/providers',
+  APPLICATION: '/scholarship/applications-scholarship',
 } as const;
 
 export const apiProvider = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiProvider',
-  tagTypes: ['Profile', 'Scholarships'],
+  tagTypes: ['Profile', 'Scholarships', 'Applications'],
   endpoints: (build) => ({
     // Get customer profile (works for both applicant and provider)
     getProfile: build.query<ProviderProfileApiResponse, void>({
@@ -148,6 +149,15 @@ export const apiProvider = createApi({
         { type: 'Scholarships', id: `provider-${providerId}` },
       ],
     }),
+
+    // Get all applications by scholarship ID
+    getApplicationsByScholarshipId: build.query<ApplicationScholarship[], number>({
+      query: (scholarshipId) => ({
+        url: `${API_ENDPOINTS.APPLICATION}/by-scholarship?scholarshipId=${scholarshipId}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, scholarshipId) => [{ type: 'Applications', id: scholarshipId }],
+    }),
   }),
 });
 
@@ -167,4 +177,5 @@ export const {
   useGetFollowedProvidersQuery,
   useGetProviderProfileByIdQuery,
   useGetScholarshipsByProviderIdQuery,
+  useGetApplicationsByScholarshipIdQuery,
 } = apiProvider;
