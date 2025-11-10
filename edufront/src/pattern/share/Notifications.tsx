@@ -47,23 +47,6 @@ const Notifications = ({ notifications }: { notifications: UserNotification[] })
             console.log('Error parsing private notification:', error);
           }
         });
-
-        // // Subscribe to global notifications
-        // client.subscribe('/topic/global', (message: IMessage) => {
-        //   try {
-        //     const notification: Notification = JSON.parse(message.body);
-        //     // Generate id if not present
-        //     if (!notification.id) {
-        //       notification.id = `${notification.userId}-${notification.referenceId}-${notification.topic}-${Date.now()}`;
-        //     }
-        //     // Add timestamp if not present
-        //     if (!notification.time) {
-        //       notification.time = new Date().toLocaleString();
-        //     }
-        //   } catch (error) {
-        //     console.error('Error parsing global notification:', error);
-        //   }
-        // });
       },
       onDisconnect: () => {
         console.log('WebSocket Disconnected');

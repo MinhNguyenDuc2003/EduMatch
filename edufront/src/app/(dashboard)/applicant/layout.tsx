@@ -2,7 +2,7 @@
 
 import Footer from '@/pattern/core/Footer';
 import Header from '@/pattern/core/Navbar';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import ProtectedRoute from '@/pattern/core/ProtectedRoute';
 import React from 'react';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
