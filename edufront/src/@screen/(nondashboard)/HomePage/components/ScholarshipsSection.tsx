@@ -1,6 +1,5 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { Button } from '@/lib/cus/button';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import CardSmalPicSkeleton from './CardSmalPicSkeleton';
@@ -16,32 +15,30 @@ type ScholarshipsSectionProps = {
   scholarships: Scholarship[];
   isLoading?: boolean;
   isError?: boolean;
+  currentPage: number;
+  totalPages: number;
+  totalElements: number;
+  onPageChange: (page: number) => void;
   onViewDetails: (item: Scholarship) => void;
 };
-
-const ITEMS_PER_PAGE = 9;
 
 export default function ScholarshipsSection({
   scholarships,
   isLoading = false,
   isError = false,
+  currentPage,
+  totalPages,
+  totalElements,
+  onPageChange,
   onViewDetails,
 }: ScholarshipsSectionProps) {
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState(0);
 
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
-  const totalItems = scholarships?.length || 0;
-  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  const startIndex = currentPage * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentScholarships = scholarships?.slice(startIndex, endIndex) || [];
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
+  // Use scholarships directly from API (already paginated)
+  const currentScholarships = scholarships || [];
 
   const handleToggleTracking = async (scholarshipId: number) => {
     const scholarship = currentScholarships.find((s) => s.id === scholarshipId);
@@ -111,7 +108,7 @@ export default function ScholarshipsSection({
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={handlePageChange}
+              onPageChange={onPageChange}
             />
           </div>
         )}
