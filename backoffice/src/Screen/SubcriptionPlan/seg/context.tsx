@@ -86,6 +86,44 @@ export default GenCtx({
           onSetLoading(false);
         }
       },
+      async onUpdate(id : string, plan: ISubscriptionPlanList ) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.put(
+            `/subscription/subscription/subscription/plans`,
+            {
+              id: id,
+              name: plan.name,
+              description: plan.description,
+              currency: plan.currency,
+              price: plan.price,
+              durationDays: plan.durationDays,
+              targetType: plan.targetType,
+              features: plan.features,
+            }
+          );
+          console.log('Update plan:', data.data);
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+      async onDelete(id: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.delete(
+            `/subscription/subscription/subscription/plans/${id}`
+          );
+          console.log('Delete plan:', data.data);
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
     };
 
     useEffect(() => {
