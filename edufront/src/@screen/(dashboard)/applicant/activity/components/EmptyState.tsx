@@ -33,6 +33,12 @@ const emptyStateConfig: Record<
     description:
       'Follow scholarship providers to stay updated on new opportunities. You will see them here when you start following.',
   },
+  application: {
+    icon: FileQuestion,
+    title: 'You are not created any applications yet',
+    description:
+      'Once you create an application, it will show up here so you can monitor application status and next steps.',
+  },
 };
 
 export default function EmptyState({ tab }: EmptyStateProps) {
