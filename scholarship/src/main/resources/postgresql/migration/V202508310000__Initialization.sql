@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS scholarship.application (
     gpa DOUBLE PRECISION,
     graduation_year VARCHAR(50),
     skills TEXT,
+    languages TEXT,
     achievements TEXT,
     extracurricular TEXT,
     motivation TEXT,

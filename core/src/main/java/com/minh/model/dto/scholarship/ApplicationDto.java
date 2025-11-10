@@ -46,6 +46,8 @@ public class ApplicationDto extends BaseDto {
 
     private String skills;
 
+    private String languages;
+
     private String achievements;
 
     private String extracurricular;

@@ -1,8 +1,6 @@
 package com.minh.scholarship.data.repository;
 
-import com.minh.model.dto.scholarship.ApplicationDto;
 import com.minh.scholarship.data.entity.ApplicationEntity;
-import com.minh.scholarship.data.vo.projection.ApplicationProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

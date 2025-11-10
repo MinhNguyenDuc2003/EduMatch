@@ -62,6 +62,9 @@ public class ApplicationEntity extends BaseEntity {
     @Column(name = "SKILLS")
     private String skills;
 
+    @Column(name = "LANGUAGES")
+    private String languages;
+
     @Column(name = "ACHIEVEMENTS")
     private String achievements;
 
