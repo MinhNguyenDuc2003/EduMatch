@@ -2,6 +2,7 @@ CREATE SCHEMA IF NOT EXISTS scholarship;
 
 CREATE TABLE IF NOT EXISTS scholarship.application (
     id BIGSERIAL PRIMARY KEY,
+    application_name VARCHAR(255) DEFAULT '',
     user_id VARCHAR(255),
     full_name VARCHAR(255),
     gender VARCHAR(50),

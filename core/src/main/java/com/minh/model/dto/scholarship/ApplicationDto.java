@@ -16,6 +16,8 @@ public class ApplicationDto extends BaseDto {
 
     private Long id;
 
+    private String applicationName;
+
     private String userId;
 
     private String fullName;

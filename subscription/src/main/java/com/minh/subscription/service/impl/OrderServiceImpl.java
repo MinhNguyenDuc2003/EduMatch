@@ -4,7 +4,7 @@ import com.minh.constants.CoreMessageCode;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.subscription.OrderDto;
 import com.minh.service.base.BaseService;
-import com.minh.subscription.data.entity.PaymentEntity;
+import com.minh.subscription.data.entity.OrderEntity;
 import com.minh.subscription.data.entity.SubscriptionEntity;
 import com.minh.subscription.data.mapper.OrderMapper;
 import com.minh.subscription.data.repository.OrderRepository;
@@ -31,7 +31,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
     @Override
     public OrderDto getById(Long id) {
-        PaymentEntity entity = paymentRepository.findByIdAndActive(id, true)
+        OrderEntity entity = paymentRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
         return orderMapper.toDto(entity);
     }
@@ -39,7 +39,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     @Override
     @Transactional(rollbackOn = Exception.class)
     public OrderDto create(OrderDto payment) {
-        PaymentEntity entity = orderMapper.toEntity(payment);
+        OrderEntity entity = orderMapper.toEntity(payment);
 
         // Gắn SubscriptionEntity nếu có id
         if (payment.getSubscriptionId() != null) {
@@ -48,14 +48,14 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             entity.setSubscription(subscription);
         }
 
-        PaymentEntity savedEntity = paymentRepository.save(entity);
+        OrderEntity savedEntity = paymentRepository.save(entity);
         return orderMapper.toDto(savedEntity);
     }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
     public OrderDto update(OrderDto payment) {
-        PaymentEntity existingEntity = paymentRepository.findByIdAndActive(payment.getId(), true)
+        OrderEntity existingEntity = paymentRepository.findByIdAndActive(payment.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
 
         orderMapper.updateEntityFromDto(payment, existingEntity);
@@ -66,7 +66,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             existingEntity.setSubscription(subscription);
         }
 
-        PaymentEntity savedEntity = paymentRepository.save(existingEntity);
+        OrderEntity savedEntity = paymentRepository.save(existingEntity);
         return orderMapper.toDto(savedEntity);
     }
 

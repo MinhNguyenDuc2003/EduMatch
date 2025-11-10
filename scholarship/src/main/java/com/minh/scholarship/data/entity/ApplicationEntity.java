@@ -17,6 +17,9 @@ public class ApplicationEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "APPLICATION_NAME")
+    private String applicationName;
+
     @Column(name = "USER_ID")
     private String userId;
 
