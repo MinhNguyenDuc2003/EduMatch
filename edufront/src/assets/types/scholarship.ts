@@ -43,7 +43,7 @@ declare global {
     isDeleted?: boolean;
     providerProfileVo: ProviderProfile;
     scholarshipPreferences?: ScholarshipPreference[];
-    scholarshipMedias: ScholarshipMedia[];
+    scholarshipMedias?: ScholarshipMedia[];
     isFollow: number;
   };
 
