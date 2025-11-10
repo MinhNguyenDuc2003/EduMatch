@@ -9,6 +9,7 @@ import {
   ProviderCard,
   ProviderCardSkeleton,
   CardSmalPicSkeleton,
+  ApplicationCardSkeleton,
 } from './components';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { type ShortlistTab, TAB_CONFIGS } from './types';
@@ -17,6 +18,8 @@ import {
   useGetTrackedScholarshipsQuery,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
+import ApplicationCard from './components/ApplicationCard';
+import { useGetApplicationsQuery } from '@/state/apiApplicant';
 
 export default function ActivityManagement() {
   const router = useRouter();
@@ -27,6 +30,7 @@ export default function ActivityManagement() {
     useGetTrackedScholarshipsQuery();
   const { data: followedProvidersData, isLoading: isLoadingFollowedProviders } =
     useGetFollowedProvidersQuery();
+  const { data: applicationsData, isLoading: isLoadingApplications } = useGetApplicationsQuery();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
@@ -34,10 +38,9 @@ export default function ActivityManagement() {
     setActiveTab(tab);
   };
 
-  const trackedScholarships: Scholarship[] = trackedScholarshipsData || [];
-  const followedProviders = followedProvidersData || [];
   const isFollowingTab = activeTab === 'following';
   const isTrackedTab = activeTab === 'tracking';
+  const isApplicationTab = activeTab === 'application';
 
   const handleViewDetails = (slug: string) => {
     router.push(`/scholarships/${slug}`);
@@ -98,13 +101,13 @@ export default function ActivityManagement() {
                     <ProviderCardSkeleton key={`skeleton-provider-${index}`} />
                   ))}
                 </div>
-              ) : isTrackedTab && trackedScholarships.length === 0 ? (
+              ) : isTrackedTab && trackedScholarshipsData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
-              ) : isFollowingTab && followedProviders.length === 0 ? (
+              ) : isFollowingTab && followedProvidersData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isTrackedTab ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {trackedScholarships.map((scholarship) => (
+                  {trackedScholarshipsData?.map((scholarship) => (
                     <CardSmalPic
                       key={scholarship.id}
                       scholarship={scholarship}
@@ -115,7 +118,7 @@ export default function ActivityManagement() {
                 </div>
               ) : isFollowingTab ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {followedProviders.map((provider, index) => (
+                  {followedProvidersData?.map((provider, index) => (
                     <ProviderCard
                       key={provider.providerId}
                       providerId={provider.providerId}
@@ -124,6 +127,20 @@ export default function ActivityManagement() {
                     />
                   ))}
                 </div>
+              ) : isApplicationTab ? (
+                isLoadingApplications ? (
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {[...Array(6)].map((_, index) => (
+                      <ApplicationCardSkeleton key={`skeleton-application-${index}`} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {applicationsData?.map((application) => (
+                      <ApplicationCard key={application.id} application={application} />
+                    ))}
+                  </div>
+                )
               ) : (
                 <EmptyState tab={activeTab} />
               )}

@@ -15,7 +15,7 @@ export const apiScholarship = createApi({
   tagTypes: ['Scholarships'],
   endpoints: (build) => ({
     // page scholarships with pagination
-    pageScholarships: build.query<Scholarship[], ScholarshipPageRequest>({
+    pageScholarships: build.query<ApiGetScholarshipResponse, ScholarshipPageRequest>({
       query: (data) => ({
         url: API_ENDPOINTS.SCHOLARSHIPS_PAGE,
         method: 'POST',

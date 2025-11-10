@@ -82,7 +82,7 @@ declare global {
   };
 
   type ScholarshipSearchResponse = {
-    scholarships: Scholarship[];
+    scholarship: Scholarship[];
     totalElements: number;
     totalPages: number;
     aggregations?: ScholarshipSearchAggregations;

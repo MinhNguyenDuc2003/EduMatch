@@ -51,7 +51,7 @@ export default function ScholarshipsList() {
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
-  const scholarships = response?.scholarships || [];
+  const scholarships = response?.scholarship || [];
   const totalElements = response?.totalElements || 0;
   const totalPages = response?.totalPages || 0;
 

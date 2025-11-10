@@ -17,7 +17,6 @@ type ScholarshipsSectionProps = {
   isError?: boolean;
   currentPage: number;
   totalPages: number;
-  totalElements: number;
   onPageChange: (page: number) => void;
   onViewDetails: (item: Scholarship) => void;
 };
@@ -28,7 +27,6 @@ export default function ScholarshipsSection({
   isError = false,
   currentPage,
   totalPages,
-  totalElements,
   onPageChange,
   onViewDetails,
 }: ScholarshipsSectionProps) {
@@ -37,11 +35,8 @@ export default function ScholarshipsSection({
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
-  // Use scholarships directly from API (already paginated)
-  const currentScholarships = scholarships || [];
-
   const handleToggleTracking = async (scholarshipId: number) => {
-    const scholarship = currentScholarships.find((s) => s.id === scholarshipId);
+    const scholarship = scholarships.find((s) => s.id === scholarshipId);
     const isTracked = scholarship?.isFollow === 1;
 
     try {
@@ -55,7 +50,7 @@ export default function ScholarshipsSection({
         }).unwrap();
       }
     } catch (error) {
-      console.error('Failed to toggle tracking:', error);
+      console.log('Failed to toggle tracking:', error);
     }
   };
 
@@ -86,8 +81,8 @@ export default function ScholarshipsSection({
                 Failed to load scholarships. Please try again later.
               </p>
             </div>
-          ) : currentScholarships.length > 0 ? (
-            map(currentScholarships, (item) => (
+          ) : scholarships.length > 0 ? (
+            map(scholarships, (item) => (
               <CardSmalPic
                 key={item.id}
                 scholarship={item}
