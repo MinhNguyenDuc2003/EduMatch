@@ -58,4 +58,7 @@ public interface ApplicationMapper extends BaseMapper<ApplicationEntity, Applica
     @Named("prosToVos")
     List<ApplicationVo> prosToVos(List<ApplicationProjection> projection);
 
+    ApplicationEntity toEntity(ApplicationDto dto);
+    ApplicationDto toDto(ApplicationEntity entity);
+
 }
