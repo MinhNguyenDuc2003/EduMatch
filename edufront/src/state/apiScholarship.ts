@@ -3,10 +3,10 @@ import customBaseQuery from './custombaseQuery';
 
 // API Endpoints
 const API_ENDPOINTS = {
-  SCHOLARSHIPS_PAGE: '/scholarship/scholarships/page',
-  SCHOLARSHIPS_SEARCH: '/search/scholarships/search',
-  SCHOLARSHIP_DETAIL: '/scholarship/scholarships',
-  SCHOLARSHIP_FOLLOW: '/scholarship/scholarships/follow',
+  SCHOLARSHIPS_PAGE: 'api/scholarship/scholarships/page',
+  SCHOLARSHIPS_SEARCH: 'api/search/scholarships/search',
+  SCHOLARSHIP_DETAIL: 'api/scholarship/scholarships',
+  SCHOLARSHIP_FOLLOW: 'api/scholarship/scholarships/follow',
 } as const;
 
 export const apiScholarship = createApi({

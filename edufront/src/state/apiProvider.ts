@@ -5,12 +5,12 @@ import { Provider } from '@radix-ui/react-tooltip';
 
 // API Endpoints
 const API_ENDPOINTS = {
-  PROVIDER_PROFILE: '/customer/storefront/provider/profile',
-  SCHOLARSHIP: '/scholarship/scholarships',
-  FOLLOW_PROVIDER: '/profile/followers',
-  GET_FOLLOWED_PROVIDERS: '/profile/followers/providers',
-  GET_PROVIDER_BY_ID: '/profile/providers',
-  APPLICATION: '/scholarship/applications-scholarship',
+  PROVIDER_PROFILE: 'api/customer/storefront/provider/profile',
+  SCHOLARSHIP: 'api/scholarship/scholarships',
+  FOLLOW_PROVIDER: 'api/profile/followers',
+  GET_FOLLOWED_PROVIDERS: 'api/profile/followers/providers',
+  GET_PROVIDER_BY_ID: 'api/profile/providers',
+  APPLICATION: 'api/scholarship/applications-scholarship',
 } as const;
 
 export const apiProvider = createApi({
