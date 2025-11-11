@@ -79,7 +79,7 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
           </h1>
 
           {!isEditing ? (
-            <div className='flex gap-5'>
+            <div className="flex gap-5">
               <button
                 onClick={() => meds.onDelete(id)}
                 className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-400 text-white rounded-lg transition"
@@ -151,43 +151,25 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
 
         {/* Description */}
         <div>
-          <label className="block text-gray-700 font-medium mb-2">Description</label>
-          {isEditing ? (
-            <CustomFormField
-              label="Description"
-              name="fields.SubcriptionPlan.description"
-              type="textarea"
-              disabled={!isEditing}
-              isBorder
-            />
-          ) : (
-            <div className="bg-gray-50 border rounded-lg p-4 text-gray-700 leading-relaxed">
-              {data.description || 'No description provided.'}
-            </div>
-          )}
+          <CustomFormField
+            label="Description"
+            name="fields.SubcriptionPlan.description"
+            type="textarea"
+            disabled={!isEditing}
+            isBorder
+          />
         </div>
 
         {/* Features */}
         <div>
-          <label className="block text-gray-700 font-medium mb-2">Features</label>
-          {isEditing ? (
-            <CustomFormField
-              label="Features"
-              name="fields.SubcriptionPlan.features"
-              placeholder="Comma-separated, e.g. AI_MATCHING,PROFILE_SCORING"
-              disabled={!isEditing}
-              isBorder
-            />
-          ) : (
-            <ul className="grid sm:grid-cols-2 gap-2 bg-gray-50 border rounded-lg p-4 text-gray-700">
-              {featureList.map((f: string, idx: number) => (
-                <li key={idx} className="flex items-center gap-2">
-                  <Check size={16} className="text-green-600" />
-                  {f.replaceAll('_', ' ')}
-                </li>
-              ))}
-            </ul>
-          )}
+          <CustomFormField
+            type="multi-input"
+            label="Features"
+            name="fields.SubcriptionPlan.features"
+            placeholder="Comma-separated, e.g. AI_MATCHING,PROFILE_SCORING"
+            disabled={!isEditing}
+            isBorder
+          />
         </div>
       </form>
     </FormProvider>

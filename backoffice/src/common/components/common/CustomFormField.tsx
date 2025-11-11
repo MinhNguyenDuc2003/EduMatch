@@ -101,6 +101,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
         return (
           <Textarea
             placeholder={placeholder}
+            disabled={disabled}
             {...field}
             rows={3}
             className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
