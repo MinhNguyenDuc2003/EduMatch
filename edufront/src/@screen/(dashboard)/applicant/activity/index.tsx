@@ -101,9 +101,17 @@ export default function ActivityManagement() {
                     <ProviderCardSkeleton key={`skeleton-provider-${index}`} />
                   ))}
                 </div>
+              ) : isApplicationTab && isLoadingApplications ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {[...Array(6)].map((_, index) => (
+                    <ApplicationCardSkeleton key={`skeleton-application-${index}`} />
+                  ))}
+                </div>
               ) : isTrackedTab && trackedScholarshipsData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isFollowingTab && followedProvidersData?.length === 0 ? (
+                <EmptyState tab={activeTab} />
+              ) : isApplicationTab && applicationsData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isTrackedTab ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -120,27 +128,19 @@ export default function ActivityManagement() {
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {followedProvidersData?.map((provider, index) => (
                     <ProviderCard
-                      key={provider.providerId}
-                      providerId={provider.providerId}
-                      onViewDetails={() => handleViewProvider(provider.providerId)}
-                      onUnfollow={() => handleUntrack(provider.providerId)}
+                      key={provider.id}
+                      provider={provider}
+                      onViewDetails={() => handleViewProvider(provider.id)}
+                      onUnfollow={() => handleUntrack(provider.id)}
                     />
                   ))}
                 </div>
               ) : isApplicationTab ? (
-                isLoadingApplications ? (
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {[...Array(6)].map((_, index) => (
-                      <ApplicationCardSkeleton key={`skeleton-application-${index}`} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {applicationsData?.map((application) => (
-                      <ApplicationCard key={application.id} application={application} />
-                    ))}
-                  </div>
-                )
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {applicationsData?.map((application) => (
+                    <ApplicationCard key={application.id} application={application} />
+                  ))}
+                </div>
               ) : (
                 <EmptyState tab={activeTab} />
               )}

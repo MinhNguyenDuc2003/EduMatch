@@ -9,6 +9,7 @@ const API_ENDPOINTS = {
   CREATE_PROFILE: '/customer/storefront/customer/profile',
   UPDATE_PROFILE: '/customer/storefront/customer/profile',
   APPLICATION: '/scholarship/applications',
+  APPLIED_APPLICATION: '/scholarship/applications-scholarship',
   FOLLOW_PROVIDER: '/profile/followers',
   SCHOLARSHIP_FOLLOW: '/scholarship/scholarships/follow',
 } as const;
@@ -110,6 +111,14 @@ export const apiApplicant = createApi({
       }),
       invalidatesTags: ['Application'],
     }),
+
+    getAppliedApplication: build.query<Application[], void>({
+      query: () => ({
+        url: API_ENDPOINTS.APPLIED_APPLICATION,
+        method: 'GET',
+      }),
+      providesTags: ['Application'],
+    }),
   }),
 });
 
@@ -124,4 +133,5 @@ export const {
   useUploadImagesMutation,
   useDeleteImagesMutation,
   useSubmitApplicationMutation,
+  useGetAppliedApplicationQuery,
 } = apiApplicant;
