@@ -1,8 +1,8 @@
 'use client';
-import React, { useState } from 'react';
-import { Check, X } from 'lucide-react';
-import { CustomFormField } from 'src/common/components/common/CustomFormField';
+import { Check } from 'lucide-react';
+import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { CustomFormField } from 'src/common/components/common/CustomFormField';
 import Context from '../seg/context';
 
 export default function SubcriptionPlanCreate() {
@@ -34,21 +34,20 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
     },
   });
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-  try {
-    setLoading(true);
-    const plan = data.fields.SubcriptionPlan; // Lấy đúng object
-    await meds.onCreate(plan); // Truyền object cho API
-  } catch (err) {
-    console.error(err);
-    alert('Failed to create subscription plan.');
-  } finally {
-    setLoading(false);
-  }
-});
-
+    try {
+      setLoading(true);
+      const plan = data.fields.SubcriptionPlan; // Lấy đúng object
+      await meds.onCreate(plan); // Truyền object cho API
+    } catch (err) {
+      console.error(err);
+      alert('Failed to create subscription plan.');
+    } finally {
+      setLoading(false);
+    }
+  });
 
   return (
     <FormProvider {...methods}>
@@ -85,7 +84,10 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
             type="number"
             placeholder="Enter price"
             isBorder
-            rules={{ required: 'Price is required', min: { value: 0, message: 'Price must be positive' } }}
+            rules={{
+              required: 'Price is required',
+              min: { value: 0, message: 'Price must be positive' },
+            }}
           />
           <CustomFormField
             name="fields.SubcriptionPlan.currency"
@@ -100,7 +102,10 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
             type="number"
             placeholder="Enter duration"
             isBorder
-            rules={{ required: 'Duration is required', min: { value: 1, message: 'Duration must be at least 1' } }}
+            rules={{
+              required: 'Duration is required',
+              min: { value: 1, message: 'Duration must be at least 1' },
+            }}
           />
           <CustomFormField
             name="fields.SubcriptionPlan.targetType"

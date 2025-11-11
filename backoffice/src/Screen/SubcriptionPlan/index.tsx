@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 const SubscriptionPlanPage = () => {
   const [filterText, setFilterText] = useState('');
-const router = useRouter();
+  const router = useRouter();
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
@@ -75,7 +75,6 @@ const router = useRouter();
                 title="Subscription Plan List"
                 data={plans as any}
                 onCreate={() => router.push('/subscriptionPlan/create')}
-
                 detailPath="/subscriptionPlan"
                 customTitles={[
                   'ID',

@@ -1,10 +1,9 @@
 'use client';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { Check, X, Pencil } from 'lucide-react';
-import Context from '../seg/context';
-import { CustomFormField } from 'src/common/components/common/CustomFormField';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { CustomFormField } from 'src/common/components/common/CustomFormField';
+import Context from '../seg/context';
 
 export default function SubcriptionPlanDetail() {
   const { id } = useParams();
@@ -21,7 +20,7 @@ export default function SubcriptionPlanDetail() {
 function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
   const [data, setData] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const methods = useForm<any>({ defaultValues: {} });
   const { reset, handleSubmit } = methods;
@@ -39,11 +38,12 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
         });
       })();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleSave = handleSubmit(async (formData) => {
     try {
-      setLoading(true);
+      // setLoading(true);
       await meds.onUpdate(id, formData);
       setData(formData);
       setIsEditing(false);
@@ -51,7 +51,7 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
       console.error(error);
       alert('Failed to update subscription.');
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   });
 
@@ -62,19 +62,19 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
       </div>
     );
 
-  const featureList =
-    typeof data?.plan?.features === 'string'
-      ? data.plan.features.split(',').map((f: string) => f.trim())
-      : [];
+  // const featureList =
+  //   typeof data?.plan?.features === 'string'
+  //     ? data.plan.features.split(',').map((f: string) => f.trim())
+  //     : [];
 
-  const formatDate = (timestamp: number) => {
-    try {
-      const date = new Date(timestamp * 1000);
-      return date.toLocaleDateString('en-US');
-    } catch {
-      return 'Invalid date';
-    }
-  };
+  // const formatDate = (timestamp: number) => {
+  //   try {
+  //     const date = new Date(timestamp * 1000);
+  //     return date.toLocaleDateString('en-US');
+  //   } catch {
+  //     return 'Invalid date';
+  //   }
+  // };
 
   return (
     <FormProvider {...methods}>

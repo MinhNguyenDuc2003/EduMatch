@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import apiClientService from 'src/apiController/ApiClientService';
 import { GenCtx } from 'src/apiController/GeneralContext';
@@ -29,7 +29,7 @@ export default GenCtx({
         filters: {},
       },
     });
-    const loading = useState(false);
+    // const loading = useState(false);
     const meds = {
       async onGetData() {
         onSetLoading(true);
@@ -48,13 +48,16 @@ export default GenCtx({
       },
     };
 
+    
     useEffect(() => {
       meds.onGetData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {
       ss,
       data,
       meds,
+      methods
     };
   },
 });

@@ -3,14 +3,12 @@
 import { SidebarTrigger } from '@commonServices/components/ui/sidebar';
 // import { UserButton, useUser } from "@clerk/nextjs";
 // import { dark } from "@clerk/themes";
-import { Bell, BookOpen } from 'lucide-react';
-import Link from 'next/link';
-import { cn } from 'src/utils/cn';
+import { Bell } from 'lucide-react';
 
 const Navbar = () => {
   //   const { user } = useUser();
   //   const userRole = user?.publicMetadata?.userType as "student" | "teacher";
-  const userRole = 'tutor';
+  // const userRole = 'tutor';
 
   return (
     <nav className=" w-full mb-6 px-4 sm:px-8 pt-7 z-10">

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
 const ScholarshipPage = () => {
   const [filterText, setFilterText] = useState('');
@@ -11,7 +11,7 @@ const ScholarshipPage = () => {
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
-const router = useRouter();
+  // const router = useRouter();
   return (
     <Context.Provider>
       <Context.Consumer>

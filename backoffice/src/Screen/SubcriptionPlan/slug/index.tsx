@@ -39,6 +39,7 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
         });
       })();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleSave = handleSubmit(async (formData) => {
@@ -63,8 +64,8 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
       </div>
     );
 
-  const featureList =
-    typeof data?.features === 'string' ? data.features.split(',').map((f: string) => f.trim()) : [];
+  // const featureList =
+  //   typeof data?.features === 'string' ? data.features.split(',').map((f: string) => f.trim()) : [];
 
   return (
     <FormProvider {...methods}>

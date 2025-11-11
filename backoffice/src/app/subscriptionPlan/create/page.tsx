@@ -1,12 +1,12 @@
-import React from 'react'
-import SubcriptionPlanCreate from 'src/Screen/SubcriptionPlan/pageCreate'
+import React from 'react';
+import SubcriptionPlanCreate from 'src/Screen/SubcriptionPlan/pageCreate';
 
 const Create = () => {
   return (
     <div>
-        <SubcriptionPlanCreate/>
+      <SubcriptionPlanCreate />
     </div>
-  )
-}
+  );
+};
 
-export default Create
+export default Create;

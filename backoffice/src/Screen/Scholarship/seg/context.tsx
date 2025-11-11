@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import apiClientService from 'src/apiController/ApiClientService';
 import { GenCtx } from 'src/apiController/GeneralContext';
@@ -29,12 +29,12 @@ export default GenCtx({
         filters: {},
       },
     });
-    const loading = useState(false);
+    // const loading = useState(false);
     const meds = {
       async onGetData() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.post('/scholarship/scholarships/page', {
+          const data = await apiClientService.post('/api/scholarship/scholarships/page', {
             criteria: {
               country: '',
               university: '',
@@ -63,7 +63,7 @@ export default GenCtx({
       async onGetByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/scholarship/scholarships/${id}`);
+          const data = await apiClientService.get(`/api/scholarship/scholarships/${id}`);
           return data.data;
         } catch (error) {
           console.error({ error });
@@ -75,6 +75,7 @@ export default GenCtx({
 
     useEffect(() => {
       meds.onGetData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {
       ss,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ControllerRenderProps, FieldValues, useFormContext, useFieldArray } from 'react-hook-form';
 import { Edit, X, Plus } from 'lucide-react';
-import MultipleSelector from './multi-select';
+// import MultipleSelector from './multi-select';
 import StringMultiSelect from './string-multi-select';
 import { Textarea } from './textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
@@ -73,7 +73,7 @@ interface FormFieldProps {
   inlineLabel?: boolean;
   isBorder?: boolean;
   stringFormat?: 'comma' | 'json' | 'pipe';
-    rules?: any; 
+  rules?: any;
 }
 
 export const CustomFormField: React.FC<FormFieldProps> = ({
@@ -226,7 +226,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
       control={control}
       name={name || ''}
       defaultValue={initialValue}
-       rules={rules}
+      rules={rules}
       render={({ field }) => (
         <FormItem
           className={`${type !== 'switch' && 'rounded-md'} relative ${className} ${

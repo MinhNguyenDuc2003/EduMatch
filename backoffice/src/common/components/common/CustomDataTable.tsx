@@ -34,13 +34,14 @@ const CustomDataTable = ({
   customTitles = [],
   externalFilterText = '',
   onCreate,
-  onEdit,
+  // onEdit,
   onDelete,
   onView,
   detailPath,
 }: CustomDataTableProps) => {
   const router = useRouter();
   const [filterText, setFilterText] = useState(externalFilterText);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
@@ -54,10 +55,10 @@ const CustomDataTable = ({
     setFilterText(externalFilterText);
   }, [externalFilterText]);
 
-  const handleCreate = () => {
-    setModalType('create');
-    setShowModal(true);
-  };
+  // const handleCreate = () => {
+  //   setModalType('create');
+  //   setShowModal(true);
+  // };
 
   const handleEdit = (row: any) => {
     setSelectedRow(row);
@@ -142,6 +143,7 @@ const CustomDataTable = ({
     };
 
     return [...dataCols, actionCol];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, customTitles, openDropdown]);
 
   const filteredData = useMemo(() => {
@@ -310,8 +312,6 @@ const CustomDataTable = ({
           }}
         />
       </motion.div>
-
-     
 
       <CustomConfirm
         open={showConfirm}
