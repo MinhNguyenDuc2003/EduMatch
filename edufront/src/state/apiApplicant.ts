@@ -5,13 +5,13 @@ import { IApplicantProfile, IApplication } from '@/lib/schemas';
 
 // API Endpoints
 const API_ENDPOINTS = {
-  CUSTOMER_PROFILE: 'api/customer/storefront/customer/profile',
-  CREATE_PROFILE: 'api/customer/storefront/customer/profile',
-  UPDATE_PROFILE: 'api/customer/storefront/customer/profile',
-  APPLICATION: 'api/scholarship/applications',
-  APPLIED_APPLICATION: 'api/scholarship/applications-scholarship',
-  FOLLOW_PROVIDER: 'api/profile/followers',
-  SCHOLARSHIP_FOLLOW: 'api/scholarship/scholarships/follow',
+  CUSTOMER_PROFILE: '/api/customer/storefront/customer/profile',
+  CREATE_PROFILE: '/api/customer/storefront/customer/profile',
+  UPDATE_PROFILE: '/api/customer/storefront/customer/profile',
+  APPLICATION: '/api/scholarship/applications',
+  APPLIED_APPLICATION: '/api/scholarship/applications-scholarship',
+  FOLLOW_PROVIDER: '/api/profile/followers',
+  SCHOLARSHIP_FOLLOW: '/api/scholarship/scholarships/follow',
 } as const;
 
 export const apiApplicant = createApi({
