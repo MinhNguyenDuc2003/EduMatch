@@ -54,7 +54,7 @@ declare global {
     scholarshipType?: string;
   };
 
-  type ScholarshipSearchRequest = {
+  type ScholarshipPageRequest = {
     criteria: ScholarshipSearchCriteria;
     sortBy?: string;
     sortDirection?: 'ASC' | 'DESC';
@@ -62,7 +62,7 @@ declare global {
     size: number;
   };
 
-  type ScholarshipAdvancedSearchRequest = {
+  type ScholarshipSearchRequest = {
     criteria: Pick<ScholarshipSearchCriteria, 'country' | 'university' | 'studyLevel'>;
     page: number;
     size: number;

@@ -1,4 +1,4 @@
-export type ShortlistTab = 'tracking' | 'applied' | 'following';
+export type ShortlistTab = 'tracking' | 'applied' | 'following' | 'application';
 
 export type TabConfig = {
   key: ShortlistTab;
@@ -32,5 +32,13 @@ export const TAB_CONFIGS: TabConfig[] = [
     description:
       'Stay connected with scholarship providers you are interested in. Get updates on new opportunities and never miss a relevant scholarship.',
     bgGradient: 'from-orange-600 via-red-600 to-pink-600',
+  },
+  {
+    key: 'application',
+    label: 'Application',
+    title: 'Your Applications',
+    description:
+      'Track all scholarships you have applied to. Monitor application status, review submission details, and follow up on your opportunities.',
+    bgGradient: 'from-green-600 via-lime-600 to-emerald-500',
   },
 ];

@@ -9,12 +9,15 @@ const API_ENDPOINTS = {
   CREATE_PROFILE: '/customer/storefront/customer/profile',
   UPDATE_PROFILE: '/customer/storefront/customer/profile',
   APPLICATION: '/scholarship/applications',
+  APPLIED_APPLICATION: '/scholarship/applications-scholarship',
+  FOLLOW_PROVIDER: '/profile/followers',
+  SCHOLARSHIP_FOLLOW: '/scholarship/scholarships/follow',
 } as const;
 
 export const apiApplicant = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiApplicant',
-  tagTypes: ['Profile', 'Application'],
+  tagTypes: ['Profile', 'Application', 'Follow', 'Scholarships', 'TrackedScholarships'],
   endpoints: (build) => ({
     // Get customer profile (works for both applicant and provider)
     getProfile: build.query<ProfileApiResponse, void>({
@@ -40,6 +43,15 @@ export const apiApplicant = createApi({
         body: data,
       }),
       invalidatesTags: ['Profile'],
+    }),
+
+    // Get all applications for current user
+    getApplications: build.query<Application[], void>({
+      query: () => ({
+        url: API_ENDPOINTS.APPLICATION + '/my-application',
+        method: 'GET',
+      }),
+      providesTags: ['Application'],
     }),
 
     // Get application by id
@@ -90,6 +102,23 @@ export const apiApplicant = createApi({
       }),
       invalidatesTags: ['Application'],
     }),
+
+    submitApplication: build.mutation<boolean, { applicationId: number; scholarshipId: number }>({
+      query: ({ applicationId, scholarshipId }) => ({
+        url: `${API_ENDPOINTS.APPLICATION}-scholarship`,
+        method: 'POST',
+        body: { applicationId, scholarshipId },
+      }),
+      invalidatesTags: ['Application'],
+    }),
+
+    getAppliedApplication: build.query<Application[], void>({
+      query: () => ({
+        url: API_ENDPOINTS.APPLIED_APPLICATION,
+        method: 'GET',
+      }),
+      providesTags: ['Application'],
+    }),
   }),
 });
 
@@ -97,9 +126,12 @@ export const {
   useGetProfileQuery,
   useCreateProfileMutation,
   useUpdateProfileMutation,
+  useGetApplicationsQuery,
   useGetApplicationByIdQuery,
   useCreateApplicationMutation,
   useUpdateApplicationMutation,
   useUploadImagesMutation,
   useDeleteImagesMutation,
+  useSubmitApplicationMutation,
+  useGetAppliedApplicationQuery,
 } = apiApplicant;

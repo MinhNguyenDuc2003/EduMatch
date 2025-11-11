@@ -39,13 +39,11 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
     });
 
   const { data: followedProviders } = useGetFollowedProvidersQuery();
-  const { data: profile } = useGetProfileQuery();
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
-  const userId = profile?.customer?.id;
   const isFollowing = followedProviders?.some((fp) => fp.providerId === providerId) || false;
 
   const handleFollowToggle = async () => {
@@ -56,7 +54,7 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
         await followProvider(providerId).unwrap();
       }
     } catch (error) {
-      console.error('Failed to toggle follow:', error);
+      console.log('Failed to toggle follow:', error);
     }
   };
 
@@ -66,8 +64,8 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
   };
 
   const handleToggleTracking = async (scholarshipId: number) => {
-    if (!userId) {
-      console.error('User ID not available');
+    if (!providerId) {
+      console.log('User ID not available');
       return;
     }
     const scholarship = scholarshipsData?.find((s) => s.id === scholarshipId);
@@ -77,16 +75,14 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
       if (isTracked) {
         await unfollowScholarship({
           scholarshipId,
-          userId,
         }).unwrap();
       } else {
         await followScholarship({
           scholarshipId,
-          userId,
         }).unwrap();
       }
     } catch (error) {
-      console.error('Failed to toggle tracking:', error);
+      console.log('Failed to toggle tracking:', error);
     }
   };
 

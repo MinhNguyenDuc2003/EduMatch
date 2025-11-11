@@ -37,7 +37,7 @@ const customBaseQuery = async (args: string | FetchArgs, api: BaseQueryApi, extr
     }
 
     if (result.data) {
-      result.data = result.data.data;
+      result.data = result.data.data ? result.data.data : null;
     } else if (result.error?.status === 204 || result.meta?.response?.status === 24) {
       return { data: null };
     }
