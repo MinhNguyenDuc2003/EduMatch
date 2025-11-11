@@ -9,6 +9,8 @@ import com.minh.utils.serializer.DateToTimestamp;
 import com.minh.utils.serializer.TimestampToDate;
 import lombok.*;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
@@ -32,5 +34,5 @@ public class SubscriptionPlanDto extends BaseDto {
 
     private String targetType;
 
-    private String features;
+    private List<String> features;
 }

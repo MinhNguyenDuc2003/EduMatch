@@ -1,8 +1,12 @@
 package com.minh.subscription.data.entity;
 
+import com.minh.subscription.data.converter.SubscriptionFeatureConverter;
 import com.minh.subscription.data.entity.base.BaseEntity;
+import com.minh.subscription.enums.SubscriptionFeature;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(schema = "subscription", name = "SUBSCRIPTION_PLAN")
@@ -37,6 +41,7 @@ public class SubscriptionPlanEntity extends BaseEntity {
     private String targetType;
 
     @Column(name = "FEATURES")
-    private String features;
+    @Convert(converter = SubscriptionFeatureConverter.class)
+    private List<SubscriptionFeature> features;
 
 }
