@@ -8,7 +8,7 @@ export const apiAuth = createApi({
   endpoints: (build) => ({
     authenticated: build.query<AuthResponse, void>({
       query: () => ({
-        url: '/customer/authenticated',
+        url: '/api/customer/authenticated',
         method: 'GET',
       }),
       providesTags: ['Auth'],
