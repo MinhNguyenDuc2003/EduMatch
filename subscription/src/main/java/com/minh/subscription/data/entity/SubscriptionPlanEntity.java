@@ -1,8 +1,8 @@
 package com.minh.subscription.data.entity;
 
+import com.minh.enumeration.subscription.SubscriptionFeatureEnum;
 import com.minh.subscription.data.converter.SubscriptionFeatureConverter;
 import com.minh.subscription.data.entity.base.BaseEntity;
-import com.minh.subscription.enums.SubscriptionFeature;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,6 +42,6 @@ public class SubscriptionPlanEntity extends BaseEntity {
 
     @Column(name = "FEATURES")
     @Convert(converter = SubscriptionFeatureConverter.class)
-    private List<SubscriptionFeature> features;
+    private List<SubscriptionFeatureEnum> features;
 
 }
