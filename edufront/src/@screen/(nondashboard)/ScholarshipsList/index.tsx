@@ -45,7 +45,7 @@ export default function ScholarshipsList() {
   }, [filters]);
 
   // Call API
-  const { data: response, isLoading, isError } = useSearchScholarshipsQuery(requestBody);
+  const { data: response, isLoading, isError, refetch } = useSearchScholarshipsQuery(requestBody);
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
   const [followProvider] = useFollowProviderMutation();
@@ -92,6 +92,7 @@ export default function ScholarshipsList() {
       } else {
         await followProvider(scholarship.providerId).unwrap();
       }
+      refetch();
     } catch (error) {
       console.log('Failed to toggle follow provider:', error);
     }
