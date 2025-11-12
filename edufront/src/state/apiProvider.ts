@@ -140,17 +140,6 @@ export const apiProvider = createApi({
       providesTags: (result, error, id) => [{ type: 'Profile', id: String(id) }],
     }),
 
-    // Get all scholarships by provider ID
-    getScholarshipsByProviderId: build.query<Scholarship[], number>({
-      query: (providerId) => ({
-        url: `${API_ENDPOINTS.SCHOLARSHIP}/provider/${providerId}`,
-        method: 'GET',
-      }),
-      providesTags: (result, error, providerId) => [
-        { type: 'Scholarships', id: `provider-${providerId}` },
-      ],
-    }),
-
     // Get all applications by scholarship ID
     getApplicationsByScholarshipId: build.query<ApplicationScholarship[], number>({
       query: (scholarshipId) => ({
@@ -177,6 +166,5 @@ export const {
   useUnfollowProviderMutation,
   useGetFollowedProvidersQuery,
   useGetProviderProfileByIdQuery,
-  useGetScholarshipsByProviderIdQuery,
   useGetApplicationsByScholarshipIdQuery,
 } = apiProvider;
