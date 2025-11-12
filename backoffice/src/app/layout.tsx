@@ -1,7 +1,7 @@
-import { SidebarProvider } from '@commonServices/components/ui/sidebar';
 import AnimatedContainer from 'src/common/components/common/AnimatedContainer';
 import AppSidebar from 'src/common/components/common/AppSidebar';
 import './globals.css';
+import { SidebarProvider } from 'common/services/components/ui/sidebar';
 export const metadata = {
   title: 'EduMatch Dashboard',
   description: 'Dashboard layout',

@@ -1,6 +1,6 @@
 'use client';
 
-import { SidebarTrigger } from '@commonServices/components/ui/sidebar';
+import { SidebarTrigger } from 'common/services/components/ui/sidebar';
 // import { UserButton, useUser } from "@clerk/nextjs";
 // import { dark } from "@clerk/themes";
 import { Bell } from 'lucide-react';
