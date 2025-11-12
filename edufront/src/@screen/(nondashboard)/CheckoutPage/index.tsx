@@ -8,7 +8,6 @@ import { useCheckoutNavigation } from '@/hooks/useCheckoutNavigation';
 import CheckoutDetailsPage from '../CheckoutDetailsPage';
 
 const CheckoutPage = () => {
-  const { isLoading } = useAuth();
   const { checkoutStep } = useCheckoutNavigation();
 
   const renderStep = () => {

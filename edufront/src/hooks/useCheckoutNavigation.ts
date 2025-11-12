@@ -1,11 +1,9 @@
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
-import { useAuth } from './useAuth';
+import { useCallback } from 'react';
 
 export const useCheckoutNavigation = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isAuthenticated } = useAuth();
 
   const subcriptionPlanId = searchParams.get('id') ?? '';
   const checkoutStep = parseInt(searchParams.get('step') ?? '1', 10);
@@ -18,7 +16,7 @@ export const useCheckoutNavigation = () => {
         scroll: false,
       });
     },
-    [subcriptionPlanId, isAuthenticated, router]
+    [subcriptionPlanId, router]
   );
 
   return { checkoutStep, navigateToStep };

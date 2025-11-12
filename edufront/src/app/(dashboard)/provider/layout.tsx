@@ -8,9 +8,7 @@ import React from 'react';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ProtectedRoute
-    // requireProvider={true}
-    >
+    <ProtectedRoute requireProvider={true}>
       <SidebarProvider>
         <div className="min-h-screen w-full bg-white flex">
           <ProviderSidebar />
