@@ -16,7 +16,7 @@ import {
 } from 'recharts';
 import React from 'react';
 import { Card } from 'src/lib/by/Div';
-import { CardContent, CardHeader, CardTitle } from '@commonServices/components/ui/card';
+import { CardContent, CardHeader, CardTitle } from 'common/services/components/ui/card';
 
 interface CustomChartProps {
   title?: string;

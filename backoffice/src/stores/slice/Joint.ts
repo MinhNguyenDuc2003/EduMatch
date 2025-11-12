@@ -1,3 +1,4 @@
+import { IApplicationItem } from 'src/assets/types/ApplicationScholarship';
 import { ISubcriptionList } from 'src/assets/types/SubcriptionList';
 import { ISubscriptionPlanList } from 'src/assets/types/SubscriptionPlanList';
 import { StateCreator } from 'zustand';
@@ -7,6 +8,7 @@ type State = {
     ScholarshipList?: IScholarshipList[];
     SubscriptionPlanList?: ISubscriptionPlanList[];
     SubcriptionList?: ISubcriptionList[];
+    IApplicationItem?: IApplicationItem[];
     formFocusID?: string;
   };
   setJointData(Obj: State['Joint']): void;
