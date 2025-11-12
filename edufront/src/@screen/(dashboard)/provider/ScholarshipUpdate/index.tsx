@@ -2,7 +2,7 @@
 
 import { IScholarship } from '@/lib/schemas';
 import Header from '@/pattern/share/Header';
-import { Loading } from '@/pattern/share/Loading';
+import Loading from '@/pattern/share/Loading';
 import ScholarshipForm from '@/pattern/share/ScholarshipForm';
 import {
   useDeleteImageMutation,

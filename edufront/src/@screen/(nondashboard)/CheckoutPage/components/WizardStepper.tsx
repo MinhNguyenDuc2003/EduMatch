@@ -6,17 +6,17 @@ const WizardStepper = ({ currentStep }: { currentStep: number }) => {
   return (
     <div className="w-1/2 mb-4 flex flex-col items-center">
       <div className="w-full flex items-center justify-between mb-2">
-        {[1, 2, 3].map((step, index) => (
+        {[1, 2].map((step, index) => (
           <React.Fragment key={step}>
             <div className="flex flex-col items-center">
               <div
                 className={cn('w-8 h-8 flex items-center justify-center rounded-full mb-2', {
-                  'bg-green-500': currentStep > step || (currentStep === 3 && step === 3),
-                  'bg-primary-brand text-white': currentStep === step && step !== 3,
+                  'bg-green-500': currentStep > step || (currentStep === 2 && step === 2),
+                  'bg-primary-brand text-white': currentStep === step && step !== 2,
                   'border border-gray-400 text-gray-400': currentStep < step,
                 })}
               >
-                {currentStep > step || (currentStep === 3 && step === 3) ? (
+                {currentStep > step || (currentStep === 2 && step === 2) ? (
                   <Check className="w-5 h-5" />
                 ) : (
                   <span>{step}</span>
@@ -28,14 +28,13 @@ const WizardStepper = ({ currentStep }: { currentStep: number }) => {
                   'text-gray-400': currentStep < step,
                 })}
               >
-                {step === 1 && 'Details'}
-                {step === 2 && 'Payment'}
-                {step === 3 && 'Completion'}
+                {step === 1 && 'Payment'}
+                {step === 2 && 'Completion'}
               </p>
             </div>
-            {index < 2 && (
+            {index < 1 && (
               <div
-                className={cn('w-1/4 h-[1px] self-start mt-4', {
+                className={cn('w-1/2 h-[1px] self-start mt-4', {
                   'bg-green-500': currentStep > step,
                   'bg-gray-400': currentStep <= step,
                 })}

@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customBaseQuery from './custombaseQuery';
 import { IScholarship } from '@/lib/schemas';
-import { Provider } from '@radix-ui/react-tooltip';
 
 // API Endpoints
 const API_ENDPOINTS = {
