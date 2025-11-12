@@ -24,7 +24,7 @@ const ApplicationCreatePage = () => {
 
       await createApplication(formData).unwrap();
     } catch (error) {
-      console.error('Error creating scholarship:', error);
+      console.log('Error creating scholarship:', error);
       throw error;
     }
   };

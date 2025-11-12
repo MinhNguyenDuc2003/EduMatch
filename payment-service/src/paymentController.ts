@@ -16,7 +16,7 @@ export const createStripePaymentIntent = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { amount, email } = req.body;
+  const { amount, email, currency = "usd" } = req.body;
 
   if (!amount || amount <= 0) {
     res
@@ -45,8 +45,8 @@ export const createStripePaymentIntent = async (
     }
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount * 100,
-      currency: "usd",
+      amount: currency.toLowerCase() === "usd" ? amount * 100 : amount,
+      currency: currency.toLowerCase(),
       automatic_payment_methods: {
         enabled: true,
         allow_redirects: "never",

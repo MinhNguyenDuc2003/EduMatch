@@ -43,7 +43,6 @@ export default function ProtectedRoute({
 }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading, isProvider } = useAuth();
   const router = useRouter();
-  const pathname = usePathname();
 
   useEffect(() => {
     // Chờ loading xong trước khi check

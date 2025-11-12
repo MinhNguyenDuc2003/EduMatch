@@ -6,14 +6,12 @@ import {
   useGetProviderProfileByIdQuery,
   useFollowProviderMutation,
   useUnfollowProviderMutation,
-  useGetFollowedProvidersQuery,
-  useGetScholarshipsByProviderIdQuery,
 } from '@/state/apiProvider';
 import {
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,
+  useGetScholarshipsByProviderIdQuery,
 } from '@/state/apiScholarship';
-import { useGetProfileQuery } from '@/state/apiApplicant';
 import { Button } from '@/lib/cus/button';
 import { Skeleton } from '@/lib/cus/skeleton';
 import { ProfileHeaderSkeleton } from '@/@screen/(dashboard)/provider/ProviderProfile/components/ProfileHeader';
@@ -27,31 +25,23 @@ import {
 export default function ViewProviderProfile({ providerId }: { providerId: number }) {
   const router = useRouter();
 
-  const { data: providerProfile, isLoading: isLoadingProfile } = useGetProviderProfileByIdQuery(
-    providerId,
-    {
-      skip: !providerId,
-    }
-  );
+  const { data: providerProfile, isLoading: isLoadingProfile } =
+    useGetProviderProfileByIdQuery(providerId);
   const { data: scholarshipsData = [], isLoading: isLoadingScholarships } =
-    useGetScholarshipsByProviderIdQuery(providerId, {
-      skip: !providerId,
-    });
+    useGetScholarshipsByProviderIdQuery(providerId);
 
-  const { data: followedProviders } = useGetFollowedProvidersQuery();
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
-  const isFollowing = followedProviders?.some((fp) => fp.providerId === providerId) || false;
-
-  const handleFollowToggle = async () => {
+  const handleFollowProvider = async (id: number) => {
+    const isFollowing = providerProfile?.isFollow === 1;
     try {
       if (isFollowing) {
-        await unfollowProvider(providerId).unwrap();
+        await unfollowProvider(id).unwrap();
       } else {
-        await followProvider(providerId).unwrap();
+        await followProvider(id).unwrap();
       }
     } catch (error) {
       console.log('Failed to toggle follow:', error);
@@ -133,7 +123,12 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
           <ProfileHeader
             currentData={providerProfile}
             isEdit={false}
-            rightElement={<FollowButton isFollowing={isFollowing} onToggle={handleFollowToggle} />}
+            rightElement={
+              <FollowButton
+                isFollowing={providerProfile.isFollow === 1}
+                onToggle={() => handleFollowProvider(providerId)}
+              />
+            }
           />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
@@ -145,6 +140,7 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
                 isLoading={isLoadingScholarships}
                 onApply={handleApply}
                 onToggleTracking={handleToggleTracking}
+                onFollowProvider={handleFollowProvider}
               />
             </div>
 

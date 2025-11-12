@@ -10,7 +10,7 @@ type ScholarshipCardProps = {
   scholarship: Scholarship;
   onApply: (scholarship: Scholarship) => void;
   onToggleTracking?: (scholarshipId: number) => void;
-  onFollowProvider?: (scholarshipId: number) => void;
+  onFollowProvider?: (providerId: number) => void;
 };
 
 export default function ScholarshipCard({
@@ -32,6 +32,8 @@ export default function ScholarshipCard({
     router.push(`/scholarships/${slug}`);
   };
 
+  const { logoUrl, organizationName, isFollow, id } = scholarship.providerProfileVo;
+
   return (
     <>
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
@@ -40,23 +42,34 @@ export default function ScholarshipCard({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div
-                className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 cursor-pointer"
-                onClick={() => handleViewProvider(scholarship.providerId)}
+                className="w-10 h-10 rounded-md flex items-center justify-center text-white text-sm font-bold flex-shrink-0 cursor-pointer relative"
+                onClick={() => handleViewProvider(id)}
               >
-                {scholarship.university?.charAt(0) || 'O'}
+                {logoUrl ? (
+                  <Image
+                    src={logoUrl}
+                    alt={organizationName || 'Organization logo'}
+                    fill
+                    className="rounded-md object-cover bg-white"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 cursor-pointer">
+                    {organizationName.charAt(0) || 'O'}
+                  </div>
+                )}
               </div>
               <div>
                 <h3
                   className="font-semibold text-gray-900 text-sm transition-colors cursor-pointer hover:underline"
-                  onClick={() => handleViewProvider(scholarship.providerId)}
+                  onClick={() => handleViewProvider(id)}
                 >
-                  {scholarship.university || 'Organization Name'}
+                  {organizationName || 'Organization Name'}
                 </h3>
                 <button
-                  onClick={() => onFollowProvider?.(scholarship.id)}
-                  className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+                  onClick={() => onFollowProvider?.(id)}
+                  className="text-xs text-blue-600 hover:text-blue-700 font-medium hover:cursor-pointer hover:underline"
                 >
-                  {scholarship.providerProfileVo?.isFollow === 1 ? 'Following' : 'Follow'}
+                  {isFollow === 1 ? 'Following' : 'Follow'}
                 </button>
               </div>
             </div>
