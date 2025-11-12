@@ -403,4 +403,6 @@ const ApplicationDetailDialog = React.memo(
   }
 );
 
+ApplicationDetailDialog.displayName = 'ApplicationDetailDialog';
+
 export default ApplicationDetailDialog;

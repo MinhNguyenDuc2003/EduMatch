@@ -144,7 +144,9 @@ const Notifications = () => {
                       !notification.isRead && 'bg-primary-light'
                     )}
                     onClick={() => {
-                      notification.slug ? router.push(`/scholarships/${notification.slug}`) : {};
+                      if (notification.slug) {
+                        router.push(`/${notification.slug}`);
+                      }
                     }}
                   >
                     <div className="flex items-start justify-between w-full">
