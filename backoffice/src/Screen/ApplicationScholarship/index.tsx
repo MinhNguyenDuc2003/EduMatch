@@ -1,10 +1,9 @@
-"use client";
-import { CheckCircle, Clock, GraduationCap, XCircle } from 'lucide-react';
+'use client';
+import { CheckCircle, Clock, GraduationCap, XCircle, User } from 'lucide-react';
 import { useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
-// import { useRouter } from 'next/navigation';
 
 const ApplicantScholarship = () => {
   const [filterText, setFilterText] = useState('');
@@ -12,81 +11,95 @@ const ApplicantScholarship = () => {
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
-  // const router = useRouter();
+
   return (
     <Context.Provider>
       <Context.Consumer>
         {({ ss }) => {
-          const list = (ss?.Joint?.ScholarshipList as any)?.data?.content || [];
-          console.log('list', list);
-          const scholarships =
-            list?.map((item: any) => ({
-              id: item.id,
-              name: item.title,
-              sponsor: item.university || 'N/A',
-              amount: item.fundingAmount || '—',
-              deadline: new Date(item.endDate).toLocaleDateString('en-US'),
-              status:
-                Date.now() < item.startDate
-                  ? 'Not Open Yet'
-                  : Date.now() > item.endDate
-                    ? 'Closed'
-                    : 'Open',
-            })) || [];
+          const list = (ss?.Joint?.ApplicationItem as any)?.data || [];
 
-          const total = scholarships.length;
-          const open = scholarships.filter((s: any) => s.status === 'Open').length;
-          const upcoming = scholarships.filter((s: any) => s.status === 'Not Open Yet').length;
-          const closed = scholarships.filter((s: any) => s.status === 'Closed').length;
+          // ✅ Format dữ liệu phù hợp cho UI
+          const applications =
+            list?.map((item: any) => {
+              const scholarship = item.scholarshipVo || {};
+              const provider = scholarship.providerProfileVo || {};
+              const applicant = item.applicationVo || {};
+
+              return {
+                id: item.id,
+                scholarshipTitle: scholarship.title || 'Untitled Scholarship',
+                organization: provider.organizationName || 'N/A',
+                applicantName: applicant.fullName || 'N/A',
+                university: scholarship.university || '—',
+                country: scholarship.country || '—',
+                funding: scholarship.fundingAmount || '—',
+                studyLevel: scholarship.studyLevel || '—',
+                status: item.status?.toUpperCase() || 'UNKNOWN',
+              };
+            }) || [];
+
+          // ✅ Thống kê
+          const total = applications.length;
+          const pending = applications.filter((a: any) => a.status === 'PENDING').length;
+          const approved = applications.filter((a: any) => a.status === 'APPROVED').length;
+          const rejected = applications.filter((a: any) => a.status === 'REJECTED').length;
 
           const stats = [
             {
-              title: 'Total Scholarships',
+              title: 'Total Applications',
               value: total,
               icon: <GraduationCap />,
               color: 'text-blue-600',
               filterName: '',
             },
             {
-              title: 'Open',
-              value: open,
-              icon: <CheckCircle />,
-              color: 'text-green-600',
-              filterName: 'Open',
-            },
-            {
-              title: 'Not Open Yet',
-              value: upcoming,
+              title: 'Pending',
+              value: pending,
               icon: <Clock />,
               color: 'text-yellow-500',
-              filterName: 'Not Open Yet',
+              filterName: 'PENDING',
             },
             {
-              title: 'Closed',
-              value: closed,
+              title: 'Approved',
+              value: approved,
+              icon: <CheckCircle />,
+              color: 'text-green-600',
+              filterName: 'APPROVED',
+            },
+            {
+              title: 'Rejected',
+              value: rejected,
               icon: <XCircle />,
               color: 'text-red-600',
-              filterName: 'Closed',
+              filterName: 'REJECTED',
             },
           ];
 
+          // ✅ Lọc theo trạng thái
+          const filteredApplications =
+            filterText && filterText !== ''
+              ? applications.filter((a: any) => a.status === filterText)
+              : applications;
+
           return (
-            <div className="flex flex-col min-h-screen bg-gray-100 p-6">
+            <div className="flex flex-col min-h-screen bg-gray-50 p-6">
               <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
               <CustomDataTable
-                title="Scholarship List"
-                data={scholarships as any}
-                detailPath="/scholarship"
+                title="My Scholarship Applications"
+                data={filteredApplications as any}
+                detailPath="/applicationScholarship"
                 customTitles={[
                   'ID',
-                  'Scholarship Name',
+                  'Scholarship Title',
+                  'Organization',
+                  'Applicant',
                   'University',
-                  'Amount',
-                  'Deadline',
+                  'Country',
+                  'Funding',
+                  'Study Level',
                   'Status',
                 ]}
-                externalFilterText={filterText}
               />
             </div>
           );
