@@ -34,13 +34,14 @@ const CustomDataTable = ({
   customTitles = [],
   externalFilterText = '',
   onCreate,
-  onEdit,
+  // onEdit,
   onDelete,
   onView,
   detailPath,
 }: CustomDataTableProps) => {
   const router = useRouter();
   const [filterText, setFilterText] = useState(externalFilterText);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
@@ -54,10 +55,10 @@ const CustomDataTable = ({
     setFilterText(externalFilterText);
   }, [externalFilterText]);
 
-  const handleCreate = () => {
-    setModalType('create');
-    setShowModal(true);
-  };
+  // const handleCreate = () => {
+  //   setModalType('create');
+  //   setShowModal(true);
+  // };
 
   const handleEdit = (row: any) => {
     setSelectedRow(row);
@@ -142,6 +143,7 @@ const CustomDataTable = ({
     };
 
     return [...dataCols, actionCol];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, customTitles, openDropdown]);
 
   const filteredData = useMemo(() => {
@@ -221,7 +223,8 @@ const CustomDataTable = ({
             } hover:bg-blue-50 transition-colors duration-150`}
           >
             <span className="text-sm font-medium text-gray-600 w-1/3">
-              {(customTitles as string[])[index] || key.charAt(0).toUpperCase() + key.slice(1)}:{' '}
+              {(customTitles as string[])[index] || key.charAt(0).toUpperCase() + key.slice(1)}
+              :{' '}
             </span>
             <span className="text-sm text-gray-800 w-2/3 text-right break-words">
               {String(value) || '—'}
@@ -261,7 +264,7 @@ const CustomDataTable = ({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.97 }}
-              onClick={handleCreate}
+              onClick={onCreate}
               className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition-all"
             >
               <Plus size={18} />
@@ -310,26 +313,6 @@ const CustomDataTable = ({
         />
       </motion.div>
 
-      {modalType && (
-        <CustomModal
-          open={showModal}
-          title={modalType === 'create' ? 'Create New Record' : 'Edit Record'}
-          onClose={() => setShowModal(false)}
-          onConfirm={() => {
-            if (modalType === 'create') onCreate?.();
-            else if (modalType === 'edit') onEdit?.(selectedRow);
-            setShowModal(false);
-          }}
-          confirmText="Save"
-        >
-          <p className="text-sm text-gray-600">
-            {modalType === 'create'
-              ? 'You are creating a new record.'
-              : `Edit information for ID: ${selectedRow?.id || ''}`}
-          </p>
-        </CustomModal>
-      )}
-
       <CustomConfirm
         open={showConfirm}
         message="Are you sure you want to delete this record?"
@@ -358,9 +341,7 @@ const CustomDataTable = ({
                   <span>{String(value) || '—'}</span>
                 </div>
               ))}
-              <div className="pt-2 text-green-600 font-semibold">
-                ✅ Successfully confirmed!
-              </div>
+              <div className="pt-2 text-green-600 font-semibold">✅ Successfully confirmed!</div>
             </div>
           ) : (
             <p>No data to display.</p>

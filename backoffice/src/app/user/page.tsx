@@ -92,14 +92,12 @@ export default function User() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 p-6">
-     
-
       <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
       <CustomDataTable
         title="Danh sách người dùng"
         data={users as any}
-          detailPath="/subscription" 
+        detailPath="/subscription"
         customTitles={[
           'ID',
           'Họ và tên',

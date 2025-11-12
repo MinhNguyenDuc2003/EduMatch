@@ -1,6 +1,6 @@
-import { ISubcriptionList } from "src/assets/types/SubcriptionList";
-import { ISubscriptionPlanList } from "src/assets/types/SubscriptionPlanList";
-import { StateCreator } from "zustand";
+import { ISubcriptionList } from 'src/assets/types/SubcriptionList';
+import { ISubscriptionPlanList } from 'src/assets/types/SubscriptionPlanList';
+import { StateCreator } from 'zustand';
 
 type State = {
   Joint: {
@@ -9,7 +9,7 @@ type State = {
     SubcriptionList?: ISubcriptionList[];
     formFocusID?: string;
   };
-  setJointData(Obj: State["Joint"]): void;
+  setJointData(Obj: State['Joint']): void;
   resetJoint(): void;
 };
 

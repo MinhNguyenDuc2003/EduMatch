@@ -72,7 +72,6 @@ const Dashboard = () => {
           color="#10b981"
         />
       </div>
-   
     </div>
   );
 };

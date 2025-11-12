@@ -185,7 +185,6 @@ export function Button({
   variant,
   size,
   full,
-  hug,
   reasonable,
   shadown,
   isPlump,
@@ -200,7 +199,6 @@ export function Button({
   loading,
   color,
   background,
-  borderColor,
   label,
   ...props
 }: ButtonProps) {

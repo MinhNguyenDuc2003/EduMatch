@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import apiClientService from 'src/apiController/ApiClientService';
 import { GenCtx } from 'src/apiController/GeneralContext';
@@ -24,14 +24,12 @@ export default GenCtx({
         filters: {},
       },
     });
-    const loading = useState(false);
+    // const loading = useState(false);
     const meds = {
       async onGetData() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(
-            '/subscription/subscription/all'
-          );
+          const data = await apiClientService.get('/api/subscription/subscription/all');
           if (data) {
             ss.setJointData({
               SubcriptionList: data || [],
@@ -49,8 +47,8 @@ export default GenCtx({
       async onGetByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/subscription/subscription/${id}`);
-          console.log('data.data', data.data)
+          const data = await apiClientService.get(`/api/subscription/subscription/${id}`);
+          console.log('data.data', data.data);
           return data.data;
         } catch (error) {
           console.error({ error });
@@ -62,6 +60,7 @@ export default GenCtx({
 
     useEffect(() => {
       meds.onGetData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {
       ss,
