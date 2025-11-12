@@ -13,7 +13,6 @@ import {
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
-import { useGetProfileQuery } from '@/state/apiApplicant';
 import { Button } from '@/lib/cus/button';
 import { Skeleton } from '@/lib/cus/skeleton';
 import { ProfileHeaderSkeleton } from '@/@screen/(dashboard)/provider/ProviderProfile/components/ProfileHeader';
@@ -44,7 +43,7 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
-  const isFollowing = followedProviders?.some((fp) => fp.providerId === providerId) || false;
+  const isFollowing = followedProviders?.some((fp) => fp.id === providerId) || false;
 
   const handleFollowToggle = async () => {
     try {

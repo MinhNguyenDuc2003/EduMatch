@@ -42,7 +42,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
   }
   const isTracked = !!trackedData;
   const isFollowing = scholarship?.providerProfileVo?.id
-    ? followedProviders?.some((fp) => fp.providerId === scholarship.providerProfileVo.id) || false
+    ? followedProviders?.some((fp) => fp.id === scholarship.providerProfileVo.id) || false
     : false;
 
   // Handle track/untrack scholarship
