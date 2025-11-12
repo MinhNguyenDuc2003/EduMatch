@@ -1,20 +1,27 @@
 package com.minh.scholarship.service.impl;
 
 import com.minh.constants.CoreMessageCode;
+import com.minh.enumeration.notification.NotificationReferenceEnum;
+import com.minh.enumeration.notification.NotificationTemplateEnum;
+import com.minh.enumeration.notification.NotificationTopicEnum;
 import com.minh.exception.BusinessException;
+import com.minh.model.dto.notification.NotificationTemplateDto;
 import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
 import com.minh.scholarship.data.entity.ApplicationScholarshipEntity;
 import com.minh.scholarship.data.mapper.ApplicationScholarshipMapper;
-import com.minh.scholarship.data.repository.ApplicationRepository;
 import com.minh.scholarship.data.repository.ApplicationScholarshipRepository;
-import com.minh.scholarship.data.repository.ScholarshipRepository;
-import com.minh.scholarship.data.vo.ApplicationScholarshipVo;
+import com.minh.scholarship.data.vo.*;
+import com.minh.scholarship.feign.NotificationTemplateFeign;
+import com.minh.scholarship.feign.ProviderProfileFeign;
+import com.minh.scholarship.message.KafkaProducer;
 import com.minh.scholarship.service.ApplicationScholarshipService;
 import com.minh.scholarship.service.ApplicationService;
 import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.base.BaseService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +35,18 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     private final ApplicationScholarshipMapper applicationScholarshipMapper;
     private final ApplicationService applicationService;
     private final ScholarshipService scholarshipService;
+
+    @Autowired
+    private KafkaProducer kafkaProducer;
+    @Autowired
+    private NotificationTemplateFeign notificationTemplateFeign;
+
+    @Value("${kafka.application.update-status.topic}")
+    private String newEventApplicationTopic;
+    @Value("${kafka.provider.application.topic}")
+    private String newEventProviderTopic;
+    @Autowired
+    private ProviderProfileFeign providerProfileFeign;
 
     @Override
     public List<ApplicationScholarshipVo> getAll() {
@@ -53,34 +72,67 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ApplicationScholarshipDto create(ApplicationScholarshipDto dto) {
-        if (dto.getApplicationId() == null || applicationService.getById(dto.getApplicationId()) == null) {
+        ApplicationVo application = applicationService.getById(dto.getApplicationId());
+        if (dto.getApplicationId() == null || application == null) {
             throw new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST);
         }
 
-        if (dto.getScholarshipId() == null || scholarshipService.getById(dto.getScholarshipId()) == null) {
+        ScholarshipVo scholarshipVo = scholarshipService.getById(dto.getScholarshipId());
+        if (dto.getScholarshipId() == null || scholarshipVo == null) {
             throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
         }
 
         if (repository.existsByApplicationIdAndScholarshipId(dto.getApplicationId(), dto.getScholarshipId())) {
             throw new BusinessException(CoreMessageCode.APPLICATION_ALREADY_SUBMITTED);
         }
-
         ApplicationScholarshipEntity saved = repository.save(mapper.toEntity(dto));
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getOne(scholarshipVo.getProviderId()));
+
+        NotificationTemplateDto notificationTemplateDto = this.parseResponse(notificationTemplateFeign.getNotificationTemplate(NotificationTemplateEnum.SCHOLARSHIP_APPLICATION.getCode()));
+        NotificationVo notificationVo = NotificationVo.builder()
+                .topic(NotificationTopicEnum.SCHOLARSHIP_APPLICATION)
+                .title(notificationTemplateDto.getTitle().replace("{scholarshipName}", scholarshipVo.getTitle()))
+                .content(notificationTemplateDto.getContent().replace("{scholarshipName}", scholarshipVo.getTitle())
+                        .replace("{applicantName}", application.getFullName()))
+                .isRead(false)
+                .referenceId(saved.getId())
+                .referenceType(NotificationReferenceEnum.SCHOLARSHIP_APPLICATION.getCode())
+                .userId(providerProfileVo.getUserId())
+                .userNotificationId(notificationTemplateDto.getId())
+                .build();
+        kafkaProducer.convertToByteAndSend(newEventProviderTopic, notificationVo);
         return mapper.toDto(saved);
     }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ApplicationScholarshipDto update(ApplicationScholarshipDto dto) {
-        repository.findByIdAndActive(dto.getId(), true)
+        ApplicationScholarshipEntity exist = repository.findByIdAndActive(dto.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICATION_SCHOLARSHIP_NOT_FOUND));
 
-        if (dto.getApplicationId() == null || applicationService.getById(dto.getApplicationId()) == null) {
+        ApplicationVo application = applicationService.getById(dto.getApplicationId());
+        if (dto.getApplicationId() == null || application == null) {
             throw new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST);
         }
 
-        if (dto.getScholarshipId() == null || scholarshipService.getById(dto.getScholarshipId()) == null) {
+        ScholarshipVo scholarshipVo = scholarshipService.getById(dto.getScholarshipId());
+        if (dto.getScholarshipId() == null || scholarshipVo == null) {
             throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
+        }
+
+        if (!exist.getStatus().equalsIgnoreCase(dto.getStatus())) {
+            NotificationTemplateDto notificationTemplateDto = this.parseResponse(notificationTemplateFeign.getNotificationTemplate(NotificationTemplateEnum.APPLICATION_STATUS_UPDATED.getCode()));
+            NotificationVo notificationVo = NotificationVo.builder()
+                    .topic(NotificationTopicEnum.APPLICATION_SUBMITTED)
+                    .title(notificationTemplateDto.getTitle().replace("{scholarshipName}", scholarshipVo.getTitle()))
+                    .content(notificationTemplateDto.getContent().replace("{scholarshipName}", scholarshipVo.getTitle()))
+                    .isRead(false)
+                    .referenceId(exist.getId())
+                    .referenceType(NotificationReferenceEnum.APPLICATION.getCode())
+                    .userId(application.getUserId())
+                    .userNotificationId(notificationTemplateDto.getId())
+                    .build();
+            kafkaProducer.convertToByteAndSend(newEventApplicationTopic, notificationVo);
         }
 
         ApplicationScholarshipEntity saved = repository.save(mapper.toEntity(dto));
@@ -100,7 +152,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     public List<ApplicationScholarshipVo> getAllByApplicationId(Long applicationId) {
         boolean exists = repository.existsByApplicationIdAndActive(applicationId, true);
         if (applicationId == null || !exists) {
-            throw new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST);
+            return null;
         }
         List<ApplicationScholarshipEntity> entities =
                 repository.findByApplicationIdAndActive(applicationId, true);
@@ -116,7 +168,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     public List<ApplicationScholarshipVo> getAllByScholarshipId(Long scholarshipId) {
         boolean exists = repository.existsByScholarshipIdAndActive(scholarshipId, true);
         if (scholarshipId == null || !exists) {
-            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
+            return null;
         }
 
         List<ApplicationScholarshipDto> dto = mapper.toDto(repository.findByScholarshipIdAndActive(scholarshipId, true));

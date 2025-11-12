@@ -24,4 +24,9 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.NOTIFICATION_TEMPLATE_TYPE_NOT_FOUND)));
     }
 
+    @Override
+    public NotificationTemplateDto saveOne(NotificationTemplateDto notificationTemplateDto) {
+        return notificationTemplateMapper.toDto(notificationTemplateRepository.save(notificationTemplateMapper.toEntity(notificationTemplateDto)));
+    }
+
 }

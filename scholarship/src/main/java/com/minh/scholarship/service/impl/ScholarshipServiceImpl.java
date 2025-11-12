@@ -103,7 +103,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
             throw new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST);
         }
         scholarship.setProviderId(providerProfileVo.getId());
-        ScholarshipEntity savedScholarship = scholarshipRepository.save(scholarshipMapper.toEntity(scholarship));
+        ScholarshipEntity savedScholarship = scholarshipRepository.saveAndFlush(scholarshipMapper.toEntity(scholarship));
         if (ObjectUtils.isNotEmpty(images)) {
             uploadImages(images, savedScholarship.getId());
         }
@@ -126,6 +126,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 .referenceType(NotificationReferenceEnum.SCHOLARSHIP.getCode())
                 .slug(savedScholarship.getSlug())
                 .userId(UaaContextHolder.getUserId())
+                .userNotificationId(notificationTemplateDto.getId())
                 .build();
         kafkaProducer.convertToByteAndSend(newEventScholarshipTopic, notificationVo);
         return scholarshipMapper.entityToVo(savedScholarship);

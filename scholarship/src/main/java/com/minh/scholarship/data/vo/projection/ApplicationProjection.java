@@ -47,4 +47,8 @@ public interface ApplicationProjection {
 
     String getPersonalStatement();
 
+    String getCode();
+
+    Long getVersionApplication();
+
 }

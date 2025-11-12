@@ -23,6 +23,12 @@ public class ApplicationEntity extends BaseEntity {
     @Column(name = "USER_ID")
     private String userId;
 
+    @Column(name = "CODE")
+    private String code;
+
+    @Column(name = "VERSION_APPLICATION")
+    private Long versionApplication;
+
     @Column(name = "FULL_NAME")
     private String fullName;
 

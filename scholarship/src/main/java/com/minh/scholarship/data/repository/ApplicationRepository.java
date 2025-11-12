@@ -29,4 +29,8 @@ public interface ApplicationRepository extends JpaRepository<ApplicationEntity, 
     List<ApplicationEntity> findAllByUserId(String userId);
 
     List<ApplicationEntity> findAllByUserIdAndActive(String userId, boolean b);
+
+    List<ApplicationEntity> findByCodeAndActive(String code, boolean b);
+
+    Optional<ApplicationEntity> findByCodeAndVersionApplicationAndActive(String code, Long versionApplication, boolean b);
 }

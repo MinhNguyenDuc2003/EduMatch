@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
-import com.minh.model.dto.scholarship.ApplicationDto;
 import com.minh.scholarship.data.vo.ApplicationVo;
 import com.minh.scholarship.model.filter.ApplicationFilter;
 import com.minh.scholarship.service.ApplicationService;
@@ -46,8 +45,13 @@ public class ApplicationController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<ApplicationDto> getById(@PathVariable Long id) {
+    public ApiResponse<ApplicationVo> getById(@PathVariable Long id) {
         return ApiResponse.ok(applicationService.getById(id));
+    }
+
+    @GetMapping("/code/{code}")
+    public ApiResponse<List<ApplicationVo>> getByCode(@PathVariable String code) {
+        return ApiResponse.ok(applicationService.getByCode(code));
     }
 
     @Authorized
