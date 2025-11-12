@@ -96,7 +96,7 @@ export default function Profile() {
         await createProfile(data).unwrap();
       }
     } catch (error) {
-      console.error('Error updating student info:', error);
+      console.log('Error updating student info:', error);
       throw error;
     }
   };

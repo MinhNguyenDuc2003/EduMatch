@@ -6,6 +6,7 @@ interface ScholarshipsSectionProps {
   isLoading: boolean;
   onApply: (scholarship: Scholarship) => void;
   onToggleTracking: (scholarshipId: number) => void;
+  onFollowProvider: (providerId: number) => void;
 }
 
 export default function ScholarshipsSection({
@@ -13,6 +14,7 @@ export default function ScholarshipsSection({
   isLoading,
   onApply,
   onToggleTracking,
+  onFollowProvider,
 }: ScholarshipsSectionProps) {
   return (
     <div className="space-y-4">
@@ -36,6 +38,7 @@ export default function ScholarshipsSection({
               scholarship={scholarship}
               onApply={onApply}
               onToggleTracking={() => onToggleTracking(scholarship.id)}
+              onFollowProvider={() => onFollowProvider(scholarship.providerId)}
             />
           ))}
         </div>

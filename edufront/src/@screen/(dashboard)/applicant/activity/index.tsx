@@ -58,7 +58,7 @@ export default function ActivityManagement() {
             scholarshipId: id,
           }).unwrap();
         } catch (error) {
-          console.error('Failed to untrack scholarship:', error);
+          console.log('Failed to untrack scholarship:', error);
         }
         break;
       }
@@ -69,7 +69,7 @@ export default function ActivityManagement() {
         try {
           await unfollowProvider(id).unwrap();
         } catch (error) {
-          console.error('Failed to unfollow provider:', error);
+          console.log('Failed to unfollow provider:', error);
         }
         break;
       }
