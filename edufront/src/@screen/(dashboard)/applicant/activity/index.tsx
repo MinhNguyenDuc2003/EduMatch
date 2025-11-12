@@ -9,6 +9,7 @@ import {
   ProviderCard,
   ProviderCardSkeleton,
   CardSmalPicSkeleton,
+  ApplicationCardSkeleton,
 } from './components';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { type ShortlistTab, TAB_CONFIGS } from './types';
@@ -17,7 +18,8 @@ import {
   useGetTrackedScholarshipsQuery,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
-import { useGetProfileQuery } from '@/state/apiApplicant';
+import ApplicationCard from './components/ApplicationCard';
+import { useGetApplicationsQuery } from '@/state/apiApplicant';
 
 export default function ActivityManagement() {
   const router = useRouter();
@@ -28,7 +30,7 @@ export default function ActivityManagement() {
     useGetTrackedScholarshipsQuery();
   const { data: followedProvidersData, isLoading: isLoadingFollowedProviders } =
     useGetFollowedProvidersQuery();
-  const { data: profile } = useGetProfileQuery();
+  const { data: applicationsData, isLoading: isLoadingApplications } = useGetApplicationsQuery();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
@@ -36,14 +38,12 @@ export default function ActivityManagement() {
     setActiveTab(tab);
   };
 
-  const trackedScholarships: Scholarship[] = trackedScholarshipsData || [];
-  const followedProviders = followedProvidersData || [];
   const isFollowingTab = activeTab === 'following';
   const isTrackedTab = activeTab === 'tracking';
-  const userId = profile?.customer?.id;
+  const isApplicationTab = activeTab === 'application';
 
-  const handleViewDetails = (scholarshipId: number) => {
-    router.push(`/scholarships/${scholarshipId}`);
+  const handleViewDetails = (slug: string) => {
+    router.push(`/scholarships/${slug}`);
   };
 
   const handleViewProvider = (providerId: number) => {
@@ -53,14 +53,9 @@ export default function ActivityManagement() {
   const handleUntrack = async (id: number) => {
     switch (activeTab) {
       case 'tracking': {
-        if (!userId) {
-          console.error('User ID not available');
-          return;
-        }
         try {
           await unfollowScholarship({
             scholarshipId: id,
-            userId,
           }).unwrap();
         } catch (error) {
           console.error('Failed to untrack scholarship:', error);
@@ -106,30 +101,44 @@ export default function ActivityManagement() {
                     <ProviderCardSkeleton key={`skeleton-provider-${index}`} />
                   ))}
                 </div>
-              ) : isTrackedTab && trackedScholarships.length === 0 ? (
+              ) : isApplicationTab && isLoadingApplications ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {[...Array(6)].map((_, index) => (
+                    <ApplicationCardSkeleton key={`skeleton-application-${index}`} />
+                  ))}
+                </div>
+              ) : isTrackedTab && trackedScholarshipsData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
-              ) : isFollowingTab && followedProviders.length === 0 ? (
+              ) : isFollowingTab && followedProvidersData?.length === 0 ? (
+                <EmptyState tab={activeTab} />
+              ) : isApplicationTab && applicationsData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isTrackedTab ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {trackedScholarships.map((scholarship) => (
+                  {trackedScholarshipsData?.map((scholarship) => (
                     <CardSmalPic
                       key={scholarship.id}
                       scholarship={scholarship}
-                      onViewDetails={() => handleViewDetails(scholarship.id)}
+                      onViewDetails={() => handleViewDetails(scholarship.slug)}
                       onToggleTracking={() => handleUntrack(scholarship.id)}
                     />
                   ))}
                 </div>
               ) : isFollowingTab ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {followedProviders.map((provider, index) => (
+                  {followedProvidersData?.map((provider, index) => (
                     <ProviderCard
-                      key={provider.providerId}
-                      providerId={provider.providerId}
-                      onViewDetails={() => handleViewProvider(provider.providerId)}
-                      onUnfollow={() => handleUntrack(provider.providerId)}
+                      key={provider.id}
+                      provider={provider}
+                      onViewDetails={() => handleViewProvider(provider.id)}
+                      onUnfollow={() => handleUntrack(provider.id)}
                     />
+                  ))}
+                </div>
+              ) : isApplicationTab ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {applicationsData?.map((application) => (
+                    <ApplicationCard key={application.id} application={application} />
                   ))}
                 </div>
               ) : (

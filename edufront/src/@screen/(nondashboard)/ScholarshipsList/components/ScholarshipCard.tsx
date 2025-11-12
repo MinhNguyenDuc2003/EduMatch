@@ -5,21 +5,18 @@ import { Flag, Calendar, DollarSign } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
-import {
-  useFollowProviderMutation,
-  useUnfollowProviderMutation,
-  useGetFollowedProvidersQuery,
-} from '@/state/apiProvider';
 
 type ScholarshipCardProps = {
   scholarship: Scholarship;
   onApply: (scholarship: Scholarship) => void;
   onToggleTracking?: (scholarshipId: number) => void;
+  onFollowProvider?: (scholarshipId: number) => void;
 };
 
 export default function ScholarshipCard({
   scholarship,
   onApply,
+  onFollowProvider,
   onToggleTracking,
 }: ScholarshipCardProps) {
   const router = useRouter();
@@ -28,35 +25,11 @@ export default function ScholarshipCard({
 
   const images = getScholarshipImages(scholarship);
 
-  // Get followed providers
-  const { data: followedProviders } = useGetFollowedProvidersQuery();
-  const [followProvider] = useFollowProviderMutation();
-  const [unfollowProvider] = useUnfollowProviderMutation();
-
-  // Check if provider is followed
-  const isFollowing =
-    followedProviders?.some((fp) => fp.providerId === scholarship.providerId) || false;
-
-  // Handle follow/unfollow provider
-  const handleFollowProvider = async () => {
-    try {
-      if (isFollowing) {
-        // If already following, unfollow
-        await unfollowProvider(scholarship.providerId).unwrap();
-      } else {
-        // If not following, follow
-        await followProvider(scholarship.providerId).unwrap();
-      }
-    } catch (error) {
-      console.error('Failed to toggle follow provider:', error);
-    }
-  };
-
   const handleViewProvider = (providerId: number) => {
     router.push(`/applicant/providers/${providerId}`);
   };
-  const handleViewScholarship = (scholarshipId: number) => {
-    router.push(`/scholarships/${scholarshipId}`);
+  const handleViewScholarship = (slug: string) => {
+    router.push(`/scholarships/${slug}`);
   };
 
   return (
@@ -80,10 +53,10 @@ export default function ScholarshipCard({
                   {scholarship.university || 'Organization Name'}
                 </h3>
                 <button
-                  onClick={handleFollowProvider}
+                  onClick={() => onFollowProvider?.(scholarship.id)}
                   className="text-xs text-blue-600 hover:text-blue-700 font-medium"
                 >
-                  {isFollowing ? 'Following' : 'Follow'}
+                  {scholarship.providerProfileVo?.isFollow === 1 ? 'Following' : 'Follow'}
                 </button>
               </div>
             </div>
@@ -116,7 +89,7 @@ export default function ScholarshipCard({
           {/* Title & Description - Clickable Area */}
           <div
             className="cursor-pointer group"
-            onClick={() => handleViewScholarship(scholarship.id)}
+            onClick={() => handleViewScholarship(scholarship.slug)}
           >
             {/* Title */}
             <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">

@@ -22,7 +22,8 @@ const Applications = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedScholarshipType, setSelectedScholarshipType] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [selectedApplicationId, setSelectedApplicationId] = useState<number | null>(null);
+  const [selectedApplicationScholarship, setSelectedApplicationScholarship] =
+    useState<ApplicationScholarship | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Fetch scholarships
@@ -49,34 +50,15 @@ const Applications = () => {
     statusFilter
   );
 
-  // Find selected application and applicationScholarship
-  // Note: DisplayApplication.id = appScholarship.id || application.id
-  // So we need to check both ApplicationScholarship.id and Application.id
-  const selectedApplicationData = useMemo(() => {
-    if (!selectedApplicationId || !applicationsScholarships) {
-      return { application: null, applicationScholarship: null };
-    }
-
-    // Find ApplicationScholarship by its id or by Application.id
-    const appScholarship = applicationsScholarships.find(
-      (app) => app.id === selectedApplicationId || app.applicationVo?.id === selectedApplicationId
-    );
-
-    return {
-      application: appScholarship?.applicationVo || null,
-      applicationScholarship: appScholarship || null,
-    };
-  }, [selectedApplicationId, applicationsScholarships]);
-
   // Handlers
-  const handleViewApplication = useCallback((id: number) => {
-    setSelectedApplicationId(id);
+  const handleViewApplication = useCallback((applicationScholarship: ApplicationScholarship) => {
+    setSelectedApplicationScholarship(applicationScholarship);
     setIsDialogOpen(true);
   }, []);
 
   const handleCloseDialog = useCallback(() => {
     setIsDialogOpen(false);
-    setSelectedApplicationId(null);
+    setSelectedApplicationScholarship(null);
   }, []);
 
   const handleApproveApplication = useCallback((id: number) => {
@@ -137,8 +119,6 @@ const Applications = () => {
                 <ApplicationsTable
                   applications={filteredApplications}
                   onView={handleViewApplication}
-                  onApprove={handleApproveApplication}
-                  onReject={handleRejectApplication}
                 />
               ) : (
                 <ApplicationsEmptyState hasApplications={applications.length > 0} />
@@ -152,8 +132,7 @@ const Applications = () => {
       <ApplicationDetailDialog
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
-        application={selectedApplicationData.application}
-        applicationScholarship={selectedApplicationData.applicationScholarship}
+        applicationScholarship={selectedApplicationScholarship}
         isLoading={false}
       />
     </div>

@@ -1,43 +1,5 @@
 // Utility functions for Applications page
 
-export type DisplayApplication = {
-  id: number;
-  studentName: string;
-  email: string;
-  appliedDate: string;
-  status: string;
-  gpa: number;
-  major: string;
-};
-
-/**
- * Convert ApplicationScholarship to DisplayApplication format
- */
-export const mapApplicationScholarshipToDisplay = (
-  appScholarship: ApplicationScholarship
-): DisplayApplication => {
-  const application = appScholarship.applicationVo;
-  const status = appScholarship.status || 'pending';
-
-  // Format applied date - appliedAt is a timestamp (number)
-  // If appliedAt is in seconds, multiply by 1000; if in milliseconds, use as is
-  const appliedDate = appScholarship.appliedAt
-    ? new Date(
-        appScholarship.appliedAt > 1e12 ? appScholarship.appliedAt : appScholarship.appliedAt * 1000
-      ).toLocaleDateString()
-    : 'N/A';
-
-  return {
-    id: appScholarship.id || application?.id || 0,
-    studentName: application?.fullName || 'Unknown',
-    email: application?.email || '',
-    appliedDate,
-    status: status.toLowerCase(),
-    gpa: application?.gpa || 0,
-    major: application?.major || 'N/A',
-  };
-};
-
 /**
  * Get status color classes
  */
@@ -62,29 +24,44 @@ export const formatStatus = (status: string): string => {
 };
 
 /**
+ * Format applied date from timestamp
+ */
+export const formatAppliedDate = (appliedAt?: number): string => {
+  if (!appliedAt) return 'N/A';
+  // If appliedAt is in seconds, multiply by 1000; if in milliseconds, use as is
+  const date = new Date(appliedAt > 1e12 ? appliedAt : appliedAt * 1000);
+  return date.toLocaleDateString();
+};
+
+/**
  * Filter applications by search query and status
  */
 export const filterApplications = (
-  applications: DisplayApplication[],
+  applications: ApplicationScholarship[],
   searchQuery: string,
   statusFilter: string
-): DisplayApplication[] => {
+): ApplicationScholarship[] => {
   let filtered = applications;
 
   // Filter by search query
   if (searchQuery.trim()) {
     const query = searchQuery.toLowerCase();
-    filtered = filtered.filter(
-      (app) =>
-        app.studentName.toLowerCase().includes(query) ||
-        app.email.toLowerCase().includes(query) ||
-        app.major.toLowerCase().includes(query)
-    );
+    filtered = filtered.filter((app) => {
+      const application = app.applicationVo;
+      const studentName = application?.fullName || '';
+      const email = application?.email || '';
+      const major = application?.major || '';
+      return (
+        studentName.toLowerCase().includes(query) ||
+        email.toLowerCase().includes(query) ||
+        major.toLowerCase().includes(query)
+      );
+    });
   }
 
   // Filter by status
   if (statusFilter !== 'all') {
-    filtered = filtered.filter((app) => app.status === statusFilter);
+    filtered = filtered.filter((app) => app.status?.toLowerCase() === statusFilter.toLowerCase());
   }
 
   return filtered;

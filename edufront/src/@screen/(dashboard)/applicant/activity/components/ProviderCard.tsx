@@ -6,20 +6,13 @@ import { useGetProviderProfileByIdQuery } from '@/state/apiProvider';
 import { Button } from '@/lib/cus/button';
 
 type ProviderCardProps = {
-  providerId: number;
+  provider: ProviderProfile;
   onViewDetails?: () => void;
   onUnfollow?: () => void;
 };
 
-export default function ProviderCard({ providerId, onViewDetails, onUnfollow }: ProviderCardProps) {
-  // Fetch provider profile data
-  const { data: providerProfile } = useGetProviderProfileByIdQuery(providerId, {
-    skip: !providerId,
-  });
-
-  const organizationName = providerProfile?.organizationName || `Provider #${providerId}`;
-  const email = providerProfile?.email || providerProfile?.providerContactDtos?.[0]?.email || '';
-  const phone = providerProfile?.phone || providerProfile?.providerContactDtos?.[0]?.phone || '';
+export default function ProviderCard({ provider, onViewDetails, onUnfollow }: ProviderCardProps) {
+  const { organizationName, email, phone, logoUrl, bannerUrl, verified } = provider;
 
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-lg">
@@ -28,9 +21,9 @@ export default function ProviderCard({ providerId, onViewDetails, onUnfollow }: 
         className="relative h-18 w-full overflow-hidden bg-slate-50 hover:cursor-pointer"
         onClick={onViewDetails}
       >
-        {providerProfile?.bannerUrl ? (
+        {bannerUrl ? (
           <Image
-            src={providerProfile.bannerUrl}
+            src={bannerUrl}
             alt={organizationName}
             fill
             className="object-cover"
@@ -59,10 +52,10 @@ export default function ProviderCard({ providerId, onViewDetails, onUnfollow }: 
         style={{ top: 'calc(0.5rem + 5rem - 2rem)' }}
         onClick={onViewDetails}
       >
-        {providerProfile?.logoUrl && (
+        {logoUrl && (
           <div className="relative w-16 h-16 flex-shrink-0 rounded-lg border-4 border-white bg-white shadow-lg overflow-hidden">
             <Image
-              src={providerProfile.logoUrl}
+              src={logoUrl}
               alt={`${organizationName} logo`}
               fill
               className="object-cover"
@@ -75,9 +68,9 @@ export default function ProviderCard({ providerId, onViewDetails, onUnfollow }: 
             className="text-lg font-bold text-slate-900 cursor-pointer hover:text-blue-600 transition-colors"
             onClick={onViewDetails}
           >
-            {organizationName}
+            {organizationName ? organizationName : `Provider #${provider.id}`}
           </h3>
-          {providerProfile?.verified && (
+          {verified && (
             <BadgeCheck className="h-5 w-5 text-blue-500 flex-shrink-0" aria-label="Verified" />
           )}
         </div>

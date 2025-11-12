@@ -12,10 +12,16 @@ import { Bell, X } from 'lucide-react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Client, IMessage } from '@stomp/stompjs';
 import { toast } from 'sonner';
+import { useGetNotificationsQuery } from '@/state/apiAuth';
+import { divide } from 'lodash';
+import { useRouter } from 'next/navigation';
 
-const Notifications = ({ notifications }: { notifications: UserNotification[] }) => {
+const Notifications = () => {
   const clientRef = useRef<Client | null>(null);
   const token = useMemo(() => process.env.NEXT_PUBLIC_API_TOKEN || '', []);
+
+  const { data: notifications, isLoading, isError } = useGetNotificationsQuery();
+  const router = useRouter();
 
   useEffect(() => {
     if (!token) {
@@ -36,6 +42,7 @@ const Notifications = ({ notifications }: { notifications: UserNotification[] })
         client.subscribe('/user/queue/private', (message: IMessage) => {
           try {
             const notification = JSON.parse(message.body);
+            console.log(notification);
 
             toast.custom((t) => (
               <div className="flex flex-col items-start rounded-lg gap-1 p-4 border border-primary-brand cursor-pointer bg-primary-light">
@@ -47,23 +54,6 @@ const Notifications = ({ notifications }: { notifications: UserNotification[] })
             console.log('Error parsing private notification:', error);
           }
         });
-
-        // // Subscribe to global notifications
-        // client.subscribe('/topic/global', (message: IMessage) => {
-        //   try {
-        //     const notification: Notification = JSON.parse(message.body);
-        //     // Generate id if not present
-        //     if (!notification.id) {
-        //       notification.id = `${notification.userId}-${notification.referenceId}-${notification.topic}-${Date.now()}`;
-        //     }
-        //     // Add timestamp if not present
-        //     if (!notification.time) {
-        //       notification.time = new Date().toLocaleString();
-        //     }
-        //   } catch (error) {
-        //     console.error('Error parsing global notification:', error);
-        //   }
-        // });
       },
       onDisconnect: () => {
         console.log('WebSocket Disconnected');
@@ -88,7 +78,10 @@ const Notifications = ({ notifications }: { notifications: UserNotification[] })
     };
   }, [token]);
 
-  const unreadCount = useMemo(() => notifications.filter((n) => !n.isRead).length, [notifications]);
+  const unreadCount = useMemo(
+    () => (notifications ? notifications.filter((n) => !n.isRead).length : 0),
+    [notifications]
+  );
 
   return (
     <div className="flex items-center gap-2 sm:gap-3">
@@ -117,35 +110,57 @@ const Notifications = ({ notifications }: { notifications: UserNotification[] })
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <div className="max-h-96 flex flex-col gap-1 overflow-y-auto">
-            {notifications.length === 0 ? (
+            {isError && (
+              <div className="p-4 text-center text-sm text-red-500">
+                Fetching notifications failed.
+              </div>
+            )}
+            {isLoading && (
+              <div className="">
+                <div className="space-y-2 p-4">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="flex flex-col gap-2 animate-pulse">
+                      <div className="flex items-center justify-between w-full">
+                        <div className="h-4 w-32 bg-gray-200 rounded"></div>
+                        <div className="w-2 h-2 bg-gray-200 rounded-full mt-1"></div>
+                      </div>
+                      <div className="h-3 w-full bg-gray-200 rounded"></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {notifications && !isLoading && notifications.length === 0 && (
               <div className="p-4 text-center text-sm text-gray-500">No notifications</div>
-            ) : (
+            )}
+            {notifications &&
+              !isLoading &&
               notifications.map((notification) => {
-                // Generate id if not present for key
-                const notificationId =
-                  notification.id ||
-                  `${notification.userId}-${notification.referenceId}-${notification.topic}`;
-                const isUnread = !notification.isRead;
-
                 return (
                   <DropdownMenuItem
-                    key={notificationId}
+                    key={notification.id}
                     className={cn(
                       'flex flex-col items-start gap-1 p-3 cursor-pointer',
-                      isUnread && 'bg-primary-light'
+                      !notification.isRead && 'bg-primary-light'
                     )}
+                    onClick={() => {
+                      if (notification.slug) {
+                        router.push(`/${notification.slug}`);
+                      }
+                    }}
                   >
                     <div className="flex items-start justify-between w-full">
-                      <p className="font-semibold text-sm text-gray-900">{notification.title}</p>
-                      {isUnread && (
+                      <p className="font-semibold text-sm text-gray-900">
+                        {notification.referenceType}
+                      </p>
+                      {!notification.isRead && (
                         <span className="w-2 h-2 bg-primary-brand rounded-full mt-1"></span>
                       )}
                     </div>
                     <p className="text-xs text-gray-600 line-clamp-2">{notification.content}</p>
                   </DropdownMenuItem>
                 );
-              })
-            )}
+              })}
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="text-center justify-center text-primary-brand font-medium cursor-pointer">

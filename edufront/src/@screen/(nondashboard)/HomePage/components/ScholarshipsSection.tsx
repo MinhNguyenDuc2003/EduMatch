@@ -1,6 +1,5 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { Button } from '@/lib/cus/button';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import CardSmalPicSkeleton from './CardSmalPicSkeleton';
@@ -11,66 +10,47 @@ import {
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
-import { useGetProfileQuery } from '@/state/apiApplicant';
 
 type ScholarshipsSectionProps = {
   scholarships: Scholarship[];
   isLoading?: boolean;
   isError?: boolean;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
   onViewDetails: (item: Scholarship) => void;
 };
-
-const ITEMS_PER_PAGE = 9;
 
 export default function ScholarshipsSection({
   scholarships,
   isLoading = false,
   isError = false,
+  currentPage,
+  totalPages,
+  onPageChange,
   onViewDetails,
 }: ScholarshipsSectionProps) {
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState(0);
 
-  const { data: profile } = useGetProfileQuery();
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
-  const userId = profile?.customer?.id;
-
-  const totalItems = scholarships?.length || 0;
-  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  const startIndex = currentPage * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentScholarships = scholarships?.slice(startIndex, endIndex) || [];
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
-
   const handleToggleTracking = async (scholarshipId: number) => {
-    if (!userId) {
-      console.error('User ID not available');
-      return;
-    }
-
-    // Find the scholarship to check if it's already tracked
-    const scholarship = currentScholarships.find((s) => s.id === scholarshipId);
+    const scholarship = scholarships.find((s) => s.id === scholarshipId);
     const isTracked = scholarship?.isFollow === 1;
 
     try {
       if (isTracked) {
         await unfollowScholarship({
           scholarshipId,
-          userId,
         }).unwrap();
       } else {
         await followScholarship({
           scholarshipId,
-          userId,
         }).unwrap();
       }
     } catch (error) {
-      console.error('Failed to toggle tracking:', error);
+      console.log('Failed to toggle tracking:', error);
     }
   };
 
@@ -101,8 +81,8 @@ export default function ScholarshipsSection({
                 Failed to load scholarships. Please try again later.
               </p>
             </div>
-          ) : currentScholarships.length > 0 ? (
-            map(currentScholarships, (item) => (
+          ) : scholarships.length > 0 ? (
+            map(scholarships, (item) => (
               <CardSmalPic
                 key={item.id}
                 scholarship={item}
@@ -123,7 +103,7 @@ export default function ScholarshipsSection({
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={handlePageChange}
+              onPageChange={onPageChange}
             />
           </div>
         )}

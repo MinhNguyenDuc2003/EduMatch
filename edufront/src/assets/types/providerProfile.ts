@@ -27,6 +27,7 @@ declare global {
     verified: boolean;
     country: string;
     providerContactDtos: ProviderContact[];
+    isFollow: number;
   };
 
   type ProviderProfileApiResponse = {
