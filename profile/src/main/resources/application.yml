@@ -168,3 +168,19 @@ keycloak:
   resource: ${env.keycloak.client-id:backoffice-bff}
   credentials:
     secret: ${env.keycloak.client-secret:TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF}
+
+kafka:
+  enable: true
+  bootstrap-server: ${env.kafka.ip:localhost}:${env.kafka.port:29092}
+  scholarship:
+    new-event:
+      topic: ${app.environment:local}.scholarship.new-event
+      group: ${app.environment:local}.scholarship.new-event.group
+  news:
+    new-event:
+      topic: ${app.environment:local}.news.new-event
+      group: ${app.environment:local}.news.new-event.group
+  application:
+    update-status:
+      topic: ${app.environment:local}.application.update-event
+      group: ${app.environment:local}.application.update-event.group

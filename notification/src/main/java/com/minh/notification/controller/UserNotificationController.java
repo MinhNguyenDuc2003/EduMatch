@@ -20,6 +20,7 @@ public class UserNotificationController {
     @Autowired
     private UserNotificationService userNotificationService;
 
+    @Authorized
     @GetMapping("/user")
     public ApiResponse<List<UserNotificationDto>> getByUser() {
         return ApiResponse.ok(userNotificationService.getByUser());
@@ -28,7 +29,7 @@ public class UserNotificationController {
     @Authorized
     @GetMapping("/token")
     public ApiResponse<String> getToken() {
-        return ApiResponse.ok("Bearer" + SecurityUtil.getRawToken());
+        return ApiResponse.ok("Bearer " + SecurityUtil.getRawToken());
     }
 
     @PostMapping

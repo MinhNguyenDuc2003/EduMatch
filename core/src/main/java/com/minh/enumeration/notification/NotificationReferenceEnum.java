@@ -11,6 +11,9 @@ import java.util.Arrays;
 public enum NotificationReferenceEnum {
 
     SCHOLARSHIP("SCHOLARSHIP"),
+    PROVIDER_NEWS("PROVIDER_NEWS"),
+    APPLICATION("APPLICATION"),
+    SCHOLARSHIP_APPLICATION("SCHOLARSHIP_APPLICATION"),
     INVALID("INVALID");
 
     private final String code;

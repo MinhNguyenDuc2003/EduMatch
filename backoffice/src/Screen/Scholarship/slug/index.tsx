@@ -1,10 +1,9 @@
 'use client';
-import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { Pencil, Check, X } from 'lucide-react';
-import Context from '../seg/context';
 import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { CustomFormField } from 'src/common/components/common/CustomFormField';
+import Context from '../seg/context';
 
 export default function ScholarshipDetail() {
   const { id } = useParams();
@@ -21,8 +20,8 @@ export default function ScholarshipDetail() {
 function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
   const [data, setData] = useState<any>(null);
   const [form, setForm] = useState<any>({});
-  const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (id && meds?.onGetByID) {
@@ -32,25 +31,26 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
         setForm(res);
       })();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleChange = (key: string, value: any) => {
     setForm((prev: any) => ({ ...prev, [key]: value }));
   };
 
-  const handleSave = async () => {
-    try {
-      setLoading(true);
-      await meds.onUpdate(id, form);
-      setData(form);
-      setIsEditing(false);
-    } catch (error) {
-      console.error('Update failed:', error);
-      alert('Failed to update scholarship.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const handleSave = async () => {
+  //   try {
+  //     setLoading(true);
+  //     await meds.onUpdate(id, form);
+  //     setData(form);
+  //     setIsEditing(false);
+  //   } catch (error) {
+  //     console.error('Update failed:', error);
+  //     alert('Failed to update scholarship.');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   if (!data)
     return (
@@ -67,7 +67,7 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
       {/* Header */}
       <div className="flex justify-between items-center border-b pb-4">
         <h1 className="text-2xl font-semibold text-gray-800">
-          {isEditing ? 'Edit Scholarship' : 'Scholarship Details'}
+          Scholarship Details
         </h1>
 
         {/* {!isEditing ? (
@@ -78,7 +78,7 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
             <Pencil size={18} /> Edit
           </button>
         ) : ( */}
-          {/* <div className="flex gap-3">
+        {/* <div className="flex gap-3">
             <button
               onClick={handleSave}
               disabled={loading}
@@ -118,21 +118,55 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
 
       {/* Basic Info */}
       <div className="grid md:grid-cols-2 gap-6">
-        <CustomFormField label="Title" initialValue={form.title} disabled={!isEditing} isBorder />
-        <CustomFormField label="University" initialValue={form.university} disabled={!isEditing} isBorder />
-        <CustomFormField label="Country" initialValue={form.country} disabled={!isEditing} isBorder />
-        <CustomFormField label="Study Level" initialValue={form.studyLevel} disabled={!isEditing} isBorder />
-        <CustomFormField label="Scholarship Type" initialValue={form.scholarshipType} disabled={!isEditing} isBorder />
-        <CustomFormField label="Funding Amount" initialValue={form.fundingAmount} disabled={!isEditing} isBorder />
-        <CustomFormField label="Available Slots" initialValue={form.availableSlots} disabled={!isEditing} isBorder />
-        <CustomFormField label="Fields" initialValue={form.fields} disabled={!isEditing} isBorder />
+        <CustomFormField label="Title" initialValue={form.title} 
+        // disabled={!isEditing} 
+        isBorder />
+        <CustomFormField
+          label="University"
+          initialValue={form.university}
+          // disabled={!isEditing}
+          isBorder
+        />
+        <CustomFormField
+          label="Country"
+          initialValue={form.country}
+          // disabled={!isEditing}
+          isBorder
+        />
+        <CustomFormField
+          label="Study Level"
+          initialValue={form.studyLevel}
+          // disabled={!isEditing}
+          isBorder
+        />
+        <CustomFormField
+          label="Scholarship Type"
+          initialValue={form.scholarshipType}
+          // disabled={!isEditing}
+          isBorder
+        />
+        <CustomFormField
+          label="Funding Amount"
+          initialValue={form.fundingAmount}
+          // disabled={!isEditing}
+          isBorder
+        />
+        <CustomFormField
+          label="Available Slots"
+          initialValue={form.availableSlots}
+          // disabled={!isEditing}
+          isBorder
+        />
+        <CustomFormField label="Fields" initialValue={form.fields} 
+        // disabled={!isEditing} 
+        isBorder />
       </div>
 
       {/* Description */}
       <TextAreaSection
         label="Description"
         value={form.description}
-        editable={isEditing}
+        editable={false}
         onChange={(v) => handleChange('description', v)}
       />
 
@@ -141,13 +175,13 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
         <TextAreaSection
           label="Requirements"
           value={form.requirements}
-          editable={isEditing}
+          editable={false}
           onChange={(v) => handleChange('requirements', v)}
         />
         <TextAreaSection
           label="Benefits"
           value={form.benefits}
-          editable={isEditing}
+          editable={false}
           onChange={(v) => handleChange('benefits', v)}
         />
       </div>
@@ -157,13 +191,13 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
         <CustomFormField
           label="Language Requirement"
           initialValue={form.languageRequirement}
-          disabled={!isEditing}
+          // disabled={!isEditing}
           isBorder
         />
         <CustomFormField
           label="GPA Requirement"
           initialValue={form.gpaRequirement}
-          disabled={!isEditing}
+          // disabled={!isEditing}
           isBorder
         />
         <CustomFormField
@@ -198,7 +232,11 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
               <h3 className="text-lg font-semibold text-gray-800">{provider.organizationName}</h3>
               <p className="text-gray-600 text-sm">{provider.organizationType}</p>
               <p className="text-gray-600 text-sm">{provider.addressSummary}</p>
-              <a href={provider.website} target="_blank" className="text-blue-600 hover:underline text-sm">
+              <a
+                href={provider.website}
+                target="_blank"
+                className="text-blue-600 hover:underline text-sm"
+              >
                 {provider.website}
               </a>
             </div>

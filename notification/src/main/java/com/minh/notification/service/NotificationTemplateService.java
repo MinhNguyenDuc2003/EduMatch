@@ -6,4 +6,6 @@ public interface NotificationTemplateService {
 
     NotificationTemplateDto getByType(String type);
 
+    NotificationTemplateDto saveOne(NotificationTemplateDto notificationTemplateDto);
+
 }

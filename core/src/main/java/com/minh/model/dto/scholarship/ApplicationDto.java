@@ -18,6 +18,10 @@ public class ApplicationDto extends BaseDto {
 
     private String applicationName;
 
+    private String code;
+
+    private Long versionApplication;
+
     private String userId;
 
     private String fullName;

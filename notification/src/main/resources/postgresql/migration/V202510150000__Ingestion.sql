@@ -12,6 +12,18 @@ VALUES ('Scholarship "{{scholarshipName}}" has been updated',
 
 INSERT INTO notification.NOTIFICATION_TEMPLATE
     (TITLE, CONTENT, TYPE)
-VALUES ('News from {{providerName}} about "{{scholarshipName}}"',
-        '{{providerName}} has published a new announcement related to the scholarship "{{scholarshipName}}": "{{newsTitle}}".',
+VALUES ('News from "{{providerName}}"',
+        '{{providerName}} has published a new announcement.',
         'SCHOLARSHIP_NEWS');
+
+INSERT INTO notification.NOTIFICATION_TEMPLATE
+(TITLE, CONTENT, TYPE)
+VALUES ('Application status updated',
+        'Your application from scholarship "{scholarshipName}" status has been updated.',
+        'APPLICATION_STATUS_UPDATED');
+
+INSERT INTO notification.NOTIFICATION_TEMPLATE
+(TITLE, CONTENT, TYPE)
+VALUES ('Scholarship "{scholarshipName}" has receive application',
+        'Scholarship "{scholarshipName}" has receive application from {applicantName}.',
+        'SCHOLARSHIP_APPLICATION');

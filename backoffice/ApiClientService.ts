@@ -29,9 +29,7 @@ const sendRequest = async (
     requestOptions.body = data;
   }
 
-  const url = endpoint.startsWith('http')
-    ? endpoint
-    : `${baseUrl}${endpoint}`;
+  const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;
 
   try {
     const response = await fetch(url, method === 'GET' ? undefined : requestOptions);

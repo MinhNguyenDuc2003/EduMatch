@@ -38,8 +38,7 @@ export const sStore = create<State>()(
             removeItem: () => {},
           };
         }),
-        merge: (persistedState, currentState) =>
-          Object.assign(currentState, persistedState),
+        merge: (persistedState, currentState) => Object.assign(currentState, persistedState),
 
         // 🔥 Sửa ở đây: lưu cả Auth & Joint
         partialize: (state) => ({

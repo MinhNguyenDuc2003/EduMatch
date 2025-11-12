@@ -1,13 +1,9 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { cn } from "src/utils/cn";
+import { motion } from 'framer-motion';
+import { cn } from 'src/utils/cn';
 
-export default function AnimatedContainer({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AnimatedContainer({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
       animate={{ marginLeft: '10rem' }}

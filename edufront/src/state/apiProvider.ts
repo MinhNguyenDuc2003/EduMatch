@@ -1,15 +1,16 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customBaseQuery from './custombaseQuery';
 import { IScholarship } from '@/lib/schemas';
+import { Provider } from '@radix-ui/react-tooltip';
 
 // API Endpoints
 const API_ENDPOINTS = {
-  PROVIDER_PROFILE: '/customer/storefront/provider/profile',
-  SCHOLARSHIP: '/scholarship/scholarships',
-  FOLLOW_PROVIDER: '/profile/followers',
-  GET_FOLLOWED_PROVIDERS: '/profile/followers/providers',
-  GET_PROVIDER_BY_ID: '/profile/providers',
-  APPLICATION: '/scholarship/applications-scholarship',
+  PROVIDER_PROFILE: '/api/customer/storefront/provider/profile',
+  SCHOLARSHIP: '/api/scholarship/scholarships',
+  FOLLOW_PROVIDER: '/api/profile/followers',
+  GET_FOLLOWED_PROVIDERS: '/api/profile/followers/providers',
+  GET_PROVIDER_BY_ID: '/api/profile/providers',
+  APPLICATION: '/api/scholarship/applications-scholarship',
 } as const;
 
 export const apiProvider = createApi({
@@ -102,7 +103,7 @@ export const apiProvider = createApi({
     }),
 
     // Follow provider
-    followProvider: build.mutation<{ userId: string; providerId: number }, number>({
+    followProvider: build.mutation<void, number>({
       query: (id) => ({
         url: `${API_ENDPOINTS.FOLLOW_PROVIDER}/${id}`,
         method: 'POST',
@@ -122,7 +123,7 @@ export const apiProvider = createApi({
     }),
 
     // Get followed providers
-    getFollowedProviders: build.query<{ userId: string; providerId: number }[], void>({
+    getFollowedProviders: build.query<ProviderProfile[], void>({
       query: () => ({
         url: API_ENDPOINTS.GET_FOLLOWED_PROVIDERS,
         method: 'GET',

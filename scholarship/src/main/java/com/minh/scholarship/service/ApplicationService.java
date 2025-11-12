@@ -1,6 +1,7 @@
 package com.minh.scholarship.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.minh.model.dto.scholarship.ApplicationDto;
 import com.minh.scholarship.data.vo.ApplicationVo;
 import com.minh.scholarship.model.filter.ApplicationFilter;
 import org.springframework.data.domain.Page;
@@ -30,4 +31,6 @@ public interface ApplicationService {
     Boolean addImagesToApplication(Long id, List<MultipartFile> mediaFiles);
 
     Boolean deleteImagesToApplication(Long id, List<Long> mediaIds);
+
+    List<ApplicationVo> getByCode(String code);
 }

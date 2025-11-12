@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,6 +82,11 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     public ApplicationVo create(ApplicationVo applicationVo, List<MultipartFile> mediaFiles) throws JsonProcessingException {
         String userId = UaaContextHolder.getUserId();
         applicationVo.setUserId(userId);
+
+        Optional<ApplicationEntity> existByCodeAndVersion = applicationRepository.findByCodeAndVersionApplicationAndActive(applicationVo.getCode(), applicationVo.getVersionApplication(), true);
+        if (existByCodeAndVersion.isPresent()) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_CODE_AND_VERSION_ALREADY_EXIST);
+        }
         ApplicationEntity entity = applicationRepository.save(applicationMapper.toEntity(applicationVo));
 
         if (ObjectUtils.isNotEmpty(applicationVo.getApplicationAttributes())) {
@@ -103,6 +109,11 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
         applicationVo.setUserId(userId);
         ApplicationEntity entity = applicationRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST));
+
+        List<ApplicationScholarshipEntity> byApplicationCodeAndApplicationVersion = applicationScholarshipRepository.findByApplicationIdAndActive(applicationVo.getId(), true);
+        if (ObjectUtils.isNotEmpty(byApplicationCodeAndApplicationVersion)) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_IS_ALREADY_SUBMITTED_PLEASE_UPDATE_VERSION);
+        }
 
         applicationMapper.updateEntityFromVo(applicationVo, entity);
         ApplicationEntity saved = applicationRepository.save(entity);
@@ -180,6 +191,17 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
             applicationMediaRepository.deleteByApplicationIdAndMediaId(id, mediaId);
         });
         return true;
+    }
+
+    @Override
+    public List<ApplicationVo> getByCode(String code) {
+        List<ApplicationEntity> entity = applicationRepository.findByCodeAndActive(code, true);
+        if (ObjectUtils.isEmpty(entity)) {
+            return null;
+        }
+        List<ApplicationVo> vo = applicationMapper.entitiesToVos(entity);
+        vo.forEach(this::addAttributesAndMedia);
+        return vo;
     }
 
     @Override

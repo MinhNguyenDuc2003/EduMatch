@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 import Subcription from '../../Screen/Subcription/index';
 
 const SubcriptionPage = () => {
   return (
     <div>
-      <Subcription/>
+      <Subcription />
     </div>
-  )
-}
+  );
+};
 
-export default SubcriptionPage
+export default SubcriptionPage;

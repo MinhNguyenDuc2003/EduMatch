@@ -1,18 +1,9 @@
-import React from "react";
-
+import React from 'react';
 
 //#region Core (cap 1)
-export function Core({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Core({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Core"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Core" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -21,17 +12,9 @@ export function Core({
 
 //#region  Contain (cap 2)
 
-export function Container({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Container({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Contain"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Contain" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -39,17 +22,9 @@ export function Container({
 //#endregion
 
 //#region  Area (cap 3)
-export function Area({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Area({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Area"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Area" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -57,17 +32,9 @@ export function Area({
 //#endregion
 
 //#region  Yard (cap 4)
-export function Yard({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Yard({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Yard"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Yard" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -75,17 +42,9 @@ export function Yard({
 //#endregion
 
 //#region  Section (cap 5)
-export function Section({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Section({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Section"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Section" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -93,17 +52,9 @@ export function Section({
 //#endregion
 
 //#region  Anchor (cap 6)
-export function Anchor({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Anchor({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Anchor"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Anchor" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -111,17 +62,9 @@ export function Anchor({
 //#endregion
 
 //#region  Block (cap 7)
-export function Block({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Block({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Block"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Block" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -130,17 +73,9 @@ export function Block({
 
 //#region  Card (cap 8)
 
-export function Card({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Card({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Card"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Card" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -150,17 +85,9 @@ export function Card({
 
 //#region  Box (cap 9)
 
-export function Box({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Box({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Box"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Box" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -170,13 +97,9 @@ export function Box({
 
 //#region  Column (cap 10)
 
-export function Column({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Column({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div id="Column" className={`${className || ""}`} {...args}>
+    <div id="Column" className={`${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -186,17 +109,9 @@ export function Column({
 
 //#region  Row (cap 11)
 
-export function Row({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Row({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Row"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Row" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -206,17 +121,9 @@ export function Row({
 
 //#region  Group (cap 12)
 
-export function Group({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Group({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Group"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Group" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -225,17 +132,9 @@ export function Group({
 //#endregion
 
 //#region  Wrap (cap 13)
-export function Wrap({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Wrap({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Wrap"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Wrap" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -245,17 +144,9 @@ export function Wrap({
 
 //#region  Cover (cap 14)
 
-export function Cover({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Cover({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Cover"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Cover" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -263,16 +154,12 @@ export function Cover({
 
 //#endregion
 
-export function Scroll({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Scroll({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div className="flex-1 relative">
       <div
         id="Scroll"
-        className={`overflow-hidden absolute m-auto flex-1 inset-0 ${className || ""}`}
+        className={`overflow-hidden absolute m-auto flex-1 inset-0 ${className || ''}`}
         {...args}
       >
         {children}
@@ -281,17 +168,9 @@ export function Scroll({
   );
 }
 
-export function Mass({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Mass({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Mass"
-      className={`flex flex-col gap-2 ${className || ""}`}
-      {...args}
-    >
+    <div id="Mass" className={`flex flex-col gap-2 ${className || ''}`} {...args}>
       {children}
     </div>
   );
@@ -303,95 +182,55 @@ export function RText({
   ...args
 }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
-    <p
-      id="RText"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <p id="RText" className={` ${className || ''}`} {...args}>
       {children}
     </p>
   );
 }
 
-export function FControl({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function FControl({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div id="FormControl" className={`${className || ""}`} {...args}>
+    <div id="FormControl" className={`${className || ''}`} {...args}>
       {children}
     </div>
   );
 }
 
-export function FLabel({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function FLabel({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div id="FLabel" className={`${className || ""}`} {...args}>
+    <div id="FLabel" className={`${className || ''}`} {...args}>
       {children}
     </div>
   );
 }
 
-export function FValid({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function FValid({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div id="FValid" className={`${className || ""}`} {...args}>
+    <div id="FValid" className={`${className || ''}`} {...args}>
       {children}
     </div>
   );
 }
 
-export function Begin({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Begin({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Begin"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Begin" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
 }
 
-export function Content({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function Content({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="Content"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="Content" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );
 }
 
-export function End({
-  className,
-  children,
-  ...args
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function End({ className, children, ...args }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      id="End"
-      className={` ${className || ""}`}
-      {...args}
-    >
+    <div id="End" className={` ${className || ''}`} {...args}>
       {children}
     </div>
   );

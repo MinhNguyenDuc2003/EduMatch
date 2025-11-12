@@ -1,7 +1,7 @@
 import React from 'react';
 import { ControllerRenderProps, FieldValues, useFormContext, useFieldArray } from 'react-hook-form';
 import { Edit, X, Plus } from 'lucide-react';
-import MultipleSelector from './multi-select';
+// import MultipleSelector from './multi-select';
 import StringMultiSelect from './string-multi-select';
 import { Textarea } from './textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
@@ -73,6 +73,7 @@ interface FormFieldProps {
   inlineLabel?: boolean;
   isBorder?: boolean;
   stringFormat?: 'comma' | 'json' | 'pipe';
+  rules?: any;
 }
 
 export const CustomFormField: React.FC<FormFieldProps> = ({
@@ -89,6 +90,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
   initialValue,
   inlineLabel,
   isBorder,
+  rules,
   stringFormat = 'comma',
 }) => {
   const { control } = useFormContext();
@@ -99,6 +101,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
         return (
           <Textarea
             placeholder={placeholder}
+            disabled={disabled}
             {...field}
             rows={3}
             className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
@@ -109,7 +112,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
           <Select
             value={String(field.value || initialValue || '')}
             defaultValue={String(field.value || initialValue || '')}
-            onValueChange={(value : any) => {
+            onValueChange={(value: any) => {
               // Convert back to number if the original value was a number
               const numValue = Number(value);
               field.onChange(isNaN(numValue) ? value : numValue);
@@ -223,6 +226,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
       control={control}
       name={name || ''}
       defaultValue={initialValue}
+      rules={rules}
       render={({ field }) => (
         <FormItem
           className={`${type !== 'switch' && 'rounded-md'} relative ${className} ${

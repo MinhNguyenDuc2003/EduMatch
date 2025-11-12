@@ -1,4 +1,4 @@
-import { StateCreator } from "zustand";
+import { StateCreator } from 'zustand';
 
 type State = {
   Auth: {
@@ -6,18 +6,18 @@ type State = {
     Token?: string;
     Permission?: IPermission;
     Functions?: IFunction[];
-    Locale ?: string
+    Locale?: string;
   };
   setToken(data: string): void;
-  setAuthData(Obj: State["Auth"]): void;
+  setAuthData(Obj: State['Auth']): void;
   resetAuth(): void;
 };
 
 export const AuthSlice: StateCreator<State> = (set) => {
   return {
-    Auth: { UserInfo: {}, Token: "", Permission: {}, Functions: [] },
+    Auth: { UserInfo: {}, Token: '', Permission: {}, Functions: [] },
     setToken(Token) {
-      sessionStorage.setItem("jwt", Token);
+      sessionStorage.setItem('jwt', Token);
       set((state) => ({ ...state, Auth: { ...state.Auth, Token } }));
     },
     setAuthData(Obj) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import apiClientService from 'src/apiController/ApiClientService';
 import { GenCtx } from 'src/apiController/GeneralContext';
@@ -12,25 +12,27 @@ export default GenCtx({
   useLogic() {
     type IForm = {
       fields: {
-      SubcriptionPlan : ISubscriptionPlanList
+        SubcriptionPlan: ISubscriptionPlanList;
       };
       filters: object;
     };
     const ss = sStore();
     const methods = useForm<IForm>({
-      mode: 'onSubmit',
+      mode: 'onChange',
+      reValidateMode: 'onSubmit',
       defaultValues: {
         fields: {},
         filters: {},
       },
     });
-    const loading = useState(false);
+    // const loading = useState(false);
+    // const { getValues } = methods;
     const meds = {
       async onGetData() {
         onSetLoading(true);
         try {
           const data = await apiClientService.get(
-            '/subscription/subscription/subscription/plans/all'
+            '/api/subscription/subscription/subscription/plans/all'
           );
           if (data) {
             ss.setJointData({
@@ -49,8 +51,72 @@ export default GenCtx({
       async onGetByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/subscription/subscription/subscription/plans/${id}`);
-          console.log('data.data', data.data)
+          const data = await apiClientService.get(
+            `/api/subscription/subscription/subscription/plans/${id}`
+          );
+          console.log('data.data', data.data);
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+
+      async onCreate(plan: ISubscriptionPlanList) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.post(
+            `/api/subscription/subscription/subscription/plans`,
+            {
+              name: plan.name,
+              description: plan.description,
+              currency: plan.currency,
+              price: plan.price,
+              durationDays: plan.durationDays,
+              targetType: plan.targetType,
+              features: plan.features,
+            }
+          );
+          console.log('Created plan:', data.data);
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+      async onUpdate(id: string, plan: ISubscriptionPlanList) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.put(
+            `/api/subscription/subscription/subscription/plans`,
+            {
+              id: id,
+              name: plan.name,
+              description: plan.description,
+              currency: plan.currency,
+              price: plan.price,
+              durationDays: plan.durationDays,
+              targetType: plan.targetType,
+              features: plan.features,
+            }
+          );
+          console.log('Update plan:', data.data);
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+      async onDelete(id: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.delete(
+            `/api/subscription/subscription/subscription/plans/${id}`
+          );
+          console.log('Delete plan:', data.data);
           return data.data;
         } catch (error) {
           console.error({ error });
@@ -62,11 +128,12 @@ export default GenCtx({
 
     useEffect(() => {
       meds.onGetData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {
       ss,
       meds,
-      methods
+      methods,
     };
   },
 });

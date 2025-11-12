@@ -3,8 +3,8 @@
 import { Button } from '@/lib/cus/button';
 import Header from '@/pattern/share/Header';
 import { Plus } from 'lucide-react';
-import React, { useState } from 'react';
-import { SearchFilters, ScholarshipCard, EmptyState, Pagination } from './components';
+import React from 'react';
+import { ScholarshipCard, EmptyState, Pagination } from './components';
 import { useRouter } from 'next/navigation';
 import { useDeleteScholarshipMutation, useGetScholarshipsQuery } from '@/state/apiProvider';
 import { ScholarshipCardSkeleton } from './components/ScholarshipCard';
@@ -12,15 +12,11 @@ import { toast } from 'sonner';
 
 const ProviderScholaship = () => {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
 
   const { data: scholarships, isLoading } = useGetScholarshipsQuery();
   const [deleteScholarship, { isLoading: isDeleting }] = useDeleteScholarshipMutation();
 
   const handleDeleteScholarship = async (id: number) => {
-    // TODO: Implement delete logic
-    console.log('Delete scholarship:', id);
-
     await deleteScholarship(id)
       .unwrap()
       .then(() => {
@@ -48,11 +44,8 @@ const ProviderScholaship = () => {
         }
       />
 
-      {/* Search and Filters */}
-      <SearchFilters searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-
       {/* Scholarships Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {isLoading &&
           Array.from({ length: 10 }).map((_, index) => (
             <ScholarshipCardSkeleton variant="medium" className="bg-white" key={index} />

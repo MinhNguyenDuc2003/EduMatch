@@ -1,8 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Footer from '@/pattern/core/Footer';
-import Header from '@/pattern/core/Navbar';
+import { useState } from 'react';
 
 import {
   BannerSection,
@@ -11,16 +10,17 @@ import {
   ScholarshipsSection,
   CTASection,
 } from './components';
-import { useSearchScholarshipsQuery } from '@/state/apiScholarship';
+import { usePageScholarshipsQuery } from '@/state/apiScholarship';
 
 export default function HomePage() {
   const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(0);
 
   const {
     data: response,
     isLoading,
     isError,
-  } = useSearchScholarshipsQuery({
+  } = usePageScholarshipsQuery({
     criteria: {
       country: '',
       university: '',
@@ -29,21 +29,29 @@ export default function HomePage() {
     },
     sortBy: 'id',
     sortDirection: 'DESC',
-    page: 0,
-    size: 50,
+    page: currentPage,
+    size: 9,
   });
 
-  const scholarships = response?.content || [];
+  const scholarships = response?.content ?? [];
+  const totalPages = response?.totalPages ?? 0;
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   return (
     <>
       <BannerSection />
 
       <ScholarshipsSection
-        scholarships={scholarships || []}
+        scholarships={scholarships}
         isLoading={isLoading}
         isError={isError}
-        onViewDetails={(item) => router.push(`/scholarships/${item.id}`)}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        onViewDetails={(item) => router.push(`/scholarships/${item.slug}`)}
       />
       <FeaturesSection />
 

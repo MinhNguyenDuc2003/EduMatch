@@ -3,7 +3,7 @@
 import { SidebarProvider } from '@/lib/cus/sidebar';
 import ProviderNavbar from '@/pattern/core/ProviderNavbar';
 import ProviderSidebar from '@/pattern/core/ProviderSidebar';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import ProtectedRoute from '@/pattern/core/ProtectedRoute';
 import React from 'react';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

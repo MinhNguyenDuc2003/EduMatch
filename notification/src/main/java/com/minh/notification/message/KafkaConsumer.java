@@ -45,14 +45,79 @@ public class KafkaConsumer extends BaseService {
                     .isRead(false)
                     .content(notificationVo.getContent())
                     .slug(notificationVo.getSlug())
-                    .notificationId(notificationVo.getUserNotificationId()).build();
+                    .notificationId(notificationVo.getUserNotificationId())
+                    .userId(notificationVo.getUserId()).build();
             userNotificationService.createOne(notification);
-            notificationVo.setUserNotificationId(notification.getId());
-            System.out.println("UserNotificationId: " + notificationVo.getUserId());
             List<String> userFollowerTopics = userSubscriptionService.getUserFollowerTopics(notificationVo.getUserId());
             userFollowerTopics.forEach(userFollowerTopic -> {
                 notificationWebSocketHandler.sendToUser(userFollowerTopic, notificationVo);
             });
+        });
+        thread.start();
+    }
+
+    @KafkaListener(topics = "${kafka.news.new-event.topic}", groupId = "${kafka.news.new-event.group}", containerFactory = "kafkaListenerContainerFactory")
+    public void receiveNewEventNews(byte[] message) throws JsonProcessingException {
+        String messageStr = new String(message);
+        NotificationVo notificationVo = objectMapper.readValue(messageStr, NotificationVo.class);
+        ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder();
+        ThreadFactory threadFactory = threadFactoryBuilder.build();
+        Thread thread = threadFactory.newThread(() -> {
+            UserNotificationDto notification = UserNotificationDto.builder()
+                    .referenceId(notificationVo.getReferenceId())
+                    .referenceType(notificationVo.getReferenceType())
+                    .isRead(false)
+                    .content(notificationVo.getContent())
+                    .slug(notificationVo.getSlug())
+                    .notificationId(notificationVo.getUserNotificationId())
+                    .userId(notificationVo.getUserId()).build();
+            userNotificationService.createOne(notification);
+            List<String> userFollowerTopics = userSubscriptionService.getUserFollowerTopics(notificationVo.getUserId());
+            userFollowerTopics.forEach(userFollowerTopic -> {
+                notificationWebSocketHandler.sendToUser(userFollowerTopic, notificationVo);
+            });
+        });
+        thread.start();
+    }
+
+    @KafkaListener(topics = "${kafka.application.update-status.topic}", groupId = "${kafka.application.update-status.group}", containerFactory = "kafkaListenerContainerFactory")
+    public void receiveUpdateEventApplication(byte[] message) throws JsonProcessingException {
+        String messageStr = new String(message);
+        NotificationVo notificationVo = objectMapper.readValue(messageStr, NotificationVo.class);
+        ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder();
+        ThreadFactory threadFactory = threadFactoryBuilder.build();
+        Thread thread = threadFactory.newThread(() -> {
+            UserNotificationDto notification = UserNotificationDto.builder()
+                    .referenceId(notificationVo.getReferenceId())
+                    .referenceType(notificationVo.getReferenceType())
+                    .isRead(false)
+                    .content(notificationVo.getContent())
+                    .slug(notificationVo.getSlug())
+                    .notificationId(notificationVo.getUserNotificationId())
+                    .userId(notificationVo.getUserId()).build();
+            userNotificationService.createOne(notification);
+            notificationWebSocketHandler.sendToUser(notificationVo.getUserId(), notificationVo);
+        });
+        thread.start();
+    }
+
+    @KafkaListener(topics = "${kafka.provider.application.topic}", groupId = "${kafka.provider.application.group}", containerFactory = "kafkaListenerContainerFactory")
+    public void receiveNewApplicationScholarship(byte[] message) throws JsonProcessingException {
+        String messageStr = new String(message);
+        NotificationVo notificationVo = objectMapper.readValue(messageStr, NotificationVo.class);
+        ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder();
+        ThreadFactory threadFactory = threadFactoryBuilder.build();
+        Thread thread = threadFactory.newThread(() -> {
+            UserNotificationDto notification = UserNotificationDto.builder()
+                    .referenceId(notificationVo.getReferenceId())
+                    .referenceType(notificationVo.getReferenceType())
+                    .isRead(false)
+                    .content(notificationVo.getContent())
+                    .slug(notificationVo.getSlug())
+                    .notificationId(notificationVo.getUserNotificationId())
+                    .userId(notificationVo.getUserId()).build();
+            userNotificationService.createOne(notification);
+            notificationWebSocketHandler.sendToUser(notificationVo.getUserId(), notificationVo);
         });
         thread.start();
     }
