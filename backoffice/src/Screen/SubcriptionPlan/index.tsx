@@ -75,7 +75,7 @@ const SubscriptionPlanPage = () => {
                 title="Subscription Plan List"
                 data={plans as any}
                 onCreate={() => router.push('/subscriptionPlan/create')}
-                detailPath="/subscriptionPlan"
+                detailPath="/backoffice/subscriptionPlan"
                 customTitles={[
                   'ID',
                   'Plan Name',
@@ -86,6 +86,7 @@ const SubscriptionPlanPage = () => {
                   'Features',
                 ]}
                 externalFilterText={filterText}
+                isCreate
               />
             </div>
           );

@@ -88,7 +88,7 @@ const ApplicantScholarship = () => {
               <CustomDataTable
                 title="My Scholarship Applications"
                 data={filteredApplications as any}
-                detailPath="/applicationScholarship"
+                detailPath="/backoffice/applicationScholarship"
                 customTitles={[
                   'ID',
                   'Scholarship Title',
