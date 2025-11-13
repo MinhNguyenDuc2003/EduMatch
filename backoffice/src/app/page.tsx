@@ -1,9 +1,5 @@
-import Dashboard from './dashboard/page';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return (
-    <div className="w-full h-full mr-3">
-      <Dashboard />
-    </div>
-  );
+ redirect('/backoffice/dashboard');
 }

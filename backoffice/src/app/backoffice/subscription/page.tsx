@@ -1,5 +1,5 @@
 import React from 'react';
-import Subcription from '../../Screen/Subcription/index';
+import Subcription from '../../../Screen/Subcription/index';
 
 const SubcriptionPage = () => {
   return (
