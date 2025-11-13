@@ -17,7 +17,7 @@ const WizardStepper = ({ currentStep }: { currentStep: number }) => {
                 })}
               >
                 {currentStep > step || (currentStep === 2 && step === 2) ? (
-                  <Check className="w-5 h-5" />
+                  <Check className="w-5 h-5 text-white" />
                 ) : (
                   <span>{step}</span>
                 )}

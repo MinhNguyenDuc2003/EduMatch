@@ -5,6 +5,7 @@ import React from 'react';
 import WizardStepper from './components/WizardStepper';
 import { useCheckoutNavigation } from '@/hooks/useCheckoutNavigation';
 import CheckoutPaymentPage from '../CheckoutPaymentPage';
+import CompletionPage from '../CompletionPage';
 
 const CheckoutPage = () => {
   const { checkoutStep } = useCheckoutNavigation();
@@ -14,7 +15,7 @@ const CheckoutPage = () => {
       case 1:
         return <CheckoutPaymentPage />;
       case 2:
-        return <div>Step 2</div>;
+        return <CompletionPage />;
     }
   };
 
@@ -22,7 +23,9 @@ const CheckoutPage = () => {
     <ProtectedRoute>
       <div className="w-full px-4 h-full flex flex-col items-center lg:px-40 py-8">
         <WizardStepper currentStep={checkoutStep} />
-        <div className="w-full max-w-screen-lg flex flex-col items-center ">{renderStep()}</div>
+        <div className="w-full h-full max-w-screen-lg flex flex-col items-center ">
+          {renderStep()}
+        </div>
       </div>
     </ProtectedRoute>
   );
