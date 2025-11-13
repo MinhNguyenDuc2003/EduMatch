@@ -1,62 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "@commonServices/*": [
-        "common/services/*"
-      ],
-      "@commonItems/*": [
-        "common/items/*"
-      ],
-      "@locationComponents/*": [
-        "src/modules/location/components/*"
-      ],
-      "@locationModels/*": [
-        "src/modules/location/models/*"
-      ],
-      "@locationServices/*": [
-        "src/modules/location/services/*"
-      ],
-      "@taxServices/*": [
-        "src/modules/tax/services/*"
-      ],
-      "@taxComponents/*": [
-        "src/modules/tax/components/*"
-      ],
-      "@taxModels/*": [
-        "src/modules/tax/models/*"
-      ],
-      "@constants/*": [
-        "src/constants/*"
-      ],
-      "@catalogModels/*": [
-        "src/modules/catalog/models/*"
-      ],
-      "@catalogServices/*": [
-        "src/modules/catalog/services/*"
-      ],
-      "@catalogComponents/*": [
-        "src/modules/catalog/components/*"
-      ],
-      "@inventoryServices/*": [
-        "src/modules/inventory/services/*"
-      ],
-      "@inventoryModels/*": [
-        "src/modules/inventory/models/*"
-      ],
-      "@inventoryComponents/*": [
-        "src/modules/inventory/components/*"
-      ],
-      "@webhookComponents/*": [
-        "src/modules/webhook/components/*"
-      ],
-      "@webhookServices/*": [
-        "src/modules/webhook/services/*"
-      ],
-      "@webhookModels/*": [
-        "src/modules/webhook/models/*"
-      ]
-    },
+   
     "target": "esnext",
     "lib": [
       "dom",

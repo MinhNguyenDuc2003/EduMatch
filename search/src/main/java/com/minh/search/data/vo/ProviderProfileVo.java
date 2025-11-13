@@ -20,7 +20,6 @@ import java.util.List;
 public class ProviderProfileVo extends ProviderProfileDto {
 
     List<ProviderContactDto> providerContactDtos;
-    private ProviderProfileVo providerProfileVo;
     private String logoUrl;
     private String bannerUrl;
     private int isFollow;

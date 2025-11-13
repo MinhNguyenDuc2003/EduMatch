@@ -8,12 +8,11 @@ import {
   DropdownMenuTrigger,
 } from '@/lib/cus/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { Bell, X } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Client, IMessage } from '@stomp/stompjs';
 import { toast } from 'sonner';
 import { useGetNotificationsQuery } from '@/state/apiAuth';
-import { divide } from 'lodash';
 import { useRouter } from 'next/navigation';
 
 const Notifications = () => {

@@ -3,10 +3,8 @@ import customBaseQuery from './custombaseQuery';
 
 // API Endpoints
 const API_ENDPOINTS = {
-  SCHOLARSHIPS_PAGE: '/api/scholarship/scholarships/page',
+  SCHOLARSHIP: '/api/scholarship/scholarships',
   SCHOLARSHIPS_SEARCH: '/api/search/scholarships/search',
-  SCHOLARSHIP_DETAIL: '/api/scholarship/scholarships',
-  SCHOLARSHIP_FOLLOW: '/api/scholarship/scholarships/follow',
 } as const;
 
 export const apiScholarship = createApi({
@@ -17,7 +15,7 @@ export const apiScholarship = createApi({
     // page scholarships with pagination
     pageScholarships: build.query<ApiGetScholarshipResponse, ScholarshipPageRequest>({
       query: (data) => ({
-        url: API_ENDPOINTS.SCHOLARSHIPS_PAGE,
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/page`,
         method: 'POST',
         body: data,
       }),
@@ -37,7 +35,7 @@ export const apiScholarship = createApi({
     // Get scholarship detail by id (returns unwrapped inner data)
     getScholarshipById: build.query<Scholarship, number | string>({
       query: (id) => ({
-        url: `${API_ENDPOINTS.SCHOLARSHIP_DETAIL}/${id}`,
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/${id}`,
         method: 'GET',
       }),
       providesTags: ['Scholarships'],
@@ -46,33 +44,27 @@ export const apiScholarship = createApi({
     // Track/Follow scholarship
     followScholarship: build.mutation<void, { scholarshipId: number }>({
       query: (data) => ({
-        url: API_ENDPOINTS.SCHOLARSHIP_FOLLOW,
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/follow`,
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: (result, error, arg) => [
-        'Scholarships',
-        { type: 'Scholarships', id: `tracked-${arg.scholarshipId}` },
-      ],
+      invalidatesTags: ['Scholarships'],
     }),
 
     // Untrack/Unfollow scholarship
     unfollowScholarship: build.mutation<void, { scholarshipId: number }>({
       query: (data) => ({
-        url: API_ENDPOINTS.SCHOLARSHIP_FOLLOW,
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/follow`,
         method: 'DELETE',
         body: data,
       }),
-      invalidatesTags: (result, error, arg) => [
-        'Scholarships',
-        { type: 'Scholarships', id: `tracked-${arg.scholarshipId}` },
-      ],
+      invalidatesTags: ['Scholarships'],
     }),
 
     // Get tracked scholarships
     getTrackedScholarships: build.query<Scholarship[], void>({
       query: () => ({
-        url: API_ENDPOINTS.SCHOLARSHIP_FOLLOW,
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/follow`,
         method: 'GET',
       }),
       providesTags: ['Scholarships'],
@@ -84,14 +76,23 @@ export const apiScholarship = createApi({
       number | string
     >({
       query: (id) => ({
-        url: `${API_ENDPOINTS.SCHOLARSHIP_FOLLOW}/${id}`,
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/follow/${id}`,
         method: 'GET',
       }),
     }),
 
     getScholarshipBySlug: build.query<Scholarship, string>({
       query: (slug) => ({
-        url: `${API_ENDPOINTS.SCHOLARSHIP_DETAIL}/slug?slug=${slug}`,
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/slug?slug=${slug}`,
+        method: 'GET',
+      }),
+      providesTags: ['Scholarships'],
+    }),
+
+    // Get all scholarships by provider ID
+    getScholarshipsByProviderId: build.query<Scholarship[], number>({
+      query: (providerId) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/provider/${providerId}`,
         method: 'GET',
       }),
       providesTags: ['Scholarships'],
@@ -108,4 +109,5 @@ export const {
   useGetTrackedScholarshipsQuery,
   useCheckIsTrackedScholarshipQuery,
   useGetScholarshipBySlugQuery,
+  useGetScholarshipsByProviderIdQuery,
 } = apiScholarship;
