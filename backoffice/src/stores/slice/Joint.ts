@@ -8,7 +8,7 @@ type State = {
     ScholarshipList?: IScholarshipList[];
     SubscriptionPlanList?: ISubscriptionPlanList[];
     SubcriptionList?: ISubcriptionList[];
-    IApplicationItem?: IApplicationItem[];
+    ApplicationItem?: IApplicationItem[];
     formFocusID?: string;
   };
   setJointData(Obj: State['Joint']): void;
