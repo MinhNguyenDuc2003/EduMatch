@@ -26,6 +26,8 @@ interface CustomDataTableProps {
   onDelete?: (row: any) => void;
   onView?: (row: any) => void;
   detailPath?: string;
+  isCreate?: boolean;
+  isEdit?: boolean;
 }
 
 const CustomDataTable = ({
@@ -37,7 +39,9 @@ const CustomDataTable = ({
   // onEdit,
   onDelete,
   onView,
+  isCreate,
   detailPath,
+  isEdit,
 }: CustomDataTableProps) => {
   const router = useRouter();
   const [filterText, setFilterText] = useState(externalFilterText);
@@ -123,13 +127,14 @@ const CustomDataTable = ({
                 </span>
                 View Details
               </button>
-
-              <button
-                onClick={() => handleEdit(row)}
-                className="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-blue-50"
-              >
-                <Edit size={16} className="mr-2 text-blue-600" /> Edit
-              </button>
+              {isEdit && (
+                <button
+                  onClick={() => handleEdit(row)}
+                  className="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-blue-50"
+                >
+                  <Edit size={16} className="mr-2 text-blue-600" /> Edit
+                </button>
+              )}
               <button
                 onClick={() => handleDelete(row)}
                 className="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-red-50"
@@ -260,16 +265,17 @@ const CustomDataTable = ({
                 onChange={(e) => setFilterText(e.target.value)}
               />
             </div>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={onCreate}
-              className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition-all"
-            >
-              <Plus size={18} />
-              <span>Create</span>
-            </motion.button>
+            {isCreate && (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={onCreate}
+                className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition-all"
+              >
+                <Plus size={18} />
+                <span>Create</span>
+              </motion.button>
+            )}
 
             <motion.button
               onClick={handleExportExcel}

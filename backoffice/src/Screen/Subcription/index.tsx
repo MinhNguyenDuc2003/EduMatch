@@ -88,7 +88,7 @@ const Subcription = () => {
               <CustomDataTable
                 title="Subscription List"
                 data={Subcriptions as any}
-                detailPath="/subscription"
+                detailPath="/backoffice/subscription"
                 customTitles={[
                   'ID',
                   'Plan Name',
