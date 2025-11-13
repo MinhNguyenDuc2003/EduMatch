@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { FilterSidebar, ScholarshipCard, RightSidebar, PremiumBanner } from './components';
 import ScholarshipCardSkeleton from './components/ScholarshipCardSkeleton';
 import { Filter } from 'lucide-react';
@@ -19,7 +19,7 @@ export default function ScholarshipsList() {
     keyword: '',
     country: '',
     studyLevel: '',
-    university: '',
+    scholarshipType: '',
     minGpa: 0,
     maxGpa: 4,
     page: 0,
@@ -27,22 +27,18 @@ export default function ScholarshipsList() {
   });
 
   // Prepare API request body
-  const requestBody = useMemo(() => {
-    const body: ScholarshipSearchRequest = {
-      criteria: {
-        studyLevel: filters.studyLevel || '',
-        country: filters.country || '',
-        university: filters.university || '',
-      },
-      page: filters.page,
-      size: filters.size,
-      keyword: filters.keyword || '',
-      minGpa: filters.minGpa,
-      maxGpa: filters.maxGpa,
-    };
-
-    return body;
-  }, [filters]);
+  const requestBody: ScholarshipSearchRequest = {
+    criteria: {
+      studyLevel: filters.studyLevel || '',
+      country: filters.country || '',
+      scholarshipType: filters.scholarshipType || '',
+    },
+    page: filters.page,
+    size: filters.size,
+    keyword: filters.keyword || '',
+    minGpa: filters.minGpa,
+    maxGpa: filters.maxGpa,
+  };
 
   // Call API
   const { data: response, isLoading, isError, refetch } = useSearchScholarshipsQuery(requestBody);
@@ -52,8 +48,6 @@ export default function ScholarshipsList() {
   const [unfollowProvider] = useUnfollowProviderMutation();
 
   const scholarships = response?.scholarship || [];
-  const totalElements = response?.totalElements || 0;
-  const totalPages = response?.totalPages || 0;
 
   const handleApply = (scholarship: Scholarship) => {
     console.log('Apply to:', scholarship.title);
@@ -61,7 +55,7 @@ export default function ScholarshipsList() {
   };
 
   const handleToggleTracking = async (scholarshipId: number) => {
-    const scholarship = scholarships.find((s) => s.id === scholarshipId);
+    const scholarship = scholarships?.find((s) => s.id === scholarshipId);
     const isTracked = scholarship?.isFollow === 1;
 
     try {
@@ -81,7 +75,7 @@ export default function ScholarshipsList() {
 
   // Handle follow/unfollow provider
   const handleFollowProvider = async (scholarshipId: number) => {
-    const scholarship = scholarships.find((s) => s.id === scholarshipId);
+    const scholarship = scholarships?.find((s) => s.id === scholarshipId);
     if (!scholarship) {
       return;
     }
@@ -98,19 +92,16 @@ export default function ScholarshipsList() {
     }
   };
 
-  const activeFiltersCount = useMemo(() => {
+  const activeFiltersCount = (() => {
     let count = 0;
     if (filters.keyword) count++;
     if (filters.country) count++;
     if (filters.studyLevel) count++;
-    if (filters.university) count++;
+    if (filters.scholarshipType) count++;
     if (filters.minGpa > 0) count++;
-    if (filters.maxGpa < 10) count++;
+    if (filters.maxGpa < 4) count++;
     return count;
-  }, [filters]);
-
-  // Extract aggregations from response for filter options
-  const aggregations = response?.aggregations;
+  })();
 
   return (
     <>
@@ -160,7 +151,6 @@ export default function ScholarshipsList() {
                 filters={filters}
                 setFilters={setFilters}
                 scholarships={scholarships}
-                aggregations={aggregations}
                 onClose={() => setIsMobileFilterOpen(false)}
                 isMobile={true}
               />
@@ -179,7 +169,6 @@ export default function ScholarshipsList() {
                 filters={filters}
                 setFilters={setFilters}
                 scholarships={scholarships}
-                aggregations={aggregations}
                 isMobile={false}
               />
             </div>
@@ -211,7 +200,7 @@ export default function ScholarshipsList() {
                       Failed to load scholarships. Please try again later.
                     </p>
                   </div>
-                ) : scholarships.length === 0 ? (
+                ) : scholarships?.length === 0 ? (
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
                     <p className="text-gray-500 text-lg">
                       No scholarships found matching your criteria.
@@ -219,7 +208,7 @@ export default function ScholarshipsList() {
                   </div>
                 ) : (
                   <>
-                    {scholarships.map((scholarship) => (
+                    {scholarships?.map((scholarship) => (
                       <ScholarshipCard
                         key={scholarship.id}
                         scholarship={scholarship}
@@ -228,37 +217,6 @@ export default function ScholarshipsList() {
                         onFollowProvider={handleFollowProvider}
                       />
                     ))}
-                    {totalPages > 1 && (
-                      <div className="text-center pt-4">
-                        <p className="text-gray-500 text-sm">
-                          Showing {scholarships.length} of {totalElements} scholarships
-                          {filters.page > 0 && ` (Page ${filters.page + 1} of ${totalPages})`}
-                        </p>
-                        <div className="flex justify-center gap-2 mt-4">
-                          <button
-                            onClick={() =>
-                              setFilters({ ...filters, page: Math.max(0, filters.page - 1) })
-                            }
-                            disabled={filters.page === 0}
-                            className="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Previous
-                          </button>
-                          <button
-                            onClick={() =>
-                              setFilters({
-                                ...filters,
-                                page: Math.min(totalPages - 1, filters.page + 1),
-                              })
-                            }
-                            disabled={filters.page >= totalPages - 1}
-                            className="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Next
-                          </button>
-                        </div>
-                      </div>
-                    )}
                   </>
                 )}
               </div>

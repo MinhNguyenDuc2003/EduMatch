@@ -49,7 +49,6 @@ declare global {
 
   type ScholarshipSearchCriteria = {
     country?: string;
-    university?: string;
     studyLevel?: string;
     scholarshipType?: string;
   };
@@ -63,16 +62,12 @@ declare global {
   };
 
   type ScholarshipSearchRequest = {
-    criteria: Pick<ScholarshipSearchCriteria, 'country' | 'university' | 'studyLevel'>;
+    criteria: ScholarshipSearchCriteria;
     page: number;
     size: number;
     keyword?: string;
     minGpa?: number;
     maxGpa?: number;
-  };
-
-  type ScholarshipPageResponse = {
-    content: Scholarship[];
   };
 
   type ScholarshipSearchAggregations = {
@@ -83,8 +78,6 @@ declare global {
 
   type ScholarshipSearchResponse = {
     scholarship: Scholarship[];
-    totalElements: number;
-    totalPages: number;
     aggregations?: ScholarshipSearchAggregations;
   };
 
@@ -93,7 +86,7 @@ declare global {
     keyword: string;
     country: string;
     studyLevel: string;
-    university: string;
+    scholarshipType: string;
     minGpa: number;
     maxGpa: number;
     page: number;
