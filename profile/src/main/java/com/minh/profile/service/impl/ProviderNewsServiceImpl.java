@@ -16,8 +16,11 @@ import com.minh.profile.data.repository.ProviderNewsMediaRepository;
 import com.minh.profile.data.repository.ProviderNewsRepository;
 import com.minh.profile.data.repository.ProviderProfileRepository;
 import com.minh.profile.data.vo.NotificationVo;
+import com.minh.profile.data.vo.ProviderNewsVo;
+import com.minh.profile.data.vo.ScholarshipVo;
 import com.minh.profile.feign.MediaFeign;
 import com.minh.profile.feign.NotificationTemplateFeign;
+import com.minh.profile.feign.ScholarshipFeign;
 import com.minh.profile.message.KafkaProducer;
 import com.minh.profile.service.ProviderNewsService;
 import com.minh.service.base.BaseService;
@@ -31,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,20 +47,25 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
     private final MediaFeign mediaFeign;
     private final KafkaProducer kafkaProducer;
     private final NotificationTemplateFeign notificationTemplateFeign;
+    private final ScholarshipFeign scholarshipFeign;
 
     @Value("${kafka.news.new-event.topic}")
     private String newEventNewsTopic;
 
     @Override
-    public List<ProviderNewsDto> getAll() {
-        return providerNewsMapper.toDto(providerNewsRepository.findAllByActive(true));
+    public List<ProviderNewsVo> getAll() {
+        List<ProviderNewsEntity> entities = providerNewsRepository.findAllByActive(true);
+        List<ProviderNewsVo> vos = entities.stream()
+                .map(this::addNewsMediaAndProvider)
+                .collect(Collectors.toList());
+        return vos;
     }
 
     @Override
-    public ProviderNewsDto getById(Long id) {
+    public ProviderNewsVo getById(Long id) {
         ProviderNewsEntity entity = providerNewsRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_NEWS_IS_NOT_EXIST));
-        return providerNewsMapper.entityToDto(entity);
+        return addNewsMediaAndProvider(entity);
     }
 
     @Override
@@ -68,6 +77,14 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_NOT_FOUND));
 
         dto.setProviderId(String.valueOf(provider.getId()));
+
+        if (dto.getScholarshipId() != null) {
+            try {
+                scholarshipFeign.getById(Long.parseLong(dto.getScholarshipId()));
+            } catch (Exception e) {
+                throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
+            }
+        }
 
         ProviderNewsEntity entity = providerNewsMapper.dtoToEntity(dto);
         entity.setProviderId(provider.getId());
@@ -99,6 +116,15 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
     public ProviderNewsDto update(Long id, ProviderNewsDto dto) {
         ProviderNewsEntity entity = providerNewsRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_NEWS_IS_NOT_EXIST));
+
+        if (dto.getScholarshipId() != null) {
+            try {
+                scholarshipFeign.getById(Long.parseLong(dto.getScholarshipId()));
+            } catch (Exception e) {
+                throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
+            }
+        }
+
         providerNewsMapper.updateEntityFromDto(dto, entity);
         ProviderNewsEntity saved = providerNewsRepository.save(entity);
 
@@ -153,8 +179,11 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
     }
 
     @Override
-    public List<ProviderNewsDto> getAllByStatus(boolean active) {
-        return providerNewsMapper.toDto(providerNewsRepository.findAllByActive(active));
+    public List<ProviderNewsVo> getAllByStatus(boolean active) {
+        List<ProviderNewsEntity> entities = providerNewsRepository.findAllByActive(active);
+        return entities.stream()
+                .map(this::addNewsMediaAndProvider)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -164,6 +193,46 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
             throw new BusinessException(CoreMessageCode.PROVIDER_NEWS_IS_NOT_EXIST);
         }
         providerNewsRepository.updateStatusById(id, active);
+    }
+
+    // Hàm helper để thêm media, provider và scholarship vào VO
+    private ProviderNewsVo addNewsMediaAndProvider(ProviderNewsEntity entity) {
+        ProviderNewsVo vo = providerNewsMapper.entityToVo(entity);
+
+//        // --- Thêm provider profile ---
+//        ProviderProfileEntity provider = providerProfileRepository.findById(entity.getProviderId())
+//                .orElse(null);
+//        if (provider != null) {
+//            vo.setProviderProfileVo(providerNewsMapper.providerEntityToVo(provider));
+//        }
+
+        // --- Thêm media ---
+        List<ProviderNewsMediaEntity> mediaEntities = providerNewsMediaRepository.findByProviderNewsId(entity.getId());
+        if (ObjectUtils.isNotEmpty(mediaEntities)) {
+            List<MediaDto> mediaDtos = mediaEntities.stream()
+                    .map(media -> {
+                        try {
+                            return parseResponse(mediaFeign.getById(media.getMediaId()));
+                        } catch (Exception e) {
+                            return null;
+                        }
+                    })
+                    .filter(ObjectUtils::isNotEmpty)
+                    .collect(Collectors.toList());
+            vo.setNewsMedias(mediaDtos);
+        }
+
+        // --- Thêm scholarship (gọi qua ScholarshipFeign) ---
+        if (entity.getScholarshipId() != null) {
+            try {
+                ScholarshipVo scholarshipVo = this.parseResponse(scholarshipFeign.getById(entity.getScholarshipId()));
+                vo.setScholarship(scholarshipVo);
+            } catch (Exception e) {
+                vo.setScholarship(null); // fallback nếu gọi thất bại
+            }
+        }
+
+        return vo;
     }
 
 }

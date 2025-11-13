@@ -38,6 +38,6 @@ public class ProviderNewsDto extends BaseDto {
 
     private String link;
 
-    private List<String> imageLinks; // tất cả ảnh của news
+    private List<String> imageLinks;
 
 }

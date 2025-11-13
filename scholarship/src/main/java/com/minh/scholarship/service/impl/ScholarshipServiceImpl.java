@@ -281,18 +281,24 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public ScholarshipVo getBySlug(String slug) {
-        Optional<ScholarshipEntity> entity = scholarshipRepository.findBySlug(slug);
-        return entity.map(scholarshipEntity -> this.getById(scholarshipEntity.getId())).orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
+        String userId = UaaContextHolder.getUserId();
+        ScholarshipProjection projection = scholarshipRepository.getVoWithFollowBySlug(slug, userId);
+        if (projection == null) {
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
+        }
+        ScholarshipVo vo = scholarshipMapper.proToVo(projection);
+        vo.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(vo.getProviderId())));
+        return addScholarshipMedia(vo);
     }
 
     @Override
     public List<ScholarshipVo> getScholarshipByProviderId(Long id) {
-        List<ScholarshipEntity> entities = scholarshipRepository.getAllByProviderId(id);
-        List<ScholarshipVo> scholarshipVos = new ArrayList<>();
-        entities.forEach(entity -> {
-            scholarshipVos.add(this.getById(entity.getId()));
-        });
-        return scholarshipVos;
+        String userId = UaaContextHolder.getUserId();
+        List<ScholarshipProjection> projections = scholarshipRepository.getVosWithFollowByProviderId(id, userId);
+        List<ScholarshipVo> vos = scholarshipMapper.prosToVos(projections);
+        vos.forEach(vo -> vo.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(vo.getProviderId()))));
+        vos.forEach(this::addScholarshipMedia);
+        return vos;
     }
 
     @Override

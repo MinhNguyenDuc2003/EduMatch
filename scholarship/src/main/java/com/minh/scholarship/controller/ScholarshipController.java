@@ -24,6 +24,7 @@ public class ScholarshipController {
 
     private final ScholarshipService scholarshipService;
 
+    @Authorized
     @PostMapping("/page")
     public ApiResponse<Page<ScholarshipVo>> getPage(@RequestBody ScholarshipFilter filter) {
         return ApiResponse.ok(scholarshipService.getPage(filter));
@@ -39,11 +40,13 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getByIds(ids));
     }
 
+    @Authorized
     @GetMapping("/provider/{id}")
     public ApiResponse<List<ScholarshipVo>> getScholarshipByProviderId(@PathVariable Long id) {
         return ApiResponse.ok(scholarshipService.getScholarshipByProviderId(id));
     }
 
+    @Authorized
     @GetMapping("/slug")
     public ApiResponse<ScholarshipVo> getBySlug(@RequestParam String slug) {
         return ApiResponse.ok(scholarshipService.getBySlug(slug));
