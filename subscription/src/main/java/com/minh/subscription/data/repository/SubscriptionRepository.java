@@ -1,6 +1,7 @@
 package com.minh.subscription.data.repository;
 
 import com.minh.subscription.data.entity.SubscriptionEntity;
+import com.minh.subscription.data.entity.SubscriptionPlanEntity;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -34,5 +35,7 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
       AND CURRENT_TIMESTAMP BETWEEN s.startDate AND s.endDate
     """)
     Optional<SubscriptionEntity> findCurrentSubscription(@Param("userId") String userId);
+
+    List<SubscriptionPlanEntity> findByActiveTrue();
 
 }

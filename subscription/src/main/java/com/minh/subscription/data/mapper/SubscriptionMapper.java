@@ -21,4 +21,5 @@ public interface SubscriptionMapper {
 
     SubscriptionPlanDto toDto(SubscriptionPlanEntity planEntity);
     SubscriptionPlanEntity toEntity(SubscriptionPlanDto planDto);
+
 }

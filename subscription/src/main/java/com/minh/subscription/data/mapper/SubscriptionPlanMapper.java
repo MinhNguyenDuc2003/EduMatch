@@ -6,6 +6,7 @@ import com.minh.subscription.data.entity.SubscriptionPlanEntity;
 import org.mapstruct.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface SubscriptionPlanMapper {
@@ -19,17 +20,16 @@ public interface SubscriptionPlanMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(SubscriptionPlanDto dto, @MappingTarget SubscriptionPlanEntity entity);
 
-    // Entity -> DTO
-    default List<String> mapFeaturesToDto(List<SubscriptionFeatureEnum> features) {
-        if (features == null) return List.of();
-        return features.stream().map(Enum::name).toList();
+    // === Thêm 2 method hỗ trợ chuyển đổi ===
+    default List<String> mapEnumListToStringList(List<SubscriptionFeatureEnum> enums) {
+        if (enums == null) return null;
+        return enums.stream().map(Enum::name).collect(Collectors.toList());
     }
 
-    // DTO -> Entity
-    default List<SubscriptionFeatureEnum> mapFeaturesToEntity(List<String> features) {
-        if (features == null) return List.of();
-        return features.stream()
-                .map(SubscriptionFeatureEnum::valueOf) // convert String -> enum
-                .toList();
+    default List<SubscriptionFeatureEnum> mapStringListToEnumList(List<String> strings) {
+        if (strings == null) return null;
+        return strings.stream()
+                .map(SubscriptionFeatureEnum::valueOf)
+                .collect(Collectors.toList());
     }
 }

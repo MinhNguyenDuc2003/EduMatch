@@ -6,29 +6,51 @@ import com.minh.enumeration.subscription.SubscriptionFeatureEnum;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Converter(autoApply = true)
 public class SubscriptionFeatureConverter implements AttributeConverter<List<SubscriptionFeatureEnum>, String> {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public String convertToDatabaseColumn(List<SubscriptionFeatureEnum> features) {
+    public String convertToDatabaseColumn(List<SubscriptionFeatureEnum> attribute) {
         try {
-            return features == null ? "[]" : mapper.writeValueAsString(features);
+            if (attribute == null || attribute.isEmpty()) {
+                return "[]";
+            }
+            // Lưu danh sách enum dưới dạng chuỗi JSON, ví dụ ["FEATURE_A", "FEATURE_B"]
+            List<String> enumNames = attribute.stream()
+                    .map(Enum::name)
+                    .collect(Collectors.toList());
+            return objectMapper.writeValueAsString(enumNames);
         } catch (Exception e) {
-            throw new IllegalStateException("Error converting features to JSON", e);
+            throw new IllegalArgumentException("Error converting enum list to JSON", e);
         }
     }
 
     @Override
     public List<SubscriptionFeatureEnum> convertToEntityAttribute(String dbData) {
         try {
-            return dbData == null ? List.of() :
-                    mapper.readValue(dbData, new TypeReference<List<SubscriptionFeatureEnum>>() {});
+            if (dbData == null || dbData.isBlank()) {
+                return Collections.emptyList();
+            }
+
+            // Nếu dữ liệu không phải JSON, wrap lại
+            if (!dbData.trim().startsWith("[") && !dbData.trim().startsWith("{")) {
+                dbData = "[\"" + dbData.trim() + "\"]";
+            }
+
+            // Đọc danh sách string từ JSON
+            List<String> list = objectMapper.readValue(dbData, new TypeReference<List<String>>() {});
+            // Chuyển sang enum
+            return list.stream()
+                    .map(SubscriptionFeatureEnum::valueOf)
+                    .collect(Collectors.toList());
         } catch (Exception e) {
-            throw new IllegalStateException("Error reading features JSON", e);
+            throw new IllegalArgumentException("Error converting JSON to enum list", e);
         }
     }
 }

@@ -39,6 +39,4 @@ public class SubscriptionEntity extends BaseEntity {
     @Column(name = "STATUS")
     private String status;
 
-    @Column(name = "AUTO_RENEW")
-    private Boolean autoRenew;
 }
