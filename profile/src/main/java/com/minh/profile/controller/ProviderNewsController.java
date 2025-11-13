@@ -35,6 +35,12 @@ public class ProviderNewsController {
     }
 
     @Authorized
+    @GetMapping("/my-news")
+    public ApiResponse<List<ProviderNewsVo>> getMyNews() {
+        return ApiResponse.ok(providerNewsService.getMyNews());
+    }
+
+    @Authorized
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<ProviderNewsDto> create(
             @RequestPart("news") String news,

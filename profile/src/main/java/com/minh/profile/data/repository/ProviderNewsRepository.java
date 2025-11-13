@@ -26,4 +26,6 @@ public interface ProviderNewsRepository extends JpaRepository<ProviderNewsEntity
     @Transactional
     @Query("UPDATE ProviderNewsEntity p SET p.active = :active WHERE p.id = :id")
     void updateStatusById(@Param("id") Long id, @Param("active") boolean active);
+
+    List<ProviderNewsEntity> findAllByProviderIdAndActive(Long id, boolean b);
 }

@@ -25,4 +25,7 @@ public interface ProviderNewsService {
     List<ProviderNewsVo> getAllByStatus(boolean active);
 
     void updateStatus(Long id, boolean active);
+
+    List<ProviderNewsVo> getMyNews();
+
 }

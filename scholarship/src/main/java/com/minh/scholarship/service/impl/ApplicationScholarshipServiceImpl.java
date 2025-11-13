@@ -134,8 +134,8 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
                     .build();
             kafkaProducer.convertToByteAndSend(newEventApplicationTopic, notificationVo);
         }
-
-        ApplicationScholarshipEntity saved = repository.save(mapper.toEntity(dto));
+        mapper.updateEntityFromDto(dto, exist);
+        ApplicationScholarshipEntity saved = repository.save(exist);
         return mapper.toDto(saved);
     }
 

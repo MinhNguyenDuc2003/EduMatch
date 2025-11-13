@@ -33,7 +33,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,10 +57,9 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
     @Override
     public List<ProviderNewsVo> getAll() {
         List<ProviderNewsEntity> entities = providerNewsRepository.findAllByActive(true);
-        List<ProviderNewsVo> vos = entities.stream()
+        return entities.stream()
                 .map(this::addNewsMediaAndProvider)
                 .collect(Collectors.toList());
-        return vos;
     }
 
     @Override
@@ -193,6 +194,20 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
             throw new BusinessException(CoreMessageCode.PROVIDER_NEWS_IS_NOT_EXIST);
         }
         providerNewsRepository.updateStatusById(id, active);
+    }
+
+    @Override
+    public List<ProviderNewsVo> getMyNews() {
+        List<ProviderNewsVo> providerNewsVos = new ArrayList<>();
+        String userId = UaaContextHolder.getUserId();
+        Optional<ProviderProfileEntity> provider = providerProfileRepository.findByUserId(userId);
+        if (provider.isPresent()) {
+            List<ProviderNewsEntity> allByProviderIdAndActive = providerNewsRepository.findAllByProviderIdAndActive(provider.get().getId(), true);
+            allByProviderIdAndActive.forEach(p -> {
+                providerNewsVos.add(this.getById(p.getId()));
+            });
+        }
+        return providerNewsVos;
     }
 
     // Hàm helper để thêm media, provider và scholarship vào VO

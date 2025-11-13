@@ -7,6 +7,7 @@ import com.minh.customer.data.vo.CustomerVo;
 import com.minh.customer.service.CustomerService;
 import com.minh.customer.viewmodel.customer.*;
 import com.minh.model.ApiResponse;
+import com.minh.service.aspect.Authorized;
 import com.minh.utils.SecurityUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
@@ -73,12 +74,14 @@ public class CustomerController {
                 customerService.getCustomerProfile(SecurityUtil.getCurrentUserId()));
     }
 
+    @Authorized
     @PostMapping("/storefront/customer/profile")
     public ApiResponse<CustomerVo> createCustomerProfile(@RequestBody CustomerVo customerVo) {
         return ApiResponse.ok(
                 customerService.createCustomerProfile(customerVo));
     }
 
+    @Authorized
     @PutMapping("/storefront/customer/profile")
     public ApiResponse<CustomerVo> updateCustomerProfile(@RequestBody CustomerVo customerVo) {
         return ApiResponse.ok(
@@ -90,6 +93,7 @@ public class CustomerController {
         return customerService.createGuestUser();
     }
 
+    @Authorized
     @PostMapping(
             value = "/storefront/provider/profile",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
@@ -102,6 +106,7 @@ public class CustomerController {
                 customerService.createProviderProfile(customerVo, logo, banner));
     }
 
+    @Authorized
     @PutMapping(value = "/storefront/provider/profile",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ApiResponse<CustomerVo> updateProviderProfile(@RequestPart("profile") String profile,
@@ -112,6 +117,7 @@ public class CustomerController {
                 customerService.updateProviderProfile(customerVo, logo, banner));
     }
 
+    @Authorized
     @GetMapping("/storefront/provider/profile")
     public ApiResponse<CustomerVo> getProviderProfile() {
         return ApiResponse.ok(

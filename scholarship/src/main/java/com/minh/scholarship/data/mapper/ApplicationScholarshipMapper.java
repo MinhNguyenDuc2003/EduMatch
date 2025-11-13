@@ -28,4 +28,6 @@ public interface ApplicationScholarshipMapper extends BaseMapper<ApplicationScho
     ApplicationScholarshipVo entityToVo(ApplicationScholarshipEntity entity);
 
     List<ApplicationScholarshipVo> entitiesToVos(List<ApplicationScholarshipEntity> entities);
+
+    void updateEntityFromDto(ApplicationScholarshipDto dto, @MappingTarget ApplicationScholarshipEntity exist);
 }
