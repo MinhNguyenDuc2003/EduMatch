@@ -66,4 +66,16 @@ public class ProviderNewsController {
         providerNewsService.delete(id);
         return ApiResponse.ok();
     }
+
+    @GetMapping("/status/{active}")
+    public ApiResponse<List<ProviderNewsDto>> getByStatus(@PathVariable boolean active) {
+        return ApiResponse.ok(providerNewsService.getAllByStatus(active));
+    }
+
+    @Authorized
+    @PutMapping("/{id}/status")
+    public ApiResponse<Void> updateStatus(@PathVariable Long id, @RequestParam boolean active) {
+        providerNewsService.updateStatus(id, active);
+        return ApiResponse.ok();
+    }
 }

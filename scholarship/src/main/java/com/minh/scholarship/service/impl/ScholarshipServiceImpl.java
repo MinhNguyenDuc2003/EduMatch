@@ -295,4 +295,28 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         return scholarshipVos;
     }
 
+    @Override
+    public List<ScholarshipVo> getByActiveStatus(boolean active) {
+        List<ScholarshipEntity> entities = scholarshipRepository.findByActive(active);
+
+        List<ScholarshipVo> scholarshipVos = entities.stream()
+                .map(entity -> {
+                    ScholarshipVo vo = scholarshipMapper.entityToVo(entity);
+                    vo.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(vo.getProviderId())));
+                    return addScholarshipMedia(vo);
+                })
+                .collect(Collectors.toList());
+
+        return scholarshipVos;
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public Boolean updateScholarshipStatus(Long id, Boolean active) {
+        ScholarshipEntity entity = scholarshipRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
+
+        scholarshipRepository.updateActiveById(id, active);
+        return true;
+    }
 }

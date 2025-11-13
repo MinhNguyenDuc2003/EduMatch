@@ -6,6 +6,7 @@ import com.minh.enumeration.subscription.SubscriptionFeatureEnum;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class SubscriptionFeatureConverter implements AttributeConverter<List<Sub
             if (attribute == null || attribute.isEmpty()) {
                 return "[]";
             }
-            // Lưu danh sách enum dưới dạng chuỗi JSON, ví dụ ["FEATURE_A", "FEATURE_B"]
+            // Lưu danh sách enum dưới dạng JSON array
             List<String> enumNames = attribute.stream()
                     .map(Enum::name)
                     .collect(Collectors.toList());
@@ -38,19 +39,22 @@ public class SubscriptionFeatureConverter implements AttributeConverter<List<Sub
                 return Collections.emptyList();
             }
 
-            // Nếu dữ liệu không phải JSON, wrap lại
-            if (!dbData.trim().startsWith("[") && !dbData.trim().startsWith("{")) {
-                dbData = "[\"" + dbData.trim() + "\"]";
+            // Nếu dbData là JSON array, parse như bình thường
+            if (dbData.trim().startsWith("[")) {
+                List<String> list = objectMapper.readValue(dbData, new TypeReference<List<String>>() {});
+                return list.stream()
+                        .map(SubscriptionFeatureEnum::valueOf)
+                        .collect(Collectors.toList());
             }
 
-            // Đọc danh sách string từ JSON
-            List<String> list = objectMapper.readValue(dbData, new TypeReference<List<String>>() {});
-            // Chuyển sang enum
-            return list.stream()
+            // Nếu dbData là CSV cũ, tách bằng dấu ","
+            return Arrays.stream(dbData.split(","))
+                    .map(String::trim)
                     .map(SubscriptionFeatureEnum::valueOf)
                     .collect(Collectors.toList());
+
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error converting JSON to enum list", e);
+            throw new IllegalArgumentException("Error converting DB value to enum list", e);
         }
     }
 }

@@ -118,4 +118,17 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.deleteScholarshipFollower(dto));
     }
 
+    @GetMapping("/status")
+    public ApiResponse<List<ScholarshipVo>> getByActiveStatus(@RequestParam boolean active) {
+        return ApiResponse.ok(scholarshipService.getByActiveStatus(active));
+    }
+
+    @Authorized
+    @PutMapping("/{id}/status")
+    public ApiResponse<Boolean> updateScholarshipStatus(
+            @PathVariable Long id,
+            @RequestParam Boolean active
+    ) {
+        return ApiResponse.ok(scholarshipService.updateScholarshipStatus(id, active));
+    }
 }

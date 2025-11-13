@@ -45,4 +45,8 @@ public interface ScholarshipService {
 
     ScholarshipFollowerDto getScholarshipFollower(Long id);
 
+    List<ScholarshipVo> getByActiveStatus(boolean active);
+
+    Boolean updateScholarshipStatus(Long id, Boolean active);
+
 }

@@ -20,4 +20,8 @@ public interface ProviderNewsService {
     Boolean addImagesToNews(Long id, List<MultipartFile> mediaFiles);
 
     Boolean deleteImagesToNews(Long id, List<Long> mediaIds);
+
+    List<ProviderNewsDto> getAllByStatus(boolean active);
+
+    void updateStatus(Long id, boolean active);
 }

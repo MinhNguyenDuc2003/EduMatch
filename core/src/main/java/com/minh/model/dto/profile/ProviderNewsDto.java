@@ -26,6 +26,8 @@ public class ProviderNewsDto extends BaseDto {
 
     private String providerId;
 
+    private String scholarshipId;
+
     private String title;
 
     private String content;
@@ -35,5 +37,7 @@ public class ProviderNewsDto extends BaseDto {
     private LocalDateTime publishedAt;
 
     private String link;
+
+    private List<String> imageLinks; // tất cả ảnh của news
 
 }

@@ -151,4 +151,19 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
             }
         }
     }
+
+    @Override
+    public List<ProviderNewsDto> getAllByStatus(boolean active) {
+        return providerNewsMapper.toDto(providerNewsRepository.findAllByActive(active));
+    }
+
+    @Override
+    @Transactional
+    public void updateStatus(Long id, boolean active) {
+        if (!providerNewsRepository.existsById(id)) {
+            throw new BusinessException(CoreMessageCode.PROVIDER_NEWS_IS_NOT_EXIST);
+        }
+        providerNewsRepository.updateStatusById(id, active);
+    }
+
 }

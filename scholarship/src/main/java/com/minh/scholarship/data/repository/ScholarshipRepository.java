@@ -69,4 +69,9 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     List<ScholarshipProjection> getAllVoByIds(List<Long> ids, String userId);
 
     List<ScholarshipEntity> getAllByProviderIdAndActive(Long id, boolean b);
+
+    @Query("SELECT s FROM ScholarshipEntity s WHERE s.active = :active")
+    List<ScholarshipEntity> findByActive(@Param("active") Boolean active);
+
+
 }
