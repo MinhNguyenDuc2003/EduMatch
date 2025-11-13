@@ -144,7 +144,7 @@ const Notifications = () => {
                     )}
                     onClick={() => {
                       if (notification.slug) {
-                        router.push(`/${notification.slug}`);
+                        router.push(`/scholarships/${notification.slug}`);
                       }
                     }}
                   >

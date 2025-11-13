@@ -147,6 +147,18 @@ export const apiProvider = createApi({
       }),
       providesTags: (result, error, scholarshipId) => [{ type: 'Applications', id: scholarshipId }],
     }),
+
+    // Update application status
+    updateApplicationStatus: build.mutation<ApplicationScholarship, UpdateApplicationStatusRequest>(
+      {
+        query: (applicationScholarship) => ({
+          url: `${API_ENDPOINTS.APPLICATION}`,
+          method: 'PUT',
+          body: applicationScholarship,
+        }),
+        invalidatesTags: ['Applications'],
+      }
+    ),
   }),
 });
 
@@ -166,4 +178,5 @@ export const {
   useGetFollowedProvidersQuery,
   useGetProviderProfileByIdQuery,
   useGetApplicationsByScholarshipIdQuery,
+  useUpdateApplicationStatusMutation,
 } = apiProvider;

@@ -22,6 +22,7 @@ import {
   ChevronRight,
   User,
   HelpCircle,
+  Newspaper,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -60,14 +61,14 @@ const ProviderSidebar = () => {
       href: '/provider/applications',
     },
     {
+      icon: Newspaper,
+      label: 'News',
+      href: '/provider/news',
+    },
+    {
       icon: Users,
       label: 'Students',
       href: '/provider/students',
-    },
-    {
-      icon: BarChart3,
-      label: 'Analytics',
-      href: '/provider/analytics',
     },
     {
       icon: Settings,
