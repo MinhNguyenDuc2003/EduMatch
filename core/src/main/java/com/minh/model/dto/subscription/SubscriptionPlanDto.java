@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.model.dto.BaseDto;
 import com.minh.utils.serializer.DateToTimestamp;
 import com.minh.utils.serializer.TimestampToDate;
 import lombok.*;
+
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -30,7 +33,7 @@ public class SubscriptionPlanDto extends BaseDto {
 
     private Integer durationDays;
 
-    private String targetType;
+    private SubscriptionTargetType targetType;
 
-    private String features;
+    private List<String> features;
 }

@@ -1,5 +1,6 @@
 package com.minh.subscription.data.repository;
 
+import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.subscription.data.entity.SubscriptionPlanEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,5 +21,7 @@ public interface SubscriptionPlanRepository extends JpaRepository<SubscriptionPl
     void updateActiveById(@Param("id") Long id, @Param("active") boolean active);
 
     List<SubscriptionPlanEntity> findByActiveTrue();
+
+    List<SubscriptionPlanEntity> findByTargetTypeAndActiveTrue(SubscriptionTargetType targetType);
 
 }

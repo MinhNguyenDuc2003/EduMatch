@@ -1,6 +1,7 @@
 package com.minh.subscription.service.impl;
 
 import com.minh.constants.CoreMessageCode;
+import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.subscription.SubscriptionPlanDto;
 import com.minh.service.base.BaseService;
@@ -60,5 +61,20 @@ public class SubscriptionPlanServiceImpl extends BaseService implements Subscrip
             throw new BusinessException(CoreMessageCode.SUBSCRIPTION_PLAN_NOT_FOUND);
         }
         subscriptionPlanRepository.updateActiveById(id, false);
+    }
+
+    @Override
+    public List<SubscriptionPlanDto> getByTargetType(SubscriptionTargetType targetType) {
+        if (targetType == null) {
+            throw new BusinessException(CoreMessageCode.INVALID_TARGET_TYPE);
+        }
+
+        List<SubscriptionPlanEntity> entities = subscriptionPlanRepository.findByTargetTypeAndActiveTrue(targetType);
+
+        if (entities.isEmpty()) {
+            throw new BusinessException(CoreMessageCode.SUBSCRIPTION_PLAN_NOT_FOUND);
+        }
+
+        return subscriptionPlanMapper.toDto(entities);
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.profile.ProviderNewsDto;
+import com.minh.profile.data.vo.ProviderNewsVo;
 import com.minh.profile.feign.NotificationTemplateFeign;
 import com.minh.profile.message.KafkaProducer;
 import com.minh.profile.service.ProviderNewsService;
@@ -24,12 +25,12 @@ public class ProviderNewsController {
     private final ProviderNewsService providerNewsService;
 
     @GetMapping
-    public ApiResponse<List<ProviderNewsDto>> getAll() {
+    public ApiResponse<List<ProviderNewsVo>> getAll() {
         return ApiResponse.ok(providerNewsService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<ProviderNewsDto> getById(@PathVariable Long id) {
+    public ApiResponse<ProviderNewsVo> getById(@PathVariable Long id) {
         return ApiResponse.ok(providerNewsService.getById(id));
     }
 
@@ -64,6 +65,18 @@ public class ProviderNewsController {
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) {
         providerNewsService.delete(id);
+        return ApiResponse.ok();
+    }
+
+    @GetMapping("/status/{active}")
+    public ApiResponse<List<ProviderNewsVo>> getByStatus(@PathVariable boolean active) {
+        return ApiResponse.ok(providerNewsService.getAllByStatus(active));
+    }
+
+    @Authorized
+    @PutMapping("/{id}/status")
+    public ApiResponse<Void> updateStatus(@PathVariable Long id, @RequestParam boolean active) {
+        providerNewsService.updateStatus(id, active);
         return ApiResponse.ok();
     }
 }

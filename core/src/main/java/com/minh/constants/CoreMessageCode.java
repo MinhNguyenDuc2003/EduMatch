@@ -37,6 +37,9 @@ public final class CoreMessageCode {
     public static final String SUBSCRIPTION_PLAN_NOT_FOUND = "Subscription plan is not exist";
     public static final String SUBSCRIPTION_NOT_FOUND = "Subscription is not exist";
     public static final String ORDER_NOT_FOUND = "Order is not exist";
+    public static final String INVALID_TARGET_TYPE = "Target type must not be null";
+    public static final String SUBSCRIPTION_PLAN_NOT_FOUND_BY_TARGET_TYPE = "No subscription plan found for target type";
+
     public static final String SCHOLARSHIP_SLUG_IS_ALREADY_EXIST = "Scholarship slug is already exist";
     public static final String APPLICATION_IS_ALREADY_SUBMITTED_PLEASE_UPDATE_VERSION = "application is already submitted please update version";
     public static final String APPLICATION_CODE_AND_VERSION_ALREADY_EXIST = "application code and version already exist";

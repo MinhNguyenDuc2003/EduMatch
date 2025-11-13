@@ -1,6 +1,7 @@
 package com.minh.subscription.controller;
 
 import com.minh.constants.EndPoint;
+import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.subscription.SubscriptionPlanDto;
 import com.minh.subscription.service.SubscriptionPlanService;
@@ -41,5 +42,10 @@ public class SubscriptionPlanController {
     public ApiResponse<Void> delete(@PathVariable Long id) {
         subscriptionPlanService.delete(id);
         return ApiResponse.ok();
+    }
+
+    @GetMapping("/targetType/{targetType}")
+    public List<SubscriptionPlanDto> getByTargetType(@PathVariable SubscriptionTargetType targetType) {
+        return subscriptionPlanService.getByTargetType(targetType);
     }
 }

@@ -69,4 +69,25 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     List<ScholarshipProjection> getAllVoByIds(List<Long> ids, String userId);
 
     List<ScholarshipEntity> getAllByProviderIdAndActive(Long id, boolean b);
+
+    @Query("SELECT s FROM ScholarshipEntity s WHERE s.active = :active")
+    List<ScholarshipEntity> findByActive(@Param("active") Boolean active);
+
+
+    @Query(value = "SELECT s.*, CASE WHEN f.user_id IS NOT NULL THEN 1 ELSE 0 END AS isFollow " +
+            "FROM scholarship.scholarship s " +
+            "LEFT JOIN scholarship.scholarship_follower f " +
+            "ON s.id = f.scholarship_id AND f.user_id = :userId " +
+            "WHERE s.active = true AND UPPER(s.slug) LIKE UPPER(CONCAT('%', :slug, '%')) " +
+            "LIMIT 1", nativeQuery = true)
+    ScholarshipProjection getVoWithFollowBySlug(@Param("slug") String slug, @Param("userId") String userId);
+
+    @Query(value = "SELECT s.*, CASE WHEN f.user_id IS NOT NULL THEN 1 ELSE 0 END AS isFollow " +
+            "FROM scholarship.scholarship s " +
+            "LEFT JOIN scholarship.scholarship_follower f " +
+            "ON s.id = f.scholarship_id AND f.user_id = :userId " +
+            "WHERE s.active = true AND s.provider_id = :providerId " +
+            "ORDER BY s.created_datetime DESC", nativeQuery = true)
+    List<ScholarshipProjection> getVosWithFollowByProviderId(@Param("providerId") Long providerId, @Param("userId") String userId);
+
 }
