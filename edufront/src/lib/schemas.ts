@@ -254,3 +254,12 @@ export const applicationSchema = z.object({
 });
 
 export type IApplication = z.infer<typeof applicationSchema>;
+
+export const newsSchema = z.object({
+  id: z.number().optional(),
+  scholarshipId: z.number().optional(),
+  title: z.string().min(1, 'Title is required'),
+  content: z.string().min(1, 'Content is required'),
+});
+
+export type INews = z.infer<typeof newsSchema>;

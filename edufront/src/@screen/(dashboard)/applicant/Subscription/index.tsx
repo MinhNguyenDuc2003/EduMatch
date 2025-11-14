@@ -7,7 +7,7 @@ export default function SubscriptionPage() {
   const { data: subscriptions, isLoading } = apiSubscription.useGetSubscriptionQuery();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 py-8 px-40">
+    <div className="h-full bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 py-8 px-40">
       <div className="w-full max-w-7xl mx-auto">
         <div className="flex justify-center items-stretch gap-6">
           {subscriptions

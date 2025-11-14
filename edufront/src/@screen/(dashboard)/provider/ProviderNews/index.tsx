@@ -16,7 +16,7 @@ const ProviderNews = () => {
         title="News"
         rightElement={
           <Button
-            onClick={() => router.push('/provider/scholarships/create')}
+            onClick={() => router.push('/provider/news/create')}
             className="bg-primary-brand text-white hover:bg-primary-brand/90 shadow-sm"
           >
             <Plus className="w-4 h-4 mr-2" />

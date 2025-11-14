@@ -15,11 +15,19 @@ import { toast } from 'sonner';
 import { useGetNotificationsQuery } from '@/state/apiAuth';
 import { useRouter } from 'next/navigation';
 
+const NOTIFICATION_TYPES = {
+  SCHOLARSHIP: 'A new scholarship has been added', // New Scholarship Message
+  SCHOLARSHIP_UPDATED: 'Your tracked scholarship has been updated',
+  SCHOLARSHIP_NEWS: 'A new news about your tracked scholarship has been published',
+  APPLICATION_STATUS_UPDATED: 'The status of your application has been updated',
+  SCHOLARSHIP_APPLICATION: 'An application has been submitted for your scholarship',
+};
+
 const Notifications = () => {
   const clientRef = useRef<Client | null>(null);
   const token = useMemo(() => process.env.NEXT_PUBLIC_API_TOKEN || '', []);
 
-  const { data: notifications, isLoading, isError } = useGetNotificationsQuery();
+  const { data: notifications, isLoading, isError, refetch } = useGetNotificationsQuery();
   const router = useRouter();
 
   useEffect(() => {
@@ -49,6 +57,8 @@ const Notifications = () => {
                 <p className="text-xs text-gray-600 line-clamp-2">{notification.content}</p>
               </div>
             ));
+
+            refetch();
           } catch (error) {
             console.log('Error parsing private notification:', error);
           }
@@ -150,7 +160,11 @@ const Notifications = () => {
                   >
                     <div className="flex items-start justify-between w-full">
                       <p className="font-semibold text-sm text-gray-900">
-                        {notification.referenceType}
+                        {
+                          NOTIFICATION_TYPES[
+                            notification.referenceType as keyof typeof NOTIFICATION_TYPES
+                          ]
+                        }
                       </p>
                       {!notification.isRead && (
                         <span className="w-2 h-2 bg-primary-brand rounded-full mt-1"></span>

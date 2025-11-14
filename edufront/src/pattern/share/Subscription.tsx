@@ -2,6 +2,7 @@
 
 import { Check } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
+import { useRouter } from 'next/navigation';
 
 export default function Subscription({
   id,
@@ -14,6 +15,7 @@ export default function Subscription({
   features,
 }: Subscription) {
   const featuresList = features ? features.split(',').map((f) => f.trim()) : [];
+  const router = useRouter();
 
   return (
     <div className="relative max-w-sm rounded-lg border-2 flex flex-col transition-all bg-white border-gray-200 shadow-sm hover:shadow-md ">
@@ -105,6 +107,7 @@ export default function Subscription({
           className="w-full py-4 rounded-lg font-semibold transition-all bg-primary-brand text-white"
           variant="custom"
           value={`Subscribe Now`}
+          onClick={() => router.push(`/checkout?step=1&id=${id}`)}
         />
       </div>
 
