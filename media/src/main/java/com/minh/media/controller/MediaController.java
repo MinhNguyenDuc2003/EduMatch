@@ -23,6 +23,11 @@ public class MediaController {
         return ApiResponse.ok(mediaService.getById(id));
     }
 
+    @PostMapping("/list")
+    public ApiResponse<List<MediaDto>> getByIds(@RequestBody List<Long> ids) {
+        return ApiResponse.ok(mediaService.getByIds(ids));
+    }
+
     @PostMapping
     public ApiResponse<MediaDto> create(@RequestBody MediaDto mediaDto) {
         return ApiResponse.ok(mediaService.saveOne(mediaDto));

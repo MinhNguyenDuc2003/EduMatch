@@ -15,7 +15,32 @@ public final class CoreMessageCode {
     public static final String APPLICANT_ID_IS_NOT_EXIST = "Applicant id is not exist";
     public static final String APPLICANT_IS_NOT_EXIST = "Applicant is not exist";
     public static final String USER_PROFILE_ALREADY_EXISTED = "User profile already existed";
+    public static final String PROVIDER_NOT_FOUND = "Provider is not exist";
+    public static final String PROVIDER_PROFILE_ALREADY_EXISTS = "Provider Profile is existed";
+
+    public static final String PROVIDER_ALREADY_FOLLOWED = "Provider Already Followed";
 
     public static final String MEDIA_ID_IS_NOT_EXIST = "Media id is not exist";
     public static final String PROVIDER_PROFILE_IS_NOT_EXIST = "Provider profile is not exist";
+    public static final String PROVIDER_NEWS_IS_NOT_EXIST = "Provider New is not exist";
+    public static final String UPLOAD_IMAGE_FAILED = "Upload Image Failed";
+    public static final String SCHOLARSHIP_IS_NOT_EXIST = "Scholarship is not exist";
+    public static final String SCHOLARSHIP_IS_NOT_EXIST_OR_INACTIVE = "Scholarship is not exist or inactive";
+    public static final String APPLICATION_IS_NOT_EXIST = "Application is not exist";
+    public static final String APPLICATION_REVIEW_NOT_FOUND = "Application review is not exist";
+    public static final String APPLICATION_SCHOLARSHIP_NOT_FOUND = "Application Scholarship is not exist";
+    public static final String APPLICATION_PREFERENCE_NOT_FOUND = "Application preference is not exist";
+    public static final String APPLICATION_ALREADY_SUBMITTED = "Application Already Submitted";
+
+    public static final String NOTIFICATION_TEMPLATE_TYPE_NOT_FOUND = "Notification template type not found";
+
+    public static final String SUBSCRIPTION_PLAN_NOT_FOUND = "Subscription plan is not exist";
+    public static final String SUBSCRIPTION_NOT_FOUND = "Subscription is not exist";
+    public static final String ORDER_NOT_FOUND = "Order is not exist";
+    public static final String INVALID_TARGET_TYPE = "Target type must not be null";
+    public static final String SUBSCRIPTION_PLAN_NOT_FOUND_BY_TARGET_TYPE = "No subscription plan found for target type";
+
+    public static final String SCHOLARSHIP_SLUG_IS_ALREADY_EXIST = "Scholarship slug is already exist";
+    public static final String APPLICATION_IS_ALREADY_SUBMITTED_PLEASE_UPDATE_VERSION = "application is already submitted please update version";
+    public static final String APPLICATION_CODE_AND_VERSION_ALREADY_EXIST = "application code and version already exist";
 }

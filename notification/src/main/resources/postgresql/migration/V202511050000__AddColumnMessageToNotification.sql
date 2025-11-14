@@ -1,0 +1,3 @@
+ALTER TABLE notification.USER_NOTIFICATION
+    ADD COLUMN content TEXT,
+    ADD COLUMN slug VARCHAR(100);

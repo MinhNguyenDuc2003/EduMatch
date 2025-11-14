@@ -9,5 +9,4 @@ declare global {
     IsBlock?: boolean;
   };
   type IPermission = Record<string, number>;
-
 }

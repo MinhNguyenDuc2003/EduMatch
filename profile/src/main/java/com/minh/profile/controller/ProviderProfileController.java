@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +24,6 @@ public class ProviderProfileController {
     @Autowired
     private ProviderProfileService providerProfileService;
 
-    @Authorized
     @GetMapping("/{id}")
     public ApiResponse<ProviderProfileVo> getOne(@PathVariable Long id) {
         return ApiResponse.ok(providerProfileService.getById(id));
@@ -47,7 +47,7 @@ public class ProviderProfileController {
     }
 
     @Authorized
-    @PutMapping
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<ProviderProfileDto> update(
             @RequestPart("profile") String profile,
             @RequestPart(value = "logo", required = false) MultipartFile logo,
@@ -57,4 +57,17 @@ public class ProviderProfileController {
         return ApiResponse.ok(providerProfileService.update(profileVo, logo, banner));
     }
 
+    @GetMapping("/unverified")
+    public ApiResponse<List<ProviderProfileDto>> getUnverifiedProviders() {
+        return ApiResponse.ok(providerProfileService.getUnverifiedProviders());
+    }
+
+    @PutMapping("/{id}/verified")
+    public ApiResponse<Void> changeVerifiedStatus(
+            @PathVariable("id") Long providerId,
+            @RequestParam("verified") Boolean verified
+    ) {
+        providerProfileService.changeVerifiedStatus(providerId, verified);
+        return ApiResponse.ok();
+    }
 }

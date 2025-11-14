@@ -2,7 +2,7 @@
 
 import { IApplication } from '@/lib/schemas';
 import ApplicationsForm from '@/pattern/share/ApplicationsForm';
-import { Loading } from '@/pattern/share/Loading';
+import Loading from '@/pattern/share/Loading';
 import {
   useDeleteImagesMutation,
   useGetApplicationByIdQuery,

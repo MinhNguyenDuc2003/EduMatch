@@ -29,40 +29,6 @@ const ProviderNavbar = () => {
 
   const breadcrumbs = generateBreadcrumbs();
 
-  // Mock notifications
-  const notifications: UserNotification[] = [
-    {
-      id: 1,
-      userId: '1',
-      isRead: false,
-      referenceType: 'application',
-      referenceId: '1',
-      topic: 'application',
-      title: 'New Application Received',
-      content: 'John Doe applied for Computer Science Scholarship',
-    },
-    {
-      id: 2,
-      userId: '2',
-      isRead: false,
-      referenceType: 'application',
-      referenceId: '2',
-      topic: 'application',
-      title: 'Scholarship Approved',
-      content: 'Your Engineering Excellence Award has been approved',
-    },
-    {
-      id: 3,
-      userId: '3',
-      isRead: false,
-      referenceType: 'application',
-      referenceId: '3',
-      topic: 'application',
-      title: 'Application Review Due',
-      content: '3 applications need your review this week',
-    },
-  ];
-
   return (
     <nav className="sticky top-0 w-full h-16 px-4 sm:px-6 lg:px-8 z-20 flex items-center border-b border-gray-200 bg-white/80 backdrop-blur-md">
       <div className="flex justify-between items-center w-full gap-4">
@@ -100,7 +66,7 @@ const ProviderNavbar = () => {
         </div>
 
         {/* Right Section - Actions */}
-        <Notifications notifications={notifications} />
+        <Notifications />
       </div>
     </nav>
   );

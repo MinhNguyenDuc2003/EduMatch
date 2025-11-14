@@ -13,9 +13,11 @@ import com.minh.profile.data.mapper.ProviderNewsMapper;
 import com.minh.profile.data.mapper.ProviderProfileMapper;
 import com.minh.profile.data.repository.*;
 import com.minh.profile.data.vo.ProviderProfileVo;
+import com.minh.profile.data.vo.projection.ProviderProfileProjection;
 import com.minh.profile.feign.MediaFeign;
 import com.minh.profile.service.ProviderProfileService;
 import com.minh.service.base.BaseService;
+import com.minh.utils.SecurityUtil;
 import com.minh.utils.UaaContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -55,7 +58,14 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ProviderProfileDto create(ProviderProfileVo profile, MultipartFile logo, MultipartFile banner) throws IOException {
-        profile.setUserId(UaaContextHolder.getUserId());
+        String userId = UaaContextHolder.getUserId();
+        profile.setUserId(userId);
+
+        Optional<ProviderProfileEntity> existingProfile = providerProfileRepository.findByUserId(userId);
+        if (existingProfile.isPresent()) {
+            throw new BusinessException(CoreMessageCode.PROVIDER_PROFILE_ALREADY_EXISTS);
+        }
+
         ProviderProfileEntity savedProfile = providerProfileRepository.save(providerProfileMapper.voToEntity(profile));
         List<ProviderContactDto> providerContactDtos = profile.getProviderContactDtos();
         providerContactDtos.forEach(pc -> {
@@ -70,7 +80,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
             logoRequest.setContentType(logo.getContentType());
             logoRequest.setThumbnail(logo.getBytes());
             logoRequest.setIsPublic(true);
-            logoRequest.setFolderName("providers");
+            logoRequest.setFolderName("providers/" + savedProfile.getId());
             MediaDto mediaDto = this.parseResponse(mediaFeign.create(logoRequest));
 
             ProviderMediaEntity logoMediaEntity = new ProviderMediaEntity();
@@ -86,6 +96,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
             bannerRequest.setSize(banner.getSize());
             bannerRequest.setContentType(banner.getContentType());
             bannerRequest.setThumbnail(banner.getBytes());
+            bannerRequest.setFolderName("providers/" + savedProfile.getId());
             bannerRequest.setIsPublic(true);
             MediaDto mediaBanner = this.parseResponse(mediaFeign.create(bannerRequest));
 
@@ -101,10 +112,11 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ProviderProfileDto update(ProviderProfileVo profile, MultipartFile logo, MultipartFile banner) throws IOException {
-        providerProfileRepository
+        ProviderProfileEntity existing = providerProfileRepository
                 .findById(profile.getId())
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
-        ProviderProfileEntity savedProfile = providerProfileRepository.save(providerProfileMapper.voToEntity(profile));
+        providerProfileMapper.updateEntityFromVo(profile, existing);
+        ProviderProfileEntity savedProfile = providerProfileRepository.save(existing);
         List<ProviderContactDto> providerContactDtos = profile.getProviderContactDtos();
         providerContactRepository.saveAll(providerContactMapper.toEntity(providerContactDtos));
 
@@ -114,6 +126,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
             logoRequest.setSize(logo.getSize());
             logoRequest.setContentType(logo.getContentType());
             logoRequest.setThumbnail(logo.getBytes());
+            logoRequest.setFolderName("providers/" + savedProfile.getId());
             logoRequest.setIsPublic(true);
             MediaDto mediaDto = this.parseResponse(mediaFeign.create(logoRequest));
 
@@ -131,6 +144,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
             bannerRequest.setSize(banner.getSize());
             bannerRequest.setContentType(banner.getContentType());
             bannerRequest.setThumbnail(banner.getBytes());
+            bannerRequest.setFolderName("providers/" + savedProfile.getId());
             bannerRequest.setIsPublic(true);
             MediaDto mediaBanner = this.parseResponse(mediaFeign.create(bannerRequest));
 
@@ -138,6 +152,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
             ProviderMediaEntity bannerMediaEntity = new ProviderMediaEntity();
             bannerMediaEntity.setProviderId(savedProfile.getId());
             bannerMediaEntity.setMediaId(mediaBanner.getId());
+            bannerRequest.setFolderName("providers/" + savedProfile.getId());
             bannerMediaEntity.setImageType("BANNER");
             providerMediaRepository.save(bannerMediaEntity);
         }
@@ -147,10 +162,10 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
 
     @Override
     public ProviderProfileVo getById(Long id) {
-        ProviderProfileEntity providerProfileEntity = providerProfileRepository
-                .findById(id)
+        ProviderProfileProjection providerProfile = providerProfileRepository
+                .getDetail(id, SecurityUtil.getCurrentUserId())
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
-        ProviderProfileVo vo = providerProfileMapper.toVo(providerProfileEntity);
+        ProviderProfileVo vo = providerProfileMapper.proToVo(providerProfile);
         List<ProviderContactEntity> contacts = providerContactRepository.findByProviderId(id);
         vo.setProviderContactDtos(providerContactMapper.toDto(contacts));
         List<ProviderMediaEntity> medias = providerMediaRepository.findByProviderId(id);
@@ -190,4 +205,18 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
         return vo;
     }
 
+    @Override
+    public List<ProviderProfileDto> getUnverifiedProviders() {
+        List<ProviderProfileEntity> entities = providerProfileRepository.findByVerifiedFalse();
+        return providerProfileMapper.toDto(entities);
+    }
+
+    @Override
+    @Transactional
+    public void changeVerifiedStatus(Long providerId, Boolean verified) {
+        ProviderProfileEntity entity = providerProfileRepository.findById(providerId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
+        entity.setVerified(verified);
+        providerProfileRepository.save(entity);
+    }
 }

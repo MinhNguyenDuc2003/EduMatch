@@ -2,11 +2,20 @@ declare global {
   type ApplicationScholarship = {
     id: number;
     scholarshipId: number;
-    applicantId: number;
-    scholarshipVo?: Scholarship;
-    applicationVo?: Application;
+    applicationId: number;
+    scholarshipVo: Scholarship;
+    applicationVo: Application;
     status: string;
     appliedAt?: number;
+    note?: string;
+  };
+
+  type UpdateApplicationStatusRequest = {
+    id: number;
+    scholarshipId: number;
+    applicationId: number;
+    reviewedAt: number;
+    status: string;
     note?: string;
   };
 }

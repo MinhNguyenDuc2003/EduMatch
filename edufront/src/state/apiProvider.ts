@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customBaseQuery from './custombaseQuery';
 import { IScholarship } from '@/lib/schemas';
-import { Provider } from '@radix-ui/react-tooltip';
 
 // API Endpoints
 const API_ENDPOINTS = {
@@ -148,6 +147,18 @@ export const apiProvider = createApi({
       }),
       providesTags: (result, error, scholarshipId) => [{ type: 'Applications', id: scholarshipId }],
     }),
+
+    // Update application status
+    updateApplicationStatus: build.mutation<ApplicationScholarship, UpdateApplicationStatusRequest>(
+      {
+        query: (applicationScholarship) => ({
+          url: `${API_ENDPOINTS.APPLICATION}`,
+          method: 'PUT',
+          body: applicationScholarship,
+        }),
+        invalidatesTags: ['Applications'],
+      }
+    ),
   }),
 });
 
@@ -167,4 +178,5 @@ export const {
   useGetFollowedProvidersQuery,
   useGetProviderProfileByIdQuery,
   useGetApplicationsByScholarshipIdQuery,
+  useUpdateApplicationStatusMutation,
 } = apiProvider;

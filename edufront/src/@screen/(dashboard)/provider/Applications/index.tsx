@@ -13,6 +13,7 @@ import ApplicationDetailDialog from './components/ApplicationDetailDialog';
 import {
   useGetApplicationsByScholarshipIdQuery,
   useGetScholarshipsQuery,
+  useUpdateApplicationStatusMutation,
 } from '@/state/apiProvider';
 import { useApplicationsData } from './hooks/useApplicationsData';
 import { useScholarshipFilter } from './hooks/useScholarshipFilter';
@@ -22,11 +23,13 @@ const Applications = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedScholarshipType, setSelectedScholarshipType] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [selectedApplicationId, setSelectedApplicationId] = useState<number | null>(null);
+  const [selectedApplicationScholarship, setSelectedApplicationScholarship] =
+    useState<ApplicationScholarship | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Fetch scholarships
   const { data: scholarships, isLoading: isLoadingScholarships } = useGetScholarshipsQuery();
+  const [updateApplicationStatus] = useUpdateApplicationStatusMutation();
 
   // Filter scholarships by type
   const filteredScholarships = useScholarshipFilter(
@@ -49,45 +52,30 @@ const Applications = () => {
     statusFilter
   );
 
-  // Find selected application and applicationScholarship
-  // Note: DisplayApplication.id = appScholarship.id || application.id
-  // So we need to check both ApplicationScholarship.id and Application.id
-  const selectedApplicationData = useMemo(() => {
-    if (!selectedApplicationId || !applicationsScholarships) {
-      return { application: null, applicationScholarship: null };
-    }
-
-    // Find ApplicationScholarship by its id or by Application.id
-    const appScholarship = applicationsScholarships.find(
-      (app) => app.id === selectedApplicationId || app.applicationVo?.id === selectedApplicationId
-    );
-
-    return {
-      application: appScholarship?.applicationVo || null,
-      applicationScholarship: appScholarship || null,
-    };
-  }, [selectedApplicationId, applicationsScholarships]);
-
   // Handlers
-  const handleViewApplication = useCallback((id: number) => {
-    setSelectedApplicationId(id);
+  const handleViewApplication = useCallback((applicationScholarship: ApplicationScholarship) => {
+    setSelectedApplicationScholarship(applicationScholarship);
     setIsDialogOpen(true);
   }, []);
 
-  const handleCloseDialog = useCallback(() => {
-    setIsDialogOpen(false);
-    setSelectedApplicationId(null);
-  }, []);
-
-  const handleApproveApplication = useCallback((id: number) => {
-    // TODO: Implement approve application logic
-    console.log('Approve application:', id);
-  }, []);
-
-  const handleRejectApplication = useCallback((id: number) => {
-    // TODO: Implement reject application logic
-    console.log('Reject application:', id);
-  }, []);
+  const handleUpdateApplicationStatus = async (
+    applicationScholarship: ApplicationScholarship,
+    status: string,
+    note?: string
+  ) => {
+    try {
+      await updateApplicationStatus({
+        id: applicationScholarship.id,
+        applicationId: applicationScholarship.applicationId,
+        scholarshipId: applicationScholarship.scholarshipId,
+        note,
+        reviewedAt: Date.now(), // Timestamp
+        status,
+      }).unwrap();
+    } catch (error) {
+      console.log('Failed to approve application:', error);
+    }
+  };
 
   return (
     <div className="p-6 lg:p-8 h-[calc(100vh-4rem)] flex flex-col">
@@ -137,8 +125,6 @@ const Applications = () => {
                 <ApplicationsTable
                   applications={filteredApplications}
                   onView={handleViewApplication}
-                  onApprove={handleApproveApplication}
-                  onReject={handleRejectApplication}
                 />
               ) : (
                 <ApplicationsEmptyState hasApplications={applications.length > 0} />
@@ -152,8 +138,8 @@ const Applications = () => {
       <ApplicationDetailDialog
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
-        application={selectedApplicationData.application}
-        applicationScholarship={selectedApplicationData.applicationScholarship}
+        onAction={handleUpdateApplicationStatus}
+        applicationScholarship={selectedApplicationScholarship}
         isLoading={false}
       />
     </div>

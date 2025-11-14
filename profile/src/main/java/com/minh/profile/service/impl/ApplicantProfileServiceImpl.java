@@ -2,25 +2,10 @@ package com.minh.profile.service.impl;
 
 import com.minh.constants.CoreMessageCode;
 import com.minh.exception.BusinessException;
-import com.minh.model.dto.profile.ApplicantCertificateDto;
-import com.minh.model.dto.profile.ApplicantEducationHistoryDto;
-import com.minh.model.dto.profile.ApplicantEducationIntentionDto;
-import com.minh.model.dto.profile.ApplicantPhoneNumberDto;
-import com.minh.model.dto.profile.ApplicantProfileDto;
-import com.minh.model.dto.profile.ApplicantSkillDto;
+import com.minh.model.dto.profile.*;
 import com.minh.profile.data.entity.ApplicantProfileEntity;
-import com.minh.profile.data.mapper.ApplicantCertificateMapper;
-import com.minh.profile.data.mapper.ApplicantEducationHistoryMapper;
-import com.minh.profile.data.mapper.ApplicantEducationIntentionMapper;
-import com.minh.profile.data.mapper.ApplicantPhoneNumberMapper;
-import com.minh.profile.data.mapper.ApplicantProfileMapper;
-import com.minh.profile.data.mapper.ApplicantSkillMapper;
-import com.minh.profile.data.repository.ApplicantCertificateRepository;
-import com.minh.profile.data.repository.ApplicantEducationHistoryRepository;
-import com.minh.profile.data.repository.ApplicantEducationIntentionRepository;
-import com.minh.profile.data.repository.ApplicantPhoneNumberRepository;
-import com.minh.profile.data.repository.ApplicantProfileRepository;
-import com.minh.profile.data.repository.ApplicantSkillRepository;
+import com.minh.profile.data.mapper.*;
+import com.minh.profile.data.repository.*;
 import com.minh.profile.data.vo.ApplicantProfileVo;
 import com.minh.profile.service.ApplicantProfileService;
 import com.minh.utils.UaaContextHolder;
@@ -31,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ApplicantProfileServiceImpl implements ApplicantProfileService {
@@ -42,7 +28,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     @Autowired
     private ApplicantEducationHistoryRepository applicantEducationHistoryRepository;
     @Autowired
-    private ApplicantPhoneNumberRepository applicantPhoneNumberRepository;
+    private ApplicantPreferenceRepository applicantPreferenceRepository;
     @Autowired
     private ApplicantSkillRepository applicantSkillRepository;
     @Autowired
@@ -55,19 +41,19 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     @Autowired
     private ApplicantEducationHistoryMapper applicantEducationHistoryMapper;
     @Autowired
-    private ApplicantPhoneNumberMapper applicantPhoneNumberMapper;
-    @Autowired
     private ApplicantSkillMapper applicantSkillMapper;
     @Autowired
     private ApplicantEducationIntentionMapper applicantEducationIntentionMapper;
+    @Autowired
+    private ApplicantPreferenceMapper applicantPreferenceMapper;
 
     @Override
-    @Transactional(rollbackOn =  Exception.class)
+    @Transactional(rollbackOn = Exception.class)
     public ApplicantProfileDto create(ApplicantProfileVo profile) {
         String userId = UaaContextHolder.getUserId();
         profile.setUserId(userId);
 
-        if(applicantProfileRepository.findByUserIdAndActive(userId, true).isPresent()){
+        if (applicantProfileRepository.findByUserIdAndActive(userId, true).isPresent()) {
             throw new BusinessException(CoreMessageCode.USER_PROFILE_ALREADY_EXISTED);
         }
 
@@ -85,7 +71,6 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
                         .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICANT_IS_NOT_EXIST))
                 );
         vo.setCertificates(applicantCertificateMapper.toDto(applicantCertificateRepository.findAllByApplicantIdAndActive(id, true)));
-        vo.setPhoneNumbers(applicantPhoneNumberMapper.toDto(applicantPhoneNumberRepository.findAllByApplicantIdAndActive(id, true)));
         vo.setEducationHistories(applicantEducationHistoryMapper.toDto(applicantEducationHistoryRepository.findAllByApplicantIdAndActive(id, true)));
         vo.setSkills(applicantSkillMapper.toDto(applicantSkillRepository.findAllByApplicantIdAndActive(id, true)));
         vo.setIntentions(applicantEducationIntentionMapper.toDto(applicantEducationIntentionRepository.findAllByApplicantIdAndActive(id, true)));
@@ -93,7 +78,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     }
 
     @Override
-    @Transactional(rollbackOn =  Exception.class)
+    @Transactional(rollbackOn = Exception.class)
     public ApplicantProfileDto update(ApplicantProfileVo profile) {
         if (ObjectUtils.isEmpty(profile.getId())) {
             throw new BusinessException(CoreMessageCode.APPLICANT_ID_IS_NOT_EXIST);
@@ -115,10 +100,10 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
             ApplicantProfileVo vo = applicantProfileMapper
                     .toVo(profile.get());
             vo.setCertificates(applicantCertificateMapper.toDto(applicantCertificateRepository.findAllByApplicantIdAndActive(vo.getId(), true)));
-            vo.setPhoneNumbers(applicantPhoneNumberMapper.toDto(applicantPhoneNumberRepository.findAllByApplicantIdAndActive(vo.getId(), true)));
             vo.setEducationHistories(applicantEducationHistoryMapper.toDto(applicantEducationHistoryRepository.findAllByApplicantIdAndActive(vo.getId(), true)));
             vo.setSkills(applicantSkillMapper.toDto(applicantSkillRepository.findAllByApplicantIdAndActive(vo.getId(), true)));
             vo.setIntentions(applicantEducationIntentionMapper.toDto(applicantEducationIntentionRepository.findAllByApplicantIdAndActive(vo.getId(), true)));
+            vo.setApplicantPreferences(applicantPreferenceMapper.toDto(applicantPreferenceRepository.findAllByApplicantIdAndActive(vo.getId(), true)));
             return vo;
         }
         return null;
@@ -128,7 +113,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
         applicantCertificateRepository.updateActiveByApplicantId(id, false);
         applicantEducationHistoryRepository.updateActiveByApplicantId(id, false);
         applicantEducationIntentionRepository.updateActiveByApplicantId(id, false);
-        applicantPhoneNumberRepository.updateActiveByApplicantId(id, false);
+        applicantPreferenceRepository.updateActiveByApplicantId(id, false);
         applicantSkillRepository.updateActiveByApplicantId(id, false);
     }
 
@@ -137,35 +122,39 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
         if (ObjectUtils.isNotEmpty(certificates)) {
             List<ApplicantCertificateDto> updatedCertificates = certificates.stream()
                     .peek(o -> o.setApplicantId(id))
-                    .toList();
+                    .collect(Collectors.toList());
             applicantCertificateRepository.saveAll(applicantCertificateMapper.toEntity(updatedCertificates));
         }
 
         List<ApplicantEducationHistoryDto> educationHistories = profile.getEducationHistories();
         if (ObjectUtils.isNotEmpty(educationHistories)) {
             List<ApplicantEducationHistoryDto> updatedEducationHistories = educationHistories.stream()
-                    .peek(o -> o.setApplicantId(id)).toList();
+                    .peek(o -> o.setApplicantId(id))
+                    .collect(Collectors.toList());
             applicantEducationHistoryRepository.saveAll(applicantEducationHistoryMapper.toEntity(updatedEducationHistories));
         }
 
-        List<ApplicantPhoneNumberDto> phoneNumbers = profile.getPhoneNumbers();
-        if (ObjectUtils.isNotEmpty(phoneNumbers)) {
-            List<ApplicantPhoneNumberDto> updatedPhoneNumbers = phoneNumbers.stream()
-                    .peek(o -> o.setApplicantId(id)).toList();
-            applicantPhoneNumberRepository.saveAll(applicantPhoneNumberMapper.toEntity(updatedPhoneNumbers));
+        List<ApplicantPreferenceDto> applicantPreferences = profile.getApplicantPreferences();
+        if (ObjectUtils.isNotEmpty(applicantPreferences)) {
+            List<ApplicantPreferenceDto> updateApplicantPreference = applicantPreferences.stream()
+                    .peek(o -> o.setApplicantId(id))
+                    .collect(Collectors.toList());
+            applicantPreferenceRepository.saveAll(applicantPreferenceMapper.toEntity(updateApplicantPreference));
         }
 
         List<ApplicantSkillDto> skills = profile.getSkills();
         if (ObjectUtils.isNotEmpty(skills)) {
             List<ApplicantSkillDto> updatedSkills = skills.stream()
-                    .peek(o -> o.setApplicantId(id)).toList();
+                    .peek(o -> o.setApplicantId(id))
+                    .collect(Collectors.toList());
             applicantSkillRepository.saveAll(applicantSkillMapper.toEntity(updatedSkills));
         }
 
         List<ApplicantEducationIntentionDto> intentions = profile.getIntentions();
         if (ObjectUtils.isNotEmpty(intentions)) {
             List<ApplicantEducationIntentionDto> updatedIntentions = intentions.stream()
-                    .peek(o -> o.setApplicantId(id)).toList();
+                    .peek(o -> o.setApplicantId(id))
+                    .collect(Collectors.toList());
             applicantEducationIntentionRepository.saveAll(applicantEducationIntentionMapper.toEntity(updatedIntentions));
         }
     }

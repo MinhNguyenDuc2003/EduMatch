@@ -1,9 +1,5 @@
 import { useMemo } from 'react';
-import {
-  mapApplicationScholarshipToDisplay,
-  filterApplications,
-  DisplayApplication,
-} from '../utils/applicationUtils';
+import { filterApplications } from '../utils/applicationUtils';
 
 /**
  * Custom hook to transform and filter applications data
@@ -13,10 +9,10 @@ export const useApplicationsData = (
   searchQuery: string,
   statusFilter: string
 ) => {
-  // Map API response to display format
-  const applications: DisplayApplication[] = useMemo(() => {
+  // Use applications directly from API
+  const applications: ApplicationScholarship[] = useMemo(() => {
     if (!applicationsScholarships) return [];
-    return applicationsScholarships.map(mapApplicationScholarshipToDisplay);
+    return applicationsScholarships;
   }, [applicationsScholarships]);
 
   // Filter applications by search query and status

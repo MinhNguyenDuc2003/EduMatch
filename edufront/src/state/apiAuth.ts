@@ -4,7 +4,7 @@ import customBaseQuery from './custombaseQuery';
 export const apiAuth = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiAuth',
-  tagTypes: ['Auth'],
+  tagTypes: ['Auth', 'Notifications'],
   endpoints: (build) => ({
     authenticated: build.query<AuthResponse, void>({
       query: () => ({
@@ -13,7 +13,14 @@ export const apiAuth = createApi({
       }),
       providesTags: ['Auth'],
     }),
+    getNotifications: build.query<UserNotification[], void>({
+      query: () => ({
+        url: '/api/notification/users/user',
+        method: 'GET',
+      }),
+      providesTags: ['Notifications'],
+    }),
   }),
 });
 
-export const { useAuthenticatedQuery } = apiAuth;
+export const { useAuthenticatedQuery, useGetNotificationsQuery } = apiAuth;

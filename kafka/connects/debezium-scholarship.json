@@ -1,0 +1,21 @@
+{
+  "name": "postgres-scholarship-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "plugin.name": "pgoutput",
+    "database.hostname": "postgres",
+    "database.port": "5432",
+    "database.user": "admin",
+    "database.password": "minh01672527656",
+    "database.dbname": "scholarship",
+    "slot.name": "scholarship_slot",
+    "publication.autocreate.mode": "filtered",
+    "schema.include.list": "scholarship",
+    "table.include.list": "scholarship.scholarship",
+    "topic.prefix": "scholarship",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "value.converter.schemas.enable": "false"
+  }
+}

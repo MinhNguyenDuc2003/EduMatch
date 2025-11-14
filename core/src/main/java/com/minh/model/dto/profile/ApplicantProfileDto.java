@@ -3,11 +3,7 @@ package com.minh.model.dto.profile;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.minh.model.dto.BaseDto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -25,6 +21,7 @@ public class ApplicantProfileDto extends BaseDto {
     private String contactName;
     private String firstName;
     private String lastName;
+    private String phoneNumber;
     private String religion;
     private String hometown;
     private String citizenshipStatus;
