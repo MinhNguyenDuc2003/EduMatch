@@ -1,13 +1,11 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    appDir: true,
-  },
+  output: 'standalone',
+  outputFileTracingRoot: __dirname,
+  basePath: '/backoffice',
   images: {
     domains: ['edumatch.s3.ap-southeast-1.amazonaws.com'],
   },
-  output: 'standalone',
 };
 
 module.exports = nextConfig;
