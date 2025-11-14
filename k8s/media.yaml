@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edumatch-media-deployment
+  namespace: edumatch
+  labels:
+    app: edumatch-media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edumatch-media
+  template:
+    metadata:
+      labels:
+        app: edumatch-media
+    spec:
+      containers:
+        - name: edumatch-media
+          image: registry.edumatch.space/edumatch/media:1.1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: edumatch-registry-secret
+      volumes:
+        - name: media-config-volume
+          configMap:
+            name: edumatch-media-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edumatch-media-service
+  namespace: edumatch
+spec:
+  selector:
+    app: edumatch-media
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: edumatch-media-ingress
+  namespace: edumatch
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: media.edumatch.devopseduvn.live
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: edumatch-media-service
+                port:
+                  number: 80

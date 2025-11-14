@@ -40,4 +40,13 @@ public class SecurityUtil {
                 .toList();
     }
 
+    public static String getRawToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof JwtAuthenticationToken jwtAuth) {
+            Jwt jwt = jwtAuth.getToken();
+            return (jwt != null) ? jwt.getTokenValue() : null;
+        }
+        return null;
+    }
+
 }

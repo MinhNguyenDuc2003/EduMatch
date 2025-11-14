@@ -1,0 +1,203 @@
+app:
+  environment: '${spring.profiles.environment:local}'
+  url:
+    eureka: '${env.eureka.url:http://localhost:8761/eureka/}'
+  db:
+    schema: scholarship
+    port: '${env.db.port:5432}'
+    endpoint: '${env.db.endpoint:localhost}'
+    database: '${env.db.database:postgres}'
+    username: '${env.db.username:postgres}'
+    password: '${env.db.password:minh01672527656}'
+    pool:
+      minimum: '${env.db.pool.minimum:2}'
+      maximum: '${env.db.pool.maximum:10}'
+
+server:
+  port: '${env.port:8084}'
+  servlet:
+    context-path: /scholarship
+  compression:
+    enabled: true
+  tomcat:
+    relaxed-query-chars: '|,{,},[,]'
+  max-http-request-header-size: 65536
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: SCHOLARSHIP
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  threads:
+    virtual:
+      enabled: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1024MB
+      max-request-size: 2048MB
+      file-size-threshold: 2KB
+  cloud:
+    config:
+      enabled: false
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    jdbc-url: 'jdbc:postgresql://${app.db.endpoint}:${app.db.port}/${app.db.database}'
+    username: '${app.db.username}'
+    password: '${app.db.password}'
+    auto-commit: true
+    minimum-idle: ${app.db.pool.minimum}
+    maximum-pool-size: ${app.db.pool.maximum}
+    max-lifetime: 30000
+    idle-timeout: 10000
+    connection-timeout: 20000
+    initialization-fail-timeout: 30000
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 30000
+      max-lifetime: 180000
+      minimum-idle: ${app.db.pool.minimum}
+      maximum-pool-size: ${app.db.pool.maximum}
+      auto-commit: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        order_inserts: true
+        order_updates: true
+        id:
+          new_generator_mappings: true
+        jdbc:
+          batch_size: 100
+          lob:
+            non_contextual_creation: true
+    show-sql: false
+  flyway:
+    enabled: true
+    connect-retries: 100
+    user: '${app.db.username}'
+    password: '${app.db.password}'
+    schemas: '${app.db.schema}'
+    locations: classpath:postgresql/migration
+    url: 'jdbc:postgresql://${app.db.endpoint}:${app.db.port}/${app.db.database}'
+    baseline-on-migrate: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${env.issuer.uri:http://localhost:8080/realms/Yas}
+  kafka:
+    bootstrap-servers: ${kafka.bootstrap-server}
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+    tags:
+      application: ${spring.application.name}
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+    org.flywaydb: DEBUG
+  level:
+    org.springframework.messaging: DEBUG
+    org.springframework.web.socket: DEBUG
+    org.springframework.web.socket.messaging: DEBUG
+
+springdoc:
+  packages-to-scan: com.minh.scholarship
+  swagger-ui:
+    path: /swagger-ui
+    oauth:
+      use-pkce-with-authorization-code-grant: true
+      client-id: swagger-ui
+  oauthflow:
+    authorization-url: ${env.authorization.url:http://localhost:8080/realms/Yas/protocol/openid-connect/auth}
+    token-url: ${env.token.url:http://localhost:8080/realms/Yas/protocol/openid-connect/token}
+
+yas:
+  services:
+    location: ${env.location.url:http://localhost:8088/location}
+
+resilience4j:
+  retry:
+    instances:
+      rest-api:
+        max-attempts: 3
+
+  circuitbreaker:
+    instances:
+      rest-circuit-breaker:
+        sliding-window-type: COUNT_BASED
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        permitted-number-of-calls-in-half-open-state: 3
+
+cors:
+  allowed-origins: "*"
+
+eureka:
+  instance:
+    preferIpAddress: false
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 1
+  client:
+    registerWithEureka: ${EUREKA_REGISTER_WITH_EUREKA:true}
+    fetchRegistry: ${EUREKA_FETCH_REGISTRY:true}
+    serviceUrl:
+      defaultZone: '${app.url.eureka}'
+
+kafka:
+  enable: true
+  bootstrap-server: ${env.kafka.ip:localhost}:${env.kafka.port:29092}
+  scholarship:
+    new-event:
+      topic: ${app.environment:local}.scholarship.new-event
+      group: ${app.environment:local}.scholarship.new-event.group
+  news:
+    new-event:
+      topic: ${app.environment:local}.news.new-event
+      group: ${app.environment:local}.news.new-event.group
+  application:
+    update-status:
+      topic: ${app.environment:local}.application.update-event
+      group: ${app.environment:local}.application.update-event.group
+  provider:
+    application:
+      topic: ${app.environment:local}.provider.application-new
+      group: ${app.environment:local}.provider.application-new.group
+
+keycloak:
+  auth-server-url: ${env.keycloak.url:http://localhost:8080}
+  realm: ${env.keycloak.realm:Yas}
+  resource: ${env.keycloak.client-id:backoffice-bff}
+  credentials:
+    secret: ${env.keycloak.client-secret:TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF}
+
+quartz-job:
+  auto-start: false
+  scholarship-suggestion:
+    name: 'scholarship-suggestion'
+    group: 'scholarship'
+    expression: '0 0 12 * * ?'

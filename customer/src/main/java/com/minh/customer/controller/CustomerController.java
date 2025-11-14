@@ -1,13 +1,18 @@
 package com.minh.customer.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.minh.customer.data.vo.AuthenticationVo;
 import com.minh.customer.data.vo.CustomerVo;
 import com.minh.customer.service.CustomerService;
 import com.minh.customer.viewmodel.customer.*;
 import com.minh.model.ApiResponse;
+import com.minh.service.aspect.Authorized;
 import com.minh.utils.SecurityUtil;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -69,12 +74,14 @@ public class CustomerController {
                 customerService.getCustomerProfile(SecurityUtil.getCurrentUserId()));
     }
 
+    @Authorized
     @PostMapping("/storefront/customer/profile")
     public ApiResponse<CustomerVo> createCustomerProfile(@RequestBody CustomerVo customerVo) {
         return ApiResponse.ok(
                 customerService.createCustomerProfile(customerVo));
     }
 
+    @Authorized
     @PutMapping("/storefront/customer/profile")
     public ApiResponse<CustomerVo> updateCustomerProfile(@RequestBody CustomerVo customerVo) {
         return ApiResponse.ok(
@@ -86,26 +93,56 @@ public class CustomerController {
         return customerService.createGuestUser();
     }
 
-    @PostMapping("/storefront/provider/profile")
-    public ApiResponse<CustomerVo> createProviderProfile(@RequestPart("profile") CustomerVo profile,
+    @Authorized
+    @PostMapping(
+            value = "/storefront/provider/profile",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+    )
+    public ApiResponse<CustomerVo> createProviderProfile(@RequestPart("profile") String profile,
                                                          @RequestPart(value = "logo", required = false) MultipartFile logo,
                                                          @RequestPart(value = "banner", required = false) MultipartFile banner) throws JsonProcessingException {
+        CustomerVo customerVo = new ObjectMapper().readValue(profile, CustomerVo.class);
         return ApiResponse.ok(
-                customerService.createProviderProfile(profile, logo, banner));
+                customerService.createProviderProfile(customerVo, logo, banner));
     }
 
-    @PutMapping("/storefront/provider/profile")
-    public ApiResponse<CustomerVo> updateProviderProfile(@RequestPart("profile") CustomerVo customerVo,
+    @Authorized
+    @PutMapping(value = "/storefront/provider/profile",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ApiResponse<CustomerVo> updateProviderProfile(@RequestPart("profile") String profile,
                                                          @RequestPart(value = "logo", required = false) MultipartFile logo,
                                                          @RequestPart(value = "banner", required = false) MultipartFile banner) throws JsonProcessingException {
+        CustomerVo customerVo = new ObjectMapper().readValue(profile, CustomerVo.class);
         return ApiResponse.ok(
                 customerService.updateProviderProfile(customerVo, logo, banner));
     }
 
+    @Authorized
     @GetMapping("/storefront/provider/profile")
     public ApiResponse<CustomerVo> getProviderProfile() {
         return ApiResponse.ok(
                 customerService.getProviderProfile());
+    }
+
+    @GetMapping("/authenticated")
+    public ApiResponse<AuthenticationVo> getAuthenticated() {
+        String userId = SecurityUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            return ApiResponse.ok(AuthenticationVo.builder().isAuthenticated(false).build());
+        } else {
+            AuthenticationVo vo = new AuthenticationVo();
+            vo.setIsAuthenticated(true);
+            vo.setCustomer(customerService.getCustomerById(userId));
+            try {
+                CustomerVo providerProfile = customerService.getProviderProfile();
+                if (providerProfile != null) {
+                    vo.setIsProvider(true);
+                }
+            } catch (Exception e) {
+                vo.setIsProvider(false);
+            }
+            return ApiResponse.ok(vo);
+        }
     }
 
 }

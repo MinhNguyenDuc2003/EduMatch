@@ -53,4 +53,7 @@ public class ProviderProfileEntity extends BaseEntity {
     @Column(name = "VERIFIED")
     private Boolean verified;
 
+    @Column(name = "COUNTRY")
+    private String country;
+
 }

@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backoffice-bff-deployment
+  namespace: edumatch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backoffice-bff
+  template:
+    metadata:
+      labels:
+        app: backoffice-bff
+    spec:
+      containers:
+        - name: backoffice-bff
+          image: registry.edumatch.space/edumatch/backoffice:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      volumes:
+        - name: backoffice-bff-config-volume
+          configMap:
+            name: backoffice-bff-config
+      imagePullSecrets:
+        - name: edumatch-registry-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backoffice-bff-service
+  namespace: edumatch
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: backoffice-bff
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backoffice-bff-ingress
+  namespace: edumatch
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backoffice-bff-service
+                port:
+                  number: 80

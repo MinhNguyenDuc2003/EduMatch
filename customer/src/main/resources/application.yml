@@ -48,7 +48,7 @@ spring:
       matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: 'jdbc:postgresql://${app.db.endpoint}:${app.db.port}/${app.db.database}'
+    jdbc-url: 'jdbc:postgresql://${app.db.endpoint}:${app.db.port}/${app.db.database}'
     username: '${app.db.username}'
     password: '${app.db.password}'
     auto-commit: true

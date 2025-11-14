@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edumatch-subscription-deployment
+  namespace: edumatch
+  labels:
+    app: edumatch-subscription
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edumatch-subscription
+  template:
+    metadata:
+      labels:
+        app: edumatch-subscription
+    spec:
+      containers:
+        - name: edumatch-subscription
+          image: registry.edumatch.space/edumatch/subscription:1.1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: edumatch-registry-secret
+      volumes:
+        - name: subscription-config-volume
+          configMap:
+            name: edumatch-subscription-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edumatch-subscription-service
+  namespace: edumatch
+spec:
+  selector:
+    app: edumatch-subscription
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: edumatch-subscription-ingress
+  namespace: edumatch
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: subscription.edumatch.devopseduvn.live
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: edumatch-subscription-service
+                port:
+                  number: 80
