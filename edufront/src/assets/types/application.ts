@@ -2,6 +2,8 @@ declare global {
   type Application = {
     id: number;
     userId: string;
+    applicationName: string;
+    versionApplication: number;
     fullName: string;
     gender: string;
     dateOfBirth: string;

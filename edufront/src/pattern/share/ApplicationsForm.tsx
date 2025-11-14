@@ -9,6 +9,14 @@ import { ImageIcon, Plus, Trash2, X } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/lib/cus/dialog';
 
 interface ApplicationsFormProps {
   application?: Application;
@@ -28,6 +36,8 @@ const ApplicationsForm = ({
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<Array<{ url: string; id?: number }>>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [applicationName, setApplicationName] = useState('');
 
   const methods = useForm<IApplication>({
     reValidateMode: 'onSubmit',
@@ -44,6 +54,10 @@ const ApplicationsForm = ({
         ...DEFAULT_APPLICATION_FORM_VALUES,
         ...application,
       });
+      // Set application name if available
+      if (application.applicationName) {
+        setApplicationName(application.applicationName);
+      }
     }
   }, [application, methods]);
 
@@ -119,6 +133,24 @@ const ApplicationsForm = ({
     );
   };
 
+  // Handle form submission - open dialog
+  const handleFormSubmit = (data: IApplication) => {
+    setApplicationName(data.applicationName || 'Application 1');
+    setIsDialogOpen(true);
+  };
+
+  // Handle complete submission
+  const handleComplete = () => {
+    if (!applicationName.trim()) return;
+
+    const formData = methods.getValues();
+    onSubmit({
+      ...formData,
+      applicationName: applicationName.trim(),
+    });
+    setIsDialogOpen(false);
+  };
+
   return (
     <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto shadow-2xl rounded-lg p-6">
       <div className="text-3xl font-bold text-gray-900 flex items-center justify-center ">
@@ -157,7 +189,7 @@ const ApplicationsForm = ({
       </div>
 
       <Form {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
           <div className="space-y-8">
             {/* Personal Information */}
             <div className="space-y-6">
@@ -498,12 +530,50 @@ const ApplicationsForm = ({
                 className="w-full bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
                 disabled={isLoading}
               >
-                {isLoading ? 'Submitting...' : 'Submit Application'}
+                {isLoading ? 'Submitting...' : 'Save Application'}
               </Button>
             </div>
           </div>
         </form>
       </Form>
+
+      {/* Application Name Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Complete Application</DialogTitle>
+            <DialogDescription>Please enter a name to complete the application.</DialogDescription>
+          </DialogHeader>
+
+          <div className="py-4">
+            <input
+              type="text"
+              value={applicationName}
+              onChange={(e) => setApplicationName(e.target.value)}
+              placeholder="Application Name"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3D6CB9]"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && applicationName.trim()) {
+                  handleComplete();
+                }
+              }}
+            />
+          </div>
+
+          <DialogFooter>
+            <Button variant="custom" color="gray" onClick={() => setIsDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={handleComplete}
+              disabled={!applicationName.trim() || isLoading}
+              className="bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white"
+              value={isLoading ? 'Completing...' : 'Complete'}
+            />
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
