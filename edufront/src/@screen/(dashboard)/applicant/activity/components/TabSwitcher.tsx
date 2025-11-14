@@ -10,7 +10,7 @@ type TabSwitcherProps = {
 
 export default function TabSwitcher({ tabs, activeTab, onTabChange }: TabSwitcherProps) {
   return (
-    <div className="flex flex-wrap items-center justify-start gap-2 rounded-lg bg-slate-700 p-1.5">
+    <div className="flex flex-wrap items-center justify-start gap-2 rounded-lg bg-[#3D6CB9] p-1.5">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.key;
 

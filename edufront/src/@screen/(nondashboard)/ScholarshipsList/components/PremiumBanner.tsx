@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Zap } from 'lucide-react';
 
 export default function PremiumBanner() {
+  const router = useRouter();
   const [isUpgraded, setIsUpgraded] = useState(false);
   const recommendedCount = 12; // Hardcoded for now
 
-  const handleUpgrade = () => {
-    setIsUpgraded(true);
+  const handleUpdate = () => {
+    router.push('/applicant/subscription');
   };
 
   return (
@@ -70,10 +72,10 @@ export default function PremiumBanner() {
                 profile
               </p>
               <button
-                onClick={handleUpgrade}
+                onClick={handleUpdate}
                 className="w-full bg-white text-blue-900 font-semibold py-2.5 px-4 rounded-lg hover:bg-gray-100 transition-all duration-200 shadow-lg"
               >
-                Upgrade Now
+                Update Now
               </button>
             </div>
 
@@ -96,10 +98,10 @@ export default function PremiumBanner() {
                 </div>
               </div>
               <button
-                onClick={handleUpgrade}
+                onClick={handleUpdate}
                 className="flex items-center gap-2 bg-white text-blue-900 font-semibold py-2.5 px-6 rounded-lg hover:cursor-pointer hover:bg-gray-100 transition-all duration-200 shadow-lg whitespace-nowrap"
               >
-                Upgrade Now
+                Update Now
               </button>
             </div>
           </>

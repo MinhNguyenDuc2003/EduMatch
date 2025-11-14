@@ -10,6 +10,7 @@ import { apiApplicant } from './apiApplicant';
 import { apiProvider } from './apiProvider';
 import { apiAuth } from './apiAuth';
 import { apiScholarship } from './apiScholarship';
+import { apiSubscription } from './apiSubscription';
 
 /* REDUX STORE */
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   [apiProvider.reducerPath]: apiProvider.reducer,
   [apiAuth.reducerPath]: apiAuth.reducer,
   [apiScholarship.reducerPath]: apiScholarship.reducer,
+  [apiSubscription.reducerPath]: apiSubscription.reducer,
 });
 
 export const makeStore = () => {
@@ -28,7 +30,8 @@ export const makeStore = () => {
         apiApplicant.middleware,
         apiProvider.middleware,
         apiAuth.middleware,
-        apiScholarship.middleware
+        apiScholarship.middleware,
+        apiSubscription.middleware
       ),
   });
 };

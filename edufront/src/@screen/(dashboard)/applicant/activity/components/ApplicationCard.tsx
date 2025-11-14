@@ -12,8 +12,8 @@ export default function ApplicationCard({ application, onEdit, onDelete }: Appli
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-lg">
       {/* Header Section */}
-      <div className="border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white p-5">
-        <h3 className="text-lg font-bold text-slate-900 truncate">
+      <div className=" border-slate-200 bg-gradient-to-r from-primary-light to-white p-3">
+        <h3 className="text-base font-bold text-slate-900 truncate">
           {application.applicationName || 'Application Name'}
         </h3>
       </div>
