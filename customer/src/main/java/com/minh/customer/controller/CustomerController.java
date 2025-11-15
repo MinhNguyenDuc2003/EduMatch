@@ -5,11 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.customer.data.vo.AuthenticationVo;
 import com.minh.customer.data.vo.CustomerVo;
 import com.minh.customer.service.CustomerService;
+import com.minh.customer.service.UserLogoutService;
 import com.minh.customer.viewmodel.customer.*;
 import com.minh.model.ApiResponse;
 import com.minh.service.aspect.Authorized;
 import com.minh.utils.SecurityUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -17,14 +21,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Map;
+
 @RestController
+@RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerService customerService;
-
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
+    private final UserLogoutService userLogoutService;
 
     @GetMapping("/backoffice/customers")
     public ResponseEntity<CustomerListVm> getCustomers(
@@ -143,6 +147,19 @@ public class CustomerController {
             }
             return ApiResponse.ok(vo);
         }
+    }
+
+    @Authorized
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "logoutUrl", userLogoutService.buildLogoutUrl()
+        ));
     }
 
 }
