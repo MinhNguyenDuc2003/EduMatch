@@ -36,7 +36,6 @@ services:
       KC_PROXY: edge
       KC_HOSTNAME: api.edumatch.space
       KC_HTTP_RELATIVE_PATH: /identity
-      KC_FRONTEND_URL: https://api.edumatch.space/identity
     volumes:
       - ./identity/realm-export.json:/opt/keycloak/data/import/realm-export.json
       - ./identity/themes/yas/theme:/opt/keycloak/themes
