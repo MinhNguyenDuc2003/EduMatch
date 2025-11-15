@@ -17,13 +17,15 @@ import Notifications from '../share/Notifications';
 const ProviderNavbar = () => {
   const pathname = usePathname();
 
+  // generate breadcrumbs from pathname except locale
   const generateBreadcrumbs = () => {
-    const paths = pathname.split('/').filter((path) => path);
+    const paths = pathname.split('/').filter((path) => path && path !== 'vi' && path !== 'en');
     const breadcrumbs = paths.map((path, index) => {
       const href = '/' + paths.slice(0, index + 1).join('/');
       const label = path.charAt(0).toUpperCase() + path.slice(1).replace(/-/g, ' ');
       return { href, label };
     });
+
     return breadcrumbs;
   };
 

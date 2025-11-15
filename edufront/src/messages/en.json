@@ -1,0 +1,35 @@
+{
+  "home": {
+    "title": "Home"
+  },
+  "navbar": {
+    "language": {
+      "en": "English",
+      "vi": "Vietnamese"
+    },
+    "login": "Sign In / Sign Up",
+    "scholarships": "Scholarships",
+    "news": "News",
+    "dropdown": {
+      "profile": "Profile",
+      "myActivity": "My Activity",
+      "providerDashboard": "Provider Dashboard",
+      "createProvider": "Become a Provider",
+      "logout": "Logout"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "new": "new notifications",
+    "scholarship": "A new scholarship has been added",
+    "scholarshipUpdated": "Your tracked scholarship has been updated",
+    "scholarshipNews": "A new news about your tracked scholarship has been published",
+    "application": "The status of your application has been updated",
+    "scholarshipApplication": "An application has been submitted for your scholarship",
+    "noNotifications": "No notifications",
+    "viewAllNotifications": "View all notifications"
+  },
+  "error": {
+    "fetchingError": "Fetching error"
+  }
+}

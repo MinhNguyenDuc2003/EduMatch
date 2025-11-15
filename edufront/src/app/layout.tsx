@@ -1,18 +1,11 @@
-import Loading from '@/pattern/share/Loading';
-import { ReactNode, Suspense } from 'react';
-import '../app/globals.css';
-import { Toaster } from 'sonner';
-import Providers from '@/provider/providers';
+import { ReactNode } from 'react';
 
-export default async function LocaleLayout({ children }: { children: ReactNode }) {
-  return (
-    <html lang={'en'}>
-      <body className="">
-        <Providers>
-          <Suspense fallback={<Loading />}>{children}</Suspense>
-          <Toaster richColors closeButton />
-        </Providers>
-      </body>
-    </html>
-  );
+type Props = {
+  children: ReactNode;
+};
+
+// Since we have a `not-found.tsx` page on the root, a layout file
+// is required, even if it's just passing children through.
+export default function RootLayout({ children }: Props) {
+  return children;
 }

@@ -16,9 +16,7 @@ import {
   BookText,
   FileText,
   Users,
-  BarChart3,
   Settings,
-  LogOut,
   ChevronRight,
   User,
   HelpCircle,
@@ -196,7 +194,7 @@ const ProviderSidebar = () => {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild className="cursor-pointer">
-              <Link href="/" className="flex items-center gap-2">
+              <Link href="/home" className="flex items-center gap-2">
                 <Home className="w-4 h-4" />
                 <span>Back to Home</span>
               </Link>

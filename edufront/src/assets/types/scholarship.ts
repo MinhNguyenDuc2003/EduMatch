@@ -49,6 +49,7 @@ declare global {
 
   type ScholarshipSearchCriteria = {
     country?: string;
+    university?: string;
     studyLevel?: string;
     scholarshipType?: string;
   };

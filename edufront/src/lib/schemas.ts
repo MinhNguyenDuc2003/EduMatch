@@ -27,7 +27,6 @@ export const applicantProfileSchema = z.object({
     certificates: z
       .array(
         z.object({
-          id: z.number().optional(),
           certificateName: z.string().min(1, 'Certificate name is required'),
           issuedBy: z.string().min(1, 'Issuing organization is required'),
           issueDate: z.union([z.string(), z.number()]),
@@ -40,7 +39,6 @@ export const applicantProfileSchema = z.object({
       .array(
         z
           .object({
-            id: z.number().optional(),
             applicantId: z.number().optional(),
             institutionName: z.string().min(1, 'Institution name is required'),
             institutionType: z.string().min(1, 'Institution type is required'),
@@ -81,7 +79,6 @@ export const applicantProfileSchema = z.object({
     applicantPreferences: z
       .array(
         z.object({
-          id: z.number().optional(),
           applicantId: z.number().optional(),
           type: z.string().min(1, 'Preference type is required'),
           value: z.string().min(1, 'Preference value is required'),
@@ -96,7 +93,6 @@ export const applicantProfileSchema = z.object({
     skills: z
       .array(
         z.object({
-          id: z.number().optional(),
           applicantId: z.number().optional(),
           skillName: z.string().min(1, 'Skill name is required'),
           proficiencyLevel: z.string().min(1, 'Proficiency level is required'),
@@ -110,7 +106,6 @@ export const applicantProfileSchema = z.object({
     intentions: z
       .array(
         z.object({
-          id: z.number().optional(),
           applicantId: z.number().optional(),
           intendedInstitution: z.string().min(1, 'Intended institution is required'),
           intendedState: z.string().min(1, 'Intended state/province is required'),
