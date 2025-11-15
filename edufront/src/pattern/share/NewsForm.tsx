@@ -1,8 +1,10 @@
+import ScholarshipCarousel from '@/@screen/(dashboard)/provider/Applications/components/ScholarshipCarousel';
 import { DEFAULT_NEWS_FORM_VALUES } from '@/constants/DefaultValues';
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { Form } from '@/lib/cus/form';
 import { INews, newsSchema } from '@/lib/schemas';
+import { useGetScholarshipsQuery } from '@/state/apiProvider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Image as ImageIcon, X } from 'lucide-react';
 import Image from 'next/image';
@@ -24,7 +26,10 @@ const NewsForm = ({
 }) => {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<Array<{ url: string; id?: number }>>([]);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { data: scholarships, isLoading: isLoadingScholarships } = useGetScholarshipsQuery();
 
   // Form setup
   const methods = useForm<INews>({
@@ -42,6 +47,8 @@ const NewsForm = ({
       });
     }
   }, [news, methods]);
+
+  const { watch, setValue } = methods;
 
   // Handle image uploads
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -190,6 +197,21 @@ const NewsForm = ({
                 <p className="text-sm text-gray-500 italic">No images uploaded yet.</p>
               )}
             </div>
+          </div>
+
+          {/* Scholarship */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold text-gray-900">Scholarship</h2>
+            <p className="text-sm text-gray-600">Select a scholarship for this news</p>
+
+            <ScholarshipCarousel
+              scholarships={scholarships || []}
+              value={watch('scholarshipId')}
+              onSelectAction={(scholarship) =>
+                setValue('scholarshipId', scholarship?.id ?? undefined)
+              }
+              isLoading={isLoadingScholarships}
+            />
           </div>
 
           {/* Submit Button */}

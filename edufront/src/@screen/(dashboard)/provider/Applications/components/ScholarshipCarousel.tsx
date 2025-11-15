@@ -65,7 +65,7 @@ const ScholarshipCarousel = ({
               <CarouselItem
                 key={scholarship.id}
                 className="basis-auto"
-                onClick={() => onSelectAction(scholarship)}
+                onClick={() => onSelectAction(value === scholarship.id ? null : scholarship)} // Selected again will remove the selection
               >
                 <ScholarshipCard
                   scholarship={scholarship}
