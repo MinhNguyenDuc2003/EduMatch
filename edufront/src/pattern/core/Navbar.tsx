@@ -24,7 +24,7 @@ import Notifications from '../share/Notifications';
 import { useAuth } from '@/hooks/useAuth';
 
 const Header = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, isProvider } = useAuth();
 
   return (
     <Begin className="px-4 lg:px-40 py-3 flex items-center border-b bg-[#fafaf6] sticky top-0 z-50">
@@ -123,6 +123,11 @@ const Header = () => {
                 <DropdownMenuItem asChild>
                   <Link href="/applicant/activity">My Activity</Link>
                 </DropdownMenuItem>
+                {isProvider && (
+                  <DropdownMenuItem asChild>
+                    <Link href="/provider/dashboard">Provider Dashboard</Link>
+                  </DropdownMenuItem>
+                )}
 
                 <DropdownMenuItem onClick={() => {}}>Logout</DropdownMenuItem>
               </DropdownMenuContent>

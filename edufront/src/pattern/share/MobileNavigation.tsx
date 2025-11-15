@@ -1,9 +1,7 @@
 import { scholarshipProviderMenuItems, studentMenuItems } from '@/constants/Common';
-import { RText } from '@/lib/by/Div';
 import { Button } from '@/lib/cus/button';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/lib/cus/sheet';
 import { Menu } from 'lucide-react';
-import Link from 'next/link';
 import React from 'react';
 
 const MobileNavigation = () => {

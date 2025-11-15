@@ -23,6 +23,7 @@ import {
   User,
   HelpCircle,
   Newspaper,
+  Home,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -194,9 +195,11 @@ const ProviderSidebar = () => {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50">
-              <LogOut className="w-4 h-4 mr-2" />
-              <span>Log out</span>
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link href="/" className="flex items-center gap-2">
+                <Home className="w-4 h-4" />
+                <span>Back to Home</span>
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

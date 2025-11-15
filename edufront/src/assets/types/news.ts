@@ -4,7 +4,7 @@ declare global {
     providerId: number;
     scholarshipId?: number;
     providerProfileVo?: ProviderProfile;
-    scholarshipVo?: Scholarship;
+    scholarship?: Scholarship;
     title: string;
     content: string;
     link?: string;

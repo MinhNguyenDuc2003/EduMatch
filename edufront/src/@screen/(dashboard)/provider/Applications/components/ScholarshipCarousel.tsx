@@ -20,6 +20,7 @@ interface ScholarshipCarouselProps {
   isLoading?: boolean;
   onSelectAction: (scholarship: Scholarship | null) => void;
   scholarships: Scholarship[];
+  ItemClassName?: string;
 }
 
 const ScholarshipCarousel = ({
@@ -27,6 +28,7 @@ const ScholarshipCarousel = ({
   isLoading,
   onSelectAction,
   scholarships,
+  ItemClassName,
 }: ScholarshipCarouselProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -64,7 +66,7 @@ const ScholarshipCarousel = ({
             scholarships.map((scholarship) => (
               <CarouselItem
                 key={scholarship.id}
-                className="basis-auto"
+                className={cn('basis-auto', ItemClassName)}
                 onClick={() => onSelectAction(value === scholarship.id ? null : scholarship)} // Selected again will remove the selection
               >
                 <ScholarshipCard

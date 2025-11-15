@@ -43,7 +43,10 @@ const NewsForm = ({
     if (news) {
       methods.reset({
         ...DEFAULT_NEWS_FORM_VALUES,
-        ...news,
+        ...{
+          ...news,
+          scholarshipId: news.scholarshipId ? Number(news.scholarshipId) : undefined,
+        },
       });
     }
   }, [news, methods]);
@@ -129,8 +132,8 @@ const NewsForm = ({
             <CustomFormField
               name="content"
               label="Content *"
-              type="textarea"
-              placeholder="Enter news content"
+              type="richtext"
+              placeholder="Enter news content with rich formatting..."
               isBorder={true}
             />
           </div>

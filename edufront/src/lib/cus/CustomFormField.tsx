@@ -10,6 +10,7 @@ import { Edit, X, Plus } from 'lucide-react';
 import MultipleSelector from './multi-select';
 import StringMultiSelect from './string-multi-select';
 import InputSelect from './input-select';
+import { RichTextEditor } from './rich-text-editor';
 
 // Helpers to convert between timestamp values and <input type="date"> value (yyyy-mm-dd)
 function toDateInputValue(value: unknown): string {
@@ -52,6 +53,7 @@ interface FormFieldProps {
     | 'text'
     | 'email'
     | 'textarea'
+    | 'richtext'
     | 'number'
     | 'date-of-birth'
     | 'date'
@@ -112,6 +114,16 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             {...field}
             rows={3}
             className={`${isBorder ? 'border border-black' : 'border-none'} bg-customgreys-darkGrey p-4 ${inputClassName}`}
+          />
+        );
+      case 'richtext':
+        return (
+          <RichTextEditor
+            value={field.value || ''}
+            onChange={field.onChange}
+            placeholder={placeholder}
+            className={inputClassName}
+            disabled={disabled}
           />
         );
       case 'select':
