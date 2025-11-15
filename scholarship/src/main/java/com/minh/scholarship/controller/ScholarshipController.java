@@ -24,7 +24,6 @@ public class ScholarshipController {
 
     private final ScholarshipService scholarshipService;
 
-    @Authorized
     @PostMapping("/page")
     public ApiResponse<Page<ScholarshipVo>> getPage(@RequestBody ScholarshipFilter filter) {
         return ApiResponse.ok(scholarshipService.getPage(filter));
