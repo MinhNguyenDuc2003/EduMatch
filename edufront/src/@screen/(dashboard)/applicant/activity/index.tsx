@@ -11,6 +11,7 @@ import {
   CardSmalPicSkeleton,
   ApplicationCardSkeleton,
   AppliedScholarshipCard,
+  ApplicationDetail,
 } from './components';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { type ShortlistTab, TAB_CONFIGS } from './types';
@@ -26,6 +27,10 @@ import { Button } from '@/lib/cus/button';
 export default function ActivityManagement() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<ShortlistTab>('tracking');
+  const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
+  const [selectedAppliedScholarship, setSelectedAppliedScholarship] =
+    useState<ApplicationScholarship | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   const { data: trackedScholarshipsData, isLoading: isLoadingTrackedScholarships } =
     useGetTrackedScholarshipsQuery();
@@ -81,6 +86,18 @@ export default function ActivityManagement() {
 
   const handleCreateNew = () => {
     router.push(`/applicant/applications/create`);
+  };
+
+  const handleViewApplication = (application: Application) => {
+    setSelectedApplication(application);
+    setSelectedAppliedScholarship(null);
+    setIsDetailOpen(true);
+  };
+
+  const handleViewAppliedScholarship = (appliedScholarship: ApplicationScholarship) => {
+    setSelectedApplication(appliedScholarship.applicationVo);
+    setSelectedAppliedScholarship(appliedScholarship);
+    setIsDetailOpen(true);
   };
 
   return (
@@ -162,7 +179,11 @@ export default function ActivityManagement() {
                   />
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {applicationsData?.map((application) => (
-                      <ApplicationCard key={application.id} application={application} />
+                      <ApplicationCard
+                        key={application.id}
+                        application={application}
+                        onViewDetails={() => handleViewApplication(application)}
+                      />
                     ))}
                   </div>
                 </div>
@@ -172,7 +193,8 @@ export default function ActivityManagement() {
                     <AppliedScholarshipCard
                       key={application.id}
                       appliedScholarship={application}
-                      onViewDetails={handleViewDetails}
+                      onViewDetails={() => handleViewAppliedScholarship(application)}
+                      onViewScholarship={handleViewDetails}
                     />
                   ))}
                 </div>
@@ -183,6 +205,14 @@ export default function ActivityManagement() {
           </div>
         </div>
       </section>
+
+      {/* Application Detail Sheet */}
+      <ApplicationDetail
+        open={isDetailOpen}
+        onOpenChange={setIsDetailOpen}
+        application={selectedApplication}
+        appliedScholarship={selectedAppliedScholarship}
+      />
     </div>
   );
 }

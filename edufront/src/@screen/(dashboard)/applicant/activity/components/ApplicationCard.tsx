@@ -6,11 +6,20 @@ type ApplicationCardProps = {
   application: Application;
   onEdit?: (application: Application) => void;
   onDelete?: (applicationId: number) => void;
+  onViewDetails?: (application: Application) => void;
 };
 
-export default function ApplicationCard({ application, onEdit, onDelete }: ApplicationCardProps) {
+export default function ApplicationCard({
+  application,
+  onEdit,
+  onDelete,
+  onViewDetails,
+}: ApplicationCardProps) {
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-lg">
+    <article
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-lg cursor-pointer"
+      onClick={() => onViewDetails?.(application)}
+    >
       {/* Header Section */}
       <div className=" border-slate-200 bg-gradient-to-r from-primary-light to-white p-3">
         <h3 className="text-base font-bold text-slate-900 truncate">

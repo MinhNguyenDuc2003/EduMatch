@@ -7,3 +7,4 @@ export { default as CardSmalPicSkeleton } from './CardSmalPicSkeleton';
 export { default as ApplicationCard } from './ApplicationCard';
 export { default as ApplicationCardSkeleton } from './ApplicationCardSkeleton';
 export { default as AppliedScholarshipCard } from './AppliedScholarshipCard';
+export { default as ApplicationDetail } from './ApplicationDetail';
