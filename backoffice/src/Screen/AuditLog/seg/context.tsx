@@ -34,9 +34,22 @@ export default GenCtx({
       async onGetData() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get('/api/profile/provider-new');
+          const data = await apiClientService.post('/api/scholarship/scholarships/page', {
+            criteria: {
+              country: '',
+              university: '',
+              studyLevel: '',
+              scholarshipType: '',
+            },
+            sortBy: 'id',
+            sortDirection: 'DESC',
+            page: 0,
+            size: 50,
+          });
           if (data) {
-            ss.Joint.News = data;
+            ss.setJointData({
+              ScholarshipList: data || [],
+            });
             console.log('first', data);
           }
           return;
@@ -47,10 +60,10 @@ export default GenCtx({
         }
       },
 
-       async onGetByID(id: string) {
+      async onGetByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/api/profile/provider-new/${id}`);
+          const data = await apiClientService.get(`/api/scholarship/scholarships/${id}`);
           return data.data;
         } catch (error) {
           console.error({ error });
@@ -68,7 +81,7 @@ export default GenCtx({
       ss,
       data,
       meds,
-      methods
+      methods,
     };
   },
 });

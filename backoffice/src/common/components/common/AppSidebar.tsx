@@ -26,9 +26,11 @@ const AppSidebar = () => {
       { icon: BookOpen, label: 'Scholarship', href: '/backoffice/scholarship' },
       { icon: Package, label: 'Application Scholarship', href: '/backoffice/applicationScholarship' },
       { icon: Bell, label: 'Payment', href: '/backoffice/payment' },
-      { icon: Package, label: 'Subcription', href: '/backoffice/subscription' },
+      { icon: Package, label: 'Subcriptions', href: '/backoffice/subscriptions' },
       { icon: Bell, label: 'Subcription Plan', href: '/backoffice/subscriptionPlan' },
       { icon: Bell, label: 'News', href: '/backoffice/news' },
+      { icon: Bell, label: 'Audit Log', href: '/backoffice/auditLog' },
+      { icon: Bell, label: 'Report & Feedback', href: '/backoffice/reportFeedback' },
     ],
   };
 
@@ -67,7 +69,7 @@ const AppSidebar = () => {
       <SidebarContent>
         <SidebarMenu className="mt-4 space-y-1 p-3">
           {navLinks.Admin.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = pathname.includes(link.href);
             return (
               <SidebarMenuItem key={link.href}>
                 <SidebarMenuButton
