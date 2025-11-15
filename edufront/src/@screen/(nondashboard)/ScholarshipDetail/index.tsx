@@ -14,6 +14,7 @@ import {
   ScholarshipContent,
   ScholarshipSidebar,
   ScholarshipDetailSkeleton,
+  ScholarshipImages,
 } from './components';
 import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 import SubmitApplicationDialog from '@/pattern/share/SubmitApplicationDialog';
@@ -76,7 +77,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
 
   // Handle follow/unfollow provider
   const handleToggleFollow = async () => {
-    if (!scholarship?.providerProfileVo?.id) return;
+    if (!providerId) return;
 
     try {
       if (isFollowingValue === 1) {
@@ -145,6 +146,9 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
               isTracked={isTracked === 1}
               onToggleTracking={handleToggleTracking}
             />
+
+            {/* Image */}
+            <ScholarshipImages scholarship={scholarship} />
 
             {/* Content Sections */}
             <ScholarshipContent scholarship={scholarship} />

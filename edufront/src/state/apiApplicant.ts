@@ -112,7 +112,7 @@ export const apiApplicant = createApi({
       invalidatesTags: ['Application'],
     }),
 
-    getAppliedApplication: build.query<Application[], void>({
+    getAppliedApplication: build.query<ApplicationScholarship[], void>({
       query: () => ({
         url: API_ENDPOINTS.APPLIED_APPLICATION,
         method: 'GET',

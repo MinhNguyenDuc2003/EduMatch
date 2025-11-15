@@ -10,6 +10,7 @@ import {
   ProviderCardSkeleton,
   CardSmalPicSkeleton,
   ApplicationCardSkeleton,
+  AppliedScholarshipCard,
 } from './components';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { type ShortlistTab, TAB_CONFIGS } from './types';
@@ -19,18 +20,19 @@ import {
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
 import ApplicationCard from './components/ApplicationCard';
-import { useGetApplicationsQuery } from '@/state/apiApplicant';
+import { useGetApplicationsQuery, useGetAppliedApplicationQuery } from '@/state/apiApplicant';
 import { Button } from '@/lib/cus/button';
 
 export default function ActivityManagement() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<ShortlistTab>('tracking');
-  const [appliedScholarships, setAppliedScholarships] = useState<Scholarship[]>([]);
 
   const { data: trackedScholarshipsData, isLoading: isLoadingTrackedScholarships } =
     useGetTrackedScholarshipsQuery();
   const { data: followedProvidersData, isLoading: isLoadingFollowedProviders } =
     useGetFollowedProvidersQuery();
+  const { data: appliedScholarshipsData, isLoading: isLoadingAppliedScholarships } =
+    useGetAppliedApplicationQuery();
   const { data: applicationsData, isLoading: isLoadingApplications } = useGetApplicationsQuery();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
@@ -40,6 +42,7 @@ export default function ActivityManagement() {
   };
 
   const isFollowingTab = activeTab === 'following';
+  const isAppliedTab = activeTab === 'applied';
   const isTrackedTab = activeTab === 'tracking';
   const isApplicationTab = activeTab === 'application';
 
@@ -64,7 +67,6 @@ export default function ActivityManagement() {
         break;
       }
       case 'applied':
-        setAppliedScholarships((prev) => prev.filter((item) => item.id !== id));
         break;
       case 'following': {
         try {
@@ -112,13 +114,23 @@ export default function ActivityManagement() {
                     <ApplicationCardSkeleton key={`skeleton-application-${index}`} />
                   ))}
                 </div>
-              ) : isTrackedTab && trackedScholarshipsData?.length === 0 ? (
+              ) : isAppliedTab && isLoadingAppliedScholarships ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {[...Array(6)].map((_, index) => (
+                    <ApplicationCardSkeleton key={`skeleton-application-${index}`} />
+                  ))}
+                </div>
+              ) : // Empty State
+              isTrackedTab && trackedScholarshipsData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isFollowingTab && followedProvidersData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isApplicationTab && applicationsData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
-              ) : isTrackedTab ? (
+              ) : isAppliedTab && appliedScholarshipsData?.length === 0 ? (
+                <EmptyState tab={activeTab} />
+              ) : // Display Data
+              isTrackedTab ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {trackedScholarshipsData?.map((scholarship) => (
                     <CardSmalPic
@@ -153,6 +165,16 @@ export default function ActivityManagement() {
                       <ApplicationCard key={application.id} application={application} />
                     ))}
                   </div>
+                </div>
+              ) : isAppliedTab ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {appliedScholarshipsData?.map((application) => (
+                    <AppliedScholarshipCard
+                      key={application.id}
+                      appliedScholarship={application}
+                      onViewDetails={handleViewDetails}
+                    />
+                  ))}
                 </div>
               ) : (
                 <EmptyState tab={activeTab} />

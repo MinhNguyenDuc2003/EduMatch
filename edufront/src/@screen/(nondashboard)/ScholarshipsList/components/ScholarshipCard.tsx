@@ -67,7 +67,11 @@ export default function ScholarshipCard({
                 </h3>
                 <button
                   onClick={() => onFollowProvider?.(id)}
-                  className="text-xs text-blue-600 hover:text-blue-700 font-medium hover:cursor-pointer hover:underline"
+                  className={`text-xs font-medium hover:cursor-pointer px-2 py-1 rounded transition-colors ${
+                    isFollow === 1
+                      ? 'text-blue-700 bg-blue-50 hover:bg-blue-100'
+                      : 'text-gray-600 bg-gray-50 hover:bg-blue-50 hover:text-blue-700'
+                  }`}
                 >
                   {isFollow === 1 ? 'Following' : 'Follow'}
                 </button>
