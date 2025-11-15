@@ -87,7 +87,7 @@ spring:
         - SaveSession
       routes:
         - id: api
-          uri: http://160.30.113.224
+          uri: https://api.edumatch.space
           predicates:
             - Path=/api/**
           filters:
@@ -100,6 +100,6 @@ spring:
                 redis-rate-limiter.burstCapacity: 20
                 key-resolver: "#{@ipKeyResolver}"
         - id: nextjs
-          uri: http://160.30.113.224
+          uri: https://api.edumatch.space
           predicates:
             - Path=/backoffice/**
