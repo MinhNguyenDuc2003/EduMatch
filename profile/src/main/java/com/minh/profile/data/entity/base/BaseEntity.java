@@ -6,12 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.Serializable;
@@ -75,6 +70,12 @@ public class BaseEntity implements Serializable {
     public void preUpdate() {
         this.updatedDate = LocalDateTime.now();
         this.updatedBy = UaaContextHolder.getUsername();
+        if (Objects.isNull(this.active)) {
+            this.active = Boolean.TRUE;
+        }
+        if (Objects.isNull(this.version)) {
+            this.version = 0L;
+        }
     }
 
 }

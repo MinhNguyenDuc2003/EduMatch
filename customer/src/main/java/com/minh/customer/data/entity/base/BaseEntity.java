@@ -75,6 +75,12 @@ public class BaseEntity implements Serializable {
     public void preUpdate() {
         this.updatedDate = LocalDateTime.now();
         this.updatedBy = UaaContextHolder.getUsername();
+        if (Objects.isNull(this.active)) {
+            this.active = Boolean.TRUE;
+        }
+        if (Objects.isNull(this.version)) {
+            this.version = 0L;
+        }
     }
 
 }

@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Map;
-
 @RestController
 @RequiredArgsConstructor
 public class CustomerController {
@@ -150,16 +148,13 @@ public class CustomerController {
     }
 
     @Authorized
-    @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout(HttpServletRequest request) {
+    @PostMapping("/storefront/logout")
+    public ApiResponse<String> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
-        return ResponseEntity.ok(Map.of(
-                "status", "success",
-                "logoutUrl", userLogoutService.buildLogoutUrl()
-        ));
+        return ApiResponse.ok(userLogoutService.buildLogoutUrl());
     }
 
 }

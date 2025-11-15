@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -184,4 +185,15 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     public List<ApplicationScholarshipDto> getAllByStatus(String status) {
         return mapper.toDto(repository.findByStatusAndActive(status, true));
     }
+
+    @Override
+    public List<ApplicationScholarshipVo> getByMyScholarship() {
+        List<ApplicationScholarshipVo> vos = new ArrayList<>();
+        List<ApplicationVo> allMyApplication = applicationService.getAllMyApplication();
+        for (ApplicationVo applicationVo : allMyApplication) {
+            vos.addAll(this.getAllByApplicationId(applicationVo.getId()));
+        }
+        return vos;
+    }
+
 }

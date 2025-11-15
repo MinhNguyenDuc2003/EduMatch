@@ -29,4 +29,7 @@ ENV ENV_EUREKA_URL=http://registry-server:8761/eureka/
 ENV EUREKA_REGISTER_WITH_EUREKA=true
 ENV EUREKA_FETCH_REGISTRY=true
 
+ENV ENV_KAFKA_IP=kafka
+ENV ENV_KAFKA_PORT=29092
+
 ENTRYPOINT ["java", "-jar", "/app.jar"]

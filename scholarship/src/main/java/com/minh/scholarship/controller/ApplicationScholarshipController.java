@@ -5,6 +5,7 @@ import com.minh.model.ApiResponse;
 import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
 import com.minh.scholarship.data.vo.ApplicationScholarshipVo;
 import com.minh.scholarship.service.ApplicationScholarshipService;
+import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,12 @@ public class ApplicationScholarshipController {
     @GetMapping("/by-scholarship")
     public ApiResponse<List<ApplicationScholarshipVo>> getByScholarshipId(@RequestParam Long scholarshipId) {
         return ApiResponse.ok(service.getAllByScholarshipId(scholarshipId));
+    }
+
+    @Authorized
+    @GetMapping("/my")
+    public ApiResponse<List<ApplicationScholarshipVo>> getByMyScholarship() {
+        return ApiResponse.ok(service.getByMyScholarship());
     }
 
     @GetMapping("/by-status")

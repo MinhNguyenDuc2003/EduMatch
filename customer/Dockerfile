@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jre-alpine
+    FROM eclipse-temurin:21-jre-alpine
 COPY target/customer*.jar app.jar
 
 ENV SPRING_PROFILES_ACTIVE=prod

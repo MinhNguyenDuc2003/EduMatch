@@ -87,9 +87,9 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
                 .findByIdAndActive(profile.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICANT_IS_NOT_EXIST));
 
-        profile.setId(existProfile.getId());
-        deleteProfileData(profile.getId());
-        saveProfileData(profile, profile.getId());
+        applicantProfileMapper.updateEntityFromVo(profile, existProfile);
+        deleteProfileData(existProfile.getId());
+        saveProfileData(profile, existProfile.getId());
         return profile;
     }
 

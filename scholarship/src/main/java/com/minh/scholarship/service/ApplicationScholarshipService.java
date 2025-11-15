@@ -22,4 +22,7 @@ public interface ApplicationScholarshipService {
     List<ApplicationScholarshipVo> getAllByScholarshipId(Long scholarshipId);
 
     List<ApplicationScholarshipDto> getAllByStatus(String status);
+
+    List<ApplicationScholarshipVo> getByMyScholarship();
+
 }
