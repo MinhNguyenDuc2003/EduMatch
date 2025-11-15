@@ -1,27 +1,40 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Form } from '@/lib/cus/form';
-import { providerProfileSchema, IProviderProfile } from '@/lib/schemas';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Mail, Plus, Trash2 } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
-import ProfileHeader from './components/ProfileHeader';
-import { ProviderProfileSkeleton } from './components';
-import { useGetProfileQuery, useUpdateProfileMutation } from '@/state/apiProvider';
+import { ProfileHeader } from '@/@screen/(dashboard)/provider/ProviderProfile/components';
 import { COUNTRIES, ORGANIZATION_TYPES } from '@/constants/Common';
 import { DEFAULT_PROVIDER_FORM_VALUES } from '@/constants/DefaultValues';
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/lib/cus/button';
+import { CustomFormField } from '@/lib/cus/CustomFormField';
+import { Form } from '@/lib/cus/form';
+import { IProviderProfile, providerProfileSchema } from '@/lib/schemas';
+import Loading from '@/pattern/share/Loading';
+import { useCreateProfileMutation } from '@/state/apiProvider';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Mail, Plus, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-export default function ProviderProfile() {
+const CreateProviderProfilePage = () => {
+  const { isAuthenticated, isProvider, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        router.push('/home');
+      } else if (isProvider) {
+        router.push('/provider/dashboard');
+      }
+    }
+  }, [isLoading, isAuthenticated, isProvider, router]);
+
   // For now, use mock data. Replace with API call later
   const [bannerUrl, setBannerUrl] = useState<File | null>(null);
   const [profileUrl, setProfileUrl] = useState<File | null>(null);
 
-  const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
-
-  const [updateProfile, { isLoading: isLoadingUpdateProfile }] = useUpdateProfileMutation();
+  const [createProfile, { isLoading: isLoadingCreateProfile }] = useCreateProfileMutation();
 
   // Form setup
   const methods = useForm<IProviderProfile>({
@@ -57,17 +70,8 @@ export default function ProviderProfile() {
 
   // Reset form when profile data is loaded
   useEffect(() => {
-    if (profileData) {
-      const formData = {
-        providerProfile: {
-          ...DEFAULT_PROVIDER_FORM_VALUES.providerProfile,
-          ...profileData.providerProfile,
-        },
-      };
-
-      methods.reset(formData);
-    }
-  }, [profileData, methods]);
+    methods.reset(DEFAULT_PROVIDER_FORM_VALUES);
+  }, [methods]);
 
   const onSubmit = async (data: IProviderProfile) => {
     try {
@@ -84,7 +88,7 @@ export default function ProviderProfile() {
         formData.append('logo', profileUrl);
       }
 
-      await updateProfile(formData).unwrap();
+      await createProfile(formData).unwrap();
     } catch (error) {
       console.error('Error updating organization info:', error);
       throw error;
@@ -113,12 +117,16 @@ export default function ProviderProfile() {
     );
   };
 
-  if (isLoadingProfile) {
-    return <ProviderProfileSkeleton />;
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!isAuthenticated || isProvider) {
+    return <Loading />;
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-6 bg-white">
+    <div className="mx-auto px-4 lg:px-40 py-6 bg-white space-y-6">
       {/* Header Section with Profile Info Display */}
       <ProfileHeader
         currentData={currentData as ProviderProfile}
@@ -155,7 +163,6 @@ export default function ProviderProfile() {
                     type="select"
                     placeholder="Select organization type"
                     options={ORGANIZATION_TYPES}
-                    initialValue={profileData?.providerProfile?.organizationType}
                     isBorder={true}
                   />
 
@@ -165,7 +172,6 @@ export default function ProviderProfile() {
                     type="select"
                     placeholder="Select country"
                     options={COUNTRIES}
-                    initialValue={profileData?.providerProfile?.country}
                     isBorder={true}
                   />
                 </div>
@@ -336,10 +342,10 @@ export default function ProviderProfile() {
             <div className="pt-4">
               <Button
                 type="submit"
-                disabled={isLoadingUpdateProfile}
+                disabled={isLoadingCreateProfile}
                 className="w-full bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
               >
-                {isLoadingUpdateProfile ? 'Saving...' : 'Submit'}
+                {isLoadingCreateProfile ? 'Saving...' : 'Submit'}
               </Button>
             </div>
           </form>
@@ -347,4 +353,6 @@ export default function ProviderProfile() {
       </div>
     </div>
   );
-}
+};
+
+export default CreateProviderProfilePage;

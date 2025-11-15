@@ -19,7 +19,7 @@ const NOTIFICATION_TYPES = {
   SCHOLARSHIP: 'A new scholarship has been added', // New Scholarship Message
   SCHOLARSHIP_UPDATED: 'Your tracked scholarship has been updated',
   SCHOLARSHIP_NEWS: 'A new news about your tracked scholarship has been published',
-  APPLICATION_STATUS_UPDATED: 'The status of your application has been updated',
+  APPLICATION: 'The status of your application has been updated',
   SCHOLARSHIP_APPLICATION: 'An application has been submitted for your scholarship',
 };
 
@@ -38,7 +38,7 @@ const Notifications = () => {
 
     // Initialize STOMP client
     const client = new Client({
-      brokerURL: `ws://160.30.113.224/notification/ws?token=${encodeURIComponent(`Bearer ${token}`)}`,
+      brokerURL: `ws://159.89.200.244/api/notification/ws?token=${encodeURIComponent(`Bearer ${token}`)}`,
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,

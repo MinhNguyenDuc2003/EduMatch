@@ -21,6 +21,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
+import { formatDate } from '@/@screen/(dashboard)/applicant/Profile/utils';
 
 interface NewsCardProps {
   news: News;
@@ -150,11 +151,9 @@ export const NewsCard = ({ news, onDelete, className, variant = 'medium' }: News
                 <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-primary-brand transition-colors">
                   {news.title}
                 </h3>
-                {news.scholarship && (
-                  <p className="text-sm text-gray-500 mb-2">
-                    Related to: <span className="font-medium">{news.scholarship.title}</span>
-                  </p>
-                )}
+                <p className="text-sm text-gray-500 mb-2">
+                  Published on {formatDate(news.publishedAt)}
+                </p>
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -183,7 +182,7 @@ export const NewsCard = ({ news, onDelete, className, variant = 'medium' }: News
             {/* Content */}
             <div className="mb-4">
               <div
-                className="text-sm text-gray-600 line-clamp-3 prose prose-sm max-w-none"
+                className={`text-sm text-gray-600 prose prose-sm max-w-none ${images.length > 0 ? 'line-clamp-3' : 'line-clamp-none'}`}
                 dangerouslySetInnerHTML={{ __html: news.content }}
               />
             </div>
@@ -267,6 +266,12 @@ export const NewsCard = ({ news, onDelete, className, variant = 'medium' }: News
                   </div>
                 )}
               </div>
+            )}
+
+            {news.scholarship && (
+              <p className="text-sm border-t text-gray-500 pt-2">
+                Related to: <span className="font-medium">{news.scholarship.title}</span>
+              </p>
             )}
           </div>
         );

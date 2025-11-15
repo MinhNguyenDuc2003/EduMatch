@@ -123,9 +123,13 @@ const Header = () => {
                 <DropdownMenuItem asChild>
                   <Link href="/applicant/activity">My Activity</Link>
                 </DropdownMenuItem>
-                {isProvider && (
+                {isProvider ? (
                   <DropdownMenuItem asChild>
                     <Link href="/provider/dashboard">Provider Dashboard</Link>
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem asChild>
+                    <Link href="/create-provider-profile">Become a Provider</Link>
                   </DropdownMenuItem>
                 )}
 

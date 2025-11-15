@@ -10,13 +10,8 @@ import React, { useState } from 'react';
 
 const NewsCreatePage = () => {
   const router = useRouter();
-  const { data: profile, isLoading: isLoadingProfile } = useGetProfileQuery();
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [createNews, { isLoading: isLoadingCreateNews }] = useCreateNewsMutation();
-
-  if (isLoadingProfile) {
-    return <Loading />;
-  }
 
   const onSubmit = async (data: INews) => {
     try {
@@ -25,7 +20,6 @@ const NewsCreatePage = () => {
         'news',
         JSON.stringify({
           ...data,
-          providerId: profile?.providerProfile?.id,
           publishedAt: Date.now(),
         })
       );
