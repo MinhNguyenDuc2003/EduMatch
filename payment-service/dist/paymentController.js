@@ -47,7 +47,7 @@ const createStripePaymentIntent = (req, res) => __awaiter(void 0, void 0, void 0
             });
         }
         const paymentIntent = yield stripe.paymentIntents.create({
-            amount: amount * 100,
+            amount: Math.round(amount * 100),
             currency: "usd",
             automatic_payment_methods: {
                 enabled: true,

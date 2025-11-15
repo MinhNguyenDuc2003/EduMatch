@@ -16,4 +16,5 @@ export { default as EducationHistoryDialog } from './EducationHistoryDialog';
 export { default as CertificatesDialog } from './CertificatesDialog';
 export { default as IntentionsDialog } from './IntentionsDialog';
 export { default as ActivitiesDialog } from './ActivitiesDialog';
+export { default as PreferencesDialog } from './PreferencesDialog';
 export { default as ProfileSkeleton } from './ProfileSkeleton';

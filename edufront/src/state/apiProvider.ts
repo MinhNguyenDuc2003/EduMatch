@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customBaseQuery from './custombaseQuery';
-import { IScholarship } from '@/lib/schemas';
-import { Provider } from '@radix-ui/react-tooltip';
+import { INews, IScholarship } from '@/lib/schemas';
 
 // API Endpoints
 const API_ENDPOINTS = {
@@ -11,12 +10,13 @@ const API_ENDPOINTS = {
   GET_FOLLOWED_PROVIDERS: '/api/profile/followers/providers',
   GET_PROVIDER_BY_ID: '/api/profile/providers',
   APPLICATION: '/api/scholarship/applications-scholarship',
+  NEWS: '/api/profile/provider-new',
 } as const;
 
 export const apiProvider = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiProvider',
-  tagTypes: ['Profile', 'Scholarships', 'Applications'],
+  tagTypes: ['Profile', 'Scholarships', 'Applications', 'News'],
   endpoints: (build) => ({
     // Get customer profile (works for both applicant and provider)
     getProfile: build.query<ProviderProfileApiResponse, void>({
@@ -148,6 +148,76 @@ export const apiProvider = createApi({
       }),
       providesTags: (result, error, scholarshipId) => [{ type: 'Applications', id: scholarshipId }],
     }),
+
+    // Update application status
+    updateApplicationStatus: build.mutation<ApplicationScholarship, UpdateApplicationStatusRequest>(
+      {
+        query: (applicationScholarship) => ({
+          url: `${API_ENDPOINTS.APPLICATION}`,
+          method: 'PUT',
+          body: applicationScholarship,
+        }),
+        invalidatesTags: ['Applications'],
+      }
+    ),
+
+    // News
+    getNews: build.query<News[], void>({
+      query: () => `${API_ENDPOINTS.NEWS}/my-news`,
+      providesTags: ['News'],
+    }),
+
+    createNews: build.mutation<News, FormData>({
+      query: (formData) => ({
+        url: API_ENDPOINTS.NEWS,
+        method: 'POST',
+        body: formData,
+      }),
+      invalidatesTags: ['News'],
+    }),
+
+    getNewsById: build.query<News, number | string>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.NEWS}/${id}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, id) => [{ type: 'News', id: String(id) }],
+    }),
+
+    updateNews: build.mutation<News, INews>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.NEWS}`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['News'],
+    }),
+
+    deleteNews: build.mutation<null, number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.NEWS}/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['News'],
+    }),
+
+    uploadNewsImages: build.mutation<boolean, { newsId: string; formData: FormData }>({
+      query: ({ newsId, formData }) => ({
+        url: `${API_ENDPOINTS.NEWS}/${newsId}/images`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: (result, error, { newsId }) => [{ type: 'News', id: newsId! }],
+    }),
+
+    deleteNewsImage: build.mutation<boolean, { newsId: string; imagesId: number[] }>({
+      query: ({ newsId, imagesId }) => ({
+        url: `${API_ENDPOINTS.NEWS}/${newsId}/images`,
+        method: 'DELETE',
+        body: imagesId,
+      }),
+      invalidatesTags: (result, error, { newsId }) => [{ type: 'News', id: newsId! }],
+    }),
   }),
 });
 
@@ -167,4 +237,12 @@ export const {
   useGetFollowedProvidersQuery,
   useGetProviderProfileByIdQuery,
   useGetApplicationsByScholarshipIdQuery,
+  useUpdateApplicationStatusMutation,
+  useGetNewsQuery,
+  useCreateNewsMutation,
+  useGetNewsByIdQuery,
+  useUpdateNewsMutation,
+  useDeleteNewsMutation,
+  useUploadNewsImagesMutation,
+  useDeleteNewsImageMutation,
 } = apiProvider;

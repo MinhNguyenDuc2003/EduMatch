@@ -1,14 +1,15 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/lib/cus/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/lib/cus/dialog';
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerDescription,
+  DrawerFooter,
 } from '@/lib/cus/drawer';
 import { Skeleton } from '@/lib/cus/skeleton';
 import { getStatusColor } from '../utils/applicationUtils';
@@ -18,10 +19,18 @@ import { Badge } from '@/lib/cus/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/lib/cus/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/cus/tabs';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { Button } from '@/lib/cus/button';
+import { Textarea } from '@/lib/cus/textarea';
+import { CheckCircle, XCircle } from 'lucide-react';
 
 interface ApplicationDetailDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onAction?: (
+    applicationScholarship: ApplicationScholarship,
+    status: string,
+    note?: string
+  ) => void;
   applicationScholarship: ApplicationScholarship | null;
   isLoading?: boolean;
 }
@@ -30,10 +39,19 @@ const ApplicationDetailDialog = React.memo(
   ({
     open,
     onOpenChange,
+    onAction,
     applicationScholarship,
     isLoading = false,
   }: ApplicationDetailDialogProps) => {
     const isMobile = useMediaQuery('(max-width: 768px)');
+    const [note, setNote] = useState('');
+
+    // Reset note when dialog closes
+    useEffect(() => {
+      if (!open) {
+        setNote('');
+      }
+    }, [open]);
 
     if (isLoading) {
       if (isMobile) {
@@ -386,6 +404,45 @@ const ApplicationDetailDialog = React.memo(
             </DrawerHeader>
             <div className="flex-1 overflow-y-auto px-4">
               <Content isMobileView={isMobile} />
+              <div className="border-t pt-4">
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="mobile-note" className="text-sm font-medium mb-2 block">
+                      Note (Optional)
+                    </label>
+                    <Textarea
+                      id="mobile-note"
+                      placeholder="Add a note for this application..."
+                      value={note}
+                      onChange={(e) => setNote(e.target.value)}
+                      rows={3}
+                      className="resize-none"
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => {
+                        onAction?.(applicationScholarship, 'Rejected', note || '');
+                        onOpenChange(false);
+                      }}
+                      className="flex-1 bg-red-500 text-white py-3 text-base font-semibold hover:bg-red-600"
+                    >
+                      <XCircle className="mr-2 h-4 w-4" />
+                      Reject
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        onAction?.(applicationScholarship, 'Approved', note || '');
+                        onOpenChange(false);
+                      }}
+                      className="flex-1 bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
+                    >
+                      <CheckCircle className="mr-2 h-4 w-4" />
+                      Approve
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           </DrawerContent>
         </Drawer>
@@ -397,6 +454,43 @@ const ApplicationDetailDialog = React.memo(
         <DialogContent className="max-h-[90vh] w-full min-w-4xl max-w-6xl overflow-y-auto">
           <DialogTitle className="text-2xl font-bold">Application Detail</DialogTitle>
           <Content isMobileView={false} />
+          <DialogFooter className="flex flex-col gap-4 sm:flex-col">
+            <div className="w-full space-y-2">
+              <label htmlFor="desktop-note" className="text-sm font-medium">
+                Note (Optional)
+              </label>
+              <Textarea
+                id="desktop-note"
+                placeholder="Add a note for this application..."
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                rows={3}
+                className="resize-none"
+              />
+            </div>
+            <div className="flex gap-2 justify-end w-full sm:w-auto">
+              <Button
+                onClick={() => {
+                  onAction?.(applicationScholarship, 'Rejected', note || '');
+                  onOpenChange(false);
+                }}
+                className="flex-1 sm:flex-initial bg-red-500 text-white py-3 text-base font-semibold hover:bg-red-600"
+              >
+                <XCircle className="mr-2 h-4 w-4" />
+                Reject
+              </Button>
+              <Button
+                onClick={() => {
+                  onAction?.(applicationScholarship, 'Approved', note || '');
+                  onOpenChange(false);
+                }}
+                className="flex-1 sm:flex-initial bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
+              >
+                <CheckCircle className="mr-2 h-4 w-4" />
+                Approve
+              </Button>
+            </div>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     );

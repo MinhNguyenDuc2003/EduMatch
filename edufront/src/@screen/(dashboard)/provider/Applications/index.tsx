@@ -13,6 +13,7 @@ import ApplicationDetailDialog from './components/ApplicationDetailDialog';
 import {
   useGetApplicationsByScholarshipIdQuery,
   useGetScholarshipsQuery,
+  useUpdateApplicationStatusMutation,
 } from '@/state/apiProvider';
 import { useApplicationsData } from './hooks/useApplicationsData';
 import { useScholarshipFilter } from './hooks/useScholarshipFilter';
@@ -28,6 +29,7 @@ const Applications = () => {
 
   // Fetch scholarships
   const { data: scholarships, isLoading: isLoadingScholarships } = useGetScholarshipsQuery();
+  const [updateApplicationStatus] = useUpdateApplicationStatusMutation();
 
   // Filter scholarships by type
   const filteredScholarships = useScholarshipFilter(
@@ -56,20 +58,24 @@ const Applications = () => {
     setIsDialogOpen(true);
   }, []);
 
-  const handleCloseDialog = useCallback(() => {
-    setIsDialogOpen(false);
-    setSelectedApplicationScholarship(null);
-  }, []);
-
-  const handleApproveApplication = useCallback((id: number) => {
-    // TODO: Implement approve application logic
-    console.log('Approve application:', id);
-  }, []);
-
-  const handleRejectApplication = useCallback((id: number) => {
-    // TODO: Implement reject application logic
-    console.log('Reject application:', id);
-  }, []);
+  const handleUpdateApplicationStatus = async (
+    applicationScholarship: ApplicationScholarship,
+    status: string,
+    note?: string
+  ) => {
+    try {
+      await updateApplicationStatus({
+        id: applicationScholarship.id,
+        applicationId: applicationScholarship.applicationId,
+        scholarshipId: applicationScholarship.scholarshipId,
+        note,
+        reviewedAt: Date.now(), // Timestamp
+        status,
+      }).unwrap();
+    } catch (error) {
+      console.log('Failed to approve application:', error);
+    }
+  };
 
   return (
     <div className="p-6 lg:p-8 h-[calc(100vh-4rem)] flex flex-col">
@@ -132,6 +138,7 @@ const Applications = () => {
       <ApplicationDetailDialog
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
+        onAction={handleUpdateApplicationStatus}
         applicationScholarship={selectedApplicationScholarship}
         isLoading={false}
       />

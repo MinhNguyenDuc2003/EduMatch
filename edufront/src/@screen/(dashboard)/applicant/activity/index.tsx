@@ -20,6 +20,7 @@ import {
 } from '@/state/apiScholarship';
 import ApplicationCard from './components/ApplicationCard';
 import { useGetApplicationsQuery } from '@/state/apiApplicant';
+import { Button } from '@/lib/cus/button';
 
 export default function ActivityManagement() {
   const router = useRouter();
@@ -74,6 +75,10 @@ export default function ActivityManagement() {
         break;
       }
     }
+  };
+
+  const handleCreateNew = () => {
+    router.push(`/applicant/applications/create`);
   };
 
   return (
@@ -136,10 +141,18 @@ export default function ActivityManagement() {
                   ))}
                 </div>
               ) : isApplicationTab ? (
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {applicationsData?.map((application) => (
-                    <ApplicationCard key={application.id} application={application} />
-                  ))}
+                <div className="flex flex-col gap-4 ">
+                  <Button
+                    variant="custom"
+                    color="gray"
+                    onClick={handleCreateNew}
+                    value="Create New Application"
+                  />
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {applicationsData?.map((application) => (
+                      <ApplicationCard key={application.id} application={application} />
+                    ))}
+                  </div>
                 </div>
               ) : (
                 <EmptyState tab={activeTab} />

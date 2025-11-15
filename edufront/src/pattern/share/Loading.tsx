@@ -1,43 +1,11 @@
-'use client';
-import { Box, Core, RText } from '@/lib/by/Div';
-import { eventBus } from '@/utils/eventBus';
-import { delay } from 'lodash';
-import { useEffect, useState } from 'react';
+import React from 'react';
 
-const root = 'Loading';
-
-export function Loading() {
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const handler = (data: any) => setLoading(data);
-    eventBus.on(root, handler);
-
-    return () => {
-      eventBus.off(root, handler);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (loading) {
-      delay(() => setLoading(false), 5000);
-    }
-  }, [loading]);
-
-  if (!loading) return null;
-
+const Loading = () => {
   return (
-    <Core
-      id="Loading"
-      className="
-        absolute inset-0 z-[999] flex flex-1 
-        items-center justify-center 
-        bg-white opacity-80
-      "
-    >
-      <Box>
-        <RText>Tiến trình đang hoạt động...</RText>
-      </Box>
-    </Core>
+    <div className="flex items-center justify-center h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+    </div>
   );
-}
+};
+
+export default Loading;

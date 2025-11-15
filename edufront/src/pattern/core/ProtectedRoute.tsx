@@ -3,6 +3,7 @@
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import Loading from '../share/Loading';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -63,13 +64,7 @@ export default function ProtectedRoute({
 
   // Hiển thị loading state
   if (isLoading) {
-    return (
-      loadingComponent || (
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-        </div>
-      )
-    );
+    return loadingComponent || <Loading />;
   }
 
   // Không render children nếu chưa authenticated hoặc không đủ điều kiện

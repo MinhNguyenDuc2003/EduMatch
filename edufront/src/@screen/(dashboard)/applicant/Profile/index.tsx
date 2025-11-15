@@ -12,6 +12,7 @@ import {
   CertificatesDialog,
   IntentionsDialog,
   ActivitiesDialog,
+  PreferencesDialog,
   ProfileSkeleton,
 } from './components';
 import { transformProfileData } from './utils';
@@ -347,6 +348,14 @@ export default function Profile() {
       <ActivitiesDialog
         open={isActivitiesDialogOpen}
         onOpenChange={setIsActivitiesDialogOpen}
+        onSubmit={handleStudentInfoSubmit}
+        onCancel={handleStudentInfoCancel}
+      />
+
+      {/* Preferences Dialog */}
+      <PreferencesDialog
+        open={isPreferencesDialogOpen}
+        onOpenChange={setIsPreferencesDialogOpen}
         onSubmit={handleStudentInfoSubmit}
         onCancel={handleStudentInfoCancel}
       />

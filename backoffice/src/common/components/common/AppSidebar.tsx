@@ -1,7 +1,14 @@
 'use client';
 
-
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from 'common/services/components/ui/sidebar';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from 'common/services/components/ui/sidebar';
 import {
   Bell,
   BookOpen,
@@ -21,14 +28,14 @@ const AppSidebar = () => {
 
   const navLinks = {
     Admin: [
-      { icon: ChartBar, label: 'Dashboard', href: '/backoffice/dashboard' },
-      { icon: User, label: 'Users', href: '/backoffice/user' },
-      { icon: BookOpen, label: 'Scholarship', href: '/backoffice/scholarship' },
-      { icon: Package, label: 'Application Scholarship', href: '/backoffice/applicationScholarship' },
-      { icon: Bell, label: 'Payment', href: '/backoffice/payment' },
-      { icon: Package, label: 'Subcription', href: '/backoffice/subscription' },
-      { icon: Bell, label: 'Subcription Plan', href: '/backoffice/subscriptionPlan' },
-      { icon: Bell, label: 'News', href: '/backoffice/news' },
+      { icon: ChartBar, label: 'Dashboard', href: '/dashboard' },
+      { icon: User, label: 'Users', href: '/user' },
+      { icon: BookOpen, label: 'Scholarship', href: '/scholarship' },
+      { icon: Package, label: 'Application Scholarship', href: '/applicationScholarship' },
+      { icon: Bell, label: 'Payment', href: '/payment' },
+      { icon: Package, label: 'Subcription', href: '/subscription' },
+      { icon: Bell, label: 'Subcription Plan', href: '/subscriptionPlan' },
+      { icon: Bell, label: 'News', href: '/news' },
     ],
   };
 

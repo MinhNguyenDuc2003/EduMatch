@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import { COUNTRIES, STUDY_LEVELS } from '@/constants/Common';
+import { COUNTRIES, SCHOLARSHIP_TYPES, STUDY_LEVELS } from '@/constants/Common';
 
 type FilterSidebarProps = {
   filters: FilterState;
   setFilters: (filters: FilterState) => void;
-  scholarships: Scholarship[];
+  scholarships?: Scholarship[];
   aggregations?: ScholarshipSearchAggregations;
   isMobile?: boolean;
   onClose?: () => void;
@@ -13,6 +12,7 @@ type FilterSidebarProps = {
 
 const STUDY_LEVEL_OPTIONS = STUDY_LEVELS.map((item) => item.value);
 const COUNTRY_OPTIONS = COUNTRIES.map((item) => item.label).sort();
+const SCHOLARSHIP_TYPE_OPTIONS = SCHOLARSHIP_TYPES.map((item) => item.value);
 
 export default function FilterSidebar({
   filters,
@@ -22,9 +22,6 @@ export default function FilterSidebar({
   isMobile = false,
   onClose,
 }: FilterSidebarProps) {
-  // Local state for university input with debounce
-  const [universityInput, setUniversityInput] = useState(filters.university);
-
   const handleFilterChange = (field: keyof FilterState, value: string) => {
     setFilters({
       ...filters,
@@ -33,29 +30,12 @@ export default function FilterSidebar({
     });
   };
 
-  // Debounce university input
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (universityInput !== filters.university) {
-        handleFilterChange('university', universityInput);
-      }
-    }, 500); // 500ms debounce
-
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [universityInput]);
-
-  // Sync local state when filters change externally
-  useEffect(() => {
-    setUniversityInput(filters.university);
-  }, [filters.university]);
-
   const clearAllFilters = () => {
     setFilters({
       keyword: '',
       country: '',
       studyLevel: '',
-      university: '',
+      scholarshipType: '',
       minGpa: 0,
       maxGpa: 4,
       page: 0,
@@ -67,7 +47,6 @@ export default function FilterSidebar({
     (filters.keyword ? 1 : 0) +
     (filters.country ? 1 : 0) +
     (filters.studyLevel ? 1 : 0) +
-    (filters.university ? 1 : 0) +
     (filters.minGpa > 0 ? 1 : 0) +
     (filters.maxGpa < 4 ? 1 : 0);
 
@@ -151,16 +130,21 @@ export default function FilterSidebar({
           </select>
         </div>
 
-        {/* University Filter - Search Input with Debounce */}
+        {/* Scholarship Type Filter */}
         <div className="border border-gray-200 rounded-lg p-4 space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900">University</h3>
-          <input
-            type="text"
-            placeholder="Enter university name..."
-            value={universityInput}
-            onChange={(e) => setUniversityInput(e.target.value)}
-            className="w-full text-sm py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
+          <h3 className="text-sm font-semibold text-gray-900">Scholarship Type</h3>
+          <select
+            value={filters.scholarshipType}
+            onChange={(e) => handleFilterChange('scholarshipType', e.target.value)}
+            className="w-full text-sm py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+          >
+            <option value="">All Types</option>
+            {SCHOLARSHIP_TYPE_OPTIONS.map((type) => (
+              <option key={type} value={type}>
+                {SCHOLARSHIP_TYPES.find((item) => item.value === type)?.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* GPA Filter */}
