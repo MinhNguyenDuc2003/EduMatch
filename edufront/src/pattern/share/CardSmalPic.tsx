@@ -6,44 +6,37 @@ import Image from 'next/image';
 type CardSmalPicProps = {
   scholarship: Scholarship;
   onViewDetails?: () => void;
-  onToggleTracking?: (scholarshipId: number) => void;
+  onToggleTracking?: () => void;
+  isAuthenticated?: boolean;
 };
 
 export default function CardSmalPic({
   onViewDetails,
   onToggleTracking,
   scholarship,
+  isAuthenticated,
 }: CardSmalPicProps) {
-  const handleBookmarkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    if (scholarship?.id && onToggleTracking) {
-      onToggleTracking(scholarship.id);
-    }
-  };
-
-  const { title, shortDescription, university, isFollow } = scholarship;
+  const { title, shortDescription, university, isFollow, fundingAmount, endDate } = scholarship;
   const { logoUrl, organizationName } = scholarship.providerProfileVo;
-  const deadline = scholarship?.endDate || 0;
-  const amount = scholarship?.fundingAmount
-    ? scholarship.fundingAmount.replace(/[^0-9.,]/g, '')
-    : '0';
 
   return (
     <Section className="group bg-white flex flex-col rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:border-[#3D6CB9] relative h-full">
       {/* Track Icon - Top Right */}
-      <button
-        className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm hover:shadow-md transition-all duration-200 "
-        onClick={handleBookmarkClick}
-        aria-label="Track scholarship"
-      >
-        <Flag
-          className={`w-5 h-5 transition-colors ${
-            isFollow === 1
-              ? 'fill-[#3D6CB9] text-[#3D6CB9]'
-              : 'text-gray-400 hover:text-[#3D6CB9] hover:fill-[#3D6CB9]'
-          }`}
-        />
-      </button>
+      {isAuthenticated && (
+        <button
+          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm hover:shadow-md transition-all duration-200 "
+          onClick={onToggleTracking}
+          aria-label="Track scholarship"
+        >
+          <Flag
+            className={`w-5 h-5 transition-colors ${
+              isFollow === 1
+                ? 'fill-[#3D6CB9] text-[#3D6CB9]'
+                : 'text-gray-400 hover:text-[#3D6CB9] hover:fill-[#3D6CB9]'
+            }`}
+          />
+        </button>
+      )}
 
       <Block className="flex flex-col p-4 flex-1 h-full">
         {/* Header with University Logo and Title - Clickable */}
@@ -94,8 +87,8 @@ export default function CardSmalPic({
 
         {/* Amount and Deadline - Always at bottom */}
         <Block className="flex-shrink-0">
-          {amount || deadline ? (
-            <Amount_Deadline amount={amount || '0'} deadline={deadline || 0} isRow={true} />
+          {fundingAmount || endDate ? (
+            <Amount_Deadline amount={fundingAmount || '0'} deadline={endDate || 0} isRow={true} />
           ) : (
             <div className="h-[3rem] flex items-center">
               <div className="invisible">

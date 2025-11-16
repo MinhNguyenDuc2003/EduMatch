@@ -11,8 +11,12 @@ import {
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
 import { useFollowProviderMutation, useUnfollowProviderMutation } from '@/state/apiProvider';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
 
 export default function ScholarshipsList() {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   const [filters, setFilters] = useState<FilterState>({
@@ -90,6 +94,18 @@ export default function ScholarshipsList() {
       console.log('Failed to toggle follow provider:', error);
     }
     refetch();
+  };
+
+  const handleViewScholarship = (slug: string) => {
+    if (!isAuthenticated) {
+      router.push('http://159.89.200.244/oauth2/authorization/keycloak');
+    } else {
+      router.push(`/scholarships/${slug}`);
+    }
+  };
+
+  const handleViewProvider = (providerId: number) => {
+    router.push(`/applicant/providers/${providerId}`);
   };
 
   const activeFiltersCount = (() => {
@@ -176,7 +192,7 @@ export default function ScholarshipsList() {
             {/* Middle Content - Scholarship Cards (6 columns desktop, full width mobile) */}
             <div className="lg:col-span-6 lg:col-start-4">
               {/* Premium Upgrade Banner */}
-              <PremiumBanner />
+              {isAuthenticated && <PremiumBanner />}
 
               {/* Search Bar - Desktop only */}
               <div className="mb-4">
@@ -215,6 +231,9 @@ export default function ScholarshipsList() {
                         onApply={handleApply}
                         onToggleTracking={handleToggleTracking}
                         onFollowProvider={handleFollowProvider}
+                        onViewScholarship={handleViewScholarship}
+                        onViewProvider={handleViewProvider}
+                        isAuthenticated={isAuthenticated}
                       />
                     ))}
                   </>

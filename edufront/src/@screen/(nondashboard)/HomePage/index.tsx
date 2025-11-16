@@ -13,7 +13,6 @@ import {
 import { usePageScholarshipsQuery } from '@/state/apiScholarship';
 
 export default function HomePage() {
-  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
 
   const {
@@ -50,7 +49,6 @@ export default function HomePage() {
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
-        onViewDetails={(item) => router.push(`/scholarships/${item.slug}`)}
       />
       <FeaturesSection />
 

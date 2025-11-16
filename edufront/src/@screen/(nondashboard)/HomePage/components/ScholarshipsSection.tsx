@@ -10,6 +10,7 @@ import {
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
+import { useAuth } from '@/hooks/useAuth';
 
 type ScholarshipsSectionProps = {
   scholarships: Scholarship[];
@@ -18,7 +19,6 @@ type ScholarshipsSectionProps = {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-  onViewDetails: (item: Scholarship) => void;
 };
 
 export default function ScholarshipsSection({
@@ -28,8 +28,8 @@ export default function ScholarshipsSection({
   currentPage,
   totalPages,
   onPageChange,
-  onViewDetails,
 }: ScholarshipsSectionProps) {
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
 
   const [followScholarship] = useFollowScholarshipMutation();
@@ -51,6 +51,14 @@ export default function ScholarshipsSection({
       }
     } catch (error) {
       console.log('Failed to toggle tracking:', error);
+    }
+  };
+
+  const handleViewDetails = (slug: string) => {
+    if (!isAuthenticated) {
+      router.push('http://159.89.200.244/oauth2/authorization/keycloak');
+    } else {
+      router.push(`/scholarships/${slug}`);
     }
   };
 
@@ -86,8 +94,9 @@ export default function ScholarshipsSection({
               <CardSmalPic
                 key={item.id}
                 scholarship={item}
-                onViewDetails={() => onViewDetails(item)}
-                onToggleTracking={handleToggleTracking}
+                onViewDetails={() => handleViewDetails(item.slug)}
+                onToggleTracking={() => handleToggleTracking(item.id)}
+                isAuthenticated={isAuthenticated}
               />
             ))
           ) : (

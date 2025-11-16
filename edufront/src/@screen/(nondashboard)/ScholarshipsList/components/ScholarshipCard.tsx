@@ -5,12 +5,16 @@ import { Flag, Calendar, DollarSign } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
+import { useAuth } from '@/hooks/useAuth';
 
 type ScholarshipCardProps = {
   scholarship: Scholarship;
   onApply: (scholarship: Scholarship) => void;
   onToggleTracking?: (scholarshipId: number) => void;
   onFollowProvider?: (providerId: number) => void;
+  onViewScholarship?: (slug: string) => void;
+  onViewProvider?: (providerId: number) => void;
+  isAuthenticated?: boolean;
 };
 
 export default function ScholarshipCard({
@@ -18,20 +22,14 @@ export default function ScholarshipCard({
   onApply,
   onFollowProvider,
   onToggleTracking,
+  onViewScholarship,
+  onViewProvider,
+  isAuthenticated,
 }: ScholarshipCardProps) {
-  const router = useRouter();
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const images = getScholarshipImages(scholarship);
-
-  const handleViewProvider = (providerId: number) => {
-    router.push(`/applicant/providers/${providerId}`);
-  };
-  const handleViewScholarship = (slug: string) => {
-    router.push(`/scholarships/${slug}`);
-  };
-
   const { logoUrl, organizationName, isFollow, id } = scholarship.providerProfileVo;
 
   return (
@@ -43,7 +41,7 @@ export default function ScholarshipCard({
             <div className="flex items-center gap-3">
               <div
                 className="w-10 h-10 rounded-md flex items-center justify-center text-white text-sm font-bold flex-shrink-0 cursor-pointer relative"
-                onClick={() => handleViewProvider(id)}
+                onClick={() => onViewProvider?.(id)}
               >
                 {logoUrl ? (
                   <Image
@@ -61,33 +59,39 @@ export default function ScholarshipCard({
               <div>
                 <h3
                   className="font-semibold text-gray-900 text-sm transition-colors cursor-pointer hover:underline"
-                  onClick={() => handleViewProvider(id)}
+                  onClick={() => onViewProvider?.(id)}
                 >
                   {organizationName || 'Organization Name'}
                 </h3>
-                <button
-                  onClick={() => onFollowProvider?.(id)}
-                  className={`text-xs font-medium hover:cursor-pointer px-2 py-1 rounded transition-colors ${
-                    isFollow === 1
-                      ? 'text-blue-700 bg-blue-50 hover:bg-blue-100'
-                      : 'text-gray-600 bg-gray-50 hover:bg-blue-50 hover:text-blue-700'
-                  }`}
-                >
-                  {isFollow === 1 ? 'Following' : 'Follow'}
-                </button>
+                {isAuthenticated && (
+                  <button
+                    onClick={() => onFollowProvider?.(id)}
+                    className={`text-xs font-medium hover:cursor-pointer px-2 py-1 rounded transition-colors ${
+                      isFollow === 1
+                        ? 'text-blue-700 bg-blue-50 hover:bg-blue-100'
+                        : 'text-gray-600 bg-gray-50 hover:bg-blue-50 hover:text-blue-700'
+                    }`}
+                  >
+                    {isFollow === 1 ? 'Following' : 'Follow'}
+                  </button>
+                )}
               </div>
             </div>
-            <button
-              onClick={() => onToggleTracking?.(scholarship.id)}
-              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-              aria-label={scholarship.isFollow === 1 ? 'Untrack scholarship' : 'Track scholarship'}
-            >
-              <Flag
-                className={`w-5 h-5 transition-colors ${
-                  scholarship.isFollow === 1 ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
-                }`}
-              />
-            </button>
+            {isAuthenticated && (
+              <button
+                onClick={() => onToggleTracking?.(scholarship.id)}
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                aria-label={
+                  scholarship.isFollow === 1 ? 'Untrack scholarship' : 'Track scholarship'
+                }
+              >
+                <Flag
+                  className={`w-5 h-5 transition-colors ${
+                    scholarship.isFollow === 1 ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
+                  }`}
+                />
+              </button>
+            )}
           </div>
         </div>
 
@@ -106,7 +110,7 @@ export default function ScholarshipCard({
           {/* Title & Description - Clickable Area */}
           <div
             className="cursor-pointer group"
-            onClick={() => handleViewScholarship(scholarship.slug)}
+            onClick={() => onViewScholarship?.(scholarship.slug)}
           >
             {/* Title */}
             <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
