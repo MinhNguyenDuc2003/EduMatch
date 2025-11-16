@@ -44,4 +44,8 @@ public final class EndPoint {
         public static final String PLANS = "/subscription/subscription/plans";
         public static final String PAYMENTS = "/subscription/orders";
     }
+
+    public static class REPORT {
+        public static final String CATEGORY = "/report/category";
+    }
 }
