@@ -112,9 +112,17 @@ export const apiApplicant = createApi({
       invalidatesTags: ['Application'],
     }),
 
-    getAppliedApplication: build.query<Application[], void>({
+    deleteApplication: build.mutation<boolean, { applicationId: number }>({
+      query: ({ applicationId }) => ({
+        url: `${API_ENDPOINTS.APPLICATION}/${applicationId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Application'],
+    }),
+
+    getAppliedApplication: build.query<ApplicationScholarship[], void>({
       query: () => ({
-        url: API_ENDPOINTS.APPLIED_APPLICATION,
+        url: `${API_ENDPOINTS.APPLIED_APPLICATION}/my`,
         method: 'GET',
       }),
       providesTags: ['Application'],
@@ -134,4 +142,5 @@ export const {
   useDeleteImagesMutation,
   useSubmitApplicationMutation,
   useGetAppliedApplicationQuery,
+  useDeleteApplicationMutation,
 } = apiApplicant;
