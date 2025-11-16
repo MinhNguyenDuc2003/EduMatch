@@ -1,5 +1,6 @@
 export { default as NewsHeader } from './NewsHeader';
-export { default as NewsListItem } from './NewsListItem';
-export { default as NewsDetail } from './NewsDetail';
-export { default as NewsList } from './NewsList';
-
+export { default as NewsCard } from './NewsCard';
+export { default as NewsMetadata } from './NewsMetadata';
+export { default as NewsContent } from './NewsContent';
+export { default as NewsSidebar } from './NewsSidebar';
+export { default as NewsImages } from './NewsImages';
