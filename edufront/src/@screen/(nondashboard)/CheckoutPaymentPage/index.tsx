@@ -25,13 +25,13 @@ const CheckoutPaymentPageContent = () => {
     const baseUrl = process.env.NEXT_PUBLIC_LOCAL_URL
       ? `http://${process.env.NEXT_PUBLIC_LOCAL_URL}`
       : process.env.NEXT_PUBLIC_PRODUCTION_URL
-        ? `https://${process.env.NEXT_PUBLIC_PRODUCTION_URL}`
+        ? `${process.env.NEXT_PUBLIC_PRODUCTION_URL}`
         : undefined;
 
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${baseUrl}/checkout?step=3?id=${subscriptionPlanId}`,
+        return_url: `${baseUrl}/checkout?step=2?id=${subscriptionPlanId}`,
       },
       redirect: 'if_required',
     });

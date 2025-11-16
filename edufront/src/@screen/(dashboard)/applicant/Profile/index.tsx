@@ -12,6 +12,7 @@ import {
   CertificatesDialog,
   IntentionsDialog,
   ActivitiesDialog,
+  PreferencesDialog,
   ProfileSkeleton,
 } from './components';
 import { transformProfileData } from './utils';
@@ -20,8 +21,7 @@ import Intentions from './components/Intentions';
 import HistoryCard from './components/HistoryCard';
 import SkillCard from './components/SkillCard';
 import PreferenceCard from './components/PreferenceCard';
-import Header from '@/pattern/core/Navbar';
-import Footer from '@/pattern/core/Footer';
+
 import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 import { Form } from '@/lib/cus/form';
 import { applicantProfileSchema, IApplicantProfile } from '@/lib/schemas';
@@ -347,6 +347,14 @@ export default function Profile() {
       <ActivitiesDialog
         open={isActivitiesDialogOpen}
         onOpenChange={setIsActivitiesDialogOpen}
+        onSubmit={handleStudentInfoSubmit}
+        onCancel={handleStudentInfoCancel}
+      />
+
+      {/* Preferences Dialog */}
+      <PreferencesDialog
+        open={isPreferencesDialogOpen}
+        onOpenChange={setIsPreferencesDialogOpen}
         onSubmit={handleStudentInfoSubmit}
         onCancel={handleStudentInfoCancel}
       />

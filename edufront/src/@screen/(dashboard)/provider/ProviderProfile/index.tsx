@@ -10,11 +10,7 @@ import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import ProfileHeader from './components/ProfileHeader';
 import { ProviderProfileSkeleton } from './components';
-import {
-  useCreateProfileMutation,
-  useGetProfileQuery,
-  useUpdateProfileMutation,
-} from '@/state/apiProvider';
+import { useGetProfileQuery, useUpdateProfileMutation } from '@/state/apiProvider';
 import { COUNTRIES, ORGANIZATION_TYPES } from '@/constants/Common';
 import { DEFAULT_PROVIDER_FORM_VALUES } from '@/constants/DefaultValues';
 
@@ -25,7 +21,6 @@ export default function ProviderProfile() {
 
   const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
 
-  const [createProfile, { isLoading: isLoadingCreateProfile }] = useCreateProfileMutation();
   const [updateProfile, { isLoading: isLoadingUpdateProfile }] = useUpdateProfileMutation();
 
   // Form setup
@@ -89,11 +84,7 @@ export default function ProviderProfile() {
         formData.append('logo', profileUrl);
       }
 
-      if (profileData?.providerProfile) {
-        await updateProfile(formData).unwrap();
-      } else {
-        await createProfile(formData).unwrap();
-      }
+      await updateProfile(formData).unwrap();
     } catch (error) {
       console.error('Error updating organization info:', error);
       throw error;
@@ -345,10 +336,10 @@ export default function ProviderProfile() {
             <div className="pt-4">
               <Button
                 type="submit"
-                disabled={isLoadingCreateProfile || isLoadingUpdateProfile}
+                disabled={isLoadingUpdateProfile}
                 className="w-full bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
               >
-                {isLoadingCreateProfile || isLoadingUpdateProfile ? 'Saving...' : 'Submit'}
+                {isLoadingUpdateProfile ? 'Saving...' : 'Submit'}
               </Button>
             </div>
           </form>

@@ -6,9 +6,11 @@ import Header from '@/pattern/share/Header';
 import { useRouter } from 'next/navigation';
 import ScholarshipForm from '@/pattern/share/ScholarshipForm';
 import { useCreateScholarshipMutation } from '@/state/apiProvider';
+import { useTranslations } from 'next-intl';
 
 const ScholarshipCreatePage = () => {
   const router = useRouter();
+  const t = useTranslations('providerScholaship');
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
 
   const [createScholarship, { isLoading: isLoadingCreateScholarship }] =
@@ -43,7 +45,7 @@ const ScholarshipCreatePage = () => {
 
   return (
     <div className="p-6 lg:p-8 space-y-6 bg-white">
-      <Header subtitle="Create a new scholarship program" title="New Scholarship" />
+      <Header subtitle={t('subtitleCreateScholarship')} title={t('newScholarship')} />
 
       <ScholarshipForm
         onSubmit={onSubmit}

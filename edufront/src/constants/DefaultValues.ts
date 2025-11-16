@@ -1,4 +1,4 @@
-import { IApplication, IProviderProfile, IScholarship } from '@/lib/schemas';
+import { IApplication, INews, IProviderProfile, IScholarship } from '@/lib/schemas';
 
 export const DEFAULT_SCHOLARSHIP_FORM_VALUES: IScholarship = {
   id: undefined,
@@ -62,4 +62,11 @@ export const DEFAULT_PROVIDER_FORM_VALUES: IProviderProfile = {
     country: '',
     providerContactDtos: [],
   },
+};
+
+export const DEFAULT_NEWS_FORM_VALUES: INews = {
+  id: undefined,
+  title: '',
+  content: '',
+  scholarshipId: undefined,
 };

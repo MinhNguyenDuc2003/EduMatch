@@ -378,8 +378,8 @@ export const STUDY_LEVELS = [
 ];
 
 export const SCHOLARSHIP_TYPES = [
-  { value: 'Scholarship', label: 'Scholarship' },
-  { value: 'Research Lab', label: 'Research Lab' },
+  { value: 'Scholarship', label: 'scholarship' },
+  { value: 'Research Lab', label: 'researchLab' },
 ];
 
 export const ORGANIZATION_TYPES = [
@@ -644,3 +644,11 @@ export const MAJOR_NAMES = [
   { value: 'Sport and Fitness Administration', label: 'Sport and Fitness Administration' },
   { value: 'Other', label: 'Other' },
 ];
+
+export const NOTIFICATION_TYPES = {
+  SCHOLARSHIP: 'scholarship',
+  SCHOLARSHIP_UPDATED: 'scholarshipUpdated',
+  SCHOLARSHIP_NEWS: 'scholarshipNews',
+  APPLICATION: 'application',
+  SCHOLARSHIP_APPLICATION: 'scholarshipApplication',
+};

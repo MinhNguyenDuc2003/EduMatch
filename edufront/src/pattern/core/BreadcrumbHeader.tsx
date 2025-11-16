@@ -8,7 +8,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/lib/cus/breadcrumb';
-import { Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export type BreadcrumbItemType = {

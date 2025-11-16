@@ -4,14 +4,16 @@ import { Button } from '@/lib/cus/button';
 import Header from '@/pattern/share/Header';
 import { Plus } from 'lucide-react';
 import React from 'react';
-import { ScholarshipCard, EmptyState, Pagination } from './components';
+import { ScholarshipCard, EmptyState } from './components';
 import { useRouter } from 'next/navigation';
 import { useDeleteScholarshipMutation, useGetScholarshipsQuery } from '@/state/apiProvider';
 import { ScholarshipCardSkeleton } from './components/ScholarshipCard';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 const ProviderScholaship = () => {
   const router = useRouter();
+  const t = useTranslations('providerScholaship');
 
   const { data: scholarships, isLoading } = useGetScholarshipsQuery();
   const [deleteScholarship, { isLoading: isDeleting }] = useDeleteScholarshipMutation();
@@ -31,15 +33,15 @@ const ProviderScholaship = () => {
     <div className="p-6 lg:p-8 space-y-6">
       {/* Header */}
       <Header
-        subtitle="Manage your scholarship programs"
-        title="Scholarships"
+        subtitle={t('subtitle')}
+        title={t('title')}
         rightElement={
           <Button
             onClick={() => router.push('/provider/scholarships/create')}
             className="bg-primary-brand text-white hover:bg-primary-brand/90 shadow-sm"
           >
             <Plus className="w-4 h-4 mr-2" />
-            New Scholarship
+            {t('newScholarship')}
           </Button>
         }
       />

@@ -3,13 +3,12 @@ import customBaseQuery from './custombaseQuery';
 
 const API_ENDPOINTS = {
   SUBSCRIPTION_PLAN: '/api/subscription/subscription/subscription/plans',
-  SUBSCRIPTION: '/api/subscription/subscription/subscription',
-} as const;
+};
 
 export const apiSubscription = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiSubscription',
-  tagTypes: ['SubscriptionPlan', 'Subscription'],
+  tagTypes: ['SubscriptionPlan'],
   endpoints: (build) => ({
     getSubscriptionPlanById: build.query<SubscriptionPlan, number | string>({
       query: (id) => ({
@@ -20,10 +19,10 @@ export const apiSubscription = createApi({
     }),
     getSubscription: build.query<Subscription[], void>({
       query: () => ({
-        url: `${API_ENDPOINTS.SUBSCRIPTION}/plans/all`,
+        url: `${API_ENDPOINTS.SUBSCRIPTION_PLAN}/all`,
         method: 'GET',
       }),
-      providesTags: ['Subscription'],
+      providesTags: ['SubscriptionPlan'],
     }),
   }),
 });

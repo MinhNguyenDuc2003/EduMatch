@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import ScholarshipList from './components/ScholarshipList';
 import ApplicationsHeader from './components/ApplicationsHeader';
 import ScholarshipTypeFilter from './components/ScholarshipTypeFilter';
@@ -19,6 +20,7 @@ import { useApplicationsData } from './hooks/useApplicationsData';
 import { useScholarshipFilter } from './hooks/useScholarshipFilter';
 
 const Applications = () => {
+  const t = useTranslations('providerApplications');
   const [selectedScholarship, setSelectedScholarship] = useState<Scholarship | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedScholarshipType, setSelectedScholarshipType] = useState<string>('all');
@@ -73,7 +75,7 @@ const Applications = () => {
         status,
       }).unwrap();
     } catch (error) {
-      console.log('Failed to approve application:', error);
+      console.log(t('failedToUpdateApplication'), error);
     }
   };
 

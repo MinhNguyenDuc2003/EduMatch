@@ -14,12 +14,17 @@ import { Client, IMessage } from '@stomp/stompjs';
 import { toast } from 'sonner';
 import { useGetNotificationsQuery } from '@/state/apiAuth';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { NOTIFICATION_TYPES } from '@/constants/Common';
 
 const Notifications = () => {
   const clientRef = useRef<Client | null>(null);
   const token = useMemo(() => process.env.NEXT_PUBLIC_API_TOKEN || '', []);
 
-  const { data: notifications, isLoading, isError } = useGetNotificationsQuery();
+  const t = useTranslations('notifications');
+  const tError = useTranslations('error');
+
+  const { data: notifications, isLoading, isError, refetch } = useGetNotificationsQuery();
   const router = useRouter();
 
   useEffect(() => {
@@ -30,7 +35,7 @@ const Notifications = () => {
 
     // Initialize STOMP client
     const client = new Client({
-      brokerURL: `ws://160.30.113.224/notification/ws?token=${encodeURIComponent(`Bearer ${token}`)}`,
+      brokerURL: `ws://159.89.200.244/api/notification/ws?token=${encodeURIComponent(`Bearer ${token}`)}`,
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
@@ -49,6 +54,8 @@ const Notifications = () => {
                 <p className="text-xs text-gray-600 line-clamp-2">{notification.content}</p>
               </div>
             ));
+
+            refetch();
           } catch (error) {
             console.log('Error parsing private notification:', error);
           }
@@ -75,7 +82,7 @@ const Notifications = () => {
       }
       clientRef.current = null;
     };
-  }, [token]);
+  }, [token, refetch]);
 
   const unreadCount = useMemo(
     () => (notifications ? notifications.filter((n) => !n.isRead).length : 0),
@@ -102,17 +109,17 @@ const Notifications = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-80">
           <DropdownMenuLabel className="flex items-center justify-between">
-            <span className="font-semibold">Notifications</span>
+            <span className="font-semibold">{t('title')}</span>
             {unreadCount > 0 && (
-              <span className="text-xs font-normal text-primary-brand">{unreadCount} new</span>
+              <span className="text-xs font-normal text-primary-brand">
+                {unreadCount} {t('new')}
+              </span>
             )}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <div className="max-h-96 flex flex-col gap-1 overflow-y-auto">
             {isError && (
-              <div className="p-4 text-center text-sm text-red-500">
-                Fetching notifications failed.
-              </div>
+              <div className="p-4 text-center text-sm text-red-500">{tError('fetchingError')}</div>
             )}
             {isLoading && (
               <div className="">
@@ -130,7 +137,7 @@ const Notifications = () => {
               </div>
             )}
             {notifications && !isLoading && notifications.length === 0 && (
-              <div className="p-4 text-center text-sm text-gray-500">No notifications</div>
+              <div className="p-4 text-center text-sm text-gray-500">{t('noNotifications')}</div>
             )}
             {notifications &&
               !isLoading &&
@@ -150,7 +157,11 @@ const Notifications = () => {
                   >
                     <div className="flex items-start justify-between w-full">
                       <p className="font-semibold text-sm text-gray-900">
-                        {notification.referenceType}
+                        {t(
+                          NOTIFICATION_TYPES[
+                            notification.referenceType as keyof typeof NOTIFICATION_TYPES
+                          ]
+                        )}
                       </p>
                       {!notification.isRead && (
                         <span className="w-2 h-2 bg-primary-brand rounded-full mt-1"></span>
@@ -163,7 +174,7 @@ const Notifications = () => {
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="text-center justify-center text-primary-brand font-medium cursor-pointer">
-            View all notifications
+            {t('viewAllNotifications')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

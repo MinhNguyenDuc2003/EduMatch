@@ -14,17 +14,18 @@ import { CircleUserRound } from 'lucide-react';
 import MobileNavigation from '../share/MobileNavigation';
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem as NavMenuItem,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from '@/lib/cus/navigation-menu';
-import { NavigationMenuItem } from '../share/NavigationMenuItem';
 import Notifications from '../share/Notifications';
 import { useAuth } from '@/hooks/useAuth';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslations } from 'next-intl';
 
 const Header = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, isProvider } = useAuth();
+
+  const t = useTranslations('navbar');
 
   return (
     <Begin className="px-4 lg:px-40 py-3 flex items-center border-b bg-[#fafaf6] sticky top-0 z-50">
@@ -50,7 +51,7 @@ const Header = () => {
 
           <NavigationMenu className="hidden lg:flex items-center space-x-6 ">
             <NavigationMenuList>
-              <NavMenuItem>
+              {/* <NavMenuItem>
                 <NavigationMenuTrigger className="text-sm">Students</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="grid w-[800px] grid-cols-2 gap-4 p-2">
@@ -72,14 +73,14 @@ const Header = () => {
                     ))}
                   </div>
                 </NavigationMenuContent>
-              </NavMenuItem>
+              </NavMenuItem> */}
 
               <NavMenuItem className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium hover:bg-zinc-200 hover:text-accent-foreground focus:bg-zinc-200 focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-zinc-200 data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-accent data-[state=open]:bg-accent/50 focus-visible:ring-ring/50 outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1">
                 <Link
                   href="/scholarships"
                   className="text-sm font-medium hover:text-primary transition-colors"
                 >
-                  Scholarships
+                  {t('scholarships')}
                 </Link>
               </NavMenuItem>
               <NavMenuItem className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium hover:bg-zinc-200 hover:text-accent-foreground focus:bg-zinc-200 focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-zinc-200 data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-accent data-[state=open]:bg-accent/50 focus-visible:ring-ring/50 outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1">
@@ -87,48 +88,61 @@ const Header = () => {
                   href="/news"
                   className="text-sm font-medium hover:text-primary transition-colors"
                 >
-                  News
+                  {t('news')}
                 </Link>
               </NavMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
 
-        {!isAuthenticated && !isLoading && (
-          <div className="flex items-center space-x-2">
-            <Link href="http://159.89.200.244/oauth2/authorization/keycloak">
-              <Button variant="outline" className="text-primary-brand text-lg p-4 shadow-none">
-                <RText>
-                  <span className="text-sm font-bold">Login / Sign Up</span>
-                </RText>
-              </Button>
-            </Link>
-          </div>
-        )}
+        <div className="flex items-center space-x-2">
+          <LanguageSwitcher />
 
-        {!isLoading && isAuthenticated && (
-          <div className="flex items-center space-x-2 gap-1">
-            <Notifications />
-
-            <DropdownMenu modal={false}>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="shadow-none rounded-full p-0">
-                  <CircleUserRound className="size-5" />
+          {!isAuthenticated && !isLoading && (
+            <div className="flex items-center space-x-2">
+              <Link href="http://159.89.200.244/oauth2/authorization/keycloak">
+                <Button variant="outline" className="text-primary-brand text-lg p-4 shadow-none">
+                  <RText>
+                    <span className="text-sm font-bold">{t('login')}</span>
+                  </RText>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="" align="end" forceMount>
-                <DropdownMenuItem asChild>
-                  <Link href="/applicant/profile">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/applicant/activity">My Activity</Link>
-                </DropdownMenuItem>
+              </Link>
+            </div>
+          )}
 
-                <DropdownMenuItem onClick={() => {}}>Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        )}
+          {!isLoading && isAuthenticated && (
+            <div className="flex items-center space-x-2 gap-1">
+              <Notifications />
+
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="shadow-none rounded-full p-0">
+                    <CircleUserRound className="size-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="" align="end" forceMount>
+                  <DropdownMenuItem asChild>
+                    <Link href="/applicant/profile">{t('dropdown.profile')}</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/applicant/activity">{t('dropdown.myActivity')}</Link>
+                  </DropdownMenuItem>
+                  {isProvider ? (
+                    <DropdownMenuItem asChild>
+                      <Link href="/provider/dashboard">{t('dropdown.providerDashboard')}</Link>
+                    </DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuItem asChild>
+                      <Link href="/create-provider-profile">{t('dropdown.createProvider')}</Link>
+                    </DropdownMenuItem>
+                  )}
+
+                  <DropdownMenuItem onClick={() => {}}>{t('dropdown.logout')}</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          )}
+        </div>
       </div>
     </Begin>
   );
