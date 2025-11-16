@@ -42,4 +42,10 @@ public class OrderController {
         paymentService.delete(id);
         return ApiResponse.ok();
     }
+
+    @PostMapping("/confirm-payment")
+    public ApiResponse<OrderDto> confirmPayment(@RequestParam String transactionId) {
+        OrderDto updatedOrder = paymentService.markAsPaid(transactionId);
+        return ApiResponse.ok(updatedOrder);
+    }
 }

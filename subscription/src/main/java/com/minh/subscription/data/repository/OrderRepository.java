@@ -17,4 +17,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     @Modifying
     @Query("UPDATE OrderEntity p SET p.active = false WHERE p.id = :id")
     void updateActiveById(@Param("id") Long id);
+
+    Optional<OrderEntity> findByTransactionIdAndActive(String transactionId, Boolean active);
 }
