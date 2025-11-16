@@ -2,6 +2,7 @@ import React from 'react';
 import { Search, Filter } from 'lucide-react';
 import { Input } from '@/lib/cus/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/cus/select';
+import { useTranslations } from 'next-intl';
 
 interface ApplicationsFiltersProps {
   searchQuery: string;
@@ -11,14 +12,21 @@ interface ApplicationsFiltersProps {
 }
 
 const ApplicationsFilters = React.memo(
-  ({ searchQuery, onSearchChange, statusFilter, onStatusFilterChange }: ApplicationsFiltersProps) => {
+  ({
+    searchQuery,
+    onSearchChange,
+    statusFilter,
+    onStatusFilterChange,
+  }: ApplicationsFiltersProps) => {
+    const t = useTranslations('providerApplications');
+
     return (
       <div className="flex flex-col sm:flex-row gap-3">
         {/* Search Input */}
         <div className="relative flex-1 sm:min-w-[200px]">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
-            placeholder="Search applications..."
+            placeholder={t('searchApplications')}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="pl-10"
@@ -30,13 +38,13 @@ const ApplicationsFilters = React.memo(
           <Filter className="w-4 h-4 text-gray-500" />
           <Select value={statusFilter} onValueChange={onStatusFilterChange}>
             <SelectTrigger className="w-full sm:w-[160px]">
-              <SelectValue placeholder="All Statuses" />
+              <SelectValue placeholder={t('allStatuses')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
-              <SelectItem value="rejected">Rejected</SelectItem>
+              <SelectItem value="all">{t('allStatuses')}</SelectItem>
+              <SelectItem value="pending">{t('Pending')}</SelectItem>
+              <SelectItem value="approved">{t('Approved')}</SelectItem>
+              <SelectItem value="rejected">{t('Rejected')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -48,4 +56,3 @@ const ApplicationsFilters = React.memo(
 ApplicationsFilters.displayName = 'ApplicationsFilters';
 
 export default ApplicationsFilters;
-

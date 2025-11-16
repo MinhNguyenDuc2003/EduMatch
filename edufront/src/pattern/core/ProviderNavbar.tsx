@@ -13,6 +13,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Notifications from '../share/Notifications';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const ProviderNavbar = () => {
   const pathname = usePathname();
@@ -68,7 +69,10 @@ const ProviderNavbar = () => {
         </div>
 
         {/* Right Section - Actions */}
-        <Notifications />
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher />
+          <Notifications />
+        </div>
       </div>
     </nav>
   );

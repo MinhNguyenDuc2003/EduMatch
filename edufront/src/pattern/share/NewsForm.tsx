@@ -10,6 +10,7 @@ import { Image as ImageIcon, X } from 'lucide-react';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 
 const NewsForm = ({
   news,
@@ -24,6 +25,7 @@ const NewsForm = ({
   onDeleteImage?: (imageId: number) => void;
   isLoading?: boolean;
 }) => {
+  const t = useTranslations('providerNews');
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<Array<{ url: string; id?: number }>>([]);
 
@@ -117,33 +119,31 @@ const NewsForm = ({
         <div className="space-y-8">
           {/* Basic Information */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-900">Basic Information</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('basicInformation')}</h2>
 
             {/* Title */}
             <CustomFormField
               name="title"
-              label="News Title *"
+              label={t('newsTitle')}
               type="text"
-              placeholder="Enter news title"
+              placeholder={t('newsTitlePlaceholder')}
               isBorder={true}
             />
 
             {/* Content */}
             <CustomFormField
               name="content"
-              label="Content *"
+              label={t('content')}
               type="richtext"
-              placeholder="Enter news content with rich formatting..."
+              placeholder={t('contentPlaceholder')}
               isBorder={true}
             />
           </div>
 
           {/* Images Upload */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-900">Images</h2>
-            <p className="text-sm text-gray-600">
-              Upload images related to this news (e.g., event photos, announcement images)
-            </p>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('images')}</h2>
+            <p className="text-sm text-gray-600">{t('imagesSubtitle')}</p>
 
             {/* Hidden file input */}
             <input
@@ -164,7 +164,7 @@ const NewsForm = ({
                 className="border-2 border-dashed text-gray-500 border-gray-300 hover:border-[#3D6CB9] hover:bg-[#3D6CB9]/5"
               >
                 <ImageIcon className="w-4 h-4 mr-2" />
-                Add Images
+                {t('addImages')}
               </Button>
 
               {/* Image previews */}
@@ -197,15 +197,15 @@ const NewsForm = ({
               )}
 
               {imagePreviews.length === 0 && (
-                <p className="text-sm text-gray-500 italic">No images uploaded yet.</p>
+                <p className="text-sm text-gray-500 italic">{t('noImages')}</p>
               )}
             </div>
           </div>
 
           {/* Scholarship */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-900">Scholarship</h2>
-            <p className="text-sm text-gray-600">Select a scholarship for this news</p>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('scholarship')}</h2>
+            <p className="text-sm text-gray-600">{t('selectScholarship')}</p>
 
             <ScholarshipCarousel
               scholarships={scholarships || []}
@@ -224,7 +224,7 @@ const NewsForm = ({
               className="flex-1 bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
               disabled={isLoading}
             >
-              {isLoading ? 'Submitting...' : 'Submit'}
+              {isLoading ? t('submitting') : t('submit')}
             </Button>
           </div>
         </div>

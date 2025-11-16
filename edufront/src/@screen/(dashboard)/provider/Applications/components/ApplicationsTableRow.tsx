@@ -3,6 +3,7 @@ import { Eye } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import { cn } from '@/lib/utils';
 import { getStatusColor, formatStatus, formatAppliedDate } from '../utils/applicationUtils';
+import { useTranslations } from 'next-intl';
 
 interface ApplicationsTableRowProps {
   application: ApplicationScholarship;
@@ -10,6 +11,7 @@ interface ApplicationsTableRowProps {
 }
 
 const ApplicationsTableRow = React.memo(({ application, onView }: ApplicationsTableRowProps) => {
+  const t = useTranslations('providerApplications');
   const handleView = () => {
     onView?.(application);
   };
@@ -48,7 +50,7 @@ const ApplicationsTableRow = React.memo(({ application, onView }: ApplicationsTa
             getStatusColor(status)
           )}
         >
-          {formatStatus(status)}
+          {t(formatStatus(status))}
         </span>
       </td>
       <td className="px-6 py-4">

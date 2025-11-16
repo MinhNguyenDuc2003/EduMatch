@@ -8,6 +8,7 @@ import { IScholarship, scholarshipSchema } from '@/lib/schemas';
 import { generateSlug } from '@/utils/generateSlug';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus, Trash2, Image as ImageIcon, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,6 +26,7 @@ const ScholarshipForm = ({
   onDeleteImage?: (imageId: number) => void;
   isLoading?: boolean;
 }) => {
+  const t = useTranslations('scholarshipForm');
   // Form setup
   const methods = useForm<IScholarship>({
     reValidateMode: 'onSubmit',
@@ -133,12 +135,12 @@ const ScholarshipForm = ({
         <div className="space-y-8">
           {/* Basic Information */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-900">Basic Information</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('basicInformation')}</h2>
 
             {/* Title */}
             <CustomFormField
               name="title"
-              label="Scholarship Title *"
+              label={t('title')}
               type="text"
               placeholder="Enter scholarship title"
               isBorder={true}
@@ -147,7 +149,7 @@ const ScholarshipForm = ({
             {/* Slug (auto-generated, read-only) */}
             <CustomFormField
               name="slug"
-              label="Slug *"
+              label={t('slug')}
               type="text"
               placeholder="Auto-generated from title"
               isBorder={true}
@@ -157,7 +159,7 @@ const ScholarshipForm = ({
             {/* Short Description */}
             <CustomFormField
               name="shortDescription"
-              label="Short Description *"
+              label={t('shortDescription')}
               type="textarea"
               placeholder="Enter a brief description (2-3 sentences)"
               isBorder={true}
@@ -166,7 +168,7 @@ const ScholarshipForm = ({
             {/* Full Description */}
             <CustomFormField
               name="description"
-              label="Description *"
+              label={t('description')}
               type="textarea"
               placeholder="Enter detailed description of the scholarship"
               isBorder={true}
@@ -175,7 +177,7 @@ const ScholarshipForm = ({
             {/* Requirements */}
             <CustomFormField
               name="requirements"
-              label="Requirements *"
+              label={t('requirements')}
               type="textarea"
               placeholder="Enter eligibility requirements and criteria"
               isBorder={true}
@@ -184,7 +186,7 @@ const ScholarshipForm = ({
             {/* Benefits */}
             <CustomFormField
               name="benefits"
-              label="Benefits *"
+              label={t('benefits')}
               type="textarea"
               placeholder="Enter benefits offered by this scholarship"
               isBorder={true}
@@ -193,7 +195,7 @@ const ScholarshipForm = ({
             {/* Fields */}
             <CustomFormField
               name="fields"
-              label="Fields of Study *"
+              label={t('fields')}
               type="text"
               placeholder="e.g., Computer Science, Engineering, Business"
               isBorder={true}
@@ -202,10 +204,8 @@ const ScholarshipForm = ({
 
           {/* Images Upload */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-900">Images</h2>
-            <p className="text-sm text-gray-600">
-              Upload images related to this scholarship (e.g., university photos, event photos)
-            </p>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('images')}</h2>
+            <p className="text-sm text-gray-600">{t('subtitleImages')}</p>
 
             {/* Hidden file input */}
             <input
@@ -226,7 +226,7 @@ const ScholarshipForm = ({
                 className="border-2 border-dashed text-gray-500 border-gray-300 hover:border-[#3D6CB9] hover:bg-[#3D6CB9]/5"
               >
                 <ImageIcon className="w-4 h-4 mr-2" />
-                Add Images
+                {t('addImages')}
               </Button>
 
               {/* Image previews */}
@@ -259,20 +259,20 @@ const ScholarshipForm = ({
               )}
 
               {imagePreviews.length === 0 && (
-                <p className="text-sm text-gray-500 italic">No images uploaded yet.</p>
+                <p className="text-sm text-gray-500 italic">{t('noImages')}</p>
               )}
             </div>
           </div>
 
           {/* Location & Institution */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-900">Location & Institution</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('locationInstitution')}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Country */}
               <CustomFormField
                 name="country"
-                label="Country *"
+                label={t('country')}
                 type="select"
                 placeholder="Select country"
                 options={COUNTRIES}
@@ -283,7 +283,7 @@ const ScholarshipForm = ({
               {/* University */}
               <CustomFormField
                 name="university"
-                label="University *"
+                label={t('university')}
                 type="text"
                 placeholder="Enter university name"
                 isBorder={true}
@@ -293,13 +293,13 @@ const ScholarshipForm = ({
 
           {/* Scholarship Details */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-900">Scholarship Details</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('scholarshipDetails')}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Study Level */}
               <CustomFormField
                 name="studyLevel"
-                label="Study Level *"
+                label={t('studyLevel')}
                 type="select"
                 placeholder="Select study level"
                 options={STUDY_LEVELS}
@@ -310,7 +310,7 @@ const ScholarshipForm = ({
               {/* Scholarship Type */}
               <CustomFormField
                 name="scholarshipType"
-                label="Scholarship Type *"
+                label={t('scholarshipType')}
                 type="select"
                 placeholder="Select scholarship type"
                 options={SCHOLARSHIP_TYPES}
@@ -322,7 +322,7 @@ const ScholarshipForm = ({
             {/* Funding Amount */}
             <CustomFormField
               name="fundingAmount"
-              label="Funding Amount *"
+              label={t('fundingAmount')}
               type="text"
               placeholder="e.g., 100000 USD, Full tuition coverage"
               isBorder={true}
@@ -331,7 +331,7 @@ const ScholarshipForm = ({
             {/* Available Slots */}
             <CustomFormField
               name="availableSlots"
-              label="Available Slots"
+              label={t('availableSlots')}
               type="number"
               placeholder="Enter number of available slots"
               isBorder={true}
@@ -340,13 +340,13 @@ const ScholarshipForm = ({
 
           {/* Dates */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-900">Application Period</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('applicationPeriod')}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Start Date */}
               <CustomFormField
                 name="startDate"
-                label="Start Date *"
+                label={t('startDate')}
                 type="date"
                 placeholder="Select start date"
                 isBorder={true}
@@ -355,7 +355,7 @@ const ScholarshipForm = ({
               {/* End Date */}
               <CustomFormField
                 name="endDate"
-                label="End Date *"
+                label={t('endDate')}
                 type="date"
                 placeholder="Select end date"
                 isBorder={true}
@@ -365,13 +365,13 @@ const ScholarshipForm = ({
 
           {/* Requirements */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-900">Academic Requirements</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('academicRequirements')}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Language Requirement */}
               <CustomFormField
                 name="languageRequirement"
-                label="Language Requirement *"
+                label={t('languageRequirement')}
                 type="text"
                 placeholder="e.g., IELTS 7.0, TOEFL 95, English proficiency certificate"
                 isBorder={true}
@@ -381,7 +381,7 @@ const ScholarshipForm = ({
 
               <CustomFormField
                 name="gpaRequirement"
-                label="GPA Requirement"
+                label={t('gpaRequirement')}
                 type="range"
                 placeholder="Enter minimum GPA (0-4 scale)"
                 isBorder={true}
@@ -395,25 +395,25 @@ const ScholarshipForm = ({
           {/* Scholarship Preferences */}
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-gray-900">Preferences</h2>
+              <h2 className="text-2xl font-semibold text-gray-900">{t('preferences')}</h2>
               <Button
                 type="button"
                 onClick={handleAddPreference}
                 className="bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Add Preference
+                {t('addPreference')}
               </Button>
             </div>
 
-            <p className="text-sm text-gray-600">
-              Add preferences that applicants should match (e.g., ethnicity, region, field of study)
-            </p>
+            <p className="text-sm text-gray-600">{t('subtitlePreferences')}</p>
 
             {watch('scholarshipPreferences')?.map((preference, index) => (
               <div key={index} className="border-2 border-gray-200 rounded-lg p-6 space-y-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Preference {index + 1}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {t('preferences')} {index + 1}
+                  </h3>
 
                   <Button
                     type="button"
@@ -430,7 +430,7 @@ const ScholarshipForm = ({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <CustomFormField
                     name={`scholarshipPreferences.${index}.type`}
-                    label="Type *"
+                    label={t('type')}
                     type="text"
                     placeholder="e.g., Ethnicity, Region, Field"
                     isBorder={true}
@@ -438,7 +438,7 @@ const ScholarshipForm = ({
 
                   <CustomFormField
                     name={`scholarshipPreferences.${index}.value`}
-                    label="Value *"
+                    label={t('value')}
                     type="text"
                     placeholder="e.g., Asian, Southeast Asia, Computer Science"
                     isBorder={true}
@@ -449,7 +449,7 @@ const ScholarshipForm = ({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <CustomFormField
                     name={`scholarshipPreferences.${index}.weight`}
-                    label="Weight *"
+                    label={t('weight')}
                     type="range"
                     placeholder="Enter weight (0-1)"
                     isBorder={true}
@@ -460,7 +460,7 @@ const ScholarshipForm = ({
 
                   <CustomFormField
                     name={`scholarshipPreferences.${index}.note`}
-                    label="Note"
+                    label={t('note')}
                     type="text"
                     placeholder="Additional notes (optional)"
                     isBorder={true}
@@ -471,9 +471,7 @@ const ScholarshipForm = ({
 
             {(!watch('scholarshipPreferences') ||
               watch('scholarshipPreferences')?.length === 0) && (
-              <p className="text-sm text-gray-500 italic">
-                No preferences added yet. Click "Add Preference" to add one.
-              </p>
+              <p className="text-sm text-gray-500 italic">{t('noPreferences')}</p>
             )}
           </div>
 
@@ -484,7 +482,7 @@ const ScholarshipForm = ({
               className="flex-1 bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
               disabled={isLoading}
             >
-              {isLoading ? 'Submitting...' : 'Submit'}
+              {isLoading ? t('submitting') : t('submit')}
             </Button>
           </div>
         </div>

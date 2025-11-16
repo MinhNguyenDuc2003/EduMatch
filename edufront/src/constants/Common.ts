@@ -378,8 +378,8 @@ export const STUDY_LEVELS = [
 ];
 
 export const SCHOLARSHIP_TYPES = [
-  { value: 'Scholarship', label: 'Scholarship' },
-  { value: 'Research Lab', label: 'Research Lab' },
+  { value: 'Scholarship', label: 'scholarship' },
+  { value: 'Research Lab', label: 'researchLab' },
 ];
 
 export const ORGANIZATION_TYPES = [

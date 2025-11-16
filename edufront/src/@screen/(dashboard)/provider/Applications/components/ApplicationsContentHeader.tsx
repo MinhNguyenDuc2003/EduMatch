@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import ApplicationsFilters from './ApplicationsFilters';
 
 interface ApplicationsContentHeaderProps {
@@ -21,12 +22,14 @@ const ApplicationsContentHeader = React.memo(
     statusFilter,
     onStatusFilterChange,
   }: ApplicationsContentHeaderProps) => {
+    const t = useTranslations('providerApplications');
+
     return (
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <div>
           <h2 className="text-xl font-semibold text-gray-900">{scholarshipTitle}</h2>
           <p className="text-sm text-gray-600 mt-1">
-            {filteredCount} of {totalCount} application(s)
+            {t('applicationsCount', { filteredCount, totalCount })}
           </p>
         </div>
 
@@ -44,4 +47,3 @@ const ApplicationsContentHeader = React.memo(
 ApplicationsContentHeader.displayName = 'ApplicationsContentHeader';
 
 export default ApplicationsContentHeader;
-

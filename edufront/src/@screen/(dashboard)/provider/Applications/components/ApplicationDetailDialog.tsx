@@ -22,6 +22,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { Button } from '@/lib/cus/button';
 import { Textarea } from '@/lib/cus/textarea';
 import { CheckCircle, XCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface ApplicationDetailDialogProps {
   open: boolean;
@@ -45,7 +46,7 @@ const ApplicationDetailDialog = React.memo(
   }: ApplicationDetailDialogProps) => {
     const isMobile = useMediaQuery('(max-width: 768px)');
     const [note, setNote] = useState('');
-
+    const t = useTranslations('providerApplications');
     // Reset note when dialog closes
     useEffect(() => {
       if (!open) {
@@ -150,12 +151,12 @@ const ApplicationDetailDialog = React.memo(
             <div className="text-right">
               <div className="mb-2">
                 <Badge className={`${getStatusColor(applicationScholarship.status)} border`}>
-                  {applicationScholarship.status}
+                  {t(applicationScholarship.status)}
                 </Badge>
               </div>
               <div className="text-sm">
-                <p className="text-muted-foreground">Applied Date ID</p>
-                <p className="font-semibold">#{appliedDate}</p>
+                <p className="text-muted-foreground">{t('appliedDate')}</p>
+                <p className="font-semibold">{appliedDate}</p>
               </div>
             </div>
           </div>
@@ -167,16 +168,16 @@ const ApplicationDetailDialog = React.memo(
             className={cn('w-full', isMobileView ? 'flex overflow-x-auto' : 'grid grid-cols-4')}
           >
             <TabsTrigger value="personal" className={isMobileView ? 'flex-shrink-0' : ''}>
-              Personal
+              {t('personal')}
             </TabsTrigger>
             <TabsTrigger value="education" className={isMobileView ? 'flex-shrink-0' : ''}>
-              Education
+              {t('education')}
             </TabsTrigger>
             <TabsTrigger value="experience" className={isMobileView ? 'flex-shrink-0' : ''}>
-              Experience
+              {t('experience')}
             </TabsTrigger>
             <TabsTrigger value="statement" className={isMobileView ? 'flex-shrink-0' : ''}>
-              Statement
+              {t('statement')}
             </TabsTrigger>
           </TabsList>
 
@@ -184,35 +185,35 @@ const ApplicationDetailDialog = React.memo(
           <TabsContent value="personal" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Personal Information</CardTitle>
+                <CardTitle className="text-lg">{t('personal')}</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <p className="text-sm text-muted-foreground">Full Name</p>
+                  <p className="text-sm text-muted-foreground">{t('fullName')}</p>
                   <p className="font-semibold">{application.fullName}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Gender</p>
+                  <p className="text-sm text-muted-foreground">{t('gender')}</p>
                   <p className="font-semibold">{application.gender || '-'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Date of Birth</p>
+                  <p className="text-sm text-muted-foreground">{t('dateOfBirth')}</p>
                   <p className="font-semibold">{application.dateOfBirth || '-'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Nationality</p>
+                  <p className="text-sm text-muted-foreground">{t('nationality')}</p>
                   <p className="font-semibold">{application.nationality || '-'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Email</p>
+                  <p className="text-sm text-muted-foreground">{t('email')}</p>
                   <p className="font-semibold">{application.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Phone</p>
+                  <p className="text-sm text-muted-foreground">{t('phone')}</p>
                   <p className="font-semibold">{application.phone || '-'}</p>
                 </div>
                 <div className="sm:col-span-2">
-                  <p className="text-sm text-muted-foreground">Address</p>
+                  <p className="text-sm text-muted-foreground">{t('address')}</p>
                   <p className="font-semibold">{application.address || '-'}</p>
                 </div>
               </CardContent>
@@ -223,27 +224,27 @@ const ApplicationDetailDialog = React.memo(
           <TabsContent value="education" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Education</CardTitle>
+                <CardTitle className="text-lg">{t('education')}</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <p className="text-sm text-muted-foreground">Education Level</p>
+                  <p className="text-sm text-muted-foreground">{t('educationLevel')}</p>
                   <p className="font-semibold">{application.educationLevel || '-'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Graduation Year</p>
+                  <p className="text-sm text-muted-foreground">{t('graduationYear')}</p>
                   <p className="font-semibold">{application.graduationYear || '-'}</p>
                 </div>
                 <div className="sm:col-span-2">
-                  <p className="text-sm text-muted-foreground">School Name</p>
+                  <p className="text-sm text-muted-foreground">{t('schoolName')}</p>
                   <p className="font-semibold">{application.schoolName || '-'}</p>
                 </div>
                 <div className="sm:col-span-2">
-                  <p className="text-sm text-muted-foreground">Major</p>
+                  <p className="text-sm text-muted-foreground">{t('major')}</p>
                   <p className="font-semibold">{application.major || '-'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">GPA</p>
+                  <p className="text-sm text-muted-foreground">{t('gpa')}</p>
                   <p className="font-semibold">{application.gpa || '-'}</p>
                 </div>
               </CardContent>
@@ -255,7 +256,7 @@ const ApplicationDetailDialog = React.memo(
             {/* Skills */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Skills</CardTitle>
+                <CardTitle className="text-base">{t('skills')}</CardTitle>
               </CardHeader>
               <CardContent>
                 {skillsList.length > 0 ? (
@@ -267,7 +268,7 @@ const ApplicationDetailDialog = React.memo(
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-muted-foreground">No skills listed</p>
+                  <p className="text-sm text-muted-foreground">{t('noSkillsListed')}</p>
                 )}
               </CardContent>
             </Card>
@@ -275,7 +276,7 @@ const ApplicationDetailDialog = React.memo(
             {/* Achievements */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Achievements</CardTitle>
+                <CardTitle className="text-base">{t('achievements')}</CardTitle>
               </CardHeader>
               <CardContent>
                 {achievementsList.length > 0 ? (
@@ -288,7 +289,7 @@ const ApplicationDetailDialog = React.memo(
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-sm text-muted-foreground">No achievements listed</p>
+                  <p className="text-sm text-muted-foreground">{t('noAchievementsListed')}</p>
                 )}
               </CardContent>
             </Card>
@@ -296,7 +297,7 @@ const ApplicationDetailDialog = React.memo(
             {/* Extracurricular */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Extracurricular Activities</CardTitle>
+                <CardTitle className="text-base">{t('extracurricularActivities')}</CardTitle>
               </CardHeader>
               <CardContent>
                 {extracurricularList.length > 0 ? (
@@ -309,7 +310,7 @@ const ApplicationDetailDialog = React.memo(
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-sm text-muted-foreground">No activities listed</p>
+                  <p className="text-sm text-muted-foreground">{t('noActivitiesListed')}</p>
                 )}
               </CardContent>
             </Card>
@@ -319,7 +320,7 @@ const ApplicationDetailDialog = React.memo(
           <TabsContent value="statement" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Motivation</CardTitle>
+                <CardTitle className="text-base">{t('motivation')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="whitespace-pre-wrap text-sm leading-relaxed">
@@ -330,7 +331,7 @@ const ApplicationDetailDialog = React.memo(
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Personal Statement</CardTitle>
+                <CardTitle className="text-base">{t('personalStatement')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="whitespace-pre-wrap text-sm leading-relaxed">
@@ -342,7 +343,7 @@ const ApplicationDetailDialog = React.memo(
             {application.applicationAttributes && application.applicationAttributes.length > 0 && (
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Additional Information</CardTitle>
+                  <CardTitle className="text-base">{t('additionalInformation')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {application.applicationAttributes.map((attr) => (
@@ -366,7 +367,7 @@ const ApplicationDetailDialog = React.memo(
         {application.applicationMedias && application.applicationMedias.length > 0 && (
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle className="text-base">Attachments</CardTitle>
+              <CardTitle className="text-base">{t('attachments')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -398,7 +399,7 @@ const ApplicationDetailDialog = React.memo(
           <DrawerContent className="max-h-[95vh]">
             <DrawerHeader className="border-b">
               <DrawerTitle className="text-xl font-semibold text-primary-brand">
-                Application Detail
+                {t('applicationDetail')}
               </DrawerTitle>
               <DrawerDescription className="sr-only" />
             </DrawerHeader>
@@ -408,11 +409,11 @@ const ApplicationDetailDialog = React.memo(
                 <div className="space-y-4">
                   <div>
                     <label htmlFor="mobile-note" className="text-sm font-medium mb-2 block">
-                      Note (Optional)
+                      {t('note')}
                     </label>
                     <Textarea
                       id="mobile-note"
-                      placeholder="Add a note for this application..."
+                      placeholder={t('notePlaceholder')}
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
                       rows={3}
@@ -428,7 +429,7 @@ const ApplicationDetailDialog = React.memo(
                       className="flex-1 bg-red-500 text-white py-3 text-base font-semibold hover:bg-red-600"
                     >
                       <XCircle className="mr-2 h-4 w-4" />
-                      Reject
+                      {t('reject')}
                     </Button>
                     <Button
                       onClick={() => {
@@ -438,7 +439,7 @@ const ApplicationDetailDialog = React.memo(
                       className="flex-1 bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
                     >
                       <CheckCircle className="mr-2 h-4 w-4" />
-                      Approve
+                      {t('approve')}
                     </Button>
                   </div>
                 </div>
@@ -452,16 +453,16 @@ const ApplicationDetailDialog = React.memo(
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-h-[90vh] w-full min-w-4xl max-w-6xl overflow-y-auto">
-          <DialogTitle className="text-2xl font-bold">Application Detail</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">{t('applicationDetail')}</DialogTitle>
           <Content isMobileView={false} />
           <DialogFooter className="flex flex-col gap-4 sm:flex-col">
             <div className="w-full space-y-2">
               <label htmlFor="desktop-note" className="text-sm font-medium">
-                Note (Optional)
+                {t('note')}
               </label>
               <Textarea
                 id="desktop-note"
-                placeholder="Add a note for this application..."
+                placeholder={t('notePlaceholder')}
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 rows={3}
@@ -477,7 +478,7 @@ const ApplicationDetailDialog = React.memo(
                 className="flex-1 sm:flex-initial bg-red-500 text-white py-3 text-base font-semibold hover:bg-red-600"
               >
                 <XCircle className="mr-2 h-4 w-4" />
-                Reject
+                {t('reject')}
               </Button>
               <Button
                 onClick={() => {
@@ -487,7 +488,7 @@ const ApplicationDetailDialog = React.memo(
                 className="flex-1 sm:flex-initial bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
               >
                 <CheckCircle className="mr-2 h-4 w-4" />
-                Approve
+                {t('approve')}
               </Button>
             </div>
           </DialogFooter>

@@ -21,6 +21,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { formatDate } from '@/@screen/(dashboard)/applicant/Profile/utils';
 
 interface NewsCardProps {
@@ -84,6 +85,8 @@ export const NewsCardSkeleton = ({ variant = 'medium', className }: NewsCardSkel
 };
 
 export const NewsCard = ({ news, onDelete, className, variant = 'medium' }: NewsCardProps) => {
+  const t = useTranslations('providerNews');
+  const tAction = useTranslations('action');
   const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -152,7 +155,7 @@ export const NewsCard = ({ news, onDelete, className, variant = 'medium' }: News
                   {news.title}
                 </h3>
                 <p className="text-sm text-gray-500 mb-2">
-                  Published on {formatDate(news.publishedAt)}
+                  {t('publishedOn')} {formatDate(news.publishedAt)}
                 </p>
               </div>
               <DropdownMenu>
@@ -165,7 +168,7 @@ export const NewsCard = ({ news, onDelete, className, variant = 'medium' }: News
                   <DropdownMenuItem asChild className="cursor-pointer">
                     <Link href={`/provider/news/${news.id}`} className="flex items-center gap-2">
                       <Edit className="w-4 h-4" />
-                      <span>Edit</span>
+                      <span>{tAction('edit')}</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -173,7 +176,7 @@ export const NewsCard = ({ news, onDelete, className, variant = 'medium' }: News
                     onClick={() => onDelete?.(news.id)}
                   >
                     <Trash2 className="w-4 h-4" />
-                    <span>Delete</span>
+                    <span>{tAction('delete')}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -270,7 +273,7 @@ export const NewsCard = ({ news, onDelete, className, variant = 'medium' }: News
 
             {news.scholarship && (
               <p className="text-sm border-t text-gray-500 pt-2">
-                Related to: <span className="font-medium">{news.scholarship.title}</span>
+                {t('relatedTo')} <span className="font-medium">{news.scholarship.title}</span>
               </p>
             )}
           </div>
@@ -347,7 +350,7 @@ export const NewsCard = ({ news, onDelete, className, variant = 'medium' }: News
                             ? 'bg-white w-8'
                             : 'bg-white/50 hover:bg-white/75'
                         )}
-                        aria-label={`Go to image ${idx + 1}`}
+                        aria-label={t('goToImage', { index: idx + 1 })}
                       />
                     ))}
                   </div>
