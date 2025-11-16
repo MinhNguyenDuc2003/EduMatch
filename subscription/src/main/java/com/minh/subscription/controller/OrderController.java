@@ -46,7 +46,7 @@ public class OrderController {
         return ApiResponse.ok();
     }
 
-    @PostMapping("/confirm-payment")
+    @PostMapping("/confirm-order")
     public ApiResponse<OrderDto> confirmPayment(
             @RequestParam Long orderId,
             @RequestParam String transactionId) {
