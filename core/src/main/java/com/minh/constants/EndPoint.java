@@ -47,5 +47,6 @@ public final class EndPoint {
 
     public static class REPORT {
         public static final String CATEGORY = "/report/category";
+        public static final String REPORTS = "/reports";
     }
 }
