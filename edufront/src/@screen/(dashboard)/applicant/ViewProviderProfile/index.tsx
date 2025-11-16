@@ -27,8 +27,11 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
 
   const { data: providerProfile, isLoading: isLoadingProfile } =
     useGetProviderProfileByIdQuery(providerId);
-  const { data: scholarshipsData = [], isLoading: isLoadingScholarships } =
-    useGetScholarshipsByProviderIdQuery(providerId);
+  const {
+    data: scholarshipsData = [],
+    isLoading: isLoadingScholarships,
+    refetch,
+  } = useGetScholarshipsByProviderIdQuery(providerId);
 
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
@@ -46,6 +49,7 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
     } catch (error) {
       console.log('Failed to toggle follow:', error);
     }
+    refetch();
   };
 
   const handleApply = (scholarship: Scholarship) => {

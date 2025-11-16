@@ -7,6 +7,7 @@ declare global {
     applicationVo: Application;
     status: string;
     appliedAt?: number;
+    reviewedAt?: number;
     note?: string;
   };
 

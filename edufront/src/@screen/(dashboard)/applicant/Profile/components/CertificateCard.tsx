@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import type { Certificate } from '../types';
 import Image from 'next/image';
 import { formatDate } from '../utils';
 
@@ -9,7 +8,7 @@ interface CertificateCardProps {
   certificate: Certificate;
 }
 
-const CertificateCard = ({ certificate }: { certificate: Certificate }) => {
+const CertificateCard = ({ certificate }: CertificateCardProps) => {
   return (
     <div className="relative rounded-lg border border-[#828282] overflow-hidden bg-[#FAFAF6] shadow-sm hover:shadow-md transition-shadow ">
       {/* Blue gradient header with score */}
