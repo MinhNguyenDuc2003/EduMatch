@@ -4,9 +4,9 @@ export default function HomeLayout() {
   return (
     <Stack >
       <Stack.Screen
-        name="index"
+        name="scholarship"
         options={{
-          title: "Home",
+          title: "Scholarship",
           headerLargeTitle: true,
           headerLargeTitleShadowVisible: false,
         }}
