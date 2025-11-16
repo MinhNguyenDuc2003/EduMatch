@@ -17,9 +17,9 @@ export const apiSubscription = createApi({
       }),
       providesTags: (result, error, id) => [{ type: 'SubscriptionPlan', id }],
     }),
-    getSubscription: build.query<Subscription[], void>({
-      query: () => ({
-        url: `${API_ENDPOINTS.SUBSCRIPTION_PLAN}/all`,
+    getSubscriptionByTargetType: build.query<SubscriptionPlan[], { targetType: string }>({
+      query: ({ targetType }) => ({
+        url: `${API_ENDPOINTS.SUBSCRIPTION_PLAN}/targetType/${targetType}`,
         method: 'GET',
       }),
       providesTags: ['SubscriptionPlan'],
@@ -27,4 +27,5 @@ export const apiSubscription = createApi({
   }),
 });
 
-export const { useGetSubscriptionPlanByIdQuery, useGetSubscriptionQuery } = apiSubscription;
+export const { useGetSubscriptionPlanByIdQuery, useGetSubscriptionByTargetTypeQuery } =
+  apiSubscription;
