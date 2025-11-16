@@ -43,4 +43,5 @@ public final class CoreMessageCode {
     public static final String SCHOLARSHIP_SLUG_IS_ALREADY_EXIST = "Scholarship slug is already exist";
     public static final String APPLICATION_IS_ALREADY_SUBMITTED_PLEASE_UPDATE_VERSION = "application is already submitted please update version";
     public static final String APPLICATION_CODE_AND_VERSION_ALREADY_EXIST = "application code and version already exist";
+    public static final String APPLICATION_IS_ALREADY_SUBMIT = "application is already submit";
 }

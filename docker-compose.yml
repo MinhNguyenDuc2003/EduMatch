@@ -158,6 +158,10 @@ services:
     image: registry.edumatch.space/edumatch/edufront-nextjs:1.0.0
     networks:
       - m-network
+  payment:
+    image: registry.edumatch.space/edumatch/payment:1.1.0
+    networks:
+      - m-network
   zookeeper:
     image: debezium/zookeeper:2.7.3.Final
     restart: always
