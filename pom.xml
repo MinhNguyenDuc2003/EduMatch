@@ -29,6 +29,7 @@
         <module>notification</module>
         <module>subscription</module>
         <module>search</module>
+        <module>report</module>
     </modules>
 
     <properties>
