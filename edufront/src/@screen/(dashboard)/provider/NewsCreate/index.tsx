@@ -7,9 +7,11 @@ import { INews } from '@/lib/schemas';
 import { useCreateNewsMutation, useGetProfileQuery } from '@/state/apiProvider';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 const NewsCreatePage = () => {
   const router = useRouter();
+  const t = useTranslations('providerNews');
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [createNews, { isLoading: isLoadingCreateNews }] = useCreateNewsMutation();
 
@@ -34,7 +36,7 @@ const NewsCreatePage = () => {
       // Navigate back to news list after successful creation
       router.push('/provider/news');
     } catch (error) {
-      console.error('Error creating news:', error);
+      console.error(t('errorCreatingNews'), error);
       throw error;
     }
   };
@@ -45,7 +47,7 @@ const NewsCreatePage = () => {
 
   return (
     <div className="p-6 lg:p-8 space-y-6 bg-white">
-      <Header subtitle="Create a news for your scholarship" title="New News" />
+      <Header subtitle={t('subtitleCreateNews')} title={t('newNews')} />
 
       <NewsForm
         onSubmit={onSubmit}

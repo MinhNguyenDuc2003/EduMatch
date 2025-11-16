@@ -13,17 +13,20 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Notifications from '../share/Notifications';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const ProviderNavbar = () => {
   const pathname = usePathname();
 
+  // generate breadcrumbs from pathname except locale
   const generateBreadcrumbs = () => {
-    const paths = pathname.split('/').filter((path) => path);
+    const paths = pathname.split('/').filter((path) => path && path !== 'vi' && path !== 'en');
     const breadcrumbs = paths.map((path, index) => {
       const href = '/' + paths.slice(0, index + 1).join('/');
       const label = path.charAt(0).toUpperCase() + path.slice(1).replace(/-/g, ' ');
       return { href, label };
     });
+
     return breadcrumbs;
   };
 
@@ -66,7 +69,10 @@ const ProviderNavbar = () => {
         </div>
 
         {/* Right Section - Actions */}
-        <Notifications />
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher />
+          <Notifications />
+        </div>
       </div>
     </nav>
   );

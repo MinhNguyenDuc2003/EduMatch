@@ -17,6 +17,7 @@ import {
   DollarSign,
   Users,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import Link from 'next/link';
 
@@ -126,6 +127,8 @@ export const ScholarshipCard = ({
   className,
   variant = 'medium',
 }: ScholarshipCardProps) => {
+  const t = useTranslations('action');
+
   const cardContent = () => {
     switch (variant) {
       case 'small':
@@ -172,7 +175,7 @@ export const ScholarshipCard = ({
                       className="flex items-center gap-2"
                     >
                       <Edit className="w-4 h-4" />
-                      <span>Edit</span>
+                      <span>{t('edit')}</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -180,7 +183,7 @@ export const ScholarshipCard = ({
                     onClick={() => onDelete?.(scholarship.id)}
                   >
                     <Trash2 className="w-4 h-4" />
-                    <span>Delete</span>
+                    <span>{t('delete')}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -245,7 +248,7 @@ export const ScholarshipCard = ({
                       className="flex items-center gap-2"
                     >
                       <Edit className="w-4 h-4" />
-                      <span>Edit</span>
+                      <span>{t('edit')}</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -253,7 +256,7 @@ export const ScholarshipCard = ({
                     onClick={() => onDelete?.(scholarship.id)}
                   >
                     <Trash2 className="w-4 h-4" />
-                    <span>Delete</span>
+                    <span>{t('delete')}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

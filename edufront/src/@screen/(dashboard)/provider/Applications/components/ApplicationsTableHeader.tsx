@@ -1,26 +1,28 @@
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 const ApplicationsTableHeader = React.memo(() => {
+  const t = useTranslations('providerApplications');
   return (
     <thead className="bg-gray-50 border-b border-gray-200 sticky top-0">
       <tr>
         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          Student
+          {t('student')}
         </th>
         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          Major
+          {t('major')}
         </th>
         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          GPA
+          {t('gpa')}
         </th>
         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          Applied Date
+          {t('appliedDate')}
         </th>
         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          Status
+          {t('status')}
         </th>
         <th className="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          Actions
+          {t('actions')}
         </th>
       </tr>
     </thead>
@@ -30,4 +32,3 @@ const ApplicationsTableHeader = React.memo(() => {
 ApplicationsTableHeader.displayName = 'ApplicationsTableHeader';
 
 export default ApplicationsTableHeader;
-

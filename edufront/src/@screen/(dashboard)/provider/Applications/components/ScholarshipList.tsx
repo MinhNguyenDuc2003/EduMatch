@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import ScholarshipCarousel from './ScholarshipCarousel';
 import { ScholarshipCardSkeleton } from '../../ProviderScholaship/components/ScholarshipCard';
+import { useTranslations } from 'next-intl';
 
 type ScholarshipListProps = {
   scholarships: Scholarship[];
@@ -20,10 +21,11 @@ const ScholarshipList = ({
   setSelectedScholarship,
 }: ScholarshipListProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const t = useTranslations('providerApplications');
 
   return (
     <>
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Scholarships</h2>
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('scholarships')}</h2>
 
       {isMobile ? (
         <ScholarshipCarousel

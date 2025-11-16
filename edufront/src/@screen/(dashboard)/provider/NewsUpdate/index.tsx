@@ -12,9 +12,11 @@ import {
 } from '@/state/apiProvider';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 const NewsUpdate = ({ newsId }: { newsId: string }) => {
   const router = useRouter();
+  const t = useTranslations('providerNews');
   const { data: news, isLoading: isLoadingNews } = useGetNewsByIdQuery(newsId);
   const [updateNews, { isLoading: isLoadingUpdateNews }] = useUpdateNewsMutation();
   const [uploadImages, { isLoading: isLoadingUploadImages }] = useUploadNewsImagesMutation();
@@ -25,7 +27,7 @@ const NewsUpdate = ({ newsId }: { newsId: string }) => {
       await updateNews(data).unwrap();
       router.push('/provider/news');
     } catch (error) {
-      console.log('Error updating news:', error);
+      console.log(t('errorUpdatingNews'), error);
     }
   };
 
@@ -47,7 +49,7 @@ const NewsUpdate = ({ newsId }: { newsId: string }) => {
 
   return (
     <div className="p-6 lg:p-8 space-y-6 bg-white">
-      <Header subtitle="Update news" title="Update News" />
+      <Header subtitle={t('subtitleUpdateNews')} title={t('updateNews')} />
       <NewsForm
         onSubmit={onSubmit}
         onImagesChange={handleImagesChange}

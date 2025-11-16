@@ -12,6 +12,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import Header from '@/pattern/share/Header';
+import Link from 'next/link';
 
 const DashboardPage = () => {
   // Mock data
@@ -127,12 +128,12 @@ const DashboardPage = () => {
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-gray-900">Recent Applications</h2>
-            <a
+            <Link
               href="/provider/applications"
               className="text-[#38a696] hover:text-[#2d8579] font-medium text-sm"
             >
               View all
-            </a>
+            </Link>
           </div>
         </div>
         <div className="divide-y divide-gray-200">

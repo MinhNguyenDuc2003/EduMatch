@@ -6,11 +6,13 @@ import { useDeleteNewsMutation, useGetNewsQuery } from '@/state/apiProvider';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import NewsCard, { NewsCardSkeleton } from './components/NewsCard';
 import { toast } from 'sonner';
 
 const ProviderNews = () => {
   const router = useRouter();
+  const t = useTranslations('providerNews');
   const { data: news, isLoading: isLoadingNews } = useGetNewsQuery();
 
   const [deleteNews, { isLoading: isDeletingNews }] = useDeleteNewsMutation();
@@ -18,10 +20,10 @@ const ProviderNews = () => {
     await deleteNews(id)
       .unwrap()
       .then(() => {
-        toast.success('News deleted successfully');
+        toast.success(t('newsDeletedSuccessfully'));
       })
       .catch(() => {
-        toast.error('Failed to delete news');
+        toast.error(t('failedToDeleteNews'));
       });
   };
 
@@ -29,15 +31,15 @@ const ProviderNews = () => {
     <div className="p-6 lg:p-8 space-y-6">
       {/* Header */}
       <Header
-        subtitle="Manage your scholarship News"
-        title="News"
+        subtitle={t('subtitle')}
+        title={t('title')}
         rightElement={
           <Button
             onClick={() => router.push('/provider/news/create')}
             className="bg-primary-brand text-white hover:bg-primary-brand/90 shadow-sm"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Create a News
+            {t('createNews')}
           </Button>
         }
       />
