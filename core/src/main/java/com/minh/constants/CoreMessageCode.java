@@ -17,8 +17,8 @@ public final class CoreMessageCode {
     public static final String USER_PROFILE_ALREADY_EXISTED = "User profile already existed";
     public static final String PROVIDER_NOT_FOUND = "Provider is not exist";
     public static final String PROVIDER_PROFILE_ALREADY_EXISTS = "Provider Profile is existed";
-
     public static final String PROVIDER_ALREADY_FOLLOWED = "Provider Already Followed";
+    public static final String ACCESS_DENIED = "Access Denied";
 
     public static final String MEDIA_ID_IS_NOT_EXIST = "Media id is not exist";
     public static final String PROVIDER_PROFILE_IS_NOT_EXIST = "Provider profile is not exist";
@@ -41,7 +41,10 @@ public final class CoreMessageCode {
     public static final String SUBSCRIPTION_PLAN_NOT_FOUND_BY_TARGET_TYPE = "No subscription plan found for target type";
 
     public static final String SCHOLARSHIP_SLUG_IS_ALREADY_EXIST = "Scholarship slug is already exist";
-    public static final String APPLICATION_IS_ALREADY_SUBMITTED_PLEASE_UPDATE_VERSION = "application is already submitted please update version";
-    public static final String APPLICATION_CODE_AND_VERSION_ALREADY_EXIST = "application code and version already exist";
-    public static final String APPLICATION_IS_ALREADY_SUBMIT = "application is already submit";
+    public static final String APPLICATION_IS_ALREADY_SUBMITTED_PLEASE_UPDATE_VERSION = "Application is already submitted please update version";
+    public static final String APPLICATION_CODE_AND_VERSION_ALREADY_EXIST = "Application code and version already exist";
+
+    public static final String REPORT_CATEGORY_NOT_FOUND = "Report category is not exist";
+    public static final String REPORT_NOT_FOUND = "Report is not exist";
+    public static final String APPLICATION_IS_ALREADY_SUBMIT = "Application is already submit";
 }

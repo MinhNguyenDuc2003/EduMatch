@@ -8,7 +8,14 @@ import org.mapstruct.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
+        componentModel = "spring",
+        uses = {
+
+        })
 public interface SubscriptionPlanMapper {
 
     SubscriptionPlanDto toDto(SubscriptionPlanEntity entity);

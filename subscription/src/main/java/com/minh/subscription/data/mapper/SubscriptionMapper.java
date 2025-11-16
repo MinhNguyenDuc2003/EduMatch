@@ -7,7 +7,14 @@ import com.minh.subscription.data.entity.SubscriptionPlanEntity;
 import org.mapstruct.*;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
+        componentModel = "spring",
+        uses = {
+
+        })
 public interface SubscriptionMapper {
 
     SubscriptionDto toDto(SubscriptionEntity entity);

@@ -150,6 +150,18 @@ services:
       - m-network
     depends_on:
       - elasticsearch
+  report:
+    image: registry.edumatch.space/edumatch/report:1.1.0
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+      - AWS_BUCKET_NAME
+    volumes:
+      - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
+      - ./deployment/app-config:/app-config
+    networks:
+      - m-network
   backoffice-nextjs:
     image: registry.edumatch.space/edumatch/backoffice-nextjs:1.0.0
     networks:

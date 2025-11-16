@@ -20,18 +20,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl extends BaseService implements OrderService {
 
-    private final OrderRepository paymentRepository;
+    private final OrderRepository orderRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final OrderMapper orderMapper;
 
     @Override
     public List<OrderDto> getAll() {
-        return orderMapper.toDto(paymentRepository.findAll());
+        return orderMapper.toDto(orderRepository.findAll());
     }
 
     @Override
     public OrderDto getById(Long id) {
-        OrderEntity entity = paymentRepository.findByIdAndActive(id, true)
+        OrderEntity entity = orderRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
         return orderMapper.toDto(entity);
     }
@@ -48,14 +48,14 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             entity.setSubscription(subscription);
         }
 
-        OrderEntity savedEntity = paymentRepository.save(entity);
+        OrderEntity savedEntity = orderRepository.save(entity);
         return orderMapper.toDto(savedEntity);
     }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
     public OrderDto update(OrderDto payment) {
-        OrderEntity existingEntity = paymentRepository.findByIdAndActive(payment.getId(), true)
+        OrderEntity existingEntity = orderRepository.findByIdAndActive(payment.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
 
         orderMapper.updateEntityFromDto(payment, existingEntity);
@@ -66,16 +66,30 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             existingEntity.setSubscription(subscription);
         }
 
-        OrderEntity savedEntity = paymentRepository.save(existingEntity);
+        OrderEntity savedEntity = orderRepository.save(existingEntity);
         return orderMapper.toDto(savedEntity);
     }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
     public void delete(Long id) {
-        if (!paymentRepository.existsById(id)) {
+        if (!orderRepository.existsById(id)) {
             throw new BusinessException(CoreMessageCode.ORDER_NOT_FOUND);
         }
-        paymentRepository.updateActiveById(id);
+        orderRepository.updateActiveById(id);
     }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public OrderDto markAsPaid(Long orderId, String transactionId) {
+        OrderEntity entity = orderRepository.findByIdAndActive(orderId, true)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
+
+        entity.setTransactionId(transactionId);
+        entity.setStatus("PAID");
+
+        OrderEntity savedEntity = orderRepository.save(entity);
+        return orderMapper.toDto(savedEntity);
+    }
+
 }
