@@ -16,5 +16,5 @@ public interface OrderService {
 
     void delete(Long id);
 
-    OrderDto markAsPaid(String transactionId);
+    OrderDto markAsPaid(Long orderId, String transactionId);
 }

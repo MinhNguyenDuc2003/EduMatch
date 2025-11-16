@@ -81,12 +81,12 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public OrderDto markAsPaid(String transactionId) {
-        OrderEntity entity = orderRepository.findByTransactionIdAndActive(transactionId, true)
+    public OrderDto markAsPaid(Long orderId, String transactionId) {
+        OrderEntity entity = orderRepository.findByIdAndActive(orderId, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
 
-        entity.setStatus("PAID");
         entity.setTransactionId(transactionId);
+        entity.setStatus("PAID");
 
         OrderEntity savedEntity = orderRepository.save(entity);
         return orderMapper.toDto(savedEntity);
