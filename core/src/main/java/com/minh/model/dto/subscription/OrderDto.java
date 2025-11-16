@@ -28,9 +28,9 @@ public class OrderDto extends BaseDto {
 
     private Double amount;
 
-    private String currency;
+    private String currency = "USD";
 
-    private String paymentMethod;
+    private String paymentMethod = "CARD";
 
     private String transactionId;
 

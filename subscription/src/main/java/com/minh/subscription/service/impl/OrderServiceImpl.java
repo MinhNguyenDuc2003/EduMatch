@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -88,14 +89,29 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     @Override
     @Transactional(rollbackOn = Exception.class)
     public OrderDto markAsPaid(Long orderId, String transactionId) {
-        OrderEntity entity = orderRepository.findByIdAndActive(orderId, true)
+        OrderEntity order = orderRepository.findByIdAndActive(orderId, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
 
-        entity.setTransactionId(transactionId);
-        entity.setStatus("PAID");
+        order.setTransactionId(transactionId);
+        order.setStatus("PAID");
+        order.setPaidAt(LocalDateTime.now());
 
-        OrderEntity savedEntity = orderRepository.save(entity);
-        return orderMapper.toDto(savedEntity);
+        SubscriptionEntity subscriptionTemplate = order.getSubscription();
+        if (subscriptionTemplate == null) {
+            throw new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND);
+        }
+
+        SubscriptionEntity newSubscription = new SubscriptionEntity();
+        newSubscription.setUserId(order.getUserId());
+        newSubscription.setPlan(subscriptionTemplate.getPlan());
+        newSubscription.setStartDate(LocalDateTime.now());
+        newSubscription.setEndDate(LocalDateTime.now().plusDays(subscriptionTemplate.getPlan().getDurationDays()));
+        newSubscription.setStatus(subscriptionTemplate.getStatus());
+        newSubscription.setActive(true);
+
+        subscriptionRepository.save(newSubscription);
+
+        OrderEntity savedOrder = orderRepository.save(order);
+        return orderMapper.toDto(savedOrder);
     }
-
 }

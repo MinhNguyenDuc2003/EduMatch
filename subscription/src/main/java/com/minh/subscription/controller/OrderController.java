@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(EndPoint.SUBSCRIPTION.PAYMENTS)
+@RequestMapping(EndPoint.SUBSCRIPTION.ORDERS)
 public class OrderController {
 
     private final OrderService paymentService;
