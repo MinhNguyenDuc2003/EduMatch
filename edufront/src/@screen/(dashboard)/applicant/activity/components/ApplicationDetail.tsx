@@ -1,16 +1,6 @@
 'use client';
 
-import {
-  X,
-  Phone,
-  Mail,
-  Calendar,
-  User,
-  Building2,
-  Stethoscope,
-  BookOpen,
-  Globe,
-} from 'lucide-react';
+import { X, Phone, Mail } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/lib/cus/sheet';
 import { Avatar, AvatarFallback } from '@/lib/cus/avatar';
 import { Badge } from '@/lib/cus/badge';
@@ -54,6 +44,15 @@ const formatDateTime = (date?: number) => {
   }
 };
 
+const formatStatus = (status?: string): string => {
+  if (!status) return 'Not reviewed yet';
+  return status
+    .replace(/_/g, ' ')
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 const getStatusColor = (status?: string): string => {
   if (!status) return 'bg-gray-100 text-gray-700';
   const statusLower = status.toLowerCase();
@@ -69,13 +68,19 @@ const getStatusColor = (status?: string): string => {
   }
 };
 
-const formatStatus = (status?: string): string => {
-  if (!status) return 'Not reviewed yet';
-  return status
-    .replace(/_/g, ' ')
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
+const getTimelineDotColor = (status?: string): string => {
+  if (!status) return 'bg-blue-500 text-blue-700';
+  const statusLower = status.toLowerCase();
+  switch (statusLower) {
+    case 'approved':
+      return 'bg-green-500 text-green-700';
+    case 'pending':
+      return 'bg-blue-500 text-blue-700';
+    case 'rejected':
+      return 'bg-red-500 text-red-700';
+    default:
+      return 'bg-blue-500 text-blue-700';
+  }
 };
 
 export default function ApplicationDetail({
@@ -89,18 +94,41 @@ export default function ApplicationDetail({
   const {
     status,
     reviewedAt,
+    note,
     scholarshipVo: scholarship,
     applicationVo,
   } = appliedScholarship || {};
-  const { organizationName, logoUrl, email, phone } = scholarship?.providerProfileVo || {};
-  const { fullName, gender, dateOfBirth, address, nationality, applicationName } =
-    applicationVo || {};
+  const {
+    organizationName,
+    logoUrl,
+    email: scholarshipEmail,
+    phone: scholarshipPhone,
+  } = scholarship?.providerProfileVo || {};
+  const {
+    fullName,
+    gender,
+    dateOfBirth,
+    address,
+    email: applicationEmail,
+    phone: applicationPhone,
+    nationality,
+    applicationName,
+    skills,
+    achievements,
+    extracurricular,
+    motivation,
+    gpa,
+    graduationYear,
+    schoolName,
+    educationLevel,
+    major,
+  } = applicationVo || application || {};
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-full p-4 sm:max-w-2xl overflow-y-auto [&>button]:hidden rounded-xl !right-12 scrollbar-hide"
+        className="w-full p-4 sm:max-w-2xl max-h-[95vh] overflow-y-auto [&>button]:hidden rounded-xl !right-4 !top-1/2 !-translate-y-1/2 scrollbar-hide"
       >
         <SheetHeader className="!p-0 ">
           <div className="flex items-center justify-between">
@@ -150,29 +178,34 @@ export default function ApplicationDetail({
                     <div className="flex text-sm text-gray-500 items-center font-semibold gap-8">
                       <div className="flex items-center gap-2">
                         <Phone className="w-4 h-4" />
-                        <span>{phone}</span>
+                        <span>{scholarshipPhone}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Mail className="w-4 h-4" />
-                        <span>{email}</span>
+                        <span>{scholarshipEmail}</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 {/* Scholarship Information */}
-                <div className="text-sm p-3">
-                  <div className="grid text-sm text-gray-500 items-start font-semibold grid-cols-2 gap-2">
+                <div className="text-sm">
+                  <div className="flex flex-col text-sm text-gray-500 items-start font-semibold gap-2 bg-gray-100 rounded-md p-3">
                     <div className="flex items-center gap-2">
-                      <span>Scholarship: {scholarship.title}</span>
+                      <span>Scholarship</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span>Amount: {scholarship.fundingAmount}</span>
+                      <span className="text-base font-bold text-gray-900">{scholarship.title}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span>Status: </span>
-                      <Badge className={`${getStatusColor(status)} border`}>
-                        {formatStatus(status)}
-                      </Badge>
+                    <div className="flex items-center gap-8">
+                      <div className="flex items-center gap-2">
+                        <span>Amount: {scholarship.fundingAmount}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span>Status: </span>
+                        <Badge className={`${getStatusColor(status)} border`}>
+                          {formatStatus(status)}
+                        </Badge>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -188,19 +221,19 @@ export default function ApplicationDetail({
               <div className="flex items-center gap-4">
                 <Avatar className="h-12 w-12">
                   <AvatarFallback className="bg-blue-100 text-blue-700 text-lg font-semibold">
-                    {application.fullName.charAt(0).toUpperCase()}
+                    {fullName?.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 space-y-1">
-                  <h4 className="font-semibold text-gray-900">{application.fullName}</h4>
+                  <h4 className="font-semibold text-gray-900">{fullName}</h4>
                   <div className="flex text-sm text-gray-500 items-center font-semibold gap-8">
                     <div className="flex items-center gap-2">
                       <Phone className="w-4 h-4" />
-                      <span>{application.phone || 'N/A'}</span>
+                      <span>{applicationPhone || 'N/A'}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Mail className="w-4 h-4" />
-                      <span>{application.email || 'N/A'}</span>
+                      <span>{applicationEmail || 'N/A'}</span>
                     </div>
                   </div>
                 </div>
@@ -210,16 +243,16 @@ export default function ApplicationDetail({
                 <p className="text-sm font-semibold text-gray-600 mb-2">Additional Information</p>
                 <div className="grid text-sm text-gray-500 items-center font-semibold grid-cols-2 gap-2">
                   <div className="flex items-center gap-2">
-                    <span>Gender: {application.gender || 'N/A'}</span>
+                    <span>Gender: {gender || 'N/A'}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span>Date of Birth: {formatDate(application.dateOfBirth) || 'N/A'}</span>
+                    <span>Date of Birth: {formatDate(dateOfBirth) || 'N/A'}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span>Address: {application.address || 'N/A'}</span>
+                    <span>Address: {address || 'N/A'}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span>Nationality: {application.nationality || 'N/A'}</span>
+                    <span>Nationality: {nationality || 'N/A'}</span>
                   </div>
                 </div>
               </div>
@@ -230,28 +263,21 @@ export default function ApplicationDetail({
           <section>
             <h3 className="text-base font-bold text-gray-900 mb-2">Education Background</h3>
             <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4">
-              <div className="text-sm bg-gray-100 rounded-md p-3">
-                <div className="grid text-sm text-gray-500 items-center font-semibold grid-cols-2 gap-2">
-                  <div className="flex items-center gap-2">
-                    <span>Education Level: {application.educationLevel || 'N/A'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span>School Name: {application.schoolName || 'N/A'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span>Major: {application.major || 'N/A'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span>
-                      GPA:{' '}
-                      {application.gpa !== undefined && application.gpa !== null
-                        ? application.gpa.toFixed(2)
-                        : 'N/A'}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span>Graduation Year: {application.graduationYear || 'N/A'}</span>
-                  </div>
+              <div className="grid text-sm text-gray-700 items-start font-medium grid-cols-2 gap-2">
+                <div className="col-span-2 flex items-center gap-2">
+                  <span>School: {schoolName || 'N/A'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>Education Level: {educationLevel || 'N/A'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>Major: {major || 'N/A'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>GPA: {gpa !== undefined && gpa !== null ? gpa.toFixed(2) : 'N/A'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>Graduation Year: {graduationYear || 'N/A'}</span>
                 </div>
               </div>
             </div>
@@ -262,11 +288,11 @@ export default function ApplicationDetail({
             <h3 className="text-base font-bold text-gray-900 mb-2">Skills & Achievements</h3>
             <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4 space-y-4">
               {/* Skills */}
-              {application.skills && (
+              {skills && (
                 <div>
-                  <p className="text-sm font-semibold text-gray-600 mb-2">Skills</p>
+                  <p className="text-sm font-semibold text-gray-500 mb-2">Skills</p>
                   <div className="flex flex-wrap gap-2">
-                    {application.skills.split(',').map((skill, index) => (
+                    {skills.split(',').map((skill, index) => (
                       <Badge
                         key={index}
                         variant="outline"
@@ -279,35 +305,35 @@ export default function ApplicationDetail({
                 </div>
               )}
 
-              {/* Achievements */}
-              {application.achievements && (
-                <div className="text-sm bg-gray-100 rounded-md p-3">
-                  <p className="text-sm font-semibold text-gray-600 mb-2">Achievements</p>
-                  <div className="space-y-1">
-                    {application.achievements.split(',').map((achievement, index) => (
-                      <div key={index} className="text-sm text-gray-500 font-semibold">
-                        • {achievement.trim()}
-                      </div>
-                    ))}
+              <div className="grid grid-cols-2 gap-2">
+                {/* Achievements */}
+                {achievements && (
+                  <div className="text-sm font-semibold text-gray-500">
+                    <p className="mb-2">Achievements</p>
+                    <div className="space-y-1">
+                      {achievements.split(',').map((achievement, index) => (
+                        <div key={index} className="text-sm text-gray-700 font-semibold">
+                          • {achievement.trim()}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Extracurricular Activities */}
-              {application.extracurricular && (
-                <div className="text-sm bg-gray-100 rounded-md p-3">
-                  <p className="text-sm font-semibold text-gray-600 mb-2">
-                    Extracurricular Activities
-                  </p>
-                  <div className="space-y-1">
-                    {application.extracurricular.split(',').map((activity, index) => (
-                      <div key={index} className="text-sm text-gray-500 font-semibold">
-                        • {activity.trim()}
-                      </div>
-                    ))}
+                {/* Extracurricular Activities */}
+                {extracurricular && (
+                  <div className="text-sm font-semibold text-gray-500 ">
+                    <p className="mb-2">Extracurricular Activities</p>
+                    <div className="space-y-1">
+                      {extracurricular.split(',').map((activity, index) => (
+                        <div key={index} className="text-sm text-gray-700 font-semibold">
+                          • {activity.trim()}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </section>
 
@@ -316,7 +342,7 @@ export default function ApplicationDetail({
             <h3 className="text-base font-bold text-gray-900 mb-2">Reason</h3>
             <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4">
               <p className="text-sm text-gray-600 bg-gray-50 rounded-md p-3 leading-relaxed">
-                {application.motivation || 'No motivation provided'}
+                {motivation || 'No motivation provided'}
               </p>
             </div>
           </section>
@@ -332,62 +358,36 @@ export default function ApplicationDetail({
           </section>
 
           {/* Application History Section */}
-          <section>
-            <h3 className="text-base font-bold text-gray-900 mb-2">Application History</h3>
-            <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4">
-              <div className="relative">
-                {/* Timeline */}
-                <div className="space-y-6 pl-6 border-l-2 border-blue-200">
-                  {reviewedAt && (
-                    <div className="relative">
-                      <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"></div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-900">
-                          {formatDateTime(reviewedAt)}
-                        </p>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {status ? `${formatStatus(status)} Application` : 'Application Submitted'}
-                        </p>
-                        {scholarship && (
-                          <p className="text-xs text-gray-500 mt-1">{scholarship.title}</p>
-                        )}
-                      </div>
+          {reviewedAt && (
+            <section>
+              <h3 className="text-base font-bold text-gray-900 mb-2">Application History</h3>
+              <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4">
+                <div className="space-y-6 pl-2 border-l-2 border-blue-200">
+                  {/* review status */}
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`w-4 h-4 rounded-full ${getTimelineDotColor(status)} border-2 mt-1 border-white`}
+                    ></div>
+                    <div className="flex flex-col gap-1">
+                      <p className={`text-sm font-medium text-${getStatusColor(status)}`}>
+                        {formatStatus(status)} Application
+                      </p>
+                      <p className="text-sm text-gray-500">{formatDateTime(reviewedAt)}</p>
+                      {scholarship && <p className="text-sm text-gray-500">{scholarship.title}</p>}
+                      {note && (
+                        <div>
+                          <span className="text-sm font-medium text-gray-900">Note: </span>
+                          <span className="text-sm text-gray-600">{note}</span>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </div>
 
-                  {application.graduationYear && (
-                    <div className="relative">
-                      <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"></div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-900">
-                          Expected Graduation: {application.graduationYear}
-                        </p>
-                        <p className="text-sm text-gray-600 mt-1">Graduation Year</p>
-                        {application.schoolName && (
-                          <p className="text-xs text-gray-500 mt-1">{application.schoolName}</p>
-                        )}
-                        {application.major && (
-                          <p className="text-xs text-gray-500">{application.major}</p>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {appliedScholarship?.note && (
-                    <div className="relative">
-                      <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"></div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-900">Note</p>
-                        <p className="text-sm text-gray-600 mt-1 whitespace-pre-wrap">
-                          {appliedScholarship.note}
-                        </p>
-                      </div>
-                    </div>
-                  )}
+                  {/* submission date */}
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
         </div>
       </SheetContent>
     </Sheet>

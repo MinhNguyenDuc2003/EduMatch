@@ -21,7 +21,11 @@ import {
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
 import ApplicationCard from './components/ApplicationCard';
-import { useGetApplicationsQuery, useGetAppliedApplicationQuery } from '@/state/apiApplicant';
+import {
+  useDeleteApplicationMutation,
+  useGetApplicationsQuery,
+  useGetAppliedApplicationQuery,
+} from '@/state/apiApplicant';
 import { Button } from '@/lib/cus/button';
 
 export default function ActivityManagement() {
@@ -38,7 +42,12 @@ export default function ActivityManagement() {
     useGetFollowedProvidersQuery();
   const { data: appliedScholarshipsData, isLoading: isLoadingAppliedScholarships } =
     useGetAppliedApplicationQuery();
-  const { data: applicationsData, isLoading: isLoadingApplications } = useGetApplicationsQuery();
+  const {
+    data: applicationsData,
+    isLoading: isLoadingApplications,
+    refetch: refetchApplications,
+  } = useGetApplicationsQuery();
+  const [deleteApplication] = useDeleteApplicationMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
@@ -84,8 +93,21 @@ export default function ActivityManagement() {
     }
   };
 
+  const handleDeleteApplication = async (applicationId: number) => {
+    try {
+      await deleteApplication({ applicationId }).unwrap();
+    } catch (error) {
+      console.log('Failed to delete application:', error);
+    }
+    refetchApplications();
+  };
+
   const handleCreateNew = () => {
     router.push(`/applicant/applications/create`);
+  };
+
+  const handleEditApplication = (application: Application) => {
+    router.push(`/applicant/applications/${application.id}`);
   };
 
   const handleViewApplication = (application: Application) => {
@@ -183,6 +205,8 @@ export default function ActivityManagement() {
                         key={application.id}
                         application={application}
                         onViewDetails={() => handleViewApplication(application)}
+                        onEdit={handleEditApplication}
+                        onDelete={handleDeleteApplication}
                       />
                     ))}
                   </div>

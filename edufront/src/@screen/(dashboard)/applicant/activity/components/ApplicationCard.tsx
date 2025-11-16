@@ -72,7 +72,10 @@ export default function ApplicationCard({
             size="sm"
             className="flex-1 text-slate-700 border-slate-300 hover:bg-slate-100 hover:border-slate-400"
             value="Edit"
-            onClick={() => onEdit(application)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(application);
+            }}
           />
         )}
         {onDelete && (
@@ -81,7 +84,10 @@ export default function ApplicationCard({
             size="sm"
             className="flex-1 text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
             value="Delete"
-            onClick={() => onDelete(application.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(application.id);
+            }}
           />
         )}
       </div>

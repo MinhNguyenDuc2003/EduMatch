@@ -21,7 +21,7 @@ const formatDate = (date?: number) => {
 };
 
 const getStatusColor = (status: string) => {
-  if (!status) return 'bg-zinc-400 text-zinc-700';
+  if (!status) return 'bg-blue-400 text-blue-700';
   const statusLower = status.toLowerCase();
   switch (statusLower) {
     case 'approved':
@@ -31,12 +31,12 @@ const getStatusColor = (status: string) => {
     case 'rejected':
       return 'bg-red-400 text-red-700';
     default:
-      return 'bg-zinc-400';
+      return 'bg-blue-400 text-blue-700';
   }
 };
 
 const formatStatus = (status: string) => {
-  if (!status) return 'Not reviewed yet ';
+  if (!status) return 'Pending ';
 
   return status
     .replace(/_/g, ' ')
@@ -66,13 +66,17 @@ export default function AppliedScholarshipCard({
           {/* Left side: */}
           <div className="flex items-center gap-2">
             <div className={`w-3 h-3 rounded-full ${getStatusColor(status)}`}></div>
-            <span className="text-sm font-medium ">{formatStatus(status)}</span>
+            <span className={`text-sm font-medium text-${getStatusColor(status)}`}>
+              {formatStatus(status)}
+            </span>
           </div>
 
           {/* Right side: Manage button (reviewedAt date) */}
-          <button className="px-3 py-1.5 rounded-md text-xs font-medium  text-gray-700 bg-zinc-100 ">
-            {formatDate(reviewedAt)}
-          </button>
+          {reviewedAt && (
+            <button className="px-3 py-1.5 rounded-md text-xs font-medium  text-gray-700 bg-zinc-100 ">
+              {formatDate(reviewedAt)}
+            </button>
+          )}
         </div>
 
         {/* Large Application Name */}
