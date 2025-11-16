@@ -10,6 +10,7 @@ import com.minh.subscription.data.mapper.OrderMapper;
 import com.minh.subscription.data.repository.OrderRepository;
 import com.minh.subscription.data.repository.SubscriptionRepository;
 import com.minh.subscription.service.OrderService;
+import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,9 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     public OrderDto create(OrderDto payment) {
         OrderEntity entity = orderMapper.toEntity(payment);
 
-        // Gắn SubscriptionEntity nếu có id
+        String userId = UaaContextHolder.getUserId();
+        entity.setUserId(userId);
+
         if (payment.getSubscriptionId() != null) {
             SubscriptionEntity subscription = subscriptionRepository.findById(payment.getSubscriptionId())
                     .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND));
@@ -57,6 +60,9 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     public OrderDto update(OrderDto payment) {
         OrderEntity existingEntity = orderRepository.findByIdAndActive(payment.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
+
+        String userId = UaaContextHolder.getUserId();
+        existingEntity.setUserId(userId);
 
         orderMapper.updateEntityFromDto(payment, existingEntity);
 

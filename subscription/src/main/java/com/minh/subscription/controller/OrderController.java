@@ -3,6 +3,7 @@ package com.minh.subscription.controller;
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.subscription.OrderDto;
+import com.minh.service.aspect.Authorized;
 import com.minh.subscription.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -27,11 +28,13 @@ public class OrderController {
         return ApiResponse.ok(paymentService.getById(id));
     }
 
+    @Authorized
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<OrderDto> create(@RequestBody OrderDto payment) {
         return ApiResponse.ok(paymentService.create(payment));
     }
 
+    @Authorized
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<OrderDto> update(@RequestBody OrderDto payment) {
         return ApiResponse.ok(paymentService.update(payment));
