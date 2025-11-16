@@ -107,6 +107,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         newSubscription.setStartDate(LocalDateTime.now());
         newSubscription.setEndDate(LocalDateTime.now().plusDays(subscriptionTemplate.getPlan().getDurationDays()));
         newSubscription.setStatus(subscriptionTemplate.getStatus());
+        newSubscription.setUserType(subscriptionTemplate.getUserType());
         newSubscription.setActive(true);
 
         subscriptionRepository.save(newSubscription);
