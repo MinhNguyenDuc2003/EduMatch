@@ -1,6 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customBaseQuery from './custombaseQuery';
-import { ProfileApiResponse } from '@/@screen/(dashboard)/applicant/Profile/types';
 import { IApplicantProfile, IApplication } from '@/lib/schemas';
 
 // API Endpoints
@@ -49,6 +48,13 @@ export const apiApplicant = createApi({
     getApplications: build.query<Application[], void>({
       query: () => ({
         url: API_ENDPOINTS.APPLICATION + '/my-application',
+        method: 'GET',
+      }),
+      providesTags: ['Application'],
+    }),
+    getApplicationByCode: build.query<Application[], string>({
+      query: (code) => ({
+        url: `${API_ENDPOINTS.APPLICATION}/code/${code}`,
         method: 'GET',
       }),
       providesTags: ['Application'],
@@ -136,6 +142,7 @@ export const {
   useUpdateProfileMutation,
   useGetApplicationsQuery,
   useGetApplicationByIdQuery,
+  useGetApplicationByCodeQuery,
   useCreateApplicationMutation,
   useUpdateApplicationMutation,
   useUploadImagesMutation,

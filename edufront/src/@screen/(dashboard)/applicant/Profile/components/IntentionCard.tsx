@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import type { Intention } from '../types';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/lib/cus/dialog';
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from '@/lib/cus/drawer';

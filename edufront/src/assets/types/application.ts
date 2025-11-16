@@ -3,6 +3,7 @@ declare global {
     id: number;
     userId: string;
     applicationName: string;
+    code?: string;
     versionApplication: number;
     fullName: string;
     gender: string;

@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.use("/stripe", paymentRouter);
+app.use("/payment", paymentRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

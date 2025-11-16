@@ -1,5 +1,3 @@
-import type { ProfileApiResponse, ProfileData } from './types';
-
 /**
  * Calculate profile completion percentage based on filled fields
  */
