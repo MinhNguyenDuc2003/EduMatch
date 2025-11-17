@@ -11,4 +11,6 @@ public interface ScholarshipViewRepository extends JpaRepository<ScholarshipView
     List<ScholarshipViewEntity> findByScholarshipId(Long id);
 
     int countScholarshipViewEntitiesByScholarshipId(Long scholarshipId);
+
+    boolean existsByUserIdAndScholarshipId(String userId, Long id);
 }
