@@ -3,7 +3,10 @@ package com.minh.report.controller;
 import com.minh.constants.EndPoint;
 import com.minh.enumeration.report.ReportCategoryType;
 import com.minh.model.ApiResponse;
+import com.minh.model.dto.report.ProfileReportCreateDto;
+import com.minh.model.dto.report.ProviderReportCreateDto;
 import com.minh.model.dto.report.ReportDto;
+import com.minh.model.dto.report.ScholarshipReportCreateDto;
 import com.minh.report.service.ReportService;
 import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
@@ -73,8 +76,22 @@ public class ReportController {
         return ApiResponse.ok(service.replyToReport(id, reply));
     }
 
-    @GetMapping("/test")
-    public ApiResponse<String> test() {
-        return ApiResponse.ok("Test!");
+    @Authorized
+    @PostMapping("/provider-report")
+    public ApiResponse<ReportDto> createProviderReport(@RequestBody ProviderReportCreateDto dto) {
+        return ApiResponse.ok(service.createProviderReport(dto));
     }
+
+    @Authorized
+    @PostMapping("/profile-report")
+    public ApiResponse<ReportDto> createProfileReport(@RequestBody ProfileReportCreateDto dto) {
+        return ApiResponse.ok(service.createProfileReport(dto));
+    }
+
+    @Authorized
+    @PostMapping("/scholarship-report")
+    public ApiResponse<ReportDto> createScholarshipReport(@RequestBody ScholarshipReportCreateDto dto) {
+        return ApiResponse.ok(service.createScholarshipReport(dto));
+    }
+
 }
