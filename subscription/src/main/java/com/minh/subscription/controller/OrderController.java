@@ -20,7 +20,7 @@ public class OrderController {
 
     @GetMapping("/test")
     public ApiResponse<?> testCi() {
-        return ApiResponse.ok();
+        return ApiResponse.ok("Hello world");
     }
 
     @GetMapping("/all")
