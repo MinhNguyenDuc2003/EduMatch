@@ -20,6 +20,7 @@ import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.base.BaseService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -190,6 +191,9 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     public List<ApplicationScholarshipVo> getByMyScholarship() {
         List<ApplicationScholarshipVo> vos = new ArrayList<>();
         List<ApplicationVo> allMyApplication = applicationService.getAllMyApplication();
+        if (ObjectUtils.isEmpty(allMyApplication)) {
+            return null;
+        }
         for (ApplicationVo applicationVo : allMyApplication) {
             vos.addAll(this.getAllByApplicationId(applicationVo.getId()));
         }

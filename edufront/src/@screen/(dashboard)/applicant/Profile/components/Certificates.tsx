@@ -1,6 +1,5 @@
 import React from 'react';
 import CertificateCard from './CertificateCard';
-import type { Certificate } from '../types';
 import { Pencil, Plus } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 

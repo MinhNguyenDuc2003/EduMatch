@@ -25,6 +25,7 @@ import ethnicities from '@/constants/ethnicities.json';
 import races from '@/constants/races.json';
 import citizenshipStatus from '@/constants/citizenshipStatus.json';
 import { IApplicantProfile } from '@/lib/schemas';
+import { COUNTRIES } from '@/constants/Common';
 
 interface StudentInformationDialogProps {
   open: boolean;
@@ -141,6 +142,8 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
             name="applicantProfile.hometown"
             label="Hometown"
             placeholder="Add Info"
+            type="input-select"
+            options={COUNTRIES}
             inlineLabel
             isBorder
           />

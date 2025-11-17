@@ -46,4 +46,5 @@ public final class CoreMessageCode {
 
     public static final String REPORT_CATEGORY_NOT_FOUND = "Report category is not exist";
     public static final String REPORT_NOT_FOUND = "Report is not exist";
+    public static final String APPLICATION_IS_ALREADY_SUBMIT = "Application is already submit";
 }

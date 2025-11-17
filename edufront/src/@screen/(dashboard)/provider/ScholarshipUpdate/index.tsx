@@ -10,11 +10,13 @@ import {
   useUpdateScholarshipMutation,
   useUploadImagesMutation,
 } from '@/state/apiProvider';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const ScholarshipUpdate = ({ scholarshipId }: { scholarshipId: string }) => {
   const router = useRouter();
+  const t = useTranslations('providerScholaship');
   const [updateScholarship, { isLoading: isLoadingUpdateScholarship }] =
     useUpdateScholarshipMutation();
 
@@ -60,7 +62,7 @@ const ScholarshipUpdate = ({ scholarshipId }: { scholarshipId: string }) => {
 
   return (
     <div className="p-6 lg:p-8 space-y-6 bg-white">
-      <Header subtitle="Update scholarship program" title="Update Scholarship" />
+      <Header subtitle={t('subtitleUpdateScholarship')} title={t('updateScholarship')} />
 
       <ScholarshipForm
         onSubmit={onSubmit}

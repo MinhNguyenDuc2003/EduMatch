@@ -1,5 +1,4 @@
 import React from 'react';
-import { Intention } from '../types';
 import { formatDate } from '../utils';
 import {
   GraduationCap,

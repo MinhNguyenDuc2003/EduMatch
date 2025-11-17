@@ -23,7 +23,6 @@ export default function HomePage() {
   } = usePageScholarshipsQuery({
     criteria: {
       country: '',
-      university: '',
       studyLevel: '',
       scholarshipType: '',
     },

@@ -4,7 +4,7 @@ import { Appearance, loadStripe, StripeElementsOptions } from '@stripe/stripe-js
 import { useCurrentSubscription } from '@/hooks/useCurrentSubscription';
 import { useAuth } from '@/hooks/useAuth';
 import Loading from '@/pattern/share/Loading';
-import apiClientService from '@/common/services/ApiClientService';
+import { useCreatePaymentIntentMutation } from '@/state/apiSubscription';
 
 if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY) {
   throw new Error('NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not set');
@@ -31,6 +31,7 @@ const StripeProvider = ({ children }: { children: React.ReactNode }) => {
   const [clientSecret, setClientSecret] = useState<string | ''>('');
   const { subscriptionPlan } = useCurrentSubscription();
   const { user } = useAuth();
+  const [createPaymentIntent] = useCreatePaymentIntentMutation();
 
   const options: StripeElementsOptions = {
     clientSecret,
@@ -40,22 +41,16 @@ const StripeProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!subscriptionPlan || !user) return;
     const fetchPaymentIntent = async () => {
-      const response = await fetch('http://localhost:8000/stripe/payment-intent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: JSON.stringify({
-          amount: subscriptionPlan.price,
-          email: user.email,
-        }),
-      });
+      await createPaymentIntent({
+        amount: subscriptionPlan.price,
+        email: user.email,
+      })
+        .unwrap()
+        .then((response) => {
+          console.log(response);
 
-      const data = await response.json();
-
-      console.log(data);
-
-      setClientSecret(data.paymentIntent.client_secret);
+          setClientSecret(response.client_secret!);
+        });
     };
     fetchPaymentIntent();
   }, [subscriptionPlan, subscriptionPlan?.price, user]);

@@ -10,6 +10,8 @@ import {
   ProviderCardSkeleton,
   CardSmalPicSkeleton,
   ApplicationCardSkeleton,
+  AppliedScholarshipCard,
+  ApplicationDetail,
 } from './components';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { type ShortlistTab, TAB_CONFIGS } from './types';
@@ -19,19 +21,33 @@ import {
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
 import ApplicationCard from './components/ApplicationCard';
-import { useGetApplicationsQuery } from '@/state/apiApplicant';
+import {
+  useDeleteApplicationMutation,
+  useGetApplicationsQuery,
+  useGetAppliedApplicationQuery,
+} from '@/state/apiApplicant';
 import { Button } from '@/lib/cus/button';
 
 export default function ActivityManagement() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<ShortlistTab>('tracking');
-  const [appliedScholarships, setAppliedScholarships] = useState<Scholarship[]>([]);
+  const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
+  const [selectedAppliedScholarship, setSelectedAppliedScholarship] =
+    useState<ApplicationScholarship | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   const { data: trackedScholarshipsData, isLoading: isLoadingTrackedScholarships } =
     useGetTrackedScholarshipsQuery();
   const { data: followedProvidersData, isLoading: isLoadingFollowedProviders } =
     useGetFollowedProvidersQuery();
-  const { data: applicationsData, isLoading: isLoadingApplications } = useGetApplicationsQuery();
+  const { data: appliedScholarshipsData, isLoading: isLoadingAppliedScholarships } =
+    useGetAppliedApplicationQuery();
+  const {
+    data: applicationsData,
+    isLoading: isLoadingApplications,
+    refetch: refetchApplications,
+  } = useGetApplicationsQuery();
+  const [deleteApplication] = useDeleteApplicationMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
@@ -40,6 +56,7 @@ export default function ActivityManagement() {
   };
 
   const isFollowingTab = activeTab === 'following';
+  const isAppliedTab = activeTab === 'applied';
   const isTrackedTab = activeTab === 'tracking';
   const isApplicationTab = activeTab === 'application';
 
@@ -64,7 +81,6 @@ export default function ActivityManagement() {
         break;
       }
       case 'applied':
-        setAppliedScholarships((prev) => prev.filter((item) => item.id !== id));
         break;
       case 'following': {
         try {
@@ -77,8 +93,33 @@ export default function ActivityManagement() {
     }
   };
 
+  const handleDeleteApplication = async (applicationId: number) => {
+    try {
+      await deleteApplication({ applicationId }).unwrap();
+    } catch (error) {
+      console.log('Failed to delete application:', error);
+    }
+    refetchApplications();
+  };
+
   const handleCreateNew = () => {
     router.push(`/applicant/applications/create`);
+  };
+
+  const handleEditApplication = (application: Application) => {
+    router.push(`/applicant/applications/${application.id}`);
+  };
+
+  const handleViewApplication = (application: Application) => {
+    setSelectedApplication(application);
+    setSelectedAppliedScholarship(null);
+    setIsDetailOpen(true);
+  };
+
+  const handleViewAppliedScholarship = (appliedScholarship: ApplicationScholarship) => {
+    setSelectedApplication(appliedScholarship.applicationVo);
+    setSelectedAppliedScholarship(appliedScholarship);
+    setIsDetailOpen(true);
   };
 
   return (
@@ -112,13 +153,23 @@ export default function ActivityManagement() {
                     <ApplicationCardSkeleton key={`skeleton-application-${index}`} />
                   ))}
                 </div>
-              ) : isTrackedTab && trackedScholarshipsData?.length === 0 ? (
+              ) : isAppliedTab && isLoadingAppliedScholarships ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {[...Array(6)].map((_, index) => (
+                    <ApplicationCardSkeleton key={`skeleton-application-${index}`} />
+                  ))}
+                </div>
+              ) : // Empty State
+              isTrackedTab && trackedScholarshipsData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isFollowingTab && followedProvidersData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isApplicationTab && applicationsData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
-              ) : isTrackedTab ? (
+              ) : isAppliedTab && appliedScholarshipsData?.length === 0 ? (
+                <EmptyState tab={activeTab} />
+              ) : // Display Data
+              isTrackedTab ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {trackedScholarshipsData?.map((scholarship) => (
                     <CardSmalPic
@@ -150,9 +201,26 @@ export default function ActivityManagement() {
                   />
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {applicationsData?.map((application) => (
-                      <ApplicationCard key={application.id} application={application} />
+                      <ApplicationCard
+                        key={application.id}
+                        application={application}
+                        onViewDetails={() => handleViewApplication(application)}
+                        onEdit={handleEditApplication}
+                        onDelete={handleDeleteApplication}
+                      />
                     ))}
                   </div>
+                </div>
+              ) : isAppliedTab ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {appliedScholarshipsData?.map((application) => (
+                    <AppliedScholarshipCard
+                      key={application.id}
+                      appliedScholarship={application}
+                      onViewDetails={() => handleViewAppliedScholarship(application)}
+                      onViewScholarship={handleViewDetails}
+                    />
+                  ))}
                 </div>
               ) : (
                 <EmptyState tab={activeTab} />
@@ -161,6 +229,14 @@ export default function ActivityManagement() {
           </div>
         </div>
       </section>
+
+      {/* Application Detail Sheet */}
+      <ApplicationDetail
+        open={isDetailOpen}
+        onOpenChange={setIsDetailOpen}
+        application={selectedApplication}
+        appliedScholarship={selectedAppliedScholarship}
+      />
     </div>
   );
 }

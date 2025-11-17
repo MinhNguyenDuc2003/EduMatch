@@ -16,9 +16,7 @@ import {
   BookText,
   FileText,
   Users,
-  BarChart3,
   Settings,
-  LogOut,
   ChevronRight,
   User,
   HelpCircle,
@@ -39,42 +37,40 @@ import {
   DropdownMenuTrigger,
 } from '@/lib/cus/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslations } from 'next-intl';
 
 const ProviderSidebar = () => {
   const { user } = useAuth();
   const pathname = usePathname();
   const { state } = useSidebar();
 
+  const t = useTranslations('providerSidebar');
+
   const navLinks = [
     {
       icon: LayoutDashboard,
-      label: 'Dashboard',
+      label: t('dashboard'),
       href: '/provider/dashboard',
     },
     {
       icon: BookText,
-      label: 'Scholarships',
+      label: t('scholarships'),
       href: '/provider/scholarships',
     },
     {
       icon: FileText,
-      label: 'Applications',
+      label: t('applications'),
       href: '/provider/applications',
     },
     {
       icon: Newspaper,
-      label: 'News',
+      label: t('news'),
       href: '/provider/news',
     },
     {
       icon: Users,
-      label: 'Students',
+      label: t('students'),
       href: '/provider/students',
-    },
-    {
-      icon: Settings,
-      label: 'Settings',
-      href: '/provider/settings',
     },
   ];
 
@@ -179,26 +175,26 @@ const ProviderSidebar = () => {
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href="/provider/profile" className="flex items-center gap-2">
                 <User className="w-4 h-4" />
-                <span>Profile</span>
+                <span>{t('profile')}</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href="/provider/settings" className="flex items-center gap-2">
                 <Settings className="w-4 h-4" />
-                <span>Settings</span>
+                <span>{t('settings')}</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href="/help" className="flex items-center gap-2">
                 <HelpCircle className="w-4 h-4" />
-                <span>Help & Support</span>
+                <span>{t('helpSupport')}</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild className="cursor-pointer">
-              <Link href="/" className="flex items-center gap-2">
+              <Link href="/home" className="flex items-center gap-2">
                 <Home className="w-4 h-4" />
-                <span>Back to Home</span>
+                <span>{t('backToHome')}</span>
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>

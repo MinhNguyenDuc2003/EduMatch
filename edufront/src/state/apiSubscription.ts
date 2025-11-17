@@ -1,8 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customBaseQuery from './custombaseQuery';
+import { PaymentIntent } from '@stripe/stripe-js';
 
 const API_ENDPOINTS = {
   SUBSCRIPTION_PLAN: '/api/subscription/subscription/subscription/plans',
+  PAYMENT: '/api/payment',
 };
 
 export const apiSubscription = createApi({
@@ -10,6 +12,12 @@ export const apiSubscription = createApi({
   reducerPath: 'apiSubscription',
   tagTypes: ['SubscriptionPlan'],
   endpoints: (build) => ({
+    createPaymentIntent: build.mutation<PaymentIntent, { amount: number; email: string }>({
+      query: () => ({
+        url: `${API_ENDPOINTS.PAYMENT}/payment-intent`,
+        method: 'POST',
+      }),
+    }),
     getSubscriptionPlanById: build.query<SubscriptionPlan, number | string>({
       query: (id) => ({
         url: `${API_ENDPOINTS.SUBSCRIPTION_PLAN}/${id}`,
@@ -27,4 +35,8 @@ export const apiSubscription = createApi({
   }),
 });
 
-export const { useGetSubscriptionPlanByIdQuery, useGetSubscriptionQuery } = apiSubscription;
+export const {
+  useGetSubscriptionPlanByIdQuery,
+  useGetSubscriptionQuery,
+  useCreatePaymentIntentMutation,
+} = apiSubscription;

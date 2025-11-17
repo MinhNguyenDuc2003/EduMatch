@@ -74,22 +74,22 @@ export default function ScholarshipsList() {
   };
 
   // Handle follow/unfollow provider
-  const handleFollowProvider = async (scholarshipId: number) => {
-    const scholarship = scholarships?.find((s) => s.id === scholarshipId);
+  const handleFollowProvider = async (providerId: number) => {
+    const scholarship = scholarships?.find((s) => s.providerProfileVo?.id === providerId);
     if (!scholarship) {
       return;
     }
     const isFollowing = scholarship.providerProfileVo?.isFollow === 1;
     try {
       if (isFollowing) {
-        await unfollowProvider(scholarship.providerId).unwrap();
+        await unfollowProvider(scholarship.providerProfileVo?.id).unwrap();
       } else {
-        await followProvider(scholarship.providerId).unwrap();
+        await followProvider(scholarship.providerProfileVo?.id).unwrap();
       }
-      refetch();
     } catch (error) {
       console.log('Failed to toggle follow provider:', error);
     }
+    refetch();
   };
 
   const activeFiltersCount = (() => {

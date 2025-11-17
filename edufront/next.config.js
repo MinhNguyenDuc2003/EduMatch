@@ -1,4 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
+const createNextIntlPlugin = require('next-intl/plugin');
+
+const withNextIntl = createNextIntlPlugin();
 
 const nextConfig = {
   reactStrictMode: true,
@@ -27,4 +30,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

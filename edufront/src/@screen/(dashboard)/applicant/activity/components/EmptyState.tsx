@@ -2,6 +2,8 @@
 
 import { FileQuestion, CheckCircle2, Users } from 'lucide-react';
 import { type ShortlistTab } from '../types';
+import { Button } from '@/lib/cus/button';
+import { useRouter } from 'next/navigation';
 
 type EmptyStateProps = {
   tab: ShortlistTab;
@@ -13,6 +15,7 @@ const emptyStateConfig: Record<
     icon: React.ComponentType<{ className?: string }>;
     title: string;
     description: string;
+    redirect?: string;
   }
 > = {
   tracking: {
@@ -38,12 +41,15 @@ const emptyStateConfig: Record<
     title: 'You are not created any applications yet',
     description:
       'Once you create an application, it will show up here so you can monitor application status and next steps.',
+    redirect: '/applicant/applications/create',
   },
 };
 
 export default function EmptyState({ tab }: EmptyStateProps) {
   const config = emptyStateConfig[tab];
   const Icon = config.icon;
+
+  const router = useRouter();
 
   return (
     <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50/50 px-8 py-20 text-center">
@@ -54,6 +60,17 @@ export default function EmptyState({ tab }: EmptyStateProps) {
       <h2 className="mb-3 text-xl font-bold text-slate-800">{config.title}</h2>
 
       <p className="max-w-md text-sm leading-relaxed text-slate-600">{config.description}</p>
+
+      {config.redirect && (
+        <div className="mt-6">
+          <Button
+            variant="custom"
+            color="gray"
+            onClick={() => router.push(config.redirect!)}
+            value="Create New Application"
+          />
+        </div>
+      )}
     </div>
   );
 }

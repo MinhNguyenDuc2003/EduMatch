@@ -1,5 +1,4 @@
 import React from 'react';
-import type { Intention } from '../types';
 import { Pencil, Plus } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import IntentionCard from './IntentionCard';
