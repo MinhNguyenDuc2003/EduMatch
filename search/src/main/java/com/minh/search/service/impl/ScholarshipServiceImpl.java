@@ -59,10 +59,16 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
             nativeQuery.withQuery(q -> q
                     .bool(b -> {
                         b.should(s -> s
-                                .multiMatch(m -> m
-                                        .fields(ScholarshipField.TITLE, ScholarshipField.UNIVERSITY)
+                                .match(m -> m
+                                        .field(ScholarshipField.TITLE)
                                         .query(criteria.getKeyword())
-                                        .fuzziness(Fuzziness.AUTO.asString())
+                                        .fuzziness(Fuzziness.ONE.asString())
+                                )
+                        );
+                        b.should(s -> s
+                                .term(t -> t
+                                        .field(ScholarshipField.UNIVERSITY)
+                                        .value(criteria.getKeyword())
                                 )
                         );
                         return b;
@@ -73,9 +79,12 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         if (hasCountry || hasStudyLevel || hasScholarshipType || hasGpa) {
             nativeQuery.withFilter(f -> f
                     .bool(b -> {
-                        if (hasCountry) extractedTermsFilter(criteria.getCriteria().getCountry(), ScholarshipField.COUNTRY, b);
-                        if (hasStudyLevel) extractedTermsFilter(criteria.getCriteria().getStudyLevel(), ScholarshipField.STUDY_LEVEL, b);
-                        if (hasScholarshipType) extractedTermsFilter(criteria.getCriteria().getScholarshipType(), ScholarshipField.SCHOLARSHIP_TYPE, b);
+                        if (hasCountry)
+                            extractedTermsFilter(criteria.getCriteria().getCountry(), ScholarshipField.COUNTRY, b);
+                        if (hasStudyLevel)
+                            extractedTermsFilter(criteria.getCriteria().getStudyLevel(), ScholarshipField.STUDY_LEVEL, b);
+                        if (hasScholarshipType)
+                            extractedTermsFilter(criteria.getCriteria().getScholarshipType(), ScholarshipField.SCHOLARSHIP_TYPE, b);
                         if (hasGpa) extractedRange(criteria.getMinGpa(), criteria.getMaxGpa(), b);
                         return b;
                     })

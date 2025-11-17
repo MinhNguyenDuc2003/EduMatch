@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
+import com.minh.model.dto.scholarship.ScholarshipViewDto;
 import com.minh.scholarship.data.vo.ScholarshipVo;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import com.minh.scholarship.service.ScholarshipService;
@@ -45,7 +46,6 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getScholarshipByProviderId(id));
     }
 
-    @Authorized
     @GetMapping("/slug")
     public ApiResponse<ScholarshipVo> getBySlug(@RequestParam String slug) {
         return ApiResponse.ok(scholarshipService.getBySlug(slug));
@@ -133,4 +133,10 @@ public class ScholarshipController {
     ) {
         return ApiResponse.ok(scholarshipService.updateScholarshipStatus(id, active));
     }
+
+    @GetMapping("/views/{id}")
+    public ApiResponse<List<ScholarshipViewDto>> getViewsByScholarshipId(@PathVariable Long id) {
+        return ApiResponse.ok(scholarshipService.getViewsByScholarshipId(id));
+    }
+
 }
