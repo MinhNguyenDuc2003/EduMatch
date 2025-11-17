@@ -11,7 +11,7 @@ export default function PremiumBanner() {
   const t = useTranslations('homepage.scholarshipsList.premiumBanner');
 
   const handleUpdate = () => {
-    router.push('/applicant/subscription');
+    router.push('/subscriptions?type=APPLICANT');
   };
 
   return (

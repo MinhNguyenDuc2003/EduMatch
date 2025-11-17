@@ -9,7 +9,7 @@ import {
 } from '@/lib/cus/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { Bell } from 'lucide-react';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Client, IMessage } from '@stomp/stompjs';
 import { toast } from 'sonner';
 import { useGetNotificationsQuery } from '@/state/apiAuth';
@@ -172,10 +172,6 @@ const Notifications = () => {
                 );
               })}
           </div>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem className="text-center justify-center text-primary-brand font-medium cursor-pointer">
-            {t('viewAllNotifications')}
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
