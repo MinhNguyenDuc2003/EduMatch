@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/lib/cus/button';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import CardSmalPicSkeleton from './CardSmalPicSkeleton';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, AlertCircle } from 'lucide-react';
 import { map } from 'lodash';
 import Pagination from './Pagination';
 import {
@@ -11,6 +11,7 @@ import {
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslations } from 'next-intl';
 
 type ScholarshipsSectionProps = {
   scholarships: Scholarship[];
@@ -31,6 +32,7 @@ export default function ScholarshipsSection({
 }: ScholarshipsSectionProps) {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const t = useTranslations('homepage.scholarships');
 
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
@@ -67,15 +69,13 @@ export default function ScholarshipsSection({
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h2 className="text-4xl font-bold text-slate-900 mb-3">Featured Scholarships</h2>
-            <p className="text-xl text-slate-600">
-              Explore our latest and most popular opportunities
-            </p>
+            <h2 className="text-4xl font-bold text-slate-900 mb-3">{t('title')}</h2>
+            <p className="text-xl text-slate-600">{t('subtitle')}</p>
           </div>
           <Button
             variant="outline"
             className="px-6 py-3 rounded-xl border-2 border-slate-300 text-primary hover:border-[#3D6CB9] hover:text-[#3D6CB9] transition-all"
-            value="View All"
+            value={t('viewAll')}
             iconRight={<ArrowRight className="w-4 h-4" />}
             onClick={() => router.push('/scholarships')}
           />
@@ -84,10 +84,16 @@ export default function ScholarshipsSection({
           {isLoading ? (
             Array.from({ length: 9 }).map((_, index) => <CardSmalPicSkeleton key={index} />)
           ) : isError ? (
-            <div className="col-span-full flex items-center justify-center py-20">
-              <p className="text-lg text-red-600">
-                Failed to load scholarships. Please try again later.
-              </p>
+            <div className="col-span-full">
+              <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50/50 px-8 py-20 text-center">
+                <div className="mb-6 rounded-full bg-white p-6 shadow-sm">
+                  <AlertCircle className="h-12 w-12 text-slate-400" />
+                </div>
+                <h2 className="mb-3 text-xl font-bold text-slate-800">{t('failedToLoad')}</h2>
+                <p className="max-w-md text-sm leading-relaxed text-slate-600">
+                  {t('failedToLoadDescription')}
+                </p>
+              </div>
             </div>
           ) : scholarships.length > 0 ? (
             map(scholarships, (item) => (
@@ -96,12 +102,11 @@ export default function ScholarshipsSection({
                 scholarship={item}
                 onViewDetails={() => handleViewDetails(item.slug)}
                 onToggleTracking={() => handleToggleTracking(item.id)}
-                isAuthenticated={isAuthenticated}
               />
             ))
           ) : (
             <div className="col-span-full flex items-center justify-center py-20">
-              <p className="text-lg text-slate-600">No scholarships found.</p>
+              <p className="text-lg text-slate-600">{t('noScholarships')}</p>
             </div>
           )}
         </div>

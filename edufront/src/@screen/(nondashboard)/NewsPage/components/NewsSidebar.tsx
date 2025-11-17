@@ -22,8 +22,6 @@ export default function NewsSidebar({
   onToggleTracking,
   onViewScholarship,
 }: NewsSidebarProps) {
-  const { isAuthenticated } = useAuth();
-
   const providerProfileVo = news.providerProfileVo || news.scholarship?.providerProfileVo;
   const provider = providerProfileVo;
 
@@ -162,7 +160,6 @@ export default function NewsSidebar({
               }
             }}
             onToggleTracking={onToggleTracking}
-            isAuthenticated={isAuthenticated}
           />
         </div>
       )}

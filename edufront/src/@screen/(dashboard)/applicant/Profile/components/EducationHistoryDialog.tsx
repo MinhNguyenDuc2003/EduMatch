@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -41,6 +42,8 @@ const EducationHistoryDialog = ({
 }: EducationHistoryDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit, control, watch } = useFormContext<IApplicantProfile>();
+  const t = useTranslations('homepage.applicantProfile.educationHistoryDialog');
+  const tCommon = useTranslations('homepage.applicantProfile.common');
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -84,13 +87,8 @@ const EducationHistoryDialog = ({
       {/* Header */}
       <div className="flex items-center gap-5">
         <div className="">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Description of your educational background
-          </h3>
-          <p className="text-sm text-gray-600">
-            Describe your educational background (you can add more educational background if you
-            want)
-          </p>
+          <h3 className="text-lg font-semibold text-gray-900">{t('description')}</h3>
+          <p className="text-sm text-gray-600">{t('subDescription')}</p>
         </div>
         <Button
           type="button"
@@ -99,7 +97,7 @@ const EducationHistoryDialog = ({
           className="flex items-center gap-2 text-primary-brand border-primary-brand hover:bg-primary-brand hover:text-white"
         >
           <Plus className="h-4 w-4" />
-          Add Education
+          {t('addEducation')}
         </Button>
       </div>
 
@@ -117,8 +115,10 @@ const EducationHistoryDialog = ({
                   <GraduationCap className="h-5 w-5 text-primary-brand" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900">Education #{index + 1}</h4>
-                  <p className="text-sm text-gray-600">Academic Institution</p>
+                  <h4 className="font-semibold text-gray-900">
+                    {t('educationNumber', { number: index + 1 })}
+                  </h4>
+                  <p className="text-sm text-gray-600">{t('academicInstitution')}</p>
                 </div>
               </div>
               <Button
@@ -127,7 +127,7 @@ const EducationHistoryDialog = ({
                 size="sm"
                 onClick={() => remove(index)}
                 className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 border-red-500"
-                title="Delete education"
+                title={t('deleteEducation')}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -137,22 +137,22 @@ const EducationHistoryDialog = ({
             <div className="space-y-4">
               <h5 className="font-medium text-gray-900 flex items-center gap-2">
                 <GraduationCap className="h-4 w-4" />
-                Institution Information
+                {t('institutionInformation')}
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.institutionName`}
-                  label="Institution Name"
-                  placeholder="Enter institution name"
+                  label={t('institutionName')}
+                  placeholder={t('enterInstitutionName')}
                   inlineLabel
                   isBorder
                 />
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.institutionType`}
-                  label="Institution Type"
+                  label={t('institutionType')}
                   type="select"
-                  placeholder="Select institution type"
+                  placeholder={t('selectInstitutionType')}
                   options={INSTITUTION_TYPES}
                   inlineLabel
                   isBorder
@@ -160,16 +160,16 @@ const EducationHistoryDialog = ({
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.state`}
-                  label="State/Province"
-                  placeholder="Enter state or province"
+                  label={t('stateProvince')}
+                  placeholder={t('enterStateProvince')}
                   inlineLabel
                   isBorder
                 />
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.country`}
-                  label="Country"
-                  placeholder="Enter country"
+                  label={t('country')}
+                  placeholder={t('enterCountry')}
                   inlineLabel
                   isBorder
                 />
@@ -180,14 +180,14 @@ const EducationHistoryDialog = ({
             <div className="space-y-4">
               <h5 className="font-medium text-gray-900 flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                Academic Information
+                {t('academicInformation')}
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.degreeType`}
-                  label="Degree Type"
+                  label={t('degreeType')}
                   type="select"
-                  placeholder="Select degree type"
+                  placeholder={t('selectDegreeType')}
                   options={STUDY_LEVELS}
                   inlineLabel
                   isBorder
@@ -195,9 +195,9 @@ const EducationHistoryDialog = ({
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.majorCategory`}
-                  label="Major Category"
+                  label={t('majorCategory')}
                   type="input-select"
-                  placeholder="Select major category"
+                  placeholder={t('selectMajorCategory')}
                   options={MAJOR_CATEGORIES}
                   inlineLabel
                   isBorder
@@ -205,9 +205,9 @@ const EducationHistoryDialog = ({
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.majorName`}
-                  label="Major Name"
+                  label={t('majorName')}
                   type="input-select"
-                  placeholder="Select major name"
+                  placeholder={t('selectMajorName')}
                   options={MAJOR_NAMES}
                   inlineLabel
                   isBorder
@@ -215,7 +215,7 @@ const EducationHistoryDialog = ({
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.gpa`}
-                  label="GPA"
+                  label={t('gpa')}
                   type="number"
                   placeholder="3.8"
                   inlineLabel
@@ -224,15 +224,15 @@ const EducationHistoryDialog = ({
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.classRank`}
-                  label="Class Rank"
-                  placeholder="e.g., 1st, 2nd, Top 10%"
+                  label={t('classRank')}
+                  placeholder={t('classRankPlaceholder')}
                   inlineLabel
                   isBorder
                 />
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.classSize`}
-                  label="Class Size"
+                  label={t('classSize')}
                   type="number"
                   placeholder="200"
                   inlineLabel
@@ -245,12 +245,12 @@ const EducationHistoryDialog = ({
             <div className="space-y-4">
               <h5 className="font-medium text-gray-900 flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                Enrollment Dates
+                {t('enrollmentDates')}
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.enrollmentStartDate`}
-                  label="Start Date"
+                  label={t('startDate')}
                   type="date"
                   inlineLabel
                   isBorder
@@ -258,7 +258,7 @@ const EducationHistoryDialog = ({
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.enrollmentEndDate`}
-                  label="End Date"
+                  label={t('endDate')}
                   type="date"
                   inlineLabel
                   isBorder
@@ -266,9 +266,9 @@ const EducationHistoryDialog = ({
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.graduationYear`}
-                  label="Graduation Year"
+                  label={t('graduationYear')}
                   type="number"
-                  placeholder="Enter graduation year"
+                  placeholder={t('enterGraduationYear')}
                   inlineLabel
                   isBorder
                 />
@@ -277,11 +277,11 @@ const EducationHistoryDialog = ({
 
             {/* Additional Information */}
             <div className="space-y-4">
-              <h5 className="font-medium text-gray-900">Additional Information</h5>
+              <h5 className="font-medium text-gray-900">{t('additionalInformation')}</h5>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.isDualEnrolled`}
-                  label="Dual Enrolled"
+                  label={t('dualEnrolled')}
                   type="switch"
                   inlineLabel
                   isBorder
@@ -289,7 +289,7 @@ const EducationHistoryDialog = ({
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.isTransfer`}
-                  label="Transfer Student"
+                  label={t('transferStudent')}
                   type="switch"
                   inlineLabel
                   isBorder
@@ -297,7 +297,7 @@ const EducationHistoryDialog = ({
 
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.isReturningStudent`}
-                  label="Returning Student"
+                  label={t('returningStudent')}
                   type="switch"
                   inlineLabel
                   isBorder
@@ -306,9 +306,9 @@ const EducationHistoryDialog = ({
 
               <CustomFormField
                 name={`applicantProfile.educationHistories.${index}.notes`}
-                label="Notes"
+                label={t('notes')}
                 type="textarea"
-                placeholder="Additional notes about this education..."
+                placeholder={t('notesPlaceholder')}
                 inlineLabel
                 isBorder
                 className="md:col-span-2"
@@ -317,22 +317,18 @@ const EducationHistoryDialog = ({
           </div>
         ))}
 
-        {length === 0 && (
+        {fields.length === 0 && (
           <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
             <GraduationCap className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-            <p className="text-lg font-medium mb-2">No education history added yet</p>
-            <p className="text-sm mb-4">
-              Click "Add Education" to get started with your academic background
-            </p>
+            <p className="text-lg font-medium mb-2">{t('noEducationHistoryAddedYet')}</p>
+            <p className="text-sm mb-4">{t('clickAddEducation')}</p>
           </div>
         )}
       </div>
 
       {/* Footer */}
       <div className="border-t pt-6">
-        <p className="text-sm text-gray-600 mb-4">
-          By clicking 'Save', you confirm that the education information provided is accurate.
-        </p>
+        <p className="text-sm text-gray-600 mb-4">{t('confirmEducationAccuracy')}</p>
       </div>
     </div>
   );
@@ -344,14 +340,14 @@ const EducationHistoryDialog = ({
         onClick={handleCancel}
         className="w-full sm:w-auto text-primary-brand px-10 py-2.5"
       >
-        Cancel
+        {tCommon('cancel')}
       </Button>
       <Button
         type="submit"
         className="w-full sm:w-auto px-10 py-2.5"
         onClick={handleSubmit(handleFormSubmit)}
       >
-        Save
+        {tCommon('save')}
       </Button>
     </div>
   );
@@ -361,9 +357,7 @@ const EducationHistoryDialog = ({
       <Drawer open={open} onOpenChange={handleCancel}>
         <DrawerContent className="min-h-[95vh]">
           <DrawerHeader className="border-b">
-            <DrawerTitle className="text-xl font-semibold text-primary-brand">
-              Education History
-            </DrawerTitle>
+            <DrawerTitle className="text-xl font-semibold text-primary-brand">{t('title')}</DrawerTitle>
             <DrawerDescription className="sr-only" />
           </DrawerHeader>
           <div className="flex-1 overflow-y-auto p-6">
@@ -379,9 +373,7 @@ const EducationHistoryDialog = ({
     <Dialog open={open} onOpenChange={handleCancel}>
       <DialogContent className="lg:min-w-6xl md:min-w-4xl min-w-2xl max-h-[90vh] flex flex-col gap-2.5 overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-primary-brand">
-            Education History
-          </DialogTitle>
+          <DialogTitle className="text-xl font-bold text-primary-brand">{t('title')}</DialogTitle>
           <DialogDescription className="sr-only" />
         </DialogHeader>
         <div className="flex-1 overflow-y-auto border-t p-2.5 border-[#828282]">

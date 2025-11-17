@@ -1,23 +1,26 @@
+'use client';
 import { Building2, Flag } from 'lucide-react';
 import Amount_Deadline from './Amount_Deadline';
 import { Anchor, Block, Card, RText, Section } from '@/lib/by/Div';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+import { useAuth } from '@/hooks/useAuth';
 
 type CardSmalPicProps = {
   scholarship: Scholarship;
   onViewDetails?: () => void;
   onToggleTracking?: () => void;
-  isAuthenticated?: boolean;
 };
 
 export default function CardSmalPic({
   onViewDetails,
   onToggleTracking,
   scholarship,
-  isAuthenticated,
 }: CardSmalPicProps) {
+  const { isAuthenticated } = useAuth();
   const { title, shortDescription, university, isFollow, fundingAmount, endDate } = scholarship;
   const { logoUrl, organizationName } = scholarship.providerProfileVo;
+  const t = useTranslations('homepage.cardSmalPic');
 
   return (
     <Section className="group bg-white flex flex-col rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:border-[#3D6CB9] relative h-full">
@@ -26,7 +29,7 @@ export default function CardSmalPic({
         <button
           className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm hover:shadow-md transition-all duration-200 "
           onClick={onToggleTracking}
-          aria-label="Track scholarship"
+          aria-label={t('trackScholarship')}
         >
           <Flag
             className={`w-5 h-5 transition-colors ${
@@ -48,7 +51,7 @@ export default function CardSmalPic({
             {logoUrl ? (
               <Image
                 src={logoUrl}
-                alt={organizationName || 'Organization logo'}
+                alt={organizationName || t('organizationLogo')}
                 fill
                 className="rounded-lg object-cover bg-white p-2"
               />

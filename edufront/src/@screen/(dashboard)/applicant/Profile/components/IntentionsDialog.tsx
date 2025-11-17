@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -34,6 +35,8 @@ interface IntentionsDialogProps {
 const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: IntentionsDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit, control } = useFormContext<IApplicantProfile>();
+  const t = useTranslations('homepage.applicantProfile.intentionsDialog');
+  const tCommon = useTranslations('homepage.applicantProfile.common');
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -71,10 +74,8 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
     <div className="space-y-6">
       <div className="flex items-center gap-5">
         <div className="">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Describe your educational intentions
-          </h3>
-          <p className="text-sm text-gray-600">Add where and what you intend to study.</p>
+          <h3 className="text-lg font-semibold text-gray-900">{t('description')}</h3>
+          <p className="text-sm text-gray-600">{t('subDescription')}</p>
         </div>
         <Button
           type="button"
@@ -83,7 +84,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
           className="flex items-center gap-2 text-primary-brand border-primary-brand hover:bg-primary-brand hover:text-white"
         >
           <Plus className="h-4 w-4" />
-          Add
+          {tCommon('add')}
         </Button>
       </div>
 
@@ -100,8 +101,10 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                   <GraduationCap className="h-5 w-5 text-primary-brand" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900">Intention #{index + 1}</h4>
-                  <p className="text-sm text-gray-600">Planned institution and program</p>
+                  <h4 className="font-semibold text-gray-900">
+                    {t('intentionNumber', { number: index + 1 })}
+                  </h4>
+                  <p className="text-sm text-gray-600">{t('plannedInstitutionProgram')}</p>
                 </div>
               </div>
               <Button
@@ -110,7 +113,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
                 size="sm"
                 onClick={() => remove(index)}
                 className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 border-red-500"
-                title="Delete intention"
+                title={t('deleteIntention')}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -120,22 +123,22 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
             <div className="space-y-4">
               <h5 className="font-medium text-gray-900 flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                Institution & Location
+                {t('institutionLocation')}
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.intendedInstitution`}
-                  label="Intended Institution"
-                  placeholder="Enter institution name"
+                  label={t('intendedInstitution')}
+                  placeholder={t('enterInstitutionName')}
                   inlineLabel
                   isBorder
                 />
 
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.degreeType`}
-                  label="Degree Type"
+                  label={t('degreeType')}
                   type="select"
-                  placeholder="Select degree type"
+                  placeholder={t('selectDegreeType')}
                   options={STUDY_LEVELS}
                   inlineLabel
                   isBorder
@@ -143,16 +146,16 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
 
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.intendedState`}
-                  label="State/Province"
-                  placeholder="Enter state or province"
+                  label={t('stateProvince')}
+                  placeholder={t('enterStateProvince')}
                   inlineLabel
                   isBorder
                 />
 
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.intendedCountry`}
-                  label="Country"
-                  placeholder="Enter country"
+                  label={t('country')}
+                  placeholder={t('enterCountry')}
                   inlineLabel
                   isBorder
                 />
@@ -163,14 +166,14 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
             <div className="space-y-4">
               <h5 className="font-medium text-gray-900 flex items-center gap-2">
                 <GraduationCap className="h-4 w-4" />
-                Academic Details
+                {t('academicDetails')}
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.intendedMajorCategory`}
-                  label="Major Category"
+                  label={t('majorCategory')}
                   type="input-select"
-                  placeholder="Select major category"
+                  placeholder={t('selectMajorCategory')}
                   options={MAJOR_CATEGORIES}
                   inlineLabel
                   isBorder
@@ -178,8 +181,8 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
 
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.intendedMajorName`}
-                  label="Major Name"
-                  placeholder="Enter major name"
+                  label={t('majorName')}
+                  placeholder={t('enterMajorName')}
                   type="input-select"
                   options={MAJOR_NAMES}
                   inlineLabel
@@ -188,8 +191,8 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
 
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.academicClassification`}
-                  label="Academic Classification"
-                  placeholder="e.g., Freshman, Sophomore"
+                  label={t('academicClassification')}
+                  placeholder={t('academicClassificationPlaceholder')}
                   inlineLabel
                   isBorder
                 />
@@ -200,12 +203,12 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
             <div className="space-y-4">
               <h5 className="font-medium text-gray-900 flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                Timeline
+                {t('timeline')}
               </h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.expectedStartDate`}
-                  label="Expected Start Date"
+                  label={t('expectedStartDate')}
                   type="date"
                   inlineLabel
                   isBorder
@@ -213,9 +216,9 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
 
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.expectedGraduationYear`}
-                  label="Expected Graduation Year"
+                  label={t('expectedGraduationYear')}
                   type="number"
-                  placeholder="Enter graduation year"
+                  placeholder={t('enterGraduationYear')}
                   inlineLabel
                   isBorder
                 />
@@ -224,11 +227,11 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
 
             {/* Additional */}
             <div className="space-y-4">
-              <h5 className="font-medium text-gray-900">Additional Information</h5>
+              <h5 className="font-medium text-gray-900">{t('additionalInformation')}</h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.isTransferStudent`}
-                  label="Transfer Student"
+                  label={t('transferStudent')}
                   type="switch"
                   inlineLabel
                   isBorder
@@ -236,7 +239,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
 
                 <CustomFormField
                   name={`applicantProfile.intentions.${index}.isReturningStudent`}
-                  label="Returning Student"
+                  label={t('returningStudent')}
                   type="switch"
                   inlineLabel
                   isBorder
@@ -245,9 +248,9 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
 
               <CustomFormField
                 name={`applicantProfile.intentions.${index}.notes`}
-                label="Notes"
+                label={t('notes')}
                 type="textarea"
-                placeholder="Additional notes about this intention..."
+                placeholder={t('notesPlaceholder')}
                 inlineLabel
                 isBorder
                 className="md:col-span-2"
@@ -256,19 +259,17 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
           </div>
         ))}
 
-        {length === 0 && (
+        {fields.length === 0 && (
           <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
             <GraduationCap className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-            <p className="text-lg font-medium mb-2">No intentions added yet</p>
-            <p className="text-sm mb-4">Click "Add" to start adding your intentions</p>
+            <p className="text-lg font-medium mb-2">{t('noIntentionsAddedYet')}</p>
+            <p className="text-sm mb-4">{t('clickAddToStart')}</p>
           </div>
         )}
       </div>
 
       <div className="border-t pt-6">
-        <p className="text-sm text-gray-600 mb-4">
-          By clicking 'Save', you confirm that the information provided is accurate.
-        </p>
+        <p className="text-sm text-gray-600 mb-4">{tCommon('confirmAccuracy')}</p>
       </div>
     </div>
   );
@@ -280,14 +281,14 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
         onClick={handleCancel}
         className="w-full sm:w-auto text-primary-brand px-10 py-2.5"
       >
-        Cancel
+        {tCommon('cancel')}
       </Button>
       <Button
         type="submit"
         className="w-full sm:w-auto px-10 py-2.5"
         onClick={handleSubmit(handleFormSubmit)}
       >
-        Save
+        {tCommon('save')}
       </Button>
     </div>
   );
@@ -298,7 +299,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
         <DrawerContent className="min-h-[95vh]">
           <DrawerHeader className="border-b">
             <DrawerTitle className="text-xl font-semibold text-primary-brand">
-              Educational Intentions
+              {t('title')}
             </DrawerTitle>
             <DrawerDescription className="sr-only" />
           </DrawerHeader>
@@ -315,9 +316,7 @@ const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: Intentions
     <Dialog open={open} onOpenChange={handleCancel}>
       <DialogContent className="lg:min-w-6xl md:min-w-4xl min-w-2xl max-h-[90vh] flex flex-col gap-2.5 overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-primary-brand">
-            Educational Intentions
-          </DialogTitle>
+          <DialogTitle className="text-xl font-bold text-primary-brand">{t('title')}</DialogTitle>
           <DialogDescription className="sr-only" />
         </DialogHeader>
         <div className="flex-1 overflow-y-auto border-t p-2.5 border-[#828282]">

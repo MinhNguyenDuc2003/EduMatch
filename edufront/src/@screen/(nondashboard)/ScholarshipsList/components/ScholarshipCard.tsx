@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -6,6 +7,7 @@ import { Button } from '@/lib/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslations } from 'next-intl';
 
 type ScholarshipCardProps = {
   scholarship: Scholarship;
@@ -28,6 +30,7 @@ export default function ScholarshipCard({
 }: ScholarshipCardProps) {
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const t = useTranslations('homepage.scholarshipsList.scholarshipCard');
 
   const images = getScholarshipImages(scholarship);
   const { logoUrl, organizationName, isFollow, id } = scholarship.providerProfileVo;
@@ -46,7 +49,7 @@ export default function ScholarshipCard({
                 {logoUrl ? (
                   <Image
                     src={logoUrl}
-                    alt={organizationName || 'Organization logo'}
+                    alt={organizationName || t('organizationLogo')}
                     fill
                     className="rounded-md object-cover bg-white"
                   />
@@ -61,7 +64,7 @@ export default function ScholarshipCard({
                   className="font-semibold text-gray-900 text-sm transition-colors cursor-pointer hover:underline"
                   onClick={() => onViewProvider?.(id)}
                 >
-                  {organizationName || 'Organization Name'}
+                  {organizationName || t('organizationName')}
                 </h3>
                 {isAuthenticated && (
                   <button
@@ -72,7 +75,7 @@ export default function ScholarshipCard({
                         : 'text-gray-600 bg-gray-50 hover:bg-blue-50 hover:text-blue-700'
                     }`}
                   >
-                    {isFollow === 1 ? 'Following' : 'Follow'}
+                    {isFollow === 1 ? t('following') : t('follow')}
                   </button>
                 )}
               </div>
@@ -82,7 +85,7 @@ export default function ScholarshipCard({
                 onClick={() => onToggleTracking?.(scholarship.id)}
                 className="p-2 rounded-full hover:bg-gray-100 transition-colors"
                 aria-label={
-                  scholarship.isFollow === 1 ? 'Untrack scholarship' : 'Track scholarship'
+                  scholarship.isFollow === 1 ? t('untrackScholarship') : t('trackScholarship')
                 }
               >
                 <Flag
@@ -128,19 +131,19 @@ export default function ScholarshipCard({
             <div className="space-y-2 mb-3 text-xs">
               {scholarship.university && (
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-500 font-medium min-w-[80px]">University:</span>
+                  <span className="text-gray-500 font-medium min-w-[80px]">{t('university')}:</span>
                   <span className="text-gray-900">{scholarship.university}</span>
                 </div>
               )}
               {scholarship.studyLevel && (
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-500 font-medium min-w-[80px]">Level:</span>
+                  <span className="text-gray-500 font-medium min-w-[80px]">{t('level')}:</span>
                   <span className="text-gray-900">{scholarship.studyLevel}</span>
                 </div>
               )}
               {scholarship.scholarshipType && (
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-500 font-medium min-w-[80px]">Type:</span>
+                  <span className="text-gray-500 font-medium min-w-[80px]">{t('type')}:</span>
                   <span className="text-gray-900">{scholarship.scholarshipType}</span>
                 </div>
               )}
@@ -161,18 +164,14 @@ export default function ScholarshipCard({
                         day: 'numeric',
                         year: 'numeric',
                       })
-                    : 'No deadline'}
+                    : t('noDeadline')}
                 </span>
               </div>
 
               {/* Amount */}
               <div className="flex items-center gap-1.5">
                 <DollarSign className="w-4 h-4" />
-                <span className="font-semibold text-gray-900">
-                  {scholarship.fundingAmount
-                    ? scholarship.fundingAmount.replace(/[^0-9.,]/g, '')
-                    : '$0'}
-                </span>
+                <span className="font-semibold text-gray-900">{scholarship.fundingAmount}</span>
               </div>
             </div>
 

@@ -33,8 +33,10 @@ import {
   useCreateProfileMutation,
   useUpdateProfileMutation,
 } from '@/state/apiApplicant';
+import { useTranslations } from 'next-intl';
 
 export default function Profile() {
+  const t = useTranslations('homepage.applicantProfile');
   const [isStudentInfoDialogOpen, setIsStudentInfoDialogOpen] = useState(false);
   const [isSkillsDialogOpen, setIsSkillsDialogOpen] = useState(false);
   const [isEducationDialogOpen, setIsEducationDialogOpen] = useState(false);
@@ -124,7 +126,10 @@ export default function Profile() {
     <Form {...methods}>
       {/* Breadcrumb Navigation */}
       <BreadcrumbHeader
-        items={[{ label: 'Applicant', href: '/applicant' }, { label: 'Profile' }]}
+        items={[
+          { label: t('breadcrumb.applicant'), href: '/applicant' },
+          { label: t('breadcrumb.profile') },
+        ]}
       />
 
       <div className="min-h-screen bg-gray-50 py-8 px-4 lg:px-40">
@@ -147,65 +152,65 @@ export default function Profile() {
           <div className="grid grid-cols-1 lg:grid-cols-3 lg:grid-rows-4 gap-6 auto-rows-fr ">
             {/* Columns 1 - Student Info */}
             <InfoCard
-              title="Student Information"
+              title={t('sections.studentInformation')}
               fields={[
                 {
-                  label: 'Contact Name',
+                  label: t('fields.contactName'),
                   value: applicantProfile?.contactName,
                 },
                 {
-                  label: 'First Name',
+                  label: t('fields.firstName'),
                   value: applicantProfile?.firstName,
                 },
                 {
-                  label: 'Last Name',
+                  label: t('fields.lastName'),
                   value: applicantProfile?.lastName,
                 },
                 {
-                  label: 'Phone Number',
+                  label: t('fields.phoneNumber'),
                   value: applicantProfile?.phoneNumber,
                 },
                 {
-                  label: 'Overall GPA',
+                  label: t('fields.overallGpa'),
                   value: applicantProfile?.overallGpa
                     ? applicantProfile.overallGpa.toFixed(2)
                     : undefined,
                 },
                 {
-                  label: 'Hometown',
+                  label: t('fields.hometown'),
                   value: applicantProfile?.hometown,
                 },
                 {
-                  label: 'Citizenship Status',
+                  label: t('fields.citizenshipStatus'),
                   value: applicantProfile?.citizenshipStatus,
                 },
                 {
-                  label: 'Race',
+                  label: t('fields.race'),
                   value: applicantProfile?.race,
                 },
                 {
-                  label: 'Ethnicity',
+                  label: t('fields.ethnicity'),
                   value: applicantProfile?.ethnicity,
                 },
                 {
-                  label: 'Religion',
+                  label: t('fields.religion'),
                   value: applicantProfile?.religion,
                 },
                 {
-                  label: 'Military Family History',
+                  label: t('fields.militaryFamilyHistory'),
                   value:
                     applicantProfile?.militaryFamilyHistory !== undefined
                       ? applicantProfile.militaryFamilyHistory
-                        ? 'Yes'
-                        : 'No'
+                        ? t('fields.yes')
+                        : t('fields.no')
                       : undefined,
                 },
                 {
-                  label: 'Disabilities',
+                  label: t('fields.disabilities'),
                   value: applicantProfile?.disabilities,
                 },
                 {
-                  label: 'Medical Conditions',
+                  label: t('fields.medicalConditions'),
                   value: applicantProfile?.medicalConditions,
                 },
               ]}
@@ -217,30 +222,30 @@ export default function Profile() {
 
             {/* Row 1 - Academic Info */}
             <InfoCard
-              title="Interests & Activities"
+              title={t('sections.interestsActivities')}
               fields={[
                 {
-                  label: 'Art/Music/Theater',
+                  label: t('fields.artMusicTheater'),
                   value: applicantProfile?.favoriteActivities,
                 },
                 {
-                  label: 'Sports Participated',
+                  label: t('fields.sportsParticipated'),
                   value: applicantProfile?.sportsParticipated,
                 },
                 {
-                  label: 'Student Activities',
+                  label: t('fields.studentActivities'),
                   value: applicantProfile?.studentActivities,
                 },
                 {
-                  label: 'Organizations Joined',
+                  label: t('fields.organizationsJoined'),
                   value: applicantProfile?.organizationsJoined,
                 },
                 {
-                  label: 'Career Goals',
+                  label: t('fields.careerGoals'),
                   value: applicantProfile?.careerGoals,
                 },
                 {
-                  label: 'Research Experience',
+                  label: t('fields.researchExperience'),
                   value: applicantProfile?.researchExperience,
                 },
               ]}
@@ -250,23 +255,23 @@ export default function Profile() {
 
             {/* Applicant Preferences Section */}
             <ArrayInfoCard
-              title="Applicant Preferences"
+              title={t('sections.applicantPreferences')}
               items={applicantProfile?.applicantPreferences}
               onEdit={() => handleEdit('preferences')}
               renderItem={(preference) => <PreferenceCard preference={preference} />}
-              emptyMessage="No preferences added"
+              emptyMessage={t('common.noPreferencesAdded')}
               className="lg:col-start-2 lg:row-start-3 "
             />
 
             <InfoCard
-              title="Account Settings"
+              title={t('sections.accountSettings')}
               fields={[
                 {
-                  label: 'Email Address',
+                  label: t('fields.emailAddress'),
                   value: customer?.email,
                 },
                 {
-                  label: 'Password',
+                  label: t('fields.password'),
                   value: '•••••••••',
                 },
               ]}
@@ -274,20 +279,20 @@ export default function Profile() {
               className="lg:col-start-2 lg:row-start-4"
             />
             <ArrayInfoCard
-              title="Education History"
+              title={t('sections.educationHistory')}
               items={applicantProfile?.educationHistories}
               onEdit={() => handleEdit('education-add')}
               renderItem={(edu) => <HistoryCard edu={edu} />}
-              emptyMessage="No education history added"
+              emptyMessage={t('common.noEducationHistoryAdded')}
               className="lg:col-start-3 lg:row-start-1 lg:row-span-2"
             />
 
             <ArrayInfoCard
-              title="Skills"
+              title={t('sections.skills')}
               items={applicantProfile?.skills}
               onEdit={() => handleEdit('skills')}
               renderItem={(skill) => <SkillCard skill={skill} />}
-              emptyMessage="No skills added"
+              emptyMessage={t('common.noSkillsAdded')}
               className="lg:col-start-3 lg:row-start-3 lg:row-span-2"
             />
           </div>

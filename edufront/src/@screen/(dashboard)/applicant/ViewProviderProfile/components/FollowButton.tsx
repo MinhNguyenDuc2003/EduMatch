@@ -1,5 +1,7 @@
+'use client';
 import { Plus, Minus } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
+import { useTranslations } from 'next-intl';
 
 interface FollowButtonProps {
   isFollowing: boolean;
@@ -7,6 +9,8 @@ interface FollowButtonProps {
 }
 
 export default function FollowButton({ isFollowing, onToggle }: FollowButtonProps) {
+  const t = useTranslations('homepage.viewProviderProfile.followButton');
+  
   return (
     <Button
       onClick={onToggle}
@@ -18,7 +22,7 @@ export default function FollowButton({ isFollowing, onToggle }: FollowButtonProp
           <Plus className="w-4 h-4 text-[#3D6CB9]" />
         )
       }
-      value={isFollowing ? 'Unfollow' : 'Follow'}
+      value={isFollowing ? t('unfollow') : t('follow')}
       hover={false}
       className={`px-4 py-2 rounded-md border ${
         isFollowing
