@@ -4,18 +4,15 @@ import { Check } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import { useRouter } from 'next/navigation';
 
-export default function Subscription({
-  id,
-  name,
-  description,
-  price,
-  currency,
-  durationDays,
-  targetType,
-  features,
-}: Subscription) {
-  const featuresList = features ? features.split(',').map((f) => f.trim()) : [];
+type SubscriptionProps = {
+  subscription?: SubscriptionPlan;
+};
+
+export default function Subscription({ subscription }: SubscriptionProps) {
   const router = useRouter();
+
+  const { id, name, description, price, currency, durationDays, features } = subscription || {};
+  console.log(subscription, 'subscription');
 
   return (
     <div className="relative max-w-sm rounded-lg border-2 flex flex-col transition-all bg-white border-gray-200 shadow-sm hover:shadow-md ">
@@ -89,7 +86,7 @@ export default function Subscription({
             <p className="text-sm font-medium text-gray-600">Start at</p>
             <div className="flex items-center gap-2">
               <span className="text-3xl font-bold text-gray-900">
-                {price.toFixed(2)} {currency}
+                {price?.toFixed(2)} {currency}
               </span>
               <span className="text-sm font-medium text-gray-600">/ month</span>
             </div>
@@ -116,7 +113,7 @@ export default function Subscription({
       <div className="flex flex-col gap-2 p-6">
         <h4 className="text-sm font-normal text-gray-900 mb-3">{name} features:</h4>
         <div className="flex-1 space-y-3 mb-6">
-          {featuresList.map((feature, index) => (
+          {features?.map((feature, index) => (
             <div key={index} className="flex items-start gap-2">
               <Check className="w-5 h-5 flex-shrink-0 mt-0.5 text-green-600" />
               <span className="text-sm text-gray-900">{feature}</span>

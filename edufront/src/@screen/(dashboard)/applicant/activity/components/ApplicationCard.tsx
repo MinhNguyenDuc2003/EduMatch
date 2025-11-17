@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/lib/cus/button';
+import { useTranslations } from 'next-intl';
 
 type ApplicationCardProps = {
   application: Application;
@@ -15,6 +16,8 @@ export default function ApplicationCard({
   onDelete,
   onViewDetails,
 }: ApplicationCardProps) {
+  const t = useTranslations('homepage.activity.applicationCard');
+
   return (
     <article
       className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-lg cursor-pointer"
@@ -23,7 +26,7 @@ export default function ApplicationCard({
       {/* Header Section */}
       <div className=" border-slate-200 bg-gradient-to-r from-primary-light to-white p-3">
         <h3 className="text-base font-bold text-slate-900 truncate">
-          {application.applicationName || 'Application Name'}
+          {application.applicationName || t('applicationName')}
         </h3>
       </div>
 
@@ -33,7 +36,7 @@ export default function ApplicationCard({
           <div className="flex items-center justify-between gap-2">
             {/* Application Name */}
             <div className="flex flex-col">
-              <span className="text-xs font-medium text-slate-500">Full Name</span>
+              <span className="text-xs font-medium text-slate-500">{t('fullName')}</span>
               <span className="text-sm font-semibold text-slate-900">
                 {application.fullName || 'N/A'}
               </span>
@@ -41,7 +44,7 @@ export default function ApplicationCard({
 
             {/* GPA */}
             <div className="flex flex-col">
-              <span className="text-xs font-medium text-slate-500">GPA</span>
+              <span className="text-xs font-medium text-slate-500">{t('gpa')}</span>
               <span className="text-sm text-slate-700">
                 {application.gpa !== undefined && application.gpa !== null
                   ? application.gpa.toFixed(2)
@@ -52,13 +55,13 @@ export default function ApplicationCard({
 
           {/* Major */}
           <div className="flex flex-col">
-            <span className="text-xs font-medium text-slate-500">Major</span>
+            <span className="text-xs font-medium text-slate-500">{t('major')}</span>
             <span className="text-sm text-slate-700">{application.major || 'N/A'}</span>
           </div>
 
           {/* Skills */}
           <div className="flex flex-col">
-            <span className="text-xs font-medium text-slate-500">Skills</span>
+            <span className="text-xs font-medium text-slate-500">{t('skills')}</span>
             <span className="text-sm text-slate-700">{application.skills || 'N/A'}</span>
           </div>
         </div>
@@ -71,7 +74,7 @@ export default function ApplicationCard({
             variant="outline"
             size="sm"
             className="flex-1 text-slate-700 border-slate-300 hover:bg-slate-100 hover:border-slate-400"
-            value="Edit"
+            value={t('edit')}
             onClick={(e) => {
               e.stopPropagation();
               onEdit(application);
@@ -83,7 +86,7 @@ export default function ApplicationCard({
             variant="outline"
             size="sm"
             className="flex-1 text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
-            value="Delete"
+            value={t('delete')}
             onClick={(e) => {
               e.stopPropagation();
               onDelete(application.id);

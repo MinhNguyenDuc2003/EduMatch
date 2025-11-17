@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   HeroSection,
   TabSwitcher,
@@ -14,7 +15,7 @@ import {
   ApplicationDetail,
 } from './components';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
-import { type ShortlistTab, TAB_CONFIGS } from './types';
+import { type ShortlistTab, getTabConfigs } from './types';
 import { useGetFollowedProvidersQuery, useUnfollowProviderMutation } from '@/state/apiProvider';
 import {
   useGetTrackedScholarshipsQuery,
@@ -30,11 +31,13 @@ import { Button } from '@/lib/cus/button';
 
 export default function ActivityManagement() {
   const router = useRouter();
+  const t = useTranslations();
   const [activeTab, setActiveTab] = useState<ShortlistTab>('tracking');
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
   const [selectedAppliedScholarship, setSelectedAppliedScholarship] =
     useState<ApplicationScholarship | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const TAB_CONFIGS = getTabConfigs(t);
 
   const { data: trackedScholarshipsData, isLoading: isLoadingTrackedScholarships } =
     useGetTrackedScholarshipsQuery();
@@ -60,11 +63,11 @@ export default function ActivityManagement() {
   const isTrackedTab = activeTab === 'tracking';
   const isApplicationTab = activeTab === 'application';
 
-  const handleViewDetails = (slug: string) => {
+  const handleViewDetails = (slug?: string) => {
     router.push(`/scholarships/${slug}`);
   };
 
-  const handleViewProvider = (providerId: number) => {
+  const handleViewProvider = (providerId?: number) => {
     router.push(`/applicant/providers/${providerId}`);
   };
 
@@ -197,7 +200,7 @@ export default function ActivityManagement() {
                     variant="custom"
                     color="gray"
                     onClick={handleCreateNew}
-                    value="Create New Application"
+                    value={t('homepage.activity.applicationDetail.createNewApplication')}
                   />
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {applicationsData?.map((application) => (
@@ -236,6 +239,8 @@ export default function ActivityManagement() {
         onOpenChange={setIsDetailOpen}
         application={selectedApplication}
         appliedScholarship={selectedAppliedScholarship}
+        onViewProvider={handleViewProvider}
+        onViewScholarship={handleViewDetails}
       />
     </div>
   );

@@ -3,6 +3,7 @@
 import React from 'react';
 import { Pencil, Plus } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
+import { useTranslations } from 'next-intl';
 
 interface ArrayItem {
   [key: string]: any;
@@ -21,11 +22,13 @@ export default function ArrayInfoCard({
   title,
   items,
   renderItem,
-  emptyMessage = 'No items added yet',
+  emptyMessage,
   onEdit,
   className,
 }: ArrayInfoCardProps) {
+  const t = useTranslations('homepage.applicantProfile.common');
   const hasItems = items && items.length > 0;
+  const defaultEmptyMessage = emptyMessage || t('noItemsAdded');
 
   return (
     <div className={`bg-[#FAFAF6] rounded-lg border border-[#828282] p-6 relative ${className}`}>
@@ -40,7 +43,7 @@ export default function ArrayInfoCard({
               onClick={onEdit}
             >
               <Pencil className="w-3 h-3" />
-              Edit
+              {t('edit')}
             </Button>
           )}
         </div>
@@ -55,7 +58,7 @@ export default function ArrayInfoCard({
             </div>
           ))
         ) : (
-          <div className="text-sm text-gray-400 italic py-2">{emptyMessage}</div>
+          <div className="text-sm text-gray-400 italic py-2">{defaultEmptyMessage}</div>
         )}
       </div>
     </div>

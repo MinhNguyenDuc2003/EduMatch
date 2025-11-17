@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Mail, Phone, BadgeCheck } from 'lucide-react';
 import { useGetProviderProfileByIdQuery } from '@/state/apiProvider';
 import { Button } from '@/lib/cus/button';
+import { useTranslations } from 'next-intl';
 
 type ProviderCardProps = {
   provider: ProviderProfile;
@@ -12,6 +13,7 @@ type ProviderCardProps = {
 };
 
 export default function ProviderCard({ provider, onViewDetails, onUnfollow }: ProviderCardProps) {
+  const t = useTranslations('homepage.activity.providerCard');
   const { organizationName, email, phone, logoUrl, bannerUrl, verified } = provider;
 
   return (
@@ -71,7 +73,7 @@ export default function ProviderCard({ provider, onViewDetails, onUnfollow }: Pr
             {organizationName ? organizationName : `Provider #${provider.id}`}
           </h3>
           {verified && (
-            <BadgeCheck className="h-5 w-5 text-blue-500 flex-shrink-0" aria-label="Verified" />
+            <BadgeCheck className="h-5 w-5 text-blue-500 flex-shrink-0" aria-label={t('verified')} />
           )}
         </div>
       </div>
@@ -103,7 +105,7 @@ export default function ProviderCard({ provider, onViewDetails, onUnfollow }: Pr
               shadown={false}
               hover={false}
               className="text-slate-600"
-              value="Unfollow"
+              value={t('unfollow')}
               onClick={(e) => {
                 e.stopPropagation();
                 onUnfollow();

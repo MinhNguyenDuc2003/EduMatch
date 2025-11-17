@@ -1,11 +1,14 @@
+'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Zap } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export default function PremiumBanner() {
   const router = useRouter();
   const [isUpgraded, setIsUpgraded] = useState(false);
   const recommendedCount = 12; // Hardcoded for now
+  const t = useTranslations('homepage.scholarshipsList.premiumBanner');
 
   const handleUpdate = () => {
     router.push('/applicant/subscription');
@@ -61,21 +64,16 @@ export default function PremiumBanner() {
             <div className="md:hidden space-y-3">
               <div className="inline-block px-2 py-1 bg-white/20 backdrop-blur-sm rounded-md">
                 <span className="text-xs font-semibold text-white uppercase tracking-wide">
-                  Premium
+                  {t('badge')}
                 </span>
               </div>
-              <h3 className="text-white font-bold text-base leading-tight">
-                Auto-Match Scholarships
-              </h3>
-              <p className="text-white/90 text-sm leading-relaxed">
-                Upgrade to premium and let AI automatically find scholarships tailored to your
-                profile
-              </p>
+              <h3 className="text-white font-bold text-base leading-tight">{t('title')}</h3>
+              <p className="text-white/90 text-sm leading-relaxed">{t('description')}</p>
               <button
                 onClick={handleUpdate}
                 className="w-full bg-white text-blue-900 font-semibold py-2.5 px-4 rounded-lg hover:bg-gray-100 transition-all duration-200 shadow-lg"
               >
-                Update Now
+                {t('updateNow')}
               </button>
             </div>
 
@@ -84,24 +82,19 @@ export default function PremiumBanner() {
               <div className="flex items-center gap-4 flex-1">
                 <div className="inline-block px-2 py-1 bg-white/20 backdrop-blur-sm rounded-md">
                   <span className="text-xs font-semibold text-white uppercase tracking-wide">
-                    Premium
+                    {t('badge')}
                   </span>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-white font-bold text-lg mb-1 leading-tight">
-                    Auto-Match Scholarships
-                  </h3>
-                  <p className="text-white/90 text-sm leading-relaxed">
-                    Upgrade to premium and let AI automatically find scholarships tailored to your
-                    profile
-                  </p>
+                  <h3 className="text-white font-bold text-lg mb-1 leading-tight">{t('title')}</h3>
+                  <p className="text-white/90 text-sm leading-relaxed">{t('description')}</p>
                 </div>
               </div>
               <button
                 onClick={handleUpdate}
                 className="flex items-center gap-2 bg-white text-blue-900 font-semibold py-2.5 px-6 rounded-lg hover:cursor-pointer hover:bg-gray-100 transition-all duration-200 shadow-lg whitespace-nowrap"
               >
-                Update Now
+                {t('updateNow')}
               </button>
             </div>
           </>
@@ -110,22 +103,18 @@ export default function PremiumBanner() {
             {/* After Upgrade - Mobile */}
             <div className="md:hidden text-center space-y-3">
               <h3 className="text-white font-bold text-xl">
-                We Found {recommendedCount} Perfect Matches!
+                {t('foundMatches', { count: recommendedCount })}
               </h3>
-              <p className="text-white/90 text-sm">
-                AI has matched you with scholarships tailored to your profile
-              </p>
+              <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
             </div>
 
             {/* After Upgrade - Desktop */}
             <div className="hidden md:flex items-center gap-4">
               <div>
                 <h3 className="text-white font-bold text-xl mb-1">
-                  We Found {recommendedCount} Perfect Matches!
+                  {t('foundMatches', { count: recommendedCount })}
                 </h3>
-                <p className="text-white/90 text-sm">
-                  AI has matched you with scholarships tailored to your profile
-                </p>
+                <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
               </div>
             </div>
           </>

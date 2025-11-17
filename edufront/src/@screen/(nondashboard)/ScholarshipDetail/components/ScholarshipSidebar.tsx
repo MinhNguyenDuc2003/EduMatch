@@ -1,7 +1,9 @@
+'use client';
 import { MapPin, Mail, Phone, Globe, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import { Card } from '@/lib/by/Div';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 type ScholarshipSidebarProps = {
   scholarship: Scholarship;
@@ -17,6 +19,7 @@ export default function ScholarshipSidebar({
   onToggleFollow,
 }: ScholarshipSidebarProps) {
   const provider = scholarship.providerProfileVo;
+  const t = useTranslations('homepage.scholarshipDetail.sidebar');
 
   return (
     <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
@@ -32,7 +35,7 @@ export default function ScholarshipSidebar({
               {provider.logoUrl ? (
                 <Image
                   src={provider.logoUrl}
-                  alt={provider.organizationName || 'Scholarship logo'}
+                  alt={provider.organizationName || t('scholarshipLogo')}
                   fill
                   className="rounded-lg object-cover bg-white p-1"
                 />
@@ -63,7 +66,7 @@ export default function ScholarshipSidebar({
             </div>
             {/* Follow Button */}
             <Button
-              value={isFollowing ? 'Following' : 'Follow'}
+              value={isFollowing ? t('following') : t('follow')}
               variant="outline_active"
               size="sm"
               onClick={onToggleFollow}
@@ -131,7 +134,7 @@ export default function ScholarshipSidebar({
         {/* Description */}
         {provider.description && (
           <div className="pt-2 border-t border-gray-200">
-            <h4 className="font-semibold text-gray-900 text-sm mb-2">About</h4>
+            <h4 className="font-semibold text-gray-900 text-sm mb-2">{t('about')}</h4>
             <p className="text-gray-700 text-sm leading-relaxed">{provider.description}</p>
           </div>
         )}

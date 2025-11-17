@@ -36,6 +36,13 @@ export const apiSubscription = createApi({
       }),
       providesTags: ['SubscriptionPlan'],
     }),
+    getSubscriptionByTargetType: build.query<SubscriptionPlan[], { targetType: string }>({
+      query: ({ targetType }) => ({
+        url: `${API_ENDPOINTS.SUBSCRIPTION_PLAN}/targetType/${targetType}`,
+        method: 'GET',
+      }),
+      providesTags: ['SubscriptionPlan'],
+    }),
   }),
 });
 
@@ -43,4 +50,5 @@ export const {
   useGetSubscriptionPlanByIdQuery,
   useGetSubscriptionQuery,
   useCreatePaymentIntentMutation,
+  useGetSubscriptionByTargetTypeQuery,
 } = apiSubscription;

@@ -18,10 +18,12 @@ import {
 } from './components';
 import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 import SubmitApplicationDialog from '@/pattern/share/SubmitApplicationDialog';
+import { useTranslations } from 'next-intl';
 
 export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const t = useTranslations('homepage.scholarshipDetail');
 
   const { data: scholarship, isLoading, isError, refetch } = useGetScholarshipBySlugQuery(slug);
   const [followProvider] = useFollowProviderMutation();
@@ -37,9 +39,9 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Scholarship not found</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('notFound')}</h1>
           <Button
-            value="Back to Scholarships"
+            value={t('backToScholarships')}
             onClick={() => router.push('/scholarships')}
             variant="outline"
           />
@@ -112,23 +114,23 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
     ? (() => {
         try {
           const date = new Date(scholarshipEndDate);
-          if (isNaN(date.getTime())) return 'No deadline';
+          if (isNaN(date.getTime())) return t('noDeadline');
           return date.toLocaleDateString('en-US', {
             month: 'long',
             day: 'numeric',
             year: 'numeric',
           });
         } catch {
-          return 'No deadline';
+          return t('noDeadline');
         }
       })()
-    : 'No deadline';
+    : t('noDeadline');
 
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumbs Header */}
       <BreadcrumbHeader
-        items={[{ label: 'Scholarships', href: '/scholarships' }, { label: scholarshipTitle }]}
+        items={[{ label: t('scholarships'), href: '/scholarships' }, { label: scholarshipTitle }]}
       />
 
       {/* Main Content */}
@@ -165,7 +167,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
               />
               {/* Action Button */}
               <Button
-                value="Apply Now"
+                value={t('applyNow')}
                 variant="ok"
                 size="lg"
                 full

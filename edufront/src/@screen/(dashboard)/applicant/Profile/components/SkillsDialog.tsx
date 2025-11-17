@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -31,16 +32,18 @@ interface SkillsDialogProps {
   onCancel: () => void;
 }
 
-const PROFICIENCY_LEVELS = [
-  { value: 'Beginner', label: 'Beginner' },
-  { value: 'Intermediate', label: 'Intermediate' },
-  { value: 'Advanced', label: 'Advanced' },
-  { value: 'Expert', label: 'Expert' },
-];
-
 const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit, control } = useFormContext<IApplicantProfile>();
+  const t = useTranslations('homepage.applicantProfile.skillsDialog');
+  const tCommon = useTranslations('homepage.applicantProfile.common');
+
+  const PROFICIENCY_LEVELS = [
+    { value: 'Beginner', label: t('beginner') },
+    { value: 'Intermediate', label: t('intermediate') },
+    { value: 'Advanced', label: t('advanced') },
+    { value: 'Expert', label: t('expert') },
+  ];
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -70,10 +73,8 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
       {/* Header */}
       <div className="flex items-center gap-5">
         <div className="">
-          <h3 className="text-lg font-semibold text-gray-900">Description of your skills</h3>
-          <p className="text-sm text-gray-600 ">
-            Describe the skills you want (you can add more skills if you want)
-          </p>
+          <h3 className="text-lg font-semibold text-gray-900">{t('description')}</h3>
+          <p className="text-sm text-gray-600 ">{t('subDescription')}</p>
         </div>
         <Button
           type="button"
@@ -82,7 +83,7 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
           className="flex items-center gap-2 text-primary-brand border-primary-brand hover:bg-primary-brand hover:text-white"
         >
           <Plus className="h-4 w-4" />
-          Add
+          {tCommon('add')}
         </Button>
       </div>
 
@@ -102,8 +103,8 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
             <div className="grid grid-cols-1 md:grid-cols-10 gap-4 flex-1">
               <CustomFormField
                 name={`applicantProfile.skills.${index}.skillName`}
-                label="Skill Name"
-                placeholder="Enter skill name"
+                label={t('skillName')}
+                placeholder={t('enterSkillName')}
                 className="md:col-span-10"
                 inlineLabel
                 isBorder
@@ -111,9 +112,9 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
 
               <CustomFormField
                 name={`applicantProfile.skills.${index}.proficiencyLevel`}
-                label="Proficiency Level"
+                label={t('proficiencyLevel')}
                 type="select"
-                placeholder="Select level"
+                placeholder={t('selectLevel')}
                 options={PROFICIENCY_LEVELS}
                 inlineLabel
                 isBorder
@@ -122,7 +123,7 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
 
               <CustomFormField
                 name={`applicantProfile.skills.${index}.yearsExperience`}
-                label="Years Experience"
+                label={t('yearsExperience')}
                 type="number"
                 placeholder="0"
                 inlineLabel
@@ -137,7 +138,7 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
                   size="sm"
                   onClick={() => remove(index)}
                   className="p-2 h-full w-full text-red-500 hover:text-red-700 hover:bg-red-50 md:col-span-1 border-red-500"
-                  title="Delete skill"
+                  title={t('deleteSkill')}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -146,18 +147,16 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
           </div>
         ))}
 
-        {length === 0 && (
+        {fields.length === 0 && (
           <div className="text-center py-8 text-gray-500">
-            <p>No skills added yet. Click "Add" to get started.</p>
+            <p>{t('noSkillsAddedYet')}</p>
           </div>
         )}
       </div>
 
       {/* Footer */}
       <div className="border-t pt-6">
-        <p className="text-sm text-gray-600 mb-4">
-          By clicking 'Save', you confirm that the information provided is accurate.
-        </p>
+        <p className="text-sm text-gray-600 mb-4">{tCommon('confirmAccuracy')}</p>
       </div>
     </div>
   );
@@ -169,14 +168,14 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
         onClick={handleCancel}
         className="w-full sm:w-auto text-primary-brand px-10 py-2.5"
       >
-        Cancel
+        {tCommon('cancel')}
       </Button>
       <Button
         type="submit"
         className="w-full sm:w-auto px-10 py-2.5"
         onClick={handleSubmit(handleFormSubmit)}
       >
-        Save
+        {tCommon('save')}
       </Button>
     </div>
   );
@@ -186,7 +185,9 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
       <Drawer open={open} onOpenChange={handleCancel}>
         <DrawerContent className="min-h-[95vh]">
           <DrawerHeader className="border-b">
-            <DrawerTitle className="text-xl font-semibold text-primary-brand">Skills</DrawerTitle>
+            <DrawerTitle className="text-xl font-semibold text-primary-brand">
+              {t('title')}
+            </DrawerTitle>
             <DrawerDescription className="sr-only" />
           </DrawerHeader>
           <div className="flex-1 overflow-y-auto p-6">
@@ -202,7 +203,7 @@ const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogPr
     <Dialog open={open} onOpenChange={handleCancel}>
       <DialogContent className="lg:min-w-6xl md:min-w-4xl min-w-2xl max-h-[90vh] flex flex-col gap-2.5 overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-primary-brand">Skills</DialogTitle>
+          <DialogTitle className="text-xl font-bold text-primary-brand">{t('title')}</DialogTitle>
           <DialogDescription className="sr-only" />
         </DialogHeader>
         <div className="flex-1 overflow-y-auto border-t p-2.5 border-[#828282]">
