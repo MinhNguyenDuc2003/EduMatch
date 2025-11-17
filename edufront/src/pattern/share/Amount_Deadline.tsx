@@ -1,6 +1,8 @@
+'use client';
 import { Block, Card, RText } from '@/lib/by/Div';
 import { cn } from '@/lib/utils';
 import { DollarSign, Calendar } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 type Amount_DeadlineProps = {
   amount: string;
@@ -32,8 +34,8 @@ const formatEndDate = (endDate: number): string => {
 };
 
 const Amount_Deadline = ({ amount, deadline, isRow, className }: Amount_DeadlineProps) => {
+  const t = useTranslations('homepage.amountDeadline');
   const formattedDate = formatEndDate(deadline);
-  const formattedAmount = parseFundingAmount(amount).toLocaleString('en-US');
 
   return (
     <Block
@@ -43,16 +45,16 @@ const Amount_Deadline = ({ amount, deadline, isRow, className }: Amount_Deadline
       <Card className="flex flex-col">
         <Block className="flex items-center gap-2">
           <DollarSign className="w-4 h-4 text-gray-600" />
-          {isRow && <RText className="text-xs text-gray-500">Amount</RText>}
+          {isRow && <RText className="text-xs text-gray-500">{t('amount')}</RText>}
         </Block>
-        <RText className="text-sm font-semibold text-gray-900 mt-1">{formattedAmount}</RText>
+        <RText className="text-sm font-semibold text-gray-900 mt-1">{amount}</RText>
       </Card>
 
       {/* Deadline */}
       <Card className="flex flex-col">
         <Block className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-gray-600" />
-          {isRow && <RText className="text-xs text-gray-500">Deadline</RText>}
+          {isRow && <RText className="text-xs text-gray-500">{t('deadline')}</RText>}
         </Block>
         <RText className="text-sm font-semibold text-gray-900 mt-1">{formattedDate}</RText>
       </Card>

@@ -2,6 +2,7 @@
 import { Button } from '@/lib/cus/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 interface PaginationProps {
   currentPage: number;
@@ -10,6 +11,8 @@ interface PaginationProps {
 }
 
 export default function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+  const t = useTranslations('homepage.pagination');
+  
   if (totalPages <= 1) return null;
 
   // Calculate which page numbers to show
@@ -58,7 +61,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
         )}
       >
         <ChevronLeft className="w-4 h-4 mr-1.5" />
-        <span className="font-medium">Previous</span>
+        <span className="font-medium">{t('previous')}</span>
       </Button>
 
       {/* Page Numbers */}
@@ -108,7 +111,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
           'disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-slate-300 disabled:hover:text-slate-700 disabled:hover:bg-white'
         )}
       >
-        <span className="font-medium">Next</span>
+        <span className="font-medium">{t('next')}</span>
         <ChevronRight className="w-4 h-4 ml-1.5" />
       </Button>
     </div>

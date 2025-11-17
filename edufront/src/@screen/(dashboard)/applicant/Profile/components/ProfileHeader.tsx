@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { User } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface ProfileHeaderProps {
   name: string;
@@ -15,6 +16,8 @@ interface ProfileHeaderProps {
 }
 
 export default function ProfileHeader({ name, role, avatarUrl, stats }: ProfileHeaderProps) {
+  const t = useTranslations('homepage.applicantProfile.profileHeader');
+  
   return (
     <div className="bg-[#FAFAF6] rounded-lg border border-[#828282] p-6 h-full grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Left Section: Avatar and Name */}
@@ -31,19 +34,19 @@ export default function ProfileHeader({ name, role, avatarUrl, stats }: ProfileH
         <div className="bg-[#0B5C8C] text-white rounded-md px-4 py-2 min-w-full">
           <div className="flex justify-between items-center gap-4">
             <span className="font-semibold text-lg">{stats.matchedScholarships}</span>
-            <span className="text-lg">Matched Scholarships</span>
+            <span className="text-lg">{t('matchedScholarships')}</span>
           </div>
         </div>
         <div className="bg-[#0B5C8C] text-white rounded-md px-4 py-2 min-w-full">
           <div className="flex justify-between items-center gap-4">
             <span className="font-semibold text-lg">{stats.matchedResearchOpportunities}</span>
-            <span className="text-lg">Matched Research Opportunities</span>
+            <span className="text-lg">{t('matchedResearchOpportunities')}</span>
           </div>
         </div>
         <div className="bg-[#0B5C8C] text-white rounded-md px-4 py-2 min-w-full">
           <div className="flex justify-between items-center gap-4">
             <span className="font-semibold text-lg">{stats.scholarshipAmount}</span>
-            <span className="text-lg">Matched Scholarships Amount</span>
+            <span className="text-lg">{t('matchedScholarshipsAmount')}</span>
           </div>
         </div>
       </div>

@@ -32,4 +32,5 @@ public class ScholarshipVo extends ScholarshipDto implements Serializable {
     private long totalElements;
     Map<String, Map<String, Long>> aggregations;
     private int isFollow;
+    private int views;
 }

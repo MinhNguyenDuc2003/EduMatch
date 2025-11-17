@@ -1,15 +1,19 @@
+'use client';
 import { Button } from '@/lib/cus/button';
+import { useTranslations } from 'next-intl';
 
 type ScholarshipContentProps = {
   scholarship: Scholarship;
 };
 
 export default function ScholarshipContent({ scholarship }: ScholarshipContentProps) {
+  const t = useTranslations('homepage.scholarshipDetail.content');
+  
   return (
     <>
       {/* Description Section */}
       <section className="mb-4">
-        <h2 className="text-xl font-bold text-gray-900 mb-3">Description</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-3">{t('description')}</h2>
         <p className="text-gray-700 leading-relaxed text-sm">
           {scholarship.description ||
             'Body text for whatever you would like to add more to the main point. It provides details, explanations, and context.'}
@@ -18,7 +22,7 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
 
       {/* Details Section */}
       <section className="mb-4">
-        <h2 className="text-xl font-bold text-gray-900 mb-3">Details</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-3">{t('details')}</h2>
         <p className="text-gray-700 leading-relaxed text-sm">
           {scholarship.shortDescription ||
             'Body text for whatever would like to add more to the main point. It provides details, explanations, and context.'}
@@ -26,28 +30,28 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
         {scholarship.studyLevel || scholarship.scholarshipType || scholarship.fields ? (
           <div className="mt-3 space-y-2 text-gray-700 text-sm">
             <p>
-              <span className="font-semibold">Study Level: </span>
-              {scholarship.studyLevel || 'N/A'}
+              <span className="font-semibold">{t('studyLevel')}: </span>
+              {scholarship.studyLevel || t('notAvailable')}
             </p>
             <p>
-              <span className="font-semibold">Scholarship Type: </span>
-              {scholarship.scholarshipType || 'N/A'}
+              <span className="font-semibold">{t('scholarshipType')}: </span>
+              {scholarship.scholarshipType || t('notAvailable')}
             </p>
             <p>
-              <span className="font-semibold">Fields: </span>
-              {scholarship.fields || 'N/A'}
+              <span className="font-semibold">{t('fields')}: </span>
+              {scholarship.fields || t('notAvailable')}
             </p>
             <p>
-              <span className="font-semibold">GPA Requirement: </span>
-              {scholarship.gpaRequirement || 'N/A'}
+              <span className="font-semibold">{t('gpaRequirement')}: </span>
+              {scholarship.gpaRequirement || t('notAvailable')}
             </p>
             <p>
-              <span className="font-semibold">Language Requirement: </span>
-              {scholarship.languageRequirement || 'N/A'}
+              <span className="font-semibold">{t('languageRequirement')}: </span>
+              {scholarship.languageRequirement || t('notAvailable')}
             </p>
             <p>
-              <span className="font-semibold">Available Slots: </span>
-              {scholarship.availableSlots || 'N/A'}
+              <span className="font-semibold">{t('availableSlots')}: </span>
+              {scholarship.availableSlots || t('notAvailable')}
             </p>
           </div>
         ) : null}
@@ -56,7 +60,7 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
       {/* Criteria Section */}
       {scholarship.requirements && (
         <section className="mb-4">
-          <h2 className="text-xl font-bold text-gray-900 mb-3">Criteria</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-3">{t('criteria')}</h2>
           <p className="text-gray-700 leading-relaxed text-sm">{scholarship.requirements}</p>
         </section>
       )}
@@ -64,7 +68,7 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
       {/* Application Process Section */}
       {scholarship.benefits && (
         <section className="mb-4">
-          <h2 className="text-xl font-bold text-gray-900 mb-3">Benefits</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-3">{t('benefits')}</h2>
           <p className="text-gray-700 leading-relaxed text-sm">{scholarship.benefits}</p>
         </section>
       )}
@@ -72,7 +76,7 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
       {/* Preferences Section */}
       {scholarship.scholarshipPreferences && scholarship.scholarshipPreferences.length > 0 && (
         <section className="mb-4">
-          <h2 className="text-xl font-bold text-gray-900 mb-3">Preferences</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-3">{t('preferences')}</h2>
           <div className="space-y-3">
             {scholarship.scholarshipPreferences.map((preference) => (
               <div key={preference.id} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
@@ -88,7 +92,7 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
                     </div>
                     <p className="text-gray-700 text-sm mb-1">{preference.value}</p>
                     {preference.note && (
-                      <p className="text-gray-600 text-xs italic mt-1">Note: {preference.note}</p>
+                      <p className="text-gray-600 text-xs italic mt-1">{t('note')}: {preference.note}</p>
                     )}
                   </div>
                 </div>

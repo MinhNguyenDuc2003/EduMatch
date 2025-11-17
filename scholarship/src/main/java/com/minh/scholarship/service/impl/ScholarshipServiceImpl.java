@@ -10,12 +10,15 @@ import com.minh.model.dto.notification.NotificationTemplateDto;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
 import com.minh.model.dto.scholarship.ScholarshipPreferenceDto;
+import com.minh.model.dto.scholarship.ScholarshipViewDto;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
+import com.minh.scholarship.data.entity.ScholarshipViewEntity;
 import com.minh.scholarship.data.entity.junction.ScholarshipFollowerEntity;
 import com.minh.scholarship.data.entity.junction.ScholarshipMediaEntity;
 import com.minh.scholarship.data.mapper.ScholarshipFollowerMapper;
 import com.minh.scholarship.data.mapper.ScholarshipMapper;
 import com.minh.scholarship.data.mapper.ScholarshipPreferenceMapper;
+import com.minh.scholarship.data.mapper.ScholarshipViewMapper;
 import com.minh.scholarship.data.repository.*;
 import com.minh.scholarship.data.vo.NotificationVo;
 import com.minh.scholarship.data.vo.ProviderProfileVo;
@@ -59,6 +62,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     private final ScholarshipPreferenceMapper scholarshipPreferenceMapper;
     private final ScholarshipFollowerRepository scholarshipFollowerRepository;
     private final ScholarshipFollowerMapper scholarshipFollowerMapper;
+    private final ScholarshipViewRepository scholarshipViewRepository;
+    private final ScholarshipViewMapper scholarshipViewMapper;
 
     @Value("${kafka.scholarship.new-event.topic}")
     private String newEventScholarshipTopic;
@@ -196,6 +201,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 filter.getCriteria().getStudyLevel(), userId).map(o -> {
             ScholarshipVo scholarshipVo = scholarshipMapper.proToVo(o);
             scholarshipVo.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(scholarshipVo.getProviderId())));
+            scholarshipVo.setViews(scholarshipViewRepository.countScholarshipViewEntitiesByScholarshipId(o.getId()));
             return addScholarshipMedia(scholarshipVo);
         });
     }
@@ -281,13 +287,23 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public ScholarshipVo getBySlug(String slug) {
-        String userId = UaaContextHolder.getUserId();
+        String userId = SecurityUtil.getCurrentUserId();
         ScholarshipProjection projection = scholarshipRepository.getVoWithFollowBySlug(slug, userId);
         if (projection == null) {
             throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
         }
         ScholarshipVo vo = scholarshipMapper.proToVo(projection);
         vo.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(vo.getProviderId())));
+
+        if(userId != null){
+            if(scholarshipViewRepository.existsByUserIdAndScholarshipId(userId, vo.getId())) {
+                ScholarshipViewEntity viewEntity = new ScholarshipViewEntity();
+                viewEntity.setUserId(userId);
+                viewEntity.setScholarshipId(vo.getId());
+                viewEntity.setFullName(SecurityUtil.getCurrentUserName());
+                scholarshipViewRepository.save(viewEntity);
+            }
+        }
         return addScholarshipMedia(vo);
     }
 
@@ -305,15 +321,13 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     public List<ScholarshipVo> getByActiveStatus(boolean active) {
         List<ScholarshipEntity> entities = scholarshipRepository.findByActive(active);
 
-        List<ScholarshipVo> scholarshipVos = entities.stream()
+        return entities.stream()
                 .map(entity -> {
                     ScholarshipVo vo = scholarshipMapper.entityToVo(entity);
                     vo.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(vo.getProviderId())));
                     return addScholarshipMedia(vo);
                 })
                 .collect(Collectors.toList());
-
-        return scholarshipVos;
     }
 
     @Override
@@ -324,5 +338,10 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
         scholarshipRepository.updateActiveById(id, active);
         return true;
+    }
+
+    @Override
+    public List<ScholarshipViewDto> getViewsByScholarshipId(Long id) {
+        return scholarshipViewMapper.toDto(scholarshipViewRepository.findByScholarshipId(id));
     }
 }

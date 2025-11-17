@@ -1,17 +1,21 @@
+'use client';
 import { Skeleton } from '@/lib/cus/skeleton';
 import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
+import { useTranslations } from 'next-intl';
 
 export default function ScholarshipDetailSkeleton() {
+  const t = useTranslations('homepage.scholarshipDetail');
+
   return (
     <div className="min-h-screen bg-white">
-      <BreadcrumbHeader items={[{ label: 'Scholarships', href: '/scholarships' }]} />
+      <BreadcrumbHeader items={[{ label: t('scholarships'), href: '/scholarships' }]} />
       <div className="mx-auto px-4 lg:px-40 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2 flex flex-col gap-6">
             {/* Title */}
             <Skeleton className="h-12 w-3/4" />
-            
+
             {/* Metadata Row */}
             <div className="flex flex-wrap items-center gap-6">
               <Skeleton className="h-6 w-32" />
@@ -92,7 +96,7 @@ export default function ScholarshipDetailSkeleton() {
                   <Skeleton className="h-4 w-full" />
                 </div>
               </div>
-              
+
               {/* Apply Button */}
               <Skeleton className="h-12 w-full rounded-lg" />
             </div>
@@ -102,4 +106,3 @@ export default function ScholarshipDetailSkeleton() {
     </div>
   );
 }
-

@@ -10,7 +10,6 @@ function formatPrice(price: number) {
 
 const SubscriptionPlanPreview = ({ subscriptionPlan }: { subscriptionPlan: SubscriptionPlan }) => {
   const price = formatPrice(subscriptionPlan.price);
-  const features = subscriptionPlan.features.split(',');
 
   return (
     <div className="space-y-6">
@@ -25,7 +24,7 @@ const SubscriptionPlanPreview = ({ subscriptionPlan }: { subscriptionPlan: Subsc
         <div>
           <h4 className="font-semibold mb-2">Subscription Features</h4>
           <ul className=" text-sm">
-            {features.map((feature, index) => (
+            {subscriptionPlan.features.map((feature, index) => (
               <div key={index} className="flex items-center gap-2">
                 <CheckCircleIcon className="w-4 h-4 text-green-500" />
                 <span className=" text-sm">{feature}</span>

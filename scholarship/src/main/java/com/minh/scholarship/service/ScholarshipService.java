@@ -2,6 +2,7 @@ package com.minh.scholarship.service;
 
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
+import com.minh.model.dto.scholarship.ScholarshipViewDto;
 import com.minh.scholarship.data.vo.ScholarshipVo;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import org.springframework.data.domain.Page;
@@ -49,4 +50,5 @@ public interface ScholarshipService {
 
     Boolean updateScholarshipStatus(Long id, Boolean active);
 
+    List<ScholarshipViewDto> getViewsByScholarshipId(Long id);
 }

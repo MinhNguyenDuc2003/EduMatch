@@ -1,5 +1,7 @@
+'use client';
 import { X } from 'lucide-react';
 import { COUNTRIES, SCHOLARSHIP_TYPES, STUDY_LEVELS } from '@/constants/Common';
+import { useTranslations } from 'next-intl';
 
 type FilterSidebarProps = {
   filters: FilterState;
@@ -22,6 +24,8 @@ export default function FilterSidebar({
   isMobile = false,
   onClose,
 }: FilterSidebarProps) {
+  const t = useTranslations('homepage.scholarshipsList.filters');
+  
   const handleFilterChange = (field: keyof FilterState, value: string) => {
     setFilters({
       ...filters,
@@ -56,14 +60,14 @@ export default function FilterSidebar({
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+        <h2 className="text-xl font-bold text-gray-900">{t('title')}</h2>
         <div className="flex items-center gap-2">
           {activeFiltersCount > 0 && (
             <button
               onClick={clearAllFilters}
               className="text-xs bg-blue-50 text-primary-brand hover:bg-blue-100 px-3 py-1.5 rounded-full font-medium flex items-center gap-1.5 transition-colors"
             >
-              <span>{activeFiltersCount} applied</span>
+              <span>{activeFiltersCount} {t('applied')}</span>
               <X className="w-3.5 h-3.5" />
             </button>
           )}
@@ -71,7 +75,7 @@ export default function FilterSidebar({
             <button
               onClick={onClose}
               className="p-1 hover:bg-gray-100 rounded transition-colors"
-              aria-label="Close filters"
+              aria-label={t('closeFilters')}
             >
               <X className="w-5 h-5 text-gray-600" />
             </button>
@@ -83,7 +87,7 @@ export default function FilterSidebar({
         {/* Study Level Filter */}
         <div className="border border-gray-200 rounded-lg p-4 space-y-3">
           <h3 className="text-sm font-semibold text-gray-900">
-            Study Level {filters.studyLevel && '(1)'}
+            {t('studyLevel')} {filters.studyLevel && '(1)'}
           </h3>
           <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
             <label className="flex items-center gap-2 cursor-pointer">
@@ -94,7 +98,7 @@ export default function FilterSidebar({
                 onChange={() => handleFilterChange('studyLevel', '')}
                 className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
               />
-              <span className="text-sm text-gray-700">All Levels</span>
+              <span className="text-sm text-gray-700">{t('allLevels')}</span>
             </label>
             {STUDY_LEVEL_OPTIONS.map((level) => (
               <label key={level} className="flex items-center gap-2 cursor-pointer">
@@ -114,14 +118,14 @@ export default function FilterSidebar({
         {/* Country Filter - Dropdown */}
         <div className="border border-gray-200 rounded-lg p-4 space-y-3">
           <h3 className="text-sm font-semibold text-gray-900">
-            Country {filters.country && '(1)'}
+            {t('country')} {filters.country && '(1)'}
           </h3>
           <select
             value={filters.country}
             onChange={(e) => handleFilterChange('country', e.target.value)}
             className="w-full text-sm py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
           >
-            <option value="">All Countries</option>
+            <option value="">{t('allCountries')}</option>
             {COUNTRY_OPTIONS.map((country) => (
               <option key={country} value={country}>
                 {country}
@@ -132,13 +136,13 @@ export default function FilterSidebar({
 
         {/* Scholarship Type Filter */}
         <div className="border border-gray-200 rounded-lg p-4 space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900">Scholarship Type</h3>
+          <h3 className="text-sm font-semibold text-gray-900">{t('scholarshipType')}</h3>
           <select
             value={filters.scholarshipType}
             onChange={(e) => handleFilterChange('scholarshipType', e.target.value)}
             className="w-full text-sm py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
           >
-            <option value="">All Types</option>
+            <option value="">{t('allTypes')}</option>
             {SCHOLARSHIP_TYPE_OPTIONS.map((type) => (
               <option key={type} value={type}>
                 {SCHOLARSHIP_TYPES.find((item) => item.value === type)?.label}
@@ -149,7 +153,7 @@ export default function FilterSidebar({
 
         {/* GPA Filter */}
         <div className="border border-gray-200 rounded-lg p-4 space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900">GPA Requirement</h3>
+          <h3 className="text-sm font-semibold text-gray-900">{t('gpaRequirement')}</h3>
           <div className="space-y-3">
             {/* GPA Quick Options */}
             <div className="grid grid-cols-2 gap-2">
@@ -163,7 +167,7 @@ export default function FilterSidebar({
                   }}
                   className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />
-                <span className="text-sm text-gray-700">All GPAs</span>
+                <span className="text-sm text-gray-700">{t('allGpas')}</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -175,7 +179,7 @@ export default function FilterSidebar({
                   }}
                   className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />
-                <span className="text-sm text-gray-700">Above 1.0</span>
+                <span className="text-sm text-gray-700">{t('above1')}</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -187,7 +191,7 @@ export default function FilterSidebar({
                   }}
                   className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />
-                <span className="text-sm text-gray-700">Above 2.0</span>
+                <span className="text-sm text-gray-700">{t('above2')}</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -199,7 +203,7 @@ export default function FilterSidebar({
                   }}
                   className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />
-                <span className="text-sm text-gray-700">Above 3.0</span>
+                <span className="text-sm text-gray-700">{t('above3')}</span>
               </label>
             </div>
 
@@ -207,7 +211,7 @@ export default function FilterSidebar({
             <div className="pt-2 border-t border-gray-200">
               <div className="space-y-2">
                 <div>
-                  <label className="text-xs text-gray-600">Min: {filters.minGpa.toFixed(1)}</label>
+                  <label className="text-xs text-gray-600">{t('min')}: {filters.minGpa.toFixed(1)}</label>
                   <input
                     type="range"
                     min="0"
@@ -221,7 +225,7 @@ export default function FilterSidebar({
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-600">Max: {filters.maxGpa.toFixed(1)}</label>
+                  <label className="text-xs text-gray-600">{t('max')}: {filters.maxGpa.toFixed(1)}</label>
                   <input
                     type="range"
                     min="0"

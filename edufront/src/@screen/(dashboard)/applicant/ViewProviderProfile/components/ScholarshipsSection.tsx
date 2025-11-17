@@ -1,5 +1,7 @@
+'use client';
 import { Skeleton } from '@/lib/cus/skeleton';
 import { ScholarshipCard } from '@/@screen/(nondashboard)/ScholarshipsList/components';
+import { useTranslations } from 'next-intl';
 
 interface ScholarshipsSectionProps {
   scholarships: Scholarship[];
@@ -16,10 +18,12 @@ export default function ScholarshipsSection({
   onToggleTracking,
   onFollowProvider,
 }: ScholarshipsSectionProps) {
+  const t = useTranslations('homepage.viewProviderProfile.scholarships');
+  
   return (
     <div className="space-y-4">
       {/* Scholarships Title */}
-      <h2 className="text-xl font-semibold text-gray-900 pl-2">Scholarships</h2>
+      <h2 className="text-xl font-semibold text-gray-900 pl-2">{t('title')}</h2>
 
       {/* Scholarships List */}
       {isLoading ? (
@@ -28,7 +32,7 @@ export default function ScholarshipsSection({
         </div>
       ) : scholarships.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No scholarships available from this provider.</p>
+          <p className="text-gray-500 text-lg">{t('noScholarships')}</p>
         </div>
       ) : (
         <div className="space-y-4">

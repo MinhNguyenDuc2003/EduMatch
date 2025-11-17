@@ -7,7 +7,7 @@ declare global {
     currency: string;
     durationDays: number;
     targetType: string;
-    features: string;
+    features: string[];
   };
 }
 

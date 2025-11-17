@@ -7,12 +7,15 @@ import { toast } from 'sonner';
 import { useCheckoutNavigation } from '@/hooks/useCheckoutNavigation';
 import StripeProvider from './components/StripeProvider';
 import { Button } from '@/lib/cus/button';
+import { useConfirmPaymentMutation } from '@/state/apiSubscription';
 
 const CheckoutPaymentPageContent = () => {
   const { subscriptionPlan, subscriptionPlanId, isLoading, isError } = useCurrentSubscription();
   const stripe = useStripe();
   const elements = useElements();
   const { navigateToStep } = useCheckoutNavigation();
+
+  const [confirmPayment, { isLoading: isConfirmPaymentLoading }] = useConfirmPaymentMutation();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -37,7 +40,10 @@ const CheckoutPaymentPageContent = () => {
     });
 
     if (result.paymentIntent?.status === 'succeeded') {
-      // TODO: Create a transaction
+      await confirmPayment({
+        transactionId: result.paymentIntent.id,
+        subscriptionPlanId: Number(subscriptionPlanId),
+      });
       navigateToStep(2);
     }
   };
@@ -78,9 +84,9 @@ const CheckoutPaymentPageContent = () => {
           className=" bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
           type="submit"
           form="payment-form"
-          disabled={!stripe || !elements}
+          disabled={!stripe || !elements || isConfirmPaymentLoading}
         >
-          Pay with Credit Card
+          {isConfirmPaymentLoading ? 'Confirming payment...' : 'Pay with Credit Card'}
         </Button>
       </div>
     </div>
