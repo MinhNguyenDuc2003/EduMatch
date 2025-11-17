@@ -1,18 +1,20 @@
 'use client';
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 interface ProfileStrengthProps {
   percentage: number;
 }
 
 export default function ProfileStrength({ percentage }: ProfileStrengthProps) {
+  const t = useTranslations('homepage.applicantProfile.profileStrength');
   const circumference = 2 * Math.PI * 45; // radius = 45
   const offset = circumference - (percentage / 100) * circumference;
 
   return (
     <div className="bg-[#FAFAF6] rounded-lg border border-[#828282] p-6">
-      <h3 className="text-sm font-semibold text-gray-900">Profile Strength</h3>
+      <h3 className="text-sm font-semibold text-gray-900">{t('title')}</h3>
 
       <div className="flex flex-col items-center">
         {/* Circular Progress */}
@@ -41,12 +43,8 @@ export default function ProfileStrength({ percentage }: ProfileStrengthProps) {
 
         {/* Description */}
         <div className="text-center">
-          <p className="text-sm text-gray-700 font-medium">
-            A complete profile leads to better results.
-          </p>
-          <p className="text-xs text-gray-600 mt-1">
-            Fill out each section below to improve the quality of your scholarship matches.
-          </p>
+          <p className="text-sm text-gray-700 font-medium">{t('description')}</p>
+          <p className="text-xs text-gray-600 mt-1">{t('subDescription')}</p>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { PaymentIntent } from '@stripe/stripe-js';
 
 const API_ENDPOINTS = {
   SUBSCRIPTION_PLAN: '/api/subscription/subscription/subscription/plans',
+  SUBSCRIPTION: '/api/subscription/subscription',
   PAYMENT: '/api/payment',
 };
 
@@ -12,10 +13,7 @@ export const apiSubscription = createApi({
   reducerPath: 'apiSubscription',
   tagTypes: ['SubscriptionPlan'],
   endpoints: (build) => ({
-    createPaymentIntent: build.mutation<
-      { paymentIntent: PaymentIntent },
-      { amount: number; email: string }
-    >({
+    createPaymentIntent: build.mutation<PaymentIntent, { amount: number; email: string }>({
       query: ({ amount, email }) => ({
         url: `${API_ENDPOINTS.PAYMENT}/payment-intent`,
         method: 'POST',
@@ -29,18 +27,26 @@ export const apiSubscription = createApi({
       }),
       providesTags: (result, error, id) => [{ type: 'SubscriptionPlan', id }],
     }),
-    getSubscription: build.query<Subscription[], void>({
-      query: () => ({
-        url: `${API_ENDPOINTS.SUBSCRIPTION_PLAN}/all`,
+    getSubscriptionByTargetType: build.query<SubscriptionPlan[], { targetType: string }>({
+      query: ({ targetType }) => ({
+        url: `${API_ENDPOINTS.SUBSCRIPTION_PLAN}/targetType/${targetType}`,
         method: 'GET',
       }),
       providesTags: ['SubscriptionPlan'],
+    }),
+    confirmPayment: build.mutation<void, { transactionId: string; subscriptionPlanId: number }>({
+      query: ({ transactionId, subscriptionPlanId }) => ({
+        url: `${API_ENDPOINTS.SUBSCRIPTION}/orders/confirm-order`,
+        method: 'POST',
+        params: { transactionId, subscriptionPlanId },
+      }),
     }),
   }),
 });
 
 export const {
   useGetSubscriptionPlanByIdQuery,
-  useGetSubscriptionQuery,
   useCreatePaymentIntentMutation,
+  useGetSubscriptionByTargetTypeQuery,
+  useConfirmPaymentMutation,
 } = apiSubscription;

@@ -3,6 +3,7 @@
 import React from 'react';
 import { Pencil } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
+import { useTranslations } from 'next-intl';
 
 interface InfoField {
   label: string;
@@ -17,6 +18,8 @@ interface InfoCardProps {
 }
 
 export default function InfoCard({ title, fields, onEdit, className }: InfoCardProps) {
+  const t = useTranslations('homepage.applicantProfile.common');
+
   return (
     <div className={`bg-[#FAFAF6] rounded-lg border border-[#828282] p-6 relative ${className}`}>
       {/* Header with Edit Button */}
@@ -29,7 +32,7 @@ export default function InfoCard({ title, fields, onEdit, className }: InfoCardP
             onClick={onEdit}
           >
             <Pencil className="w-3 h-3" />
-            Edit
+            {t('edit')}
           </Button>
         )}
       </div>
@@ -42,7 +45,7 @@ export default function InfoCard({ title, fields, onEdit, className }: InfoCardP
             <span
               className={`text-sm mt-1 ${field.value ? 'text-gray-900' : 'text-gray-400 italic'}`}
             >
-              {field.value || 'Add Info'}
+              {field.value || t('addInfo')}
             </span>
           </div>
         ))}

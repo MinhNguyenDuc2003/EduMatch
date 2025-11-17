@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -30,6 +31,7 @@ export default function SubmitApplicationDialog({
   onSubmit,
 }: SubmitApplicationDialogProps) {
   const router = useRouter();
+  const t = useTranslations('homepage.activity.submitApplicationDialog');
   const [selectedApplicationId, setSelectedApplicationId] = useState<number | null>(null);
   const { data: applications, isLoading } = useGetApplicationsQuery(undefined, {
     skip: !open, // Only fetch when dialog is open
@@ -61,11 +63,11 @@ export default function SubmitApplicationDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Submit Scholarship Application</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>
             {scholarshipTitle
-              ? `Select a pre-created application to submit for "${scholarshipTitle}"`
-              : 'Select a pre-created application to submit'}
+              ? t('descriptionWithTitle', { title: scholarshipTitle })
+              : t('description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -91,7 +93,7 @@ export default function SubmitApplicationDialog({
                   variant="custom"
                   className="w-full border-2 border-blue-600 bg-white text-blue-600 hover:border-blue-800 hover:text-blue-800 transition-all duration-200 font-medium"
                   size="md"
-                  value={'Create New'}
+                  value={t('createNew')}
                 />
 
                 {/* Application Names List */}
@@ -120,54 +122,54 @@ export default function SubmitApplicationDialog({
                   <div className="space-y-4">
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        Application Details
+                        {t('applicationDetails')}
                       </h3>
                     </div>
 
                     {/* Personal Information */}
                     <div className="space-y-3">
                       <h4 className="font-semibold text-gray-800 border-b pb-2">
-                        Personal Information
+                        {t('personalInformation')}
                       </h4>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <p className="text-sm text-gray-500">Full Name</p>
+                          <p className="text-sm text-gray-500">{t('fullName')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.fullName}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Gender</p>
+                          <p className="text-sm text-gray-500">{t('gender')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.gender}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Date of Birth</p>
+                          <p className="text-sm text-gray-500">{t('dateOfBirth')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.dateOfBirth}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Nationality</p>
+                          <p className="text-sm text-gray-500">{t('nationality')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.nationality}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Email</p>
+                          <p className="text-sm text-gray-500">{t('email')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.email}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Phone</p>
+                          <p className="text-sm text-gray-500">{t('phone')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.phone}
                           </p>
                         </div>
                         <div className="col-span-2">
-                          <p className="text-sm text-gray-500">Address</p>
+                          <p className="text-sm text-gray-500">{t('address')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.address}
                           </p>
@@ -178,35 +180,35 @@ export default function SubmitApplicationDialog({
                     {/* Education Information */}
                     <div className="space-y-3">
                       <h4 className="font-semibold text-gray-800 border-b pb-2">
-                        Education Information
+                        {t('educationInformation')}
                       </h4>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <p className="text-sm text-gray-500">Education Level</p>
+                          <p className="text-sm text-gray-500">{t('educationLevel')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.educationLevel}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">GPA</p>
+                          <p className="text-sm text-gray-500">{t('gpa')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.gpa}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">School Name</p>
+                          <p className="text-sm text-gray-500">{t('schoolName')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.schoolName}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Major</p>
+                          <p className="text-sm text-gray-500">{t('major')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.major}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Graduation Year</p>
+                          <p className="text-sm text-gray-500">{t('graduationYear')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.graduationYear}
                           </p>
@@ -217,35 +219,35 @@ export default function SubmitApplicationDialog({
                     {/* Additional Information */}
                     <div className="space-y-3">
                       <h4 className="font-semibold text-gray-800 border-b pb-2">
-                        Additional Information
+                        {t('additionalInformation')}
                       </h4>
                       <div className="space-y-3">
                         <div>
-                          <p className="text-sm text-gray-500">Skills</p>
+                          <p className="text-sm text-gray-500">{t('skills')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.skills}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Achievements</p>
+                          <p className="text-sm text-gray-500">{t('achievements')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.achievements}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Extracurricular</p>
+                          <p className="text-sm text-gray-500">{t('extracurricular')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.extracurricular}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Motivation</p>
+                          <p className="text-sm text-gray-500">{t('motivation')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.motivation}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Personal Statement</p>
+                          <p className="text-sm text-gray-500">{t('personalStatement')}</p>
                           <p className="text-sm font-medium text-gray-900">
                             {selectedApplication.personalStatement}
                           </p>
@@ -258,7 +260,7 @@ export default function SubmitApplicationDialog({
                       selectedApplication.applicationAttributes.length > 0 && (
                         <div className="space-y-3">
                           <h4 className="font-semibold text-gray-800 border-b pb-2">
-                            Additional Attributes
+                            {t('additionalAttributes')}
                           </h4>
                           <div className="space-y-2">
                             {selectedApplication.applicationAttributes.map((attr, index) => (
@@ -276,20 +278,20 @@ export default function SubmitApplicationDialog({
                   </div>
                 ) : (
                   <div className="flex items-center justify-center h-full text-gray-500">
-                    <p>Select an application to view details</p>
+                    <p>{t('selectApplicationToView')}</p>
                   </div>
                 )}
               </div>
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-gray-600 mb-4">You don't have any applications yet.</p>
+              <p className="text-gray-600 mb-4">{t('noApplicationsYet')}</p>
               <Button
                 onClick={handleCreateNew}
                 variant="ok"
                 className="w-full sm:w-auto text-white"
               >
-                Create New Application
+                {t('createNewApplication')}
               </Button>
             </div>
           )}
@@ -302,7 +304,7 @@ export default function SubmitApplicationDialog({
               onClick={handleCancel}
               className="w-full sm:w-auto text-gray-700 border-gray-300 hover:bg-gray-50"
             >
-              Cancel
+              {t('cancel')}
             </Button>
             {applications && applications.length > 0 && (
               <Button
@@ -311,7 +313,7 @@ export default function SubmitApplicationDialog({
                 className="w-full sm:w-auto text-white"
                 disabled={!selectedApplicationId}
               >
-                Submit Application
+                {t('submitApplication')}
               </Button>
             )}
           </div>

@@ -11,9 +11,11 @@ import {
   Users,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function BannerSection() {
   const router = useRouter();
+  const t = useTranslations('homepage.banner');
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-200">
@@ -25,18 +27,16 @@ export default function BannerSection() {
           <div className="space-y-8 z-10">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-blue-200 shadow-sm">
-              <span className="text-sm font-medium text-blue-900">
-                Scholarship Matching Platform
-              </span>
+              <span className="text-sm font-medium text-blue-900">{t('badge')}</span>
             </div>
 
             {/* Heading */}
             <div className="space-y-4">
               <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight">
-                Find Your Perfect{' '}
+                {t('title')}{' '}
                 <span className="relative inline-block">
                   <span className="relative z-10 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                    Scholarship
+                    {t('titleHighlight')}
                   </span>
                   <svg
                     className="absolute -bottom-2 left-0 w-full"
@@ -59,12 +59,9 @@ export default function BannerSection() {
                     </defs>
                   </svg>
                 </span>{' '}
-                Match
+                {t('titleEnd')}
               </h1>
-              <p className="text-xl text-gray-600 leading-relaxed max-w-xl">
-                Connect with thousands of scholarship opportunities worldwide. Our AI-powered
-                platform matches you with funding that perfectly aligns with your academic goals.
-              </p>
+              <p className="text-xl text-gray-600 leading-relaxed max-w-xl">{t('description')}</p>
             </div>
 
             {/* CTA Button */}
@@ -72,13 +69,13 @@ export default function BannerSection() {
               <Button
                 variant="custom"
                 className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all [&_.value]:text-white"
-                value="Explore Scholarships"
+                value={t('exploreScholarships')}
                 onClick={() => router.push('/scholarships')}
               />
               <Button
                 variant="custom"
                 className="bg-white/80 backdrop-blur-sm border-2 border-gray-200 hover:border-blue-300 text-gray-700 px-8 py-6 text-lg font-semibold rounded-xl shadow-sm hover:shadow-md transition-all [&_.value]:text-gray-700"
-                value="How It Works"
+                value={t('howItWorks')}
               />
             </div>
           </div>

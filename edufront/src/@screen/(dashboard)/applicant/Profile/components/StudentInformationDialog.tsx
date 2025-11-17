@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -42,6 +43,9 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit } = useFormContext<IApplicantProfile>();
+  const t = useTranslations('homepage.applicantProfile.studentInformationDialog');
+  const tFields = useTranslations('homepage.applicantProfile.fields');
+  const tCommon = useTranslations('homepage.applicantProfile.common');
 
   const handleFormSubmit = (data: IApplicantProfile) => {
     onSubmit(data);
@@ -58,42 +62,39 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
       {/* Personal Section */}
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Student Information</h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Provide your personal details and academic background to help us understand your
-            qualifications.
-          </p>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('title')}</h3>
+          <p className="text-sm text-gray-600 mb-4">{t('description')}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Full Name */}
           <CustomFormField
             name="applicantProfile.firstName"
-            label="First Name"
-            placeholder="First Name"
+            label={tFields('firstName')}
+            placeholder={tFields('firstName')}
             inlineLabel
             isBorder
           />
 
           <CustomFormField
             name="applicantProfile.lastName"
-            label="Last Name"
-            placeholder="Last Name"
+            label={tFields('lastName')}
+            placeholder={tFields('lastName')}
             inlineLabel
             isBorder
           />
 
           <CustomFormField
             name="applicantProfile.contactName"
-            label="Contact Name"
-            placeholder="Add Info"
+            label={tFields('contactName')}
+            placeholder={tCommon('addInfo')}
             inlineLabel
             isBorder
           />
 
           <CustomFormField
             name="applicantProfile.phoneNumber"
-            label="Phone Number"
+            label={tFields('phoneNumber')}
             placeholder="+1 234 567 8900"
             inlineLabel
             isBorder
@@ -101,9 +102,9 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 
           <CustomFormField
             name="applicantProfile.religion"
-            label="Religion"
+            label={tFields('religion')}
             type="select"
-            placeholder="Select Religion"
+            placeholder={t('selectReligion')}
             options={religions}
             inlineLabel
             isBorder
@@ -111,7 +112,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 
           <CustomFormField
             name="applicantProfile.overallGpa"
-            label="Overall GPA"
+            label={tFields('overallGpa')}
             type="number"
             placeholder="3.8"
             inlineLabel
@@ -120,9 +121,9 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 
           <CustomFormField
             name="applicantProfile.ethnicity"
-            label="Ethnicity"
+            label={tFields('ethnicity')}
             type="select"
-            placeholder="Select Ethnicity"
+            placeholder={t('selectEthnicity')}
             options={ethnicities}
             inlineLabel
             isBorder
@@ -130,9 +131,9 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 
           <CustomFormField
             name="applicantProfile.race"
-            label="Race"
+            label={tFields('race')}
             type="select"
-            placeholder="Select Race"
+            placeholder={t('selectRace')}
             options={races}
             inlineLabel
             isBorder
@@ -140,8 +141,8 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 
           <CustomFormField
             name="applicantProfile.hometown"
-            label="Hometown"
-            placeholder="Add Info"
+            label={tFields('hometown')}
+            placeholder={tCommon('addInfo')}
             type="input-select"
             options={COUNTRIES}
             inlineLabel
@@ -150,9 +151,9 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 
           <CustomFormField
             name="applicantProfile.citizenshipStatus"
-            label="Citizenship Status"
+            label={tFields('citizenshipStatus')}
             type="select"
-            placeholder="Select Citizenship Status"
+            placeholder={t('selectCitizenshipStatus')}
             options={citizenshipStatus}
             inlineLabel
             isBorder
@@ -160,22 +161,22 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 
           <CustomFormField
             name="applicantProfile.disabilities"
-            label="Disabilities"
-            placeholder="Add Info"
+            label={tFields('disabilities')}
+            placeholder={tCommon('addInfo')}
             inlineLabel
             isBorder
           />
 
           <CustomFormField
             name="applicantProfile.medicalConditions"
-            label="Medical Conditions"
-            placeholder="Add Info"
+            label={tFields('medicalConditions')}
+            placeholder={tCommon('addInfo')}
             inlineLabel
             isBorder
           />
           <CustomFormField
             name="applicantProfile.militaryFamilyHistory"
-            label="Military Family History"
+            label={tFields('militaryFamilyHistory')}
             type="switch"
             className="mb-4 "
             inlineLabel
@@ -186,9 +187,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 
       {/* Footer */}
       <div className="border-t pt-6">
-        <p className="text-sm text-gray-600 mb-4">
-          By clicking 'Save', you confirm that the information provided is accurate.
-        </p>
+        <p className="text-sm text-gray-600 mb-4">{tCommon('confirmAccuracy')}</p>
       </div>
     </div>
   );
@@ -200,14 +199,14 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
         onClick={handleCancel}
         className="w-full sm:w-auto text-primary-brand px-10 py-2.5"
       >
-        Cancel
+        {tCommon('cancel')}
       </Button>
       <Button
         type="submit"
         className="w-full sm:w-auto px-10 py-2.5"
         onClick={handleSubmit(handleFormSubmit)}
       >
-        Save
+        {tCommon('save')}
       </Button>
     </div>
   );
@@ -218,7 +217,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
         <DrawerContent className="min-h-[95vh]">
           <DrawerHeader className="border-b">
             <DrawerTitle className="text-xl font-semibold text-primary-brand">
-              Student Information
+              {t('title')}
             </DrawerTitle>
             <DrawerDescription className="sr-only" />
           </DrawerHeader>
@@ -236,9 +235,7 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
     <Dialog open={open} onOpenChange={handleCancel}>
       <DialogContent className="lg:min-w-6xl md:min-w-4xl min-w-2xl max-h-[90vh] flex flex-col gap-2.5 overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-primary-brand">
-            Student Information
-          </DialogTitle>
+          <DialogTitle className="text-xl font-bold text-primary-brand">{t('title')}</DialogTitle>
           <DialogDescription className="sr-only" />
         </DialogHeader>
         <div className="flex-1 overflow-y-auto border-t p-2.5 border-[#828282]">

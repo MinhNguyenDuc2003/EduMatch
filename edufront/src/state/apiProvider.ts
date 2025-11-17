@@ -218,6 +218,15 @@ export const apiProvider = createApi({
       }),
       invalidatesTags: (result, error, { newsId }) => [{ type: 'News', id: newsId! }],
     }),
+
+    // Get All News
+    getAllNews: build.query<News[], void>({
+      query: () => ({
+        url: API_ENDPOINTS.NEWS,
+        method: 'GET',
+      }),
+      providesTags: ['News'],
+    }),
   }),
 });
 
@@ -245,4 +254,5 @@ export const {
   useDeleteNewsMutation,
   useUploadNewsImagesMutation,
   useDeleteNewsImageMutation,
+  useGetAllNewsQuery,
 } = apiProvider;

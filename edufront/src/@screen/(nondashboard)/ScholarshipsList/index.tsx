@@ -11,9 +11,15 @@ import {
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
 import { useFollowProviderMutation, useUnfollowProviderMutation } from '@/state/apiProvider';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function ScholarshipsList() {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const t = useTranslations('homepage.scholarshipsList');
 
   const [filters, setFilters] = useState<FilterState>({
     keyword: '',
@@ -92,6 +98,18 @@ export default function ScholarshipsList() {
     refetch();
   };
 
+  const handleViewScholarship = (slug: string) => {
+    if (!isAuthenticated) {
+      router.push('http://159.89.200.244/oauth2/authorization/keycloak');
+    } else {
+      router.push(`/scholarships/${slug}`);
+    }
+  };
+
+  const handleViewProvider = (providerId: number) => {
+    router.push(`/applicant/providers/${providerId}`);
+  };
+
   const activeFiltersCount = (() => {
     let count = 0;
     if (filters.keyword) count++;
@@ -111,7 +129,7 @@ export default function ScholarshipsList() {
           {/* Search Bar - Always visible */}
           <div className="flex-1">
             <SearchBar
-              placeholder="Search scholarships..."
+              placeholder={t('searchPlaceholder')}
               value={filters.keyword}
               onChange={(value) => setFilters({ ...filters, keyword: value, page: 0 })}
               inputClassName="h-11 rounded-full bg-gray-50"
@@ -124,7 +142,7 @@ export default function ScholarshipsList() {
               setIsMobileFilterOpen(!isMobileFilterOpen);
             }}
             className="w-11 h-11 flex-shrink-0 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center hover:bg-gray-200 transition-all active:scale-95 relative"
-            aria-label="Filter"
+            aria-label={t('filter')}
           >
             <Filter className="w-5 h-5 text-gray-700" />
             {activeFiltersCount > 0 && (
@@ -176,12 +194,12 @@ export default function ScholarshipsList() {
             {/* Middle Content - Scholarship Cards (6 columns desktop, full width mobile) */}
             <div className="lg:col-span-6 lg:col-start-4">
               {/* Premium Upgrade Banner */}
-              <PremiumBanner />
+              {isAuthenticated && <PremiumBanner />}
 
               {/* Search Bar - Desktop only */}
               <div className="mb-4">
                 <SearchBar
-                  placeholder="Search scholarships..."
+                  placeholder={t('searchPlaceholder')}
                   value={filters.keyword}
                   onChange={(value) => setFilters({ ...filters, keyword: value, page: 0 })}
                 />
@@ -196,15 +214,11 @@ export default function ScholarshipsList() {
                   </>
                 ) : isError ? (
                   <div className="bg-white rounded-xl shadow-sm border border-red-200 p-12 text-center">
-                    <p className="text-red-600 text-lg">
-                      Failed to load scholarships. Please try again later.
-                    </p>
+                    <p className="text-red-600 text-lg">{t('failedToLoad')}</p>
                   </div>
                 ) : scholarships?.length === 0 ? (
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-                    <p className="text-gray-500 text-lg">
-                      No scholarships found matching your criteria.
-                    </p>
+                    <p className="text-gray-500 text-lg">{t('noScholarshipsFound')}</p>
                   </div>
                 ) : (
                   <>
@@ -215,6 +229,9 @@ export default function ScholarshipsList() {
                         onApply={handleApply}
                         onToggleTracking={handleToggleTracking}
                         onFollowProvider={handleFollowProvider}
+                        onViewScholarship={handleViewScholarship}
+                        onViewProvider={handleViewProvider}
+                        isAuthenticated={isAuthenticated}
                       />
                     ))}
                   </>

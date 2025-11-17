@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -40,6 +41,8 @@ interface ActivitiesDialogProps {
 const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: ActivitiesDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit } = useFormContext<IApplicantProfile>();
+  const t = useTranslations('homepage.applicantProfile.activitiesDialog');
+  const tCommon = useTranslations('homepage.applicantProfile.common');
 
   const handleFormSubmit = (data: IApplicantProfile) => {
     onSubmit(data);
@@ -54,18 +57,16 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
   const Content = () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-gray-900">Interests & Activities</h3>
-        <p className="text-sm text-gray-600">
-          Add your interests and activities. You can input multiple items for each field.
-        </p>
+        <h3 className="text-lg font-semibold text-gray-900">{t('title')}</h3>
+        <p className="text-sm text-gray-600">{t('description')}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <CustomFormField
           name="applicantProfile.favoriteActivities"
-          label="Favorite Activities"
+          label={t('favoriteActivities')}
           type="multi-select"
-          placeholder="e.g., Piano, Painting, Theater"
+          placeholder={t('favoriteActivitiesPlaceholder')}
           options={FAVORITE_ACTIVITIES}
           labelClassName="w-40"
           inlineLabel
@@ -74,9 +75,9 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
 
         <CustomFormField
           name="applicantProfile.sportsParticipated"
-          label="Sports Participated"
+          label={t('sportsParticipated')}
           type="multi-select"
-          placeholder="e.g., Soccer, Basketball"
+          placeholder={t('sportsParticipatedPlaceholder')}
           options={SPORTS_PARTICIPATED}
           inlineLabel
           isBorder
@@ -84,9 +85,9 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
 
         <CustomFormField
           name="applicantProfile.studentActivities"
-          label="Student Activities"
+          label={t('studentActivities')}
           type="multi-select"
-          placeholder="e.g., Debate Club, Student Council"
+          placeholder={t('studentActivitiesPlaceholder')}
           options={STUDENT_ACTIVITIES}
           inlineLabel
           isBorder
@@ -94,9 +95,9 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
 
         <CustomFormField
           name="applicantProfile.organizationsJoined"
-          label="Organizations Joined"
+          label={t('organizationsJoined')}
           type="multi-select"
-          placeholder="e.g., Red Cross, Coding Club"
+          placeholder={t('organizationsJoinedPlaceholder')}
           options={ORGANIZATIONS_JOINED}
           inlineLabel
           isBorder
@@ -104,9 +105,9 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
 
         <CustomFormField
           name="applicantProfile.researchExperience"
-          label="Research Experience"
+          label={t('researchExperience')}
           type="multi-select"
-          placeholder="e.g., AI Lab, Biology Research"
+          placeholder={t('researchExperiencePlaceholder')}
           options={RESEARCH_EXPERIENCE}
           inlineLabel
           isBorder
@@ -114,9 +115,9 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
 
         <CustomFormField
           name="applicantProfile.careerGoals"
-          label="Career Goals"
+          label={t('careerGoals')}
           type="multi-select"
-          placeholder="e.g., Software Engineer, Doctor"
+          placeholder={t('careerGoalsPlaceholder')}
           options={CAREER_GOALS}
           inlineLabel
           isBorder
@@ -124,9 +125,7 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
       </div>
 
       <div className="border-t pt-6">
-        <p className="text-sm text-gray-600 mb-4">
-          By clicking 'Save', you confirm that the information provided is accurate.
-        </p>
+        <p className="text-sm text-gray-600 mb-4">{tCommon('confirmAccuracy')}</p>
       </div>
     </div>
   );
@@ -138,14 +137,14 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
         onClick={handleCancel}
         className="w-full sm:w-auto text-primary-brand px-10 py-2.5"
       >
-        Cancel
+        {tCommon('cancel')}
       </Button>
       <Button
         type="submit"
         className="w-full sm:w-auto px-10 py-2.5"
         onClick={handleSubmit(handleFormSubmit)}
       >
-        Save
+        {tCommon('save')}
       </Button>
     </div>
   );
@@ -156,7 +155,7 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
         <DrawerContent className="min-h-[95vh]">
           <DrawerHeader className="border-b">
             <DrawerTitle className="text-xl font-semibold text-primary-brand">
-              Interests & Activities
+              {t('title')}
             </DrawerTitle>
             <DrawerDescription className="sr-only" />
           </DrawerHeader>
@@ -173,9 +172,7 @@ const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Activities
     <Dialog open={open} onOpenChange={handleCancel}>
       <DialogContent className="lg:min-w-6xl md:min-w-4xl min-w-2xl max-h-[90vh] flex flex-col gap-2.5 overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-primary-brand">
-            Interests & Activities
-          </DialogTitle>
+          <DialogTitle className="text-xl font-bold text-primary-brand">{t('title')}</DialogTitle>
           <DialogDescription className="sr-only" />
         </DialogHeader>
         <div className="flex-1 overflow-y-auto border-t p-2.5 border-[#828282]">

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -31,23 +32,25 @@ interface PreferencesDialogProps {
   onCancel: () => void;
 }
 
-const PREFERENCE_TYPES = [
-  { value: 'Location', label: 'Location' },
-  { value: 'Institution Size', label: 'Institution Size' },
-  { value: 'Major Focus', label: 'Major Focus' },
-  { value: 'Campus Culture', label: 'Campus Culture' },
-  { value: 'Career Services', label: 'Career Services' },
-  { value: 'Research Opportunities', label: 'Research Opportunities' },
-  { value: 'Cost', label: 'Cost' },
-  { value: 'Financial Aid', label: 'Financial Aid' },
-  { value: 'Diversity', label: 'Diversity' },
-  { value: 'Athletics', label: 'Athletics' },
-  { value: 'Other', label: 'Other' },
-];
-
 const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: PreferencesDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit, control, watch } = useFormContext<IApplicantProfile>();
+  const t = useTranslations('homepage.applicantProfile.preferencesDialog');
+  const tCommon = useTranslations('homepage.applicantProfile.common');
+
+  const PREFERENCE_TYPES = [
+    { value: 'Location', label: t('location') },
+    { value: 'Institution Size', label: t('institutionSize') },
+    { value: 'Major Focus', label: t('majorFocus') },
+    { value: 'Campus Culture', label: t('campusCulture') },
+    { value: 'Career Services', label: t('careerServices') },
+    { value: 'Research Opportunities', label: t('researchOpportunities') },
+    { value: 'Cost', label: t('cost') },
+    { value: 'Financial Aid', label: t('financialAid') },
+    { value: 'Diversity', label: t('diversity') },
+    { value: 'Athletics', label: t('athletics') },
+    { value: 'Other', label: t('other') },
+  ];
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -78,10 +81,8 @@ const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Preferenc
       {/* Header */}
       <div className="flex items-center gap-5">
         <div className="">
-          <h3 className="text-lg font-semibold text-gray-900">Your Preferences</h3>
-          <p className="text-sm text-gray-600 ">
-            Define what's important to you in your education journey (add multiple preferences)
-          </p>
+          <h3 className="text-lg font-semibold text-gray-900">{t('description')}</h3>
+          <p className="text-sm text-gray-600 ">{t('subDescription')}</p>
         </div>
         <Button
           type="button"
@@ -90,7 +91,7 @@ const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Preferenc
           className="flex items-center gap-2 text-primary-brand border-primary-brand hover:bg-primary-brand hover:text-white"
         >
           <Plus className="h-4 w-4" />
-          Add
+          {tCommon('add')}
         </Button>
       </div>
 
@@ -114,9 +115,9 @@ const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Preferenc
               <div className="grid grid-cols-1 md:grid-cols-10 gap-4 flex-1">
                 <CustomFormField
                   name={`applicantProfile.applicantPreferences.${index}.type`}
-                  label="Preference Type"
+                  label={t('preferenceType')}
                   type="select"
-                  placeholder="Select type"
+                  placeholder={t('selectType')}
                   options={PREFERENCE_TYPES}
                   inlineLabel
                   isBorder
@@ -125,8 +126,8 @@ const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Preferenc
 
                 <CustomFormField
                   name={`applicantProfile.applicantPreferences.${index}.value`}
-                  label="Preference Value"
-                  placeholder="e.g., Urban, Medium, Computer Science"
+                  label={t('preferenceValue')}
+                  placeholder={t('preferenceValuePlaceholder')}
                   inlineLabel
                   isBorder
                   className="md:col-span-4"
@@ -139,7 +140,7 @@ const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Preferenc
                     size="sm"
                     onClick={() => remove(index)}
                     className="p-2 h-full w-full text-red-500 hover:text-red-700 hover:bg-red-50 md:col-span-1 border-red-500"
-                    title="Delete preference"
+                    title={t('deletePreference')}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -149,7 +150,7 @@ const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Preferenc
                 <div className="md:col-span-10 space-y-2">
                   <CustomFormField
                     name={`applicantProfile.applicantPreferences.${index}.weight`}
-                    label="Weight"
+                    label={t('weight')}
                     type="range"
                     placeholder="Enter weight (0-1)"
                     min={0}
@@ -162,9 +163,9 @@ const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Preferenc
                 {/* Note */}
                 <CustomFormField
                   name={`applicantProfile.applicantPreferences.${index}.note`}
-                  label="Note (Optional)"
+                  label={t('noteOptional')}
                   type="textarea"
-                  placeholder="Add additional details about this preference"
+                  placeholder={t('notePlaceholder')}
                   inlineLabel
                   isBorder
                   className="md:col-span-10"
@@ -176,16 +177,14 @@ const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Preferenc
 
         {fields.length === 0 && (
           <div className="text-center py-8 text-gray-500">
-            <p>No preferences added yet. Click "Add" to get started.</p>
+            <p>{t('noPreferencesAddedYet')}</p>
           </div>
         )}
       </div>
 
       {/* Footer */}
       <div className="border-t pt-6">
-        <p className="text-sm text-gray-600 mb-4">
-          By clicking 'Save', you confirm that the information provided is accurate.
-        </p>
+        <p className="text-sm text-gray-600 mb-4">{tCommon('confirmAccuracy')}</p>
       </div>
     </div>
   );
@@ -197,14 +196,14 @@ const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Preferenc
         onClick={handleCancel}
         className="w-full sm:w-auto text-primary-brand px-10 py-2.5"
       >
-        Cancel
+        {tCommon('cancel')}
       </Button>
       <Button
         type="submit"
         className="w-full sm:w-auto px-10 py-2.5"
         onClick={handleSubmit(handleFormSubmit)}
       >
-        Save
+        {tCommon('save')}
       </Button>
     </div>
   );
@@ -215,7 +214,7 @@ const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Preferenc
         <DrawerContent className="min-h-[95vh]">
           <DrawerHeader className="border-b">
             <DrawerTitle className="text-xl font-semibold text-primary-brand">
-              Applicant Preferences
+              {t('title')}
             </DrawerTitle>
             <DrawerDescription className="sr-only" />
           </DrawerHeader>
@@ -232,9 +231,7 @@ const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: Preferenc
     <Dialog open={open} onOpenChange={handleCancel}>
       <DialogContent className="lg:min-w-6xl md:min-w-4xl min-w-2xl max-h-[90vh] flex flex-col gap-2.5 overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-primary-brand">
-            Applicant Preferences
-          </DialogTitle>
+          <DialogTitle className="text-xl font-bold text-primary-brand">{t('title')}</DialogTitle>
           <DialogDescription className="sr-only" />
         </DialogHeader>
         <div className="flex-1 overflow-y-auto border-t p-2.5 border-[#828282]">

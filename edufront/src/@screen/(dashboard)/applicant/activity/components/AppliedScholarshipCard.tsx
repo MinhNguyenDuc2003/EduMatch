@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 type AppliedScholarshipCardProps = {
   appliedScholarship: ApplicationScholarship;
   onViewDetails?: (appliedScholarship: ApplicationScholarship) => void;
@@ -23,26 +25,17 @@ const formatDate = (date?: number) => {
 const getStatusColor = (status: string) => {
   if (!status) return 'bg-blue-400 text-blue-700';
   const statusLower = status.toLowerCase();
-  switch (statusLower) {
-    case 'approved':
-      return 'bg-green-400 text-green-700';
-    case 'pending':
-      return 'bg-blue-400 text-blue-700';
-    case 'rejected':
-      return 'bg-red-400 text-red-700';
-    default:
-      return 'bg-blue-400 text-blue-700';
-  }
+  if (statusLower === 'approved') return 'bg-green-400 text-green-700';
+  if (statusLower === 'rejected') return 'bg-red-400 text-red-700';
+  return 'bg-blue-400 text-blue-700'; // pending (default)
 };
 
-const formatStatus = (status: string) => {
-  if (!status) return 'Pending ';
-
-  return status
-    .replace(/_/g, ' ')
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
+const formatStatus = (status: string, t: (key: string) => string) => {
+  if (!status) return t('status.pending');
+  const statusLower = status.toLowerCase();
+  if (statusLower === 'approved') return t('status.approved');
+  if (statusLower === 'rejected') return t('status.rejected');
+  return t('status.pending');
 };
 
 export default function AppliedScholarshipCard({
@@ -50,6 +43,7 @@ export default function AppliedScholarshipCard({
   onViewDetails,
   onViewScholarship,
 }: AppliedScholarshipCardProps) {
+  const t = useTranslations('homepage.activity.appliedScholarshipCard');
   const { applicationVo, scholarshipVo, status, note, reviewedAt } = appliedScholarship;
   const { title, fundingAmount, providerProfileVo, slug } = scholarshipVo;
   const { applicationName } = applicationVo;
@@ -67,7 +61,7 @@ export default function AppliedScholarshipCard({
           <div className="flex items-center gap-2">
             <div className={`w-3 h-3 rounded-full ${getStatusColor(status)}`}></div>
             <span className={`text-sm font-medium text-${getStatusColor(status)}`}>
-              {formatStatus(status)}
+              {formatStatus(status, t)}
             </span>
           </div>
 
@@ -84,7 +78,7 @@ export default function AppliedScholarshipCard({
 
         {/* Description text */}
         <p className="text-sm text-gray-600">
-          This application is submitted to: {organizationName}
+          {t('submittedTo')} {organizationName}
         </p>
       </div>
 
@@ -101,13 +95,13 @@ export default function AppliedScholarshipCard({
             onViewScholarship?.(slug);
           }}
         >
-          <span className="text-sm text-gray-600">Scholarship</span>
+          <span className="text-sm text-gray-600">{t('scholarship')}</span>
           <span className="text-sm font-medium text-gray-900 hover:text-blue-500">{title}</span>
         </div>
 
         {/* Funding Amount */}
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Amount</span>
+          <span className="text-sm text-gray-600">{t('amount')}</span>
           <span className="text-sm font-medium text-gray-900">{fundingAmount}</span>
         </div>
       </div>

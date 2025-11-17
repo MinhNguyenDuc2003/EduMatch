@@ -5,12 +5,15 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/lib/
 import { Avatar, AvatarFallback } from '@/lib/cus/avatar';
 import { Badge } from '@/lib/cus/badge';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 type ApplicationDetailProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   application: Application | null;
   appliedScholarship?: ApplicationScholarship | null;
+  onViewProvider?: (providerId?: number) => void;
+  onViewScholarship?: (slug?: string) => void;
 };
 
 const formatDate = (date?: number | string) => {
@@ -44,51 +47,40 @@ const formatDateTime = (date?: number) => {
   }
 };
 
-const formatStatus = (status?: string): string => {
-  if (!status) return 'Not reviewed yet';
-  return status
-    .replace(/_/g, ' ')
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
+const formatStatus = (status?: string, t?: (key: string) => string) => {
+  if (!t) return 'Pending';
+  if (!status) return t('status.pending');
+  const statusLower = status.toLowerCase();
+  if (statusLower === 'approved') return t('status.approved');
+  if (statusLower === 'rejected') return t('status.rejected');
+  return t('status.pending');
 };
 
 const getStatusColor = (status?: string): string => {
-  if (!status) return 'bg-gray-100 text-gray-700';
+  if (!status) return 'bg-blue-100 text-blue-700';
   const statusLower = status.toLowerCase();
-  switch (statusLower) {
-    case 'approved':
-      return 'bg-green-100 text-green-700';
-    case 'pending':
-      return 'bg-blue-100 text-blue-700';
-    case 'rejected':
-      return 'bg-red-100 text-red-700';
-    default:
-      return 'bg-gray-100 text-gray-700';
-  }
+  if (statusLower === 'approved') return 'bg-green-100 text-green-700';
+  if (statusLower === 'rejected') return 'bg-red-100 text-red-700';
+  return 'bg-blue-100 text-blue-700'; // pending (default)
 };
 
 const getTimelineDotColor = (status?: string): string => {
   if (!status) return 'bg-blue-500 text-blue-700';
   const statusLower = status.toLowerCase();
-  switch (statusLower) {
-    case 'approved':
-      return 'bg-green-500 text-green-700';
-    case 'pending':
-      return 'bg-blue-500 text-blue-700';
-    case 'rejected':
-      return 'bg-red-500 text-red-700';
-    default:
-      return 'bg-blue-500 text-blue-700';
-  }
+  if (statusLower === 'approved') return 'bg-green-500 text-green-700';
+  if (statusLower === 'rejected') return 'bg-red-500 text-red-700';
+  return 'bg-blue-500 text-blue-700'; // pending (default)
 };
 
 export default function ApplicationDetail({
   open,
   onOpenChange,
+  onViewProvider,
+  onViewScholarship,
   application,
   appliedScholarship,
 }: ApplicationDetailProps) {
+  const t = useTranslations('homepage.activity.applicationDetail');
   if (!application) return null;
 
   const {
@@ -99,6 +91,7 @@ export default function ApplicationDetail({
     applicationVo,
   } = appliedScholarship || {};
   const {
+    id: providerId,
     organizationName,
     logoUrl,
     email: scholarshipEmail,
@@ -134,17 +127,19 @@ export default function ApplicationDetail({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <SheetTitle className="text-lg font-bold text-gray-900">
-                {applicationName ? applicationName : 'Application Information'}
+                {applicationName ? applicationName : t('title')}
               </SheetTitle>
               {/* Status */}
               {status && (
-                <Badge className={`${getStatusColor(status)} border`}>{formatStatus(status)}</Badge>
+                <Badge className={`${getStatusColor(status)} border`}>
+                  {formatStatus(status, t)}
+                </Badge>
               )}
             </div>
             {/* Close button */}
             <SheetClose className="rounded-full bg-white p-2 shadow-lg ring-1 ring-gray-200 transition-opacity hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 flex-shrink-0">
               <X className="h-4 w-4 text-gray-700" />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{t('close')}</span>
             </SheetClose>
           </div>
         </SheetHeader>
@@ -153,28 +148,41 @@ export default function ApplicationDetail({
           {/* Scholarship Section */}
           {scholarship && (
             <section>
-              <h3 className="text-base font-bold text-gray-900 mb-2">Scholarship Information</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2">
+                {t('scholarshipInformation')}
+              </h3>
               <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4 space-y-4">
                 {/* Avatar */}
                 <div className="flex items-center gap-4">
                   {logoUrl ? (
-                    <div className="relative w-12 h-12">
+                    <div
+                      className="relative w-12 h-12 cursor-pointer"
+                      onClick={() => onViewProvider?.(providerId)}
+                    >
                       <Image
                         src={logoUrl}
-                        alt={organizationName || 'Organization Logo'}
+                        alt={organizationName || t('organizationLogo')}
                         fill
                         className="rounded-full w-12 h-12 object-cover"
                       />
                     </div>
                   ) : (
-                    <div className="rounded-full w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 text-white flex items-center justify-center">
+                    <div
+                      className="rounded-full w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 text-white flex items-center justify-center cursor-pointer"
+                      onClick={() => onViewProvider?.(providerId)}
+                    >
                       <span className="text-lg font-bold">
                         {organizationName?.charAt(0).toUpperCase()}
                       </span>
                     </div>
                   )}
                   <div className="flex-1 space-y-1">
-                    <h4 className="font-semibold text-gray-900">{organizationName}</h4>
+                    <h4
+                      className="font-semibold text-gray-900 cursor-pointer hover:text-blue-600 transition-colors"
+                      onClick={() => onViewProvider?.(providerId)}
+                    >
+                      {organizationName}
+                    </h4>
                     <div className="flex text-sm text-gray-500 items-center font-semibold gap-8">
                       <div className="flex items-center gap-2">
                         <Phone className="w-4 h-4" />
@@ -189,21 +197,26 @@ export default function ApplicationDetail({
                 </div>
                 {/* Scholarship Information */}
                 <div className="text-sm">
-                  <div className="flex flex-col text-sm text-gray-500 items-start font-semibold gap-2 bg-gray-100 rounded-md p-3">
+                  <div
+                    className="flex flex-col text-sm text-gray-500 items-start font-semibold gap-2 bg-gray-100 rounded-md p-3 hover:bg-gray-200 transition-colors cursor-pointer"
+                    onClick={() => scholarship?.slug && onViewScholarship?.(scholarship.slug)}
+                  >
                     <div className="flex items-center gap-2">
-                      <span>Scholarship</span>
+                      <span>{t('scholarship')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-base font-bold text-gray-900">{scholarship.title}</span>
                     </div>
                     <div className="flex items-center gap-8">
                       <div className="flex items-center gap-2">
-                        <span>Amount: {scholarship.fundingAmount}</span>
+                        <span>
+                          {t('amount')} {scholarship.fundingAmount}
+                        </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span>Status: </span>
+                        <span>{t('statusLabel')} </span>
                         <Badge className={`${getStatusColor(status)} border`}>
-                          {formatStatus(status)}
+                          {formatStatus(status, t)}
                         </Badge>
                       </div>
                     </div>
@@ -215,7 +228,7 @@ export default function ApplicationDetail({
 
           {/* Personal Detail Section */}
           <section>
-            <h3 className="text-base font-bold text-gray-900 mb-2">Personal Detail</h3>
+            <h3 className="text-base font-bold text-gray-900 mb-2">{t('personalDetail')}</h3>
             <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4 space-y-4">
               {/* Avatar */}
               <div className="flex items-center gap-4">
@@ -240,19 +253,29 @@ export default function ApplicationDetail({
               </div>
               {/* Additional Information */}
               <div className="text-sm bg-gray-100 rounded-md p-3">
-                <p className="text-sm font-semibold text-gray-600 mb-2">Additional Information</p>
+                <p className="text-sm font-semibold text-gray-600 mb-2">
+                  {t('additionalInformation')}
+                </p>
                 <div className="grid text-sm text-gray-500 items-center font-semibold grid-cols-2 gap-2">
                   <div className="flex items-center gap-2">
-                    <span>Gender: {gender || 'N/A'}</span>
+                    <span>
+                      {t('gender')} {gender || 'N/A'}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span>Date of Birth: {formatDate(dateOfBirth) || 'N/A'}</span>
+                    <span>
+                      {t('dateOfBirth')} {formatDate(dateOfBirth) || 'N/A'}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span>Address: {address || 'N/A'}</span>
+                    <span>
+                      {t('address')} {address || 'N/A'}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span>Nationality: {nationality || 'N/A'}</span>
+                    <span>
+                      {t('nationality')} {nationality || 'N/A'}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -261,23 +284,33 @@ export default function ApplicationDetail({
 
           {/* Education Background Section */}
           <section>
-            <h3 className="text-base font-bold text-gray-900 mb-2">Education Background</h3>
+            <h3 className="text-base font-bold text-gray-900 mb-2">{t('educationBackground')}</h3>
             <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4">
               <div className="grid text-sm text-gray-700 items-start font-medium grid-cols-2 gap-2">
                 <div className="col-span-2 flex items-center gap-2">
-                  <span>School: {schoolName || 'N/A'}</span>
+                  <span>
+                    {t('school')} {schoolName || 'N/A'}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span>Education Level: {educationLevel || 'N/A'}</span>
+                  <span>
+                    {t('educationLevel')} {educationLevel || 'N/A'}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span>Major: {major || 'N/A'}</span>
+                  <span>
+                    {t('major')} {major || 'N/A'}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span>GPA: {gpa !== undefined && gpa !== null ? gpa.toFixed(2) : 'N/A'}</span>
+                  <span>
+                    {t('gpa')} {gpa !== undefined && gpa !== null ? gpa.toFixed(2) : 'N/A'}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span>Graduation Year: {graduationYear || 'N/A'}</span>
+                  <span>
+                    {t('graduationYear')} {graduationYear || 'N/A'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -285,12 +318,12 @@ export default function ApplicationDetail({
 
           {/* Skills & Achievements Section */}
           <section>
-            <h3 className="text-base font-bold text-gray-900 mb-2">Skills & Achievements</h3>
+            <h3 className="text-base font-bold text-gray-900 mb-2">{t('skillsAchievements')}</h3>
             <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4 space-y-4">
               {/* Skills */}
               {skills && (
                 <div>
-                  <p className="text-sm font-semibold text-gray-500 mb-2">Skills</p>
+                  <p className="text-sm font-semibold text-gray-500 mb-2">{t('skills')}</p>
                   <div className="flex flex-wrap gap-2">
                     {skills.split(',').map((skill, index) => (
                       <Badge
@@ -309,7 +342,7 @@ export default function ApplicationDetail({
                 {/* Achievements */}
                 {achievements && (
                   <div className="text-sm font-semibold text-gray-500">
-                    <p className="mb-2">Achievements</p>
+                    <p className="mb-2">{t('achievements')}</p>
                     <div className="space-y-1">
                       {achievements.split(',').map((achievement, index) => (
                         <div key={index} className="text-sm text-gray-700 font-semibold">
@@ -323,7 +356,7 @@ export default function ApplicationDetail({
                 {/* Extracurricular Activities */}
                 {extracurricular && (
                   <div className="text-sm font-semibold text-gray-500 ">
-                    <p className="mb-2">Extracurricular Activities</p>
+                    <p className="mb-2">{t('extracurricularActivities')}</p>
                     <div className="space-y-1">
                       {extracurricular.split(',').map((activity, index) => (
                         <div key={index} className="text-sm text-gray-700 font-semibold">
@@ -339,20 +372,20 @@ export default function ApplicationDetail({
 
           {/* Reason Section */}
           <section>
-            <h3 className="text-base font-bold text-gray-900 mb-2">Reason</h3>
+            <h3 className="text-base font-bold text-gray-900 mb-2">{t('reason')}</h3>
             <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4">
               <p className="text-sm text-gray-600 bg-gray-50 rounded-md p-3 leading-relaxed">
-                {motivation || 'No motivation provided'}
+                {motivation || t('noMotivationProvided')}
               </p>
             </div>
           </section>
 
           {/* Goals Section */}
           <section>
-            <h3 className="text-base font-bold text-gray-900 mb-2">Goals</h3>
+            <h3 className="text-base font-bold text-gray-900 mb-2">{t('goals')}</h3>
             <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4">
               <p className="text-sm text-gray-600 bg-gray-50 rounded-md p-3 leading-relaxed">
-                {application.personalStatement || 'No personal statement provided'}
+                {application.personalStatement || t('noPersonalStatementProvided')}
               </p>
             </div>
           </section>
@@ -360,7 +393,7 @@ export default function ApplicationDetail({
           {/* Application History Section */}
           {reviewedAt && (
             <section>
-              <h3 className="text-base font-bold text-gray-900 mb-2">Application History</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2">{t('applicationHistory')}</h3>
               <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4">
                 <div className="space-y-6 pl-2 border-l-2 border-blue-200">
                   {/* review status */}
@@ -370,13 +403,13 @@ export default function ApplicationDetail({
                     ></div>
                     <div className="flex flex-col gap-1">
                       <p className={`text-sm font-medium text-${getStatusColor(status)}`}>
-                        {formatStatus(status)} Application
+                        {formatStatus(status, t)} {t('application')}
                       </p>
                       <p className="text-sm text-gray-500">{formatDateTime(reviewedAt)}</p>
                       {scholarship && <p className="text-sm text-gray-500">{scholarship.title}</p>}
                       {note && (
                         <div>
-                          <span className="text-sm font-medium text-gray-900">Note: </span>
+                          <span className="text-sm font-medium text-gray-900">{t('note')} </span>
                           <span className="text-sm text-gray-600">{note}</span>
                         </div>
                       )}

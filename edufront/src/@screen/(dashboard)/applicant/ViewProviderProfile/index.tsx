@@ -21,9 +21,11 @@ import {
   ScholarshipsSection,
   ProviderInformationSidebar,
 } from './components';
+import { useTranslations } from 'next-intl';
 
 export default function ViewProviderProfile({ providerId }: { providerId: number }) {
   const router = useRouter();
+  const t = useTranslations('homepage.viewProviderProfile');
 
   const { data: providerProfile, isLoading: isLoadingProfile } =
     useGetProviderProfileByIdQuery(providerId);
@@ -106,12 +108,10 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
       <div className="min-h-screen bg-gray-50">
         <div className="min-h-[60vh] flex items-center justify-center px-4">
           <div className="text-center max-w-md">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Provider not found</h2>
-            <p className="text-gray-600 mb-4">
-              The provider you're looking for doesn't exist or has been removed.
-            </p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('notFound')}</h2>
+            <p className="text-gray-600 mb-4">{t('notFoundDescription')}</p>
             <Button onClick={() => router.back()} className="mt-4">
-              Go Back
+              {t('goBack')}
             </Button>
           </div>
         </div>

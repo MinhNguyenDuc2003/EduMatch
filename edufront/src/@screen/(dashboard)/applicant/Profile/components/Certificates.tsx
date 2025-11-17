@@ -1,7 +1,9 @@
+'use client';
 import React from 'react';
 import CertificateCard from './CertificateCard';
 import { Pencil, Plus } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
+import { useTranslations } from 'next-intl';
 
 interface CertificatesProps {
   certificates: Certificate[];
@@ -9,11 +11,14 @@ interface CertificatesProps {
 }
 
 const Certificates = ({ certificates, onEdit }: CertificatesProps) => {
+  const t = useTranslations('homepage.applicantProfile');
+  const tCommon = useTranslations('homepage.applicantProfile.common');
+
   return (
     <div className="space-y-4">
       {/* Header with Add button */}
       <div className="flex gap-2">
-        <h2 className="text-primary-brand text-xl font-semibold">Certificates</h2>
+        <h2 className="text-primary-brand text-xl font-semibold">{t('sections.certificates')}</h2>
         {onEdit && (
           <Button
             variant="custom"
@@ -21,7 +26,7 @@ const Certificates = ({ certificates, onEdit }: CertificatesProps) => {
             onClick={onEdit}
           >
             <Pencil className="w-3 h-3" />
-            Edit
+            {tCommon('edit')}
           </Button>
         )}
       </div>
@@ -35,9 +40,7 @@ const Certificates = ({ certificates, onEdit }: CertificatesProps) => {
 
       {/* Empty state */}
       {certificates.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          No certificates added yet. Click the Add button to get started.
-        </div>
+        <div className="text-center py-8 text-gray-500">{tCommon('noCertificatesAdded')}</div>
       )}
     </div>
   );
