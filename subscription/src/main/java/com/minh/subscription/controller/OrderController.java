@@ -18,6 +18,11 @@ public class OrderController {
 
     private final OrderService paymentService;
 
+    @GetMapping("/test")
+    public ApiResponse<?> testCi() {
+        return ApiResponse.ok();
+    }
+
     @GetMapping("/all")
     public ApiResponse<List<OrderDto>> getAll() {
         return ApiResponse.ok(paymentService.getAll());
