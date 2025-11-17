@@ -6,8 +6,10 @@ import com.minh.model.dto.subscription.OrderDto;
 import com.minh.service.base.BaseService;
 import com.minh.subscription.data.entity.OrderEntity;
 import com.minh.subscription.data.entity.SubscriptionEntity;
+import com.minh.subscription.data.entity.SubscriptionPlanEntity;
 import com.minh.subscription.data.mapper.OrderMapper;
 import com.minh.subscription.data.repository.OrderRepository;
+import com.minh.subscription.data.repository.SubscriptionPlanRepository;
 import com.minh.subscription.data.repository.SubscriptionRepository;
 import com.minh.subscription.service.OrderService;
 import com.minh.utils.UaaContextHolder;
@@ -24,6 +26,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
     private final OrderRepository orderRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final SubscriptionPlanRepository subscriptionplanRepository;
     private final OrderMapper orderMapper;
 
     @Override
@@ -88,31 +91,42 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public OrderDto markAsPaid(Long orderId, String transactionId) {
-        OrderEntity order = orderRepository.findByIdAndActive(orderId, true)
-                .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
+    public OrderDto markAsPaid(String transactionId, Long subscriptionPlanId) {
 
+        String userId = UaaContextHolder.getUserId();
+
+        // 1) Lấy Subscription Plan mà user đã mua
+        SubscriptionPlanEntity plan = subscriptionplanRepository.findById(subscriptionPlanId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_PLAN_NOT_FOUND));
+
+        // 2) Tạo Subscription mới (ACTIVE)
+        SubscriptionEntity subscription = new SubscriptionEntity();
+        subscription.setUserId(userId);
+        subscription.setPlan(plan);
+        subscription.setStartDate(LocalDateTime.now());
+        subscription.setEndDate(LocalDateTime.now().plusDays(plan.getDurationDays()));
+        subscription.setStatus("ACTIVE");
+        subscription.setUserType(plan.getTargetType());
+        subscription.setActive(true);
+
+        subscriptionRepository.save(subscription);
+
+        // 3) Tạo Order và gán subscription mới vừa tạo
+        OrderEntity order = new OrderEntity();
+        order.setUserId(userId);
         order.setTransactionId(transactionId);
         order.setStatus("PAID");
         order.setPaidAt(LocalDateTime.now());
+        order.setActive(true);
+        order.setSubscription(subscription);
+        order.setAmount(subscription.getPlan().getPrice());
+        order.setCurrency("USD");
+        order.setPaymentMethod("CARD");
 
-        SubscriptionEntity subscriptionTemplate = order.getSubscription();
-        if (subscriptionTemplate == null) {
-            throw new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND);
-        }
+        order = orderRepository.save(order);
 
-        SubscriptionEntity newSubscription = new SubscriptionEntity();
-        newSubscription.setUserId(order.getUserId());
-        newSubscription.setPlan(subscriptionTemplate.getPlan());
-        newSubscription.setStartDate(LocalDateTime.now());
-        newSubscription.setEndDate(LocalDateTime.now().plusDays(subscriptionTemplate.getPlan().getDurationDays()));
-        newSubscription.setStatus(subscriptionTemplate.getStatus());
-        newSubscription.setUserType(subscriptionTemplate.getUserType());
-        newSubscription.setActive(true);
-
-        subscriptionRepository.save(newSubscription);
-
-        OrderEntity savedOrder = orderRepository.save(order);
-        return orderMapper.toDto(savedOrder);
+        // 4) Trả về OrderDto
+        return orderMapper.toDto(order);
     }
+
 }

@@ -46,12 +46,13 @@ public class OrderController {
         return ApiResponse.ok();
     }
 
+    @Authorized
     @PostMapping("/confirm-order")
     public ApiResponse<OrderDto> confirmPayment(
-            @RequestParam Long orderId,
-            @RequestParam String transactionId) {
+            @RequestParam String transactionId,
+            @RequestParam Long subscriptionPlanId) {
 
-        OrderDto updatedOrder = paymentService.markAsPaid(orderId, transactionId);
+        OrderDto updatedOrder = paymentService.markAsPaid(transactionId, subscriptionPlanId);
         return ApiResponse.ok(updatedOrder);
     }
 }

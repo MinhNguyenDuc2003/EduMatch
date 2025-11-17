@@ -45,7 +45,9 @@ public class SubscriptionPlanController {
     }
 
     @GetMapping("/targetType/{targetType}")
-    public List<SubscriptionPlanDto> getByTargetType(@PathVariable SubscriptionTargetType targetType) {
-        return subscriptionPlanService.getByTargetType(targetType);
+    public ApiResponse<List<SubscriptionPlanDto>> getByTargetType(
+            @PathVariable SubscriptionTargetType targetType) {
+
+        return ApiResponse.ok(subscriptionPlanService.getByTargetType(targetType));
     }
 }

@@ -1,5 +1,6 @@
 package com.minh.subscription.data.entity;
 
+import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.subscription.data.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +25,7 @@ public class SubscriptionEntity extends BaseEntity {
     private String userId;
 
     @Column(name = "USER_TYPE")
-    private String userType;
+    private SubscriptionTargetType userType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PLAN_ID")
