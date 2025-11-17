@@ -55,7 +55,7 @@ const createStripePaymentIntent = (req, res) => __awaiter(void 0, void 0, void 0
             },
             customer: customer.id,
         });
-        res.status(200).json({ paymentIntent });
+        res.status(200).json({ data: paymentIntent });
     }
     catch (error) {
         res.status(500).json({ message: "Failed to create payment intent", error });
