@@ -93,5 +93,4 @@ public class ReportController {
     public ApiResponse<ReportDto> createScholarshipReport(@RequestBody ScholarshipReportCreateDto dto) {
         return ApiResponse.ok(service.createScholarshipReport(dto));
     }
-
 }
