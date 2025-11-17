@@ -42,7 +42,7 @@ const Home = () => {
       <Pressable
         onPress={() => {
           console.log("Clicked", item.id);
-          router.push(`/scholarship/${item.id}/index`);
+          router.push(`/scholarshipdetails/${item.id}`);
         }}
         className="bg-green-50 rounded-2xl shadow-lg pt-4 pb-4 mb-4 cursor-pointer border border-green-500 border-3px"
       >
@@ -80,7 +80,7 @@ const Home = () => {
   };
 
   return (
-    <View className="flex-1 bg-gray-100 p-4 mb-36">
+    <View className="flex-1 bg-gray-100 p-4 ">
       {data.length === 0 ? (
         <Text className="text-center text-gray-500 mt-10">
           Loading scholarships...

@@ -1,12 +1,12 @@
 import { Stack } from "expo-router";
 
-export default function HomeLayout() {
+export default function ScholarshipLayout() {
   return (
     <Stack >
       <Stack.Screen
-        name="ScholarshipDetail"
+        name="index"
         options={{
-          title: "Scholarship Detail",
+          title: "Scholarship",
           headerLargeTitle: true,
           headerLargeTitleShadowVisible: false,
         }}

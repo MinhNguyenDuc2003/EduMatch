@@ -3,7 +3,7 @@ import { ArrowLeft, HeartIcon } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, Text, View } from "react-native";
 
-const Home = () => {
+const ScholarshipPage = () => {
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -96,4 +96,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ScholarshipPage;

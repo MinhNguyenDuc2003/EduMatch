@@ -19,6 +19,14 @@ export default function RootLayout() {
             drawable="profile_drawable"
           />
         </NativeTabs.Trigger>
+        <NativeTabs.Trigger name="scholarship">
+          <Label>Scholarship</Label>
+          <Icon
+            sf={{ default: "person", selected: "person" }}
+            drawable="profile_drawable"
+          />
+        </NativeTabs.Trigger>
+       
       </NativeTabs>
       <PortalHost />
     </>
