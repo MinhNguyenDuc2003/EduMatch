@@ -4,6 +4,7 @@ import { PaymentIntent } from '@stripe/stripe-js';
 
 const API_ENDPOINTS = {
   SUBSCRIPTION_PLAN: '/api/subscription/subscription/subscription/plans',
+  SUBSCRIPTION: '/api/subscription/subscription',
   PAYMENT: '/api/payment',
 };
 
@@ -12,10 +13,7 @@ export const apiSubscription = createApi({
   reducerPath: 'apiSubscription',
   tagTypes: ['SubscriptionPlan'],
   endpoints: (build) => ({
-    createPaymentIntent: build.mutation<
-      { paymentIntent: PaymentIntent },
-      { amount: number; email: string }
-    >({
+    createPaymentIntent: build.mutation<PaymentIntent, { amount: number; email: string }>({
       query: ({ amount, email }) => ({
         url: `${API_ENDPOINTS.PAYMENT}/payment-intent`,
         method: 'POST',
@@ -36,6 +34,13 @@ export const apiSubscription = createApi({
       }),
       providesTags: ['SubscriptionPlan'],
     }),
+    confirmPayment: build.mutation<void, { transactionId: string; subscriptionPlanId: number }>({
+      query: ({ transactionId, subscriptionPlanId }) => ({
+        url: `${API_ENDPOINTS.SUBSCRIPTION}/orders/confirm-order`,
+        method: 'POST',
+        params: { transactionId, subscriptionPlanId },
+      }),
+    }),
   }),
 });
 
@@ -43,4 +48,5 @@ export const {
   useGetSubscriptionPlanByIdQuery,
   useCreatePaymentIntentMutation,
   useGetSubscriptionByTargetTypeQuery,
+  useConfirmPaymentMutation,
 } = apiSubscription;
