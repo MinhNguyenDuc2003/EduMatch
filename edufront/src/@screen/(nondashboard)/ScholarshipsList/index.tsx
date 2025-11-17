@@ -19,7 +19,7 @@ export default function ScholarshipsList() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  const t = useTranslations('homepage.scholarshipsList');
+  const t = useTranslations('scholarshipsList');
 
   const [filters, setFilters] = useState<FilterState>({
     keyword: '',

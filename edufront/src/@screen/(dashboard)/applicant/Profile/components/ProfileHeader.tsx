@@ -16,7 +16,7 @@ interface ProfileHeaderProps {
 }
 
 export default function ProfileHeader({ name, role, avatarUrl, stats }: ProfileHeaderProps) {
-  const t = useTranslations('homepage.applicantProfile.profileHeader');
+  const t = useTranslations('applicantProfile.profileHeader');
   
   return (
     <div className="bg-[#FAFAF6] rounded-lg border border-[#828282] p-6 h-full grid grid-cols-1 lg:grid-cols-2 gap-6">

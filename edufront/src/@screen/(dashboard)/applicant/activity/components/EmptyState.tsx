@@ -17,7 +17,7 @@ const iconMap: Record<ShortlistTab, React.ComponentType<{ className?: string }>>
 };
 
 export default function EmptyState({ tab }: EmptyStateProps) {
-  const t = useTranslations(`homepage.activity.emptyState.${tab}`);
+  const t = useTranslations(`activity.emptyState.${tab}`);
   const Icon = iconMap[tab];
 
   return (

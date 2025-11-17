@@ -15,7 +15,7 @@ export default function ScholarshipMetadata({
   isTracked,
   onToggleTracking,
 }: ScholarshipMetadataProps) {
-  const t = useTranslations('homepage.scholarshipDetail.metadata');
+  const t = useTranslations('scholarshipDetail.metadata');
   
   return (
     <div className="flex flex-wrap items-center gap-6">

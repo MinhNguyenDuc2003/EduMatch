@@ -43,9 +43,9 @@ const StudentInformationDialog: React.FC<StudentInformationDialogProps> = ({
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit } = useFormContext<IApplicantProfile>();
-  const t = useTranslations('homepage.applicantProfile.studentInformationDialog');
-  const tFields = useTranslations('homepage.applicantProfile.fields');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.studentInformationDialog');
+  const tFields = useTranslations('applicantProfile.fields');
+  const tCommon = useTranslations('applicantProfile.common');
 
   const handleFormSubmit = (data: IApplicantProfile) => {
     onSubmit(data);

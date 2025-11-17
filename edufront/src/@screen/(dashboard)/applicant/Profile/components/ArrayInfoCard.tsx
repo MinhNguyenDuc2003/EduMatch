@@ -26,7 +26,7 @@ export default function ArrayInfoCard({
   onEdit,
   className,
 }: ArrayInfoCardProps) {
-  const t = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.common');
   const hasItems = items && items.length > 0;
   const defaultEmptyMessage = emptyMessage || t('noItemsAdded');
 

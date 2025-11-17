@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 export default function HeroSection() {
-  const t = useTranslations('homepage.activity.heroSection');
+  const t = useTranslations('activity.heroSection');
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-200">

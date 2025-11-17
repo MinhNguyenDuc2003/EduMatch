@@ -30,7 +30,7 @@ export default function ScholarshipCard({
 }: ScholarshipCardProps) {
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const t = useTranslations('homepage.scholarshipsList.scholarshipCard');
+  const t = useTranslations('scholarshipsList.scholarshipCard');
 
   const images = getScholarshipImages(scholarship);
   const { logoUrl, organizationName, isFollow, id } = scholarship.providerProfileVo;

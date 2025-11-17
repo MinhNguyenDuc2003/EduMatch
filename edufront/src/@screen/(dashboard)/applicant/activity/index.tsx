@@ -200,7 +200,7 @@ export default function ActivityManagement() {
                     variant="custom"
                     color="gray"
                     onClick={handleCreateNew}
-                    value={t('homepage.activity.applicationDetail.createNewApplication')}
+                    value={t('activity.applicationDetail.createNewApplication')}
                   />
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {applicationsData?.map((application) => (

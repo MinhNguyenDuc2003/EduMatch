@@ -39,8 +39,8 @@ const CertificatesDialog = ({
 }: CertificatesDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit, control, watch } = useFormContext<IApplicantProfile>();
-  const t = useTranslations('homepage.applicantProfile.certificatesDialog');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.certificatesDialog');
+  const tCommon = useTranslations('applicantProfile.common');
 
   const { fields, append, remove } = useFieldArray({
     control,

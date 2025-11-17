@@ -24,7 +24,7 @@ export default function FilterSidebar({
   isMobile = false,
   onClose,
 }: FilterSidebarProps) {
-  const t = useTranslations('homepage.scholarshipsList.filters');
+  const t = useTranslations('scholarshipsList.filters');
   
   const handleFilterChange = (field: keyof FilterState, value: string) => {
     setFilters({

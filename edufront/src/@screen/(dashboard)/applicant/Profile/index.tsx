@@ -36,7 +36,7 @@ import {
 import { useTranslations } from 'next-intl';
 
 export default function Profile() {
-  const t = useTranslations('homepage.applicantProfile');
+  const t = useTranslations('applicantProfile');
   const [isStudentInfoDialogOpen, setIsStudentInfoDialogOpen] = useState(false);
   const [isSkillsDialogOpen, setIsSkillsDialogOpen] = useState(false);
   const [isEducationDialogOpen, setIsEducationDialogOpen] = useState(false);

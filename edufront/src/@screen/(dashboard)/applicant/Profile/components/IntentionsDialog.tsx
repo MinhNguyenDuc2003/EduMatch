@@ -35,8 +35,8 @@ interface IntentionsDialogProps {
 const IntentionsDialog = ({ open, onOpenChange, onSubmit, onCancel }: IntentionsDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit, control } = useFormContext<IApplicantProfile>();
-  const t = useTranslations('homepage.applicantProfile.intentionsDialog');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.intentionsDialog');
+  const tCommon = useTranslations('applicantProfile.common');
 
   const { fields, append, remove } = useFieldArray({
     control,

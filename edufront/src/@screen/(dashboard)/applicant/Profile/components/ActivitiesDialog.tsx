@@ -41,8 +41,8 @@ interface ActivitiesDialogProps {
 const ActivitiesDialog = ({ open, onOpenChange, onSubmit, onCancel }: ActivitiesDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit } = useFormContext<IApplicantProfile>();
-  const t = useTranslations('homepage.applicantProfile.activitiesDialog');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.activitiesDialog');
+  const tCommon = useTranslations('applicantProfile.common');
 
   const handleFormSubmit = (data: IApplicantProfile) => {
     onSubmit(data);

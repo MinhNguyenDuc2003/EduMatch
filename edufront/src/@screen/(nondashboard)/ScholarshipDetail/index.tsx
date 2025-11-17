@@ -23,7 +23,7 @@ import { useTranslations } from 'next-intl';
 export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const t = useTranslations('homepage.scholarshipDetail');
+  const t = useTranslations('scholarshipDetail');
 
   const { data: scholarship, isLoading, isError, refetch } = useGetScholarshipBySlugQuery(slug);
   const [followProvider] = useFollowProviderMutation();

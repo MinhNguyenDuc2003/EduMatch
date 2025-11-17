@@ -13,7 +13,7 @@ type ProviderCardProps = {
 };
 
 export default function ProviderCard({ provider, onViewDetails, onUnfollow }: ProviderCardProps) {
-  const t = useTranslations('homepage.activity.providerCard');
+  const t = useTranslations('activity.providerCard');
   const { organizationName, email, phone, logoUrl, bannerUrl, verified } = provider;
 
   return (

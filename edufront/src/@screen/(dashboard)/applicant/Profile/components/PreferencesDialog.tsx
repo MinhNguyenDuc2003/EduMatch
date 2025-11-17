@@ -35,8 +35,8 @@ interface PreferencesDialogProps {
 const PreferencesDialog = ({ open, onOpenChange, onSubmit, onCancel }: PreferencesDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit, control, watch } = useFormContext<IApplicantProfile>();
-  const t = useTranslations('homepage.applicantProfile.preferencesDialog');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.preferencesDialog');
+  const tCommon = useTranslations('applicantProfile.common');
 
   const PREFERENCE_TYPES = [
     { value: 'Location', label: t('location') },

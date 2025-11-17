@@ -42,8 +42,8 @@ const EducationHistoryDialog = ({
 }: EducationHistoryDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit, control, watch } = useFormContext<IApplicantProfile>();
-  const t = useTranslations('homepage.applicantProfile.educationHistoryDialog');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.educationHistoryDialog');
+  const tCommon = useTranslations('applicantProfile.common');
 
   const { fields, append, remove } = useFieldArray({
     control,

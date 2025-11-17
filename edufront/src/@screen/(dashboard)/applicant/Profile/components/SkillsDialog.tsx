@@ -35,8 +35,8 @@ interface SkillsDialogProps {
 const SkillsDialog = ({ open, onOpenChange, onSubmit, onCancel }: SkillsDialogProps) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { handleSubmit, control } = useFormContext<IApplicantProfile>();
-  const t = useTranslations('homepage.applicantProfile.skillsDialog');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.skillsDialog');
+  const tCommon = useTranslations('applicantProfile.common');
 
   const PROFICIENCY_LEVELS = [
     { value: 'Beginner', label: t('beginner') },

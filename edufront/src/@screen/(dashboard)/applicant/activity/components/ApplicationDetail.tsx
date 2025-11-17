@@ -80,7 +80,7 @@ export default function ApplicationDetail({
   application,
   appliedScholarship,
 }: ApplicationDetailProps) {
-  const t = useTranslations('homepage.activity.applicationDetail');
+  const t = useTranslations('activity.applicationDetail');
   if (!application) return null;
 
   const {

@@ -19,7 +19,7 @@ export default function ScholarshipSidebar({
   onToggleFollow,
 }: ScholarshipSidebarProps) {
   const provider = scholarship.providerProfileVo;
-  const t = useTranslations('homepage.scholarshipDetail.sidebar');
+  const t = useTranslations('scholarshipDetail.sidebar');
 
   return (
     <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">

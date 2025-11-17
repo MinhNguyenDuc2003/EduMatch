@@ -31,7 +31,7 @@ export default function SubmitApplicationDialog({
   onSubmit,
 }: SubmitApplicationDialogProps) {
   const router = useRouter();
-  const t = useTranslations('homepage.activity.submitApplicationDialog');
+  const t = useTranslations('activity.submitApplicationDialog');
   const [selectedApplicationId, setSelectedApplicationId] = useState<number | null>(null);
   const { data: applications, isLoading } = useGetApplicationsQuery(undefined, {
     skip: !open, // Only fetch when dialog is open

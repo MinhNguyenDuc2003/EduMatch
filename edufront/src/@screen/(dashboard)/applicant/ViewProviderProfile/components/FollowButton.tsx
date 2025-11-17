@@ -9,7 +9,7 @@ interface FollowButtonProps {
 }
 
 export default function FollowButton({ isFollowing, onToggle }: FollowButtonProps) {
-  const t = useTranslations('homepage.viewProviderProfile.followButton');
+  const t = useTranslations('viewProviderProfile.followButton');
   
   return (
     <Button
