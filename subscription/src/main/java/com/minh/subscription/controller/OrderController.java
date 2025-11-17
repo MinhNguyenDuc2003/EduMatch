@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(EndPoint.SUBSCRIPTION.PAYMENTS)
+@RequestMapping(EndPoint.SUBSCRIPTION.ORDERS)
 public class OrderController {
 
     private final OrderService paymentService;
@@ -46,12 +46,13 @@ public class OrderController {
         return ApiResponse.ok();
     }
 
-    @PostMapping("/confirm-payment")
+    @Authorized
+    @PostMapping("/confirm-order")
     public ApiResponse<OrderDto> confirmPayment(
-            @RequestParam Long orderId,
-            @RequestParam String transactionId) {
+            @RequestParam String transactionId,
+            @RequestParam Long subscriptionPlanId) {
 
-        OrderDto updatedOrder = paymentService.markAsPaid(orderId, transactionId);
+        OrderDto updatedOrder = paymentService.markAsPaid(transactionId, subscriptionPlanId);
         return ApiResponse.ok(updatedOrder);
     }
 }
