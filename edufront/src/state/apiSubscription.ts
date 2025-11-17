@@ -12,10 +12,14 @@ export const apiSubscription = createApi({
   reducerPath: 'apiSubscription',
   tagTypes: ['SubscriptionPlan'],
   endpoints: (build) => ({
-    createPaymentIntent: build.mutation<PaymentIntent, { amount: number; email: string }>({
-      query: () => ({
+    createPaymentIntent: build.mutation<
+      { paymentIntent: PaymentIntent },
+      { amount: number; email: string }
+    >({
+      query: ({ amount, email }) => ({
         url: `${API_ENDPOINTS.PAYMENT}/payment-intent`,
         method: 'POST',
+        body: { amount, email },
       }),
     }),
     getSubscriptionPlanById: build.query<SubscriptionPlan, number | string>({

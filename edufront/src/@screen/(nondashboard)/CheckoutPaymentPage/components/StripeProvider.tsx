@@ -47,9 +47,7 @@ const StripeProvider = ({ children }: { children: React.ReactNode }) => {
       })
         .unwrap()
         .then((response) => {
-          console.log(response);
-
-          setClientSecret(response.client_secret!);
+          setClientSecret(response.paymentIntent.client_secret!);
         });
     };
     fetchPaymentIntent();
