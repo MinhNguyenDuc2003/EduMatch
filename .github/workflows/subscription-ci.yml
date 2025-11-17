@@ -17,5 +17,5 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd /Edumatch/subscription
+            cd /home/minh/EduMatch/subscription
             pwsh docker-build.ps1
