@@ -72,4 +72,9 @@ public class ReportController {
     public ApiResponse<ReportDto> reply(@PathVariable Long id, @RequestBody String reply) {
         return ApiResponse.ok(service.replyToReport(id, reply));
     }
+
+    @GetMapping("/test")
+    public ApiResponse<String> test() {
+        return ApiResponse.ok("Test!");
+    }
 }

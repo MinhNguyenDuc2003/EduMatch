@@ -95,11 +95,11 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
         String userId = UaaContextHolder.getUserId();
 
-        // 1) Lấy Subscription Plan mà user đã mua
+        // Lấy Subscription Plan mà user đã mua
         SubscriptionPlanEntity plan = subscriptionplanRepository.findById(subscriptionPlanId)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_PLAN_NOT_FOUND));
 
-        // 2) Tạo Subscription mới (ACTIVE)
+        // Tạo Subscription mới (ACTIVE)
         SubscriptionEntity subscription = new SubscriptionEntity();
         subscription.setUserId(userId);
         subscription.setPlan(plan);
@@ -111,7 +111,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
         subscriptionRepository.save(subscription);
 
-        // 3) Tạo Order và gán subscription mới vừa tạo
+        // Tạo Order và gán subscription mới vừa tạo
         OrderEntity order = new OrderEntity();
         order.setUserId(userId);
         order.setTransactionId(transactionId);
@@ -125,7 +125,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
         order = orderRepository.save(order);
 
-        // 4) Trả về OrderDto
+        // Trả về OrderDto
         return orderMapper.toDto(order);
     }
 
