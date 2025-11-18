@@ -1,6 +1,7 @@
 package com.minh.subscription.service.impl;
 
 import com.minh.constants.CoreMessageCode;
+import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.subscription.SubscriptionDto;
 import com.minh.service.base.BaseService;

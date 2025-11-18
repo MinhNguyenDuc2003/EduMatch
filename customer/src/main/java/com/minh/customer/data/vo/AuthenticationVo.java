@@ -22,4 +22,15 @@ public class AuthenticationVo implements Serializable {
     private Boolean isAuthenticated;
     private Boolean isProvider;
 
+    private SubscriptionInfoVo provider;
+    private SubscriptionInfoVo applicant;
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static  class SubscriptionInfoVo {
+        private Integer duration;
+    }
 }

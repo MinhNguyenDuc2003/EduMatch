@@ -60,4 +60,16 @@ public class OrderController {
         OrderDto updatedOrder = paymentService.markAsPaid(transactionId, subscriptionPlanId);
         return ApiResponse.ok(updatedOrder);
     }
+
+    @Authorized
+    @PostMapping("/extend")
+    public ApiResponse<OrderDto> extendSubscription(
+            @RequestParam Long subscriptionId,
+            @RequestParam Long subscriptionPlanId,
+            @RequestParam String transactionId) {
+
+        OrderDto updatedOrder = paymentService.extendSubscription(subscriptionId, subscriptionPlanId, transactionId);
+        return ApiResponse.ok(updatedOrder);
+    }
+
 }

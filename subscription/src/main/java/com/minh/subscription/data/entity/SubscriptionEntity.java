@@ -25,6 +25,7 @@ public class SubscriptionEntity extends BaseEntity {
     private String userId;
 
     @Column(name = "USER_TYPE")
+    @Enumerated(EnumType.STRING)
     private SubscriptionTargetType userType;
 
     @ManyToOne(fetch = FetchType.LAZY)
