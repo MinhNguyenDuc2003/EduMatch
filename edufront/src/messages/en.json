@@ -709,7 +709,15 @@
       "applicationHistory": "Application History",
       "application": "Application",
       "note": "Note:",
-      "createNewApplication": "Create New Application"
+      "createNewApplication": "Create New Application",
+      "documents": "Documents",
+      "noDocumentsProvided": "No documents provided",
+      "images": "Images",
+      "files": "Files",
+      "download": "Download",
+      "viewFullSize": "View full size",
+      "clickToView": "Click to view",
+      "submissionDate": "Submission Date"
     },
     "submitApplicationDialog": {
       "title": "Submit Scholarship Application",

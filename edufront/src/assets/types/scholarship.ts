@@ -45,6 +45,7 @@ declare global {
     scholarshipPreferences?: ScholarshipPreference[];
     scholarshipMedias?: ScholarshipMedia[];
     isFollow: number;
+    view: number;
   };
 
   type ScholarshipSearchCriteria = {

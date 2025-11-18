@@ -707,9 +707,17 @@
       "goals": "Mục tiêu",
       "noPersonalStatementProvided": "Chưa cung cấp tuyên bố cá nhân",
       "applicationHistory": "Lịch Sử Đơn Ứng Tuyển",
-      "application": "Đơn ứng tuyển",
+      "application": "đơn ứng tuyển",
       "note": "Ghi chú:",
-      "createNewApplication": "Tạo Đơn Ứng Tuyển Mới"
+      "createNewApplication": "Tạo Đơn Ứng Tuyển Mới",
+      "submissionDate": "Ngày nộp đơn",
+      "documents": "Tài liệu",
+      "noDocumentsProvided": "Chưa cung cấp tài liệu",
+      "images": "Hình ảnh",
+      "files": "Tệp tin",
+      "download": "Tải xuống",
+      "viewFullSize": "Xem toàn màn hình",
+      "clickToView": "Nhấn để xem"
     },
     "submitApplicationDialog": {
       "title": "Nộp Đơn Ứng Tuyển Học Bổng",

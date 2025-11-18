@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Flag, Calendar, DollarSign } from 'lucide-react';
+import { Flag, Calendar, DollarSign, X, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
@@ -175,6 +175,12 @@ export default function ScholarshipCard({
               </div>
             </div>
 
+            {/* View */}
+            <div className="flex items-center gap-1.5 text-gray-600">
+              <Eye className="w-4 h-4" />
+              <span className="font-semibold">{scholarship.view || 0}</span>
+            </div>
+
             {/* Action Buttons
             <div className="flex items-center gap-2">
               <Button
@@ -192,7 +198,7 @@ export default function ScholarshipCard({
             className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
             onClick={() => setIsImageZoomed(false)}
           >
-            <div className="relative max-w-7xl max-h-full">
+            <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
               <Image
                 src={images[selectedImageIndex]}
                 alt={`${scholarship.title} ${selectedImageIndex + 1}`}
@@ -202,10 +208,10 @@ export default function ScholarshipCard({
                 onClick={(e) => e.stopPropagation()}
               />
               <button
+                className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
                 onClick={() => setIsImageZoomed(false)}
-                className="absolute top-4 right-4 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
               >
-                ×
+                <X className="h-6 w-6 text-white" />
               </button>
               {images.length > 1 && (
                 <>
@@ -216,7 +222,7 @@ export default function ScholarshipCard({
                     }}
                     className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
                   >
-                    ‹
+                    <ChevronLeft className="h-6 w-6 text-white" />
                   </button>
                   <button
                     onClick={(e) => {
@@ -225,7 +231,7 @@ export default function ScholarshipCard({
                     }}
                     className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
                   >
-                    ›
+                    <ChevronRight className="h-6 w-6 text-white" />
                   </button>
                 </>
               )}
