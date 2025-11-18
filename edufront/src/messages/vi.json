@@ -371,12 +371,14 @@
     "applicantProfile": {
       "breadcrumb": {
         "applicant": "Ứng viên",
-        "profile": "Hồ sơ"
+        "profile": "Hồ sơ",
+        "update": "Cập nhật hồ sơ"
       },
       "profileHeader": {
         "matchedScholarships": "Học bổng phù hợp",
         "matchedResearchOpportunities": "Cơ hội nghiên cứu phù hợp",
-        "matchedScholarshipsAmount": "Tổng giá trị học bổng phù hợp"
+        "matchedScholarshipsAmount": "Tổng giá trị học bổng phù hợp",
+        "editProfile": "Chỉnh sửa hồ sơ"
       },
       "profileStrength": {
         "title": "Độ hoàn thiện hồ sơ",

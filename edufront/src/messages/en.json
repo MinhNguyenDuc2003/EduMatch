@@ -371,12 +371,14 @@
     "applicantProfile": {
       "breadcrumb": {
         "applicant": "Applicant",
-        "profile": "Profile"
+        "profile": "Profile",
+        "update": "Update Profile"
       },
       "profileHeader": {
         "matchedScholarships": "Matched Scholarships",
         "matchedResearchOpportunities": "Matched Research Opportunities",
-        "matchedScholarshipsAmount": "Matched Scholarships Amount"
+        "matchedScholarshipsAmount": "Matched Scholarships Amount",
+        "editProfile": "Edit Profile"
       },
       "profileStrength": {
         "title": "Profile Strength",

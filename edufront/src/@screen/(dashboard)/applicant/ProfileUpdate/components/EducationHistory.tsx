@@ -1,47 +1,16 @@
-'use client';
-
-import React, { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { useTranslations } from 'next-intl';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogDescription,
-} from '@/lib/cus/dialog';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerDescription,
-} from '@/lib/cus/drawer';
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
-import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { Plus, Trash2, Calendar, GraduationCap } from 'lucide-react';
-import { useFieldArray } from 'react-hook-form';
-import { INSTITUTION_TYPES } from '../constants';
 import { IApplicantProfile } from '@/lib/schemas';
+import Header from '@/pattern/share/Header';
+import { Calendar, GraduationCap, Plus, Trash2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import React from 'react';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { INSTITUTION_TYPES } from '../../Profile/constants';
 import { MAJOR_CATEGORIES, MAJOR_NAMES, STUDY_LEVELS } from '@/constants/Common';
 
-interface EducationHistoryDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSubmit: (data: IApplicantProfile) => void;
-  onCancel: () => void;
-}
-
-const EducationHistoryDialog = ({
-  open,
-  onOpenChange,
-  onSubmit,
-  onCancel,
-}: EducationHistoryDialogProps) => {
-  const isMobile = useMediaQuery('(max-width: 768px)');
-  const { handleSubmit, control, watch } = useFormContext<IApplicantProfile>();
+const EducationHistory = () => {
+  const { handleSubmit, control } = useFormContext<IApplicantProfile>();
   const t = useTranslations('homepage.applicantProfile.educationHistoryDialog');
   const tCommon = useTranslations('homepage.applicantProfile.common');
 
@@ -49,16 +18,6 @@ const EducationHistoryDialog = ({
     control,
     name: 'applicantProfile.educationHistories',
   });
-
-  const handleFormSubmit = (data: IApplicantProfile) => {
-    onSubmit(data);
-    onOpenChange(false);
-  };
-
-  const handleCancel = () => {
-    onCancel();
-    onOpenChange(false);
-  };
 
   const handleAddEducation = () => {
     append({
@@ -82,24 +41,23 @@ const EducationHistoryDialog = ({
     });
   };
 
-  const Content = () => (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-5">
-        <div className="">
-          <h3 className="text-lg font-semibold text-gray-900">{t('description')}</h3>
-          <p className="text-sm text-gray-600">{t('subDescription')}</p>
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleAddEducation}
-          className="flex items-center gap-2 text-primary-brand border-primary-brand hover:bg-primary-brand hover:text-white"
-        >
-          <Plus className="h-4 w-4" />
-          {t('addEducation')}
-        </Button>
-      </div>
+  return (
+    <div className="space-y-4">
+      <Header
+        subtitle={t('description')}
+        title={t('title')}
+        rightElement={
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleAddEducation}
+            className="flex items-center gap-2 text-primary-brand border-primary-brand hover:bg-primary-brand hover:text-white"
+          >
+            <Plus className="h-4 w-4" />
+            {t('addEducation')}
+          </Button>
+        }
+      />
 
       {/* Education History List */}
       <div className="space-y-6">
@@ -325,66 +283,8 @@ const EducationHistoryDialog = ({
           </div>
         )}
       </div>
-
-      {/* Footer */}
-      <div className="border-t pt-6">
-        <p className="text-sm text-gray-600 mb-4">{t('confirmEducationAccuracy')}</p>
-      </div>
     </div>
-  );
-
-  const Footer = () => (
-    <div className="flex flex-col sm:flex-row gap-2 sm:justify-end">
-      <Button
-        variant="outline"
-        onClick={handleCancel}
-        className="w-full sm:w-auto text-primary-brand px-10 py-2.5"
-      >
-        {tCommon('cancel')}
-      </Button>
-      <Button
-        type="submit"
-        className="w-full sm:w-auto px-10 py-2.5"
-        onClick={handleSubmit(handleFormSubmit)}
-      >
-        {tCommon('save')}
-      </Button>
-    </div>
-  );
-
-  if (isMobile) {
-    return (
-      <Drawer open={open} onOpenChange={handleCancel}>
-        <DrawerContent className="min-h-[95vh]">
-          <DrawerHeader className="border-b">
-            <DrawerTitle className="text-xl font-semibold text-primary-brand">{t('title')}</DrawerTitle>
-            <DrawerDescription className="sr-only" />
-          </DrawerHeader>
-          <div className="flex-1 overflow-y-auto p-6">
-            <Content />
-            <Footer />
-          </div>
-        </DrawerContent>
-      </Drawer>
-    );
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={handleCancel}>
-      <DialogContent className="lg:min-w-6xl md:min-w-4xl min-w-2xl max-h-[90vh] flex flex-col gap-2.5 overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-primary-brand">{t('title')}</DialogTitle>
-          <DialogDescription className="sr-only" />
-        </DialogHeader>
-        <div className="flex-1 overflow-y-auto border-t p-2.5 border-[#828282]">
-          <Content />
-        </div>
-        <DialogFooter>
-          <Footer />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   );
 };
 
-export default EducationHistoryDialog;
+export default EducationHistory;
