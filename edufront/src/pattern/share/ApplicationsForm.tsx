@@ -502,19 +502,22 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   {documentsPreviews.length > 0 && (
                     <div className="flex flex-col gap-2">
                       {documentsPreviews.map((preview, index) => (
-                        <div key={index} className="flex items-center gap-2">
+                        <div
+                          key={index}
+                          className="flex items-center gap-2 bg-slate-200 p-2 rounded-lg w-fit"
+                        >
                           <FileIcon className="w-4 h-4 mr-2" />
                           <Link
                             href={preview.url}
                             target="_blank"
-                            className="text-blue-500 hover:text-blue-600"
+                            className="text-slate-500 hover:text-blue-600 mr-2"
                           >
-                            {preview.url}
+                            {preview.url.split('/').pop()}
                           </Link>
                           <Button
                             type="button"
                             onClick={() => handleRemoveImage(preview.url, 'document')}
-                            className="bg-red-500 hover:bg-red-600 text-white rounded-full p-1 "
+                            className="bg-slate-500 hover:bg-red-600 text-white rounded-full p-1 "
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
