@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Calendar, Link2 } from 'lucide-react';
+import { Calendar, Link2, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import ScholarshipCardImages from '@/@screen/(nondashboard)/ScholarshipsList/components/ScholarshipCardImages';
 
 type NewsCardProps = {
@@ -156,12 +156,11 @@ export default function NewsCard({
           className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
           onClick={() => setIsImageZoomed(false)}
         >
-          <div className="relative max-w-7xl max-h-full">
+          <div className="relative max-w-7xl max-h-full w-full h-full">
             <Image
               src={images[selectedImageIndex]}
               alt={`${news.title} ${selectedImageIndex + 1}`}
-              width={1200}
-              height={800}
+              fill
               className="max-w-full max-h-[90vh] object-contain"
               onClick={(e) => e.stopPropagation()}
             />
@@ -169,7 +168,7 @@ export default function NewsCard({
               onClick={() => setIsImageZoomed(false)}
               className="absolute top-4 right-4 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
             >
-              ×
+              <X className="size-4" />
             </button>
             {images.length > 1 && (
               <>
@@ -180,7 +179,7 @@ export default function NewsCard({
                   }}
                   className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
                 >
-                  ‹
+                  <ChevronLeft className="size-4" />
                 </button>
                 <button
                   onClick={(e) => {
@@ -189,7 +188,7 @@ export default function NewsCard({
                   }}
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl font-bold transition-colors"
                 >
-                  ›
+                  <ChevronRight className="size-4" />
                 </button>
               </>
             )}
