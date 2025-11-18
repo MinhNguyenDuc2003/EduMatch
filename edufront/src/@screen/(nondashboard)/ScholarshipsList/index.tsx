@@ -54,6 +54,7 @@ export default function ScholarshipsList() {
   const [unfollowProvider] = useUnfollowProviderMutation();
 
   const scholarships = response?.scholarship || [];
+  const aggregations = response?.aggregations;
 
   const handleApply = (scholarship: Scholarship) => {
     console.log('Apply to:', scholarship.title);
@@ -169,6 +170,7 @@ export default function ScholarshipsList() {
                 filters={filters}
                 setFilters={setFilters}
                 scholarships={scholarships}
+                aggregations={aggregations}
                 onClose={() => setIsMobileFilterOpen(false)}
                 isMobile={true}
               />
@@ -187,6 +189,7 @@ export default function ScholarshipsList() {
                 filters={filters}
                 setFilters={setFilters}
                 scholarships={scholarships}
+                aggregations={aggregations}
                 isMobile={false}
               />
             </div>
