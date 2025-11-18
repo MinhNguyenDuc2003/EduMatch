@@ -9,7 +9,6 @@ import { FileIcon, ImageIcon, Plus, Trash2, X } from 'lucide-react';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -39,7 +38,8 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
     const [documentsPreviews, setDocumentsPreviews] = useState<Array<{ url: string; id?: number }>>(
       []
     );
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const imageInputRef = useRef<HTMLInputElement>(null);
+    const documentInputRef = useRef<HTMLInputElement>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [applicationName, setApplicationName] = useState('');
 
@@ -114,8 +114,11 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
       });
 
       // Reset input
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+      if (imageInputRef.current) {
+        imageInputRef.current.value = '';
+      }
+      if (documentInputRef.current) {
+        documentInputRef.current.value = '';
       }
     };
 
@@ -135,7 +138,11 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
     };
 
     const handleImageClick = () => {
-      fileInputRef.current?.click();
+      imageInputRef.current?.click();
+    };
+
+    const handleDocumentClick = () => {
+      documentInputRef.current?.click();
     };
 
     // Load initial images from scholarship
@@ -434,7 +441,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
 
                 {/* Hidden file input */}
                 <input
-                  ref={fileInputRef}
+                  ref={imageInputRef}
                   type="file"
                   accept="image/*"
                   multiple
@@ -498,7 +505,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
 
                 {/* Hidden file input */}
                 <input
-                  ref={fileInputRef}
+                  ref={documentInputRef}
                   type="file"
                   accept="application/pdf"
                   className="hidden"
@@ -508,7 +515,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                 <div className="space-y-4">
                   <Button
                     type="button"
-                    onClick={handleImageClick}
+                    onClick={handleDocumentClick}
                     variant="outline"
                     className="border-2 border-dashed text-gray-500 border-gray-300 hover:border-[#3D6CB9] hover:bg-[#3D6CB9]/5"
                   >
@@ -526,7 +533,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                             target="_blank"
                             className="text-blue-500 hover:text-blue-600"
                           >
-                            {preview.url}
+                            Document {index + 1}
                           </Link>
                           <Button
                             type="button"
