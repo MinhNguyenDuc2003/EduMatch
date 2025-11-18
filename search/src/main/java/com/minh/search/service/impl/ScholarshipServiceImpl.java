@@ -149,7 +149,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         SearchHits<ScholarshipEntity> result = elasticsearchOperations.search(matchQuery, ScholarshipEntity.class);
         List<ScholarshipEntity> scholarships = result.stream().map(SearchHit::getContent).toList();
         Map<String, ScholarshipEntity> scholarshipEntityMap = scholarships.stream().collect(Collectors.toMap(ScholarshipEntity::getUniversity, Function.identity(), (o1, o2) -> o1));
-        return scholarshipMapper.toDto((List<ScholarshipEntity>) scholarshipEntityMap.values());
+        return scholarshipMapper.toDto(new ArrayList<>(scholarshipEntityMap.values()));
     }
 
     private void extractedTermsFilter(String fieldValues, String keywordField, BoolQuery.Builder boolBuilder) {
