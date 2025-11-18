@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -147,7 +148,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 .build();
         SearchHits<ScholarshipEntity> result = elasticsearchOperations.search(matchQuery, ScholarshipEntity.class);
         List<ScholarshipEntity> scholarships = result.stream().map(SearchHit::getContent).toList();
-        return scholarshipMapper.toDto(scholarships);
+        Map<String, ScholarshipEntity> scholarshipEntityMap = scholarships.stream().collect(Collectors.toMap(ScholarshipEntity::getUniversity, Function.identity(), (o1, o2) -> o1));
+        return scholarshipMapper.toDto((List<ScholarshipEntity>) scholarshipEntityMap.values());
     }
 
     private void extractedTermsFilter(String fieldValues, String keywordField, BoolQuery.Builder boolBuilder) {
