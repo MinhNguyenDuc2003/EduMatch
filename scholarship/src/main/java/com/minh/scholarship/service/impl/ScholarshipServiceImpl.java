@@ -24,6 +24,7 @@ import com.minh.scholarship.data.vo.NotificationVo;
 import com.minh.scholarship.data.vo.ProviderProfileVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
 import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
+import com.minh.scholarship.data.vo.projection.ScholarshipViewProjection;
 import com.minh.scholarship.feign.MediaFeign;
 import com.minh.scholarship.feign.NotificationTemplateFeign;
 import com.minh.scholarship.feign.ProviderProfileFeign;
@@ -42,6 +43,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -295,8 +297,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         ScholarshipVo vo = scholarshipMapper.proToVo(projection);
         vo.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(vo.getProviderId())));
 
-        if(userId != null){
-            if(scholarshipViewRepository.existsByUserIdAndScholarshipId(userId, vo.getId())) {
+        if (userId != null) {
+            if (!scholarshipViewRepository.existsByUserIdAndScholarshipId(userId, vo.getId())) {
                 ScholarshipViewEntity viewEntity = new ScholarshipViewEntity();
                 viewEntity.setUserId(userId);
                 viewEntity.setScholarshipId(vo.getId());
@@ -343,5 +345,17 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     public List<ScholarshipViewDto> getViewsByScholarshipId(Long id) {
         return scholarshipViewMapper.toDto(scholarshipViewRepository.findByScholarshipId(id));
+    }
+
+    @Override
+    public List<ScholarshipVo> getTopViewsByMonth() {
+        List<ScholarshipVo> vos = new ArrayList<>();
+        List<ScholarshipViewProjection> entities = scholarshipViewRepository.getTop10ViewsByMonth(LocalDate.now().getMonth().getValue());
+        entities.forEach(entity -> {
+            ScholarshipVo scholarshipVo = this.getById(entity.getScholarshipId());
+            scholarshipVo.setViews(entity.getView());
+            vos.add(scholarshipVo);
+        });
+        return vos;
     }
 }

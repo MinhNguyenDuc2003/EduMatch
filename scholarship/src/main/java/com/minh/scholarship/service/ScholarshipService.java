@@ -51,4 +51,7 @@ public interface ScholarshipService {
     Boolean updateScholarshipStatus(Long id, Boolean active);
 
     List<ScholarshipViewDto> getViewsByScholarshipId(Long id);
+
+    List<ScholarshipVo> getTopViewsByMonth();
+
 }

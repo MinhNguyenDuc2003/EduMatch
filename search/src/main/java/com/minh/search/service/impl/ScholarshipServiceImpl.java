@@ -66,9 +66,10 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                                 )
                         );
                         b.should(s -> s
-                                .term(t -> t
+                                .match(t -> t
                                         .field(ScholarshipField.UNIVERSITY)
-                                        .value(criteria.getKeyword())
+                                        .query(criteria.getCriteria().getUniversity())
+                                        .fuzziness(Fuzziness.ONE.asString())
                                 )
                         );
                         return b;
@@ -128,6 +129,25 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     public List<ScholarshipDto> getAll() {
         return scholarshipMapper.toDto(scholarshipRepository.findAll());
+    }
+
+    @Override
+    public List<ScholarshipDto> autoCompleteUniversity(String keyword) {
+        NativeQuery matchQuery = NativeQuery.builder()
+                .withQuery(q -> q
+                        .matchPhrasePrefix(m -> m
+                                .field(ScholarshipField.UNIVERSITY)
+                                .query(keyword)
+                        )
+                )
+                .withSourceFilter(new FetchSourceFilter(
+                        new String[]{"university"},
+                        null)
+                )
+                .build();
+        SearchHits<ScholarshipEntity> result = elasticsearchOperations.search(matchQuery, ScholarshipEntity.class);
+        List<ScholarshipEntity> scholarships = result.stream().map(SearchHit::getContent).toList();
+        return scholarshipMapper.toDto(scholarships);
     }
 
     private void extractedTermsFilter(String fieldValues, String keywordField, BoolQuery.Builder boolBuilder) {
