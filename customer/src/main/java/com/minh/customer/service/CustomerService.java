@@ -5,21 +5,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.CoreMessageCode;
 import com.minh.customer.configuration.KeycloakPropsConfig;
 import com.minh.customer.data.vo.ApplicantProfileVo;
-import com.minh.customer.data.vo.AuthenticationVo;
 import com.minh.customer.data.vo.CustomerVo;
 import com.minh.customer.data.vo.ProviderProfileVo;
 import com.minh.customer.feign.ApplicantProfileFeign;
 import com.minh.customer.feign.ProviderProfileFeign;
+import com.minh.customer.feign.SubscriptionFeign;
 import com.minh.customer.viewmodel.customer.*;
 import com.minh.exception.BusinessException;
-import com.minh.model.ApiResponse;
 import com.minh.model.dto.profile.ProviderProfileDto;
+import com.minh.model.dto.subscription.SubscriptionDto;
 import com.minh.service.base.BaseService;
-import com.minh.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.core.Response;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
@@ -52,6 +50,7 @@ public class CustomerService extends BaseService {
     @Autowired
     private ProviderProfileFeign providerFeign;
     @Autowired
+    private SubscriptionFeign subscriptionFeign;
 
     public CustomerService(Keycloak keycloak, KeycloakPropsConfig keycloakPropsConfig) {
         this.keycloak = keycloak;
@@ -266,5 +265,9 @@ public class CustomerService extends BaseService {
         ProviderProfileVo providerProfileVo = this.parseResponse(providerFeign.getMyProviderInfo());
         vo.setProviderProfile(providerProfileVo);
         return vo;
+    }
+
+    public List<SubscriptionDto> getCurrenSubscriptions() {
+        return this.parseResponse(subscriptionFeign.getCurrentSubscription());
     }
 }

@@ -8,15 +8,16 @@ import com.minh.service.base.BaseService;
 import com.minh.subscription.data.entity.SubscriptionEntity;
 import com.minh.subscription.data.entity.SubscriptionPlanEntity;
 import com.minh.subscription.data.mapper.SubscriptionMapper;
-import com.minh.subscription.data.repository.SubscriptionRepository;
 import com.minh.subscription.data.repository.SubscriptionPlanRepository;
+import com.minh.subscription.data.repository.SubscriptionRepository;
 import com.minh.subscription.service.SubscriptionService;
+import com.minh.utils.SecurityUtil;
 import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -98,12 +99,13 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
     }
 
     @Override
-    public SubscriptionDto getCurrentSubscriptionByUser() {
-        String userId = UaaContextHolder.getUserId();
+    public List<SubscriptionDto> getCurrentSubscriptionByUser() {
+        String userId = SecurityUtil.getCurrentUserId();
+        if (ObjectUtils.isEmpty(userId)) {
+            return null;
+        }
 
-        SubscriptionEntity entity = subscriptionRepository.findCurrentSubscription(userId)
-                .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND));
-
+        List<SubscriptionEntity> entity = subscriptionRepository.findCurrentSubscription(userId);
         return subscriptionMapper.toDto(entity);
     }
 }

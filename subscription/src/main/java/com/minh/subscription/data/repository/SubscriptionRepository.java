@@ -3,11 +3,12 @@ package com.minh.subscription.data.repository;
 import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.subscription.data.entity.SubscriptionEntity;
 import com.minh.subscription.data.entity.SubscriptionPlanEntity;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,21 +22,21 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
     void updateActiveById(@Param("id") Long id, @Param("active") boolean active);
 
     @Query("""
-    SELECT s
-    FROM SubscriptionEntity s
-    WHERE s.userId = :userId
-    """)
+            SELECT s
+            FROM SubscriptionEntity s
+            WHERE s.userId = :userId
+            """)
     List<SubscriptionEntity> findAllByUserId(@Param("userId") String userId);
 
     @Query(value = """
-    SELECT s FROM SubscriptionEntity s
-    JOIN FETCH s.plan p
-    WHERE s.userId = :userId
-      AND s.active = TRUE
-      AND s.status = 'true'
-      AND CURRENT_TIMESTAMP BETWEEN s.startDate AND s.endDate
-    """)
-    Optional<SubscriptionEntity> findCurrentSubscription(@Param("userId") String userId);
+            SELECT s FROM SubscriptionEntity s
+            JOIN FETCH s.plan p
+            WHERE s.userId = :userId
+              AND s.active = TRUE
+              AND s.status = 'true'
+              AND CURRENT_TIMESTAMP BETWEEN s.startDate AND s.endDate
+            """)
+    List<SubscriptionEntity> findCurrentSubscription(@Param("userId") String userId);
 
     List<SubscriptionPlanEntity> findByActiveTrue();
 

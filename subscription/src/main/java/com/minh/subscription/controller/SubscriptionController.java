@@ -46,9 +46,8 @@ public class SubscriptionController {
         return ApiResponse.ok();
     }
 
-    @Authorized
     @GetMapping("/current")
-    public ApiResponse<SubscriptionDto> getCurrentSubscription() {
+    public ApiResponse<List<SubscriptionDto>> getCurrentSubscription() {
         return ApiResponse.ok(subscriptionService.getCurrentSubscriptionByUser());
     }
 

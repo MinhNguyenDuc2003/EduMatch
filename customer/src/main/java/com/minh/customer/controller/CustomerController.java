@@ -143,6 +143,7 @@ public class CustomerController {
             } catch (Exception e) {
                 vo.setIsProvider(false);
             }
+            vo.setSubscriptions(customerService.getCurrenSubscriptions());
             return ApiResponse.ok(vo);
         }
     }

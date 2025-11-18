@@ -183,6 +183,9 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     @Override
     @Transactional(rollbackOn = Exception.class)
     public Boolean addImagesToApplication(Long id, List<MultipartFile> mediaFiles) {
+        if(applicationScholarshipRepository.existsByApplicationIdAndActive(id, true)) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_IS_ALREADY_SUBMIT);
+        }
         this.uploadImages(mediaFiles, id);
         return true;
     }
@@ -190,6 +193,9 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     @Override
     @Transactional(rollbackOn = Exception.class)
     public Boolean deleteImagesToApplication(Long id, List<Long> mediaIds) {
+        if(applicationScholarshipRepository.existsByApplicationIdAndActive(id, true)) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_IS_ALREADY_SUBMIT);
+        }
         mediaIds.forEach(mediaId -> {
             applicationMediaRepository.deleteByApplicationIdAndMediaId(id, mediaId);
         });
