@@ -11,7 +11,7 @@ import java.util.List;
 @FeignClient(name = "SUBSCRIPTION", path = "/subscription", contextId = "subscription-feign-client", configuration = FeignInterceptorConfig.class)
 public interface SubscriptionFeign {
 
-    @GetMapping("/subscriptions/current")
+    @GetMapping("/subscription/current")
     ApiResponse<List<SubscriptionDto>> getCurrentSubscription();
 
 }
