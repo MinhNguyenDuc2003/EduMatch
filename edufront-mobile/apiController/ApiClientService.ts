@@ -9,7 +9,7 @@ interface RequestOptions {
 }
 
 const baseUrl = NEXT_PUBLIC_API_BASE_PATH || '';
-const token = NEXT_PUBLIC_API_TOKEN || '';
+const token = NEXT_PUBLIC_API_TOKEN || '' ;
 
 console.log(baseUrl)
 console.log(token)
@@ -31,27 +31,36 @@ const sendRequest = async (
   if (data) {
     if (data instanceof FormData) {
       delete requestOptions.headers['Content-type'];
+      requestOptions.body = data as any;
+    } else {
+      requestOptions.body = JSON.stringify(data);
     }
-    requestOptions.body = JSON.stringify(data);
   }
 
   const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;
 
   try {
-    // const response = await fetch(url, method === 'GET' ? undefined : requestOptions);
     const response = await fetch(url, requestOptions);
 
-    // Workaround to manually redirect in case of CORS error
-    if (response.type == 'cors' && response.redirected) {
-      window.location.href = response.url;
+    if (!response.ok) {
+      // Nếu server trả lỗi
+      const errorText = await response.text();
+      throw new Error(errorText || response.statusText);
     }
 
-    return await response.json();
+    // Nếu response là JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      return await response.json();
+    } else {
+      return await response.text();
+    }
   } catch (error) {
     console.error('API call error:', error);
     throw error;
   }
 };
+
 
 const apiClientService = {
   get: (endpoint: string) => sendRequest('GET', endpoint),
