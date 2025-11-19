@@ -23,6 +23,7 @@ public final class EndPoint {
         public static final String PROVIDERS = "/providers";
         public static final String FOLLOWERS = "/followers";
         public static final String PROVIDER_NEW = "/provider-new";
+        public static final String PROVIDER_FAVOURITE = "/provider-favourite";
     }
 
     public static class LOCATION {

@@ -17,4 +17,6 @@ public interface OrderService {
     void delete(Long id);
 
     OrderDto markAsPaid(String transactionId, Long subscriptionPlanId);
+
+    OrderDto extendSubscription(Long subscriptionId, Long subscriptionPlanId, String transactionId);
 }

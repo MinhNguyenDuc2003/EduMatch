@@ -1,5 +1,6 @@
 package com.minh.subscription.service;
 
+import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.model.dto.subscription.SubscriptionDto;
 import java.util.List;
 

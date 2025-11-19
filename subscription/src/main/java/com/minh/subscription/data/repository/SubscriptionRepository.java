@@ -1,5 +1,6 @@
 package com.minh.subscription.data.repository;
 
+import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.subscription.data.entity.SubscriptionEntity;
 import com.minh.subscription.data.entity.SubscriptionPlanEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,4 +40,13 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
 
     List<SubscriptionPlanEntity> findByActiveTrue();
 
+    Optional<SubscriptionEntity> findByUserIdAndUserTypeAndStatus(String userId,
+                                                                  SubscriptionTargetType userType,
+                                                                  String status);
+
+    @Query("SELECT s FROM SubscriptionEntity s " +
+            "WHERE s.userId = :userId " +
+            "AND s.active = true " +
+            "ORDER BY s.endDate DESC")
+    Optional<SubscriptionEntity> findActiveSubscriptionByUserId(@Param("userId") String userId);
 }

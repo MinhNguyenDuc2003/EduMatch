@@ -105,12 +105,11 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         subscription.setPlan(plan);
         subscription.setStartDate(LocalDateTime.now());
         subscription.setEndDate(LocalDateTime.now().plusDays(plan.getDurationDays()));
-        subscription.setStatus("ACTIVE");
+        subscription.setStatus("true");
         subscription.setUserType(plan.getTargetType());
         subscription.setActive(true);
 
         subscriptionRepository.save(subscription);
-
         // Tạo Order và gán subscription mới vừa tạo
         OrderEntity order = new OrderEntity();
         order.setUserId(userId);
@@ -129,4 +128,48 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         return orderMapper.toDto(order);
     }
 
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public OrderDto extendSubscription(Long subscriptionId, Long subscriptionPlanId, String transactionId) {
+
+        String userId = UaaContextHolder.getUserId();
+        LocalDateTime now = LocalDateTime.now();
+
+        // Lấy Subscription Plan mới
+        SubscriptionPlanEntity plan = subscriptionplanRepository.findById(subscriptionPlanId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_PLAN_NOT_FOUND));
+
+        // Lấy Subscription hiện tại của user
+        SubscriptionEntity subscription = subscriptionRepository.findById(subscriptionId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND));
+
+        if (!subscription.getUserId().equals(userId)) {
+            throw new BusinessException(CoreMessageCode.ACCESS_DENIED);
+        }
+
+        // Tính ngày mới
+        LocalDateTime baseDate = subscription.getEndDate().isBefore(now) ? now : subscription.getEndDate();
+        subscription.setEndDate(baseDate.plusDays(plan.getDurationDays()));
+
+        // Cập nhật plan nếu cần
+        subscription.setPlan(plan);
+
+        subscriptionRepository.save(subscription);
+
+        // Tạo order mới cho giao dịch gia hạn
+        OrderEntity order = new OrderEntity();
+        order.setUserId(userId);
+        order.setTransactionId(transactionId);
+        order.setStatus("PAID");
+        order.setPaidAt(now);
+        order.setActive(true);
+        order.setSubscription(subscription);
+        order.setAmount(plan.getPrice());
+        order.setCurrency("USD");
+        order.setPaymentMethod("CARD");
+
+        order = orderRepository.save(order);
+
+        return orderMapper.toDto(order);
+    }
 }

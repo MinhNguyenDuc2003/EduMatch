@@ -1,6 +1,7 @@
 package com.minh.subscription.controller;
 
 import com.minh.constants.EndPoint;
+import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.subscription.SubscriptionDto;
 import com.minh.service.aspect.Authorized;
