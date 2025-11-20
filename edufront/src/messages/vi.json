@@ -14,6 +14,7 @@
       "profile": "Hồ sơ",
       "myActivity": "Hoạt động của tôi",
       "providerDashboard": "Bảng thống kê của nhà cung cấp",
+      "subscription": "Gia hạn tài khoản",
       "createProvider": "Đăng ký nhà cung cấp",
       "logout": "Đăng xuất"
     }
@@ -37,7 +38,8 @@
     "students": "Sinh viên",
     "settings": "Cài đặt",
     "profile": "Hồ sơ",
-    "updateAccount": "Nâng cấp tài khoản",
+    "extendSubscription": "Gia hạn tài khoản",
+    "helpSupport": "Trợ giúp & Hỗ trợ",
     "backToHome": "Quay về trang chủ"
   },
   "providerScholaship": {

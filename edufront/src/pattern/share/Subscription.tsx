@@ -3,6 +3,7 @@
 import { Check } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
 
 type SubscriptionProps = {
   subscription?: SubscriptionPlan;
@@ -18,6 +19,11 @@ const subscriptionFeatures = {
 
 export default function Subscription({ subscription }: SubscriptionProps) {
   const router = useRouter();
+  const { subscriptions: userSubscriptions, isLoading } = useAuth();
+
+  const isSubscribed = userSubscriptions.some(
+    (userSubscription) => userSubscription.userType === subscription?.targetType
+  );
 
   const { id, name, description, price, currency, durationDays, features } = subscription || {};
 
@@ -110,9 +116,11 @@ export default function Subscription({ subscription }: SubscriptionProps) {
         <Button
           className="w-full py-4 rounded-lg font-semibold transition-all bg-primary-brand text-white"
           variant="custom"
-          value={`Subscribe Now`}
+          disabled={isLoading}
           onClick={() => router.push(`/checkout?step=1&id=${id}`)}
-        />
+        >
+          {!isSubscribed ? 'Subscribe Now' : 'Extend Subscription'}
+        </Button>
       </div>
 
       <div className="border-t border-gray-200 mx-6" />

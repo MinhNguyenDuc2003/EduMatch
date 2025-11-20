@@ -18,6 +18,7 @@ import {
   DialogTitle,
 } from '@/lib/cus/dialog';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 interface ApplicationsFormProps {
   application?: Application;

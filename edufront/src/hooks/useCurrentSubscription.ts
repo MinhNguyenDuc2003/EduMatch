@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetSubscriptionPlanByIdQuery } from '@/state/apiSubscription';
+import { useGetSubscriptionPlanByIdQuery } from '@/state/apiAuth';
 import { useSearchParams } from 'next/navigation';
 
 export const useCurrentSubscription = () => {

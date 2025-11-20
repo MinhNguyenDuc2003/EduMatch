@@ -17,18 +17,23 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const CreateProviderProfilePage = () => {
-  const { isAuthenticated, isProvider, isLoading } = useAuth();
+  const { isAuthenticated, isProvider, isLoading, subscriptions } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!isLoading) {
       if (!isAuthenticated) {
         router.push('/home');
-      } else if (isProvider) {
+      } else if (
+        isProvider &&
+        !subscriptions.some((subscription) => subscription.userType === 'PROVIDER')
+      ) {
+        router.push('/subscriptions?type=PROVIDER');
+      } else {
         router.push('/provider/dashboard');
       }
     }
-  }, [isLoading, isAuthenticated, isProvider, router]);
+  }, [isLoading, isAuthenticated, isProvider, router, subscriptions]);
 
   // For now, use mock data. Replace with API call later
   const [bannerUrl, setBannerUrl] = useState<File | null>(null);
@@ -88,7 +93,9 @@ const CreateProviderProfilePage = () => {
         formData.append('logo', profileUrl);
       }
 
-      await createProfile(formData).unwrap();
+      await createProfile(formData)
+        .unwrap()
+        .then(() => router.push('/subscriptions?type=PROVIDER'));
     } catch (error) {
       console.error('Error updating organization info:', error);
       throw error;

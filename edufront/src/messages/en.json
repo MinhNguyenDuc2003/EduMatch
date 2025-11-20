@@ -14,6 +14,7 @@
       "profile": "Profile",
       "myActivity": "My Activity",
       "providerDashboard": "Provider Dashboard",
+      "subscription": "Extend Subscription",
       "createProvider": "Become a Provider",
       "logout": "Logout"
     }
@@ -37,7 +38,8 @@
     "students": "Students",
     "settings": "Settings",
     "profile": "Profile",
-    "updateAccount": "Update Account",
+    "extendSubscription": "Extend Subscription",
+    "helpSupport": "Help & Support",
     "backToHome": "Back to Home"
   },
   "providerScholaship": {

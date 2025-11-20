@@ -188,7 +188,7 @@ const ProviderSidebar = () => {
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href="/subscriptions?type=PROVIDER" className="flex items-center gap-2">
                 <ArrowBigUp className="w-4 h-4" />
-                <span>{t('updateAccount')}</span>
+                <span>{t('extendSubscription')}</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

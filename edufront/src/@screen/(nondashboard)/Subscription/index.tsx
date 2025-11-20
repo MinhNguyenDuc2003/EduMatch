@@ -1,11 +1,11 @@
 'use client';
 
 import Subscription from '@/pattern/share/Subscription';
-import { useGetSubscriptionByTargetTypeQuery } from '@/state/apiSubscription';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import Loading from '@/pattern/share/Loading';
 import BasicSubscriptionCard from '@/pattern/share/BasicSubscriptionCard';
+import { useGetSubscriptionByTargetTypeQuery } from '@/state/apiAuth';
 
 const SubscriptionPage = () => {
   const searchParams = useSearchParams();

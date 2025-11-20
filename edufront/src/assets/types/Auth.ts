@@ -11,6 +11,7 @@ declare global {
     customer?: Customer;
     isAuthenticated: boolean;
     isProvider?: boolean;
+    subscriptions?: Subscription[];
   };
 }
 export {};

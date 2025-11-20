@@ -1,13 +1,12 @@
 declare global {
   type Subscription = {
     id: number;
-    name: string;
-    description: string;
-    price: number;
-    currency: string;
-    durationDays: number;
-    targetType: 'PROVIDER' | 'APPLICANT';
-    features: string;
+    userId: string;
+    userType: 'PROVIDER' | 'APPLICANT';
+    startDate: number;
+    endDate: number;
+    status: string;
+    plan: SubscriptionPlan;
   };
 }
 
