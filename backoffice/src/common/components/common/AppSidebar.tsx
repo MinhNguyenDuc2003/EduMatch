@@ -25,7 +25,7 @@ const AppSidebar = () => {
       { icon: User, label: 'Users', href: '/backoffice/user' },
       { icon: BookOpen, label: 'Scholarship', href: '/backoffice/scholarship' },
       { icon: Package, label: 'Application Scholarship', href: '/backoffice/applicationScholarship' },
-      { icon: Bell, label: 'Payment', href: '/backoffice/payment' },
+      { icon: Bell, label: 'Orders', href: '/backoffice/order' },
       { icon: Package, label: 'Subcriptions', href: '/backoffice/subscriptions' },
       { icon: Bell, label: 'Subcription Plan', href: '/backoffice/subscriptionPlan' },
       { icon: Bell, label: 'News', href: '/backoffice/news' },

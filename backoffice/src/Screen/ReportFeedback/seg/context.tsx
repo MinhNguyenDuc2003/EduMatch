@@ -33,22 +33,12 @@ export default GenCtx({
     const meds = {
       async onGetData() {
         onSetLoading(true);
+        console.log('dfffffffffff');
         try {
-          const data = await apiClientService.post('/api/scholarship/scholarships/page', {
-            criteria: {
-              country: '',
-              university: '',
-              studyLevel: '',
-              scholarshipType: '',
-            },
-            sortBy: 'id',
-            sortDirection: 'DESC',
-            page: 0,
-            size: 50,
-          });
+          const data = await apiClientService.get('/api/report/reports/all');
           if (data) {
             ss.setJointData({
-              ScholarshipList: data || [],
+              ReportList: data || [],
             });
             console.log('first', data);
           }
@@ -63,7 +53,20 @@ export default GenCtx({
       async onGetByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/api/scholarship/scholarships/${id}`);
+          const data = await apiClientService.get(`/api/report/reports/${id}`);
+          console.log(data.data);
+
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+      async onReply(id: string, content: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.post(`/api/report/reports/${id}/reply`, content);
           return data.data;
         } catch (error) {
           console.error({ error });
