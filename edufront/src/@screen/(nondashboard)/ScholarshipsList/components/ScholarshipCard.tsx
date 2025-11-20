@@ -2,12 +2,31 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Flag, Calendar, DollarSign, X, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
+import {
+  Flag,
+  Calendar,
+  DollarSign,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  EllipsisVertical,
+  OctagonAlert,
+} from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
 import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/lib/cus/dropdown-menu';
+import ReportDialog from '@/pattern/share/ReportDialog';
 
 type ScholarshipCardProps = {
   scholarship: Scholarship;
@@ -30,6 +49,7 @@ export default function ScholarshipCard({
 }: ScholarshipCardProps) {
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const t = useTranslations('scholarshipsList.scholarshipCard');
 
   const images = getScholarshipImages(scholarship);
@@ -81,19 +101,51 @@ export default function ScholarshipCard({
               </div>
             </div>
             {isAuthenticated && (
-              <button
-                onClick={() => onToggleTracking?.(scholarship.id)}
-                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-                aria-label={
-                  scholarship.isFollow === 1 ? t('untrackScholarship') : t('trackScholarship')
-                }
-              >
-                <Flag
-                  className={`w-5 h-5 transition-colors ${
-                    scholarship.isFollow === 1 ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
-                  }`}
-                />
-              </button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="custom"
+                    className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
+                  >
+                    <EllipsisVertical className="w-5 h-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem
+                    onClick={() => onToggleTracking?.(scholarship.id)}
+                    className="cursor-pointer"
+                  >
+                    <Flag
+                      className={`w-4 h-4 mr-2 transition-colors ${
+                        scholarship.isFollow === 1 ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
+                      }`}
+                    />
+                    <span>
+                      {scholarship.isFollow === 1 ? 'Untrack Scholarship' : 'Track Scholarship'}
+                    </span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setIsReportDialogOpen(true)}
+                    className="cursor-pointer"
+                  >
+                    <OctagonAlert className="w-4 h-4 mr-2" />
+                    <span>Report</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              // <button
+              //   onClick={() => onToggleTracking?.(scholarship.id)}
+              //   className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              //   aria-label={
+              //     scholarship.isFollow === 1 ? t('untrackScholarship') : t('trackScholarship')
+              //   }
+              // >
+              //   <Flag
+              //     className={`w-5 h-5 transition-colors ${
+              //       scholarship.isFollow === 1 ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
+              //     }`}
+              //   />
+              // </button>
             )}
           </div>
         </div>
@@ -239,6 +291,9 @@ export default function ScholarshipCard({
           </div>
         )}
       </div>
+
+      {/* Report Dialog */}
+      <ReportDialog open={isReportDialogOpen} onOpenChange={setIsReportDialogOpen} />
     </>
   );
 }

@@ -334,6 +334,7 @@
     "filters": {
       "title": "Bộ lọc",
       "applied": "đã áp dụng",
+      "availableFilters": "Bộ lọc có sẵn",
       "studyLevel": "Trình độ học vấn",
       "allLevels": "Tất cả",
       "country": "Quốc gia",

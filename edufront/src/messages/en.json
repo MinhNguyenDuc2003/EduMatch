@@ -334,6 +334,7 @@
     "filters": {
       "title": "Filters",
       "applied": "applied",
+      "availableFilters": "Available Filters",
       "studyLevel": "Study Level",
       "allLevels": "All Levels",
       "country": "Country",
