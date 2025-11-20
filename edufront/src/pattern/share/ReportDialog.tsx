@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { Button } from '@/lib/cus/button';
@@ -13,11 +13,12 @@ import {
 } from '@/lib/cus/dialog';
 import { Form } from '@/lib/cus/form';
 import { useGetReportsQuery, useCreateReportMutation } from '@/state/apiApplicant';
-import { CheckCircle2, Loader2, ChevronLeft } from 'lucide-react';
+import { Loader2, ChevronLeft } from 'lucide-react';
 
 interface ReportDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialType?: ReportType;
 }
 
 type ReportTypeItem = {
@@ -54,9 +55,17 @@ const REPORT_TYPES: ReportTypeItem[] = [
   },
 ];
 
-export default function ReportDialog({ open, onOpenChange }: ReportDialogProps) {
+export default function ReportDialog({ open, onOpenChange, initialType }: ReportDialogProps) {
   const [step, setStep] = useState<'type' | 'category'>('type');
   const [selectedType, setSelectedType] = useState<ReportType | null>(null);
+
+  // Set initial type when dialog opens with initialType
+  useEffect(() => {
+    if (open && initialType) {
+      setSelectedType(initialType);
+      setStep('category');
+    }
+  }, [open, initialType]);
 
   const { data: categories, isLoading: isLoadingCategories } = useGetReportsQuery(
     (selectedType || 'SYSTEM') as ReportType,
@@ -98,7 +107,9 @@ export default function ReportDialog({ open, onOpenChange }: ReportDialogProps) 
   };
 
   const handleClose = () => {
-    resetAll();
+    reset();
+    setStep('type');
+    setSelectedType(null);
     onOpenChange(false);
   };
 
@@ -194,6 +205,9 @@ export default function ReportDialog({ open, onOpenChange }: ReportDialogProps) 
                       <div className="text-sm text-gray-600">Selected Category:</div>
                       <div className="font-semibold text-gray-900">
                         {categories?.find((c) => c.id === selectedCategoryId)?.name}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        {categories?.find((c) => c.id === selectedCategoryId)?.description}
                       </div>
                     </div>
 

@@ -293,7 +293,11 @@ export default function ScholarshipCard({
       </div>
 
       {/* Report Dialog */}
-      <ReportDialog open={isReportDialogOpen} onOpenChange={setIsReportDialogOpen} />
+      <ReportDialog
+        open={isReportDialogOpen}
+        onOpenChange={setIsReportDialogOpen}
+        initialType="SCHOLARSHIP"
+      />
     </>
   );
 }
