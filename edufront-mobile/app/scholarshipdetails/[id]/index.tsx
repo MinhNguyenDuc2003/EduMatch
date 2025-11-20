@@ -33,14 +33,12 @@ const ScholarshipDetail = () => {
   const scaleHeart = useRef(new Animated.Value(1)).current;
   const [isFollow, setIsFollow] = useState(false);
 
-  // Modal states
   const [showApplicationModal, setShowApplicationModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState<
     string | null
   >(null);
 
-  // Form state
   const [formData, setFormData] = useState<any>({
     applicationName: "",
     code: "",
@@ -71,77 +69,80 @@ const ScholarshipDetail = () => {
 
   const handleSubmitApplication = async (applicationId: string) => {
     try {
-      alert("Application submitted successfully!");
-    } catch (err) {
-      alert("Submit failed!");
+      const res = await apiClientService.post("/api/scholarship/applications-scholarship", {
+        scholarshipId: id,
+        applicationId: applicationId,
+        status: "Pending"
+      });
+
+      console.log("SUCCESS:", res);
+      alert("Application created successfully!");
+      setShowCreateModal(false);
+    } catch (err: any) {
+      console.log("ERROR:", err.response?.data || err);
+      alert("Failed to submit application");
     }
   };
-const handleCreateApplication = async () => {
-  try {
-    const body = new FormData();
+  const handleCreateApplication = async () => {
+    try {
+      const body = new FormData();
 
-    // Append JSON application
-    body.append(
-      "application",
-      JSON.stringify({
-        applicationName: formData.applicationName || "1333",
-        code: formData.code || "1333",
-        versionApplication: formData.versionApplication,
-        fullName: formData.fullName,
-        gender: formData.gender,
-        dateOfBirth: formData.dateOfBirth,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        nationality: formData.nationality,
-        educationLevel: formData.educationLevel,
-        schoolName: formData.schoolName,
-        major: formData.major,
-        gpa: Number(formData.gpa),
-        graduationYear: formData.graduationYear,
-        skills: formData.skills,
-        languages: formData.languages,
-        achievements: formData.achievements,
-        extracurricular: formData.extracurricular,
-        motivation: formData.motivation,
-        personalStatement: formData.personalStatement,
-      })
-    );
+      body.append(
+        "application",
+        JSON.stringify({
+          applicationName: formData.applicationName || "1333",
+          code: formData.code || "1333",
+          versionApplication: formData.versionApplication,
+          fullName: formData.fullName,
+          gender: formData.gender,
+          dateOfBirth: formData.dateOfBirth,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          nationality: formData.nationality,
+          educationLevel: formData.educationLevel,
+          schoolName: formData.schoolName,
+          major: formData.major,
+          gpa: Number(formData.gpa),
+          graduationYear: formData.graduationYear,
+          skills: formData.skills,
+          languages: formData.languages,
+          achievements: formData.achievements,
+          extracurricular: formData.extracurricular,
+          motivation: formData.motivation,
+          personalStatement: formData.personalStatement,
+        })
+      );
 
-    // Append mediaFiles placeholder nếu không có file
-    if (!formData.mediaFiles || formData.mediaFiles.length === 0) {
-      body.append("mediaFiles", "string"); // placeholder giống cURL
-    } else {
-      formData.mediaFiles.forEach((file: any, index: number) => {
-        body.append("mediaFiles", {
-          uri: file.uri,
-          name: file.name || `file_${index}.jpg`,
-          type: file.type || "image/jpeg",
-        } as any);
-      });
+      if (!formData.mediaFiles || formData.mediaFiles.length === 0) {
+        body.append("mediaFiles", "string"); // placeholder giống cURL
+      } else {
+        formData.mediaFiles.forEach((file: any, index: number) => {
+          body.append("mediaFiles", {
+            uri: file.uri,
+            name: file.name || `file_${index}.jpg`,
+            type: file.type || "image/jpeg",
+          } as any);
+        });
+      }
+
+      for (let [key, value] of body.entries()) {
+        console.log("FormData Entry:", key, value);
+      }
+
+      const res = await apiClientService.post(
+        "/api/scholarship/applications",
+        body
+      );
+
+      console.log("SUCCESS:", res);
+      alert("Application created successfully!");
+      setShowCreateModal(false);
+    } catch (err: any) {
+      console.log("ERROR:", err.response?.data || err);
+      alert("Failed to submit application");
     }
-
-    // Debug FormData
-    for (let [key, value] of body.entries()) {
-      console.log("FormData Entry:", key, value);
-    }
-
-    // Gọi API (không cần set Content-Type thủ công)
-    const res = await apiClientService.post("/api/scholarship/applications", body);
-
-    console.log("SUCCESS:", res);
-    alert("Application created successfully!");
-    setShowCreateModal(false);
-  } catch (err: any) {
-    console.log("ERROR:", err.response?.data || err);
-    alert("Failed to submit application");
-  }
-};
-
-
-
-
-
+  };
 
   // Ẩn footer tabs
   React.useLayoutEffect(() => {
@@ -231,7 +232,6 @@ const handleCreateApplication = async () => {
 
   return (
     <View className="flex-1 bg-white">
-      {/* Banner */}
       <Image
         source={{ uri: provider.bannerUrl }}
         style={{
@@ -243,7 +243,6 @@ const handleCreateApplication = async () => {
         resizeMode="cover"
       />
 
-      {/* Back button on banner */}
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{
@@ -259,7 +258,6 @@ const handleCreateApplication = async () => {
         <ArrowLeft size={24} color="#16a34a" />
       </TouchableOpacity>
 
-      {/* Provider Sticky Info */}
       <View
         style={{
           position: "absolute",
@@ -303,7 +301,6 @@ const handleCreateApplication = async () => {
         </TouchableOpacity>
       </View>
 
-      {/* Scrollable Content */}
       <ScrollView
         contentContainerStyle={{
           paddingTop: 60,
@@ -318,7 +315,6 @@ const handleCreateApplication = async () => {
           {dataScholarships.shortDescription}
         </Text>
 
-        {/* INFO CARDS */}
         <View
           style={{
             backgroundColor: "#dcfce7",
@@ -353,7 +349,6 @@ const handleCreateApplication = async () => {
         {section("Benefits", dataScholarships.benefits)}
         {section("Fields", dataScholarships.fields)}
 
-        {/* Provider Contacts */}
         <View
           style={{
             backgroundColor: "#f9fafb",
@@ -377,7 +372,6 @@ const handleCreateApplication = async () => {
         </View>
       </ScrollView>
 
-      {/* APPLY NOW BUTTON */}
       <TouchableOpacity
         style={{
           position: "absolute",
@@ -397,9 +391,7 @@ const handleCreateApplication = async () => {
         </Text>
       </TouchableOpacity>
 
-      {/* ======================================================= */}
-      {/*     APPLICATION LIST MODAL                              */}
-      {/* ======================================================= */}
+      
       <Modal visible={showApplicationModal} animationType="slide" transparent>
         <View
           style={{
@@ -460,9 +452,7 @@ const handleCreateApplication = async () => {
               })}
             </ScrollView>
 
-            {/* Buttons */}
             <View style={{ flexDirection: "row", marginTop: 15 }}>
-              {/* Close */}
               <TouchableOpacity
                 onPress={() => setShowApplicationModal(false)}
                 style={{
@@ -479,7 +469,6 @@ const handleCreateApplication = async () => {
                 </Text>
               </TouchableOpacity>
 
-              {/* Submit Selected */}
               <TouchableOpacity
                 disabled={!selectedApplicationId}
                 onPress={() => {
@@ -503,7 +492,6 @@ const handleCreateApplication = async () => {
               </TouchableOpacity>
             </View>
 
-            {/* Create New */}
             <TouchableOpacity
               onPress={() => {
                 setShowApplicationModal(false);
@@ -525,19 +513,13 @@ const handleCreateApplication = async () => {
         </View>
       </Modal>
 
-      {/* ======================================================= */}
-      {/*     CREATE APPLICATION FORM MODAL                       */}
-      {/* ======================================================= */}
-      {/* ======================================================= */}
-      {/*     CREATE APPLICATION FORM MODAL (REDESIGNED)         */}
-      {/* ======================================================= */}
+    
       <Modal visible={showCreateModal} animationType="slide">
         <ScrollView style={{ padding: 20 }}>
           <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 20 }}>
             Create New Application
           </Text>
 
-          {/* ========= PERSONAL INFO ========== */}
           <Text className="text-lg font-semibold mb-2">
             Personal Information
           </Text>
@@ -582,7 +564,6 @@ const handleCreateApplication = async () => {
             </View>
           </View>
 
-          {/* ========= CONTACT INFO ========== */}
           <Text className="text-lg font-semibold mt-8 mb-2">
             Contact Information
           </Text>
@@ -616,7 +597,6 @@ const handleCreateApplication = async () => {
             />
           </View>
 
-          {/* ========= EDUCATION INFO ========== */}
           <Text className="text-lg font-semibold mt-8 mb-2">
             Education Information
           </Text>
@@ -661,7 +641,6 @@ const handleCreateApplication = async () => {
             </View>
           </View>
 
-          {/* ========= SKILLS / LANGUAGES ========== */}
           <Text className="text-lg font-semibold mt-8 mb-2">
             Skills & Languages
           </Text>
@@ -684,7 +663,6 @@ const handleCreateApplication = async () => {
             />
           </View>
 
-          {/* ========= EXTRA INFO ========== */}
           <Text className="text-lg font-semibold mt-8 mb-2">Additional</Text>
 
           <View>
@@ -717,7 +695,6 @@ const handleCreateApplication = async () => {
             />
           </View>
 
-          {/* =========== SUBMIT BUTTONS =========== */}
           <TouchableOpacity
             onPress={() => handleCreateApplication()}
             className="bg-green-600 p-4 rounded-xl mt-8"
@@ -739,7 +716,6 @@ const handleCreateApplication = async () => {
   );
 };
 
-// Section component
 const section = (title: string, content: string) => (
   <View style={{ marginBottom: 16 }}>
     <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 4 }}>

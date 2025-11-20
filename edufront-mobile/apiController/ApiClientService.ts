@@ -11,6 +11,9 @@ interface RequestOptions {
 const baseUrl = NEXT_PUBLIC_API_BASE_PATH || '';
 const token = NEXT_PUBLIC_API_TOKEN || '' ;
 
+
+
+
 console.log(baseUrl)
 console.log(token)
 const sendRequest = async (
