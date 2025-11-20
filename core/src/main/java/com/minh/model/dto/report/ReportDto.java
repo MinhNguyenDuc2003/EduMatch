@@ -23,5 +23,6 @@ public class ReportDto extends BaseDto {
     private ReportCategoryDto category;
     private Boolean isRead;
     private ReportStatus status;
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private String response;
 }
