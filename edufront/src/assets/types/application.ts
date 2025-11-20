@@ -24,6 +24,7 @@ declare global {
     personalStatement: string;
     applicationMedias: ApplicationMedia[];
     applicationAttributes: ApplicationAttribute[];
+    createdDate: number;
   };
 
   type ApplicationMedia = {

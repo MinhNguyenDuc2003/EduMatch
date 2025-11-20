@@ -43,7 +43,7 @@ export default function AppliedScholarshipCard({
   onViewDetails,
   onViewScholarship,
 }: AppliedScholarshipCardProps) {
-  const t = useTranslations('homepage.activity.appliedScholarshipCard');
+  const t = useTranslations('activity.appliedScholarshipCard');
   const { applicationVo, scholarshipVo, status, note, reviewedAt } = appliedScholarship;
   const { title, fundingAmount, providerProfileVo, slug } = scholarshipVo;
   const { applicationName } = applicationVo;

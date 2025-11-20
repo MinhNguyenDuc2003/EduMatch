@@ -18,7 +18,7 @@ export default function ScholarshipsSection({
   onToggleTracking,
   onFollowProvider,
 }: ScholarshipsSectionProps) {
-  const t = useTranslations('homepage.viewProviderProfile.scholarships');
+  const t = useTranslations('viewProviderProfile.scholarships');
   
   return (
     <div className="space-y-4">

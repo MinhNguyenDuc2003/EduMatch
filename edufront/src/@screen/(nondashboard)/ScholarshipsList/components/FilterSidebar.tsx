@@ -2,6 +2,7 @@
 import { X } from 'lucide-react';
 import { COUNTRIES, SCHOLARSHIP_TYPES, STUDY_LEVELS } from '@/constants/Common';
 import { useTranslations } from 'next-intl';
+import AggregationFilters from './AggregationFilters';
 
 type FilterSidebarProps = {
   filters: FilterState;
@@ -24,8 +25,8 @@ export default function FilterSidebar({
   isMobile = false,
   onClose,
 }: FilterSidebarProps) {
-  const t = useTranslations('homepage.scholarshipsList.filters');
-  
+  const t = useTranslations('scholarshipsList.filters');
+
   const handleFilterChange = (field: keyof FilterState, value: string) => {
     setFilters({
       ...filters,
@@ -67,7 +68,9 @@ export default function FilterSidebar({
               onClick={clearAllFilters}
               className="text-xs bg-blue-50 text-primary-brand hover:bg-blue-100 px-3 py-1.5 rounded-full font-medium flex items-center gap-1.5 transition-colors"
             >
-              <span>{activeFiltersCount} {t('applied')}</span>
+              <span>
+                {activeFiltersCount} {t('applied')}
+              </span>
               <X className="w-3.5 h-3.5" />
             </button>
           )}
@@ -84,6 +87,14 @@ export default function FilterSidebar({
       </div>
 
       <div className="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
+        {/* Aggregation Filters - Dynamic filters from search results (only shown when searching) */}
+        <AggregationFilters
+          aggregations={aggregations}
+          filters={filters}
+          setFilters={setFilters}
+          keyword={filters.keyword}
+        />
+
         {/* Study Level Filter */}
         <div className="border border-gray-200 rounded-lg p-4 space-y-3">
           <h3 className="text-sm font-semibold text-gray-900">
@@ -211,7 +222,9 @@ export default function FilterSidebar({
             <div className="pt-2 border-t border-gray-200">
               <div className="space-y-2">
                 <div>
-                  <label className="text-xs text-gray-600">{t('min')}: {filters.minGpa.toFixed(1)}</label>
+                  <label className="text-xs text-gray-600">
+                    {t('min')}: {filters.minGpa.toFixed(1)}
+                  </label>
                   <input
                     type="range"
                     min="0"
@@ -225,7 +238,9 @@ export default function FilterSidebar({
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-600">{t('max')}: {filters.maxGpa.toFixed(1)}</label>
+                  <label className="text-xs text-gray-600">
+                    {t('max')}: {filters.maxGpa.toFixed(1)}
+                  </label>
                   <input
                     type="range"
                     min="0"

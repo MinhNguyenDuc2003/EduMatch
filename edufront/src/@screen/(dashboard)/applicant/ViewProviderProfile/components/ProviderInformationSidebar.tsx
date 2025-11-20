@@ -9,7 +9,7 @@ interface ProviderInformationSidebarProps {
 export default function ProviderInformationSidebar({
   providerProfile,
 }: ProviderInformationSidebarProps) {
-  const t = useTranslations('homepage.viewProviderProfile.sidebar');
+  const t = useTranslations('viewProviderProfile.sidebar');
 
   return (
     <div className="lg:col-span-1">

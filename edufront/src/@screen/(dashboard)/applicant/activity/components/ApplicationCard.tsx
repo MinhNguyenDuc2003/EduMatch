@@ -16,7 +16,7 @@ export default function ApplicationCard({
   onDelete,
   onViewDetails,
 }: ApplicationCardProps) {
-  const t = useTranslations('homepage.activity.applicationCard');
+  const t = useTranslations('activity.applicationCard');
 
   return (
     <article

@@ -11,12 +11,14 @@ const API_ENDPOINTS = {
   APPLIED_APPLICATION: '/api/scholarship/applications-scholarship',
   FOLLOW_PROVIDER: '/api/profile/followers',
   SCHOLARSHIP_FOLLOW: '/api/scholarship/scholarships/follow',
+  CREATE_REPORT: '/api/report/reports',
+  GET_REPORTS: '/api/report/report/category/type',
 } as const;
 
 export const apiApplicant = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiApplicant',
-  tagTypes: ['Profile', 'Application', 'Follow', 'Scholarships', 'TrackedScholarships'],
+  tagTypes: ['Profile', 'Application', 'Follow', 'Scholarships', 'TrackedScholarships', 'Report'],
   endpoints: (build) => ({
     // Get customer profile (works for both applicant and provider)
     getProfile: build.query<ProfileApiResponse, void>({
@@ -133,6 +135,25 @@ export const apiApplicant = createApi({
       }),
       providesTags: ['Application'],
     }),
+
+    // GET REPORTS
+    getReports: build.query<ReportCategory[], ReportType>({
+      query: (type) => ({
+        url: `${API_ENDPOINTS.GET_REPORTS}/${type}`,
+        method: 'GET',
+      }),
+      providesTags: ['Report'],
+    }),
+
+    // CREATE REPORT
+    createReport: build.mutation<boolean, FormReport>({
+      query: (data) => ({
+        url: API_ENDPOINTS.CREATE_REPORT,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Report'],
+    }),
   }),
 });
 
@@ -150,4 +171,6 @@ export const {
   useSubmitApplicationMutation,
   useGetAppliedApplicationQuery,
   useDeleteApplicationMutation,
+  useGetReportsQuery,
+  useCreateReportMutation,
 } = apiApplicant;

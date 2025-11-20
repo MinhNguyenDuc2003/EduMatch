@@ -11,8 +11,8 @@ interface CertificatesProps {
 }
 
 const Certificates = ({ certificates, onEdit }: CertificatesProps) => {
-  const t = useTranslations('homepage.applicantProfile');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile');
+  const tCommon = useTranslations('applicantProfile.common');
 
   return (
     <div className="space-y-4">

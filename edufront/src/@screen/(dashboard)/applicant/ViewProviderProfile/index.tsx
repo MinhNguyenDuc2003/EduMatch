@@ -25,7 +25,7 @@ import { useTranslations } from 'next-intl';
 
 export default function ViewProviderProfile({ providerId }: { providerId: number }) {
   const router = useRouter();
-  const t = useTranslations('homepage.viewProviderProfile');
+  const t = useTranslations('viewProviderProfile');
 
   const { data: providerProfile, isLoading: isLoadingProfile } =
     useGetProviderProfileByIdQuery(providerId);

@@ -1,11 +1,12 @@
 'use client';
 
-import { X, Phone, Mail } from 'lucide-react';
+import { X, Phone, Mail, FileText, Download, Image as ImageIcon } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/lib/cus/sheet';
 import { Avatar, AvatarFallback } from '@/lib/cus/avatar';
 import { Badge } from '@/lib/cus/badge';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 type ApplicationDetailProps = {
   open: boolean;
@@ -72,6 +73,28 @@ const getTimelineDotColor = (status?: string): string => {
   return 'bg-blue-500 text-blue-700'; // pending (default)
 };
 
+const isImageFile = (contentType?: string) => {
+  if (!contentType) return false;
+  return contentType.startsWith('image/');
+};
+
+// Can Change other icon if needed
+const getFileIcon = (contentType?: string) => {
+  if (!contentType) return FileText;
+  if (contentType.includes('pdf')) return FileText;
+  if (contentType.includes('word') || contentType.includes('document')) return FileText;
+  if (contentType.includes('sheet') || contentType.includes('excel')) return FileText;
+  return FileText;
+};
+
+const formatFileSize = (bytes?: number): string => {
+  if (!bytes) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+};
+
 export default function ApplicationDetail({
   open,
   onOpenChange,
@@ -80,7 +103,9 @@ export default function ApplicationDetail({
   application,
   appliedScholarship,
 }: ApplicationDetailProps) {
-  const t = useTranslations('homepage.activity.applicationDetail');
+  const t = useTranslations('activity.applicationDetail');
+  // const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   if (!application) return null;
 
   const {
@@ -115,7 +140,12 @@ export default function ApplicationDetail({
     schoolName,
     educationLevel,
     major,
+    createdDate,
+    applicationMedias,
   } = applicationVo || application || {};
+
+  const imageFiles = applicationMedias?.filter((media) => isImageFile(media.contentType));
+  const documentFiles = applicationMedias?.filter((media) => !isImageFile(media.contentType));
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -130,11 +160,10 @@ export default function ApplicationDetail({
                 {applicationName ? applicationName : t('title')}
               </SheetTitle>
               {/* Status */}
-              {status && (
-                <Badge className={`${getStatusColor(status)} border`}>
-                  {formatStatus(status, t)}
-                </Badge>
-              )}
+
+              <Badge className={`${getStatusColor(status)} border`}>
+                {formatStatus(status, t)}
+              </Badge>
             </div>
             {/* Close button */}
             <SheetClose className="rounded-full bg-white p-2 shadow-lg ring-1 ring-gray-200 transition-opacity hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 flex-shrink-0">
@@ -390,13 +419,101 @@ export default function ApplicationDetail({
             </div>
           </section>
 
-          {/* Application History Section */}
-          {reviewedAt && (
+          {/* Documents Section */}
+          {imageFiles.length > 0 && documentFiles.length > 0 && (
             <section>
-              <h3 className="text-base font-bold text-gray-900 mb-2">{t('applicationHistory')}</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2">{t('documents')}</h3>
+              <div className="bg-white rounded-lg border-2 border-gray-200 p-4 mb-4 space-y-4">
+                {/* Images */}
+                {imageFiles.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <ImageIcon className="w-4 h-4 text-gray-600" />
+                      <h4 className="text-sm font-semibold text-gray-700">{t('images')}</h4>
+                      <Badge variant="outline" className="text-xs">
+                        {imageFiles.length}
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {imageFiles.map((media) => (
+                        <div
+                          key={media.id}
+                          className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 transition-colors "
+                          // onClick={() => setSelectedImage(media.url)}
+                        >
+                          <Image
+                            src={media.thumbnail || media.url}
+                            alt={media.fileName}
+                            fill
+                            className="object-cover "
+                          />
+                          {/* <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                            <span className="text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                              {t('clickToView')}
+                            </span>
+                          </div> */}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Files */}
+                {documentFiles.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <FileText className="w-4 h-4 text-gray-600" />
+                      <h4 className="text-sm font-semibold text-gray-700">{t('files')}</h4>
+                      <Badge variant="outline" className="text-xs">
+                        {documentFiles.length}
+                      </Badge>
+                    </div>
+                    <div className="space-y-2">
+                      {documentFiles.map((media) => {
+                        const FileIcon = getFileIcon(media.contentType);
+                        return (
+                          <a
+                            key={media.id}
+                            href={media.url}
+                            target="_blank"
+                            className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
+                          >
+                            <FileIcon className="w-5 h-5 text-gray-500 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-gray-900 truncate">
+                                {media.fileName}
+                              </p>
+                              <p className="text-xs text-gray-500">{formatFileSize(media.size)}</p>
+                            </div>
+                            <Download className="w-4 h-4 text-gray-400 group-hover:text-blue-500 flex-shrink-0" />
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
+          {applicationMedias && applicationMedias.length === 0 && (
+            <section>
+              <h3 className="text-base font-bold text-gray-900 mb-2">{t('documents')}</h3>
               <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4">
-                <div className="space-y-6 pl-2 border-l-2 border-blue-200">
-                  {/* review status */}
+                <p className="text-sm text-gray-600 bg-gray-50 rounded-md p-3 leading-relaxed">
+                  {t('noDocumentsProvided')}
+                </p>
+              </div>
+            </section>
+          )}
+
+          {/* Application History Section */}
+          <section>
+            <h3 className="text-base font-bold text-gray-900 mb-2">{t('applicationHistory')}</h3>
+            <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4">
+              <div className="space-y-6 pl-2 border-l-2 border-blue-200">
+                {/* review status */}
+                {reviewedAt && (
                   <div className="flex items-start gap-4">
                     <div
                       className={`w-4 h-4 rounded-full ${getTimelineDotColor(status)} border-2 mt-1 border-white`}
@@ -415,14 +532,47 @@ export default function ApplicationDetail({
                       )}
                     </div>
                   </div>
-
-                  {/* submission date */}
-                </div>
+                )}
+                {/* submission date */}
+                {createdDate && (
+                  <div className="flex items-start gap-4">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 border-2 mt-1 border-white"></div>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-sm font-medium text-blue-500">{t('submissionDate')}</p>
+                      <p className="text-sm text-gray-500">{formatDateTime(createdDate)}</p>
+                      {scholarship && <p className="text-sm text-gray-500">{scholarship.title}</p>}
+                    </div>
+                  </div>
+                )}
               </div>
-            </section>
-          )}
+            </div>
+          </section>
         </div>
       </SheetContent>
+
+      {/* Image Lightbox */}
+      {/* {selectedImage && (
+        <div
+          className="fixed z-[9999] inset-0 bg-black/90  flex items-center justify-center p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            onClick={() => setSelectedImage(null)}
+          >
+            <X className="h-6 w-6 text-white" />
+          </button>
+          <div className="relative z-[99999] max-w-7xl max-h-full w-full h-full flex items-center justify-center">
+            <Image
+              src={selectedImage}
+              alt={t('viewFullSize')}
+              fill
+              className="max-w-full max-h-[90vh] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )} */}
     </Sheet>
   );
 }

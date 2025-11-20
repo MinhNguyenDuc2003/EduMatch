@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import {
   HeroSection,
@@ -31,6 +31,7 @@ import { Button } from '@/lib/cus/button';
 
 export default function ActivityManagement() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const t = useTranslations();
   const [activeTab, setActiveTab] = useState<ShortlistTab>('tracking');
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
@@ -54,8 +55,16 @@ export default function ActivityManagement() {
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab) {
+      setActiveTab(tab as ShortlistTab);
+    }
+  }, [searchParams]);
+
   const handleTabChange = (tab: ShortlistTab) => {
     setActiveTab(tab);
+    router.push(`/applicant/activity?tab=${tab}`);
   };
 
   const isFollowingTab = activeTab === 'following';
@@ -200,7 +209,7 @@ export default function ActivityManagement() {
                     variant="custom"
                     color="gray"
                     onClick={handleCreateNew}
-                    value={t('homepage.activity.applicationDetail.createNewApplication')}
+                    value={t('activity.applicationDetail.createNewApplication')}
                   />
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {applicationsData?.map((application) => (

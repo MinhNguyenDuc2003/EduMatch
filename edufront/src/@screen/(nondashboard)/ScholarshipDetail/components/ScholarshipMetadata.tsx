@@ -1,5 +1,5 @@
 'use client';
-import { Flag, Calendar, DollarSign } from 'lucide-react';
+import { Flag, Calendar, DollarSign, Eye } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 type ScholarshipMetadataProps = {
@@ -7,6 +7,7 @@ type ScholarshipMetadataProps = {
   amount: string;
   isTracked: boolean;
   onToggleTracking: () => void;
+  view: number;
 };
 
 export default function ScholarshipMetadata({
@@ -14,9 +15,10 @@ export default function ScholarshipMetadata({
   amount,
   isTracked,
   onToggleTracking,
+  view,
 }: ScholarshipMetadataProps) {
-  const t = useTranslations('homepage.scholarshipDetail.metadata');
-  
+  const t = useTranslations('scholarshipDetail.metadata');
+
   return (
     <div className="flex flex-wrap items-center gap-6">
       {/* Date */}
@@ -44,6 +46,12 @@ export default function ScholarshipMetadata({
         />
         <span className="font-medium">{isTracked ? t('tracked') : t('track')}</span>
       </button>
+
+      {/* View */}
+      <div className="flex items-center gap-2 text-gray-600">
+        <Eye className="size-5" />
+        <span className="font-medium">{view}</span>
+      </div>
     </div>
   );
 }

@@ -125,7 +125,7 @@ const Header = () => {
                     <Link href="/applicant/profile">{t('dropdown.profile')}</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/applicant/activity">{t('dropdown.myActivity')}</Link>
+                    <Link href="/applicant/activity?tab=tracking">{t('dropdown.myActivity')}</Link>
                   </DropdownMenuItem>
                   {isProvider ? (
                     <DropdownMenuItem asChild>

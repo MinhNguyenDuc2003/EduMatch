@@ -4,7 +4,7 @@ import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 import { useTranslations } from 'next-intl';
 
 export default function ScholarshipDetailSkeleton() {
-  const t = useTranslations('homepage.scholarshipDetail');
+  const t = useTranslations('scholarshipDetail');
 
   return (
     <div className="min-h-screen bg-white">

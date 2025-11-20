@@ -19,7 +19,7 @@ export default function ScholarshipsList() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  const t = useTranslations('homepage.scholarshipsList');
+  const t = useTranslations('scholarshipsList');
 
   const [filters, setFilters] = useState<FilterState>({
     keyword: '',
@@ -54,6 +54,7 @@ export default function ScholarshipsList() {
   const [unfollowProvider] = useUnfollowProviderMutation();
 
   const scholarships = response?.scholarship || [];
+  const aggregations = response?.aggregations;
 
   const handleApply = (scholarship: Scholarship) => {
     console.log('Apply to:', scholarship.title);
@@ -169,6 +170,7 @@ export default function ScholarshipsList() {
                 filters={filters}
                 setFilters={setFilters}
                 scholarships={scholarships}
+                aggregations={aggregations}
                 onClose={() => setIsMobileFilterOpen(false)}
                 isMobile={true}
               />
@@ -187,6 +189,7 @@ export default function ScholarshipsList() {
                 filters={filters}
                 setFilters={setFilters}
                 scholarships={scholarships}
+                aggregations={aggregations}
                 isMobile={false}
               />
             </div>

@@ -8,7 +8,7 @@ interface ProfileStrengthProps {
 }
 
 export default function ProfileStrength({ percentage }: ProfileStrengthProps) {
-  const t = useTranslations('homepage.applicantProfile.profileStrength');
+  const t = useTranslations('applicantProfile.profileStrength');
   const circumference = 2 * Math.PI * 45; // radius = 45
   const offset = circumference - (percentage / 100) * circumference;
 
