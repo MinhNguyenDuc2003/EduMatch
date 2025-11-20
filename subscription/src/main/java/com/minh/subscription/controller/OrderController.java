@@ -18,9 +18,9 @@ public class OrderController {
 
     private final OrderService paymentService;
 
-    @GetMapping("/test")
-    public ApiResponse<?> testCi() {
-        return ApiResponse.ok("Hello world 2");
+    @GetMapping("/testCI")
+    public ApiResponse<?> testCI() {
+        return ApiResponse.ok("Hehe boiii");
     }
 
     @GetMapping("/all")

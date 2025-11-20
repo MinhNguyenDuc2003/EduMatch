@@ -49,4 +49,6 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
             "AND s.active = true " +
             "ORDER BY s.endDate DESC")
     Optional<SubscriptionEntity> findActiveSubscriptionByUserId(@Param("userId") String userId);
+
+    Optional<SubscriptionEntity> findByUserIdAndActiveTrue(String userId);
 }

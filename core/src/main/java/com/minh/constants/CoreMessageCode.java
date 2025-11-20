@@ -38,6 +38,7 @@ public final class CoreMessageCode {
 
     public static final String SUBSCRIPTION_PLAN_NOT_FOUND = "Subscription plan is not exist";
     public static final String SUBSCRIPTION_NOT_FOUND = "Subscription is not exist";
+    public static final String SUBSCRIPTION_ALREADY_ACTIVE = "Subscription Already Active";
     public static final String ORDER_NOT_FOUND = "Order is not exist";
     public static final String INVALID_TARGET_TYPE = "Target type must not be null";
     public static final String SUBSCRIPTION_PLAN_NOT_FOUND_BY_TARGET_TYPE = "No subscription plan found for target type";
