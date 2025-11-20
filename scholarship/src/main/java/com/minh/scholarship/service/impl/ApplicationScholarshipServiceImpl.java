@@ -195,7 +195,10 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
             return null;
         }
         for (ApplicationVo applicationVo : allMyApplication) {
-            vos.addAll(this.getAllByApplicationId(applicationVo.getId()));
+            List<ApplicationScholarshipVo> allByApplicationId = this.getAllByApplicationId(applicationVo.getId());
+            if(ObjectUtils.isNotEmpty(allByApplicationId)) {
+                vos.addAll(allByApplicationId);
+            }
         }
         return vos;
     }
