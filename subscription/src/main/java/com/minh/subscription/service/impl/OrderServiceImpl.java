@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -98,6 +99,13 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         // Lấy Subscription Plan mà user đã mua
         SubscriptionPlanEntity plan = subscriptionplanRepository.findById(subscriptionPlanId)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_PLAN_NOT_FOUND));
+
+        Optional<SubscriptionEntity> existingActiveSub =
+                subscriptionRepository.findByUserIdAndActiveTrue(userId);
+
+        if (existingActiveSub.isPresent()) {
+            throw new BusinessException(CoreMessageCode.SUBSCRIPTION_ALREADY_ACTIVE);
+        }
 
         // Tạo Subscription mới (ACTIVE)
         SubscriptionEntity subscription = new SubscriptionEntity();
