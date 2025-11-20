@@ -1,6 +1,8 @@
 'use client';
-import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
+import Image from 'next/image';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { Button } from '@/lib/cus/button';
 import {
@@ -12,67 +14,42 @@ import {
   DialogTitle,
 } from '@/lib/cus/dialog';
 import { Form } from '@/lib/cus/form';
-import { useGetReportsQuery, useCreateReportMutation } from '@/state/apiApplicant';
+import {
+  useGetReportsQuery,
+  useReportSystemMutation,
+  useReportProviderMutation,
+  useReportScholarshipMutation,
+  useReportProfileMutation,
+} from '@/state/apiApplicant';
 import { Loader2, ChevronLeft } from 'lucide-react';
 
 interface ReportDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  initialType?: ReportType;
+  initialType: ReportType;
+  id?: number;
+  scholarshipData?: Scholarship;
+  providerData?: ProviderProfile;
 }
 
-type ReportTypeItem = {
-  type: ReportType;
-  name: string;
-  shortDescription: string;
-};
+export default function ReportDialog({
+  open,
+  onOpenChange,
+  initialType,
+  id,
+  scholarshipData,
+  providerData,
+}: ReportDialogProps) {
+  const t = useTranslations('reportDialog');
 
-const REPORT_TYPES: ReportTypeItem[] = [
-  {
-    type: 'SCHOLARSHIP',
-    name: 'Scholarship',
-    shortDescription: 'Report issues or concerns about a scholarship',
-  },
-  {
-    type: 'PROVIDER',
-    name: 'Provider',
-    shortDescription: 'Report issues or concerns about a provider',
-  },
-  {
-    type: 'APPLICANT',
-    name: 'Applicant',
-    shortDescription: 'Report issues or concerns about an applicant',
-  },
-  {
-    type: 'SYSTEM',
-    name: 'System',
-    shortDescription: 'Report technical issues or system problems',
-  },
-  {
-    type: 'PROFILE',
-    name: 'Profile',
-    shortDescription: 'Report issues or concerns about a profile',
-  },
-];
+  const { data: categories, isLoading: isLoadingCategories } = useGetReportsQuery(initialType, {
+    skip: !open,
+  });
 
-export default function ReportDialog({ open, onOpenChange, initialType }: ReportDialogProps) {
-  const [step, setStep] = useState<'type' | 'category'>('type');
-  const [selectedType, setSelectedType] = useState<ReportType | null>(null);
-
-  // Set initial type when dialog opens with initialType
-  useEffect(() => {
-    if (open && initialType) {
-      setSelectedType(initialType);
-      setStep('category');
-    }
-  }, [open, initialType]);
-
-  const { data: categories, isLoading: isLoadingCategories } = useGetReportsQuery(
-    (selectedType || 'SYSTEM') as ReportType,
-    { skip: !selectedType }
-  );
-
-  const [createReport, { isLoading: isSubmitting }] = useCreateReportMutation();
+  const [reportSystem] = useReportSystemMutation();
+  const [reportProvider] = useReportProviderMutation();
+  const [reportScholarship] = useReportScholarshipMutation();
+  const [reportProfile] = useReportProfileMutation();
 
   const methods = useForm<FormReport>({
     defaultValues: { title: '', comment: '', categoryId: 0 },
@@ -80,27 +57,33 @@ export default function ReportDialog({ open, onOpenChange, initialType }: Report
 
   const { handleSubmit, reset, setValue, watch } = methods;
   const selectedCategoryId = watch('categoryId');
-
-  const resetAll = () => {
-    reset();
-    setStep('type');
-    setSelectedType(null);
-  };
-
-  const handleTypeSelect = (type: ReportType) => {
-    setSelectedType(type);
-    setStep('category');
-  };
-
-  const handleCategorySelect = (categoryId: number) => {
-    setValue('categoryId', categoryId);
-  };
+  const selectedCategory = categories?.find((c) => c.id === selectedCategoryId);
 
   const onSubmit = async (data: FormReport) => {
     try {
-      await createReport(data).unwrap();
-      resetAll();
+      switch (initialType) {
+        case 'SYSTEM':
+          await reportSystem(data).unwrap();
+          break;
+        case 'PROVIDER':
+          if (id) {
+            await reportProvider({ ...data, providerId: id }).unwrap();
+          }
+          break;
+        case 'SCHOLARSHIP':
+          if (id) {
+            await reportScholarship({ ...data, scholarshipId: id }).unwrap();
+          }
+          break;
+        case 'PROFILE':
+          if (id) {
+            await reportProfile({ ...data, profileId: id }).unwrap();
+          }
+          break;
+      }
+      reset();
       onOpenChange(false);
+      toast.success(t('submitSuccess'));
     } catch (error) {
       console.error('Failed to create report:', error);
     }
@@ -108,149 +91,124 @@ export default function ReportDialog({ open, onOpenChange, initialType }: Report
 
   const handleClose = () => {
     reset();
-    setStep('type');
-    setSelectedType(null);
     onOpenChange(false);
-  };
-
-  const handleBack = () => {
-    if (selectedCategoryId) {
-      setValue('categoryId', 0);
-    } else {
-      setStep('type');
-      setSelectedType(null);
-    }
   };
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle>Give us your feedback</DialogTitle>
-          <DialogDescription>
-            We value your feedback and would like to hear from you. Please fill out the form below
-            to give us your feedback.
-          </DialogDescription>
+          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
         </DialogHeader>
 
         <div className="border-b border-gray-200"></div>
 
-        <div className="py-2 px-1 overflow-y-auto flex-1 scrollbar-hide">
-          {step === 'type' ? (
-            <div className="space-y-3">
-              <h3 className="text-lg font-semibold mb-2">Select Report Type</h3>
-              <div className="space-y-2">
-                {REPORT_TYPES.map((reportType) => (
-                  <button
-                    key={reportType.type}
-                    onClick={() => handleTypeSelect(reportType.type)}
-                    className="w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer"
-                  >
-                    <div className="font-semibold text-gray-900">{reportType.name}</div>
-                    <div className="text-sm text-gray-600">{reportType.shortDescription}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <Form {...methods}>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pr-1">
-                {/* Selected Type - Clickable to go back */}
-                <div
-                  onClick={() => {
-                    setStep('type');
-                    setSelectedType(null);
-                  }}
-                  className="mb-4 bg-gray-100 rounded-md p-3 cursor-pointer hover:bg-gray-200 transition-colors"
-                >
-                  <div className="text-sm text-gray-600">Selected Type:</div>
-                  <div className="font-semibold text-gray-900">
-                    {REPORT_TYPES.find((t) => t.type === selectedType)?.name}
-                  </div>
+        {/* Entity Info */}
+        {(initialType === 'SCHOLARSHIP' && scholarshipData) ||
+        (initialType === 'PROVIDER' && providerData) ? (
+          <div>
+            <div className="text-sm text-gray-500 mb-2">{t('reportingAbout')}</div>
+            {initialType === 'SCHOLARSHIP' && scholarshipData && (
+              <div className="px-4 py-3 bg-gray-100 border-b border-gray-300 hover:bg-gray-200 transition-colors cursor-default rounded-lg">
+                <div className="font-semibold text-gray-900">{scholarshipData.title}</div>
+                <div className="text-sm text-gray-600 mt-1">
+                  {scholarshipData.providerProfileVo.organizationName}
                 </div>
-
-                {!selectedCategoryId ? (
-                  isLoadingCategories ? (
-                    <div className="flex items-center justify-center py-8">
-                      <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-                    </div>
-                  ) : categories?.length ? (
-                    <div className="space-y-2">
-                      {categories.map((category) => (
-                        <button
-                          key={category.id}
-                          type="button"
-                          onClick={() => handleCategorySelect(category.id)}
-                          className="w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer"
-                        >
-                          <div className="font-semibold text-gray-900">{category.name}</div>
-                          {category.description && (
-                            <div className="text-sm text-gray-600">{category.description}</div>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-gray-500">
-                      No categories available for this report type.
-                    </div>
-                  )
-                ) : (
-                  <>
-                    {/* Selected Category - Clickable to go back */}
-                    <div
-                      onClick={() => setValue('categoryId', 0)}
-                      className="mb-4 bg-gray-100 rounded-md p-3 cursor-pointer hover:bg-gray-200 transition-colors"
-                    >
-                      <div className="text-sm text-gray-600">Selected Category:</div>
-                      <div className="font-semibold text-gray-900">
-                        {categories?.find((c) => c.id === selectedCategoryId)?.name}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        {categories?.find((c) => c.id === selectedCategoryId)?.description}
-                      </div>
-                    </div>
-
-                    <CustomFormField
-                      name="title"
-                      label="Title"
-                      type="text"
-                      placeholder="Enter a title for your report"
-                      isBorder={true}
-                    />
-                    <CustomFormField
-                      name="comment"
-                      label="Description"
-                      type="textarea"
-                      placeholder="Please provide details about your feedback"
-                      isBorder={true}
-                    />
-
-                    <DialogFooter className="flex gap-2 mt-4">
-                      <Button
-                        type="button"
-                        variant="custom"
-                        onClick={handleBack}
-                        disabled={isSubmitting}
-                        className="flex items-center gap-1 text-[#3D6CB9] border-[#3D6CB9] border-1 rounded-md px-2 py-1 cursor-pointer"
-                      >
-                        <ChevronLeft className="w-4 h-4" />
-                        Back
-                      </Button>
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        variant="custom"
-                        className="bg-[#3D6CB9] text-white"
-                      >
-                        Submit
-                      </Button>
-                    </DialogFooter>
-                  </>
+              </div>
+            )}
+            {initialType === 'PROVIDER' && providerData && (
+              <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg flex items-center gap-3">
+                {providerData.logoUrl && (
+                  <Image
+                    src={providerData.logoUrl}
+                    alt={providerData.organizationName}
+                    width={48}
+                    height={48}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
                 )}
-              </form>
-            </Form>
-          )}
+                <div className="font-semibold text-gray-900">{providerData.organizationName}</div>
+              </div>
+            )}
+          </div>
+        ) : null}
+
+        <div className="py-2 px-1 overflow-y-auto flex-1 scrollbar-hide">
+          <Form {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pr-1">
+              {!selectedCategoryId ? (
+                isLoadingCategories ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                  </div>
+                ) : categories?.length ? (
+                  <div className="space-y-2">
+                    {categories.map((category) => (
+                      <button
+                        key={category.id}
+                        type="button"
+                        onClick={() => setValue('categoryId', category.id)}
+                        className="w-full group text-left px-4 py-2 border border-gray-400 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer"
+                      >
+                        <div className="font-semibold text-gray-900 group-hover:text-blue-500 transition-colors">
+                          {category.name}
+                        </div>
+                        {category.description && (
+                          <div className="text-sm text-gray-600">{category.description}</div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-gray-500">{t('noCategories')}</div>
+                )
+              ) : (
+                <>
+                  {/* Selected Category - Clickable to go back */}
+                  <div
+                    onClick={() => setValue('categoryId', 0)}
+                    className="mb-4 bg-gray-100 rounded-md p-3 cursor-pointer hover:bg-gray-200 transition-colors"
+                  >
+                    <div className="text-sm text-gray-600">{t('selectedCategory')}</div>
+                    <div className="font-semibold text-gray-900">{selectedCategory?.name}</div>
+                    {selectedCategory?.description && (
+                      <div className="text-sm text-gray-600">{selectedCategory.description}</div>
+                    )}
+                  </div>
+
+                  <CustomFormField
+                    name="title"
+                    label={t('titleLabel')}
+                    type="text"
+                    placeholder={t('titlePlaceholder')}
+                    isBorder={true}
+                  />
+                  <CustomFormField
+                    name="comment"
+                    label={t('descriptionLabel')}
+                    type="textarea"
+                    placeholder={t('descriptionPlaceholder')}
+                    isBorder={true}
+                  />
+
+                  <DialogFooter className="flex gap-2 mt-4">
+                    <Button
+                      type="button"
+                      variant="custom"
+                      onClick={() => setValue('categoryId', 0)}
+                      className="flex items-center gap-1 text-[#3D6CB9] border-[#3D6CB9] border-1 rounded-md px-2 py-1 cursor-pointer"
+                    >
+                      {t('back')}
+                    </Button>
+                    <Button type="submit" variant="custom" className="bg-[#3D6CB9] text-white">
+                      {t('submit')}
+                    </Button>
+                  </DialogFooter>
+                </>
+              )}
+            </form>
+          </Form>
         </div>
       </DialogContent>
     </Dialog>

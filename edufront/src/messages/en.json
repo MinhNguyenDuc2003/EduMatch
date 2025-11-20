@@ -843,5 +843,19 @@
         "completing": "Completing..."
       }
     }
+  },
+  "reportDialog": {
+    "title": "Give us your feedback",
+    "description": "We value your feedback and would like to hear from you. Please fill out the form below to give us your feedback.",
+    "reportingAbout": "You are reporting about:",
+    "selectedCategory": "Selected Category:",
+    "noCategories": "No categories available for this report type.",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Enter a title for your report",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Please provide details about your feedback",
+    "back": "Back",
+    "submit": "Submit",
+    "submitSuccess": "Report Submitted Successfully"
   }
 }

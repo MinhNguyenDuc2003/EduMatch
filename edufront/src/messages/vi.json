@@ -843,5 +843,19 @@
         "completing": "Đang hoàn tất..."
       }
     }
+  },
+  "reportDialog": {
+    "title": "Gửi phản hồi cho chúng tôi",
+    "description": "Chúng tôi đánh giá cao phản hồi của bạn và muốn lắng nghe từ bạn. Vui lòng điền vào biểu mẫu bên dưới để gửi phản hồi cho chúng tôi.",
+    "reportingAbout": "Bạn đang báo cáo về:",
+    "selectedCategory": "Danh mục đã chọn:",
+    "noCategories": "Không có danh mục nào cho loại báo cáo này.",
+    "titleLabel": "Tiêu đề",
+    "titlePlaceholder": "Nhập tiêu đề cho báo cáo của bạn",
+    "descriptionLabel": "Mô tả",
+    "descriptionPlaceholder": "Vui lòng cung cấp chi tiết về phản hồi của bạn",
+    "back": "Quay lại",
+    "submit": "Gửi",
+    "submitSuccess": "Gửi báo cáo thành công"
   }
 }

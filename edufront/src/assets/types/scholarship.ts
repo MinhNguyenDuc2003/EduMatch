@@ -48,6 +48,12 @@ declare global {
     view: number;
   };
 
+  type SearchScholarshipsByUniversityResponse = {
+    id: number;
+    university: string;
+    availableSlots: number;
+  };
+
   type ScholarshipSearchCriteria = {
     country?: string;
     university?: string;

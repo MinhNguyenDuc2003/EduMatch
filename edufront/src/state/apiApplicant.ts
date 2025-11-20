@@ -145,10 +145,38 @@ export const apiApplicant = createApi({
       providesTags: ['Report'],
     }),
 
-    // CREATE REPORT
-    createReport: build.mutation<boolean, FormReport>({
+    // REPORT SYSTEM
+    reportSystem: build.mutation<boolean, FormReport>({
       query: (data) => ({
         url: API_ENDPOINTS.CREATE_REPORT,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Report'],
+    }),
+
+    // REPORT PROVIDER
+    reportProvider: build.mutation<boolean, FormReport & { providerId: number }>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.CREATE_REPORT}/provider-report`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Report'],
+    }),
+    // REPORT SCHOLARSHIP
+    reportScholarship: build.mutation<boolean, FormReport & { scholarshipId: number }>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.CREATE_REPORT}/scholarship-report`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Report'],
+    }),
+    // REPORT PROFILE
+    reportProfile: build.mutation<boolean, FormReport & { profileId: number }>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.CREATE_REPORT}/profile-report`,
         method: 'POST',
         body: data,
       }),
@@ -172,5 +200,8 @@ export const {
   useGetAppliedApplicationQuery,
   useDeleteApplicationMutation,
   useGetReportsQuery,
-  useCreateReportMutation,
+  useReportSystemMutation,
+  useReportProviderMutation,
+  useReportScholarshipMutation,
+  useReportProfileMutation,
 } = apiApplicant;
