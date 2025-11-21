@@ -9,6 +9,7 @@ interface ScholarshipsSectionProps {
   onApply: (scholarship: Scholarship) => void;
   onToggleTracking: (scholarshipId: number) => void;
   onFollowProvider: (providerId: number) => void;
+  isAuthenticated: boolean;
 }
 
 export default function ScholarshipsSection({
@@ -17,9 +18,10 @@ export default function ScholarshipsSection({
   onApply,
   onToggleTracking,
   onFollowProvider,
+  isAuthenticated,
 }: ScholarshipsSectionProps) {
   const t = useTranslations('viewProviderProfile.scholarships');
-  
+
   return (
     <div className="space-y-4">
       {/* Scholarships Title */}
@@ -43,6 +45,7 @@ export default function ScholarshipsSection({
               onApply={onApply}
               onToggleTracking={() => onToggleTracking(scholarship.id)}
               onFollowProvider={() => onFollowProvider(scholarship.providerId)}
+              isAuthenticated={isAuthenticated}
             />
           ))}
         </div>

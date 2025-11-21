@@ -111,11 +111,14 @@ export const apiApplicant = createApi({
       invalidatesTags: ['Application'],
     }),
 
-    submitApplication: build.mutation<boolean, { applicationId: number; scholarshipId: number }>({
-      query: ({ applicationId, scholarshipId }) => ({
+    submitApplication: build.mutation<
+      boolean,
+      { applicationId: number; scholarshipId: number; status: string }
+    >({
+      query: ({ applicationId, scholarshipId, status }) => ({
         url: `${API_ENDPOINTS.APPLICATION}-scholarship`,
         method: 'POST',
-        body: { applicationId, scholarshipId },
+        body: { applicationId, scholarshipId, status },
       }),
       invalidatesTags: ['Application'],
     }),

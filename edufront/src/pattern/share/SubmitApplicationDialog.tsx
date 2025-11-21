@@ -45,7 +45,11 @@ export default function SubmitApplicationDialog({
       onSubmit(selectedApplicationId);
       onOpenChange(false);
       setSelectedApplicationId(null);
-      submitApplication({ applicationId: selectedApplicationId, scholarshipId }).unwrap();
+      submitApplication({
+        applicationId: selectedApplicationId,
+        scholarshipId,
+        status: 'Pending',
+      }).unwrap();
     }
   };
 
