@@ -1,29 +1,28 @@
 import { Button } from '@/lib/cus/button';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const HeroSection = () => {
   const router = useRouter();
+  const t = useTranslations('scholarshipProviderGuidelines.heroSection');
 
   return (
     <div className="px-4 lg:px-40 py-6  bg-[#FAFAF6] space-y-6">
       <div className="flex gap-x-40 justify-center items-center flex-wrap-reverse md:flex-nowrap">
         <div className="flex flex-col gap-4 max-w-md">
           <h1 className="text-4xl flex flex-col">
-            <span className="font-semibold">Make a Difference</span>
-            <span className="font-bold text-primary-brand">in a Student's Life</span>
+            <span className="font-semibold">{t('headLine1')}</span>
+            <span className="font-bold text-primary-brand">{t('headLine2')}</span>
           </h1>
-          <p className="text-2xl">
-            Leverage our advanced matching algorithm to connect your scholarship with eligible
-            students.
-          </p>
+          <p className="text-2xl">{t('description')}</p>
           <Button
             className="w-full py-4 rounded-lg font-semibold transition-all bg-primary-brand text-white"
             variant="custom"
             onClick={() => router.push('/create-provider-profile')}
           >
-            Create Your Provider Profile
+            {t('button')}
           </Button>
         </div>
         <div className="border-10 border-black aspect-square -rotate-4 scale-[0.9] max-w-md">

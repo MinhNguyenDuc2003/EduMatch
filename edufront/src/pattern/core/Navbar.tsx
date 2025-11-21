@@ -144,7 +144,9 @@ const Header = () => {
                   {!isProvider &&
                     !subscriptions.some((subscription) => subscription.userType === 'PROVIDER') && (
                       <DropdownMenuItem asChild>
-                        <Link href="/create-provider-profile">{t('dropdown.createProvider')}</Link>
+                        <Link href="/scholarship-provider-guidelines">
+                          {t('dropdown.createProvider')}
+                        </Link>
                       </DropdownMenuItem>
                     )}
 
