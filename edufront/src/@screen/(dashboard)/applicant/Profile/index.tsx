@@ -16,19 +16,11 @@ import SkillCard from './components/SkillCard';
 import PreferenceCard from './components/PreferenceCard';
 
 import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
-import { applicantProfileSchema, IApplicantProfile } from '@/lib/schemas';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { DEFAULT_PROFILE_FORM_VALUES } from './constants';
-import {
-  useGetProfileQuery,
-  useCreateProfileMutation,
-  useUpdateProfileMutation,
-} from '@/state/apiApplicant';
+import { useGetProfileQuery } from '@/state/apiApplicant';
 import { useTranslations } from 'next-intl';
 
 export default function Profile() {
-  const t = useTranslations('homepage.applicantProfile');
+  const t = useTranslations('applicantProfile');
 
   // RTK Query hooks
   const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();

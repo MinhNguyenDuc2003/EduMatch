@@ -18,7 +18,7 @@ interface ProfileHeaderProps {
 }
 
 export default function ProfileHeader({ name, role, avatarUrl, stats }: ProfileHeaderProps) {
-  const t = useTranslations('homepage.applicantProfile.profileHeader');
+  const t = useTranslations('applicantProfile.profileHeader');
   const router = useRouter();
 
   return (

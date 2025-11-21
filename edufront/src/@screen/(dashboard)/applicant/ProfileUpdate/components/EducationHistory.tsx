@@ -10,9 +10,8 @@ import { INSTITUTION_TYPES } from '../../Profile/constants';
 import { MAJOR_CATEGORIES, MAJOR_NAMES, STUDY_LEVELS } from '@/constants/Common';
 
 const EducationHistory = () => {
-  const { handleSubmit, control } = useFormContext<IApplicantProfile>();
-  const t = useTranslations('homepage.applicantProfile.educationHistoryDialog');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const { control } = useFormContext<IApplicantProfile>();
+  const t = useTranslations('applicantProfile.educationHistoryDialog');
 
   const { fields, append, remove } = useFieldArray({
     control,

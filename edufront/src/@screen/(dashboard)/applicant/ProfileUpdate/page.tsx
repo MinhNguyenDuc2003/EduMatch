@@ -29,7 +29,7 @@ import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 
 const ProfileUpdatePage = () => {
-  const t = useTranslations('homepage.applicantProfile');
+  const t = useTranslations('applicantProfile');
   const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
   const [createProfile, { isLoading: isLoadingCreateProfile }] = useCreateProfileMutation();
   const [updateProfile, { isLoading: isLoadingUpdateProfile }] = useUpdateProfileMutation();

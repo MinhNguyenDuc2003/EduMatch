@@ -5,9 +5,9 @@ import { useTranslations } from 'next-intl';
 import React from 'react';
 
 const StudentInformation = () => {
-  const t = useTranslations('homepage.applicantProfile.studentInformationDialog');
-  const tFields = useTranslations('homepage.applicantProfile.fields');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.studentInformationDialog');
+  const tFields = useTranslations('applicantProfile.fields');
+  const tCommon = useTranslations('applicantProfile.common');
 
   return (
     <div className="space-y-4">

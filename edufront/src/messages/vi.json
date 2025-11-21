@@ -375,12 +375,14 @@
   "applicantProfile": {
     "breadcrumb": {
       "applicant": "Ứng viên",
-      "profile": "Hồ sơ"
+      "profile": "Hồ sơ",
+      "update": "Cập nhật hồ sơ"
     },
     "profileHeader": {
       "matchedScholarships": "Học bổng phù hợp",
       "matchedResearchOpportunities": "Cơ hội nghiên cứu phù hợp",
-      "matchedScholarshipsAmount": "Tổng giá trị học bổng phù hợp"
+      "matchedScholarshipsAmount": "Tổng giá trị học bổng phù hợp",
+      "editProfile": "Chỉnh sửa hồ sơ"
     },
     "profileStrength": {
       "title": "Độ hoàn thiện hồ sơ",
@@ -538,7 +540,22 @@
       "expectedGraduationYear": "Năm tốt nghiệp dự kiến",
       "enterGraduationYear": "Nhập năm tốt nghiệp",
       "noIntentionsAddedYet": "Chưa có dự định nào được thêm",
-      "clickAddToStart": "Nhấp \"Thêm\" để bắt đầu thêm dự định của bạn"
+      "clickAddToStart": "Nhấp \"Thêm\" để bắt đầu thêm dự định của bạn",
+      "degreeType": "Loại bằng cấp",
+      "selectDegreeType": "Chọn loại bằng cấp",
+      "majorCategory": "Danh mục chuyên ngành",
+      "selectMajorCategory": "Chọn danh mục chuyên ngành",
+      "majorName": "Tên chuyên ngành",
+      "enterMajorName": "Nhập tên chuyên ngành",
+      "stateProvince": "Tỉnh/Thành phố",
+      "enterStateProvince": "Nhập tỉnh hoặc thành phố",
+      "country": "Quốc gia",
+      "enterCountry": "Nhập quốc gia",
+      "additionalInformation": "Thông tin bổ sung",
+      "notes": "Ghi chú",
+      "notesPlaceholder": "Ghi chú bổ sung về dự định này",
+      "transferStudent": "Sinh viên chuyển trường",
+      "returningStudent": "Sinh viên quay lại"
     },
     "activitiesDialog": {
       "title": "Sở thích & Hoạt động",

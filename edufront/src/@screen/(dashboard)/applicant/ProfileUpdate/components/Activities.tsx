@@ -12,7 +12,7 @@ import {
 import Header from '@/pattern/share/Header';
 
 const Activities = () => {
-  const t = useTranslations('homepage.applicantProfile.activitiesDialog');
+  const t = useTranslations('applicantProfile.activitiesDialog');
 
   return (
     <div className="space-y-4">

@@ -10,8 +10,8 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 const Intentions = () => {
   const { control } = useFormContext<IApplicantProfile>();
-  const t = useTranslations('homepage.applicantProfile.intentionsDialog');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.intentionsDialog');
+  const tCommon = useTranslations('applicantProfile.common');
 
   const { fields, append, remove } = useFieldArray({
     control,

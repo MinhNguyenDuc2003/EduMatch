@@ -8,8 +8,8 @@ import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 const Preferences = () => {
-  const t = useTranslations('homepage.applicantProfile.preferencesDialog');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.preferencesDialog');
+  const tCommon = useTranslations('applicantProfile.common');
 
   const { control, watch } = useFormContext<IApplicantProfile>();
 

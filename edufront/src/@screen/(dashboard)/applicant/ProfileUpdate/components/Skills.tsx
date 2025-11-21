@@ -9,8 +9,8 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 const Skills = () => {
   const { control } = useFormContext<IApplicantProfile>();
-  const t = useTranslations('homepage.applicantProfile.skillsDialog');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.skillsDialog');
+  const tCommon = useTranslations('applicantProfile.common');
 
   const PROFICIENCY_LEVELS = [
     { value: 'Beginner', label: t('beginner') },

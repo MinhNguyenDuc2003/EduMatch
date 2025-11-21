@@ -8,8 +8,8 @@ import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 const Certificates = () => {
-  const t = useTranslations('homepage.applicantProfile.certificatesDialog');
-  const tCommon = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.certificatesDialog');
+  const tCommon = useTranslations('applicantProfile.common');
   const { handleSubmit, control } = useFormContext<IApplicantProfile>();
 
   const { fields, append, remove } = useFieldArray({

@@ -375,12 +375,14 @@
   "applicantProfile": {
     "breadcrumb": {
       "applicant": "Applicant",
-      "profile": "Profile"
+      "profile": "Profile",
+      "update": "Update"
     },
     "profileHeader": {
       "matchedScholarships": "Matched Scholarships",
       "matchedResearchOpportunities": "Matched Research Opportunities",
-      "matchedScholarshipsAmount": "Matched Scholarships Amount"
+      "matchedScholarshipsAmount": "Matched Scholarships Amount",
+      "editProfile": "Edit Profile"
     },
     "profileStrength": {
       "title": "Profile Strength",
@@ -534,6 +536,21 @@
       "academicClassification": "Academic Classification",
       "academicClassificationPlaceholder": "e.g., Freshman, Sophomore",
       "timeline": "Timeline",
+      "degreeType": "Degree Type",
+      "selectDegreeType": "Select degree type",
+      "majorCategory": "Major Category",
+      "selectMajorCategory": "Select major category",
+      "majorName": "Major Name",
+      "enterMajorName": "Enter major name",
+      "stateProvince": "State/Province",
+      "enterStateProvince": "Enter state or province",
+      "country": "Country",
+      "enterCountry": "Enter country",
+      "additionalInformation": "Additional Information",
+      "notes": "Notes",
+      "notesPlaceholder": "Additional notes about this intention",
+      "transferStudent": "Transfer Student",
+      "returningStudent": "Returning Student",
       "expectedStartDate": "Expected Start Date",
       "expectedGraduationYear": "Expected Graduation Year",
       "enterGraduationYear": "Enter graduation year",
