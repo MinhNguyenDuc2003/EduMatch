@@ -4,6 +4,8 @@ import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
 import com.minh.scholarship.data.vo.ApplicationScholarshipVo;
+import com.minh.scholarship.data.vo.ScholarshipApplyStatisticVo;
+import com.minh.scholarship.data.vo.ScholarshipDashboardVo;
 import com.minh.scholarship.service.ApplicationScholarshipService;
 import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
@@ -63,5 +65,15 @@ public class ApplicationScholarshipController {
     public ApiResponse<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ApiResponse.ok();
+    }
+
+    @GetMapping("/top-applied")
+    public ApiResponse<List<ScholarshipApplyStatisticVo>> getTopAppliedScholarships() {
+        return ApiResponse.ok(service.getTopAppliedScholarships());
+    }
+
+    @GetMapping("/statistics")
+    public ApiResponse<ScholarshipDashboardVo> getDashboardStatistics() {
+        return ApiResponse.ok(service.getDashboardStatistics());
     }
 }

@@ -1,6 +1,8 @@
 package com.minh.scholarship.data.repository;
 
 import com.minh.scholarship.data.entity.ApplicationScholarshipEntity;
+import com.minh.scholarship.data.vo.ApplicationScholarshipStatusStatisticVo;
+import com.minh.scholarship.data.vo.ScholarshipApplyStatisticVo;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -45,4 +47,20 @@ public interface ApplicationScholarshipRepository extends JpaRepository<Applicat
 
     boolean existsByApplicationIdAndScholarshipId(Long applicationId, Long scholarshipId);
 
+    @Query(value = "SELECT s.ID, s.TITLE, COUNT(a.ID) " +
+            "FROM scholarship.APPLICATION_SCHOLARSHIP a " +
+            "JOIN scholarship.SCHOLARSHIP s ON a.SCHOLARSHIP_ID = s.ID " +
+            "WHERE a.STATUS = 'PENDING' OR a.STATUS = 'APPROVED' " +
+            "GROUP BY s.ID, s.TITLE " +
+            "ORDER BY COUNT(a.ID) DESC", nativeQuery = true)
+    List<Object[]> findTopAppliedScholarshipsRaw();
+
+    @Query("SELECT new com.minh.scholarship.data.vo.ApplicationScholarshipStatusStatisticVo(e.status, COUNT(e.id)) " +
+            "FROM ApplicationScholarshipEntity e " +
+            "WHERE e.active = true " +
+            "GROUP BY e.status")
+    List<ApplicationScholarshipStatusStatisticVo> countApplicationsByStatus();
+
+    @Query("SELECT COUNT(e.id) FROM ApplicationScholarshipEntity e WHERE e.active = true")
+    Long countAllApplicationScholarship();
 }

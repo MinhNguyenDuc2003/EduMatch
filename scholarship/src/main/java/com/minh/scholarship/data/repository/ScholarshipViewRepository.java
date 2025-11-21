@@ -29,4 +29,7 @@ public interface ScholarshipViewRepository extends JpaRepository<ScholarshipView
             "ORDER BY view DESC " +
             "LIMIT 10;", nativeQuery = true)
     List<ScholarshipViewProjection> getTop10ViewsByMonth(int month);
+
+    @Query("SELECT COUNT(v.id) FROM ScholarshipViewEntity v WHERE v.active = true")
+    Long countAllViews();
 }
