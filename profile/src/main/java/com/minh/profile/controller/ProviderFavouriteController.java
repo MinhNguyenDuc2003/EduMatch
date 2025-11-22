@@ -37,9 +37,9 @@ public class ProviderFavouriteController {
     }
 
     @Authorized
-    @GetMapping("/provider/{providerId}")
-    public ApiResponse<List<ProviderFavouriteVo>> getByProviderId(@PathVariable Long providerId) {
-        return ApiResponse.ok(providerFavouriteService.getByProviderId(providerId));
+    @GetMapping("/applicant/{applicantId}")
+    public ApiResponse<List<ProviderFavouriteVo>> getByProviderId(@PathVariable Long applicantId) {
+        return ApiResponse.ok(providerFavouriteService.getByApplicantId(applicantId));
     }
 
     @Authorized
@@ -49,9 +49,9 @@ public class ProviderFavouriteController {
     }
 
     @Authorized
-    @PutMapping("/{id}")
-    public ApiResponse<ProviderFavouriteDto> update(@PathVariable Long id, @RequestBody ProviderFavouriteDto dto) {
-        return ApiResponse.ok(providerFavouriteService.update(id, dto));
+    @PutMapping
+    public ApiResponse<ProviderFavouriteDto> update(@RequestBody ProviderFavouriteDto dto) {
+        return ApiResponse.ok(providerFavouriteService.update(dto));
     }
 
     @Authorized

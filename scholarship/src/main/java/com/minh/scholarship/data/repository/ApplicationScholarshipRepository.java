@@ -50,7 +50,7 @@ public interface ApplicationScholarshipRepository extends JpaRepository<Applicat
     @Query(value = "SELECT s.ID, s.TITLE, COUNT(a.ID) " +
             "FROM scholarship.APPLICATION_SCHOLARSHIP a " +
             "JOIN scholarship.SCHOLARSHIP s ON a.SCHOLARSHIP_ID = s.ID " +
-            "WHERE a.STATUS = 'PENDING' OR a.STATUS = 'APPROVED' " +
+            "WHERE a.STATUS = 'Pending' OR a.STATUS = 'Approved' OR a.STATUS = 'Rejected' " +
             "GROUP BY s.ID, s.TITLE " +
             "ORDER BY COUNT(a.ID) DESC", nativeQuery = true)
     List<Object[]> findTopAppliedScholarshipsRaw();

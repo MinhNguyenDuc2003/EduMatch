@@ -17,11 +17,11 @@ public class ProviderFavouriteEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "PROVIDER_ID", nullable = false)
-    private Long providerId;
-
     @Column(name = "USER_ID", nullable = false)
     private String userId;
+
+    @Column(name = "APPLICANT_ID", nullable = false)
+    private Long applicantId;
 
     @Column(name = "NOTE")
     private String note;

@@ -10,6 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProviderFavouriteVo extends ProviderFavouriteDto {
-    private ProviderProfileVo providerProfileVo;
+    private ApplicantProfileVo applicantProfileVo;
     private int isFavourite;
 }
