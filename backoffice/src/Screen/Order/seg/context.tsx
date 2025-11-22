@@ -36,7 +36,9 @@ export default GenCtx({
         try {
           const data = await apiClientService.get('/api/subscription/subscription/orders/all');
           if (data) {
-            ss.Joint.OrderList = data;
+            ss.setJointData({
+              OrderList: data || [],
+            });
             console.log('first', data);
           }
           return;

@@ -36,7 +36,9 @@ export default GenCtx({
         try {
           const data = await apiClientService.get('/api/profile/provider-new');
           if (data) {
-            ss.Joint.News = data;
+             ss.setJointData({
+              News: data || [],
+            });
             console.log('first', data);
           }
           return;
