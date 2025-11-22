@@ -22,4 +22,6 @@ public class ScholarshipViewDto extends BaseDto {
 
     private String fullName;
 
+    private Long viewCount;
+
 }

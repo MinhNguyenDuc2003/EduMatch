@@ -54,4 +54,5 @@ public interface ScholarshipService {
 
     List<ScholarshipVo> getTopViewsByMonth();
 
+    List<ScholarshipViewDto> getTopScholarshipViews();
 }

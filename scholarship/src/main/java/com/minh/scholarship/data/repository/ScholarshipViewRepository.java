@@ -32,4 +32,6 @@ public interface ScholarshipViewRepository extends JpaRepository<ScholarshipView
 
     @Query("SELECT COUNT(v.id) FROM ScholarshipViewEntity v WHERE v.active = true")
     Long countAllViews();
+
+    Long countByScholarshipId(Long scholarshipId);
 }

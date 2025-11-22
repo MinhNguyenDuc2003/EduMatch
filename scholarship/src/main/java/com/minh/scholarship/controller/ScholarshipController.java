@@ -145,4 +145,8 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getTopViewsByMonth());
     }
 
+    @GetMapping("/top-views")
+    public ApiResponse<List<ScholarshipViewDto>> getTopScholarshipViews() {
+        return ApiResponse.ok(scholarshipService.getTopScholarshipViews());
+    }
 }

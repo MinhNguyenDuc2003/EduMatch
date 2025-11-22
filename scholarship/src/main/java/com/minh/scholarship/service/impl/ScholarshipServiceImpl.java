@@ -358,4 +358,22 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         });
         return vos;
     }
+
+    @Override
+    public List<ScholarshipViewDto> getTopScholarshipViews() {
+        List<ScholarshipEntity> scholarships = scholarshipRepository.findByActive(true);
+
+        List<ScholarshipViewDto> topList = scholarships.stream().map(s -> {
+                    ScholarshipViewDto dto = new ScholarshipViewDto();
+                    dto.setScholarshipId(s.getId());
+                    dto.setFullName(s.getTitle());
+                    dto.setViewCount((long) scholarshipViewRepository.countByScholarshipId(s.getId()));
+                    return dto;
+                }).sorted((a, b) -> b.getViewCount().compareTo(a.getViewCount()))
+                .limit(10)
+                .toList();
+
+        return topList;
+    }
+
 }
