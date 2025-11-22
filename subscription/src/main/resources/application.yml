@@ -178,3 +178,10 @@ keycloak:
   resource: ${env.keycloak.client-id:backoffice-bff}
   credentials:
     secret: ${env.keycloak.client-secret:TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF}
+
+quartz-job:
+  auto-start: false
+  expired-notice:
+    name: 'expired-notice'
+    group: 'subscription'
+    expression: '0 0 9 * * ?'

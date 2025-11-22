@@ -187,6 +187,10 @@ kafka:
     application:
       topic: ${app.environment:local}.provider.application-new
       group: ${app.environment:local}.provider.application-new.group
+  mail:
+    send-mail:
+      topic: ${app.environment:local}.system.mail
+      group: ${app.environment:local}.system.mail.group
 
 keycloak:
   auth-server-url: ${env.keycloak.url:http://localhost:8080}

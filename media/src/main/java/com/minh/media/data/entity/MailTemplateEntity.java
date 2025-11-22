@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(schema = "media", name = "MEDIA")
+@Table(schema = "media", name = "MAIL_TEMPLATE")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,5 +17,14 @@ public class MailTemplateEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
+
+    @Column(name = "TYPE")
+    private String type;
+
+    @Column(name = "SUBJECT")
+    private String subject;
+
+    @Column(name = "BODY")
+    private String body;
 
 }

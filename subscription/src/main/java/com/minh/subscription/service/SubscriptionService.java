@@ -12,4 +12,5 @@ public interface SubscriptionService {
     void delete(Long id);
     List<SubscriptionDto> getCurrentSubscriptionByUser();
     List<SubscriptionDto> getAllSubscriptionsByUserId(String userId);
+    Boolean sendMailExpiredDate5DaysLeft();
 }

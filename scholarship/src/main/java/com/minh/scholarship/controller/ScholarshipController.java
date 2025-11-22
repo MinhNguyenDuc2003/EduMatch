@@ -144,4 +144,10 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getTopViewsByMonth());
     }
 
+    @GetMapping("/suggestion/mail")
+    public ApiResponse<Boolean> sendMailSuggestion() {
+        return ApiResponse.ok(scholarshipService.sendMailSuggestion());
+    }
+
+
 }

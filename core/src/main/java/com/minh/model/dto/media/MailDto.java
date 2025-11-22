@@ -13,7 +13,10 @@ import lombok.*;
 @ToString(callSuper = true)
 public class MailDto {
 
+    private Long id;
+    private String from;
     private String to;
+    private Long templateId;
     private String subject;
     private String body;
 

@@ -184,3 +184,7 @@ kafka:
     update-status:
       topic: ${app.environment:local}.application.update-event
       group: ${app.environment:local}.application.update-event.group
+  mail:
+    send-mail:
+      topic: ${app.environment:local}.system.mail
+      group: ${app.environment:local}.system.mail.group

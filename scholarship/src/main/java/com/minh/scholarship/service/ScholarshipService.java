@@ -1,5 +1,6 @@
 package com.minh.scholarship.service;
 
+import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
 import com.minh.model.dto.scholarship.ScholarshipViewDto;
@@ -53,5 +54,9 @@ public interface ScholarshipService {
     List<ScholarshipViewDto> getViewsByScholarshipId(Long id);
 
     List<ScholarshipVo> getTopViewsByMonth();
+
+    Boolean sendMailSuggestion();
+
+    Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto);
 
 }

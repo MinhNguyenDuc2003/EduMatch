@@ -1,10 +1,14 @@
 package com.minh.profile.service.impl;
 
 import com.minh.constants.CoreMessageCode;
+import com.minh.enumeration.mail.MailTypeEnum;
 import com.minh.exception.BusinessException;
+import com.minh.model.dto.media.MailDto;
+import com.minh.model.dto.media.MailTemplateDto;
 import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.profile.ProviderContactDto;
 import com.minh.model.dto.profile.ProviderProfileDto;
+import com.minh.profile.data.entity.ProviderCodeVerifiedEntity;
 import com.minh.profile.data.entity.ProviderContactEntity;
 import com.minh.profile.data.entity.ProviderProfileEntity;
 import com.minh.profile.data.entity.junction.ProviderMediaEntity;
@@ -27,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +49,8 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
     private ProviderNewsMediaRepository providerNewsMediaRepository;
     @Autowired
     private ProviderMediaRepository providerMediaRepository;
+    @Autowired
+    private ProviderCodeVerifiedRepository providerCodeVerifiedRepository;
 
     @Autowired
     private ProviderProfileMapper providerProfileMapper;
@@ -217,6 +224,50 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
         ProviderProfileEntity entity = providerProfileRepository.findById(providerId)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
         entity.setVerified(verified);
+        if (verified) {
+            MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.PROVIDER_VERIFIED.getCode()));
+            String body = templateDto.getBody().replace("{{link}}", "http://159.89.200.244/edufront/home");
+
+            MailDto mailDto = new MailDto();
+            mailDto.setBody(body);
+            mailDto.setTo(entity.getEmail());
+            mailDto.setSubject(templateDto.getSubject());
+            mailDto.setTemplateId(templateDto.getId());
+            mediaFeign.sendMail(mailDto);
+        }
         providerProfileRepository.save(entity);
+    }
+
+    @Override
+    public Boolean sendVerifyMail(String email) {
+        ProviderCodeVerifiedEntity entity = new ProviderCodeVerifiedEntity();
+        String code = generateCode();
+        entity.setCode(code);
+        entity.setUserId(UaaContextHolder.getUserId());
+        entity.setExpiredTime(LocalDateTime.now().plusMinutes(10L));
+        providerCodeVerifiedRepository.save(entity);
+
+        MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.PROVIDER_VERIFIED.getCode()));
+        String body = templateDto.getBody().replace("{{code}}", code);
+
+        MailDto mailDto = new MailDto();
+        mailDto.setBody(body);
+        mailDto.setTo(email);
+        mailDto.setSubject(templateDto.getSubject());
+        mailDto.setTemplateId(templateDto.getId());
+        mediaFeign.sendMail(mailDto);
+
+        return true;
+    }
+
+    @Override
+    public Boolean verifyCode(String code) {
+        List<ProviderCodeVerifiedEntity> existCode = providerCodeVerifiedRepository.findByUserIdAndCodeValid(UaaContextHolder.getUserId(), code);
+        return !ObjectUtils.isEmpty(existCode);
+    }
+
+    private String generateCode() {
+        int code = new java.util.Random().nextInt(900000) + 100000;
+        return String.valueOf(code);
     }
 }

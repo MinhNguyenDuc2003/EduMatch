@@ -51,4 +51,11 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
     Optional<SubscriptionEntity> findActiveSubscriptionByUserId(@Param("userId") String userId);
 
     Optional<SubscriptionEntity> findByUserIdAndActiveTrue(String userId);
+
+    @Query(value = "SELECT * " +
+            "FROM subscription.subscription s " +
+            "WHERE s.end_date::date - CURRENT_DATE = 5 ",
+            nativeQuery = true)
+    List<SubscriptionEntity> getAllExpiredDate5DaysLeft();
+
 }

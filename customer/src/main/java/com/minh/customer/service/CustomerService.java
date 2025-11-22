@@ -270,4 +270,17 @@ public class CustomerService extends BaseService {
     public List<SubscriptionDto> getCurrenSubscriptions() {
         return this.parseResponse(subscriptionFeign.getCurrentSubscription());
     }
+
+    public CustomerVo getSimpleCustomerById(String userId) {
+        try {
+            CustomerVo vo = new CustomerVo();
+            CustomerVm customerVm = CustomerVm.fromUserRepresentation(
+                    keycloak.realm(keycloakPropsConfig.getRealm()).users().get(userId).toRepresentation());
+            vo.setCustomer(customerVm);
+            return vo;
+        } catch (ForbiddenException exception) {
+            throw new AccessDeniedException(
+                    String.format(ERROR_FORMAT, exception.getMessage(), keycloakPropsConfig.getResource()));
+        }
+    }
 }

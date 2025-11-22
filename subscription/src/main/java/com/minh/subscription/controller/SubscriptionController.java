@@ -55,4 +55,10 @@ public class SubscriptionController {
     public ApiResponse<List<SubscriptionDto>> getAllSubscriptionsByUserId(@PathVariable String userId) {
         return ApiResponse.ok(subscriptionService.getAllSubscriptionsByUserId(userId));
     }
+
+    @GetMapping("/mail/expired")
+    public ApiResponse<Boolean> sendMailExpired5DaysLeft() {
+        return ApiResponse.ok(subscriptionService.sendMailExpiredDate5DaysLeft());
+    }
+
 }

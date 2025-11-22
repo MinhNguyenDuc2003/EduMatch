@@ -20,4 +20,8 @@ public interface ProviderProfileService {
     List<ProviderProfileDto> getUnverifiedProviders();
 
     void changeVerifiedStatus(Long providerId, Boolean verified);
+
+    Boolean sendVerifyMail(String email);
+
+    Boolean verifyCode(String code);
 }
