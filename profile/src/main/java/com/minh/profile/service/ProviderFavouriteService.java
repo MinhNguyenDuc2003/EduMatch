@@ -13,11 +13,11 @@ public interface ProviderFavouriteService {
 
     ProviderFavouriteDto create(ProviderFavouriteDto dto);
 
-    ProviderFavouriteDto update(Long id, ProviderFavouriteDto dto);
+    ProviderFavouriteDto update(ProviderFavouriteDto dto);
 
     void delete(Long id);
 
     List<ProviderFavouriteVo> getAll();
 
-    List<ProviderFavouriteVo> getByProviderId(Long providerId);
+    List<ProviderFavouriteVo> getByApplicantId(Long applicantId);
 }

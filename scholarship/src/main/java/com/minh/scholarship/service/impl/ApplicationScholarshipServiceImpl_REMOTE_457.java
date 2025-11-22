@@ -1,13 +1,10 @@
 package com.minh.scholarship.service.impl;
 
 import com.minh.constants.CoreMessageCode;
-import com.minh.enumeration.mail.MailTypeEnum;
 import com.minh.enumeration.notification.NotificationReferenceEnum;
 import com.minh.enumeration.notification.NotificationTemplateEnum;
 import com.minh.enumeration.notification.NotificationTopicEnum;
 import com.minh.exception.BusinessException;
-import com.minh.model.dto.media.MailDto;
-import com.minh.model.dto.media.MailTemplateDto;
 import com.minh.model.dto.notification.NotificationTemplateDto;
 import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
 import com.minh.scholarship.data.entity.ApplicationScholarshipEntity;
@@ -16,7 +13,6 @@ import com.minh.scholarship.data.repository.ApplicationScholarshipRepository;
 import com.minh.scholarship.data.repository.ScholarshipRepository;
 import com.minh.scholarship.data.repository.ScholarshipViewRepository;
 import com.minh.scholarship.data.vo.*;
-import com.minh.scholarship.feign.MediaFeign;
 import com.minh.scholarship.feign.NotificationTemplateFeign;
 import com.minh.scholarship.feign.ProviderProfileFeign;
 import com.minh.scholarship.message.KafkaProducer;
@@ -45,7 +41,6 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     private final ApplicationScholarshipMapper applicationScholarshipMapper;
     private final ApplicationService applicationService;
     private final ScholarshipService scholarshipService;
-    private final MediaFeign mediaFeign;
     private final ScholarshipRepository scholarshipRepository;
     private final ApplicationScholarshipRepository applicationScholarshipRepository;
     private final ScholarshipViewRepository scholarshipViewRepository;
@@ -54,9 +49,6 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     private KafkaProducer kafkaProducer;
     @Autowired
     private NotificationTemplateFeign notificationTemplateFeign;
-
-    @Value("${kafka.mail.send-mail.topic}")
-    private String mailTopic;
 
     @Value("${kafka.application.update-status.topic}")
     private String newEventApplicationTopic;
@@ -150,17 +142,6 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
                     .userNotificationId(notificationTemplateDto.getId())
                     .build();
             kafkaProducer.convertToByteAndSend(newEventApplicationTopic, notificationVo);
-
-            MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.APPLICATION_UPDATED.getCode()));
-            String body = templateDto.getBody().replace("{{scholarshipName}}", scholarshipVo.getTitle())
-                    .replace("{{UniversityName}}", scholarshipVo.getUniversity())
-                    .replace("{{status}}", dto.getStatus())
-                    .replace("{{link}}", "");
-            MailDto mailDto = new MailDto();
-            mailDto.setBody(body);
-            mailDto.setTo(application.getEmail());
-            mailDto.setSubject(templateDto.getSubject());
-            mailDto.setTemplateId(templateDto.getId());
         }
         mapper.updateEntityFromDto(dto, exist);
         ApplicationScholarshipEntity saved = repository.save(exist);

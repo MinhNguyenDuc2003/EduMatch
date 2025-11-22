@@ -2,6 +2,8 @@ package com.minh.scholarship.service;
 
 import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
 import com.minh.scholarship.data.vo.ApplicationScholarshipVo;
+import com.minh.scholarship.data.vo.ScholarshipApplyStatisticVo;
+import com.minh.scholarship.data.vo.ScholarshipDashboardVo;
 
 import java.util.List;
 
@@ -25,4 +27,7 @@ public interface ApplicationScholarshipService {
 
     List<ApplicationScholarshipVo> getByMyScholarship();
 
+    List<ScholarshipApplyStatisticVo> getTopAppliedScholarships();
+
+    ScholarshipDashboardVo getDashboardStatistics();
 }

@@ -45,10 +45,13 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     private final ApplicationScholarshipMapper applicationScholarshipMapper;
     private final ApplicationService applicationService;
     private final ScholarshipService scholarshipService;
+<<<<<<< HEAD
     private final MediaFeign mediaFeign;
+=======
     private final ScholarshipRepository scholarshipRepository;
     private final ApplicationScholarshipRepository applicationScholarshipRepository;
     private final ScholarshipViewRepository scholarshipViewRepository;
+>>>>>>> b9afe7cce83c9a4770a2916d1a1839202eb8cf07
 
     @Autowired
     private KafkaProducer kafkaProducer;
@@ -222,7 +225,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
         }
         for (ApplicationVo applicationVo : allMyApplication) {
             List<ApplicationScholarshipVo> allByApplicationId = this.getAllByApplicationId(applicationVo.getId());
-            if(ObjectUtils.isNotEmpty(allByApplicationId)) {
+            if (ObjectUtils.isNotEmpty(allByApplicationId)) {
                 vos.addAll(allByApplicationId);
             }
         }

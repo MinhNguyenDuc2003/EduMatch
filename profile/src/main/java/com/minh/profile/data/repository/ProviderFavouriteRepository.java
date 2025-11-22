@@ -11,9 +11,9 @@ public interface ProviderFavouriteRepository extends JpaRepository<ProviderFavou
 
     List<ProviderFavouriteEntity> findAllByUserIdAndActive(String userId, boolean active);
 
-    boolean existsByUserIdAndProviderId(String userId, Long providerId);
+    boolean existsByUserIdAndApplicantId(String userId, Long applicantId);
 
-    List<ProviderFavouriteEntity> findAllByProviderIdAndActive(Long providerId, boolean active);
+    List<ProviderFavouriteEntity> findAllByApplicantIdAndActive(Long applicantId, boolean active);
 
     List<ProviderFavouriteEntity> findAllByActive(boolean active);
 }

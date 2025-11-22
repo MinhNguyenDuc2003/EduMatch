@@ -2,7 +2,9 @@ package com.minh.subscription.service.impl;
 
 import com.minh.constants.CoreMessageCode;
 import com.minh.exception.BusinessException;
+import com.minh.model.dto.subscription.MonthlyRevenueDto;
 import com.minh.model.dto.subscription.OrderDto;
+import com.minh.model.dto.subscription.RevenueByUserTypeDto;
 import com.minh.service.base.BaseService;
 import com.minh.subscription.data.entity.OrderEntity;
 import com.minh.subscription.data.entity.SubscriptionEntity;
@@ -179,5 +181,20 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         order = orderRepository.save(order);
 
         return orderMapper.toDto(order);
+    }
+
+    @Override
+    public List<MonthlyRevenueDto> getMonthlyRevenue() {
+        return orderRepository.getMonthlyRevenue();
+    }
+
+    @Override
+    public List<RevenueByUserTypeDto> getRevenueByUserType() {
+        return orderRepository.getRevenueByUserType();
+    }
+
+    @Override
+    public List<MonthlyRevenueDto> getRevenueByMonth() {
+        return orderRepository.getRevenueByMonth();
     }
 }
