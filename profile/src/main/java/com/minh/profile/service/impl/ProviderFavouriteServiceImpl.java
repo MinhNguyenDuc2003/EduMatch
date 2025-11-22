@@ -32,13 +32,17 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
     private ProviderFavouriteVo enrich(ProviderFavouriteEntity entity) {
         ProviderFavouriteVo vo = mapper.entityToVo(entity);
 
-        // set isFavourite
+        // isFavourite
         String currentProviderId = UaaContextHolder.getUserId();
-        vo.setIsFavourite(repository.existsByProviderIdAndUserId(currentProviderId, entity.getUserId()) ? 1 : 0);
+        vo.setIsFavourite(
+                repository.existsByProviderIdAndUserId(currentProviderId, entity.getUserId()) ? 1 : 0
+        );
 
-        // set applicantProfileVo
-        applicantProfileRepository.findByUserIdAndActive(String.valueOf(entity.getUserId()), true)
-                .ifPresent(applicant -> vo.setApplicantProfileVo(mapper.applicantEntityToVo(applicant)));
+        // applicantProfileVo
+        applicantProfileRepository.findByUserIdAndActive(entity.getUserId(), true)
+                .ifPresent(applicant ->
+                        vo.setApplicantProfileVo(mapper.applicantEntityToVo(applicant))
+                );
 
         return vo;
     }
@@ -55,7 +59,9 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
     @Override
     public ProviderFavouriteVo getById(Long id) {
         ProviderFavouriteEntity entity = repository.findById(id)
-                .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICANT_FAVOURITE_NOT_FOUND));
+                .orElseThrow(() ->
+                        new BusinessException(CoreMessageCode.APPLICANT_FAVOURITE_NOT_FOUND)
+                );
         return enrich(entity);
     }
 
@@ -79,7 +85,9 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
     @Transactional
     public ProviderFavouriteDto update(ProviderFavouriteDto dto) {
         ProviderFavouriteEntity entity = repository.findById(dto.getId())
-                .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICANT_FAVOURITE_NOT_FOUND));
+                .orElseThrow(() ->
+                        new BusinessException(CoreMessageCode.APPLICANT_FAVOURITE_NOT_FOUND)
+                );
 
         mapper.updateEntityFromDto(dto, entity);
         repository.save(entity);
@@ -91,14 +99,16 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
     @Transactional
     public void delete(Long id) {
         ProviderFavouriteEntity entity = repository.findById(id)
-                .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICANT_FAVOURITE_NOT_FOUND));
+                .orElseThrow(() ->
+                        new BusinessException(CoreMessageCode.APPLICANT_FAVOURITE_NOT_FOUND)
+                );
 
         entity.setActive(false);
         repository.save(entity);
     }
 
     @Override
-    public List<ProviderFavouriteVo> getByUserId(Long userId) {
+    public List<ProviderFavouriteVo> getByUserId(String userId) {
         return repository.findAllByUserIdAndActive(userId, true)
                 .stream()
                 .map(this::enrich)

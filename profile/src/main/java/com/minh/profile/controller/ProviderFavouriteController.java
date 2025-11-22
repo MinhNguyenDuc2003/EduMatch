@@ -32,7 +32,7 @@ public class ProviderFavouriteController {
 
     @Authorized
     @GetMapping("/user/{userId}")
-    public ApiResponse<List<ProviderFavouriteVo>> getByUserId(@PathVariable Long userId) {
+    public ApiResponse<List<ProviderFavouriteVo>> getByUserId(@PathVariable String userId) {
         return ApiResponse.ok(service.getByUserId(userId));
     }
 

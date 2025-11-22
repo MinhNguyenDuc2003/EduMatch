@@ -8,10 +8,16 @@ import java.util.List;
 public interface ProviderFavouriteService {
 
     List<ProviderFavouriteVo> getMyFavourite();
+
     ProviderFavouriteVo getById(Long id);
+
     ProviderFavouriteDto create(ProviderFavouriteDto dto);
+
     ProviderFavouriteDto update(ProviderFavouriteDto dto);
+
     void delete(Long id);
-    List<ProviderFavouriteVo> getByUserId(Long userId);
+
+    List<ProviderFavouriteVo> getByUserId(String userId);
+
     List<ProviderFavouriteVo> getAll();
 }

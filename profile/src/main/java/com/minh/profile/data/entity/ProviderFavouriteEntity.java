@@ -21,7 +21,7 @@ public class ProviderFavouriteEntity extends BaseEntity {
     private String providerId;
 
     @Column(name = "USER_ID", nullable = false)
-    private Long userId;
+    private String userId;
 
     @Column(name = "NOTE")
     private String note;
