@@ -16,48 +16,48 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProviderFavouriteController {
 
-    private final ProviderFavouriteService providerFavouriteService;
+    private final ProviderFavouriteService service;
 
     @Authorized
     @GetMapping("/my-favourite")
     public ApiResponse<List<ProviderFavouriteVo>> getMyFavourite() {
-        return ApiResponse.ok(providerFavouriteService.getMyFavourite());
-    }
-
-    @Authorized
-    @GetMapping
-    public ApiResponse<List<ProviderFavouriteVo>> getAll() {
-        return ApiResponse.ok(providerFavouriteService.getAll());
+        return ApiResponse.ok(service.getMyFavourite());
     }
 
     @Authorized
     @GetMapping("/{id}")
     public ApiResponse<ProviderFavouriteVo> getById(@PathVariable Long id) {
-        return ApiResponse.ok(providerFavouriteService.getById(id));
+        return ApiResponse.ok(service.getById(id));
     }
 
     @Authorized
-    @GetMapping("/applicant/{applicantId}")
-    public ApiResponse<List<ProviderFavouriteVo>> getByProviderId(@PathVariable Long applicantId) {
-        return ApiResponse.ok(providerFavouriteService.getByApplicantId(applicantId));
+    @GetMapping("/user/{userId}")
+    public ApiResponse<List<ProviderFavouriteVo>> getByUserId(@PathVariable Long userId) {
+        return ApiResponse.ok(service.getByUserId(userId));
+    }
+
+    @Authorized
+    @GetMapping
+    public ApiResponse<List<ProviderFavouriteVo>> getAll() {
+        return ApiResponse.ok(service.getAll());
     }
 
     @Authorized
     @PostMapping
     public ApiResponse<ProviderFavouriteDto> create(@RequestBody ProviderFavouriteDto dto) {
-        return ApiResponse.ok(providerFavouriteService.create(dto));
+        return ApiResponse.ok(service.create(dto));
     }
 
     @Authorized
     @PutMapping
     public ApiResponse<ProviderFavouriteDto> update(@RequestBody ProviderFavouriteDto dto) {
-        return ApiResponse.ok(providerFavouriteService.update(dto));
+        return ApiResponse.ok(service.update(dto));
     }
 
     @Authorized
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) {
-        providerFavouriteService.delete(id);
+        service.delete(id);
         return ApiResponse.ok();
     }
 }

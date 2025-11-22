@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.minh.model.dto.profile.ProviderFavouriteDto;
 import lombok.*;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.ALWAYS)
 @Getter
 @Setter
 @NoArgsConstructor

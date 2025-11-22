@@ -21,8 +21,6 @@ public interface ProviderFavouriteMapper extends BaseMapper<ProviderFavouriteEnt
 
     ProviderFavouriteVo entityToVo(ProviderFavouriteEntity entity);
 
-    ProviderProfileVo providerEntityToVo(ProviderProfileEntity entity);
-
     void updateEntityFromDto(ProviderFavouriteDto dto, @MappingTarget ProviderFavouriteEntity entity);
 
     ApplicantProfileVo applicantEntityToVo(ApplicantProfileEntity entity);

@@ -25,35 +25,28 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProviderFavouriteServiceImpl extends BaseService implements ProviderFavouriteService {
 
-    private final ProviderFavouriteRepository providerFavouriteRepository;
+    private final ProviderFavouriteRepository repository;
+    private final ProviderFavouriteMapper mapper;
     private final ApplicantProfileRepository applicantProfileRepository;
-    private final ProviderFavouriteMapper providerFavouriteMapper;
 
     private ProviderFavouriteVo enrich(ProviderFavouriteEntity entity) {
-        ProviderFavouriteVo vo = providerFavouriteMapper.entityToVo(entity);
+        ProviderFavouriteVo vo = mapper.entityToVo(entity);
 
-        ApplicantProfileEntity applicant =
-                applicantProfileRepository.findById(entity.getApplicantId()).orElse(null);
+        // set isFavourite
+        String currentProviderId = UaaContextHolder.getUserId();
+        vo.setIsFavourite(repository.existsByProviderIdAndUserId(currentProviderId, entity.getUserId()) ? 1 : 0);
 
-        if (applicant != null) {
-            vo.setApplicantProfileVo(providerFavouriteMapper.applicantEntityToVo(applicant));
-        }
-
-        String currentUserId = UaaContextHolder.getUserId();
-
-        boolean favourite =
-                providerFavouriteRepository.existsByUserIdAndApplicantId(currentUserId, entity.getApplicantId());
-
-        vo.setIsFavourite(favourite ? 1 : 0);
+        // set applicantProfileVo
+        applicantProfileRepository.findByUserIdAndActive(String.valueOf(entity.getUserId()), true)
+                .ifPresent(applicant -> vo.setApplicantProfileVo(mapper.applicantEntityToVo(applicant)));
 
         return vo;
     }
 
     @Override
     public List<ProviderFavouriteVo> getMyFavourite() {
-        String userId = UaaContextHolder.getUserId();
-
-        return providerFavouriteRepository.findAllByUserIdAndActive(userId, true)
+        String providerId = UaaContextHolder.getUserId();
+        return repository.findAllByProviderIdAndActive(providerId, true)
                 .stream()
                 .map(this::enrich)
                 .collect(Collectors.toList());
@@ -61,7 +54,7 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
 
     @Override
     public ProviderFavouriteVo getById(Long id) {
-        ProviderFavouriteEntity entity = providerFavouriteRepository.findById(id)
+        ProviderFavouriteEntity entity = repository.findById(id)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICANT_FAVOURITE_NOT_FOUND));
         return enrich(entity);
     }
@@ -69,63 +62,44 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
     @Override
     @Transactional
     public ProviderFavouriteDto create(ProviderFavouriteDto dto) {
+        String providerId = UaaContextHolder.getUserId();
+        dto.setProviderId(providerId);
 
-        String userId = UaaContextHolder.getUserId();
-        dto.setUserId(userId);
-
-        if (providerFavouriteRepository.existsByUserIdAndApplicantId(userId, dto.getApplicantId())) {
+        if (repository.existsByProviderIdAndUserId(providerId, dto.getUserId())) {
             throw new BusinessException(CoreMessageCode.APPLICANT_ALREADY_ADDED_TO_FAVOURITE);
         }
 
-        if (!applicantProfileRepository.existsById(dto.getApplicantId())) {
-            throw new BusinessException(CoreMessageCode.APPLICANT_NOT_FOUND);
-        }
+        ProviderFavouriteEntity entity = mapper.toEntity(dto);
+        repository.save(entity);
 
-        ProviderFavouriteEntity entity = providerFavouriteMapper.toEntity(dto);
-        providerFavouriteRepository.save(entity);
-
-        return providerFavouriteMapper.entityToVo(entity);
+        return mapper.toDto(entity);
     }
 
     @Override
     @Transactional
     public ProviderFavouriteDto update(ProviderFavouriteDto dto) {
-
-        ProviderFavouriteEntity entity = providerFavouriteRepository.findById(dto.getId())
+        ProviderFavouriteEntity entity = repository.findById(dto.getId())
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICANT_FAVOURITE_NOT_FOUND));
 
+        mapper.updateEntityFromDto(dto, entity);
+        repository.save(entity);
 
-        Long applicantId = dto.getApplicantId();
-
-        if (!applicantProfileRepository.existsById(applicantId)) {
-            throw new BusinessException(CoreMessageCode.APPLICANT_NOT_FOUND);
-        }
-
-        providerFavouriteMapper.updateEntityFromDto(dto, entity);
-        providerFavouriteRepository.save(entity);
-
-        return providerFavouriteMapper.entityToVo(entity);
+        return mapper.toDto(entity);
     }
-
 
     @Override
     @Transactional
     public void delete(Long id) {
-        ProviderFavouriteEntity entity = providerFavouriteRepository.findById(id)
+        ProviderFavouriteEntity entity = repository.findById(id)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICANT_FAVOURITE_NOT_FOUND));
 
         entity.setActive(false);
-        providerFavouriteRepository.save(entity);
+        repository.save(entity);
     }
 
     @Override
-    public List<ProviderFavouriteVo> getByApplicantId(Long applicantId) {
-
-        if (!applicantProfileRepository.existsById(applicantId)) {
-            throw new BusinessException(CoreMessageCode.APPLICANT_NOT_FOUND);
-        }
-
-        return providerFavouriteRepository.findAllByApplicantIdAndActive(applicantId, true)
+    public List<ProviderFavouriteVo> getByUserId(Long userId) {
+        return repository.findAllByUserIdAndActive(userId, true)
                 .stream()
                 .map(this::enrich)
                 .collect(Collectors.toList());
@@ -133,7 +107,7 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
 
     @Override
     public List<ProviderFavouriteVo> getAll() {
-        return providerFavouriteRepository.findAllByActive(true)
+        return repository.findAllByActive(true)
                 .stream()
                 .map(this::enrich)
                 .collect(Collectors.toList());

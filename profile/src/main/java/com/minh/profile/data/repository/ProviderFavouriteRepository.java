@@ -9,11 +9,11 @@ import java.util.List;
 @Repository
 public interface ProviderFavouriteRepository extends JpaRepository<ProviderFavouriteEntity, Long> {
 
-    List<ProviderFavouriteEntity> findAllByUserIdAndActive(String userId, boolean active);
+    boolean existsByProviderIdAndUserId(String providerId, Long userId);
 
-    boolean existsByUserIdAndApplicantId(String userId, Long applicantId);
+    List<ProviderFavouriteEntity> findAllByProviderIdAndActive(String providerId, Boolean active);
 
-    List<ProviderFavouriteEntity> findAllByApplicantIdAndActive(Long applicantId, boolean active);
+    List<ProviderFavouriteEntity> findAllByUserIdAndActive(Long userId, Boolean active);
 
-    List<ProviderFavouriteEntity> findAllByActive(boolean active);
+    List<ProviderFavouriteEntity> findAllByActive(Boolean active);
 }
