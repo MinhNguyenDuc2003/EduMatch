@@ -32,14 +32,14 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
     private ProviderFavouriteVo enrich(ProviderFavouriteEntity entity) {
         ProviderFavouriteVo vo = mapper.entityToVo(entity);
 
-        // isFavourite
         String currentProviderId = UaaContextHolder.getUserId();
         vo.setIsFavourite(
                 repository.existsByProviderIdAndUserId(currentProviderId, entity.getUserId()) ? 1 : 0
         );
 
-        // applicantProfileVo
-        applicantProfileRepository.findByUserIdAndActive(entity.getUserId(), true)
+        Long applicantId = Long.parseLong(entity.getUserId());
+
+        applicantProfileRepository.findByIdAndActive(applicantId, true)
                 .ifPresent(applicant ->
                         vo.setApplicantProfileVo(mapper.applicantEntityToVo(applicant))
                 );
