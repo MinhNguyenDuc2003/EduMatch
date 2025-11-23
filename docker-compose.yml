@@ -165,7 +165,7 @@ services:
   ai-match:
     image: registry.edumatch.space/edumatch/ai-match:1.0.0
     volumes:
-      - .ai-match/app:/app/app
+      - ./ai-match/app:/app/app
   backoffice-nextjs:
     image: registry.edumatch.space/edumatch/backoffice-nextjs:1.0.0
     networks:
