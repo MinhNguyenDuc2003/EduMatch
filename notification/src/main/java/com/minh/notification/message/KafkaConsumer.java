@@ -82,27 +82,20 @@ public class KafkaConsumer extends BaseService {
 
     @KafkaListener(topics = "${kafka.application.update-status.topic}", groupId = "${kafka.application.update-status.group}", containerFactory = "kafkaListenerContainerFactory")
     public void receiveUpdateEventApplication(byte[] message) throws JsonProcessingException {
-        String messageStr = new String(message);
-        NotificationVo notificationVo = objectMapper.readValue(messageStr, NotificationVo.class);
-        ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder();
-        ThreadFactory threadFactory = threadFactoryBuilder.build();
-        Thread thread = threadFactory.newThread(() -> {
-            UserNotificationDto notification = UserNotificationDto.builder()
-                    .referenceId(notificationVo.getReferenceId())
-                    .referenceType(notificationVo.getReferenceType())
-                    .isRead(false)
-                    .content(notificationVo.getContent())
-                    .slug(notificationVo.getSlug())
-                    .notificationId(notificationVo.getUserNotificationId())
-                    .userId(notificationVo.getUserId()).build();
-            userNotificationService.createOne(notification);
-            notificationWebSocketHandler.sendToUser(notificationVo.getUserId(), notificationVo);
-        });
-        thread.start();
+        sendNotificationToUser(message);
     }
 
     @KafkaListener(topics = "${kafka.provider.application.topic}", groupId = "${kafka.provider.application.group}", containerFactory = "kafkaListenerContainerFactory")
     public void receiveNewApplicationScholarship(byte[] message) throws JsonProcessingException {
+        sendNotificationToUser(message);
+    }
+
+    @KafkaListener(topics = "${kafka.scholarship.referral-event.topic}", groupId = "${kafka.scholarship.referral-event.group}", containerFactory = "kafkaListenerContainerFactory")
+    public void receiveReferralApplicationScholarship(byte[] message) throws JsonProcessingException {
+        sendNotificationToUser(message);
+    }
+
+    private void sendNotificationToUser(byte[] message) throws JsonProcessingException {
         String messageStr = new String(message);
         NotificationVo notificationVo = objectMapper.readValue(messageStr, NotificationVo.class);
         ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder();

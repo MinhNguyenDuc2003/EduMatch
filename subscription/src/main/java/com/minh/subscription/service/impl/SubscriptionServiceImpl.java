@@ -22,6 +22,7 @@ import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +37,9 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
     private final SubscriptionPlanRepository subscriptionPlanRepository;
     private final MediaFeign mediaFeign;
     private final CustomerFeign customerFeign;
+
+    @Value("${fe.end-point}")
+    private String feEndPoint;
 
     @Override
     public List<SubscriptionDto> getAll() {
@@ -116,11 +120,10 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
         mailDto.setTemplateId(templateDto.getId());
         entities.forEach(entity -> {
             CustomerVo customer = this.parseResponse(customerFeign.getSimpleCustomerById(entity.getUserId()));
-            String body = templateDto.getBody().replace("{{link}}", "http://159.89.200.244/edufront/home")
+            String body = templateDto.getBody().replace("{{link}}", feEndPoint + "/applicant/subscription")
                     .replace("{{expireDate}}", DateTimeUtils.format(entity.getEndDate(), "dd/MM/yyyy"));
             mailDto.setBody(body);
-//            mailDto.setTo(customer.getCustomer().email());
-            mailDto.setTo("ducm40877@gmail.com");
+            mailDto.setTo(customer.getCustomer().email());
             mediaFeign.sendMail(mailDto);
         });
         return true;

@@ -28,5 +28,6 @@ public class ApplicationScholarshipVo extends ApplicationScholarshipDto {
 
     private ApplicationVo applicationVo;
     private ScholarshipVo scholarshipVo;
+    private Double score;
 
 }

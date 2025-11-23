@@ -5,9 +5,9 @@ app:
   db:
     schema: profile
     port: '${env.db.port:5432}'
-    endpoint: '${env.db.endpoint:localhost}'
-    database: '${env.db.database:postgres}'
-    username: '${env.db.username:postgres}'
+    endpoint: '${env.db.endpoint:160.30.113.224}'
+    database: '${env.db.database:profile}'
+    username: '${env.db.username:admin}'
     password: '${env.db.password:minh01672527656}'
     pool:
       minimum: '${env.db.pool.minimum:2}'
@@ -176,6 +176,9 @@ kafka:
     new-event:
       topic: ${app.environment:local}.scholarship.new-event
       group: ${app.environment:local}.scholarship.new-event.group
+    referral-event:
+      topic: ${app.environment:local}.scholarship.referral-event
+      group: ${app.environment:local}.scholarship.referral-event.group
   news:
     new-event:
       topic: ${app.environment:local}.news.new-event
@@ -188,3 +191,6 @@ kafka:
     send-mail:
       topic: ${app.environment:local}.system.mail
       group: ${app.environment:local}.system.mail.group
+
+fe:
+  end-point: ${env.fe.url:http://159.89.200.244/edufront}

@@ -26,6 +26,7 @@ import com.minh.utils.UaaContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,6 +62,8 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
 
     @Autowired
     private MediaFeign mediaFeign;
+    @Value("${fe.end-point}")
+    private String feEndPoint;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -226,7 +229,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
         entity.setVerified(verified);
         if (verified) {
             MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.PROVIDER_VERIFIED.getCode()));
-            String body = templateDto.getBody().replace("{{link}}", "http://159.89.200.244/edufront/home");
+            String body = templateDto.getBody().replace("{{link}}", feEndPoint + "/applicant/providers/" + entity.getId());
 
             MailDto mailDto = new MailDto();
             mailDto.setBody(body);

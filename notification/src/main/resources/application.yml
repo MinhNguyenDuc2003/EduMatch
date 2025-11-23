@@ -171,6 +171,9 @@ kafka:
     new-event:
       topic: ${app.environment:local}.scholarship.new-event
       group: ${app.environment:local}.scholarship.new-event.group
+    referral-event:
+      topic: ${app.environment:local}.scholarship.referral-event
+      group: ${app.environment:local}.scholarship.referral-event.group
   news:
     new-event:
       topic: ${app.environment:local}.news.new-event

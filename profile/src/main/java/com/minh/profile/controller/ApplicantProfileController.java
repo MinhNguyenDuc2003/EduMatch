@@ -27,7 +27,6 @@ public class ApplicantProfileController {
         return ApiResponse.ok(profileService.create(profile));
     }
 
-    @Authorized
     @GetMapping("/{id}")
     public ApiResponse<ApplicantProfileVo> getOne(@PathVariable Long id) {
         return ApiResponse.ok(profileService.getOne(id));
@@ -39,7 +38,6 @@ public class ApplicantProfileController {
         return ApiResponse.ok(profileService.update(profile));
     }
 
-    @Authorized
     @GetMapping("/user")
     public ApiResponse<ApplicantProfileVo> getOneByUserId(@RequestParam String userId) {
         return ApiResponse.ok(profileService.getOneByUserId(userId));

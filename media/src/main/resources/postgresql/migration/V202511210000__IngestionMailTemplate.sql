@@ -737,10 +737,6 @@ VALUES ('APPLICATION_SUBMITTED',
                                     <td style="padding: 16px;">
                                         <table width="100%" cellpadding="0" cellspacing="0">
                                             <tr>
-                                                <td width="80" valign="top">
-                                                    <img src="#image" alt="University"
-                                                        style="width: 80px; height: 80px; border-radius: 8px; object-fit: contain; background-color: #ffffff; padding: 8px; border: 1px solid #f3f4f6;" />
-                                                </td>
                                                 <td style="padding-left: 16px;">
                                                     <a href="{{link}}" target="_blank" style="text-decoration: none; color: inherit; display: block;">
                                                         <div style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 4px;">

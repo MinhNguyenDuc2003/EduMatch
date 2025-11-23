@@ -2,12 +2,13 @@ package com.minh.profile.service;
 
 import com.minh.model.dto.profile.ProviderFavouriteDto;
 import com.minh.profile.data.vo.ProviderFavouriteVo;
+import com.minh.profile.data.vo.ReferralRequestVo;
 
 import java.util.List;
 
 public interface ProviderFavouriteService {
 
-    List<ProviderFavouriteVo> getMyFavourite();
+    ProviderFavouriteVo getMyFavourite();
 
     ProviderFavouriteVo getById(Long id);
 
@@ -17,7 +18,8 @@ public interface ProviderFavouriteService {
 
     void delete(Long id);
 
-    List<ProviderFavouriteVo> getAll();
+    Boolean sendOneRefer(String userId, Long scholarshipId);
 
-    List<ProviderFavouriteVo> getByApplicantId(Long applicantId);
+    Boolean sendAllRefer(ReferralRequestVo referralRequestVo);
+
 }

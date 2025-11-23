@@ -5,9 +5,9 @@ app:
   db:
     schema: scholarship
     port: '${env.db.port:5432}'
-    endpoint: '${env.db.endpoint:localhost}'
-    database: '${env.db.database:postgres}'
-    username: '${env.db.username:postgres}'
+    endpoint: '${env.db.endpoint:160.30.113.224}'
+    database: '${env.db.database:scholarship}'
+    username: '${env.db.username:admin}'
     password: '${env.db.password:minh01672527656}'
     pool:
       minimum: '${env.db.pool.minimum:2}'
@@ -205,3 +205,9 @@ quartz-job:
     name: 'scholarship-suggestion'
     group: 'scholarship'
     expression: '0 0 12 * * ?'
+
+ai:
+  end-point: ${env.ai.url:http://localhost:8000}
+
+fe:
+  end-point: ${env.fe.url:http://159.89.200.244/edufront}

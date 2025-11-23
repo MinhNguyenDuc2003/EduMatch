@@ -6,6 +6,8 @@ import com.minh.enumeration.notification.NotificationReferenceEnum;
 import com.minh.enumeration.notification.NotificationTemplateEnum;
 import com.minh.enumeration.notification.NotificationTopicEnum;
 import com.minh.exception.BusinessException;
+import com.minh.model.dto.ai.AiRequestDto;
+import com.minh.model.dto.ai.ScholarshipRecommendationResponseDto;
 import com.minh.model.dto.media.MailDto;
 import com.minh.model.dto.media.MailTemplateDto;
 import com.minh.model.dto.notification.NotificationTemplateDto;
@@ -16,6 +18,7 @@ import com.minh.scholarship.data.repository.ApplicationScholarshipRepository;
 import com.minh.scholarship.data.repository.ScholarshipRepository;
 import com.minh.scholarship.data.repository.ScholarshipViewRepository;
 import com.minh.scholarship.data.vo.*;
+import com.minh.scholarship.feign.AiMatchFeign;
 import com.minh.scholarship.feign.MediaFeign;
 import com.minh.scholarship.feign.NotificationTemplateFeign;
 import com.minh.scholarship.feign.ProviderProfileFeign;
@@ -49,6 +52,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     private final ScholarshipRepository scholarshipRepository;
     private final ApplicationScholarshipRepository applicationScholarshipRepository;
     private final ScholarshipViewRepository scholarshipViewRepository;
+    private final AiMatchFeign aiMatchFeign;
 
     @Autowired
     private KafkaProducer kafkaProducer;
@@ -57,6 +61,8 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
 
     @Value("${kafka.mail.send-mail.topic}")
     private String mailTopic;
+    @Value("${fe.end-point}")
+    private String feEndPoint;
 
     @Value("${kafka.application.update-status.topic}")
     private String newEventApplicationTopic;
@@ -118,6 +124,9 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
                 .userNotificationId(notificationTemplateDto.getId())
                 .build();
         kafkaProducer.convertToByteAndSend(newEventProviderTopic, notificationVo);
+
+        scholarshipService.sendMailSubmittedApplication(dto);
+
         return mapper.toDto(saved);
     }
 
@@ -155,12 +164,13 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
             String body = templateDto.getBody().replace("{{scholarshipName}}", scholarshipVo.getTitle())
                     .replace("{{UniversityName}}", scholarshipVo.getUniversity())
                     .replace("{{status}}", dto.getStatus())
-                    .replace("{{link}}", "");
+                    .replace("{{link}}", feEndPoint + "/applicant/activity?tab=applied");
             MailDto mailDto = new MailDto();
             mailDto.setBody(body);
             mailDto.setTo(application.getEmail());
             mailDto.setSubject(templateDto.getSubject());
             mailDto.setTemplateId(templateDto.getId());
+            kafkaProducer.convertToByteAndSend(mailTopic, mailDto);
         }
         mapper.updateEntityFromDto(dto, exist);
         ApplicationScholarshipEntity saved = repository.save(exist);
@@ -222,7 +232,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
         }
         for (ApplicationVo applicationVo : allMyApplication) {
             List<ApplicationScholarshipVo> allByApplicationId = this.getAllByApplicationId(applicationVo.getId());
-            if(ObjectUtils.isNotEmpty(allByApplicationId)) {
+            if (ObjectUtils.isNotEmpty(allByApplicationId)) {
                 vos.addAll(allByApplicationId);
             }
         }
@@ -261,5 +271,34 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
         Long totalViews = scholarshipViewRepository.countAllViews();
 
         return new ScholarshipDashboardVo(totalScholarship, totalApplicationByStatus, totalViews);
+    }
+
+    @Override
+    public List<ApplicationScholarshipVo> getRankApplication(Long scholarshipId, Integer topK) {
+        AiRequestDto requestDto = new AiRequestDto();
+        requestDto.setScholarshipId(scholarshipId);
+        requestDto.setTopK(topK);
+
+        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRankApplicationForScholarship(requestDto);
+        List<ApplicationScholarshipVo> result = new ArrayList<>();
+        if (ObjectUtils.isEmpty(recommendationScholarship.getResults())) {
+            return null;
+        }
+        recommendationScholarship.getResults().forEach(item -> {
+            ApplicationScholarshipVo vo = this.getByScholarshipIdAndApplicationId(scholarshipId, item.getApplication());
+            vo.setScore(item.getSimilarityScore());
+            result.add(vo);
+        });
+        return result;
+    }
+
+    @Override
+    public ApplicationScholarshipVo getByScholarshipIdAndApplicationId(Long scholarshipId, Long applicationId) {
+        ApplicationScholarshipEntity entity = repository.findAllByScholarshipIdAndApplicationId(scholarshipId, applicationId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICATION_SCHOLARSHIP_NOT_FOUND));
+        ApplicationScholarshipVo vo = mapper.entityToVo(entity);
+        vo.setApplicationVo(applicationService.getById(vo.getApplicationId()));
+        vo.setScholarshipVo(scholarshipService.getById(vo.getScholarshipId()));
+        return vo;
     }
 }

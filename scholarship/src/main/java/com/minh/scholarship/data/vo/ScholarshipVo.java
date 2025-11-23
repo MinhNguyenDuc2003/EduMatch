@@ -27,5 +27,6 @@ public class ScholarshipVo extends ScholarshipDto {
     private List<ApplicationAttributeDto> applicationAttributes;
     private int isFollow;
     private int views;
+    private Double score;
 
 }
