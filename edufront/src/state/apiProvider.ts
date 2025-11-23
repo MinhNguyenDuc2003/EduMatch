@@ -244,6 +244,13 @@ export const apiProvider = createApi({
       }),
       providesTags: ['News'],
     }),
+
+    getStatistics: build.query<Statistics, void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.APPLICATION}/statistics`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -274,4 +281,5 @@ export const {
   useUploadNewsImagesMutation,
   useDeleteNewsImageMutation,
   useGetAllNewsQuery,
+  useGetStatisticsQuery,
 } = apiProvider;

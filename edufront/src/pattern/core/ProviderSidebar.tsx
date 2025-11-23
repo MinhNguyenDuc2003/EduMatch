@@ -19,7 +19,6 @@ import {
   Settings,
   ChevronRight,
   User,
-  HelpCircle,
   Newspaper,
   Home,
   ArrowBigUp,
