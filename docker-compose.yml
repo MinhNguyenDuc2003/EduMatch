@@ -168,6 +168,8 @@ services:
       - ./ai-match/app:/app/app
     env_file:
       - ./ai-match/.env
+    networks:
+      - m-network
   backoffice-nextjs:
     image: registry.edumatch.space/edumatch/backoffice-nextjs:1.0.0
     networks:
