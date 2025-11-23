@@ -336,6 +336,7 @@
       "applied": "applied",
       "availableFilters": "Available Filters",
       "studyLevel": "Study Level",
+      "university": "University",
       "allLevels": "All Levels",
       "country": "Country",
       "allCountries": "All Countries",
@@ -347,7 +348,10 @@
       "above2": "Above 2.0",
       "above3": "Above 3.0",
       "min": "Min",
-      "max": "Max"
+      "max": "Max",
+      "noUniversitiesFound": "No universities found",
+      "searching": "Searching...",
+      "closeFilters": "Close filters"
     },
     "scholarshipCard": {
       "organizationLogo": "Organization logo",

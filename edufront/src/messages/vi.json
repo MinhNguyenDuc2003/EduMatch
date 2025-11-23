@@ -336,6 +336,7 @@
       "applied": "đã áp dụng",
       "availableFilters": "Bộ lọc có sẵn",
       "studyLevel": "Trình độ học vấn",
+      "university": "Trường đại học",
       "allLevels": "Tất cả",
       "country": "Quốc gia",
       "allCountries": "Tất cả quốc gia",
@@ -347,7 +348,10 @@
       "above2": "Trên 2.0",
       "above3": "Trên 3.0",
       "min": "Tối thiểu",
-      "max": "Tối đa"
+      "max": "Tối đa",
+      "noUniversitiesFound": "Không tìm thấy trường đại học nào",
+      "searching": "Đang tìm kiếm...",
+      "closeFilters": "Đóng bộ lọc"
     },
     "scholarshipCard": {
       "organizationLogo": "Logo tổ chức",

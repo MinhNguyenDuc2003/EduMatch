@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FilterSidebar, ScholarshipCard, RightSidebar, PremiumBanner } from './components';
 import ScholarshipCardSkeleton from './components/ScholarshipCardSkeleton';
 import { Filter } from 'lucide-react';
@@ -14,6 +14,7 @@ import { useFollowProviderMutation, useUnfollowProviderMutation } from '@/state/
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { useDebounce } from '@/utils/useDebounce';
 
 export default function ScholarshipsList() {
   const { isAuthenticated } = useAuth();
@@ -21,16 +22,24 @@ export default function ScholarshipsList() {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const t = useTranslations('scholarshipsList');
 
+  const [keywordInput, setKeywordInput] = useState('');
+  const debouncedKeyword = useDebounce(keywordInput, 500);
+
   const [filters, setFilters] = useState<FilterState>({
     keyword: '',
     country: '',
     studyLevel: '',
     scholarshipType: '',
+    university: '',
     minGpa: 0,
     maxGpa: 4,
     page: 0,
     size: 100,
   });
+
+  useEffect(() => {
+    setFilters((prev) => ({ ...prev, keyword: debouncedKeyword || '', page: 0 }));
+  }, [debouncedKeyword]);
 
   // Prepare API request body
   const requestBody: ScholarshipSearchRequest = {
@@ -38,6 +47,7 @@ export default function ScholarshipsList() {
       studyLevel: filters.studyLevel || '',
       country: filters.country || '',
       scholarshipType: filters.scholarshipType || '',
+      university: filters.university || '',
     },
     page: filters.page,
     size: filters.size,
@@ -131,8 +141,8 @@ export default function ScholarshipsList() {
           <div className="flex-1">
             <SearchBar
               placeholder={t('searchPlaceholder')}
-              value={filters.keyword}
-              onChange={(value) => setFilters({ ...filters, keyword: value, page: 0 })}
+              value={keywordInput}
+              onChange={setKeywordInput}
               inputClassName="h-11 rounded-full bg-gray-50"
             />
           </div>
@@ -169,7 +179,6 @@ export default function ScholarshipsList() {
               <FilterSidebar
                 filters={filters}
                 setFilters={setFilters}
-                scholarships={scholarships}
                 aggregations={aggregations}
                 onClose={() => setIsMobileFilterOpen(false)}
                 isMobile={true}
@@ -188,7 +197,6 @@ export default function ScholarshipsList() {
               <FilterSidebar
                 filters={filters}
                 setFilters={setFilters}
-                scholarships={scholarships}
                 aggregations={aggregations}
                 isMobile={false}
               />
@@ -203,8 +211,8 @@ export default function ScholarshipsList() {
               <div className="mb-4">
                 <SearchBar
                   placeholder={t('searchPlaceholder')}
-                  value={filters.keyword}
-                  onChange={(value) => setFilters({ ...filters, keyword: value, page: 0 })}
+                  value={keywordInput}
+                  onChange={setKeywordInput}
                 />
               </div>
 

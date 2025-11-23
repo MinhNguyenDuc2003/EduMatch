@@ -71,21 +71,12 @@ export default function AggregationFilters({
                 onClick={() => handleFilterClick('country', country)}
                 className={`group flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all hover:shadow-md ${
                   filters.country === country
-                    ? 'bg-[#3d6cb9] text-white shadow-md'
-                    : 'bg-white text-gray-700 hover:bg-blue-100 border border-gray-200'
+                    ? 'bg-[#3d6cb9] text-white hover:bg-blue-800'
+                    : 'bg-gray-100 hover:bg-blue-100 border-transparent'
                 }`}
               >
                 <span>{country}</span>
-                <Badge
-                  variant="outline"
-                  className={`text-xs px-1.5 py-0 min-w-[24px] ${
-                    filters.country === country
-                      ? ' text-white border-white/30'
-                      : 'bg-gray-100 text-gray-600 border-gray-300'
-                  }`}
-                >
-                  {count}
-                </Badge>
+                <span className="text-xs p-1 rounded-full bg-white text-gray-700">{count}</span>
               </button>
             ))}
           </div>
@@ -105,21 +96,12 @@ export default function AggregationFilters({
                 onClick={() => handleFilterClick('studyLevel', level)}
                 className={`group flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all hover:shadow-md ${
                   filters.studyLevel === level
-                    ? 'bg-[#3d6cb9] text-white shadow-md'
-                    : 'bg-white text-gray-700 hover:bg-indigo-100 border border-gray-200'
+                    ? 'bg-[#3d6cb9] hover:bg-blue-800'
+                    : 'bg-gray-100 hover:bg-blue-100 border-transparent'
                 }`}
               >
                 <span>{level}</span>
-                <Badge
-                  variant="outline"
-                  className={`text-xs px-1.5 py-0 min-w-[24px] ${
-                    filters.studyLevel === level
-                      ? ' text-white border-white/30'
-                      : 'bg-gray-100 text-gray-600 border-gray-300'
-                  }`}
-                >
-                  {count}
-                </Badge>
+                <span className="text-xs p-1 rounded-full bg-white text-gray-700">{count}</span>
               </button>
             ))}
           </div>

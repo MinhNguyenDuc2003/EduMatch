@@ -95,6 +95,7 @@ declare global {
     country: string;
     studyLevel: string;
     scholarshipType: string;
+    university: string;
     minGpa: number;
     maxGpa: number;
     page: number;

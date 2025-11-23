@@ -3,11 +3,14 @@ import { X } from 'lucide-react';
 import { COUNTRIES, SCHOLARSHIP_TYPES, STUDY_LEVELS } from '@/constants/Common';
 import { useTranslations } from 'next-intl';
 import AggregationFilters from './AggregationFilters';
+import { useSearchScholarshipsByUniversityQuery } from '@/state/apiScholarship';
+import SearchBar from '@/pattern/share/SearchBar';
+import { useState, useEffect } from 'react';
+import { useDebounce } from '@/lib/cus/multi-select';
 
 type FilterSidebarProps = {
   filters: FilterState;
   setFilters: (filters: FilterState) => void;
-  scholarships?: Scholarship[];
   aggregations?: ScholarshipSearchAggregations;
   isMobile?: boolean;
   onClose?: () => void;
@@ -20,12 +23,27 @@ const SCHOLARSHIP_TYPE_OPTIONS = SCHOLARSHIP_TYPES.map((item) => item.value);
 export default function FilterSidebar({
   filters,
   setFilters,
-  scholarships,
   aggregations,
   isMobile = false,
   onClose,
 }: FilterSidebarProps) {
   const t = useTranslations('scholarshipsList.filters');
+  const [universitySearch, setUniversitySearch] = useState('');
+  const debouncedSearch = useDebounce(universitySearch, 500);
+
+  const { data: universities, isLoading: isLoadingUniversities } =
+    useSearchScholarshipsByUniversityQuery(debouncedSearch, {
+      skip: !debouncedSearch || debouncedSearch.length < 2,
+    });
+
+  useEffect(() => {
+    if (universitySearch.length === 0 && filters.university) {
+      setFilters({ ...filters, university: '', page: 0 });
+    } else if (universities?.length === 1) {
+      setFilters({ ...filters, university: universities[0].university, page: 0 });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [universitySearch, universities]);
 
   const handleFilterChange = (field: keyof FilterState, value: string) => {
     setFilters({
@@ -41,11 +59,13 @@ export default function FilterSidebar({
       country: '',
       studyLevel: '',
       scholarshipType: '',
+      university: '',
       minGpa: 0,
       maxGpa: 4,
       page: 0,
       size: 100,
     });
+    setUniversitySearch('');
   };
 
   const activeFiltersCount =
@@ -54,6 +74,9 @@ export default function FilterSidebar({
     (filters.studyLevel ? 1 : 0) +
     (filters.minGpa > 0 ? 1 : 0) +
     (filters.maxGpa < 4 ? 1 : 0);
+
+  const showResults = universitySearch.length >= 2 && !isLoadingUniversities;
+  const showLoading = universitySearch.length >= 2 && isLoadingUniversities;
 
   return (
     <div
@@ -94,6 +117,56 @@ export default function FilterSidebar({
           setFilters={setFilters}
           keyword={filters.keyword}
         />
+
+        {/* University Filter */}
+        <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+          <h3 className="text-sm font-semibold text-gray-900">
+            {t('university')} {filters.university && '(1)'}
+          </h3>
+
+          <SearchBar
+            value={universitySearch}
+            onChange={(value) => setUniversitySearch(value)}
+            placeholder={t('university')}
+          />
+
+          {/* Loading indicator */}
+          {showLoading && (
+            <div className="flex items-center justify-center py-3">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+              <span className="ml-2 text-sm text-gray-500">{t('searching') || 'Searching...'}</span>
+            </div>
+          )}
+
+          {/* University Search Results */}
+          {showResults && universities && universities.length > 0 && (
+            <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
+              {universities.map((university) => {
+                const isSelected = filters.university === university.university;
+                return (
+                  <button
+                    key={university.id}
+                    onClick={() => handleFilterChange('university', university.university)}
+                    className={`rounded-full px-3 py-1 text-sm font-medium transition-colors border ${
+                      isSelected
+                        ? 'bg-[#3d6cb9] text-white hover:bg-blue-800'
+                        : 'bg-gray-100 hover:bg-blue-100 border-transparent'
+                    }`}
+                  >
+                    {university.university}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {/* No results message */}
+          {showResults && (!universities || universities.length === 0) && (
+            <p className="text-sm text-gray-500 text-center py-2">
+              {t('noUniversitiesFound') || 'No universities found'}
+            </p>
+          )}
+        </div>
 
         {/* Study Level Filter */}
         <div className="border border-gray-200 rounded-lg p-4 space-y-3">
