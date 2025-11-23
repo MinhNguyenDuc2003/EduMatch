@@ -11,6 +11,7 @@ const API_ENDPOINTS = {
   GET_PROVIDER_BY_ID: '/api/profile/providers',
   APPLICATION: '/api/scholarship/applications-scholarship',
   NEWS: '/api/profile/provider-new',
+  VERIFY_PROVIDERS_EMAIL: '/api/profile/providers/verify',
 } as const;
 
 export const apiProvider = createApi({
@@ -29,6 +30,22 @@ export const apiProvider = createApi({
         url: API_ENDPOINTS.PROVIDER_PROFILE,
         method: 'POST',
         body: formData,
+      }),
+    }),
+
+    sendVerificationEmail: build.query<boolean, { email: string }>({
+      query: ({ email }) => ({
+        url: `${API_ENDPOINTS.VERIFY_PROVIDERS_EMAIL}/mail`,
+        method: 'GET',
+        params: { email },
+      }),
+    }),
+
+    verifyProvidersEmailCode: build.query<boolean, { code: string }>({
+      query: ({ code }) => ({
+        url: `${API_ENDPOINTS.VERIFY_PROVIDERS_EMAIL}/code`,
+        method: 'GET',
+        params: { code },
       }),
     }),
 
@@ -234,6 +251,8 @@ export const {
   useGetProfileQuery,
   useCreateProfileMutation,
   useUpdateProfileMutation,
+  useLazySendVerificationEmailQuery,
+  useLazyVerifyProvidersEmailCodeQuery,
   useGetScholarshipsQuery,
   useCreateScholarshipMutation,
   useGetScholarshipsByIdQuery,
