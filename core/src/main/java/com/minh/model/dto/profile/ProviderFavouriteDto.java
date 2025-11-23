@@ -13,9 +13,9 @@ public class ProviderFavouriteDto extends BaseDto {
 
     private Long id;
 
-    private String providerId;
-
     private String userId;
+
+    private Long providerId;
 
     private String note;
 }

@@ -6,10 +6,12 @@ import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
 import com.minh.model.dto.scholarship.ScholarshipViewDto;
+import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.aspect.Authorized;
+import com.minh.utils.UaaContextHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -33,6 +35,24 @@ public class ScholarshipController {
     @GetMapping("/{id}")
     public ApiResponse<ScholarshipVo> getById(@PathVariable Long id) {
         return ApiResponse.ok(scholarshipService.getById(id));
+    }
+
+    @Authorized
+    @GetMapping("/recommendation")
+    public ApiResponse<List<ScholarshipVo>> getRecommendationScholarship(@RequestParam Integer topK) {
+        String userId = UaaContextHolder.getUserId();
+        return ApiResponse.ok(scholarshipService.getRecommendationScholarship(userId, topK));
+    }
+
+    @GetMapping("/recommendation/applicant")
+    public ApiResponse<List<ApplicantProfileVo>> getRecommendationApplicantForScholarship(@RequestParam Long scholarshipId, @RequestParam Integer topK) {
+        return ApiResponse.ok(scholarshipService.getRecommendationApplicantForScholarship(scholarshipId, topK));
+    }
+
+    @Authorized
+    @GetMapping("/analyze")
+    public ApiResponse<String> getAnalyzeResponse(@RequestParam Long scholarshipId) {
+        return ApiResponse.ok(scholarshipService.getAnalyzeResponse(scholarshipId));
     }
 
     @PostMapping("/ids")
@@ -149,4 +169,10 @@ public class ScholarshipController {
     public ApiResponse<List<ScholarshipViewDto>> getTopScholarshipViews() {
         return ApiResponse.ok(scholarshipService.getTopScholarshipViews());
     }
+
+    @GetMapping("/suggestion/mail")
+    public ApiResponse<Boolean> sendMailSuggestion() {
+        return ApiResponse.ok(scholarshipService.sendMailSuggestion());
+    }
+
 }

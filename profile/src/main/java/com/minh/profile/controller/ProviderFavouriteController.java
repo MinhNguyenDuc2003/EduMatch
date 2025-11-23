@@ -4,6 +4,7 @@ import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.profile.ProviderFavouriteDto;
 import com.minh.profile.data.vo.ProviderFavouriteVo;
+import com.minh.profile.data.vo.ReferralRequestVo;
 import com.minh.profile.service.ProviderFavouriteService;
 import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
@@ -20,26 +21,26 @@ public class ProviderFavouriteController {
 
     @Authorized
     @GetMapping("/my-favourite")
-    public ApiResponse<List<ProviderFavouriteVo>> getMyFavourite() {
+    public ApiResponse<ProviderFavouriteVo> getMyFavourite() {
         return ApiResponse.ok(service.getMyFavourite());
+    }
+
+    @Authorized
+    @GetMapping("/refer/{scholarshipId}")
+    public ApiResponse<Boolean> sendOne(@RequestParam String userId, @PathVariable Long scholarshipId) {
+        return ApiResponse.ok(service.sendOneRefer(userId, scholarshipId));
+    }
+
+    @Authorized
+    @PostMapping("/refer/all")
+    public ApiResponse<Boolean> sendAll(@RequestBody ReferralRequestVo referralRequestVo) {
+        return ApiResponse.ok(service.sendAllRefer(referralRequestVo));
     }
 
     @Authorized
     @GetMapping("/{id}")
     public ApiResponse<ProviderFavouriteVo> getById(@PathVariable Long id) {
         return ApiResponse.ok(service.getById(id));
-    }
-
-    @Authorized
-    @GetMapping("/user/{userId}")
-    public ApiResponse<List<ProviderFavouriteVo>> getByUserId(@PathVariable String userId) {
-        return ApiResponse.ok(service.getByUserId(userId));
-    }
-
-    @Authorized
-    @GetMapping
-    public ApiResponse<List<ProviderFavouriteVo>> getAll() {
-        return ApiResponse.ok(service.getAll());
     }
 
     @Authorized

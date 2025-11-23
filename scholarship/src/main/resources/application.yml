@@ -187,6 +187,10 @@ kafka:
     application:
       topic: ${app.environment:local}.provider.application-new
       group: ${app.environment:local}.provider.application-new.group
+  mail:
+    send-mail:
+      topic: ${app.environment:local}.system.mail
+      group: ${app.environment:local}.system.mail.group
 
 keycloak:
   auth-server-url: ${env.keycloak.url:http://localhost:8080}
@@ -201,3 +205,9 @@ quartz-job:
     name: 'scholarship-suggestion'
     group: 'scholarship'
     expression: '0 0 12 * * ?'
+
+ai:
+  end-point: ${env.ai.url:http://localhost:8000}
+
+fe:
+  end-point: ${env.fe.url:http://159.89.200.244/edufront}

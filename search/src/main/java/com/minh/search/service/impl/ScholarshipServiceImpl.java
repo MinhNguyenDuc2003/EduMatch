@@ -66,11 +66,18 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                                         .fuzziness(Fuzziness.ONE.asString())
                                 )
                         );
-                        b.should(s -> s
-                                .match(t -> t
+                        return b;
+                    })
+            );
+        }
+
+        if (StringUtils.hasText(criteria.getCriteria().getUniversity())) {
+            nativeQuery.withFilter(f -> f
+                    .bool(b -> {
+                        b.must(m -> m
+                                .term(t -> t
                                         .field(ScholarshipField.UNIVERSITY)
-                                        .query(criteria.getCriteria().getUniversity())
-                                        .fuzziness(Fuzziness.ONE.asString())
+                                        .value(criteria.getCriteria().getUniversity())
                                 )
                         );
                         return b;

@@ -62,6 +62,18 @@ public class ProviderProfileController {
         return ApiResponse.ok(providerProfileService.getUnverifiedProviders());
     }
 
+    @Authorized
+    @GetMapping("/verify/mail")
+    public ApiResponse<Boolean> sendVerifyMail(String email) {
+        return ApiResponse.ok(providerProfileService.sendVerifyMail(email));
+    }
+
+    @Authorized
+    @GetMapping("/verify/code")
+    public ApiResponse<Boolean> verifyCode(String code) {
+        return ApiResponse.ok(providerProfileService.verifyCode(code));
+    }
+
     @PutMapping("/{id}/verified")
     public ApiResponse<Void> changeVerifiedStatus(
             @PathVariable("id") Long providerId,

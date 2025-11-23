@@ -2,7 +2,6 @@ package com.minh.scholarship.data.repository;
 
 import com.minh.scholarship.data.entity.ApplicationScholarshipEntity;
 import com.minh.scholarship.data.vo.ApplicationScholarshipStatusStatisticVo;
-import com.minh.scholarship.data.vo.ScholarshipApplyStatisticVo;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -31,6 +30,7 @@ public interface ApplicationScholarshipRepository extends JpaRepository<Applicat
     List<ApplicationScholarshipEntity> findAllByScholarshipId(Long id);
 
     boolean existsByApplicationIdAndActive(Long applicationId, boolean active);
+
     boolean existsByScholarshipIdAndActive(Long scholarshipId, boolean active);
 
     @Transactional
@@ -63,4 +63,6 @@ public interface ApplicationScholarshipRepository extends JpaRepository<Applicat
 
     @Query("SELECT COUNT(e.id) FROM ApplicationScholarshipEntity e WHERE e.active = true")
     Long countAllApplicationScholarship();
+
+    Optional<ApplicationScholarshipEntity> findAllByScholarshipIdAndApplicationId(Long scholarshipId, Long applicationId);
 }

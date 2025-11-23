@@ -1,8 +1,10 @@
 package com.minh.scholarship.service;
 
+import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
 import com.minh.model.dto.scholarship.ScholarshipViewDto;
+import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import org.springframework.data.domain.Page;
@@ -55,4 +57,14 @@ public interface ScholarshipService {
     List<ScholarshipVo> getTopViewsByMonth();
 
     List<ScholarshipViewDto> getTopScholarshipViews();
+    Boolean sendMailSuggestion();
+
+    Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto);
+
+    List<ScholarshipVo> getRecommendationScholarship(String userId, int topK);
+
+    List<ApplicantProfileVo> getRecommendationApplicantForScholarship(Long scholarshipId, int topK);
+
+    String getAnalyzeResponse(Long scholarshipId);
+
 }

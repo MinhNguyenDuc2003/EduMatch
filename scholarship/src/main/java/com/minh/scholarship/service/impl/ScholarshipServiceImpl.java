@@ -1,16 +1,18 @@
 package com.minh.scholarship.service.impl;
 
 import com.minh.constants.CoreMessageCode;
+import com.minh.enumeration.mail.MailTypeEnum;
 import com.minh.enumeration.notification.NotificationReferenceEnum;
 import com.minh.enumeration.notification.NotificationTemplateEnum;
 import com.minh.enumeration.notification.NotificationTopicEnum;
 import com.minh.exception.BusinessException;
+import com.minh.model.dto.ai.AiRequestDto;
+import com.minh.model.dto.ai.ScholarshipRecommendationResponseDto;
+import com.minh.model.dto.media.MailDto;
+import com.minh.model.dto.media.MailTemplateDto;
 import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.notification.NotificationTemplateDto;
-import com.minh.model.dto.scholarship.ScholarshipDto;
-import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
-import com.minh.model.dto.scholarship.ScholarshipPreferenceDto;
-import com.minh.model.dto.scholarship.ScholarshipViewDto;
+import com.minh.model.dto.scholarship.*;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
 import com.minh.scholarship.data.entity.ScholarshipViewEntity;
 import com.minh.scholarship.data.entity.junction.ScholarshipFollowerEntity;
@@ -20,18 +22,19 @@ import com.minh.scholarship.data.mapper.ScholarshipMapper;
 import com.minh.scholarship.data.mapper.ScholarshipPreferenceMapper;
 import com.minh.scholarship.data.mapper.ScholarshipViewMapper;
 import com.minh.scholarship.data.repository.*;
+import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import com.minh.scholarship.data.vo.NotificationVo;
 import com.minh.scholarship.data.vo.ProviderProfileVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
 import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
 import com.minh.scholarship.data.vo.projection.ScholarshipViewProjection;
-import com.minh.scholarship.feign.MediaFeign;
-import com.minh.scholarship.feign.NotificationTemplateFeign;
-import com.minh.scholarship.feign.ProviderProfileFeign;
+import com.minh.scholarship.feign.*;
 import com.minh.scholarship.message.KafkaProducer;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
+import com.minh.scholarship.service.ApplicationService;
 import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.base.BaseService;
+import com.minh.utils.DateTimeUtils;
 import com.minh.utils.SecurityUtil;
 import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
@@ -66,9 +69,16 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     private final ScholarshipFollowerMapper scholarshipFollowerMapper;
     private final ScholarshipViewRepository scholarshipViewRepository;
     private final ScholarshipViewMapper scholarshipViewMapper;
+    private final ApplicationService applicationService;
+    private final AiMatchFeign aiMatchFeign;
+    private final ApplicantProfileFeign applicantProfileFeign;
 
+    @Value("${fe.end-point}")
+    private String feEndPoint;
     @Value("${kafka.scholarship.new-event.topic}")
     private String newEventScholarshipTopic;
+    @Value("${kafka.mail.send-mail.topic}")
+    private String mailTopic;
 
     @Override
     public List<ScholarshipDto> getAll() {
@@ -376,4 +386,109 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         return topList;
     }
 
+    public Boolean sendMailSuggestion() {
+        List<ScholarshipDto> scholarshipEntities = this.getAll();
+
+        MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.SCHOLARSHIP_RECOMMENDATION.getCode()));
+        String body = generateBodyEmailScholarshipSuggestion(scholarshipEntities, templateDto.getBody());
+        body = body.replace("{{link}}", feEndPoint + "/scholarships");
+        MailDto mailDto = new MailDto();
+        mailDto.setBody(body);
+        mailDto.setTo("ducm40877@gmail.com");
+        mailDto.setSubject(templateDto.getSubject());
+        mailDto.setTemplateId(templateDto.getId());
+        kafkaProducer.convertToByteAndSend(mailTopic, mailDto);
+
+        return true;
+    }
+
+    @Override
+    public Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto) {
+        List<ScholarshipDto> scholarshipEntities = this.getAll();
+
+        ScholarshipDto scholarshipDto = this.getById(dto.getScholarshipId());
+        ApplicationDto applicationDto = applicationService.getById(dto.getApplicationId());
+        MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.APPLICATION_SUBMITTED.getCode()));
+        String template = templateDto.getBody().replace("{{title}}", scholarshipDto.getTitle())
+                .replace("{{description}}", scholarshipDto.getDescription())
+                .replace("{{university}}", scholarshipDto.getUniversity())
+                .replace("{{amount}}", scholarshipDto.getFundingAmount())
+                .replace("{{deadline}}", DateTimeUtils.format(scholarshipDto.getEndDate(), "dd/MM/yyyy"))
+                .replace("{{fullName}}", applicationDto.getFullName())
+                .replace("{{universityName}}", scholarshipDto.getUniversity())
+                .replace("{{link}}", feEndPoint + "scholarships/" + scholarshipDto.getSlug());
+        String body = generateBodyEmailScholarshipSuggestion(scholarshipEntities, template);
+        MailDto mailDto = new MailDto();
+        mailDto.setBody(body);
+        mailDto.setTo("ducm40877@gmail.com");
+        mailDto.setSubject(templateDto.getSubject());
+        mailDto.setTemplateId(templateDto.getId());
+        kafkaProducer.convertToByteAndSend(mailTopic, mailDto);
+
+        return true;
+    }
+
+    @Override
+    public List<ScholarshipVo> getRecommendationScholarship(String userId, int topK) {
+        ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(userId));
+        AiRequestDto requestDto = new AiRequestDto();
+        requestDto.setApplicantId(applicantProfileVo.getId());
+        requestDto.setTopK(topK);
+        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationScholarship(requestDto);
+        List<ScholarshipVo> result = new ArrayList<>();
+        if (ObjectUtils.isEmpty(recommendationScholarship.getResults())) {
+            return null;
+        }
+        recommendationScholarship.getResults().forEach(item -> {
+            ScholarshipVo vo = this.getById(item.getScholarship());
+            vo.setScore(item.getSimilarityScore());
+            result.add(vo);
+        });
+        return result;
+    }
+
+    @Override
+    public List<ApplicantProfileVo> getRecommendationApplicantForScholarship(Long scholarshipId, int topK) {
+        AiRequestDto requestDto = new AiRequestDto();
+        requestDto.setScholarshipId(scholarshipId);
+        requestDto.setTopK(topK);
+
+        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationApplicantForScholarship(requestDto);
+        List<ApplicantProfileVo> result = new ArrayList<>();
+        if (ObjectUtils.isEmpty(recommendationScholarship.getResults())) {
+            return null;
+        }
+        recommendationScholarship.getResults().forEach(item -> {
+            ApplicantProfileVo vo = this.parseResponse(applicantProfileFeign.getOne(item.getApplicant()));
+            vo.setScore(item.getSimilarityScore());
+            result.add(vo);
+        });
+        return result;
+    }
+
+    @Override
+    public String getAnalyzeResponse(Long scholarshipId) {
+        ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(UaaContextHolder.getUserId()));
+        AiRequestDto requestDto = new AiRequestDto();
+        requestDto.setApplicantId(1L);
+        requestDto.setScholarshipId(scholarshipId);
+        return aiMatchFeign.getAnalyzeMatch(requestDto);
+    }
+
+    private String generateBodyEmailScholarshipSuggestion(List<ScholarshipDto> scholarships, String template) {
+        for (int i = 0; i < scholarships.size(); i++) {
+            int number = i + 1;
+            template = template.replace(getKey("title", number), scholarships.get(i).getTitle())
+                    .replace(getKey("description", number), scholarships.get(i).getDescription())
+                    .replace(getKey("university", number), scholarships.get(i).getUniversity())
+                    .replace(getKey("amount", number), scholarships.get(i).getFundingAmount())
+                    .replace(getKey("deadline", number), DateTimeUtils.format(scholarships.get(i).getEndDate(), "dd/MM/yyyy"))
+                    .replace(getKey("link", number), feEndPoint + "scholarships/" + scholarships.get(i).getSlug());
+        }
+        return template;
+    }
+
+    private String getKey(String key, int i) {
+        return "{{" + key + i + "}}";
+    }
 }

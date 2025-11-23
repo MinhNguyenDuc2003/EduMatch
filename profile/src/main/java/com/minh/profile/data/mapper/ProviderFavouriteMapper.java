@@ -10,6 +10,8 @@ import com.minh.profile.data.vo.ProviderFavouriteVo;
 import com.minh.profile.data.vo.ProviderProfileVo;
 import org.mapstruct.*;
 
+import java.util.List;
+
 @Mapper(
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
@@ -19,7 +21,14 @@ import org.mapstruct.*;
 )
 public interface ProviderFavouriteMapper extends BaseMapper<ProviderFavouriteEntity, ProviderFavouriteDto> {
 
+    @Named("entityToVo")
     ProviderFavouriteVo entityToVo(ProviderFavouriteEntity entity);
+
+    @Named("entitiesToVos")
+    @IterableMapping(qualifiedByName = "entityToVo")
+    List<ProviderFavouriteVo> entitiesToVos(List<ProviderFavouriteEntity> entity);
+
+    ProviderProfileVo providerEntityToVo(ProviderProfileEntity entity);
 
     void updateEntityFromDto(ProviderFavouriteDto dto, @MappingTarget ProviderFavouriteEntity entity);
 

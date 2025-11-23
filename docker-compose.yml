@@ -162,6 +162,16 @@ services:
       - ./deployment/app-config:/app-config
     networks:
       - m-network
+  ai-match:
+    image: registry.edumatch.space/edumatch/ai-match:1.0.0
+    ports:
+      - "8000:80"
+    volumes:
+      - ./ai-match/app:/app/app
+    env_file:
+      - ./ai-match/.env
+    networks:
+      - m-network
   backoffice-nextjs:
     image: registry.edumatch.space/edumatch/backoffice-nextjs:1.0.0
     networks:

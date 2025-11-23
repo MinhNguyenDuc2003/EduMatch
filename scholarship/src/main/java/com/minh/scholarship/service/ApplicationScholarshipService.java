@@ -30,4 +30,9 @@ public interface ApplicationScholarshipService {
     List<ScholarshipApplyStatisticVo> getTopAppliedScholarships();
 
     ScholarshipDashboardVo getDashboardStatistics();
+
+    List<ApplicationScholarshipVo> getRankApplication(Long scholarshipId, Integer topK);
+
+    ApplicationScholarshipVo getByScholarshipIdAndApplicationId(Long scholarshipId, Long applicationId);
+
 }
