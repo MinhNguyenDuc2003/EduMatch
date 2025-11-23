@@ -652,3 +652,215 @@ export const NOTIFICATION_TYPES = {
   APPLICATION: 'application',
   SCHOLARSHIP_APPLICATION: 'scholarshipApplication',
 };
+
+export const RELIGIONS = [
+  {
+    value: 'Buddhism',
+    label: 'Buddhism',
+  },
+  {
+    value: 'Christianity',
+    label: 'Christianity',
+  },
+  {
+    value: 'Islam',
+    label: 'Islam',
+  },
+  {
+    value: 'Hinduism',
+    label: 'Hinduism',
+  },
+  {
+    value: 'Judaism',
+    label: 'Judaism',
+  },
+  {
+    value: 'Sikhism',
+    label: 'Sikhism',
+  },
+  {
+    value: 'Taoism',
+    label: 'Taoism',
+  },
+  {
+    value: 'Confucianism',
+    label: 'Confucianism',
+  },
+  {
+    value: 'Shinto',
+    label: 'Shinto',
+  },
+  {
+    value: 'Jainism',
+    label: 'Jainism',
+  },
+  {
+    value: "Bahá'í Faith",
+    label: "Bahá'í Faith",
+  },
+  {
+    value: 'Zoroastrianism',
+    label: 'Zoroastrianism',
+  },
+  {
+    value: 'Agnostic',
+    label: 'Agnostic',
+  },
+  {
+    value: 'Atheist',
+    label: 'Atheist',
+  },
+  {
+    value: 'Spiritual but not religious',
+    label: 'Spiritual but not religious',
+  },
+  {
+    value: 'Other',
+    label: 'Other',
+  },
+  {
+    value: 'None',
+    label: 'No religion',
+  },
+];
+
+export const ETHNICITIES = [
+  {
+    value: 'Asian',
+    label: 'Asian',
+  },
+  {
+    value: 'Black or African American',
+    label: 'Black or African American',
+  },
+  {
+    value: 'Hispanic or Latino',
+    label: 'Hispanic or Latino',
+  },
+  {
+    value: 'Native American or Alaska Native',
+    label: 'Native American or Alaska Native',
+  },
+  {
+    value: 'Native Hawaiian or Other Pacific Islander',
+    label: 'Native Hawaiian or Other Pacific Islander',
+  },
+  {
+    value: 'White or Caucasian',
+    label: 'White or Caucasian',
+  },
+  {
+    value: 'Mixed Race',
+    label: 'Mixed Race',
+  },
+  {
+    value: 'Middle Eastern',
+    label: 'Middle Eastern',
+  },
+  {
+    value: 'South Asian',
+    label: 'South Asian',
+  },
+  {
+    value: 'Southeast Asian',
+    label: 'Southeast Asian',
+  },
+  {
+    value: 'East Asian',
+    label: 'East Asian',
+  },
+  {
+    value: 'Other',
+    label: 'Other',
+  },
+  {
+    value: 'Prefer not to say',
+    label: 'Prefer not to say',
+  },
+];
+
+export const RACES = [
+  {
+    value: 'American Indian or Alaska Native',
+    label: 'American Indian or Alaska Native',
+  },
+  {
+    value: 'Asian',
+    label: 'Asian',
+  },
+  {
+    value: 'Black or African American',
+    label: 'Black or African American',
+  },
+  {
+    value: 'Hispanic or Latino',
+    label: 'Hispanic or Latino',
+  },
+  {
+    value: 'Native Hawaiian or Other Pacific Islander',
+    label: 'Native Hawaiian or Other Pacific Islander',
+  },
+  {
+    value: 'White',
+    label: 'White',
+  },
+  {
+    value: 'Two or More Races',
+    label: 'Two or More Races',
+  },
+  {
+    value: 'Other',
+    label: 'Other',
+  },
+  {
+    value: 'Prefer not to say',
+    label: 'Prefer not to say',
+  },
+];
+
+export const CITIZENSHIP_STATUS = [
+  {
+    value: 'Citizen',
+    label: 'Citizen',
+  },
+  {
+    value: 'Permanent Resident',
+    label: 'Permanent Resident',
+  },
+  {
+    value: 'Temporary Resident',
+    label: 'Temporary Resident',
+  },
+  {
+    value: 'Student Visa',
+    label: 'Student Visa',
+  },
+  {
+    value: 'Work Visa',
+    label: 'Work Visa',
+  },
+  {
+    value: 'Refugee',
+    label: 'Refugee',
+  },
+  {
+    value: 'Asylee',
+    label: 'Asylee',
+  },
+  {
+    value: 'DACA Recipient',
+    label: 'DACA Recipient',
+  },
+  {
+    value: 'Undocumented',
+    label: 'Undocumented',
+  },
+  {
+    value: 'Other',
+    label: 'Other',
+  },
+  {
+    value: 'Prefer not to say',
+    label: 'Prefer not to say',
+  },
+];

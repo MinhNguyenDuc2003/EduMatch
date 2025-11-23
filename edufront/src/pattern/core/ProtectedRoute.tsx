@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Loading from '../share/Loading';
 
@@ -42,7 +42,7 @@ export default function ProtectedRoute({
   requireProvider = false,
   loadingComponent,
 }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading, isProvider } = useAuth();
+  const { isAuthenticated, isLoading, isProvider, subscriptions } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -56,8 +56,21 @@ export default function ProtectedRoute({
     }
 
     // Redirect nếu cần provider nhưng user không phải provider
-    if (requireProvider && !isProvider) {
+    if (
+      requireProvider &&
+      !isProvider &&
+      !subscriptions.some((subscription) => subscription.userType === 'PROVIDER')
+    ) {
       router.push(redirectTo);
+      return;
+    }
+
+    if (
+      requireProvider &&
+      isProvider &&
+      !subscriptions.some((subscription) => subscription.userType === 'PROVIDER')
+    ) {
+      router.push('/subscriptions?type=PROVIDER');
       return;
     }
   }, [isAuthenticated, isLoading, isProvider, requireProvider, router, redirectTo]);
@@ -68,7 +81,12 @@ export default function ProtectedRoute({
   }
 
   // Không render children nếu chưa authenticated hoặc không đủ điều kiện
-  if (!isAuthenticated || (requireProvider && !isProvider)) {
+  if (
+    !isAuthenticated ||
+    (requireProvider &&
+      !isProvider &&
+      !subscriptions.some((subscription) => subscription.userType === 'PROVIDER'))
+  ) {
     return null;
   }
 

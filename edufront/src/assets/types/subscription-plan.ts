@@ -6,7 +6,7 @@ declare global {
     price: number;
     currency: string;
     durationDays: number;
-    targetType: string;
+    targetType: 'PROVIDER' | 'APPLICANT';
     features: string[];
   };
 }

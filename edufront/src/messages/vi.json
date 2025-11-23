@@ -14,6 +14,7 @@
       "profile": "Hồ sơ",
       "myActivity": "Hoạt động của tôi",
       "providerDashboard": "Bảng thống kê của nhà cung cấp",
+      "subscription": "Gia hạn tài khoản",
       "createProvider": "Đăng ký nhà cung cấp",
       "logout": "Đăng xuất"
     }
@@ -37,6 +38,7 @@
     "students": "Sinh viên",
     "settings": "Cài đặt",
     "profile": "Hồ sơ",
+    "extendSubscription": "Gia hạn tài khoản",
     "helpSupport": "Trợ giúp & Hỗ trợ",
     "backToHome": "Quay về trang chủ"
   },
@@ -377,12 +379,14 @@
   "applicantProfile": {
     "breadcrumb": {
       "applicant": "Ứng viên",
-      "profile": "Hồ sơ"
+      "profile": "Hồ sơ",
+      "update": "Cập nhật hồ sơ"
     },
     "profileHeader": {
       "matchedScholarships": "Học bổng phù hợp",
       "matchedResearchOpportunities": "Cơ hội nghiên cứu phù hợp",
-      "matchedScholarshipsAmount": "Tổng giá trị học bổng phù hợp"
+      "matchedScholarshipsAmount": "Tổng giá trị học bổng phù hợp",
+      "editProfile": "Chỉnh sửa hồ sơ"
     },
     "profileStrength": {
       "title": "Độ hoàn thiện hồ sơ",
@@ -540,7 +544,22 @@
       "expectedGraduationYear": "Năm tốt nghiệp dự kiến",
       "enterGraduationYear": "Nhập năm tốt nghiệp",
       "noIntentionsAddedYet": "Chưa có dự định nào được thêm",
-      "clickAddToStart": "Nhấp \"Thêm\" để bắt đầu thêm dự định của bạn"
+      "clickAddToStart": "Nhấp \"Thêm\" để bắt đầu thêm dự định của bạn",
+      "degreeType": "Loại bằng cấp",
+      "selectDegreeType": "Chọn loại bằng cấp",
+      "majorCategory": "Danh mục chuyên ngành",
+      "selectMajorCategory": "Chọn danh mục chuyên ngành",
+      "majorName": "Tên chuyên ngành",
+      "enterMajorName": "Nhập tên chuyên ngành",
+      "stateProvince": "Tỉnh/Thành phố",
+      "enterStateProvince": "Nhập tỉnh hoặc thành phố",
+      "country": "Quốc gia",
+      "enterCountry": "Nhập quốc gia",
+      "additionalInformation": "Thông tin bổ sung",
+      "notes": "Ghi chú",
+      "notesPlaceholder": "Ghi chú bổ sung về dự định này",
+      "transferStudent": "Sinh viên chuyển trường",
+      "returningStudent": "Sinh viên quay lại"
     },
     "activitiesDialog": {
       "title": "Sở thích & Hoạt động",
@@ -861,5 +880,40 @@
     "back": "Quay lại",
     "submit": "Gửi",
     "submitSuccess": "Gửi báo cáo thành công"
+  },
+  "scholarshipProviderGuidelines": {
+    "heroSection": {
+      "headLine1": "Tạo Sự Khác Biệt",
+      "headLine2": "Trong Cuộc Sống Sinh Viên",
+      "description": "Tận dụng thuật toán ghép nối tiên tiến của chúng tôi để kết nối học bổng của bạn với những sinh viên đủ điều kiện.",
+      "button": "Tạo Hồ Sơ Nhà Cung Cấp Của Bạn"
+    },
+    "guidelines": {
+      "title": "Hướng Dẫn Dành Cho Nhà Cung Cấp Học Bổng",
+      "description": "Cảm ơn bạn đã quan tâm đến việc đăng danh sách học bổng của mình. Để đảm bảo học bổng của bạn được đưa lên nền tảng của chúng tôi, vui lòng đảm bảo rằng nó tuân thủ các hướng dẫn sau:",
+      "guidelines": {
+        "1": "Bạn cần đăng ký một gói dịch vụ để có thể nộp hồ sơ học bổng và sử dụng các dịch vụ hỗ trợ AI của nền tảng chúng tôi.",
+        "2": "Sinh viên không nên được yêu cầu cung cấp số an sinh xã hội của họ trong quá trình nộp đơn.",
+        "3": "Học sinh không được yêu cầu cung cấp thông tin thẻ tín dụng trong quá trình nộp đơn.",
+        "4": "Học bổng phải được liên kết với một địa chỉ email hợp pháp.",
+        "5": "Học bổng nên cung cấp một khoản thưởng hợp lý, tương xứng với mức độ nỗ lực mà các ứng viên phải bỏ ra.",
+        "6": "Các quy định về học bổng phải được hiển thị rõ ràng, nêu chi tiết tất cả các tiêu chí đủ điều kiện, thời hạn, các tài liệu cần thiết và quy trình chọn người nhận học bổng hoặc các tiêu chí đánh giá.",
+        "7": "Danh sách học bổng không được trùng lặp với bất kỳ học bổng nào đã được liệt kê trước đó. Vui lòng giữ lại tất cả thông tin nhận được từ hệ thống sau khi quá trình liệt kê hoàn tất thành công.",
+        "8": "Thông tin liên hệ, bao gồm địa chỉ, số điện thoại và email, phải được sinh viên dễ dàng tiếp cận để hỏi về học bổng và các quy định của nó.",
+        "9": "Nhà cung cấp học bổng nên cung cấp cho chúng tôi một địa chỉ email liên hệ sử dụng tên miền của tổ chức (ví dụ: admin@examplescholarship.org). Việc đảm bảo rằng họ có thể liên lạc được với chúng tôi là trách nhiệm của nhà cung cấp học bổng."
+      },
+      "requiredInformation": {
+        "title": "Thông Tin Cần Thiết Để Nộp Học Bổng",
+        "scholarshipProviderInformation": "Thông Tin Nhà Cung Cấp Học Bổng",
+        "scholarshipProviderInformationDescription": "Để học bổng của bạn được liệt kê, chúng tôi yêu cầu địa chỉ gửi thư, số điện thoảng, tên người liên hệ, địa chỉ email và URL trang web của tổ chức của bạn. Vui lòng lưu ý rằng thông tin này sẽ chỉ được sử dụng cho mục đích nội bộ, mặc dù các trường cụ thể trên biểu mẫu nộp đơn trực tuyến là bắt buộc.",
+        "scholarshipInformation": "Thông Tin Học Bổng",
+        "scholarshipInformationDescription": "Để tốt nhất phục vụ người dùng và nhà cung cấp của chúng tôi, tất cả học bổng được liệt kê phải:",
+        "scholarshipInformationList": {
+          "1": "Cung cấp một tóm tắt mô tả cho giải thưởng",
+          "2": "Bao gồm tiêu đề học bổng, ngày hạn chót, giá trị của học bổng và số lượng giải thưởng có sẵn",
+          "3": "Chỉ rõ loại sinh viên mà học bổng đó tập trung và đảm bảo xem xét và chỉnh sửa tất cả các tiêu chí lọc để đảm bảo chỉ có những sinh viên đủ điều kiện để nhận học bổng được đưa ra."
+        }
+      }
+    }
   }
 }

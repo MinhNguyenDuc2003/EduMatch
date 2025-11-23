@@ -14,6 +14,7 @@
       "profile": "Profile",
       "myActivity": "My Activity",
       "providerDashboard": "Provider Dashboard",
+      "subscription": "Extend Subscription",
       "createProvider": "Become a Provider",
       "logout": "Logout"
     }
@@ -37,6 +38,7 @@
     "students": "Students",
     "settings": "Settings",
     "profile": "Profile",
+    "extendSubscription": "Extend Subscription",
     "helpSupport": "Help & Support",
     "backToHome": "Back to Home"
   },
@@ -377,12 +379,14 @@
   "applicantProfile": {
     "breadcrumb": {
       "applicant": "Applicant",
-      "profile": "Profile"
+      "profile": "Profile",
+      "update": "Update"
     },
     "profileHeader": {
       "matchedScholarships": "Matched Scholarships",
       "matchedResearchOpportunities": "Matched Research Opportunities",
-      "matchedScholarshipsAmount": "Matched Scholarships Amount"
+      "matchedScholarshipsAmount": "Matched Scholarships Amount",
+      "editProfile": "Edit Profile"
     },
     "profileStrength": {
       "title": "Profile Strength",
@@ -536,6 +540,21 @@
       "academicClassification": "Academic Classification",
       "academicClassificationPlaceholder": "e.g., Freshman, Sophomore",
       "timeline": "Timeline",
+      "degreeType": "Degree Type",
+      "selectDegreeType": "Select degree type",
+      "majorCategory": "Major Category",
+      "selectMajorCategory": "Select major category",
+      "majorName": "Major Name",
+      "enterMajorName": "Enter major name",
+      "stateProvince": "State/Province",
+      "enterStateProvince": "Enter state or province",
+      "country": "Country",
+      "enterCountry": "Enter country",
+      "additionalInformation": "Additional Information",
+      "notes": "Notes",
+      "notesPlaceholder": "Additional notes about this intention",
+      "transferStudent": "Transfer Student",
+      "returningStudent": "Returning Student",
       "expectedStartDate": "Expected Start Date",
       "expectedGraduationYear": "Expected Graduation Year",
       "enterGraduationYear": "Enter graduation year",
@@ -861,5 +880,40 @@
     "back": "Back",
     "submit": "Submit",
     "submitSuccess": "Report Submitted Successfully"
+  },
+  "scholarshipProviderGuidelines": {
+    "heroSection": {
+      "headLine1": "Make a Difference",
+      "headLine2": "in a Student's Life",
+      "description": "Leverage our advanced matching algorithm to connect your scholarship with eligible students.",
+      "button": "Create Your Provider Profile"
+    },
+    "guidelines": {
+      "title": "Scholarship Provider Guidelines",
+      "description": "Thank you for your interest in listing your scholarship. To ensure the inclusion of your scholarship on our platform, please ensure that it adheres to the following guidelines:",
+      "guidelines": {
+        "1": "You need to subscribe to a package to be able to submit scholarships and use the AI support services of our platform.",
+        "2": "Students should not be prompted to provide their social security number during the application process.",
+        "3": "Students must not be prompted to provide credit card information during the application process.",
+        "4": "The scholarship must be associated with a legitimate.",
+        "5": "The scholarship should offer a reasonable award, commensurate with the amount of effort required from applicants.",
+        "6": "The scholarship rules must be clearly displayed, outlining all eligibility criteria, deadlines, required materials, and the process for selecting scholarship winners or judging criteria.",
+        "7": "The scholarship listing must not be a duplicate of any scholarships already listed. Please retain all information received from system upon successful completion of the listing process.",
+        "8": "Contact information, including address, phone number, and email, must be easily accessible to students for any inquiries regarding the scholarship and its rules.",
+        "9": "The scholarship provider should provide us with a contact email address that uses the organization's domain name (e.g., admin@examplescholarship.org). It is the responsibility of the scholarship provider to ensure that they can be reached by us."
+      },
+      "requiredInformation": {
+        "title": "Required Information to Submit a Scholarship",
+        "scholarshipProviderInformation": "Scholarship Provider Information",
+        "scholarshipProviderInformationDescription": "In order for your scholarship to be listed, we require the mailing address, phone number, contact name, email address, and website URL of your organization. Please note that this information will be used exclusively for internal purposes, although specific fields on the online submission form are mandatory.",
+        "scholarshipInformation": "Scholarship Information",
+        "scholarshipInformationDescription": "To best serve our site’s users and providers, all scholarships listed must:",
+        "scholarshipInformationList": {
+          "1": "Provide a descriptive summary of the award",
+          "2": "Include a scholarship title, deadline date, value of the scholarships and number of awards available",
+          "3": "Indicate the type of student the scholarship is targeting and be sure to review and edit all filterable criteria to ensure only those students who will qualify for the scholarship being offered will be presented with the scholarship."
+        }
+      }
+    }
   }
 }

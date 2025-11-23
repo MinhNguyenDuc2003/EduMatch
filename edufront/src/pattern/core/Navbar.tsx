@@ -23,7 +23,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslations } from 'next-intl';
 
 const Header = () => {
-  const { isAuthenticated, isLoading, isProvider } = useAuth();
+  const { isAuthenticated, isLoading, isProvider, subscriptions } = useAuth();
 
   const t = useTranslations('navbar');
 
@@ -127,15 +127,28 @@ const Header = () => {
                   <DropdownMenuItem asChild>
                     <Link href="/applicant/activity?tab=tracking">{t('dropdown.myActivity')}</Link>
                   </DropdownMenuItem>
-                  {isProvider ? (
-                    <DropdownMenuItem asChild>
-                      <Link href="/provider/dashboard">{t('dropdown.providerDashboard')}</Link>
-                    </DropdownMenuItem>
-                  ) : (
-                    <DropdownMenuItem asChild>
-                      <Link href="/create-provider-profile">{t('dropdown.createProvider')}</Link>
-                    </DropdownMenuItem>
-                  )}
+                  {isProvider &&
+                    subscriptions.some((subscription) => subscription.userType === 'PROVIDER') && (
+                      <DropdownMenuItem asChild>
+                        <Link href="/provider/dashboard">{t('dropdown.providerDashboard')}</Link>
+                      </DropdownMenuItem>
+                    )}
+                  {isProvider &&
+                    !subscriptions.some((subscription) => subscription.userType === 'PROVIDER') && (
+                      <DropdownMenuItem asChild>
+                        <Link href="/subscriptions?type=PROVIDER">
+                          {t('dropdown.subscription')}
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
+                  {!isProvider &&
+                    !subscriptions.some((subscription) => subscription.userType === 'PROVIDER') && (
+                      <DropdownMenuItem asChild>
+                        <Link href="/scholarship-provider-guidelines">
+                          {t('dropdown.createProvider')}
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
 
                   <DropdownMenuItem onClick={() => {}}>{t('dropdown.logout')}</DropdownMenuItem>
                 </DropdownMenuContent>

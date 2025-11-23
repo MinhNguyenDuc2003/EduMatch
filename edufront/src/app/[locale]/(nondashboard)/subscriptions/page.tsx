@@ -1,4 +1,4 @@
-import SubscriptionPage from '@/@screen/(dashboard)/applicant/Subscription';
+import SubscriptionPage from '@/@screen/(nondashboard)/Subscription';
 import React from 'react';
 
 const page = () => {
@@ -6,4 +6,3 @@ const page = () => {
 };
 
 export default page;
-

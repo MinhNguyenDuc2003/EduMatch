@@ -12,7 +12,7 @@ export const useAuth = () => {
     // Authentication state
     isAuthenticated: data?.isAuthenticated ?? false,
     isProvider: data?.isProvider ?? false,
-
+    subscriptions: data?.subscriptions ?? [],
     // Loading and error states
     isLoading,
     isError,

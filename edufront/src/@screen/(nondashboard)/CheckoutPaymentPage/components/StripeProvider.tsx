@@ -4,7 +4,7 @@ import { Appearance, loadStripe, StripeElementsOptions } from '@stripe/stripe-js
 import { useCurrentSubscription } from '@/hooks/useCurrentSubscription';
 import { useAuth } from '@/hooks/useAuth';
 import Loading from '@/pattern/share/Loading';
-import { useCreatePaymentIntentMutation } from '@/state/apiSubscription';
+import { useCreatePaymentIntentMutation } from '@/state/apiAuth';
 
 if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY) {
   throw new Error('NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not set');
