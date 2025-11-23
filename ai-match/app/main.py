@@ -1,6 +1,10 @@
 """FastAPI application for AI Match."""
-from fastapi import FastAPI, HTTPException, Depends
+import logging
+import sys
+import traceback
+from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 from typing import Dict, Any
 
@@ -26,19 +30,51 @@ from app.services.embedding_service import (
 from app.services.llm_service import llm_analyze
 
 
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
+
+
 # Lifespan context manager for startup/shutdown
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan manager."""
+    settings = get_settings()
+    logger.info(f"Starting {settings.app_name} v{settings.app_version}")
+    logger.info(f"Debug mode: {settings.debug}")
+    
     # Startup: Pre-load embedding model
-    print("Loading embedding model...")
-    get_embedding_model()
-    print("Embedding model loaded successfully!")
+    try:
+        logger.info("Loading embedding model...")
+        get_embedding_model()
+        logger.info("✓ Embedding model loaded successfully!")
+    except Exception as e:
+        logger.error(f"✗ Failed to load embedding model: {e}")
+        logger.error(traceback.format_exc())
+        raise
+    
+    # Test database connections
+    try:
+        logger.info("Testing database connections...")
+        with get_both_cursors() as (sch_cursor, prof_cursor):
+            sch_cursor.execute("SELECT 1")
+            prof_cursor.execute("SELECT 1")
+        logger.info("✓ Database connections successful!")
+    except Exception as e:
+        logger.error(f"✗ Database connection failed: {e}")
+        logger.error(traceback.format_exc())
+        raise
     
     yield
     
     # Shutdown: cleanup if needed
-    print("Shutting down...")
+    logger.info("Shutting down...")
 
 
 # Create FastAPI app
@@ -59,6 +95,26 @@ app.add_middleware(
 )
 
 
+# Global exception handler for debugging
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    """Catch all unhandled exceptions and log them."""
+    logger.error(f"Unhandled exception on {request.method} {request.url}")
+    logger.error(f"Exception type: {type(exc).__name__}")
+    logger.error(f"Exception message: {str(exc)}")
+    logger.error(f"Full traceback:\n{traceback.format_exc()}")
+    
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": "Internal server error",
+            "error": str(exc),
+            "type": type(exc).__name__,
+            "path": str(request.url)
+        }
+    )
+
+
 @app.get("/", tags=["Info"])
 async def root():
     """API information."""
@@ -72,12 +128,27 @@ async def root():
 
 @app.get("/health", response_model=HealthResponse, tags=["Health"])
 async def health_check(settings: Settings = Depends(get_settings)):
-    """Health check endpoint."""
-    return HealthResponse(
-        status="healthy",
-        version="1.0.0",
-        embedding_model=settings.embedding_model_name
-    )
+    """Health check endpoint with database connection test."""
+    try:
+        # Test database connections
+        with get_both_cursors() as (sch_cursor, prof_cursor):
+            sch_cursor.execute("SELECT 1")
+            prof_cursor.execute("SELECT 1")
+        
+        logger.info("Health check passed")
+        return HealthResponse(
+            status="healthy",
+            version="1.0.0",
+            embedding_model=settings.embedding_model_name
+        )
+    except Exception as e:
+        logger.error(f"Health check failed: {e}")
+        logger.error(traceback.format_exc())
+        raise HTTPException(
+            status_code=503,
+            detail=f"Service unhealthy: Database connection failed - {str(e)}"
+        )
+
 
 
 @app.post("/api/v1/scholarships/search", response_model=ScholarshipSearchResponse, tags=["Scholarships"])
@@ -87,6 +158,7 @@ async def search_scholarships(request: ScholarshipSearchRequest):
     
     Returns top K scholarships ranked by similarity score.
     """
+    logger.info(f"Scholarship search request: applicant_id={request.applicant_id}, top_k={request.top_k}")
     try:
         with get_both_cursors() as (sch_cursor, prof_cursor):
             results = scholarships_search(
@@ -96,13 +168,17 @@ async def search_scholarships(request: ScholarshipSearchRequest):
                 top_k=request.top_k
             )
         
+        logger.info(f"Scholarship search completed: {len(results)} results")
         return ScholarshipSearchResponse(
             results=results,
             count=len(results)
         )
     except ValueError as e:
+        logger.warning(f"Scholarship search failed: {e}")
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
+        logger.error(f"Scholarship search error: {e}")
+        logger.error(traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
@@ -113,6 +189,7 @@ async def search_applicants(request: ApplicantSearchRequest):
     
     Returns top K applicants ranked by similarity score.
     """
+    logger.info(f"Applicant search request: scholarship_id={request.scholarship_id}, top_k={request.top_k}")
     try:
         with get_both_cursors() as (sch_cursor, prof_cursor):
             results = applicant_search(
@@ -122,13 +199,17 @@ async def search_applicants(request: ApplicantSearchRequest):
                 top_k=request.top_k
             )
         
+        logger.info(f"Applicant search completed: {len(results)} results")
         return ApplicantSearchResponse(
             results=results,
             count=len(results)
         )
     except ValueError as e:
+        logger.warning(f"Applicant search failed: {e}")
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
+        logger.error(f"Applicant search error: {e}")
+        logger.error(traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
@@ -139,6 +220,7 @@ async def rank_applications(request: ApplicationRankRequest):
     
     Returns top K applications ranked by similarity score.
     """
+    logger.info(f"Application rank request: scholarship_id={request.scholarship_id}, top_k={request.top_k}")
     try:
         with get_both_cursors() as (sch_cursor, _):
             results = application_search(
@@ -147,13 +229,17 @@ async def rank_applications(request: ApplicationRankRequest):
                 top_k=request.top_k
             )
         
+        logger.info(f"Application rank completed: {len(results)} results")
         return ApplicationRankResponse(
             results=results,
             count=len(results)
         )
     except ValueError as e:
+        logger.warning(f"Application rank failed: {e}")
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
+        logger.error(f"Application rank error: {e}")
+        logger.error(traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
@@ -170,6 +256,7 @@ async def analyze_match(request: AnalyzeRequest):
     - Overall strategy
     - Timeline
     """
+    logger.info(f"LLM analysis request: applicant_id={request.applicant_id}, scholarship_id={request.scholarship_id}")
     try:
         with get_both_cursors() as (sch_cursor, prof_cursor):
             analysis = llm_analyze(
@@ -179,10 +266,14 @@ async def analyze_match(request: AnalyzeRequest):
                 prof_cursor=prof_cursor
             )
         
+        logger.info(f"LLM analysis completed successfully")
         return AnalyzeResponse(analysis=analysis)
     except ValueError as e:
+        logger.warning(f"LLM analysis failed: {e}")
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
+        logger.error(f"LLM analysis error: {e}")
+        logger.error(traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 

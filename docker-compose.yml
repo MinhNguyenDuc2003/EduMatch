@@ -164,6 +164,8 @@ services:
       - m-network
   ai-match:
     image: registry.edumatch.space/edumatch/ai-match:1.0.0
+    ports:
+      - "8000:80"
     volumes:
       - ./ai-match/app:/app/app
     env_file:
