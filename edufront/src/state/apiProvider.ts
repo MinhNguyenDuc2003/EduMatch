@@ -11,12 +11,13 @@ const API_ENDPOINTS = {
   GET_PROVIDER_BY_ID: '/api/profile/providers',
   APPLICATION: '/api/scholarship/applications-scholarship',
   NEWS: '/api/profile/provider-new',
+  FAVOURITE: '/api/profile/provider-favourite',
 } as const;
 
 export const apiProvider = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiProvider',
-  tagTypes: ['Profile', 'Scholarships', 'Applications', 'News'],
+  tagTypes: ['Profile', 'Scholarships', 'Applications', 'News', 'Applicants'],
   endpoints: (build) => ({
     // Get customer profile (works for both applicant and provider)
     getProfile: build.query<ProviderProfileApiResponse, void>({
@@ -227,6 +228,35 @@ export const apiProvider = createApi({
       }),
       providesTags: ['News'],
     }),
+
+    // Get all favourite applicants
+    getAllFavouriteApplicants: build.query<FavouriteApplicantApiResponse, void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.FAVOURITE}/my-favourite`,
+        method: 'GET',
+      }),
+      providesTags: ['Applicants'],
+    }),
+
+    // Add favourite applicant
+    addFavouriteApplicant: build.mutation<FavouriteApplicant, number>({
+      query: (applicantId) => ({
+        url: API_ENDPOINTS.FAVOURITE,
+        method: 'POST',
+        body: { applicantId },
+      }),
+      invalidatesTags: ['Applicants'],
+    }),
+
+    // Remove favourite applicant
+    removeFavouriteApplicant: build.mutation<FavouriteApplicant, number>({
+      query: (applicantId) => ({
+        url: `${API_ENDPOINTS.FAVOURITE}/${applicantId}`,
+        method: 'DELETE',
+        body: { applicantId },
+      }),
+      invalidatesTags: ['Applicants'],
+    }),
   }),
 });
 
@@ -255,4 +285,7 @@ export const {
   useUploadNewsImagesMutation,
   useDeleteNewsImageMutation,
   useGetAllNewsQuery,
+  useGetAllFavouriteApplicantsQuery,
+  useAddFavouriteApplicantMutation,
+  useRemoveFavouriteApplicantMutation,
 } = apiProvider;

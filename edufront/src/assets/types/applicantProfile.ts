@@ -94,6 +94,7 @@ declare global {
     applicantPreferences: ApplicantPreference[];
     skills: Skill[];
     intentions: Intention[];
+    note?: string;
   }
 
   interface ProfileApiResponse {
@@ -115,6 +116,20 @@ declare global {
     avatarUrl?: string;
     stats: ProfileStats;
     profileStrength: number;
+  }
+
+  interface FavouriteApplicant {
+    id: number;
+    userId: string;
+    applicantId: number;
+    note?: string;
+    applicantProfileVo?: ApplicantProfile;
+    isFavourite?: number;
+  }
+
+  interface FavouriteApplicantApiResponse {
+    id?: number;
+    applicantProfileVo?: ApplicantProfile[];
   }
 }
 
