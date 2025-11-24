@@ -54,7 +54,7 @@ public interface ScholarshipViewRepository extends JpaRepository<ScholarshipView
             "        COUNT(v.user_id) AS view " +
             "    FROM scholarship.scholarship_view v " +
             "    INNER JOIN scholarship.scholarship s ON v.scholarship_id = s.id " +
-            "    WHERE EXTRACT(MONTH FROM v.created_datetime) = :month AND s.id = :id " +
+            "    WHERE s.id = :id " +
             "    GROUP BY v.scholarship_id " +
             ") " +
             "SELECT * " +
