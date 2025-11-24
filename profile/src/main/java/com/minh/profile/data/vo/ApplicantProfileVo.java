@@ -24,5 +24,6 @@ public class ApplicantProfileVo extends ApplicantProfileDto {
     private List<ApplicantPreferenceDto> applicantPreferences = new ArrayList<>();
     private List<ApplicantSkillDto> skills = new ArrayList<>();
     private List<ApplicantEducationIntentionDto> intentions = new ArrayList<>();
+    private String note;
 
 }

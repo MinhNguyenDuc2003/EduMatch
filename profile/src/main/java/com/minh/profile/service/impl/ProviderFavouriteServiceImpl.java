@@ -66,9 +66,11 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
                 providerFavouriteRepository.findAllByProviderIdAndActive(provider.get().getId(), true);
 
         List<ApplicantProfileVo> profileVos = new ArrayList<>();
+
         entities.forEach(entity -> {
             ApplicantProfileVo applicant = applicantProfileService.getOneByUserId(entity.getUserId());
             if (applicant != null) {
+                applicant.setNote(entity.getNote());
                 profileVos.add(applicant);
             }
         });
@@ -76,7 +78,6 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
         ProviderFavouriteVo result = new ProviderFavouriteVo();
         result.setId(provider.get().getId());
         result.setApplicantProfileVo(profileVos);
-
         return result;
     }
 
