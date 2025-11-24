@@ -2,6 +2,7 @@ import { Button } from '@/lib/cus/button';
 import { Checkbox } from '@/lib/cus/checkbox';
 import { useReferApplicantsMutation } from '@/state/apiProvider';
 import { Eye, Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -15,6 +16,8 @@ const ApplicantsList = ({
   scholarshipId: number;
 }) => {
   const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
+
+  const t = useTranslations('aiApplicantSuggestions');
 
   const [referApplicants, { isLoading: isReferApplicantsLoading }] = useReferApplicantsMutation();
 
@@ -59,20 +62,20 @@ const ApplicantsList = ({
                   }}
                 />
               </th>
-              <th className="px-2 sm:px-4 py-3 text-left font-semibold">Name</th>
+              <th className="px-2 sm:px-4 py-3 text-left font-semibold">{t('name')}</th>
               <th className="px-2 sm:px-4 py-3 text-left font-semibold hidden sm:table-cell">
-                GPA
+                {t('gpa')}
               </th>
               <th className="px-2 sm:px-4 py-3 text-left font-semibold hidden md:table-cell">
-                University
+                {t('university')}
               </th>
               <th className="px-2 sm:px-4 py-3 text-left font-semibold hidden lg:table-cell">
-                Major
+                {t('major')}
               </th>
-              <th className="px-2 sm:px-4 py-3 text-left font-semibold hidden lg:table-cell">
-                Matching Score
+              <th className="px-2 sm:px-4 py-3 text-left font-semibold hidden sm:table-cell">
+                {t('score')}
               </th>
-              <th className="px-2 sm:px-4 py-3 text-center font-semibold">Actions</th>
+              <th className="px-2 sm:px-4 py-3 text-center font-semibold">{t('actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -99,7 +102,10 @@ const ApplicantsList = ({
                 <td className="px-2 sm:px-4 py-3 text-muted-foreground text-xs hidden lg:table-cell">
                   {applicant.educationHistories?.[0]?.majorName || 'N/A'}
                 </td>
-                <td className="px-2 sm:px-4 py-3 text-muted-foreground text-xs hidden lg:table-cell">
+                <td
+                  className="px-2 sm:px-4 py-3 font-bold hidden sm:table-cell"
+                  style={{ color: '#3d6cb9' }}
+                >
                   {applicant.score ? `${(applicant.score * 100).toFixed(2)}%` : 'N/A'}
                 </td>
                 <td className="px-2 sm:px-4 py-3 flex items-center justify-center text-center">
@@ -124,7 +130,7 @@ const ApplicantsList = ({
             onClick={() => setSelectedApplicants([])}
             className="w-full sm:w-auto bg-gray-200 text-gray-900 hover:bg-gray-300 shadow-sm"
           >
-            Clear Selection
+            {t('clearSelection')}
           </Button>
           <Button
             onClick={handleSaveSelected}
@@ -135,7 +141,7 @@ const ApplicantsList = ({
             {isReferApplicantsLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              `Save ${selectedApplicants.length} Applicant${selectedApplicants.length !== 1 ? 's' : ''}`
+              `${t('save', { count: selectedApplicants.length })}`
             )}
           </Button>
         </div>

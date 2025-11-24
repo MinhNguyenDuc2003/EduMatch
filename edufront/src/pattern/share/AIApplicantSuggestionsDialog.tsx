@@ -12,6 +12,7 @@ import Loading from './Loading';
 import ApplicantsList from './ApplicantsList';
 import ApplicantDetail from './ApplicantDetail';
 import { Button } from '@/lib/cus/button';
+import { useTranslations } from 'next-intl';
 
 interface AISuggestionsDialogProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ const AIApplicantSuggestionsDialog = ({
   onClose,
   scholarshipId,
 }: AISuggestionsDialogProps) => {
+  const t = useTranslations('aiApplicantSuggestions');
   const [selectedApplicant, setSelectedApplicant] = useState<ApplicantProfile | null>(null);
 
   const { data: applicants, isLoading } = useGetRecommendedApplicantsQuery(
@@ -46,9 +48,9 @@ const AIApplicantSuggestionsDialog = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Sparkles className="w-5 h-5" style={{ color: '#3d6cb9' }} />
-            Recommended Applicants
+            {t('title')}
           </DialogTitle>
-          <DialogDescription>Matching applicants for scholarship {scholarshipId}</DialogDescription>
+          <DialogDescription>{t('description', { scholarshipId })}</DialogDescription>
         </DialogHeader>
 
         {selectedApplicant ? (
@@ -67,7 +69,7 @@ const AIApplicantSuggestionsDialog = ({
               onClick={() => setSelectedApplicant(null)}
               className="bg-primary-brand text-white hover:bg-primary-brand/90 mt-2 shadow-sm"
             >
-              Back
+              {t('back')}
             </Button>
           </div>
         )}
