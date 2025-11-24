@@ -966,5 +966,12 @@
         }
       }
     }
+  },
+  "newsPage": {
+    "title": "Tin Tức EduMatch",
+    "topViewed": "Học bổng được xem nhiều nhất",
+    "noTopScholarships": "Chưa có học bổng được xem nhiều",
+    "noNewsAvailable": "Không có tin tức",
+    "noNewsDescription": "Hiện tại chưa có bài viết tin tức nào. Vui lòng quay lại sau để xem các cập nhật và nội dung mới."
   }
 }

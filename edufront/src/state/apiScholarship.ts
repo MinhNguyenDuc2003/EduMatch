@@ -107,9 +107,10 @@ export const apiScholarship = createApi({
       providesTags: ['Scholarships'],
     }),
 
-    getScholarshipTopView: build.query<Scholarship[], void>({
+    // Top view by month
+    getScholarshipTopViewByMonth: build.query<Scholarship[], void>({
       query: () => ({
-        url: `${API_ENDPOINTS.SCHOLARSHIP}/top-views`,
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/top-views/month`,
         method: 'GET',
       }),
       providesTags: ['Scholarships'],
@@ -128,5 +129,5 @@ export const {
   useCheckIsTrackedScholarshipQuery,
   useGetScholarshipBySlugQuery,
   useGetScholarshipsByProviderIdQuery,
-  useGetScholarshipTopViewQuery,
+  useGetScholarshipTopViewByMonthQuery,
 } = apiScholarship;

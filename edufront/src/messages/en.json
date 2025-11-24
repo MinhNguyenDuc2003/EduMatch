@@ -966,5 +966,12 @@
         }
       }
     }
+  },
+  "newsPage": {
+    "title": "EduMatch News",
+    "topViewed": "Top Viewed Scholarships",
+    "noTopScholarships": "No top viewed scholarships available",
+    "noNewsAvailable": "No news available",
+    "noNewsDescription": "There are no news articles at the moment. Check back later for updates and new content."
   }
 }
