@@ -257,18 +257,15 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
 
     @Override
     public ScholarshipDashboardVo getDashboardStatistics() {
-        // 1. Tổng số scholarship
         Long totalScholarship = scholarshipRepository.count();
 
-        // 2. Tổng số application theo status
         List<ApplicationScholarshipEntity> allActiveApplications = applicationScholarshipRepository.findByActive(true);
         Map<String, Long> totalApplicationByStatus = allActiveApplications.stream()
                 .collect(Collectors.groupingBy(
-                        e -> e.getStatus().toUpperCase(), // map status sang in hoa
+                        e -> e.getStatus(),
                         Collectors.counting()
                 ));
 
-        // 3. Tổng số views
         Long totalViews = scholarshipViewRepository.countAllViews();
 
         return new ScholarshipDashboardVo(totalScholarship, totalApplicationByStatus, totalViews);

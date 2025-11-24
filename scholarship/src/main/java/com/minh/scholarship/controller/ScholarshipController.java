@@ -176,4 +176,5 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.sendMailSuggestion());
     }
 
+
 }

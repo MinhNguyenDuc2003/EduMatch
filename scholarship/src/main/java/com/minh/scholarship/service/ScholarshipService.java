@@ -56,6 +56,7 @@ public interface ScholarshipService {
 
     List<ScholarshipVo> getTopViewsByMonth();
 
+    List<ScholarshipViewDto> getTopScholarshipViews();
     Boolean sendMailSuggestion();
 
     Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto);

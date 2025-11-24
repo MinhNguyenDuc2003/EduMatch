@@ -25,4 +25,5 @@ public class ProviderFavouriteEntity extends BaseEntity {
 
     @Column(name = "NOTE")
     private String note;
+
 }

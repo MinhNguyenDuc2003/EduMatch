@@ -12,4 +12,5 @@ public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfi
     Optional<ApplicantProfileEntity> findByIdAndActive(Long id, Boolean active);
 
     Optional<ApplicantProfileEntity> findByUserIdAndActive(String userId, Boolean active);
+
 }

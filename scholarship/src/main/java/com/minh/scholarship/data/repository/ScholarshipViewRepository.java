@@ -61,4 +61,6 @@ public interface ScholarshipViewRepository extends JpaRepository<ScholarshipView
             "FROM views " +
             "ORDER BY view DESC ", nativeQuery = true)
     ScholarshipViewProjection getViewsByScholarshipId(Long id);
+
+    Long countByScholarshipId(Long scholarshipId);
 }
