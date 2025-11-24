@@ -48,6 +48,12 @@ declare global {
     views: number;
   };
 
+  type SearchScholarshipsByUniversityResponse = {
+    id: number;
+    university: string;
+    availableSlots: number;
+  };
+
   type ScholarshipSearchCriteria = {
     country?: string;
     university?: string;
@@ -89,6 +95,7 @@ declare global {
     country: string;
     studyLevel: string;
     scholarshipType: string;
+    university: string;
     minGpa: number;
     maxGpa: number;
     page: number;

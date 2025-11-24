@@ -4,7 +4,7 @@ import customBaseQuery from './custombaseQuery';
 // API Endpoints
 const API_ENDPOINTS = {
   SCHOLARSHIP: '/api/scholarship/scholarships',
-  SCHOLARSHIPS_SEARCH: '/api/search/scholarships/search',
+  SCHOLARSHIPS_SEARCH: '/api/search/scholarships',
 } as const;
 
 export const apiScholarship = createApi({
@@ -25,9 +25,18 @@ export const apiScholarship = createApi({
     // search scholarships with filters
     searchScholarships: build.query<ScholarshipSearchResponse, ScholarshipSearchRequest>({
       query: (data) => ({
-        url: API_ENDPOINTS.SCHOLARSHIPS_SEARCH,
+        url: `${API_ENDPOINTS.SCHOLARSHIPS_SEARCH}/search`,
         method: 'POST',
         body: data,
+      }),
+      providesTags: ['Scholarships'],
+    }),
+
+    // search scholarships by University
+    searchScholarshipsByUniversity: build.query<SearchScholarshipsByUniversityResponse[], string>({
+      query: (keyword) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIPS_SEARCH}/autocomplete/university?keyword=${encodeURIComponent(keyword)}`,
+        method: 'GET',
       }),
       providesTags: ['Scholarships'],
     }),
@@ -97,12 +106,21 @@ export const apiScholarship = createApi({
       }),
       providesTags: ['Scholarships'],
     }),
+
+    getScholarshipTopView: build.query<Scholarship[], void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/top-views`,
+        method: 'GET',
+      }),
+      providesTags: ['Scholarships'],
+    }),
   }),
 });
 
 export const {
   usePageScholarshipsQuery,
   useSearchScholarshipsQuery,
+  useSearchScholarshipsByUniversityQuery,
   useGetScholarshipByIdQuery,
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,
@@ -110,4 +128,5 @@ export const {
   useCheckIsTrackedScholarshipQuery,
   useGetScholarshipBySlugQuery,
   useGetScholarshipsByProviderIdQuery,
+  useGetScholarshipTopViewQuery,
 } = apiScholarship;

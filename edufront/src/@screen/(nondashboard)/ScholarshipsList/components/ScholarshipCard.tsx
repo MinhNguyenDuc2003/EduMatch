@@ -297,6 +297,8 @@ export default function ScholarshipCard({
         open={isReportDialogOpen}
         onOpenChange={setIsReportDialogOpen}
         initialType="SCHOLARSHIP"
+        id={scholarship.id}
+        scholarshipData={scholarship}
       />
     </>
   );

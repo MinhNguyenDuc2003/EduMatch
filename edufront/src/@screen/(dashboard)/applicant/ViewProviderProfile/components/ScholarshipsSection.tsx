@@ -2,6 +2,7 @@
 import { Skeleton } from '@/lib/cus/skeleton';
 import { ScholarshipCard } from '@/@screen/(nondashboard)/ScholarshipsList/components';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 
 interface ScholarshipsSectionProps {
   scholarships: Scholarship[];
@@ -9,6 +10,7 @@ interface ScholarshipsSectionProps {
   onApply: (scholarship: Scholarship) => void;
   onToggleTracking: (scholarshipId: number) => void;
   onFollowProvider: (providerId: number) => void;
+  isAuthenticated: boolean;
 }
 
 export default function ScholarshipsSection({
@@ -17,9 +19,23 @@ export default function ScholarshipsSection({
   onApply,
   onToggleTracking,
   onFollowProvider,
+  isAuthenticated,
 }: ScholarshipsSectionProps) {
   const t = useTranslations('viewProviderProfile.scholarships');
-  
+  const router = useRouter();
+
+  const handleViewScholarship = (slug: string) => {
+    if (!isAuthenticated) {
+      router.push('http://159.89.200.244/oauth2/authorization/keycloak');
+    } else {
+      router.push(`/scholarships/${slug}`);
+    }
+  };
+
+  const handleViewProvider = (providerId: number) => {
+    router.push(`/applicant/providers/${providerId}`);
+  };
+
   return (
     <div className="space-y-4">
       {/* Scholarships Title */}
@@ -41,8 +57,11 @@ export default function ScholarshipsSection({
               key={scholarship.id}
               scholarship={scholarship}
               onApply={onApply}
+              onViewScholarship={handleViewScholarship}
+              onViewProvider={handleViewProvider}
               onToggleTracking={() => onToggleTracking(scholarship.id)}
               onFollowProvider={() => onFollowProvider(scholarship.providerId)}
+              isAuthenticated={isAuthenticated}
             />
           ))}
         </div>

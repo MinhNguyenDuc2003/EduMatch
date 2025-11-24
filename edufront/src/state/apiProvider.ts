@@ -272,6 +272,21 @@ export const apiProvider = createApi({
         params: { scholarshipId, topK },
       }),
     }),
+
+    getAllFavouriteApplicants: build.query<FavouriteApplicantApiResponse, void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.PROVIDER_FAVORITES}/my-favourite`,
+        method: 'GET',
+      }),
+      providesTags: ['ProviderFavorites'],
+    }),
+
+    removeFavouriteApplicant: build.mutation<void, number>({
+      query: (applicantId) => ({
+        url: `${API_ENDPOINTS.PROVIDER_FAVORITES}/${applicantId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -303,6 +318,8 @@ export const {
   useDeleteNewsImageMutation,
   useGetAllNewsQuery,
   useGetStatisticsQuery,
-  useReferApplicantsMutation,
   useGetRecommendedApplicantsQuery,
+  useReferApplicantsMutation,
+  useGetAllFavouriteApplicantsQuery,
+  useRemoveFavouriteApplicantMutation,
 } = apiProvider;

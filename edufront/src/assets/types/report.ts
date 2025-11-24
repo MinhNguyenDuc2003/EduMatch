@@ -1,5 +1,5 @@
 declare global {
-  type ReportType = 'SCHOLARSHIP' | 'PROVIDER' | 'APPLICANT' | 'SYSTEM' | 'PROFILE';
+  type ReportType = 'SCHOLARSHIP' | 'PROVIDER' | 'SYSTEM' | 'PROFILE';
 
   type FormReport = {
     title: string;

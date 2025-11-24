@@ -9,16 +9,20 @@ import {
 } from '@/state/apiProvider';
 import {
   useFollowScholarshipMutation,
+  useGetScholarshipTopViewQuery,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
 import Loading from '@/pattern/share/Loading';
 import { Newspaper } from 'lucide-react';
+import CardSmalPic from '@/pattern/share/CardSmalPic';
 
 export default function NewsPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
   const { data: newsData, isLoading, refetch } = useGetAllNewsQuery();
+  const { data: scholarshipTopView, isLoading: isLoadingScholarshipTopView } =
+    useGetScholarshipTopViewQuery();
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
   const [followScholarship] = useFollowScholarshipMutation();
@@ -60,6 +64,8 @@ export default function NewsPage() {
       console.log('Failed to toggle follow provider:', error);
     }
   };
+
+  const handleToggleTracking = (scholarshipId: number) => {};
 
   if (isLoading) {
     return <Loading />;
@@ -105,6 +111,21 @@ export default function NewsPage() {
                 isAuthenticated={isAuthenticated}
               />
             ))}
+          </div>
+          <div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Top Viewed Scholarships</h2>
+            </div>
+            <div>
+              {scholarshipTopView?.map((scholarship) => (
+                <CardSmalPic
+                  key={scholarship.id}
+                  scholarship={scholarship}
+                  onViewDetails={() => handleViewScholarship(scholarship.slug)}
+                  onToggleTracking={() => handleToggleTracking(scholarship.id)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>

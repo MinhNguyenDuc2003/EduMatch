@@ -36,6 +36,7 @@
     "applications": "Applications",
     "news": "News",
     "students": "Students",
+    "favourite": "Favourite",
     "settings": "Settings",
     "profile": "Profile",
     "extendSubscription": "Extend Subscription",
@@ -175,6 +176,56 @@
     "submit": "Submit",
     "errorUpdatingNews": "Error updating news",
     "errorCreatingNews": "Error creating news"
+  },
+  "provider": {
+    "favourite": {
+      "title": "Favourite Applicants",
+      "applicantsCount": "applicants saved",
+      "error": "Failed to load favourite applicants. Please try again.",
+      "education": "Education",
+      "note": "Note",
+      "noFavourites": "No favourite applicants yet",
+      "noFavouritesDescription": "Save applicants to quickly access their profiles later",
+      "viewDetail": "View Details",
+      "table": {
+        "applicant": "Applicant",
+        "contact": "Contact",
+        "education": "Education",
+        "gpa": "GPA",
+        "note": "Note",
+        "actions": "Actions"
+      },
+      "detail": {
+        "close": "Close",
+        "personalInfo": "Personal Information",
+        "additionalInformation": "Additional Information",
+        "hometown": "Hometown",
+        "citizenship": "Citizenship",
+        "race": "Race",
+        "ethnicity": "Ethnicity",
+        "religion": "Religion",
+        "gpa": "GPA",
+        "overallGpa": "Overall GPA",
+        "educationHistory": "Education History",
+        "school": "School",
+        "major": "Major",
+        "degreeType": "Degree",
+        "graduationYear": "Graduation Year",
+        "country": "Country",
+        "skills": "Skills",
+        "certificates": "Certificates",
+        "issueDate": "Issue Date",
+        "expiryDate": "Expiry Date",
+        "intentions": "Study Intentions",
+        "expectedGraduation": "Expected Graduation",
+        "activities": "Activities & Interests",
+        "favoriteActivities": "Favorite Activities",
+        "sports": "Sports",
+        "studentActivities": "Student Activities",
+        "organizations": "Organizations",
+        "careerGoals": "Career Goals"
+      }
+    }
   },
   "action": {
     "edit": "Edit",
@@ -389,6 +440,7 @@
       "applied": "applied",
       "availableFilters": "Available Filters",
       "studyLevel": "Study Level",
+      "university": "University",
       "allLevels": "All Levels",
       "country": "Country",
       "allCountries": "All Countries",
@@ -400,7 +452,10 @@
       "above2": "Above 2.0",
       "above3": "Above 3.0",
       "min": "Min",
-      "max": "Max"
+      "max": "Max",
+      "noUniversitiesFound": "No universities found",
+      "searching": "Searching...",
+      "closeFilters": "Close filters"
     },
     "scholarshipCard": {
       "organizationLogo": "Organization logo",
@@ -913,6 +968,20 @@
         "completing": "Completing..."
       }
     }
+  },
+  "reportDialog": {
+    "title": "Give us your feedback",
+    "description": "We value your feedback and would like to hear from you. Please fill out the form below to give us your feedback.",
+    "reportingAbout": "You are reporting about:",
+    "selectedCategory": "Selected Category:",
+    "noCategories": "No categories available for this report type.",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Enter a title for your report",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Please provide details about your feedback",
+    "back": "Back",
+    "submit": "Submit",
+    "submitSuccess": "Report Submitted Successfully"
   },
   "scholarshipProviderGuidelines": {
     "heroSection": {
