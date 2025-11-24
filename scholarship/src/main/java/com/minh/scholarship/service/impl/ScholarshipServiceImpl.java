@@ -226,7 +226,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         scholarshipVos.forEach(o -> {
             o.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(o.getProviderId())));
             ScholarshipViewProjection entities = scholarshipViewRepository.getViewsByScholarshipId(o.getId());
-            o.setViews(entities.getView());
+            if (ObjectUtils.isNotEmpty(entities)) {
+                o.setViews(entities.getView());
+            }
             addScholarshipMedia(o);
         });
         return scholarshipVos;

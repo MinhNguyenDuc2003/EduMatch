@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -178,9 +177,9 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
             MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.REFERRAL_APPLICATION.getCode()));
             String body = templateDto.getBody().replace("{{scholarshipName}}", scholarshipVo.getTitle())
                     .replace("{{universityName}}", scholarshipVo.getUniversity())
-                    .replace("description", scholarshipVo.getDescription()
-                            .replace("{{amount}}", scholarshipVo.getFundingAmount())
-                            .replace("{{link}}", "http://159.89.200.244/edufront/home"));
+                    .replace("{{description}}", scholarshipVo.getDescription())
+                    .replace("{{amount}}", scholarshipVo.getFundingAmount())
+                    .replace("{{link}}", "http://159.89.200.244/edufront/home");
             MailDto mailDto = new MailDto();
             mailDto.setBody(body);
             mailDto.setTo(customerVo.getCustomer().email());
