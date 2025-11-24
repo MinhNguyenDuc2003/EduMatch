@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,26 +52,25 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
     private String referralEventTopic;
     @Value("${kafka.mail.send-mail.topic}")
     private String mailTopic;
+    @Value("${fe.end-point}")
+    private String feEndPoint;
 
     @Override
-    public ProviderFavouriteVo getMyFavourite() {
+    public List<ProviderFavouriteVo> getMyFavourite() {
         String userId = UaaContextHolder.getUserId();
         Optional<ProviderProfileEntity> provider = providerProfileRepository.findByUserId(userId);
         if (provider.isEmpty()) {
             return null;
         }
         List<ProviderFavouriteVo> allByProviderIdAndActive = providerFavouriteMapper.entitiesToVos(providerFavouriteRepository.findAllByProviderIdAndActive(provider.get().getId(), true));
-        ProviderFavouriteVo result = allByProviderIdAndActive.getFirst();
-        List<ApplicantProfileVo> profileVos = new ArrayList<>();
         allByProviderIdAndActive.forEach(entity -> {
             ApplicantProfileVo applicant =
                     applicantProfileService.getOneByUserId(entity.getUserId());
             if (applicant != null) {
-                profileVos.add(applicant);
+                entity.setApplicantProfileVo(applicant);
             }
         });
-        result.setApplicantProfileVo(profileVos);
-        return result;
+        return allByProviderIdAndActive;
     }
 
     @Override
@@ -146,8 +144,7 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
                 .replace("{{link}}", "http://159.89.200.244/edufront/home");
         MailDto mailDto = new MailDto();
         mailDto.setBody(body);
-//        mailDto.setTo(customerVo.getCustomer().email());
-        mailDto.setTo("ducm40877@gmail.com");
+        mailDto.setTo(customerVo.getCustomer().email());
         mailDto.setSubject(templateDto.getSubject());
         mailDto.setTemplateId(templateDto.getId());
         kafkaProducer.convertToByteAndSend(mailTopic, mailDto);
@@ -167,8 +164,8 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
             NotificationVo notificationVo = NotificationVo.builder()
                     .topic(NotificationTopicEnum.APPLICATION_REFERRAL)
                     .title(notificationTemplateDto.getTitle().replace("{{providerName}}", scholarshipVo.getProviderProfileVo().getOrganizationName()))
-                    .content(notificationTemplateDto.getContent().replace("{{providerName}}", scholarshipVo.getProviderProfileVo().getOrganizationName()
-                            .replace("{{scholarshipName}}", scholarshipVo.getTitle())))
+                    .content(notificationTemplateDto.getContent().replace("{{providerName}}", scholarshipVo.getProviderProfileVo().getOrganizationName())
+                            .replace("{{scholarshipName}}", scholarshipVo.getTitle()))
                     .isRead(false)
                     .referenceId(scholarshipId)
                     .referenceType(NotificationReferenceEnum.APPLICATION_REFERRAL.getCode())
@@ -183,7 +180,7 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
                     .replace("{{universityName}}", scholarshipVo.getUniversity())
                     .replace("description", scholarshipVo.getDescription()
                             .replace("{{amount}}", scholarshipVo.getFundingAmount())
-                            .replace("{{link}}", "http://159.89.200.244/edufront/home"));
+                            .replace("{{link}}", feEndPoint + "scholarships/" + scholarshipVo.getSlug()));
             MailDto mailDto = new MailDto();
             mailDto.setBody(body);
             mailDto.setTo(customerVo.getCustomer().email());

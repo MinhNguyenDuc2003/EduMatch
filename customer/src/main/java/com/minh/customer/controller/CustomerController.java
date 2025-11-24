@@ -44,7 +44,7 @@ public class CustomerController {
         return ApiResponse.ok(customerService.getCustomerProfile(id));
     }
 
-    @GetMapping("customers/profile")
+    @GetMapping("/customers/profile")
     public ApiResponse<CustomerVo> getSimpleCustomerById(@RequestParam String id) {
         return ApiResponse.ok(customerService.getSimpleCustomerById(id));
     }

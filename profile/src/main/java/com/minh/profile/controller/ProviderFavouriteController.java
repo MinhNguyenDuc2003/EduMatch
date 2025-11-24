@@ -10,6 +10,8 @@ import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(EndPoint.PROFILES.PROVIDER_FAVOURITE)
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class ProviderFavouriteController {
 
     @Authorized
     @GetMapping("/my-favourite")
-    public ApiResponse<ProviderFavouriteVo> getMyFavourite() {
+    public ApiResponse<List<ProviderFavouriteVo>> getMyFavourite() {
         return ApiResponse.ok(providerFavouriteService.getMyFavourite());
     }
 

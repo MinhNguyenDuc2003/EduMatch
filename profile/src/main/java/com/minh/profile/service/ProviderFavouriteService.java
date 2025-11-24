@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProviderFavouriteService {
 
-    ProviderFavouriteVo getMyFavourite();
+    List<ProviderFavouriteVo> getMyFavourite();
 
     ProviderFavouriteVo getById(Long id);
 

@@ -32,4 +32,33 @@ public interface ScholarshipViewRepository extends JpaRepository<ScholarshipView
 
     @Query("SELECT COUNT(v.id) FROM ScholarshipViewEntity v WHERE v.active = true")
     Long countAllViews();
+
+    @Query(value = "WITH views AS ( " +
+            "    SELECT  " +
+            "        v.scholarship_id as scholarshipId, " +
+            "        COUNT(v.user_id) AS view " +
+            "    FROM scholarship.scholarship_view v " +
+            "    INNER JOIN scholarship.scholarship s ON v.scholarship_id = s.id " +
+            "    WHERE s.provider_id = :id " +
+            "    GROUP BY v.scholarship_id " +
+            ") " +
+            "SELECT * " +
+            "FROM views " +
+            "ORDER BY view DESC " +
+            "LIMIT 10;", nativeQuery = true)
+    List<ScholarshipViewProjection> getTop10ViewsByMonthAndProviderId(Long id);
+
+    @Query(value = "WITH views AS ( " +
+            "    SELECT  " +
+            "        v.scholarship_id as scholarshipId, " +
+            "        COUNT(v.user_id) AS view " +
+            "    FROM scholarship.scholarship_view v " +
+            "    INNER JOIN scholarship.scholarship s ON v.scholarship_id = s.id " +
+            "    WHERE EXTRACT(MONTH FROM v.created_datetime) = :month AND s.id = :id " +
+            "    GROUP BY v.scholarship_id " +
+            ") " +
+            "SELECT * " +
+            "FROM views " +
+            "ORDER BY view DESC ", nativeQuery = true)
+    ScholarshipViewProjection getViewsByScholarshipId(Long id);
 }

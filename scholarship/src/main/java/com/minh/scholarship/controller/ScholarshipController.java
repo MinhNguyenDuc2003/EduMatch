@@ -165,10 +165,15 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getTopViewsByMonth());
     }
 
+    @Authorized
+    @GetMapping("/top-views/provider/month")
+    public ApiResponse<List<ScholarshipVo>> getTopViewsByMonthByProvider() {
+        return ApiResponse.ok(scholarshipService.getTopViewsByMonthByProvider());
+    }
+
     @GetMapping("/suggestion/mail")
     public ApiResponse<Boolean> sendMailSuggestion() {
         return ApiResponse.ok(scholarshipService.sendMailSuggestion());
     }
-
 
 }

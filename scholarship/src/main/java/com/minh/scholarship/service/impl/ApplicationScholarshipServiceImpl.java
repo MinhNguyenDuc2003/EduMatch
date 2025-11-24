@@ -13,6 +13,7 @@ import com.minh.model.dto.media.MailTemplateDto;
 import com.minh.model.dto.notification.NotificationTemplateDto;
 import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
 import com.minh.scholarship.data.entity.ApplicationScholarshipEntity;
+import com.minh.scholarship.data.entity.ScholarshipEntity;
 import com.minh.scholarship.data.mapper.ApplicationScholarshipMapper;
 import com.minh.scholarship.data.repository.ApplicationScholarshipRepository;
 import com.minh.scholarship.data.repository.ScholarshipRepository;
@@ -301,4 +302,19 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
         vo.setScholarshipVo(scholarshipService.getById(vo.getScholarshipId()));
         return vo;
     }
+
+    @Override
+    public List<ApplicationScholarshipVo> getByMyProvider() {
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getMyProviderInfo());
+        List<ScholarshipEntity> scholarshipEntities = scholarshipRepository.findAllByProviderIdAndActive(providerProfileVo.getId(), true);
+        List<ApplicationScholarshipVo> vos = new ArrayList<>();
+        scholarshipEntities.forEach(item -> {
+            List<ApplicationScholarshipVo> allByScholarshipId = this.getAllByScholarshipId(item.getId());
+            if (!allByScholarshipId.isEmpty()) {
+                vos.addAll(allByScholarshipId);
+            }
+        });
+        return vos;
+    }
+
 }

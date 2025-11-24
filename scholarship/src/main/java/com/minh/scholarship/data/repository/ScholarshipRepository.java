@@ -90,4 +90,5 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
             "ORDER BY s.created_datetime DESC", nativeQuery = true)
     List<ScholarshipProjection> getVosWithFollowByProviderId(@Param("providerId") Long providerId, @Param("userId") String userId);
 
+    List<ScholarshipEntity> findAllByProviderIdAndActive(Long id, boolean b);
 }

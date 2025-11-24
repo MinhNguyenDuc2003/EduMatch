@@ -35,4 +35,5 @@ public interface ApplicationScholarshipService {
 
     ApplicationScholarshipVo getByScholarshipIdAndApplicationId(Long scholarshipId, Long applicationId);
 
+    List<ApplicationScholarshipVo> getByMyProvider();
 }

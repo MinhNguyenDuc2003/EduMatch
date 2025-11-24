@@ -66,4 +66,5 @@ public interface ScholarshipService {
 
     String getAnalyzeResponse(Long scholarshipId);
 
+    List<ScholarshipVo> getTopViewsByMonthByProvider();
 }

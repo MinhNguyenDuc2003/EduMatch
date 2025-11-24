@@ -225,6 +225,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         List<ScholarshipVo> scholarshipVos = scholarshipMapper.prosToVos(allVoByIds);
         scholarshipVos.forEach(o -> {
             o.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(o.getProviderId())));
+            ScholarshipViewProjection entities = scholarshipViewRepository.getViewsByScholarshipId(o.getId());
+            o.setViews(entities.getView());
             addScholarshipMedia(o);
         });
         return scholarshipVos;
@@ -278,7 +280,10 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         List<ScholarshipEntity> scholarshipEntities = scholarshipRepository.getAllByProviderIdAndActive(providerProfileVo.getId(), true);
         List<ScholarshipVo> scholarshipVos = new ArrayList<>();
         scholarshipEntities.forEach(entity -> {
-            scholarshipVos.add(this.getById(entity.getId()));
+            ScholarshipVo scholarshipVo = this.getById(entity.getId());
+            ScholarshipViewProjection entities = scholarshipViewRepository.getViewsByScholarshipId(scholarshipVo.getId());
+            scholarshipVo.setViews(entities.getView());
+            scholarshipVos.add(scholarshipVo);
         });
         return scholarshipVos;
     }
@@ -316,6 +321,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 scholarshipViewRepository.save(viewEntity);
             }
         }
+        ScholarshipViewProjection entities = scholarshipViewRepository.getViewsByScholarshipId(vo.getId());
+        vo.setViews(entities.getView());
         return addScholarshipMedia(vo);
     }
 
@@ -416,6 +423,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     public List<ScholarshipVo> getRecommendationScholarship(String userId, int topK) {
         ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(userId));
         AiRequestDto requestDto = new AiRequestDto();
+        if (ObjectUtils.isEmpty(applicantProfileVo)) {
+            throw new BusinessException(CoreMessageCode.APPLICANT_ID_IS_NOT_EXIST);
+        }
         requestDto.setApplicantId(applicantProfileVo.getId());
         requestDto.setTopK(topK);
         ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationScholarship(requestDto);
@@ -457,6 +467,19 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         requestDto.setApplicantId(1L);
         requestDto.setScholarshipId(scholarshipId);
         return aiMatchFeign.getAnalyzeMatch(requestDto);
+    }
+
+    @Override
+    public List<ScholarshipVo> getTopViewsByMonthByProvider() {
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getMyProviderInfo());
+        List<ScholarshipVo> vos = new ArrayList<>();
+        List<ScholarshipViewProjection> entities = scholarshipViewRepository.getTop10ViewsByMonthAndProviderId(providerProfileVo.getId());
+        entities.forEach(entity -> {
+            ScholarshipVo scholarshipVo = this.getById(entity.getScholarshipId());
+            scholarshipVo.setViews(entity.getView());
+            vos.add(scholarshipVo);
+        });
+        return vos;
     }
 
     private String generateBodyEmailScholarshipSuggestion(List<ScholarshipDto> scholarships, String template) {

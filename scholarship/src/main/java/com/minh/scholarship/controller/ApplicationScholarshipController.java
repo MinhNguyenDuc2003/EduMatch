@@ -46,6 +46,12 @@ public class ApplicationScholarshipController {
     }
 
     @Authorized
+    @GetMapping("/by-provider")
+    public ApiResponse<List<ApplicationScholarshipVo>> getByMyProvider() {
+        return ApiResponse.ok(service.getByMyProvider());
+    }
+
+    @Authorized
     @GetMapping("/my")
     public ApiResponse<List<ApplicationScholarshipVo>> getByMyScholarship() {
         return ApiResponse.ok(service.getByMyScholarship());
