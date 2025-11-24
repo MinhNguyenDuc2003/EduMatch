@@ -9,6 +9,7 @@ declare global {
     appliedAt?: number;
     reviewedAt?: number;
     note?: string;
+    score?: number;
   };
 
   type UpdateApplicationStatusRequest = {

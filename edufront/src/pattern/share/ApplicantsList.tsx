@@ -138,17 +138,17 @@ const ApplicantsList = ({
                 </td>
 
                 <td
-                  className="px-2 sm:px-4 py-3 font-bold hidden sm:table-cell"
+                  className="px-2 h-full sm:px-4 py-3 font-bold hidden sm:table-cell"
                   style={{ color: '#3d6cb9' }}
                 >
                   {applicant.score ? `${(applicant.score * 100).toFixed(2)}%` : 'N/A'}
                 </td>
-                <td className="px-2 sm:px-4 py-3 flex items-center justify-center text-center">
+                <td className="px-2 h-full sm:px-4 py-3 sm:table-cell">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setDetailApplicant(applicant)}
-                    className="shadow-none"
+                    className="shadow-none w-full"
                   >
                     <Eye className="w-4 h-4 text-primary-brand" />
                   </Button>

@@ -17,7 +17,6 @@ const ApplicationsTableRow = React.memo(({ application, onView }: ApplicationsTa
   };
 
   const status = application.status || 'pending';
-  const appliedDate = formatAppliedDate(application.appliedAt);
 
   const { fullName, email, major, gpa } = application.applicationVo;
 
@@ -41,7 +40,9 @@ const ApplicationsTableRow = React.memo(({ application, onView }: ApplicationsTa
         <p className="text-sm font-medium text-gray-900">{gpa}</p>
       </td>
       <td className="px-6 py-4">
-        <p className="text-sm text-gray-500">{appliedDate}</p>
+        <p className="text-sm font-bold text-primary-brand">
+          {application.score ? (application.score * 100).toFixed(2) + '%' : 'N/A'}
+        </p>
       </td>
       <td className="px-6 py-4">
         <span

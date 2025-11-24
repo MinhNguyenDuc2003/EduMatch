@@ -27,6 +27,7 @@
     "scholarshipNews": "Đã có tin tức về học bổng mà bạn theo dõi",
     "application": "Trạng thái của hồ sơ của bạn đã được cập nhật",
     "scholarshipApplication": "Đã có hồ sơ đăng ký học bổng của bạn",
+    "applicationReferral": "Bạn có nhận được đề xuất học bổng mới",
     "noNotifications": "Không có thông báo nào",
     "viewAllNotifications": "Xem tất cả thông báo"
   },
@@ -56,6 +57,7 @@
   "providerApplications": {
     "title": "Hồ sơ",
     "subtitle": "Quản lý và xem xét các hồ sơ học bổng",
+    "score": "Điểm phù hợp",
     "exportData": "Xuất dữ liệu",
     "selectScholarship": "Chọn một học bổng",
     "selectScholarshipDescription": "Chọn một học bổng từ bên trái để xem các hồ sơ của nó",
@@ -211,7 +213,7 @@
     "description": "Ứng viên phù hợp cho học bổng {scholarshipId}",
     "back": "Quay lại",
     "clearSelection": "Xóa lựa chọn",
-    "save": "Lưu {count} Ứng viên{count, plural, one {s} other {s}}",
+    "save": "Gửi đề xuất cho {count} Ứng viên",
     "name": "Tên",
     "gpa": "GPA",
     "university": "Trường học",

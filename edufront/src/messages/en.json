@@ -27,6 +27,7 @@
     "scholarshipNews": "A new news about your tracked scholarship has been published",
     "application": "The status of your application has been updated",
     "scholarshipApplication": "An application has been submitted for your scholarship",
+    "applicationReferral": "You have a new referral scholarship",
     "noNotifications": "No notifications",
     "viewAllNotifications": "View all notifications"
   },
@@ -56,6 +57,7 @@
   "providerApplications": {
     "title": "Applications",
     "subtitle": "Manage and review scholarship applications",
+    "score": "Matching Score",
     "exportData": "Export Data",
     "selectScholarship": "Select a Scholarship",
     "selectScholarshipDescription": "Choose a scholarship from the left to view its applications",
@@ -211,7 +213,7 @@
     "description": "Matching applicants for scholarship {scholarshipId}",
     "back": "Back",
     "clearSelection": "Clear Selection",
-    "save": "Save {count} Applicant{count, plural, one {s} other {s}}",
+    "save": "Send Referral for {count} Applicant{count, plural, one {s} other {s}}",
     "name": "Name",
     "gpa": "GPA",
     "university": "University",

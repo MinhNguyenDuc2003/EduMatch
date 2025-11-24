@@ -159,12 +159,17 @@ export const apiProvider = createApi({
     }),
 
     // Get all applications by scholarship ID
-    getApplicationsByScholarshipId: build.query<ApplicationScholarship[], number>({
-      query: (scholarshipId) => ({
-        url: `${API_ENDPOINTS.APPLICATION}/by-scholarship?scholarshipId=${scholarshipId}`,
+    getApplicationsByScholarshipId: build.query<
+      ApplicationScholarship[],
+      { scholarshipId: number; topK: number }
+    >({
+      query: ({ scholarshipId, topK }) => ({
+        url: `${API_ENDPOINTS.APPLICATION}/rank/application?scholarshipId=${scholarshipId}&topK=${topK}`,
         method: 'GET',
       }),
-      providesTags: (result, error, scholarshipId) => [{ type: 'Applications', id: scholarshipId }],
+      providesTags: (result, error, { scholarshipId }) => [
+        { type: 'Applications', id: scholarshipId },
+      ],
     }),
 
     // Update application status
