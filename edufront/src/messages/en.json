@@ -322,6 +322,7 @@
     "backToScholarships": "Back to Scholarships",
     "scholarships": "Scholarships",
     "applyNow": "Apply Now",
+    "analyzeScholarship": "Analyze Scholarship",
     "noDeadline": "No deadline",
     "metadata": {
       "track": "Track",
@@ -349,6 +350,18 @@
       "follow": "Follow",
       "scholarshipLogo": "Scholarship logo",
       "about": "About"
+    },
+    "analysis": {
+      "title": "Scholarship Analysis",
+      "analysisResult": "Analysis Result",
+      "loading": "Analyzing scholarship...",
+      "noData": "No analysis data available",
+      "matchReasons": "Match Reasons",
+      "studentStrengths": "Student Strengths",
+      "improvementAreas": "Areas for Improvement",
+      "applicationTips": "Application Tips",
+      "overallStrategy": "Overall Strategy",
+      "timeline": "Timeline"
     }
   },
   "viewProviderProfile": {

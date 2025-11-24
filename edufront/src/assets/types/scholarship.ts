@@ -117,6 +117,20 @@ declare global {
     last: boolean;
     empty: boolean;
   };
+
+  type ScholarshipAnalysisRecommendation = {
+    scholarship_name: string;
+    match_reasons: string[];
+    student_strengths: string[];
+    improvement_areas: string[];
+    application_tips: string[];
+  };
+
+  type ScholarshipAnalysis = {
+    recommendations: ScholarshipAnalysisRecommendation[];
+    overall_strategy: string;
+    timeline: string[];
+  };
 }
 
 export {};

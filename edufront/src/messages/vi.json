@@ -322,6 +322,7 @@
     "backToScholarships": "Quay lại danh sách học bổng",
     "scholarships": "Học bổng",
     "applyNow": "Ứng tuyển ngay",
+    "analyzeScholarship": "Phân tích học bổng",
     "noDeadline": "Không có hạn chót",
     "metadata": {
       "track": "Theo dõi",
@@ -349,6 +350,18 @@
       "follow": "Theo dõi",
       "scholarshipLogo": "Logo học bổng",
       "about": "Giới thiệu"
+    },
+    "analysis": {
+      "title": "Phân Tích Học Bổng",
+      "analysisResult": "Kết quả phân tích học bổng",
+      "loading": "Đang phân tích học bổng...",
+      "noData": "Không có dữ liệu phân tích",
+      "matchReasons": "Lý Do Phù Hợp",
+      "studentStrengths": "Điểm Mạnh Của Sinh Viên",
+      "improvementAreas": "Lĩnh Vực Cần Cải Thiện",
+      "applicationTips": "Mẹo Ứng Tuyển",
+      "overallStrategy": "Chiến Lược Tổng Thể",
+      "timeline": "Lộ Trình"
     }
   },
   "viewProviderProfile": {
