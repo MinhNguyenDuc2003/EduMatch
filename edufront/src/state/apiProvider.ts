@@ -12,12 +12,13 @@ const API_ENDPOINTS = {
   APPLICATION: '/api/scholarship/applications-scholarship',
   NEWS: '/api/profile/provider-new',
   VERIFY_PROVIDERS_EMAIL: '/api/profile/providers/verify',
+  PROVIDER_FAVORITES: '/api/profile/provider-favourite',
 } as const;
 
 export const apiProvider = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiProvider',
-  tagTypes: ['Profile', 'Scholarships', 'Applications', 'News'],
+  tagTypes: ['Profile', 'Scholarships', 'Applications', 'News', 'ProviderFavorites'],
   endpoints: (build) => ({
     // Get customer profile (works for both applicant and provider)
     getProfile: build.query<ProviderProfileApiResponse, void>({
@@ -251,6 +252,26 @@ export const apiProvider = createApi({
         method: 'GET',
       }),
     }),
+
+    referApplicants: build.mutation<boolean, { scholarshipId: number; userIds: string[] }>({
+      query: ({ scholarshipId, userIds }) => ({
+        url: `${API_ENDPOINTS.PROVIDER_FAVORITES}/refer/all`,
+        method: 'POST',
+        body: { scholarshipId, userIds },
+      }),
+      invalidatesTags: ['ProviderFavorites'],
+    }),
+
+    getRecommendedApplicants: build.query<
+      ApplicantProfile[],
+      { scholarshipId: number; topK: number }
+    >({
+      query: ({ scholarshipId, topK }) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/recommendation/applicant`,
+        method: 'GET',
+        params: { scholarshipId, topK },
+      }),
+    }),
   }),
 });
 
@@ -282,4 +303,6 @@ export const {
   useDeleteNewsImageMutation,
   useGetAllNewsQuery,
   useGetStatisticsQuery,
+  useReferApplicantsMutation,
+  useGetRecommendedApplicantsQuery,
 } = apiProvider;

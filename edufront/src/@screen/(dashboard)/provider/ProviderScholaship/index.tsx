@@ -3,17 +3,21 @@
 import { Button } from '@/lib/cus/button';
 import Header from '@/pattern/share/Header';
 import { Plus } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { ScholarshipCard, EmptyState } from './components';
 import { useRouter } from 'next/navigation';
 import { useDeleteScholarshipMutation, useGetScholarshipsQuery } from '@/state/apiProvider';
 import { ScholarshipCardSkeleton } from './components/ScholarshipCard';
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
+import AIApplicantSuggestionsDialog from '@/pattern/share/AIApplicantSuggestionsDialog';
 
 const ProviderScholaship = () => {
   const router = useRouter();
   const t = useTranslations('providerScholaship');
+
+  const [selectedScholarshipId, setSelectedScholarshipId] = useState<number | null>(null);
+  const [showAISuggestions, setShowAISuggestions] = useState(false);
 
   const { data: scholarships, isLoading } = useGetScholarshipsQuery();
   const [deleteScholarship, { isLoading: isDeleting }] = useDeleteScholarshipMutation();
@@ -47,7 +51,7 @@ const ProviderScholaship = () => {
       />
 
       {/* Scholarships Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoading &&
           Array.from({ length: 10 }).map((_, index) => (
             <ScholarshipCardSkeleton variant="medium" className="bg-white" key={index} />
@@ -61,11 +65,24 @@ const ProviderScholaship = () => {
               key={scholarship.id}
               scholarship={scholarship}
               onDelete={handleDeleteScholarship}
+              setSelectedScholarshipId={setSelectedScholarshipId}
+              setShowAISuggestions={setShowAISuggestions}
             />
           ))}
       </div>
 
       {!isLoading && (!scholarships || scholarships.length === 0) && <EmptyState />}
+
+      {selectedScholarshipId && (
+        <AIApplicantSuggestionsDialog
+          isOpen={showAISuggestions}
+          onClose={() => {
+            setShowAISuggestions(false);
+            setSelectedScholarshipId(null);
+          }}
+          scholarshipId={selectedScholarshipId}
+        />
+      )}
     </div>
   );
 };

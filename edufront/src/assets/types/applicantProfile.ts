@@ -94,6 +94,7 @@ declare global {
     applicantPreferences: ApplicantPreference[];
     skills: Skill[];
     intentions: Intention[];
+    score?: number;
   }
 
   interface ProfileApiResponse {

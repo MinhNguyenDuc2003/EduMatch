@@ -178,7 +178,8 @@
   },
   "action": {
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "generateSuggestions": "Generate Suggestions"
   },
   "error": {
     "fetchingError": "Fetching error"

@@ -178,7 +178,8 @@
   },
   "action": {
     "edit": "Sửa",
-    "delete": "Xóa"
+    "delete": "Xóa",
+    "generateSuggestions": "Tạo gợi ý"
   },
   "error": {
     "fetchingError": "Lỗi khi lấy dữ liệu"
