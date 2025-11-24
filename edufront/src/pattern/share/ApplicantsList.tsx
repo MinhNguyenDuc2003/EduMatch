@@ -1,7 +1,7 @@
 import { Button } from '@/lib/cus/button';
 import { Checkbox } from '@/lib/cus/checkbox';
 import { useReferApplicantsMutation } from '@/state/apiProvider';
-import { Eye, Loader2 } from 'lucide-react';
+import { Eye, Loader2, MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
@@ -69,8 +69,8 @@ const ApplicantsList = ({
               <th className="px-2 sm:px-4 py-3 text-left font-semibold hidden md:table-cell">
                 {t('university')}
               </th>
-              <th className="px-2 sm:px-4 py-3 text-left font-semibold hidden lg:table-cell">
-                {t('major')}
+              <th className="px-2 sm:px-4 py-3 text-left font-semibold hidden md:table-cell">
+                {t('contact')}
               </th>
               <th className="px-2 sm:px-4 py-3 text-left font-semibold hidden sm:table-cell">
                 {t('score')}
@@ -88,7 +88,17 @@ const ApplicantsList = ({
                   />
                 </td>
                 <td className="px-2 sm:px-4 py-3 font-medium text-xs sm:text-sm">
-                  {applicant.firstName} {applicant.lastName}
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary-brand rounded-full flex items-center justify-center text-white font-bold">
+                      {applicant.firstName?.[0]}
+                      {applicant.lastName?.[0]}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">
+                        {applicant.firstName} {applicant.lastName}
+                      </p>
+                    </div>
+                  </div>
                 </td>
                 <td
                   className="px-2 sm:px-4 py-3 font-bold hidden sm:table-cell"
@@ -97,11 +107,36 @@ const ApplicantsList = ({
                   {applicant.overallGpa}
                 </td>
                 <td className="px-2 sm:px-4 py-3 text-muted-foreground text-xs hidden md:table-cell">
-                  {applicant.educationHistories?.[0]?.institutionName || 'N/A'}
+                  {applicant.educationHistories && applicant.educationHistories.length > 0 ? (
+                    <div className="max-w-xs">
+                      <div className="flex items-center gap-1 mb-1">
+                        <p className="text-sm font-medium text-gray-900 truncate">
+                          {applicant.educationHistories[0].institutionName}
+                        </p>
+                      </div>
+                      <p className="text-xs text-gray-500 truncate">
+                        {applicant.educationHistories[0].majorName}
+                      </p>
+                    </div>
+                  ) : (
+                    <span className="text-sm text-gray-400">-</span>
+                  )}
                 </td>
-                <td className="px-2 sm:px-4 py-3 text-muted-foreground text-xs hidden lg:table-cell">
-                  {applicant.educationHistories?.[0]?.majorName || 'N/A'}
+
+                <td className="px-2 sm:px-4 py-3 text-muted-foreground text-xs hidden md:table-cell">
+                  <div className="space-y-1">
+                    {applicant.phoneNumber && (
+                      <p className="text-sm text-gray-900">{applicant.phoneNumber}</p>
+                    )}
+                    {applicant.hometown && (
+                      <div className="flex items-center gap-1 text-sm text-gray-500">
+                        <MapPin className="w-3 h-3" />
+                        <span>{applicant.hometown}</span>
+                      </div>
+                    )}
+                  </div>
                 </td>
+
                 <td
                   className="px-2 sm:px-4 py-3 font-bold hidden sm:table-cell"
                   style={{ color: '#3d6cb9' }}

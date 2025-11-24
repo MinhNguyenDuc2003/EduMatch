@@ -4,7 +4,7 @@ import { useGetAllFavouriteApplicantsQuery } from '@/state/apiProvider';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { FavouriteEmptyState, FavouriteListSkeleton, FavouriteApplicantsTable } from './components';
-import ApplicantDetailDialog from '@/pattern/share/ApplicantDetailDialog';
+import ApplicantDetailDialog from './components/ApplicantDetailDialog';
 
 export default function FavouriteApplicants() {
   const t = useTranslations('provider.favourite');

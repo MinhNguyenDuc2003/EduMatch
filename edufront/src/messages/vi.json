@@ -196,34 +196,8 @@
         "actions": "Thao tác"
       },
       "detail": {
-        "close": "Đóng",
-        "personalInfo": "Thông tin cá nhân",
-        "additionalInformation": "Thông tin bổ sung",
-        "hometown": "Quê quán",
-        "citizenship": "Quốc tịch",
-        "race": "Chủng tộc",
-        "ethnicity": "Dân tộc",
-        "religion": "Tôn giáo",
-        "gpa": "Điểm trung bình",
-        "overallGpa": "Điểm trung bình tổng thể",
-        "educationHistory": "Lịch sử học tập",
-        "school": "Trường học",
-        "major": "Chuyên ngành",
-        "degreeType": "Bằng cấp",
-        "graduationYear": "Năm tốt nghiệp",
-        "country": "Quốc gia",
-        "skills": "Kỹ năng",
-        "certificates": "Chứng chỉ",
-        "issueDate": "Ngày cấp",
-        "expiryDate": "Ngày hết hạn",
-        "intentions": "Ý định học tập",
-        "expectedGraduation": "Dự kiến tốt nghiệp",
-        "activities": "Hoạt động & Sở thích",
-        "favoriteActivities": "Hoạt động yêu thích",
-        "sports": "Thể thao",
-        "studentActivities": "Hoạt động sinh viên",
-        "organizations": "Tổ chức",
-        "careerGoals": "Mục tiêu nghề nghiệp"
+        "title": "Chi tiết ứng viên",
+        "description": "Xem chi tiết của ứng viên."
       }
     }
   },
@@ -241,7 +215,7 @@
     "name": "Tên",
     "gpa": "GPA",
     "university": "Trường học",
-    "major": "Chuyên ngành",
+    "contact": "Liên hệ",
     "score": "Điểm",
     "actions": "Hành động",
     "detail": {

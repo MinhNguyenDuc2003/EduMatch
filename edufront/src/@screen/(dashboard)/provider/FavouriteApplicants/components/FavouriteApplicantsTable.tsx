@@ -44,7 +44,7 @@ export default function FavouriteApplicantsTable({
                 {/* Applicant Info */}
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                    <div className="w-10 h-10 bg-primary-brand rounded-full flex items-center justify-center text-white font-bold">
                       {applicant.firstName?.[0]}
                       {applicant.lastName?.[0]}
                     </div>
@@ -119,7 +119,6 @@ export default function FavouriteApplicantsTable({
                     className="inline-flex items-center gap-1 text-primary-brand hover:text-[#3d4c63] cursor-pointer font-medium text-sm transition-colors"
                   >
                     <Eye className="w-4 h-4" />
-                    {t('viewDetail')}
                   </button>
                 </td>
               </tr>
