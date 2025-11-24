@@ -61,19 +61,25 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
         if (provider.isEmpty()) {
             return null;
         }
-        List<ProviderFavouriteVo> allByProviderIdAndActive = providerFavouriteMapper.entitiesToVos(providerFavouriteRepository.findAllByProviderIdAndActive(provider.get().getId(), true));
-        ProviderFavouriteVo result = allByProviderIdAndActive.getFirst();
+
+        List<ProviderFavouriteEntity> entities =
+                providerFavouriteRepository.findAllByProviderIdAndActive(provider.get().getId(), true);
+
         List<ApplicantProfileVo> profileVos = new ArrayList<>();
-        allByProviderIdAndActive.forEach(entity -> {
-            ApplicantProfileVo applicant =
-                    applicantProfileService.getOneByUserId(entity.getUserId());
+        entities.forEach(entity -> {
+            ApplicantProfileVo applicant = applicantProfileService.getOneByUserId(entity.getUserId());
             if (applicant != null) {
                 profileVos.add(applicant);
             }
         });
+
+        ProviderFavouriteVo result = new ProviderFavouriteVo();
+        result.setId(provider.get().getId());
         result.setApplicantProfileVo(profileVos);
+
         return result;
     }
+
 
     @Override
     public ProviderFavouriteVo getById(Long id) {
@@ -84,11 +90,33 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
     @Override
     @Transactional
     public ProviderFavouriteDto create(ProviderFavouriteDto dto) {
-        if (providerFavouriteRepository.existsByProviderIdAndUserId(dto.getProviderId(), dto.getUserId())) {
+
+        String currentUserId = UaaContextHolder.getUserId();
+        ProviderProfileEntity provider = providerProfileRepository.findByUserId(currentUserId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
+
+        Long providerId = provider.getId();
+
+        ApplicantProfileVo applicant = applicantProfileService.getOne(dto.getApplicantId());
+        if (applicant == null) {
+            throw new BusinessException(CoreMessageCode.APPLICANT_NOT_FOUND);
+        }
+
+        boolean exists = providerFavouriteRepository.existsByProviderIdAndUserId(
+                providerId,
+                applicant.getUserId()
+        );
+
+        if (exists) {
             throw new BusinessException(CoreMessageCode.APPLICANT_ALREADY_ADDED_TO_FAVOURITE);
         }
 
-        ProviderFavouriteEntity entity = providerFavouriteMapper.toEntity(dto);
+        ProviderFavouriteEntity entity = new ProviderFavouriteEntity();
+        entity.setProviderId(providerId);
+        entity.setUserId(applicant.getUserId());
+        entity.setNote(dto.getNote());
+        entity.setActive(true);
+
         providerFavouriteRepository.save(entity);
 
         return providerFavouriteMapper.entityToVo(entity);
@@ -101,12 +129,24 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
         ProviderFavouriteEntity entity = providerFavouriteRepository.findById(dto.getId())
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICANT_FAVOURITE_NOT_FOUND));
 
-        providerFavouriteMapper.updateEntityFromDto(dto, entity);
+        if (dto.getApplicantId() != null) {
+            ApplicantProfileVo applicant = applicantProfileService.getOne(dto.getApplicantId());
+            if (applicant == null) {
+                throw new BusinessException(CoreMessageCode.APPLICANT_NOT_FOUND);
+            }
+            entity.setUserId(applicant.getUserId());
+        }
+
+        if (dto.getNote() != null) {
+            entity.setNote(dto.getNote());
+        }
+
+        entity.setActive(dto.getActive());
+
         providerFavouriteRepository.save(entity);
 
         return providerFavouriteMapper.entityToVo(entity);
     }
-
 
     @Override
     @Transactional

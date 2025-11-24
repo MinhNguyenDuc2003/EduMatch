@@ -12,4 +12,5 @@ public interface ApplicantProfileService {
     ApplicantProfileDto update(ApplicantProfileVo profile);
 
     ApplicantProfileVo getOneByUserId(String userId);
+
 }

@@ -12,5 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProviderFavouriteVo extends ProviderFavouriteDto {
+    private Long id;
+    private String userId;
+    private String note;
     private List<ApplicantProfileVo> applicantProfileVo;
 }
