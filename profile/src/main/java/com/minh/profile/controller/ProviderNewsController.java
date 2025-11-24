@@ -5,8 +5,6 @@ import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.profile.ProviderNewsDto;
 import com.minh.profile.data.vo.ProviderNewsVo;
-import com.minh.profile.feign.NotificationTemplateFeign;
-import com.minh.profile.message.KafkaProducer;
 import com.minh.profile.service.ProviderNewsService;
 import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
