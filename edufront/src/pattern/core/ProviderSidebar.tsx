@@ -19,9 +19,10 @@ import {
   Settings,
   ChevronRight,
   User,
-  HelpCircle,
   Newspaper,
   Home,
+  ArrowBigUp,
+  Heart,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -68,9 +69,9 @@ const ProviderSidebar = () => {
       href: '/provider/news',
     },
     {
-      icon: Users,
-      label: t('students'),
-      href: '/provider/students',
+      icon: Heart,
+      label: t('favourite'),
+      href: '/provider/favourite',
     },
   ];
 
@@ -185,9 +186,9 @@ const ProviderSidebar = () => {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="cursor-pointer">
-              <Link href="/help" className="flex items-center gap-2">
-                <HelpCircle className="w-4 h-4" />
-                <span>{t('helpSupport')}</span>
+              <Link href="/subscriptions?type=PROVIDER" className="flex items-center gap-2">
+                <ArrowBigUp className="w-4 h-4" />
+                <span>{t('extendSubscription')}</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

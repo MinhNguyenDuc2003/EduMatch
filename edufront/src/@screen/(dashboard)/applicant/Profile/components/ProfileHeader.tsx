@@ -3,6 +3,8 @@
 import React from 'react';
 import { User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { Avatar, AvatarFallback } from '@/lib/cus/avatar';
 
 interface ProfileHeaderProps {
   name: string;
@@ -16,16 +18,29 @@ interface ProfileHeaderProps {
 }
 
 export default function ProfileHeader({ name, role, avatarUrl, stats }: ProfileHeaderProps) {
-  const t = useTranslations('homepage.applicantProfile.profileHeader');
-  
+  const t = useTranslations('applicantProfile.profileHeader');
+  const router = useRouter();
+
   return (
     <div className="bg-[#FAFAF6] rounded-lg border border-[#828282] p-6 h-full grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Left Section: Avatar and Name */}
       <div className="flex flex-col lg:gap-4 items-center justify-center">
-        <div className="w-48 h-24 bg-gray-300 rounded-md flex items-center justify-center flex-shrink-0"></div>
+        <Avatar className="w-12 h-12">
+          <AvatarFallback className="bg-primary-brand text-primary-foreground font-semibold">
+            {name[0].toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
         <div className="flex flex-col items-center justify-center">
           <h2 className="text-lg lg:text-xl font-bold text-primary-brand">{name}</h2>
           <p className="text-lg text-gray-600">{role}</p>
+        </div>
+        <div className="bg-primary-brand w-1/2 text-white rounded-md px-4 py-2 ">
+          <div
+            className="flex justify-center items-center gap-4 cursor-pointer"
+            onClick={() => router.push('/applicant/profile/update')}
+          >
+            <span className="font-semibold text-sm">{t('editProfile')}</span>
+          </div>
         </div>
       </div>
 

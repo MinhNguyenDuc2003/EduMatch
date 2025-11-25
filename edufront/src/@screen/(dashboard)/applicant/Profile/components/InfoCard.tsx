@@ -18,7 +18,7 @@ interface InfoCardProps {
 }
 
 export default function InfoCard({ title, fields, onEdit, className }: InfoCardProps) {
-  const t = useTranslations('homepage.applicantProfile.common');
+  const t = useTranslations('applicantProfile.common');
 
   return (
     <div className={`bg-[#FAFAF6] rounded-lg border border-[#828282] p-6 relative ${className}`}>

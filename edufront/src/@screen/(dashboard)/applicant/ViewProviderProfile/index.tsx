@@ -22,10 +22,15 @@ import {
   ProviderInformationSidebar,
 } from './components';
 import { useTranslations } from 'next-intl';
+import { useAuth } from '@/hooks/useAuth';
+import { OctagonAlert } from 'lucide-react';
+import { useState } from 'react';
+import ReportDialog from '@/pattern/share/ReportDialog';
 
 export default function ViewProviderProfile({ providerId }: { providerId: number }) {
   const router = useRouter();
-  const t = useTranslations('homepage.viewProviderProfile');
+  const { isAuthenticated } = useAuth();
+  const t = useTranslations('viewProviderProfile');
 
   const { data: providerProfile, isLoading: isLoadingProfile } =
     useGetProviderProfileByIdQuery(providerId);
@@ -39,6 +44,7 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
   const [unfollowProvider] = useUnfollowProviderMutation();
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
+  const [openReportDialog, setOpenReportDialog] = useState(false);
 
   const handleFollowProvider = async (id: number) => {
     const isFollowing = providerProfile?.isFollow === 1;
@@ -133,6 +139,18 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
                 onToggle={() => handleFollowProvider(providerId)}
               />
             }
+            itemReport={
+              <Button
+                variant="custom"
+                className="absolute group/report top-3 right-3 md:top-5 md:right-5 bg-white rounded-full p-1.5 md:p-2 flex items-center !gap-0 transition-all hover:!translate-0"
+                onClick={() => setOpenReportDialog(true)}
+              >
+                <OctagonAlert className="w-4 h-4 md:w-5 md:h-5 group-hover/report:mr-10 md:group-hover/report:mr-12 transition-all duration-300" />
+                <span className="absolute right-1.5 md:right-2 text-xs md:text-sm opacity-0 max-w-0 overflow-hidden group-hover/report:opacity-100 group-hover/report:max-w-[60px] md:group-hover/report:max-w-[100px] transition-all duration-300 whitespace-nowrap">
+                  Report
+                </span>
+              </Button>
+            }
           />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
@@ -145,6 +163,7 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
                 onApply={handleApply}
                 onToggleTracking={handleToggleTracking}
                 onFollowProvider={handleFollowProvider}
+                isAuthenticated={isAuthenticated}
               />
             </div>
 
@@ -153,6 +172,13 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
           </div>
         </div>
       </div>
+      <ReportDialog
+        open={openReportDialog}
+        onOpenChange={setOpenReportDialog}
+        initialType="PROVIDER"
+        id={providerId}
+        providerData={providerProfile}
+      />
     </div>
   );
 }

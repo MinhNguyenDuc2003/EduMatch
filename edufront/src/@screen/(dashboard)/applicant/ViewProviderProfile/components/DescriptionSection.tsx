@@ -6,7 +6,7 @@ interface DescriptionSectionProps {
 }
 
 export default function DescriptionSection({ description }: DescriptionSectionProps) {
-  const t = useTranslations('homepage.viewProviderProfile.description');
+  const t = useTranslations('viewProviderProfile.description');
   
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-sm">

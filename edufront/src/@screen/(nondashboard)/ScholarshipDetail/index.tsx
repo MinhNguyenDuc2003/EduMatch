@@ -23,7 +23,7 @@ import { useTranslations } from 'next-intl';
 export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const t = useTranslations('homepage.scholarshipDetail');
+  const t = useTranslations('scholarshipDetail');
 
   const { data: scholarship, isLoading, isError, refetch } = useGetScholarshipBySlugQuery(slug);
   const [followProvider] = useFollowProviderMutation();
@@ -56,6 +56,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
     fundingAmount: scholarshipFundingAmount,
     endDate: scholarshipEndDate,
     isFollow: isTracked,
+    views: scholarshipView,
     providerProfileVo,
   } = scholarship;
   const { id: providerId, isFollow: isFollowingValue } = providerProfileVo;
@@ -147,6 +148,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
               amount={scholarshipFundingAmount || '0'}
               isTracked={isTracked === 1}
               onToggleTracking={handleToggleTracking}
+              view={scholarshipView || 0}
             />
 
             {/* Image */}

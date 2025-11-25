@@ -43,9 +43,12 @@ const Applications = () => {
 
   // Fetch applications for selected scholarship
   const { data: applicationsScholarships, isLoading: isLoadingApplications } =
-    useGetApplicationsByScholarshipIdQuery(selectedScholarship?.id ?? 0, {
-      skip: !selectedScholarship?.id,
-    });
+    useGetApplicationsByScholarshipIdQuery(
+      { scholarshipId: selectedScholarship?.id ?? 0, topK: 10 },
+      {
+        skip: !selectedScholarship?.id,
+      }
+    );
 
   // Transform and filter applications data
   const { applications, filteredApplications } = useApplicationsData(

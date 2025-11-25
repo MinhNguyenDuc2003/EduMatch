@@ -8,10 +8,10 @@ export default function PremiumBanner() {
   const router = useRouter();
   const [isUpgraded, setIsUpgraded] = useState(false);
   const recommendedCount = 12; // Hardcoded for now
-  const t = useTranslations('homepage.scholarshipsList.premiumBanner');
+  const t = useTranslations('scholarshipsList.premiumBanner');
 
   const handleUpdate = () => {
-    router.push('/applicant/subscription');
+    router.push('/subscriptions?type=APPLICANT');
   };
 
   return (

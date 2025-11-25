@@ -3,16 +3,29 @@
 import { Check } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
 
 type SubscriptionProps = {
   subscription?: SubscriptionPlan;
 };
 
+const subscriptionFeatures = {
+  POST_SCHOLARSHIP: 'Post scholarships',
+  AI_PROFILE_RECOMMENDATION: 'AI applicant recommendation',
+  APPLICATION_FILTERING: 'Application filtering',
+  AI_SCHOLARSHIP_NOTIFICATION: 'Receive notifications for suitable scholarships',
+  AI_SCHOLARSHIP_RECOMMENDATION: 'Receive scholarship recommendations based on your profile',
+};
+
 export default function Subscription({ subscription }: SubscriptionProps) {
   const router = useRouter();
+  const { subscriptions: userSubscriptions, isLoading } = useAuth();
+
+  const isSubscribed = userSubscriptions.some(
+    (userSubscription) => userSubscription.userType === subscription?.targetType
+  );
 
   const { id, name, description, price, currency, durationDays, features } = subscription || {};
-  console.log(subscription, 'subscription');
 
   return (
     <div className="relative max-w-sm rounded-lg border-2 flex flex-col transition-all bg-white border-gray-200 shadow-sm hover:shadow-md ">
@@ -103,9 +116,11 @@ export default function Subscription({ subscription }: SubscriptionProps) {
         <Button
           className="w-full py-4 rounded-lg font-semibold transition-all bg-primary-brand text-white"
           variant="custom"
-          value={`Subscribe Now`}
+          disabled={isLoading}
           onClick={() => router.push(`/checkout?step=1&id=${id}`)}
-        />
+        >
+          {!isSubscribed ? 'Subscribe Now' : 'Extend Subscription'}
+        </Button>
       </div>
 
       <div className="border-t border-gray-200 mx-6" />
@@ -116,7 +131,9 @@ export default function Subscription({ subscription }: SubscriptionProps) {
           {features?.map((feature, index) => (
             <div key={index} className="flex items-start gap-2">
               <Check className="w-5 h-5 flex-shrink-0 mt-0.5 text-green-600" />
-              <span className="text-sm text-gray-900">{feature}</span>
+              <span className="text-sm text-gray-900">
+                {subscriptionFeatures[feature as keyof typeof subscriptionFeatures]}
+              </span>
             </div>
           ))}
         </div>

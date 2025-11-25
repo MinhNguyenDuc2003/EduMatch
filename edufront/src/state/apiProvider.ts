@@ -11,12 +11,14 @@ const API_ENDPOINTS = {
   GET_PROVIDER_BY_ID: '/api/profile/providers',
   APPLICATION: '/api/scholarship/applications-scholarship',
   NEWS: '/api/profile/provider-new',
+  VERIFY_PROVIDERS_EMAIL: '/api/profile/providers/verify',
+  PROVIDER_FAVORITES: '/api/profile/provider-favourite',
 } as const;
 
 export const apiProvider = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiProvider',
-  tagTypes: ['Profile', 'Scholarships', 'Applications', 'News'],
+  tagTypes: ['Profile', 'Scholarships', 'Applications', 'News', 'ProviderFavorites'],
   endpoints: (build) => ({
     // Get customer profile (works for both applicant and provider)
     getProfile: build.query<ProviderProfileApiResponse, void>({
@@ -29,6 +31,22 @@ export const apiProvider = createApi({
         url: API_ENDPOINTS.PROVIDER_PROFILE,
         method: 'POST',
         body: formData,
+      }),
+    }),
+
+    sendVerificationEmail: build.query<boolean, { email: string }>({
+      query: ({ email }) => ({
+        url: `${API_ENDPOINTS.VERIFY_PROVIDERS_EMAIL}/mail`,
+        method: 'GET',
+        params: { email },
+      }),
+    }),
+
+    verifyProvidersEmailCode: build.query<boolean, { code: string }>({
+      query: ({ code }) => ({
+        url: `${API_ENDPOINTS.VERIFY_PROVIDERS_EMAIL}/code`,
+        method: 'GET',
+        params: { code },
       }),
     }),
 
@@ -140,13 +158,26 @@ export const apiProvider = createApi({
       providesTags: (result, error, id) => [{ type: 'Profile', id: String(id) }],
     }),
 
-    // Get all applications by scholarship ID
-    getApplicationsByScholarshipId: build.query<ApplicationScholarship[], number>({
-      query: (scholarshipId) => ({
-        url: `${API_ENDPOINTS.APPLICATION}/by-scholarship?scholarshipId=${scholarshipId}`,
+    getAllApplications: build.query<ApplicationScholarship[], void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.APPLICATION}/by-provider`,
         method: 'GET',
       }),
-      providesTags: (result, error, scholarshipId) => [{ type: 'Applications', id: scholarshipId }],
+      providesTags: ['Applications'],
+    }),
+
+    // Get all applications by scholarship ID
+    getApplicationsByScholarshipId: build.query<
+      ApplicationScholarship[],
+      { scholarshipId: number; topK: number }
+    >({
+      query: ({ scholarshipId, topK }) => ({
+        url: `${API_ENDPOINTS.APPLICATION}/rank/application?scholarshipId=${scholarshipId}&topK=${topK}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, { scholarshipId }) => [
+        { type: 'Applications', id: scholarshipId },
+      ],
     }),
 
     // Update application status
@@ -227,6 +258,69 @@ export const apiProvider = createApi({
       }),
       providesTags: ['News'],
     }),
+
+    getStatistics: build.query<Statistics, void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.APPLICATION}/statistics`,
+        method: 'GET',
+      }),
+    }),
+
+    referApplicants: build.mutation<boolean, { scholarshipId: number; userIds: string[] }>({
+      query: ({ scholarshipId, userIds }) => ({
+        url: `${API_ENDPOINTS.PROVIDER_FAVORITES}/refer/all`,
+        method: 'POST',
+        body: { scholarshipId, userIds },
+      }),
+      invalidatesTags: ['ProviderFavorites'],
+    }),
+
+    getRecommendedApplicants: build.query<
+      ApplicantProfile[],
+      { scholarshipId: number; topK: number }
+    >({
+      query: ({ scholarshipId, topK }) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/recommendation/applicant`,
+        method: 'GET',
+        params: { scholarshipId, topK },
+      }),
+    }),
+
+    addFavouriteApplicant: build.mutation<
+      void,
+      { userId: string; providerId: number; note: string }
+    >({
+      query: ({ userId, providerId, note }) => ({
+        url: `${API_ENDPOINTS.PROVIDER_FAVORITES}`,
+        method: 'POST',
+        body: { userId, providerId, note },
+      }),
+      invalidatesTags: ['ProviderFavorites'],
+    }),
+
+    getAllFavouriteApplicants: build.query<FavouriteApplicant[], void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.PROVIDER_FAVORITES}/my-favourite`,
+        method: 'GET',
+      }),
+      providesTags: ['ProviderFavorites'],
+    }),
+
+    removeFavouriteApplicant: build.mutation<void, number>({
+      query: (applicantId) => ({
+        url: `${API_ENDPOINTS.PROVIDER_FAVORITES}/${applicantId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['ProviderFavorites'],
+    }),
+
+    getTopViewedScholarships: build.query<Scholarship[], void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/top-views/provider/month`,
+        method: 'GET',
+      }),
+      providesTags: ['Scholarships'],
+    }),
   }),
 });
 
@@ -234,6 +328,8 @@ export const {
   useGetProfileQuery,
   useCreateProfileMutation,
   useUpdateProfileMutation,
+  useLazySendVerificationEmailQuery,
+  useLazyVerifyProvidersEmailCodeQuery,
   useGetScholarshipsQuery,
   useCreateScholarshipMutation,
   useGetScholarshipsByIdQuery,
@@ -246,6 +342,7 @@ export const {
   useGetFollowedProvidersQuery,
   useGetProviderProfileByIdQuery,
   useGetApplicationsByScholarshipIdQuery,
+  useGetAllApplicationsQuery,
   useUpdateApplicationStatusMutation,
   useGetNewsQuery,
   useCreateNewsMutation,
@@ -255,4 +352,11 @@ export const {
   useUploadNewsImagesMutation,
   useDeleteNewsImageMutation,
   useGetAllNewsQuery,
+  useGetStatisticsQuery,
+  useGetRecommendedApplicantsQuery,
+  useReferApplicantsMutation,
+  useAddFavouriteApplicantMutation,
+  useGetAllFavouriteApplicantsQuery,
+  useRemoveFavouriteApplicantMutation,
+  useGetTopViewedScholarshipsQuery,
 } = apiProvider;

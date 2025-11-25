@@ -9,7 +9,6 @@ import { FileIcon, ImageIcon, Plus, Trash2, X } from 'lucide-react';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -19,6 +18,7 @@ import {
   DialogTitle,
 } from '@/lib/cus/dialog';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 interface ApplicationsFormProps {
   application?: Application;
@@ -34,12 +34,14 @@ export interface ApplicationsFormRef {
 
 const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormProps>(
   ({ application, onSubmit, onImagesChange, onDeleteImage, isLoading }, ref) => {
+    const t = useTranslations('activity.applicationForm');
     const [uploadedImages, setUploadedImages] = useState<File[]>([]);
     const [imagePreviews, setImagePreviews] = useState<Array<{ url: string; id?: number }>>([]);
     const [documentsPreviews, setDocumentsPreviews] = useState<Array<{ url: string; id?: number }>>(
       []
     );
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const imageInputRef = useRef<HTMLInputElement>(null);
+    const documentInputRef = useRef<HTMLInputElement>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [applicationName, setApplicationName] = useState('');
 
@@ -114,8 +116,11 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
       });
 
       // Reset input
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+      if (imageInputRef.current) {
+        imageInputRef.current.value = '';
+      }
+      if (documentInputRef.current) {
+        documentInputRef.current.value = '';
       }
     };
 
@@ -135,7 +140,11 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
     };
 
     const handleImageClick = () => {
-      fileInputRef.current?.click();
+      imageInputRef.current?.click();
+    };
+
+    const handleDocumentClick = () => {
+      documentInputRef.current?.click();
     };
 
     // Load initial images from scholarship
@@ -191,38 +200,18 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
     return (
       <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto shadow-2xl rounded-lg p-6">
         <div className="text-3xl font-bold text-gray-900 flex items-center justify-center ">
-          Application Form
+          {t('title')}
         </div>
 
         {/* Guidelines Section */}
         <div className="flex flex-col">
-          <p className="text-sm text-gray-800 font-medium">
-            To ensure your scholarship application is as strong as possible, please keep these
-            important points in mind before you finalize and submit:
-          </p>
+          <p className="text-sm text-gray-800 font-medium">{t('guidelines.title')}</p>
           <ul className="text-sm text-gray-700 list-disc">
-            <li className="ml-6">
-              Accuracy and Completeness: Double-check that all the information you've provided is
-              accurate and complete. Incomplete or inaccurate details can lead to delays or
-              disqualification.
-            </li>
-            <li className="ml-6">
-              Required Documents: Make sure you have gathered and uploaded all necessary supporting
-              documents as specified. Ensure they are in the correct format and clearly legible.
-            </li>
-            <li className="ml-6">
-              Proofread Thoroughly: Before hitting submit, proofread your entire application for any
-              spelling or grammatical errors. A polished application demonstrates attention to
-              detail.
-            </li>
-            <li className="ml-6">
-              Adhere to Deadlines: Be mindful of the submission deadline. Late applications are
-              typically not considered.
-            </li>
-            <li className="ml-6">
-              Follow Instructions Precisely: Carefully review and follow all instructions provided
-              for the application form and any accompanying materials.
-            </li>
+            <li className="ml-6">{t('guidelines.accuracy')}</li>
+            <li className="ml-6">{t('guidelines.documents')}</li>
+            <li className="ml-6">{t('guidelines.proofread')}</li>
+            <li className="ml-6">{t('guidelines.deadlines')}</li>
+            <li className="ml-6">{t('guidelines.instructions')}</li>
           </ul>
         </div>
 
@@ -231,14 +220,16 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
             <div className="space-y-8">
               {/* Personal Information */}
               <div className="space-y-6">
-                <h2 className="text-lg font-semibold text-gray-900">Personal Information</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  {t('sections.personalInformation')}
+                </h2>
 
                 {/* Full Name */}
                 <CustomFormField
                   name="fullName"
-                  label="Full Name *"
+                  label={t('fields.fullName')}
                   type="text"
-                  placeholder="Enter your full name"
+                  placeholder={t('fields.fullNamePlaceholder')}
                   isBorder={true}
                 />
 
@@ -246,9 +237,9 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   {/* Gender */}
                   <CustomFormField
                     name="gender"
-                    label="Gender *"
+                    label={t('fields.gender')}
                     type="select"
-                    placeholder="Select gender"
+                    placeholder={t('fields.genderPlaceholder')}
                     options={GENDER_OPTIONS}
                     initialValue={application?.gender}
                     isBorder={true}
@@ -257,9 +248,9 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   {/* Date of Birth */}
                   <CustomFormField
                     name="dateOfBirth"
-                    label="Date of Birth *"
+                    label={t('fields.dateOfBirth')}
                     type="date-of-birth"
-                    placeholder="Select date of birth"
+                    placeholder={t('fields.dateOfBirthPlaceholder')}
                     isBorder={true}
                   />
                 </div>
@@ -268,18 +259,18 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   {/* Email */}
                   <CustomFormField
                     name="email"
-                    label="Email *"
+                    label={t('fields.email')}
                     type="email"
-                    placeholder="Enter your email address"
+                    placeholder={t('fields.emailPlaceholder')}
                     isBorder={true}
                   />
 
                   {/* Phone */}
                   <CustomFormField
                     name="phone"
-                    label="Phone Number *"
+                    label={t('fields.phoneNumber')}
                     type="text"
-                    placeholder="Enter your phone number"
+                    placeholder={t('fields.phoneNumberPlaceholder')}
                     isBorder={true}
                   />
                 </div>
@@ -287,18 +278,18 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                 {/* Address */}
                 <CustomFormField
                   name="address"
-                  label="Address *"
+                  label={t('fields.address')}
                   type="text"
-                  placeholder="Enter your address"
+                  placeholder={t('fields.addressPlaceholder')}
                   isBorder={true}
                 />
 
                 {/* Nationality */}
                 <CustomFormField
                   name="nationality"
-                  label="Nationality *"
+                  label={t('fields.nationality')}
                   type="input-select"
-                  placeholder="Select nationality"
+                  placeholder={t('fields.nationalityPlaceholder')}
                   options={COUNTRIES}
                   initialValue={application?.nationality}
                   isBorder={true}
@@ -307,15 +298,17 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
 
               {/* Educational Background */}
               <div className="space-y-6">
-                <h2 className="text-lg font-semibold text-gray-900">Educational Background</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  {t('sections.educationalBackground')}
+                </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Education Level */}
                   <CustomFormField
                     name="educationLevel"
-                    label="Education Level *"
+                    label={t('fields.educationLevel')}
                     type="select"
-                    placeholder="Select education level"
+                    placeholder={t('fields.educationLevelPlaceholder')}
                     options={STUDY_LEVELS}
                     initialValue={application?.educationLevel}
                     isBorder={true}
@@ -324,9 +317,9 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   {/* School Name */}
                   <CustomFormField
                     name="schoolName"
-                    label="School Name *"
+                    label={t('fields.schoolName')}
                     type="text"
-                    placeholder="Enter your school name"
+                    placeholder={t('fields.schoolNamePlaceholder')}
                     isBorder={true}
                   />
                 </div>
@@ -336,8 +329,8 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   <CustomFormField
                     name="major"
                     type="input-select"
-                    label="Major *"
-                    placeholder="Select your major"
+                    label={t('fields.major')}
+                    placeholder={t('fields.majorPlaceholder')}
                     options={MAJOR_NAMES}
                     initialValue={application?.major}
                     isBorder={true}
@@ -346,9 +339,9 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   {/* GPA */}
                   <CustomFormField
                     name="gpa"
-                    label="GPA *"
+                    label={t('fields.gpa')}
                     type="range"
-                    placeholder="Enter your GPA (0-4 scale)"
+                    placeholder={t('fields.gpaPlaceholder')}
                     isBorder={true}
                     min={0}
                     max={4}
@@ -359,9 +352,9 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                 {/* Graduation Year */}
                 <CustomFormField
                   name="graduationYear"
-                  label="Graduation Year *"
+                  label={t('fields.graduationYear')}
                   type="select"
-                  placeholder="Select graduation year"
+                  placeholder={t('fields.graduationYearPlaceholder')}
                   options={YEARS.map((year) => ({ value: String(year.value), label: year.label }))}
                   initialValue={application?.graduationYear}
                   isBorder={true}
@@ -370,32 +363,34 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
 
               {/* Skills & Achievements */}
               <div className="space-y-6">
-                <h2 className="text-lg font-semibold text-gray-900">Skills & Achievements</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  {t('sections.skillsAchievements')}
+                </h2>
 
                 {/* Skills */}
                 <CustomFormField
                   name="skills"
-                  label="Skills *"
+                  label={t('fields.skills')}
                   type="textarea"
-                  placeholder="List your skills (e.g., Programming, Leadership, Communication)"
+                  placeholder={t('fields.skillsPlaceholder')}
                   isBorder={true}
                 />
 
                 {/* Achievements */}
                 <CustomFormField
                   name="achievements"
-                  label="Achievements *"
+                  label={t('fields.achievements')}
                   type="textarea"
-                  placeholder="Describe your achievements, awards, and recognitions"
+                  placeholder={t('fields.achievementsPlaceholder')}
                   isBorder={true}
                 />
 
                 {/* Extracurricular Activities */}
                 <CustomFormField
                   name="extracurricular"
-                  label="Extracurricular Activities *"
+                  label={t('fields.extracurricular')}
                   type="textarea"
-                  placeholder="Describe your extracurricular activities, clubs, sports, volunteer work, etc."
+                  placeholder={t('fields.extracurricularPlaceholder')}
                   isBorder={true}
                 />
               </div>
@@ -403,38 +398,36 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
               {/* Motivation & Personal Statement */}
               <div className="space-y-6">
                 <h2 className="text-lg font-semibold text-gray-900">
-                  Motivation & Personal Statement
+                  {t('sections.motivationPersonalStatement')}
                 </h2>
 
                 {/* Motivation */}
                 <CustomFormField
                   name="motivation"
-                  label="Motivation *"
+                  label={t('fields.motivation')}
                   type="textarea"
-                  placeholder="Explain why you are applying for this scholarship and what motivates you"
+                  placeholder={t('fields.motivationPlaceholder')}
                   isBorder={true}
                 />
 
                 {/* Personal Statement */}
                 <CustomFormField
                   name="personalStatement"
-                  label="Personal Statement *"
+                  label={t('fields.personalStatement')}
                   type="textarea"
-                  placeholder="Write a personal statement about yourself, your goals, and how this scholarship will help you achieve them"
+                  placeholder={t('fields.personalStatementPlaceholder')}
                   isBorder={true}
                 />
               </div>
 
               {/* Images Upload */}
               <div className="space-y-6">
-                <h2 className="text-2xl font-semibold text-gray-900">Images</h2>
-                <p className="text-sm text-gray-600">
-                  Upload images related to this application (e.g., university photos, event photos)
-                </p>
+                <h2 className="text-2xl font-semibold text-gray-900">{t('sections.images')}</h2>
+                <p className="text-sm text-gray-600">{t('images.description')}</p>
 
                 {/* Hidden file input */}
                 <input
-                  ref={fileInputRef}
+                  ref={imageInputRef}
                   type="file"
                   accept="image/*"
                   multiple
@@ -451,7 +444,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                     className="border-2 border-dashed text-gray-500 border-gray-300 hover:border-[#3D6CB9] hover:bg-[#3D6CB9]/5"
                   >
                     <ImageIcon className="w-4 h-4 mr-2" />
-                    Add Images
+                    {t('images.addImages')}
                   </Button>
 
                   {/* Image previews */}
@@ -464,7 +457,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                         >
                           <Image
                             src={preview.url}
-                            alt={`Application image ${index + 1}`}
+                            alt={`${t('images.imageAlt')} ${index + 1}`}
                             width={100}
                             height={100}
                             unoptimized
@@ -484,21 +477,19 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   )}
 
                   {imagePreviews.length === 0 && (
-                    <p className="text-sm text-gray-500 italic">No images uploaded yet.</p>
+                    <p className="text-sm text-gray-500 italic">{t('images.noImagesUploaded')}</p>
                   )}
                 </div>
               </div>
 
               {/* Documents Upload */}
               <div className="space-y-6">
-                <h2 className="text-2xl font-semibold text-gray-900">CV/Resume</h2>
-                <p className="text-sm text-gray-600">
-                  Upload your CV/Resume related to this application
-                </p>
+                <h2 className="text-2xl font-semibold text-gray-900">{t('documents.title')}</h2>
+                <p className="text-sm text-gray-600">{t('documents.description')}</p>
 
                 {/* Hidden file input */}
                 <input
-                  ref={fileInputRef}
+                  ref={documentInputRef}
                   type="file"
                   accept="application/pdf"
                   className="hidden"
@@ -508,30 +499,33 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                 <div className="space-y-4">
                   <Button
                     type="button"
-                    onClick={handleImageClick}
+                    onClick={handleDocumentClick}
                     variant="outline"
                     className="border-2 border-dashed text-gray-500 border-gray-300 hover:border-[#3D6CB9] hover:bg-[#3D6CB9]/5"
                   >
                     <FileIcon className="w-4 h-4 mr-2" />
-                    Add Documents
+                    {t('documents.addDocuments')}
                   </Button>
                   {/* Documents previews */}
                   {documentsPreviews.length > 0 && (
                     <div className="flex flex-col gap-2">
                       {documentsPreviews.map((preview, index) => (
-                        <div key={index} className="flex items-center gap-2">
+                        <div
+                          key={index}
+                          className="flex items-center gap-2 bg-slate-200 p-2 rounded-lg w-fit"
+                        >
                           <FileIcon className="w-4 h-4 mr-2" />
                           <Link
                             href={preview.url}
                             target="_blank"
-                            className="text-blue-500 hover:text-blue-600"
+                            className="text-slate-500 hover:text-blue-600 mr-2"
                           >
-                            {preview.url}
+                            Document {index + 1}
                           </Link>
                           <Button
                             type="button"
                             onClick={() => handleRemoveImage(preview.url, 'document')}
-                            className="bg-red-500 hover:bg-red-600 text-white rounded-full p-1 "
+                            className="bg-slate-500 hover:bg-red-600 text-white rounded-full p-1 "
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -545,25 +539,27 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
               {/* Application Attributes */}
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-gray-900">Additional Information</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    {t('sections.additionalInformation')}
+                  </h2>
                   <Button
                     type="button"
                     onClick={handleAddPreference}
                     className="bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white"
                   >
                     <Plus className="w-4 h-4 mr-2" />
-                    Add Attribute
+                    {t('additionalInfo.addAttribute')}
                   </Button>
                 </div>
 
-                <p className="text-sm text-gray-600">
-                  Add any additional information or attributes relevant to your application
-                </p>
+                <p className="text-sm text-gray-600">{t('additionalInfo.description')}</p>
 
                 {watch('applicationAttributes')?.map((preference, index) => (
                   <div key={index} className="border-2 border-gray-200 rounded-lg p-6 space-y-4">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900">Attribute {index + 1}</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {t('additionalInfo.attributeNumber', { number: index + 1 })}
+                      </h3>
 
                       <Button
                         type="button"
@@ -580,17 +576,17 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <CustomFormField
                         name={`applicationAttributes.${index}.key`}
-                        label="Name *"
+                        label={t('additionalInfo.name')}
                         type="text"
-                        placeholder="e.g., Language Proficiency, Certification"
+                        placeholder={t('additionalInfo.namePlaceholder')}
                         isBorder={true}
                       />
 
                       <CustomFormField
                         name={`applicationAttributes.${index}.value`}
-                        label="Value *"
+                        label={t('additionalInfo.value')}
                         type="text"
-                        placeholder="e.g., IELTS 7.5, AWS Certified"
+                        placeholder={t('additionalInfo.valuePlaceholder')}
                         isBorder={true}
                       />
                     </div>
@@ -598,9 +594,9 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                     {/* Note */}
                     <CustomFormField
                       name={`applicationAttributes.${index}.note`}
-                      label="Note"
+                      label={t('additionalInfo.note')}
                       type="textarea"
-                      placeholder="Additional notes (optional)"
+                      placeholder={t('additionalInfo.notePlaceholder')}
                       isBorder={true}
                     />
                   </div>
@@ -609,7 +605,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                 {(!watch('applicationAttributes') ||
                   watch('applicationAttributes')?.length === 0) && (
                   <p className="text-sm text-gray-500 italic">
-                    No attributes added yet. Click "Add Attribute" to add one.
+                    {t('additionalInfo.noAttributesAdded')}
                   </p>
                 )}
               </div>
@@ -621,7 +617,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   className="w-full bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Submitting...' : 'Save Application'}
+                  {isLoading ? t('buttons.submitting') : t('buttons.saveApplication')}
                 </Button>
               </div>
             </div>
@@ -632,10 +628,8 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle>Complete Application</DialogTitle>
-              <DialogDescription>
-                Please enter a name to complete the application.
-              </DialogDescription>
+              <DialogTitle>{t('dialog.title')}</DialogTitle>
+              <DialogDescription>{t('dialog.description')}</DialogDescription>
             </DialogHeader>
 
             <div className="py-4">
@@ -643,7 +637,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                 type="text"
                 value={applicationName}
                 onChange={(e) => setApplicationName(e.target.value)}
-                placeholder="Application Name"
+                placeholder={t('dialog.applicationNamePlaceholder')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3D6CB9]"
                 autoFocus
                 onKeyDown={(e) => {
@@ -656,13 +650,13 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
 
             <DialogFooter>
               <Button variant="custom" color="gray" onClick={() => setIsDialogOpen(false)}>
-                Cancel
+                {t('dialog.cancel')}
               </Button>
               <Button
                 onClick={handleComplete}
                 disabled={!applicationName.trim() || isLoading}
                 className="bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white"
-                value={isLoading ? 'Completing...' : 'Complete'}
+                value={isLoading ? t('dialog.completing') : t('dialog.complete')}
               />
             </DialogFooter>
           </DialogContent>

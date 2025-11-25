@@ -1,21 +1,31 @@
 import { useCurrentSubscription } from '@/hooks/useCurrentSubscription';
 import Loading from '@/pattern/share/Loading';
 import SubscriptionPlanPreview from '@/@screen/(nondashboard)/CheckoutPaymentPage/components/SubscriptionPlanPreview';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { toast } from 'sonner';
 import { useCheckoutNavigation } from '@/hooks/useCheckoutNavigation';
 import StripeProvider from './components/StripeProvider';
 import { Button } from '@/lib/cus/button';
-import { useConfirmPaymentMutation } from '@/state/apiSubscription';
+import { useConfirmPaymentMutation, useExtendSubscriptionMutation } from '@/state/apiAuth';
+import { useAuth } from '@/hooks/useAuth';
 
 const CheckoutPaymentPageContent = () => {
   const { subscriptionPlan, subscriptionPlanId, isLoading, isError } = useCurrentSubscription();
+  const { subscriptions: userSubscriptions, isLoading: userLoading } = useAuth();
+
+  const userSubscription = useMemo(() => {
+    return userSubscriptions.find(
+      (userSubscription) => userSubscription.userType === subscriptionPlan?.targetType
+    );
+  }, [subscriptionPlan]);
+
   const stripe = useStripe();
   const elements = useElements();
   const { navigateToStep } = useCheckoutNavigation();
 
   const [confirmPayment, { isLoading: isConfirmPaymentLoading }] = useConfirmPaymentMutation();
+  const [extendSubscription] = useExtendSubscriptionMutation();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -40,15 +50,23 @@ const CheckoutPaymentPageContent = () => {
     });
 
     if (result.paymentIntent?.status === 'succeeded') {
-      await confirmPayment({
-        transactionId: result.paymentIntent.id,
-        subscriptionPlanId: Number(subscriptionPlanId),
-      });
+      if (userSubscription) {
+        await extendSubscription({
+          subscriptionId: userSubscription.id,
+          subscriptionPlanId: Number(subscriptionPlanId),
+          transactionId: result.paymentIntent.id,
+        });
+      } else {
+        await confirmPayment({
+          transactionId: result.paymentIntent.id,
+          subscriptionPlanId: Number(subscriptionPlanId),
+        });
+      }
       navigateToStep(2);
     }
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading || userLoading) return <Loading />;
   if (isError)
     return (
       <div className="p-4 text-center text-sm text-red-500">Fetching notifications failed.</div>

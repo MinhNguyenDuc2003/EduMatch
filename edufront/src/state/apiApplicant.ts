@@ -11,12 +11,14 @@ const API_ENDPOINTS = {
   APPLIED_APPLICATION: '/api/scholarship/applications-scholarship',
   FOLLOW_PROVIDER: '/api/profile/followers',
   SCHOLARSHIP_FOLLOW: '/api/scholarship/scholarships/follow',
+  CREATE_REPORT: '/api/report/reports',
+  GET_REPORTS: '/api/report/report/category/type',
 } as const;
 
 export const apiApplicant = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'apiApplicant',
-  tagTypes: ['Profile', 'Application', 'Follow', 'Scholarships', 'TrackedScholarships'],
+  tagTypes: ['Profile', 'Application', 'Follow', 'Scholarships', 'TrackedScholarships', 'Report'],
   endpoints: (build) => ({
     // Get customer profile (works for both applicant and provider)
     getProfile: build.query<ProfileApiResponse, void>({
@@ -109,11 +111,14 @@ export const apiApplicant = createApi({
       invalidatesTags: ['Application'],
     }),
 
-    submitApplication: build.mutation<boolean, { applicationId: number; scholarshipId: number }>({
-      query: ({ applicationId, scholarshipId }) => ({
+    submitApplication: build.mutation<
+      boolean,
+      { applicationId: number; scholarshipId: number; status: string }
+    >({
+      query: ({ applicationId, scholarshipId, status }) => ({
         url: `${API_ENDPOINTS.APPLICATION}-scholarship`,
         method: 'POST',
-        body: { applicationId, scholarshipId },
+        body: { applicationId, scholarshipId, status },
       }),
       invalidatesTags: ['Application'],
     }),
@@ -133,6 +138,53 @@ export const apiApplicant = createApi({
       }),
       providesTags: ['Application'],
     }),
+
+    // GET REPORTS
+    getReports: build.query<ReportCategory[], ReportType>({
+      query: (type) => ({
+        url: `${API_ENDPOINTS.GET_REPORTS}/${type}`,
+        method: 'GET',
+      }),
+      providesTags: ['Report'],
+    }),
+
+    // REPORT SYSTEM
+    reportSystem: build.mutation<boolean, FormReport>({
+      query: (data) => ({
+        url: API_ENDPOINTS.CREATE_REPORT,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Report'],
+    }),
+
+    // REPORT PROVIDER
+    reportProvider: build.mutation<boolean, FormReport & { providerId: number }>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.CREATE_REPORT}/provider-report`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Report'],
+    }),
+    // REPORT SCHOLARSHIP
+    reportScholarship: build.mutation<boolean, FormReport & { scholarshipId: number }>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.CREATE_REPORT}/scholarship-report`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Report'],
+    }),
+    // REPORT PROFILE
+    reportProfile: build.mutation<boolean, FormReport & { profileId: number }>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.CREATE_REPORT}/profile-report`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Report'],
+    }),
   }),
 });
 
@@ -150,4 +202,9 @@ export const {
   useSubmitApplicationMutation,
   useGetAppliedApplicationQuery,
   useDeleteApplicationMutation,
+  useGetReportsQuery,
+  useReportSystemMutation,
+  useReportProviderMutation,
+  useReportScholarshipMutation,
+  useReportProfileMutation,
 } = apiApplicant;

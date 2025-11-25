@@ -1,9 +1,19 @@
 'use client';
 
-import { useAuthenticatedQuery } from '@/state/apiAuth';
+import { useAuthenticatedQuery, useLogoutMutation } from '@/state/apiAuth';
+import { toast } from 'sonner';
 
 export const useAuth = () => {
   const { data, isLoading, isError, error, refetch } = useAuthenticatedQuery();
+  const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    await logout()
+      .unwrap()
+      .then(() => {
+        toast.success('Logged out successfully');
+      });
+  };
 
   return {
     // User data
@@ -12,11 +22,13 @@ export const useAuth = () => {
     // Authentication state
     isAuthenticated: data?.isAuthenticated ?? false,
     isProvider: data?.isProvider ?? false,
-
+    subscriptions: data?.subscriptions ?? [],
     // Loading and error states
     isLoading,
     isError,
     error,
+
+    handleLogout,
 
     // Helper methods
     refetch,

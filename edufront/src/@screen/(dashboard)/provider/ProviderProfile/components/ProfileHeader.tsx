@@ -1,6 +1,5 @@
-import { Camera, Globe, Mail, Phone } from 'lucide-react';
+import { Camera, Globe, Mail, OctagonAlert, Phone } from 'lucide-react';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import { IProviderProfile } from '@/lib/schemas';
 import { Skeleton } from '@/lib/cus/skeleton';
 
 interface ProfileHeaderProps {
@@ -9,6 +8,7 @@ interface ProfileHeaderProps {
   onProfileUpload?: (file: File) => void;
   isEdit?: boolean;
   rightElement?: ReactNode;
+  itemReport?: ReactNode;
 }
 
 export const ProfileHeaderSkeleton = () => {
@@ -46,6 +46,7 @@ const ProfileHeader = ({
   onProfileUpload,
   isEdit = false,
   rightElement,
+  itemReport,
 }: ProfileHeaderProps) => {
   const [bannerPreview, setBannerPreview] = useState<string | null>(currentData?.bannerUrl || null);
   const [profilePreview, setProfilePreview] = useState<string | null>(currentData?.logoUrl || null);
@@ -140,6 +141,7 @@ const ProfileHeader = ({
             </div>
           </div>
         )}
+        {itemReport && <div>{itemReport}</div>}
       </div>
 
       {/* Profile image */}

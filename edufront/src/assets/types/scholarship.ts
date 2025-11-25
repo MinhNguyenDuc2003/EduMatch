@@ -45,6 +45,13 @@ declare global {
     scholarshipPreferences?: ScholarshipPreference[];
     scholarshipMedias?: ScholarshipMedia[];
     isFollow: number;
+    views: number;
+  };
+
+  type SearchScholarshipsByUniversityResponse = {
+    id: number;
+    university: string;
+    availableSlots: number;
   };
 
   type ScholarshipSearchCriteria = {
@@ -88,6 +95,7 @@ declare global {
     country: string;
     studyLevel: string;
     scholarshipType: string;
+    university: string;
     minGpa: number;
     maxGpa: number;
     page: number;

@@ -7,7 +7,7 @@ type ScholarshipContentProps = {
 };
 
 export default function ScholarshipContent({ scholarship }: ScholarshipContentProps) {
-  const t = useTranslations('homepage.scholarshipDetail.content');
+  const t = useTranslations('scholarshipDetail.content');
   
   return (
     <>
