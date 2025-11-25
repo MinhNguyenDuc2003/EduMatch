@@ -21,9 +21,11 @@ import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 import SubmitApplicationDialog from '@/pattern/share/SubmitApplicationDialog';
 import ScholarshipAnalysisDialog from './components/ScholarshipAnalysisDialog';
 import { useTranslations } from 'next-intl';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
+  const { subscriptions } = useAuth();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAnalysisDialogOpen, setIsAnalysisDialogOpen] = useState(false);
   const [shouldAnalyze, setShouldAnalyze] = useState(false);
@@ -204,14 +206,25 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
                 onToggleFollow={handleToggleFollow}
               />
               {/* Action Button */}
-              <Button
-                value={t('analyzeScholarship')}
-                variant="ok"
-                size="lg"
-                full
-                onClick={handleAnalyzeScholarship}
-                className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
-              />
+              {subscriptions.some((subscription) => subscription.userType === 'APPLICANT') ? (
+                <Button
+                  value={t('analyzeScholarship')}
+                  variant="ok"
+                  size="lg"
+                  full
+                  onClick={handleAnalyzeScholarship}
+                  className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
+                />
+              ) : (
+                <Button
+                  value={t('upgradeToPremium')}
+                  variant="ok"
+                  size="lg"
+                  full
+                  onClick={() => router.push('/subscriptions?type=APPLICANT')}
+                  className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
+                />
+              )}
               <Button
                 value={t('applyNow')}
                 variant="ok"
