@@ -986,5 +986,12 @@
     "noTopScholarships": "Chưa có học bổng được xem nhiều",
     "noNewsAvailable": "Không có tin tức",
     "noNewsDescription": "Hiện tại chưa có bài viết tin tức nào. Vui lòng quay lại sau để xem các cập nhật và nội dung mới."
+  },
+  "recommendedScholarships": {
+    "heroSection": {
+      "title": "EduMatch Premium",
+      "titleHighlight": "Gợi ý học bổng cho bạn",
+      "description": "Khám phá các học bổng phù hợp nhất với hồ sơ của bạn. Hệ thống AI của chúng tôi phân tích nền tảng học vấn, sở thích và mục tiêu của bạn để đề xuất những cơ hội tốt nhất cho hành trình giáo dục của bạn."
+    }
   }
 }

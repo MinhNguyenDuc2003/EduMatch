@@ -1,17 +1,30 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Zap } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function PremiumBanner() {
   const router = useRouter();
   const [isUpgraded, setIsUpgraded] = useState(false);
-  const recommendedCount = 12; // Hardcoded for now
   const t = useTranslations('scholarshipsList.premiumBanner');
+  const { subscriptions } = useAuth();
+  const { data: scholarships } = useGetRecommendedScholarshipsQuery({ topK: 10 });
+
+  useEffect(() => {
+    if (subscriptions.some((subscription) => subscription.userType === 'APPLICANT')) {
+      setIsUpgraded(true);
+    }
+  }, [subscriptions]);
 
   const handleUpdate = () => {
-    router.push('/subscriptions?type=APPLICANT');
+    if (isUpgraded) {
+      router.push('/recommended-scholarships');
+    } else {
+      router.push('/subscriptions?type=APPLICANT');
+    }
   };
 
   return (
@@ -101,18 +114,18 @@ export default function PremiumBanner() {
         ) : (
           <>
             {/* After Upgrade - Mobile */}
-            <div className="md:hidden text-center space-y-3">
+            <div className="md:hidden text-center space-y-3" onClick={handleUpdate}>
               <h3 className="text-white font-bold text-xl">
-                {t('foundMatches', { count: recommendedCount })}
+                {t('foundMatches', { count: scholarships?.length ?? 0 })}
               </h3>
               <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
             </div>
 
             {/* After Upgrade - Desktop */}
-            <div className="hidden md:flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-4" onClick={handleUpdate}>
               <div>
                 <h3 className="text-white font-bold text-xl mb-1">
-                  {t('foundMatches', { count: recommendedCount })}
+                  {t('foundMatches', { count: scholarships?.length ?? 0 })}
                 </h3>
                 <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
               </div>

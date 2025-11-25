@@ -123,6 +123,15 @@ export const apiScholarship = createApi({
         method: 'GET',
       }),
     }),
+
+    getRecommendedScholarships: build.query<Scholarship[], { topK: number }>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/recommendation`,
+        method: 'GET',
+        params: data,
+      }),
+      providesTags: ['Scholarships'],
+    }),
   }),
 });
 
@@ -139,4 +148,5 @@ export const {
   useGetScholarshipsByProviderIdQuery,
   useGetScholarshipTopViewByMonthQuery,
   useAnalyzeScholarshipQuery,
+  useGetRecommendedScholarshipsQuery,
 } = apiScholarship;
