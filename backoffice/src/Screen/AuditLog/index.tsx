@@ -17,7 +17,7 @@ const AuditLogPage = () => {
     <Context.Provider>
       <Context.Consumer>
         {({ ss }) => {
-          const list = (ss?.Joint?.auditLogList as any)?.data?.content || [];
+          const list = (ss?.Joint?.News as any)?.data?.content || [];
           console.log('list', list);
           const AuditLogs =
             list?.map((item: any) => ({

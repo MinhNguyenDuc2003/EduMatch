@@ -29,7 +29,6 @@ const AppSidebar = () => {
       { icon: Package, label: 'Subcriptions', href: '/backoffice/subscriptions' },
       { icon: Bell, label: 'Subcription Plan', href: '/backoffice/subscriptionPlan' },
       { icon: Bell, label: 'News', href: '/backoffice/news' },
-      { icon: Bell, label: 'Audit Log', href: '/backoffice/auditLog' },
       { icon: Bell, label: 'Report & Feedback', href: '/backoffice/reportFeedback' },
     ],
   };
