@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Form } from '@/lib/cus/form';
 import { providerProfileSchema, IProviderProfile } from '@/lib/schemas';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Mail, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
@@ -13,11 +13,13 @@ import { ProviderProfileSkeleton } from './components';
 import { useGetProfileQuery, useUpdateProfileMutation } from '@/state/apiProvider';
 import { COUNTRIES, ORGANIZATION_TYPES } from '@/constants/Common';
 import { DEFAULT_PROVIDER_FORM_VALUES } from '@/constants/DefaultValues';
+import { useTranslations } from 'next-intl';
 
 export default function ProviderProfile() {
-  // For now, use mock data. Replace with API call later
   const [bannerUrl, setBannerUrl] = useState<File | null>(null);
   const [profileUrl, setProfileUrl] = useState<File | null>(null);
+
+  const t = useTranslations('providerProfile');
 
   const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
 
@@ -31,68 +33,78 @@ export default function ProviderProfile() {
     defaultValues: DEFAULT_PROVIDER_FORM_VALUES,
   });
 
-  const { watch, setValue } = methods;
-  const currentData = watch('providerProfile');
+  const { setValue, reset, control } = methods;
+
+  // Watch only the contacts array to minimize re-renders for the contacts list
+  const providerContactDtos = useWatch({
+    control,
+    name: 'providerProfile.providerContactDtos',
+    defaultValue: [],
+  });
+
+  // Watch full profile data for ProfileHeader (only necessary fields)
+  const profileForHeader = useWatch({
+    control,
+    name: 'providerProfile',
+  });
+
+  // Memoize current data to avoid unnecessary re-renders
+  const currentData = useMemo(() => {
+    return {
+      providerContactDtos: providerContactDtos || [],
+    };
+  }, [providerContactDtos]);
+
+  // Memoize profile data for header
+  const headerData = useMemo(() => {
+    return profileForHeader ? (profileForHeader as ProviderProfile) : undefined;
+  }, [profileForHeader]);
 
   // Handle image uploads
-  const handleBannerUpload = async (file: File) => {
-    try {
-      console.log('Uploading banner:', file);
-      // TODO: Call API to upload banner image
-      setBannerUrl(file);
-    } catch (error) {
-      console.error('Error uploading banner:', error);
-    }
-  };
+  const handleBannerUpload = useCallback(async (file: File) => {
+    setBannerUrl(file);
+  }, []);
 
-  const handleProfileUpload = async (file: File) => {
-    try {
-      console.log('Uploading profile image:', file);
-      // TODO: Call API to upload profile image
-      setProfileUrl(file);
-    } catch (error) {
-      console.error('Error uploading profile image:', error);
-    }
-  };
+  const handleProfileUpload = useCallback(async (file: File) => {
+    setProfileUrl(file);
+  }, []);
 
   // Reset form when profile data is loaded
   useEffect(() => {
-    if (profileData) {
-      const formData = {
+    if (profileData?.providerProfile) {
+      const formData: IProviderProfile = {
         providerProfile: {
           ...DEFAULT_PROVIDER_FORM_VALUES.providerProfile,
           ...profileData.providerProfile,
         },
       };
-
-      methods.reset(formData);
+      reset(formData);
     }
-  }, [profileData, methods]);
+  }, [profileData, reset]);
 
-  const onSubmit = async (data: IProviderProfile) => {
-    try {
-      // TODO: Call API to update or create provider profile
-      console.log('Submitting provider profile:', data);
-      // await updateProviderProfile(data).unwrap();
+  const onSubmit = useCallback(
+    async (data: IProviderProfile) => {
+      try {
+        const formData = new FormData();
+        formData.append('profile', JSON.stringify(data));
+        if (bannerUrl) {
+          formData.append('banner', bannerUrl);
+        }
+        if (profileUrl) {
+          formData.append('logo', profileUrl);
+        }
 
-      const formData = new FormData();
-      formData.append('profile', JSON.stringify(data));
-      if (bannerUrl) {
-        formData.append('banner', bannerUrl);
+        await updateProfile(formData).unwrap();
+      } catch (error) {
+        console.error('Error updating organization info:', error);
+        throw error;
       }
-      if (profileUrl) {
-        formData.append('logo', profileUrl);
-      }
+    },
+    [bannerUrl, profileUrl, updateProfile]
+  );
 
-      await updateProfile(formData).unwrap();
-    } catch (error) {
-      console.error('Error updating organization info:', error);
-      throw error;
-    }
-  };
-
-  const handleAddContact = () => {
-    const currentContacts = currentData.providerContactDtos || [];
+  const handleAddContact = useCallback(() => {
+    const currentContacts = currentData.providerContactDtos;
     setValue('providerProfile.providerContactDtos', [
       ...currentContacts,
       {
@@ -103,15 +115,18 @@ export default function ProviderProfile() {
         linkedinUrl: '',
       },
     ]);
-  };
+  }, [currentData.providerContactDtos, setValue]);
 
-  const handleRemoveContact = (index: number) => {
-    const currentContacts = currentData.providerContactDtos || [];
-    setValue(
-      'providerProfile.providerContactDtos',
-      currentContacts.filter((_, i) => i !== index)
-    );
-  };
+  const handleRemoveContact = useCallback(
+    (index: number) => {
+      const currentContacts = currentData.providerContactDtos;
+      setValue(
+        'providerProfile.providerContactDtos',
+        currentContacts.filter((_: unknown, i: number) => i !== index)
+      );
+    },
+    [currentData.providerContactDtos, setValue]
+  );
 
   if (isLoadingProfile) {
     return <ProviderProfileSkeleton />;
@@ -121,7 +136,7 @@ export default function ProviderProfile() {
     <div className="p-6 lg:p-8 space-y-6 bg-white">
       {/* Header Section with Profile Info Display */}
       <ProfileHeader
-        currentData={currentData as ProviderProfile}
+        currentData={headerData}
         onBannerUpload={handleBannerUpload}
         onProfileUpload={handleProfileUpload}
         isEdit
@@ -135,13 +150,13 @@ export default function ProviderProfile() {
               {/* Organization Information */}
               <div className="space-y-6 ">
                 <h2 className="text-2xl font-semibold text-gray-900 flex items-center">
-                  Organization Information
+                  {t('organizationInformation')}
                 </h2>
 
                 {/* Organization Name */}
                 <CustomFormField
                   name="providerProfile.organizationName"
-                  label="Organization Name *"
+                  label={`${t('organizationName')} *`}
                   type="text"
                   placeholder="Enter organization name"
                   isBorder={true}
@@ -151,7 +166,7 @@ export default function ProviderProfile() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <CustomFormField
                     name="providerProfile.organizationType"
-                    label="Organization Type *"
+                    label={`${t('organizationType')} *`}
                     type="select"
                     placeholder="Select organization type"
                     options={ORGANIZATION_TYPES}
@@ -161,7 +176,7 @@ export default function ProviderProfile() {
 
                   <CustomFormField
                     name="providerProfile.country"
-                    label="Country *"
+                    label={`${t('country')} *`}
                     type="select"
                     placeholder="Select country"
                     options={COUNTRIES}
@@ -173,7 +188,7 @@ export default function ProviderProfile() {
                 {/* Year Established */}
                 <CustomFormField
                   name="providerProfile.yearEstablished"
-                  label="Year Established"
+                  label={`${t('yearEstablished')} *`}
                   type="number"
                   placeholder="Enter year established"
                   isBorder={true}
@@ -182,7 +197,7 @@ export default function ProviderProfile() {
                 {/* Address Summary */}
                 <CustomFormField
                   name="providerProfile.addressSummary"
-                  label="Address Summary"
+                  label={`${t('addressSummary')} *`}
                   type="text"
                   placeholder="Enter address"
                   isBorder={true}
@@ -191,7 +206,7 @@ export default function ProviderProfile() {
                 {/* Description */}
                 <CustomFormField
                   name="providerProfile.description"
-                  label="Description"
+                  label={`${t('description')} *`}
                   type="textarea"
                   placeholder="Enter organization description"
                   isBorder={true}
@@ -200,7 +215,7 @@ export default function ProviderProfile() {
                 {/* Accreditation */}
                 <CustomFormField
                   name="providerProfile.accreditation"
-                  label="Accreditation"
+                  label={`${t('accreditation')} *`}
                   type="text"
                   placeholder="Enter accreditation details"
                   isBorder={true}
@@ -209,7 +224,7 @@ export default function ProviderProfile() {
                 {/* Specialization */}
                 <CustomFormField
                   name="providerProfile.specialization"
-                  label="Specialization"
+                  label={`${t('specialization')} *`}
                   type="text"
                   placeholder="Enter specialization areas"
                   isBorder={true}
@@ -217,22 +232,23 @@ export default function ProviderProfile() {
 
                 <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
                   <Mail className="w-6 h-6" />
-                  Contact Information
+                  {t('contactInformation')}
                 </h2>
 
                 {/* Email & Phone */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <CustomFormField
                     name="providerProfile.email"
-                    label="Email *"
+                    label={`${t('email')} *`}
                     type="email"
+                    disabled
                     placeholder="Enter email address"
                     isBorder={true}
                   />
 
                   <CustomFormField
                     name="providerProfile.phone"
-                    label="Phone *"
+                    label={`${t('phone')} *`}
                     type="text"
                     placeholder="Enter phone number"
                     isBorder={true}
@@ -242,7 +258,7 @@ export default function ProviderProfile() {
                 {/* Website */}
                 <CustomFormField
                   name="providerProfile.website"
-                  label="Website"
+                  label={`${t('website')} *`}
                   type="text"
                   placeholder="https://example.com"
                   isBorder={true}
@@ -252,14 +268,14 @@ export default function ProviderProfile() {
               {/* Contact Information */}
               <div className="space-y-6 ">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-semibold text-gray-900">Contact Persons</h2>
+                  <h2 className="text-2xl font-semibold text-gray-900">{t('contactPersons')}</h2>
                   <Button
                     type="button"
                     onClick={handleAddContact}
                     className="bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white"
                   >
                     <Plus className="w-4 h-4 mr-2" />
-                    Add Contact
+                    {t('addContact')}
                   </Button>
                 </div>
 
@@ -267,7 +283,7 @@ export default function ProviderProfile() {
                   <div key={index} className="border-2 border-gray-200 rounded-lg p-6 space-y-4">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-semibold text-gray-900">
-                        Contact Person {index + 1}
+                        {t('contactPersons')} {index + 1}
                       </h3>
 
                       <Button
@@ -285,7 +301,7 @@ export default function ProviderProfile() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <CustomFormField
                         name={`providerProfile.providerContactDtos.${index}.contactName`}
-                        label="Contact Name *"
+                        label={`${t('contactName')} *`}
                         type="text"
                         placeholder="Enter contact name"
                         isBorder={true}
@@ -293,7 +309,7 @@ export default function ProviderProfile() {
 
                       <CustomFormField
                         name={`providerProfile.providerContactDtos.${index}.roleTitle`}
-                        label="Role Title *"
+                        label={`${t('roleTitle')} *`}
                         type="text"
                         placeholder="Enter role title"
                         isBorder={true}
@@ -304,7 +320,7 @@ export default function ProviderProfile() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <CustomFormField
                         name={`providerProfile.providerContactDtos.${index}.email`}
-                        label="Email *"
+                        label={`${t('email')} *`}
                         type="email"
                         placeholder="Enter email"
                         isBorder={true}
@@ -312,7 +328,7 @@ export default function ProviderProfile() {
 
                       <CustomFormField
                         name={`providerProfile.providerContactDtos.${index}.phone`}
-                        label="Phone *"
+                        label={`${t('phone')} *`}
                         type="text"
                         placeholder="Enter phone"
                         isBorder={true}
@@ -322,7 +338,7 @@ export default function ProviderProfile() {
                     {/* LinkedIn URL */}
                     <CustomFormField
                       name={`providerProfile.providerContactDtos.${index}.linkedinUrl`}
-                      label="LinkedIn URL"
+                      label={`${t('linkedinUrl')} *`}
                       type="text"
                       placeholder="https://linkedin.com/in/username"
                       isBorder={true}
@@ -339,7 +355,7 @@ export default function ProviderProfile() {
                 disabled={isLoadingUpdateProfile}
                 className="w-full bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
               >
-                {isLoadingUpdateProfile ? 'Saving...' : 'Submit'}
+                {isLoadingUpdateProfile ? t('saving') : t('submit')}
               </Button>
             </div>
           </form>

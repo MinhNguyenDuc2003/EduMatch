@@ -24,7 +24,7 @@ export default function FavouriteListSkeleton() {
                   {t('table.gpa')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {t('table.skills')}
+                  {t('table.note')}
                 </th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {t('table.actions')}

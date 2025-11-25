@@ -1,21 +1,34 @@
 'use client';
 
-import { useGetAllFavouriteApplicantsQuery } from '@/state/apiProvider';
+import {
+  useGetAllFavouriteApplicantsQuery,
+  useRemoveFavouriteApplicantMutation,
+} from '@/state/apiProvider';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { FavouriteEmptyState, FavouriteListSkeleton, FavouriteApplicantsTable } from './components';
-import ApplicantDetailDialog from '@/pattern/share/ApplicantDetailDialog';
+import ApplicantDetailDialog from './components/ApplicantDetailDialog';
+import { toast } from 'sonner';
 
 export default function FavouriteApplicants() {
   const t = useTranslations('provider.favourite');
-  const {
-    data: favouriteApplicantsResponse,
-    isLoading,
-    error,
-  } = useGetAllFavouriteApplicantsQuery();
+  const { data: favouriteApplicants, isLoading, error } = useGetAllFavouriteApplicantsQuery();
+  const [removeFavouriteApplicant, { isLoading: isRemovingFavouriteApplicant }] =
+    useRemoveFavouriteApplicantMutation();
+
   const [selectedApplicant, setSelectedApplicant] = useState<ApplicantProfile | null>(null);
 
-  const favouriteApplicants = favouriteApplicantsResponse?.applicantProfileVo ?? [];
+  const handleRemoveFavouriteApplicant = async (favouriteApplicantId: number) => {
+    try {
+      await removeFavouriteApplicant(favouriteApplicantId)
+        .unwrap()
+        .then(() => {
+          toast.success('Favourite applicant removed successfully');
+        });
+    } catch (error) {
+      console.log('Failed to remove favourite applicant:', error);
+    }
+  };
 
   if (isLoading) {
     return <FavouriteListSkeleton />;
@@ -45,8 +58,9 @@ export default function FavouriteApplicants() {
 
       {favouriteApplicants && favouriteApplicants.length > 0 ? (
         <FavouriteApplicantsTable
-          applicants={favouriteApplicants}
+          applicants={favouriteApplicants || []}
           onViewDetail={setSelectedApplicant}
+          onRemoveFavourite={handleRemoveFavouriteApplicant}
         />
       ) : (
         <FavouriteEmptyState />

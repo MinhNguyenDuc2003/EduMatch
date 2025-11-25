@@ -23,7 +23,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslations } from 'next-intl';
 
 const Header = () => {
-  const { isAuthenticated, isLoading, isProvider, subscriptions } = useAuth();
+  const { isAuthenticated, isLoading, isProvider, subscriptions, handleLogout } = useAuth();
 
   const t = useTranslations('navbar');
 
@@ -160,7 +160,7 @@ const Header = () => {
                       </DropdownMenuItem>
                     )}
 
-                  <DropdownMenuItem onClick={() => {}}>{t('dropdown.logout')}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>{t('dropdown.logout')}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

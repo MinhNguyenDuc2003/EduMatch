@@ -19,7 +19,6 @@ import {
   Settings,
   ChevronRight,
   User,
-  HelpCircle,
   Newspaper,
   Home,
   ArrowBigUp,
@@ -68,11 +67,6 @@ const ProviderSidebar = () => {
       icon: Newspaper,
       label: t('news'),
       href: '/provider/news',
-    },
-    {
-      icon: Users,
-      label: t('students'),
-      href: '/provider/students',
     },
     {
       icon: Heart,

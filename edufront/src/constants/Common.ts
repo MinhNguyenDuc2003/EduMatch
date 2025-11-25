@@ -651,6 +651,7 @@ export const NOTIFICATION_TYPES = {
   SCHOLARSHIP_NEWS: 'scholarshipNews',
   APPLICATION: 'application',
   SCHOLARSHIP_APPLICATION: 'scholarshipApplication',
+  APPLICATION_REFERRAL: 'applicationReferral',
 };
 
 export const RELIGIONS = [

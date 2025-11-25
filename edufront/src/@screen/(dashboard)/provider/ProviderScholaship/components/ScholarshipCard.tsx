@@ -7,6 +7,7 @@ import {
 } from '@/lib/cus/dropdown-menu';
 import { Skeleton } from '@/lib/cus/skeleton';
 import { cn } from '@/lib/utils';
+import { formatDate } from '@/utils/formatDate';
 import {
   MoreVertical,
   Edit,
@@ -16,6 +17,8 @@ import {
   GraduationCap,
   DollarSign,
   Users,
+  Eye,
+  Sparkles,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -26,15 +29,9 @@ interface ScholarshipCardProps {
   onDelete?: (id: number) => void;
   className?: string;
   variant?: 'small' | 'medium';
+  setSelectedScholarshipId?: (id: number) => void;
+  setShowAISuggestions?: (show: boolean) => void;
 }
-
-const formatDate = (timestamp: number) => {
-  return new Date(timestamp).toLocaleDateString('vi-VN', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  });
-};
 
 interface ScholarshipCardSkeletonProps {
   variant?: 'small' | 'medium';
@@ -126,6 +123,8 @@ export const ScholarshipCard = ({
   onDelete,
   className,
   variant = 'medium',
+  setSelectedScholarshipId,
+  setShowAISuggestions,
 }: ScholarshipCardProps) => {
   const t = useTranslations('action');
 
@@ -148,6 +147,10 @@ export const ScholarshipCard = ({
               <div className="flex items-center gap-1">
                 <Calendar className="w-3 h-3" />
                 <span>{formatDate(scholarship.endDate)}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Eye className="w-3 h-3" />
+                <span>{scholarship.views}</span>
               </div>
             </div>
           </div>
@@ -216,13 +219,34 @@ export const ScholarshipCard = ({
             </div>
 
             {/* Deadline */}
-            <div className="flex items-center gap-2 text-sm text-gray-600 ">
-              <Calendar className="w-4 h-4 text-gray-400" />
-              <span>
-                Deadline:{' '}
-                <span className="font-medium text-gray-900">{formatDate(scholarship.endDate)}</span>
-              </span>
+            <div className="flex items-center justify-between text-sm text-gray-600 ">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-gray-400" />
+                <span>
+                  Deadline:{' '}
+                  <span className="font-medium text-gray-900">
+                    {formatDate(scholarship.endDate)}
+                  </span>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Eye className="w-4 h-4 text-gray-400" />
+                <span>
+                  Views: <span className="font-medium text-gray-900">{scholarship.views}</span>
+                </span>
+              </div>
             </div>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedScholarshipId?.(scholarship.id);
+                setShowAISuggestions?.(true);
+              }}
+              className="bg-primary-brand text-white hover:bg-primary-brand/90 w-full mt-2 shadow-sm"
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              {t('generateSuggestions')}
+            </Button>
           </div>
         );
       default:
@@ -289,13 +313,34 @@ export const ScholarshipCard = ({
             </div>
 
             {/* Deadline */}
-            <div className="flex items-center gap-2 text-sm text-gray-600 ">
-              <Calendar className="w-4 h-4 text-gray-400" />
-              <span>
-                Deadline:{' '}
-                <span className="font-medium text-gray-900">{formatDate(scholarship.endDate)}</span>
-              </span>
+            <div className="flex items-center justify-between text-sm text-gray-600 ">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-gray-400" />
+                <span>
+                  Deadline:{' '}
+                  <span className="font-medium text-gray-900">
+                    {formatDate(scholarship.endDate)}
+                  </span>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Eye className="w-4 h-4 text-gray-400" />
+                <span>
+                  Views: <span className="font-medium text-gray-900">{scholarship.views}</span>
+                </span>
+              </div>
             </div>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedScholarshipId?.(scholarship.id);
+                setShowAISuggestions?.(true);
+              }}
+              className="bg-primary-brand text-white hover:bg-primary-brand/90 w-full mt-2 shadow-sm"
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              {t('generateSuggestions')}
+            </Button>
           </div>
         );
     }
