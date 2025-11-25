@@ -106,7 +106,12 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                 subscriptionRepository.findByUserIdAndActiveTrue(userId);
 
         if (existingActiveSub.isPresent()) {
-            throw new BusinessException(CoreMessageCode.SUBSCRIPTION_ALREADY_ACTIVE);
+            Optional<SubscriptionPlanEntity> existPlan = subscriptionplanRepository.findById(existingActiveSub.get().getPlan().getId());
+            if (existPlan.isPresent()) {
+                if (existPlan.get().getTargetType().equals(plan.getTargetType())) {
+                    throw new BusinessException(CoreMessageCode.SUBSCRIPTION_ALREADY_ACTIVE);
+                }
+            }
         }
 
         // Tạo Subscription mới (ACTIVE)

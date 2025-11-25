@@ -62,16 +62,19 @@ public class ApplicationScholarshipController {
         return ApiResponse.ok(service.getAllByStatus(status));
     }
 
+    @Authorized
     @PostMapping
     public ApiResponse<ApplicationScholarshipDto> create(@RequestBody ApplicationScholarshipDto dto) {
         return ApiResponse.ok(service.create(dto));
     }
 
+    @Authorized
     @PutMapping
     public ApiResponse<ApplicationScholarshipDto> update(@RequestBody ApplicationScholarshipDto dto) {
         return ApiResponse.ok(service.update(dto));
     }
 
+    @Authorized
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) {
         service.delete(id);

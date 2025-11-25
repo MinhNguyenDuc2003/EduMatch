@@ -171,10 +171,10 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getTopViewsByMonthByProvider());
     }
 
+    @Authorized
     @GetMapping("/suggestion/mail")
     public ApiResponse<Boolean> sendMailSuggestion() {
-        return ApiResponse.ok(scholarshipService.sendMailSuggestion());
+        return ApiResponse.ok(scholarshipService.sendMailSuggestion(UaaContextHolder.getUserId()));
     }
-
 
 }

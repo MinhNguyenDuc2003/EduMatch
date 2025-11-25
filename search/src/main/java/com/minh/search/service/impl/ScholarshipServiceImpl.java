@@ -75,9 +75,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
             nativeQuery.withFilter(f -> f
                     .bool(b -> {
                         b.must(m -> m
-                                .term(t -> t
+                                .matchPhrase(mp -> mp
                                         .field(ScholarshipField.UNIVERSITY)
-                                        .value(criteria.getCriteria().getUniversity())
+                                        .query(criteria.getCriteria().getUniversity())
                                 )
                         );
                         return b;

@@ -22,10 +22,7 @@ import com.minh.scholarship.data.mapper.ScholarshipMapper;
 import com.minh.scholarship.data.mapper.ScholarshipPreferenceMapper;
 import com.minh.scholarship.data.mapper.ScholarshipViewMapper;
 import com.minh.scholarship.data.repository.*;
-import com.minh.scholarship.data.vo.ApplicantProfileVo;
-import com.minh.scholarship.data.vo.NotificationVo;
-import com.minh.scholarship.data.vo.ProviderProfileVo;
-import com.minh.scholarship.data.vo.ScholarshipVo;
+import com.minh.scholarship.data.vo.*;
 import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
 import com.minh.scholarship.data.vo.projection.ScholarshipViewProjection;
 import com.minh.scholarship.feign.*;
@@ -72,6 +69,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     private final ApplicationService applicationService;
     private final AiMatchFeign aiMatchFeign;
     private final ApplicantProfileFeign applicantProfileFeign;
+    private final CustomerFeign customerFeign;
 
     @Value("${fe.end-point}")
     private String feEndPoint;
@@ -395,8 +393,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         return topList;
     }
 
-    public Boolean sendMailSuggestion() {
-        List<ScholarshipDto> scholarshipEntities = this.getAll();
+    @Override
+    public Boolean sendMailSuggestion(String userId) {
+        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(userId, 5);
 
         MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.SCHOLARSHIP_RECOMMENDATION.getCode()));
         String body = generateBodyEmailScholarshipSuggestion(scholarshipEntities, templateDto.getBody());
@@ -413,7 +412,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto) {
-        List<ScholarshipDto> scholarshipEntities = this.getAll();
+        String userId = UaaContextHolder.getUserId();
+        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(userId, 5);
+        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(userId));
 
         ScholarshipDto scholarshipDto = this.getById(dto.getScholarshipId());
         ApplicationDto applicationDto = applicationService.getById(dto.getApplicationId());
@@ -429,7 +430,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         String body = generateBodyEmailScholarshipSuggestion(scholarshipEntities, template);
         MailDto mailDto = new MailDto();
         mailDto.setBody(body);
-        mailDto.setTo("ducm40877@gmail.com");
+        mailDto.setTo(customerVo.getCustomer().email());
         mailDto.setSubject(templateDto.getSubject());
         mailDto.setTemplateId(templateDto.getId());
         kafkaProducer.convertToByteAndSend(mailTopic, mailDto);
@@ -500,7 +501,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         return vos;
     }
 
-    private String generateBodyEmailScholarshipSuggestion(List<ScholarshipDto> scholarships, String template) {
+    private String generateBodyEmailScholarshipSuggestion(List<ScholarshipVo> scholarships, String template) {
         for (int i = 0; i < scholarships.size(); i++) {
             int number = i + 1;
             template = template.replace(getKey("title", number), scholarships.get(i).getTitle())

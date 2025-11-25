@@ -82,7 +82,7 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
     @Override
     @Transactional
     public ProviderFavouriteDto create(ProviderFavouriteDto dto) {
-        if (providerFavouriteRepository.existsByProviderIdAndUserId(dto.getProviderId(), dto.getUserId())) {
+        if (providerFavouriteRepository.existsByProviderIdAndUserIdAndActive(dto.getProviderId(), dto.getUserId(), true)) {
             throw new BusinessException(CoreMessageCode.APPLICANT_ALREADY_ADDED_TO_FAVOURITE);
         }
 

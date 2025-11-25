@@ -262,7 +262,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
         List<ApplicationScholarshipEntity> allActiveApplications = applicationScholarshipRepository.findByActive(true);
         Map<String, Long> totalApplicationByStatus = allActiveApplications.stream()
                 .collect(Collectors.groupingBy(
-                        e -> e.getStatus(),
+                        ApplicationScholarshipEntity::getStatus,
                         Collectors.counting()
                 ));
 

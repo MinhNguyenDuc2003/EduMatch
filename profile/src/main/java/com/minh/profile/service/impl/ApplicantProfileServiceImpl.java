@@ -109,6 +109,11 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
         return null;
     }
 
+    @Override
+    public List<ApplicantProfileDto> getAll() {
+        return applicantProfileMapper.toDto(applicantProfileRepository.getAllByActive(true));
+    }
+
     private void deleteProfileData(Long id) {
         applicantCertificateRepository.updateActiveByApplicantId(id, false);
         applicantEducationHistoryRepository.updateActiveByApplicantId(id, false);
