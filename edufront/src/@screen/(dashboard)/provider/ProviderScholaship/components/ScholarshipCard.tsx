@@ -148,6 +148,10 @@ export const ScholarshipCard = ({
                 <Calendar className="w-3 h-3" />
                 <span>{formatDate(scholarship.endDate)}</span>
               </div>
+              <div className="flex items-center gap-1">
+                <Eye className="w-3 h-3" />
+                <span>{scholarship.views}</span>
+              </div>
             </div>
           </div>
         );

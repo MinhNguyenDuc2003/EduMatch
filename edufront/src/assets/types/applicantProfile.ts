@@ -125,12 +125,6 @@ declare global {
     applicantId: number;
     note?: string;
     applicantProfileVo?: ApplicantProfile;
-    isFavourite?: number;
-  }
-
-  interface FavouriteApplicantApiResponse {
-    id?: number;
-    applicantProfileVo?: ApplicantProfile[];
   }
 }
 

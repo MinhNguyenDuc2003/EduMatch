@@ -69,11 +69,6 @@ const ProviderSidebar = () => {
       href: '/provider/news',
     },
     {
-      icon: Users,
-      label: t('students'),
-      href: '/provider/students',
-    },
-    {
       icon: Heart,
       label: t('favourite'),
       href: '/provider/favourite',

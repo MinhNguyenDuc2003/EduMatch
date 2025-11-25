@@ -66,6 +66,13 @@ export const apiAuth = createApi({
         params: { subscriptionId, subscriptionPlanId, transactionId },
       }),
     }),
+    logout: build.mutation<void, void>({
+      query: () => ({
+        url: '/api/customer/storefront/logout',
+        method: 'POST',
+      }),
+      invalidatesTags: ['Auth'],
+    }),
   }),
 });
 
@@ -77,4 +84,5 @@ export const {
   useGetSubscriptionByTargetTypeQuery,
   useConfirmPaymentMutation,
   useExtendSubscriptionMutation,
+  useLogoutMutation,
 } = apiAuth;

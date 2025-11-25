@@ -158,6 +158,14 @@ export const apiProvider = createApi({
       providesTags: (result, error, id) => [{ type: 'Profile', id: String(id) }],
     }),
 
+    getAllApplications: build.query<ApplicationScholarship[], void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.APPLICATION}/by-provider`,
+        method: 'GET',
+      }),
+      providesTags: ['Applications'],
+    }),
+
     // Get all applications by scholarship ID
     getApplicationsByScholarshipId: build.query<
       ApplicationScholarship[],
@@ -278,7 +286,19 @@ export const apiProvider = createApi({
       }),
     }),
 
-    getAllFavouriteApplicants: build.query<FavouriteApplicantApiResponse, void>({
+    addFavouriteApplicant: build.mutation<
+      void,
+      { userId: string; providerId: number; note: string }
+    >({
+      query: ({ userId, providerId, note }) => ({
+        url: `${API_ENDPOINTS.PROVIDER_FAVORITES}`,
+        method: 'POST',
+        body: { userId, providerId, note },
+      }),
+      invalidatesTags: ['ProviderFavorites'],
+    }),
+
+    getAllFavouriteApplicants: build.query<FavouriteApplicant[], void>({
       query: () => ({
         url: `${API_ENDPOINTS.PROVIDER_FAVORITES}/my-favourite`,
         method: 'GET',
@@ -291,6 +311,15 @@ export const apiProvider = createApi({
         url: `${API_ENDPOINTS.PROVIDER_FAVORITES}/${applicantId}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['ProviderFavorites'],
+    }),
+
+    getTopViewedScholarships: build.query<Scholarship[], void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/top-views/provider/month`,
+        method: 'GET',
+      }),
+      providesTags: ['Scholarships'],
     }),
   }),
 });
@@ -313,6 +342,7 @@ export const {
   useGetFollowedProvidersQuery,
   useGetProviderProfileByIdQuery,
   useGetApplicationsByScholarshipIdQuery,
+  useGetAllApplicationsQuery,
   useUpdateApplicationStatusMutation,
   useGetNewsQuery,
   useCreateNewsMutation,
@@ -325,6 +355,8 @@ export const {
   useGetStatisticsQuery,
   useGetRecommendedApplicantsQuery,
   useReferApplicantsMutation,
+  useAddFavouriteApplicantMutation,
   useGetAllFavouriteApplicantsQuery,
   useRemoveFavouriteApplicantMutation,
+  useGetTopViewedScholarshipsQuery,
 } = apiProvider;

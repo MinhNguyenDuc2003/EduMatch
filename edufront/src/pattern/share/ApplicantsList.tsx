@@ -1,7 +1,11 @@
 import { Button } from '@/lib/cus/button';
 import { Checkbox } from '@/lib/cus/checkbox';
-import { useReferApplicantsMutation } from '@/state/apiProvider';
-import { Eye, Loader2, MapPin } from 'lucide-react';
+import {
+  useAddFavouriteApplicantMutation,
+  useGetProfileQuery,
+  useReferApplicantsMutation,
+} from '@/state/apiProvider';
+import { Eye, Heart, Loader2, MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
@@ -20,6 +24,9 @@ const ApplicantsList = ({
   const t = useTranslations('aiApplicantSuggestions');
 
   const [referApplicants, { isLoading: isReferApplicantsLoading }] = useReferApplicantsMutation();
+  const { data } = useGetProfileQuery();
+  const [addFavouriteApplicant, { isLoading: isAddFavouriteApplicantLoading }] =
+    useAddFavouriteApplicantMutation();
 
   const toggleApplicantSelection = (userId: string) => {
     if (selectedApplicants.includes(userId)) {
@@ -41,6 +48,24 @@ const ApplicantsList = ({
         });
     } catch (error) {
       console.log('Failed to refer applicants:', error);
+    }
+  };
+
+  const handleAddFavouriteApplicant = async (userId: string) => {
+    try {
+      if (!data || !data.providerProfile) return;
+
+      await addFavouriteApplicant({
+        userId,
+        providerId: data.providerProfile.id,
+        note: '',
+      })
+        .unwrap()
+        .then(() => {
+          toast.success('Applicant added to favourites successfully');
+        });
+    } catch (error) {
+      console.log('Failed to add favourite applicant:', error);
     }
   };
 
@@ -144,14 +169,24 @@ const ApplicantsList = ({
                   {applicant.score ? `${(applicant.score * 100).toFixed(2)}%` : 'N/A'}
                 </td>
                 <td className="px-2 h-full sm:px-4 py-3 sm:table-cell">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setDetailApplicant(applicant)}
-                    className="shadow-none w-full"
-                  >
-                    <Eye className="w-4 h-4 text-primary-brand" />
-                  </Button>
+                  <div className="flex items-center justify-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setDetailApplicant(applicant)}
+                      className="shadow-none w-fit"
+                    >
+                      <Eye className="w-4 h-4 text-primary-brand" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleAddFavouriteApplicant(applicant.userId)}
+                      className="shadow-none w-fit"
+                    >
+                      <Heart className="w-4 h-4 text-primary-brand" />
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}

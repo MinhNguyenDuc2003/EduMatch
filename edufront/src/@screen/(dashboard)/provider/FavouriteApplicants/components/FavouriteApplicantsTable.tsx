@@ -1,14 +1,16 @@
-import { GraduationCap, MapPin, Eye, Star } from 'lucide-react';
+import { MapPin, Eye, Trash } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 interface FavouriteApplicantsTableProps {
-  applicants: ApplicantProfile[];
+  applicants: FavouriteApplicant[];
   onViewDetail: (applicant: ApplicantProfile) => void;
+  onRemoveFavourite: (favouriteApplicantId: number) => void;
 }
 
 export default function FavouriteApplicantsTable({
   applicants,
   onViewDetail,
+  onRemoveFavourite,
 }: FavouriteApplicantsTableProps) {
   const t = useTranslations('provider.favourite');
 
@@ -39,90 +41,103 @@ export default function FavouriteApplicantsTable({
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {applicants.map((applicant) => (
-              <tr key={applicant.id} className="hover:bg-gray-50 transition-colors">
-                {/* Applicant Info */}
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary-brand rounded-full flex items-center justify-center text-white font-bold">
-                      {applicant.firstName?.[0]}
-                      {applicant.lastName?.[0]}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-900">
-                        {applicant.firstName} {applicant.lastName}
-                      </p>
-                      <p className="text-sm text-gray-500">{applicant.contactName}</p>
-                    </div>
-                  </div>
-                </td>
+            {applicants.map((favouriteApplicant) => {
+              const applicant = favouriteApplicant.applicantProfileVo;
+              if (!applicant) return null;
 
-                {/* Contact */}
-                <td className="px-6 py-4">
-                  <div className="space-y-1">
-                    {applicant.phoneNumber && (
-                      <p className="text-sm text-gray-900">{applicant.phoneNumber}</p>
-                    )}
-                    {applicant.hometown && (
-                      <div className="flex items-center gap-1 text-sm text-gray-500">
-                        <MapPin className="w-3 h-3" />
-                        <span>{applicant.hometown}</span>
+              return (
+                <tr key={applicant.id} className="hover:bg-gray-50 transition-colors">
+                  {/* Applicant Info */}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary-brand rounded-full flex items-center justify-center text-white font-bold">
+                        {applicant.firstName?.[0]}
+                        {applicant.lastName?.[0]}
                       </div>
-                    )}
-                  </div>
-                </td>
+                      <div>
+                        <p className="font-semibold text-gray-900">
+                          {applicant.firstName} {applicant.lastName}
+                        </p>
+                        <p className="text-sm text-gray-500">{applicant.contactName}</p>
+                      </div>
+                    </div>
+                  </td>
 
-                {/* Education */}
-                <td className="px-6 py-4">
-                  {applicant.educationHistories && applicant.educationHistories.length > 0 ? (
-                    <div className="max-w-xs">
-                      <div className="flex items-center gap-1 mb-1">
-                        <p className="text-sm font-medium text-gray-900 truncate">
-                          {applicant.educationHistories[0].institutionName}
+                  {/* Contact */}
+                  <td className="px-6 py-4">
+                    <div className="space-y-1">
+                      {applicant.phoneNumber && (
+                        <p className="text-sm text-gray-900">{applicant.phoneNumber}</p>
+                      )}
+                      {applicant.hometown && (
+                        <div className="flex items-center gap-1 text-sm text-gray-500">
+                          <MapPin className="w-3 h-3" />
+                          <span>{applicant.hometown}</span>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+
+                  {/* Education */}
+                  <td className="px-6 py-4">
+                    {applicant.educationHistories && applicant.educationHistories.length > 0 ? (
+                      <div className="max-w-xs">
+                        <div className="flex items-center gap-1 mb-1">
+                          <p className="text-sm font-medium text-gray-900 truncate">
+                            {applicant.educationHistories[0].institutionName}
+                          </p>
+                        </div>
+                        <p className="text-xs text-gray-500 truncate">
+                          {applicant.educationHistories[0].majorName}
                         </p>
                       </div>
-                      <p className="text-xs text-gray-500 truncate">
-                        {applicant.educationHistories[0].majorName}
-                      </p>
+                    ) : (
+                      <span className="text-sm text-gray-400">-</span>
+                    )}
+                  </td>
+
+                  {/* GPA */}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {applicant.overallGpa ? (
+                      <div className="flex items-center gap-1">
+                        <span className="font-semibold text-gray-900">
+                          {applicant.overallGpa.toFixed(2)}
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="text-sm text-gray-400">-</span>
+                    )}
+                  </td>
+
+                  {/* Note */}
+                  <td className="px-6 py-4">
+                    {applicant.note ? (
+                      <p className="text-sm text-gray-900">{applicant.note}</p>
+                    ) : (
+                      <span className="text-sm text-gray-400">_____</span>
+                    )}
+                  </td>
+
+                  {/* Actions */}
+                  <td className="px-6 py-4  whitespace-nowrap text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <button
+                        onClick={() => onViewDetail(applicant)}
+                        className="inline-flex items-center gap-1 text-primary-brand hover:text-[#3d4c63] cursor-pointer font-medium text-sm transition-colors"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => onRemoveFavourite(favouriteApplicant.id)}
+                        className="inline-flex items-center gap-1 text-red-500 hover:text-red-700 cursor-pointer font-medium text-sm transition-colors"
+                      >
+                        <Trash className="w-4 h-4" />
+                      </button>
                     </div>
-                  ) : (
-                    <span className="text-sm text-gray-400">-</span>
-                  )}
-                </td>
-
-                {/* GPA */}
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {applicant.overallGpa ? (
-                    <div className="flex items-center gap-1">
-                      <span className="font-semibold text-gray-900">
-                        {applicant.overallGpa.toFixed(2)}
-                      </span>
-                    </div>
-                  ) : (
-                    <span className="text-sm text-gray-400">-</span>
-                  )}
-                </td>
-
-                {/* Note */}
-                <td className="px-6 py-4">
-                  {applicant.note ? (
-                    <p className="text-sm text-gray-900">{applicant.note}</p>
-                  ) : (
-                    <span className="text-sm text-gray-400">_____</span>
-                  )}
-                </td>
-
-                {/* Actions */}
-                <td className="px-6 py-4 whitespace-nowrap text-center">
-                  <button
-                    onClick={() => onViewDetail(applicant)}
-                    className="inline-flex items-center gap-1 text-primary-brand hover:text-[#3d4c63] cursor-pointer font-medium text-sm transition-colors"
-                  >
-                    <Eye className="w-4 h-4" />
-                  </button>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
