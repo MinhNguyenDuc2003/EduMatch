@@ -1,9 +1,9 @@
 'use client';
 
+import { Check, Eye, FolderKanban, MessageSquare, X } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Context from '../seg/context';
-import { MessageSquare, Eye, FolderKanban, X, Check } from 'lucide-react';
 
 export default function ReportFeedbackDetail() {
   const { id } = useParams();

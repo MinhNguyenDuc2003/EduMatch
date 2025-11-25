@@ -1,5 +1,5 @@
 "use client";
-import { CheckCircle, Clock, GraduationCap, XCircle, Mail } from "lucide-react";
+import { CheckCircle, Clock, GraduationCap, Mail } from "lucide-react";
 import { useState } from "react";
 import CustomDataTable from "src/common/components/common/CustomDataTable";
 import StatisticGrid from "src/common/components/common/StatisticGrid";

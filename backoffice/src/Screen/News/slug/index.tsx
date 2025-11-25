@@ -1,9 +1,9 @@
 'use client';
 
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Context from '../seg/context';
-import Image from 'next/image';
 
 export default function NewsDetail() {
   const { id } = useParams();
