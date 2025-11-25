@@ -7,6 +7,7 @@ import { IRevenueByUsertype } from 'src/assets/types/RevenueByUsertype';
 import { IRevenueMonthly } from 'src/assets/types/RevenueMonthly';
 import { ISubcriptionList } from 'src/assets/types/SubcriptionList';
 import { ISubscriptionPlanList } from 'src/assets/types/SubscriptionPlanList';
+import { IUsers } from 'src/assets/types/Users';
 import { StateCreator } from 'zustand';
 
 type State = {
@@ -21,6 +22,7 @@ type State = {
     RevenueByMonth?: IRevenueByMonth[];
     RevenueMonthly?: IRevenueMonthly[];
     News?: INews[];
+    Users?: IUsers[];
     formFocusID?: string;
   };
   setJointData(Obj: State['Joint']): void;
