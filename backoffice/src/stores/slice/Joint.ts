@@ -23,6 +23,8 @@ type State = {
     RevenueMonthly?: IRevenueMonthly[];
     News?: INews[];
     Users?: IUsers[];
+    TopApply?: ITopApply[];
+    TopView?: ITopView[];
     formFocusID?: string;
   };
   setJointData(Obj: State['Joint']): void;
