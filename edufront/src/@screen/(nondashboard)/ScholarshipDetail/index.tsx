@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/lib/cus/button';
 import {
+  useAnalyzeScholarshipQuery,
   useFollowScholarshipMutation,
   useGetScholarshipBySlugQuery,
   useUnfollowScholarshipMutation,
@@ -18,14 +19,26 @@ import {
 } from './components';
 import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 import SubmitApplicationDialog from '@/pattern/share/SubmitApplicationDialog';
+import ScholarshipAnalysisDialog from './components/ScholarshipAnalysisDialog';
 import { useTranslations } from 'next-intl';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
+  const { subscriptions } = useAuth();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAnalysisDialogOpen, setIsAnalysisDialogOpen] = useState(false);
+  const [shouldAnalyze, setShouldAnalyze] = useState(false);
   const t = useTranslations('scholarshipDetail');
 
   const { data: scholarship, isLoading, isError, refetch } = useGetScholarshipBySlugQuery(slug);
+  const {
+    data: analyzeScholarshipResponse,
+    isLoading: isLoadingAnalyzeScholarship,
+    refetch: refetchAnalysis,
+  } = useAnalyzeScholarshipQuery(scholarship?.id || 0, {
+    skip: !shouldAnalyze || !scholarship?.id,
+  });
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
   const [followScholarship] = useFollowScholarshipMutation();
@@ -102,6 +115,31 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
     setIsDialogOpen(true);
   };
 
+  const handleAnalyzeScholarship = async () => {
+    if (!scholarship?.id) return;
+    setShouldAnalyze(true);
+    setIsAnalysisDialogOpen(true);
+    try {
+      await refetchAnalysis();
+    } catch (error) {
+      console.log('Failed to analyze scholarship:', error);
+    }
+  };
+
+  // Parse analysis data from JSON string
+  const parseAnalysisData = (): ScholarshipAnalysis | undefined => {
+    if (!analyzeScholarshipResponse) return undefined;
+    try {
+      const parsed = JSON.parse(analyzeScholarshipResponse || '');
+      return parsed.analysis;
+    } catch (error) {
+      console.log('Failed to parse analysis data:', error);
+      return;
+    }
+  };
+
+  const analysisData = parseAnalysisData();
+
   const handleSubmitApplication = async (applicationId: number) => {
     // TODO: Implement API call to submit application to scholarship
     console.log('Submitting application', applicationId, 'to scholarship', scholarship?.id);
@@ -168,6 +206,25 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
                 onToggleFollow={handleToggleFollow}
               />
               {/* Action Button */}
+              {subscriptions.some((subscription) => subscription.userType === 'APPLICANT') ? (
+                <Button
+                  value={t('analyzeScholarship')}
+                  variant="ok"
+                  size="lg"
+                  full
+                  onClick={handleAnalyzeScholarship}
+                  className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
+                />
+              ) : (
+                <Button
+                  value={t('upgradeToPremium')}
+                  variant="ok"
+                  size="lg"
+                  full
+                  onClick={() => router.push('/subscriptions?type=APPLICANT')}
+                  className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
+                />
+              )}
               <Button
                 value={t('applyNow')}
                 variant="ok"
@@ -191,6 +248,15 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
           onSubmit={handleSubmitApplication}
         />
       )}
+
+      {/* Analysis Dialog */}
+      <ScholarshipAnalysisDialog
+        open={isAnalysisDialogOpen}
+        onOpenChange={setIsAnalysisDialogOpen}
+        analysisData={analysisData}
+        isLoading={isLoadingAnalyzeScholarship}
+        scholarshipTitle={scholarshipTitle}
+      />
     </div>
   );
 }

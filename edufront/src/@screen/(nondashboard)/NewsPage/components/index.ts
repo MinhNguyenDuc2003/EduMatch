@@ -4,3 +4,4 @@ export { default as NewsMetadata } from './NewsMetadata';
 export { default as NewsContent } from './NewsContent';
 export { default as NewsSidebar } from './NewsSidebar';
 export { default as NewsImages } from './NewsImages';
+export { default as TopViewedScholarships } from './TopViewedScholarships';

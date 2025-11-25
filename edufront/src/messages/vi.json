@@ -349,6 +349,8 @@
     "backToScholarships": "Quay lại danh sách học bổng",
     "scholarships": "Học bổng",
     "applyNow": "Ứng tuyển ngay",
+    "upgradeToPremium": "Nâng cấp Premium",
+    "analyzeScholarship": "Phân tích học bổng",
     "noDeadline": "Không có hạn chót",
     "metadata": {
       "track": "Theo dõi",
@@ -376,6 +378,18 @@
       "follow": "Theo dõi",
       "scholarshipLogo": "Logo học bổng",
       "about": "Giới thiệu"
+    },
+    "analysis": {
+      "title": "Phân Tích Học Bổng",
+      "analysisResult": "Kết quả phân tích học bổng",
+      "loading": "Đang phân tích học bổng...",
+      "noData": "Không có dữ liệu phân tích",
+      "matchReasons": "Lý Do Phù Hợp",
+      "studentStrengths": "Điểm Mạnh Của Sinh Viên",
+      "improvementAreas": "Lĩnh Vực Cần Cải Thiện",
+      "applicationTips": "Mẹo Ứng Tuyển",
+      "overallStrategy": "Chiến Lược Tổng Thể",
+      "timeline": "Lộ Trình"
     }
   },
   "viewProviderProfile": {
@@ -992,6 +1006,20 @@
           "3": "Chỉ rõ loại sinh viên mà học bổng đó tập trung và đảm bảo xem xét và chỉnh sửa tất cả các tiêu chí lọc để đảm bảo chỉ có những sinh viên đủ điều kiện để nhận học bổng được đưa ra."
         }
       }
+    }
+  },
+  "newsPage": {
+    "title": "Tin Tức EduMatch",
+    "topViewed": "Học bổng được xem nhiều nhất",
+    "noTopScholarships": "Chưa có học bổng được xem nhiều",
+    "noNewsAvailable": "Không có tin tức",
+    "noNewsDescription": "Hiện tại chưa có bài viết tin tức nào. Vui lòng quay lại sau để xem các cập nhật và nội dung mới."
+  },
+  "recommendedScholarships": {
+    "heroSection": {
+      "title": "EduMatch Premium",
+      "titleHighlight": "Gợi ý học bổng cho bạn",
+      "description": "Khám phá các học bổng phù hợp nhất với hồ sơ của bạn. Hệ thống AI của chúng tôi phân tích nền tảng học vấn, sở thích và mục tiêu của bạn để đề xuất những cơ hội tốt nhất cho hành trình giáo dục của bạn."
     }
   },
   "providerProfile": {

@@ -349,6 +349,8 @@
     "backToScholarships": "Back to Scholarships",
     "scholarships": "Scholarships",
     "applyNow": "Apply Now",
+    "upgradeToPremium": "Upgrade to Premium",
+    "analyzeScholarship": "Analyze Scholarship",
     "noDeadline": "No deadline",
     "metadata": {
       "track": "Track",
@@ -376,6 +378,18 @@
       "follow": "Follow",
       "scholarshipLogo": "Scholarship logo",
       "about": "About"
+    },
+    "analysis": {
+      "title": "Scholarship Analysis",
+      "analysisResult": "Analysis Result",
+      "loading": "Analyzing scholarship...",
+      "noData": "No analysis data available",
+      "matchReasons": "Match Reasons",
+      "studentStrengths": "Student Strengths",
+      "improvementAreas": "Areas for Improvement",
+      "applicationTips": "Application Tips",
+      "overallStrategy": "Overall Strategy",
+      "timeline": "Timeline"
     }
   },
   "viewProviderProfile": {
@@ -1042,5 +1056,19 @@
     "enterRoleTitle": "Enter role title",
     "enterEmail": "Enter email",
     "enterPhone": "Enter phone"
+  },
+  "newsPage": {
+    "title": "EduMatch News",
+    "topViewed": "Top Viewed Scholarships",
+    "noTopScholarships": "No top viewed scholarships available",
+    "noNewsAvailable": "No news available",
+    "noNewsDescription": "There are no news articles at the moment. Check back later for updates and new content."
+  },
+  "recommendedScholarships": {
+    "heroSection": {
+      "title": "EduMatch Premium",
+      "titleHighlight": "Scholarship Recommendations",
+      "description": "Discover scholarships perfectly matched to your profile. Our AI-powered system analyzes your academic background, interests, and goals to recommend the best opportunities for your educational journey."
+    }
   }
 }

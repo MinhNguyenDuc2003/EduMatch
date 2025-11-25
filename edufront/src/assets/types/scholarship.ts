@@ -46,6 +46,8 @@ declare global {
     scholarshipMedias?: ScholarshipMedia[];
     isFollow: number;
     views: number;
+    score?: number;
+    createdDate?: number;
   };
 
   type SearchScholarshipsByUniversityResponse = {
@@ -116,6 +118,20 @@ declare global {
     first: boolean;
     last: boolean;
     empty: boolean;
+  };
+
+  type ScholarshipAnalysisRecommendation = {
+    scholarship_name: string;
+    match_reasons: string[];
+    student_strengths: string[];
+    improvement_areas: string[];
+    application_tips: string[];
+  };
+
+  type ScholarshipAnalysis = {
+    recommendations: ScholarshipAnalysisRecommendation[];
+    overall_strategy: string;
+    timeline: string[];
   };
 }
 
