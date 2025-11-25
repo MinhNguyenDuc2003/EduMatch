@@ -10,7 +10,6 @@ import {
 import { useGetScholarshipTopViewByMonthQuery } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
 import Loading from '@/pattern/share/Loading';
-import { useTranslations } from 'next-intl';
 import EmptyNews from './components/EmptyNews';
 
 export default function NewsPage() {

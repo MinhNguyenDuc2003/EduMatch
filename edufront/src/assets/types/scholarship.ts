@@ -45,7 +45,9 @@ declare global {
     scholarshipPreferences?: ScholarshipPreference[];
     scholarshipMedias?: ScholarshipMedia[];
     isFollow: number;
-    view: number;
+    views: number;
+    score?: number;
+    createdDate?: number;
   };
 
   type SearchScholarshipsByUniversityResponse = {

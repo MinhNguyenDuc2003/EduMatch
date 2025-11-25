@@ -67,7 +67,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
     fundingAmount: scholarshipFundingAmount,
     endDate: scholarshipEndDate,
     isFollow: isTracked,
-    view: scholarshipView,
+    views: scholarshipView,
     providerProfileVo,
   } = scholarship;
   const { id: providerId, isFollow: isFollowingValue } = providerProfileVo;

@@ -15,7 +15,7 @@ export default function TopViewedScholarships({
 }: TopViewedScholarshipsProps) {
   const t = useTranslations('newsPage');
   return (
-    <div className="sticky top-20 overflow-y-auto rounded-lg shadow-md">
+    <div className="sticky top-24 rounded-lg shadow-md">
       {/* Header */}
       <div className="bg-gradient-to-r from-[#1B3053] to-[#3D6CB9] rounded-t-lg px-4 py-3">
         <div className="flex items-center gap-2">
