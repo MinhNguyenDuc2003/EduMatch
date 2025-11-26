@@ -4,13 +4,6 @@ FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
-ENV NEXT_PUBLIC_API_BASE_URL http://159.89.200.244/api
-ENV I18NEXUS_API_KEY 9tyPHZ7HboEM-F0f_Lqmbw
-ENV GEMINI_API_KEY AIzaSyDaQ3-9F7xROuJZxu7LTp2jtmejqe2IMFo
-ENV NEXT_PUBLIC_STRIPE_PUBLIC_KEY pk_test_51SSc2BKcSCMGzohUhfnyrAS9UWw6IL4rXMTYnubWHuh5gkQFQiCoXUVkD4s9AV08AidMpNGEaiFWAfZCmSKGkFoo00aNuHUBQ7
-
 COPY package.json package-lock.json ./ 
 RUN npm ci
 
@@ -24,6 +17,11 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV I18NEXUS_API_KEY 9tyPHZ7HboEM-F0f_Lqmbw
+ENV GEMINI_API_KEY AIzaSyDaQ3-9F7xROuJZxu7LTp2jtmejqe2IMFo
+ENV NEXT_PUBLIC_STRIPE_PUBLIC_KEY pk_test_51SSc2BKcSCMGzohUhfnyrAS9UWw6IL4rXMTYnubWHuh5gkQFQiCoXUVkD4s9AV08AidMpNGEaiFWAfZCmSKGkFoo00aNuHUBQ7
 
 RUN npm run build
 

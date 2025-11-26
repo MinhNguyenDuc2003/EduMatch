@@ -1,7 +1,7 @@
 """LLM analysis service using Google GenAI."""
 import json
 from typing import Dict, Any
-from google import genai
+from openai import OpenAI
 from app.config import get_settings
 from app.services.database_service import all_scholarships_query, all_applicant_profile_query
 from app.services.embedding_service import create_scholarship_text, create_applicant_text
@@ -104,32 +104,35 @@ RESPONSE RULES
 Generate JSON now.
 """
     
-    # Call GenAI
-    client = genai.Client(api_key=settings.google_genai_api_key)
-    
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
+    client = OpenAI(api_key=settings.chat_gpt_api_key)
+
+    response = client.chat.completions.create(
+        model="gpt-5.1-nano",
+        messages=[
+            {"role": "system", "content": "You are a helpful scholarship advisor."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=2048,
+        temperature=0.3
     )
-    
-    # Parse response
-    response_text = response.text.strip()
-    
-    # Remove markdown code blocks if present
+
+    # Lấy nội dung trả về
+    response_text = response.choices[0].message.content.strip()
+
+    # Xóa code blocks nếu có
     if response_text.startswith("```json"):
         response_text = response_text[7:]
     if response_text.startswith("```"):
         response_text = response_text[3:]
     if response_text.endswith("```"):
         response_text = response_text[:-3]
-    
     response_text = response_text.strip()
-    
+
+    # Thử parse JSON
     try:
         analysis = json.loads(response_text)
         return analysis
     except json.JSONDecodeError as e:
-        # If parsing fails, return raw response
         return {
             "error": "Failed to parse LLM response",
             "raw_response": response_text,
