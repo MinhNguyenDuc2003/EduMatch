@@ -3,7 +3,7 @@ $PROJECT  = "edumatch"
 $SERVICE  = "ai-match"
 $VERSION  = "1.0.0"
 
-docker build -t "$($SERVICE):$($VERSION)" .
+docker build --no-cache -t "$($SERVICE):$($VERSION)" .
 docker tag "$($SERVICE):$($VERSION)" "$($REGISTRY)/$($PROJECT)/$($SERVICE):$($VERSION)"
 docker login $REGISTRY
 docker push "$($REGISTRY)/$($PROJECT)/$($SERVICE):$($VERSION)"

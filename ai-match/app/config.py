@@ -24,9 +24,8 @@ class Settings(BaseSettings):
     profile_db_name: str
     profile_db_user: str
     profile_db_password: str
-    
-    # Google GenAI
-    google_genai_api_key: str
+
+    chat_gpt_api_key: str
     
     # Embedding Model
     embedding_model_name: str = "all-MiniLM-L6-v2"
