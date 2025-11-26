@@ -273,4 +273,47 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
         int code = new java.util.Random().nextInt(900000) + 100000;
         return String.valueOf(code);
     }
+
+    @Override
+    public List<ProviderProfileVo> getAll() {
+
+        List<ProviderProfileEntity> profiles = providerProfileRepository.findAll();
+
+        return profiles.stream().map(entity -> {
+            ProviderProfileVo vo = providerProfileMapper.toVo(entity);
+
+            // Contacts
+            List<ProviderContactEntity> contacts =
+                    providerContactRepository.findByProviderId(entity.getId());
+            vo.setProviderContactDtos(providerContactMapper.toDto(contacts));
+
+            // Logo + Banner
+            List<ProviderMediaEntity> medias =
+                    providerMediaRepository.findByProviderId(entity.getId());
+
+            Long logoId = medias.stream()
+                    .filter(m -> "LOGO".equalsIgnoreCase(m.getImageType()))
+                    .map(ProviderMediaEntity::getMediaId)
+                    .findFirst()
+                    .orElse(null);
+
+            if (logoId != null) {
+                MediaDto logo = this.parseResponse(mediaFeign.getById(logoId));
+                vo.setLogoUrl(logo.getUrl());
+            }
+
+            Long bannerId = medias.stream()
+                    .filter(m -> "BANNER".equalsIgnoreCase(m.getImageType()))
+                    .map(ProviderMediaEntity::getMediaId)
+                    .findFirst()
+                    .orElse(null);
+
+            if (bannerId != null) {
+                MediaDto banner = this.parseResponse(mediaFeign.getById(bannerId));
+                vo.setBannerUrl(banner.getUrl());
+            }
+
+            return vo;
+        }).toList();
+    }
 }
