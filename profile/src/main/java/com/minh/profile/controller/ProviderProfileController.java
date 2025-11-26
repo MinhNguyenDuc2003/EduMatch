@@ -82,4 +82,9 @@ public class ProviderProfileController {
         providerProfileService.changeVerifiedStatus(providerId, verified);
         return ApiResponse.ok();
     }
+
+    @GetMapping("/all")
+    public ApiResponse<List<ProviderProfileVo>> getAll() {
+        return ApiResponse.ok(providerProfileService.getAll());
+    }
 }

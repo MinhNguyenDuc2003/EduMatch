@@ -24,4 +24,6 @@ public interface ProviderProfileService {
     Boolean sendVerifyMail(String email);
 
     Boolean verifyCode(String code);
+
+    List<ProviderProfileVo> getAll();
 }
