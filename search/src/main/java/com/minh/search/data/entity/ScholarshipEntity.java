@@ -52,6 +52,9 @@ public class ScholarshipEntity {
     private String university;
 
     @Field(type = FieldType.Keyword)
+    private String universityKeyword;
+
+    @Field(type = FieldType.Keyword)
     private String studyLevel;
 
     @Field(type = FieldType.Keyword)

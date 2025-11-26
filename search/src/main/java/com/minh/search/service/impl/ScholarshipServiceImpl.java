@@ -55,6 +55,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         boolean hasStudyLevel = criteria.getCriteria().getStudyLevel() != null && !criteria.getCriteria().getStudyLevel().isEmpty();
         boolean hasScholarshipType = criteria.getCriteria().getScholarshipType() != null && !criteria.getCriteria().getScholarshipType().isEmpty();
         boolean hasGpa = criteria.getMinGpa() != null || criteria.getMaxGpa() != null;
+        boolean hasUniversity = criteria.getCriteria().getUniversity() != null && !criteria.getCriteria().getUniversity().isEmpty();
 
         if (hasKeyword) {
             nativeQuery.withQuery(q -> q
@@ -64,20 +65,6 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                                         .field(ScholarshipField.TITLE)
                                         .query(criteria.getKeyword())
                                         .fuzziness(Fuzziness.ONE.asString())
-                                )
-                        );
-                        return b;
-                    })
-            );
-        }
-
-        if (StringUtils.hasText(criteria.getCriteria().getUniversity())) {
-            nativeQuery.withFilter(f -> f
-                    .bool(b -> {
-                        b.must(m -> m
-                                .matchPhrase(mp -> mp
-                                        .field(ScholarshipField.UNIVERSITY)
-                                        .query(criteria.getCriteria().getUniversity())
                                 )
                         );
                         return b;
@@ -95,6 +82,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                         if (hasScholarshipType)
                             extractedTermsFilter(criteria.getCriteria().getScholarshipType(), ScholarshipField.SCHOLARSHIP_TYPE, b);
                         if (hasGpa) extractedRange(criteria.getMinGpa(), criteria.getMaxGpa(), b);
+                        if (hasUniversity)
+                            extractedTermsFilter(criteria.getCriteria().getUniversity(), ScholarshipField.UNIVERSITY_KEYWORD, b);
                         return b;
                     })
             );

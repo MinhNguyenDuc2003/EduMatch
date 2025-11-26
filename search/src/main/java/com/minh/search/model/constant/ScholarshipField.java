@@ -5,6 +5,7 @@ public class ScholarshipField {
     public static final String DESCRIPTION = "description";
     public static final String COUNTRY = "country";
     public static final String UNIVERSITY = "university";
+    public static final String UNIVERSITY_KEYWORD = "universityKeyword";
     public static final String STUDY_LEVEL = "studyLevel";
     public static final String GPA_REQUIREMENT = "gpaRequirement";
     public static final String SCHOLARSHIP_TYPE = "scholarshipType";
