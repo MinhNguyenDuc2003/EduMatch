@@ -424,8 +424,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 .replace("{{university}}", scholarshipDto.getUniversity())
                 .replace("{{amount}}", scholarshipDto.getFundingAmount())
                 .replace("{{deadline}}", DateTimeUtils.format(scholarshipDto.getEndDate(), "dd/MM/yyyy"))
-                .replace("{{fullName}}", applicationDto.getFullName())
-                .replace("{{universityName}}", scholarshipDto.getUniversity())
+                .replace("{{fullname}}", applicationDto.getFullName())
+                .replace("{{scholarshipName}}", applicationDto.getFullName())
+                .replace("{{universityName}}", scholarshipDto.getTitle())
                 .replace("{{link}}", feEndPoint + "scholarships/" + scholarshipDto.getSlug());
         String body = generateBodyEmailScholarshipSuggestion(scholarshipEntities, template);
         MailDto mailDto = new MailDto();

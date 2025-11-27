@@ -24,6 +24,7 @@ import com.minh.profile.message.KafkaProducer;
 import com.minh.profile.service.ApplicantProfileService;
 import com.minh.profile.service.ProviderFavouriteService;
 import com.minh.service.base.BaseService;
+import com.minh.utils.DateTimeUtils;
 import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -179,7 +180,8 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
                     .replace("{{universityName}}", scholarshipVo.getUniversity())
                     .replace("{{description}}", scholarshipVo.getDescription())
                     .replace("{{amount}}", scholarshipVo.getFundingAmount())
-                    .replace("{{link}}", "http://159.89.200.244/edufront/home");
+                    .replace("{{deadline}}", DateTimeUtils.format(scholarshipVo.getEndDate(), "dd/MM/yyyy"))
+                    .replace("{{link}}", feEndPoint + "/scholarships/" + scholarshipVo.getSlug());
             MailDto mailDto = new MailDto();
             mailDto.setBody(body);
             mailDto.setTo(customerVo.getCustomer().email());

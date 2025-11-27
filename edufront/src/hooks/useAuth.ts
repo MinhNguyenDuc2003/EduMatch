@@ -7,12 +7,8 @@ export const useAuth = () => {
   const { data, isLoading, isError, error, refetch } = useAuthenticatedQuery();
   const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
 
-  const handleLogout = async () => {
-    await logout()
-      .unwrap()
-      .then(() => {
-        toast.success('Logged out successfully');
-      });
+  const handleLogout = () => {
+    window.location.href = 'http://159.89.200.244/logout';
   };
 
   return {
