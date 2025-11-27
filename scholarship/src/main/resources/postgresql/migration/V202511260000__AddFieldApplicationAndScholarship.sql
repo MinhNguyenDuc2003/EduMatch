@@ -1,13 +1,9 @@
 ALTER TABLE scholarship.application
     -- Thông tin học vấn và mục tiêu nghề nghiệp
-    ADD COLUMN major VARCHAR(255),
-    ADD COLUMN education_level VARCHAR(100),
-    ADD COLUMN school_name VARCHAR(255),
     ADD COLUMN career_goal TEXT,
     ADD COLUMN research_interest TEXT,
 
     -- Thông tin kỹ năng, giải thưởng, ngoại ngữ
-    ADD COLUMN skills TEXT,
     ADD COLUMN academic_awards TEXT,
     ADD COLUMN publication_count INT,
 
@@ -20,7 +16,6 @@ ALTER TABLE scholarship.application
     ADD COLUMN ielts_score DOUBLE PRECISION,
 
     -- Thông tin hoạt động ngoại khóa, cộng đồng, lãnh đạo
-    ADD COLUMN extracurricular TEXT,
     ADD COLUMN work_experience_years INT,
 
     -- Thông tin về lớp (Class rank)
@@ -31,8 +26,6 @@ ALTER TABLE scholarship.application
     -- Thông tin demographic & background
     ADD COLUMN age INT,
     ADD COLUMN citizenship VARCHAR(100),
-    ADD COLUMN family_income_range VARCHAR(50),
-    ADD COLUMN number_of_dependents INT,
 
     -- Thông tin đặc biệt (veteran, athlete, thành tích thể thao)
     ADD COLUMN is_athlete BOOLEAN DEFAULT FALSE,

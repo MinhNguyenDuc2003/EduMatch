@@ -67,6 +67,46 @@ public class ApplicationDto extends BaseDto {
 
     private String personalStatement;
 
+    // ======================================
+    // NEW MATCHING FIELDS — DTO NEW FIELDS
+    // ======================================
+
+    private String careerGoal;
+
+    private String researchInterest;
+
+    private String academicAwards;
+
+    private Integer publicationCount;
+
+    private Integer satScore;
+
+    private Integer actScore;
+
+    private Integer greScore;
+
+    private Integer gmatScore;
+
+    private Integer toeflScore;
+
+    private Double ieltsScore;
+
+    private Integer workExperienceYears;
+
+    private Integer classRank;
+
+    private Integer classSize;
+
+    private Double classRankPercentile;
+
+    private Integer age;
+
+    private String citizenship;
+
+    private Boolean isAthlete;
+
+    private String athleticAchievements;
+
     @JsonProperty("createdDate")
     @JsonSerialize(using = DateToTimestamp.class)
     @JsonDeserialize(using = TimestampToDate.class)
