@@ -170,6 +170,7 @@ public class ProviderFavouriteServiceImpl extends BaseService implements Provide
                     .referenceId(scholarshipId)
                     .referenceType(NotificationReferenceEnum.APPLICATION_REFERRAL.getCode())
                     .userId(userId)
+                    .slug(scholarshipVo.getSlug())
                     .userNotificationId(notificationTemplateDto.getId())
                     .build();
             kafkaProducer.convertToByteAndSend(referralEventTopic, notificationVo);
