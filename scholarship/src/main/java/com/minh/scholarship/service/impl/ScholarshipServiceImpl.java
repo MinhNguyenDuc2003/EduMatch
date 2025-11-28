@@ -44,6 +44,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -517,5 +518,75 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     private String getKey(String key, int i) {
         return "{{" + key + i + "}}";
+    }
+
+    @Override
+    public ScholarshipStatisticsDto getStatisticsByProvider(String providerId) {
+        // 1. Retrieve all scholarships for the provider
+        List<ScholarshipEntity> scholarships = scholarshipRepository.getAllByProviderIdAndActive(Long.valueOf(providerId), true);
+        long totalScholarships = scholarships.size();
+
+        // 2. Calculate total views
+        long totalViews = scholarships.stream()
+                .mapToLong(s -> scholarshipViewRepository.countByScholarshipId(s.getId()))
+                .sum();
+
+        // 3. Calculate total applies
+        long totalApplies = scholarships.stream()
+                .mapToLong(s -> applicationScholarshipRepository.countByScholarshipIdAndActive(s.getId()))
+                .sum();
+
+        // 4. Calculate average apply rate (apply/view)
+        double averageApplyRate = totalViews > 0 ? ((double) totalApplies / totalViews) * 100 : 0;
+
+        // 5. Calculate approve, reject, and pending rates
+        long totalApproved = applicationScholarshipRepository.findByStatusAndActive("Approved", true)
+                .stream()
+                .filter(a -> scholarships.stream().anyMatch(s -> s.getId().equals(a.getScholarshipId())))
+                .count();
+
+        long totalRejected = applicationScholarshipRepository.findByStatusAndActive("Rejected", true)
+                .stream()
+                .filter(a -> scholarships.stream().anyMatch(s -> s.getId().equals(a.getScholarshipId())))
+                .count();
+
+        long totalPending = applicationScholarshipRepository.findByStatusAndActive("Pending", true)
+                .stream()
+                .filter(a -> scholarships.stream().anyMatch(s -> s.getId().equals(a.getScholarshipId())))
+                .count();
+
+        double approveRate = totalApplies > 0 ? ((double) totalApproved / totalApplies) * 100 : 0;
+        double rejectRate = totalApplies > 0 ? ((double) totalRejected / totalApplies) * 100 : 0;
+        double pendingRate = totalApplies > 0 ? ((double) totalPending / totalApplies) * 100 : 0;
+
+        // 6. Calculate the rate of views that did not result in an application
+        double viewButNoApplyRate = totalViews > 0 ? ((double) (totalViews - totalApplies) / totalViews) * 100 : 0;
+
+        // 7. Top 5 scholarships by view count
+        List<String> top5ByView = scholarships.stream()
+                .sorted((a, b) -> Long.compare(
+                        scholarshipViewRepository.countByScholarshipId(b.getId()),
+                        scholarshipViewRepository.countByScholarshipId(a.getId())
+                ))
+                .limit(5)
+                .map(ScholarshipEntity::getTitle)
+                .toList();
+
+        // 8. Top 5 scholarships by apply count
+        List<String> top5ByApply = scholarships.stream()
+                .sorted((a, b) -> Long.compare(
+                        applicationScholarshipRepository.countByScholarshipIdAndActive(b.getId()),
+                        applicationScholarshipRepository.countByScholarshipIdAndActive(a.getId())
+                ))
+                .limit(5)
+                .map(ScholarshipEntity::getTitle)
+                .toList();
+
+        // Return the DTO
+        return new ScholarshipStatisticsDto(
+                totalScholarships, totalViews, totalApplies, averageApplyRate,
+                approveRate, rejectRate, pendingRate, viewButNoApplyRate,
+                top5ByView, top5ByApply
+        );
     }
 }

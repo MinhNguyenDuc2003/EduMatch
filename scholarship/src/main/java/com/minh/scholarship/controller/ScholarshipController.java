@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
+import com.minh.model.dto.scholarship.ScholarshipStatisticsDto;
 import com.minh.model.dto.scholarship.ScholarshipViewDto;
 import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
@@ -177,4 +178,9 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.sendMailSuggestion(UaaContextHolder.getUserId()));
     }
 
+    @Authorized
+    @GetMapping("/provider/{id}/statistics")
+    public ApiResponse<ScholarshipStatisticsDto> getProviderStatistics(@PathVariable("id") String providerId) {
+        return ApiResponse.ok(scholarshipService.getStatisticsByProvider(providerId));
+    }
 }

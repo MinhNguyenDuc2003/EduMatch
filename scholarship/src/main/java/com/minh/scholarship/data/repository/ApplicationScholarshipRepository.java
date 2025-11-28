@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,4 +66,10 @@ public interface ApplicationScholarshipRepository extends JpaRepository<Applicat
     Long countAllApplicationScholarship();
 
     Optional<ApplicationScholarshipEntity> findAllByScholarshipIdAndApplicationId(Long scholarshipId, Long applicationId);
+
+    @Query("SELECT COUNT(a.id) FROM ApplicationScholarshipEntity a WHERE a.scholarshipId = :scholarshipId AND a.active = true")
+    long countByScholarshipIdAndActive(@Param("scholarshipId") Long scholarshipId);
+
+    List<ApplicationScholarshipEntity> findByActiveAndCreatedDateBetween(boolean active, LocalDateTime start, LocalDateTime end);
+
 }

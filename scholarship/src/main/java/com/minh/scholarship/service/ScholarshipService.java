@@ -1,9 +1,6 @@
 package com.minh.scholarship.service;
 
-import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
-import com.minh.model.dto.scholarship.ScholarshipDto;
-import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
-import com.minh.model.dto.scholarship.ScholarshipViewDto;
+import com.minh.model.dto.scholarship.*;
 import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
@@ -69,4 +66,6 @@ public interface ScholarshipService {
     String getAnalyzeResponse(Long scholarshipId);
 
     List<ScholarshipVo> getTopViewsByMonthByProvider();
+
+    ScholarshipStatisticsDto getStatisticsByProvider(String providerId);
 }
