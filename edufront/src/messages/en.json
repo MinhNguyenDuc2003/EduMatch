@@ -978,7 +978,7 @@
         "personalStatement": "Personal Statement *",
         "personalStatementPlaceholder": "Write a personal statement about yourself, your goals, and how this scholarship will help you achieve them",
         "age": "Age",
-        "agePlaceholder": "Enter your age",
+        "agePlaceholder": "Your age will be calculated automatically",
         "citizenship": "Citizenship",
         "citizenshipPlaceholder": "Select citizenship",
         "classRank": "Class Rank",

@@ -22,6 +22,7 @@ import SubmitApplicationDialog from '@/pattern/share/SubmitApplicationDialog';
 import ScholarshipAnalysisDialog from './components/ScholarshipAnalysisDialog';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/hooks/useAuth';
+import { useGetApplicationsQuery } from '@/state/apiApplicant';
 
 export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
@@ -39,6 +40,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
   } = useAnalyzeScholarshipQuery(scholarship?.id || 0, {
     skip: !shouldAnalyze || !scholarship?.id,
   });
+  const { data: applications, isLoading: isLoadingApplications } = useGetApplicationsQuery();
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
   const [followScholarship] = useFollowScholarshipMutation();
@@ -112,6 +114,10 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
   };
 
   const handleApplyNow = () => {
+    if (applications?.length === 0) {
+      router.push('/applicant/applications/create');
+      return;
+    }
     setIsDialogOpen(true);
   };
 

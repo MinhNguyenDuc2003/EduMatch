@@ -197,6 +197,24 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
       setIsDialogOpen(false);
     };
 
+    // Auto-calculate age from dateOfBirth
+    const dateOfBirth = watch('dateOfBirth');
+    useEffect(() => {
+      if (!dateOfBirth) {
+        setValue('age', undefined, { shouldValidate: false });
+        return;
+      }
+      const birthDate = new Date(dateOfBirth);
+      if (isNaN(birthDate.getTime())) return;
+
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--;
+
+      setValue('age', age, { shouldValidate: false });
+    }, [dateOfBirth, setValue]);
+
     return (
       <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto shadow-2xl rounded-lg p-6">
         <div className="text-3xl font-bold text-gray-900 flex items-center justify-center ">
@@ -260,9 +278,10 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   <CustomFormField
                     name="age"
                     label={t('fields.age')}
-                    type="number"
                     placeholder={t('fields.agePlaceholder')}
+                    type="number"
                     isBorder={true}
+                    disabled={true}
                   />
 
                   {/* Citizenship */}
