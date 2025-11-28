@@ -68,8 +68,8 @@
     "failedToUpdateApplication": "Failed to update application",
     "filterByType": "Filter by Type",
     "allTypes": "All Types",
-    "scholarship": "Scholarship",
-    "researchLab": "Research Lab",
+    "Scholarship": "Scholarship",
+    "ResearchLab": "Research Lab",
     "scholarships": "Scholarships",
     "searchApplications": "Search applications...",
     "allStatuses": "All Statuses",
@@ -137,6 +137,24 @@
     "scholarshipDetails": "Scholarship Details",
     "applicationPeriod": "Application Period",
     "academicRequirements": "Academic Requirements",
+    "requiredMajor": "Required Major*",
+    "genderRequirement": "Gender Requirement*",
+    "demographicRequirements": "Demographic Requirements",
+    "minAge": "Minimum Age",
+    "maxAge": "Maximum Age",
+    "restrictedNationalities": "Restricted Nationalities",
+    "testScoreRequirements": "Test Score Requirements",
+    "subtitleTestScores": "Enter minimum test scores if required (leave blank if not applicable)",
+    "requiredSatScore": "Required SAT Score",
+    "requiredActScore": "Required ACT Score",
+    "requiredGreScore": "Required GRE Score",
+    "requiredToeflScore": "Required TOEFL Score",
+    "requiredIeltsScore": "Required IELTS Score",
+    "experienceRequirements": "Experience & Achievement Requirements",
+    "requiredWorkExperienceYears": "Required Work Experience (Years)",
+    "requiredPublicationCount": "Required Publication Count",
+    "requiredAcademicAwards": "Required Academic Awards",
+    "requiredClassRankPercentile": "Required Class Rank Percentile",
     "startDate": "Start Date*",
     "endDate": "End Date*",
     "type": "Type*",
@@ -992,6 +1010,38 @@
           "3": "Indicate the type of student the scholarship is targeting and be sure to review and edit all filterable criteria to ensure only those students who will qualify for the scholarship being offered will be presented with the scholarship."
         }
       }
+    }
+  },
+  "providerDashboard": {
+    "title": "Dashboard",
+    "subtitle": "Welcome back! Here's what's happening today.",
+    "conversionFunnel": {
+      "scholarships": "Scholarships",
+      "totalViews": "Total Views",
+      "appliedApplications": "Applied Applications",
+      "viewedButNoApply": "Viewed but No Apply"
+    },
+    "decisionStatus": {
+      "applicationDecisions": "Application Decisions",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "pending": "Pending"
+    },
+    "top5Scholarship": {
+      "top5ByViews": "Top 5 by Views",
+      "top5ByApplications": "Top 5 by Applications"
+    },
+    "recentApplications": {
+      "title": "Recent Applications",
+      "subtitle": "Latest applications from applicants",
+      "viewAll": "View All",
+      "applicant": "Applicant",
+      "scholarship": "Scholarship",
+      "major": "Major",
+      "gpa": "GPA",
+      "status": "Status",
+      "noApplicationsYet": "No applications yet",
+      "noApplicationsDescription": "Applications will appear here when applicants apply to your scholarships"
     }
   },
   "providerProfile": {

@@ -192,6 +192,60 @@ export const scholarshipSchema = z
       .min(0, 'GPA must be greater than 0')
       .max(4, 'GPA must be less than 4')
       .optional(),
+    requiredMajor: z.string().min(1, 'Required major is required'),
+    restrictedNationalities: z.string().optional(),
+    minAge: z.coerce
+      .number<number>()
+      .min(16, 'Minimum age must be greater than 16')
+      .max(100, 'Minimum age must be less than 100')
+      .optional(),
+    maxAge: z.coerce
+      .number<number>()
+      .min(16, 'Maximum age must be greater than 16')
+      .max(100, 'Maximum age must be less than 100')
+      .optional(),
+    genderRequirement: z.string().min(1, 'Gender requirement is required'),
+    requiredSatScore: z.coerce
+      .number<number>()
+      .min(100, 'SAT score must be greater than 100')
+      .max(1600, 'SAT score must be less than 1600')
+      .optional(),
+    requiredActScore: z.coerce
+      .number<number>()
+      .min(1, 'ACT score must be greater than 1')
+      .max(36, 'ACT score must be less than 36')
+      .optional(),
+    requiredGreScore: z.coerce
+      .number<number>()
+      .min(100, 'GRE score must be greater than 100')
+      .max(340, 'GRE score must be less than 340')
+      .optional(),
+    requiredToeflScore: z.coerce
+      .number<number>()
+      .min(0, 'TOEFL score must be greater than 0')
+      .max(120, 'TOEFL score must be less than 120')
+      .optional(),
+    requiredIeltsScore: z.coerce
+      .number<number>()
+      .min(0, 'IELTS score must be greater than 0')
+      .max(9, 'IELTS score must be less than 9')
+      .optional(),
+    requiredWorkExperienceYears: z.coerce
+      .number<number>()
+      .min(0, 'Work experience years must be greater than 0')
+      .max(10, 'Work experience years must be less than 10')
+      .optional(),
+    requiredPublicationCount: z.coerce
+      .number<number>()
+      .min(0, 'Publication count must be greater than 0')
+      .max(10, 'Publication count must be less than 10')
+      .optional(),
+    requiredAcademicAwards: z.string().optional(),
+    requiredClassRankPercentile: z.coerce
+      .number<number>()
+      .min(0, 'Class rank percentile must be greater than 0')
+      .max(100, 'Class rank percentile must be less than 100')
+      .optional(),
     scholarshipPreferences: z
       .array(
         z.object({
@@ -205,6 +259,10 @@ export const scholarshipSchema = z
         })
       )
       .optional(),
+  })
+  .refine((data) => Number(data.maxAge) >= Number(data.minAge), {
+    message: 'Maximum age must be greater than or equal to minimum age',
+    path: ['maxAge'],
   })
   .refine((data) => Number(data.endDate) > Number(data.startDate), {
     message: 'end date must be greater than start date',

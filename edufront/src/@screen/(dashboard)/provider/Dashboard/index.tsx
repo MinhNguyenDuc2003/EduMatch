@@ -1,42 +1,30 @@
 'use client';
 import Header from '@/pattern/share/Header';
-import {
-  useGetAllApplicationsQuery,
-  useGetStatisticsQuery,
-  useGetTopViewedScholarshipsQuery,
-} from '@/state/apiProvider';
+import { useGetAllApplicationsQuery, useGetStatisticsQuery } from '@/state/apiProvider';
 import React from 'react';
-import { StatsCard } from './components/StatsCard';
-import { BookText, Check, Clock, Eye, X, TrendingUp, FileText } from 'lucide-react';
-import {
-  ScholarshipCard,
-  ScholarshipCardSkeleton,
-} from '@/@screen/(dashboard)/provider/ProviderScholaship/components/ScholarshipCard';
+import { FileText } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/lib/cus/button';
 import {
   getStatusColor,
   formatStatus,
-  formatAppliedDate,
 } from '@/@screen/(dashboard)/provider/Applications/utils/applicationUtils';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import ConversionFunnelCard from './components/ConversionFunnelCard';
+import DecisionStatusCard from './components/DecisionStatusCard';
+import Top5Scholarship from './components/Top5Scholarship';
 
 const DashboardPage = () => {
   const router = useRouter();
-  const t = useTranslations('providerApplications');
+  const t = useTranslations('providerDashboard');
+  const tApplications = useTranslations('providerApplications');
   const { data: statistics, isLoading: isLoadingStats } = useGetStatisticsQuery();
-  const { data: topViewedScholarships, isLoading: isLoadingScholarships } =
-    useGetTopViewedScholarshipsQuery();
   const { data: allApplications, isLoading: isLoadingApplications } = useGetAllApplicationsQuery();
 
   // Get recent applications (limit to 10)
-  const recentApplications = allApplications?.slice(0, 10) || [];
-
-  const handleViewScholarship = (id: number) => {
-    router.push(`/provider/scholarships/${id}`);
-  };
+  const recentApplications: ApplicationScholarship[] = allApplications?.slice(0, 10) || [];
 
   const handleViewApplication = (application: ApplicationScholarship) => {
     router.push(`/provider/applications?scholarshipId=${application.scholarshipId}`);
@@ -44,93 +32,28 @@ const DashboardPage = () => {
 
   return (
     <div className="p-6 lg:p-8 space-y-6">
-      <Header title="Dashboard" subtitle="Welcome back! Here's what's happening today." />
+      <Header title={t('title')} subtitle={t('subtitle')} />
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <StatsCard
-          title="Total Scholarships"
-          value={statistics?.totalScholarship || 0}
-          color="from-blue-500 to-blue-600"
-          icon={BookText}
+      <div className="grid grid-cols-1 md:grid-cols-2  gap-6">
+        <ConversionFunnelCard
+          totalScholarships={statistics?.totalScholarships || 0}
+          totalViews={statistics?.totalViews || 0}
+          applyRate={statistics?.averageApplyRate || 0}
+          viewButNoApplyRate={statistics?.viewButNoApplyRate || 0}
         />
-        <StatsCard
-          title="Total Pending Applications"
-          value={statistics?.totalApplicationByStatus?.Pending || 0}
-          color="from-[#38a696] to-[#52c0b0]"
-          icon={Clock}
-        />
-        <StatsCard
-          title="Total Approved Applications"
-          value={statistics?.totalApplicationByStatus?.Approved || 0}
-          color="from-green-500 to-green-600"
-          icon={Check}
-        />
-        <StatsCard
-          title="Total Rejected Applications"
-          value={statistics?.totalApplicationByStatus?.Rejected || 0}
-          color="from-red-500 to-red-600"
-          icon={X}
-        />
-        <StatsCard
-          title="Total Views"
-          value={statistics?.totalViews || 0}
-          color="from-yellow-500 to-yellow-600"
-          icon={Eye}
+        <DecisionStatusCard
+          totalApplies={statistics?.totalApplies || 0}
+          approveRate={statistics?.approveRate || 0}
+          rejectRate={statistics?.rejectRate || 0}
+          pendingRate={statistics?.pendingRate || 0}
         />
       </div>
 
-      {/* Top Viewed Scholarships Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg">
-              <TrendingUp className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-900">Top Viewed Scholarships</h2>
-              <p className="text-sm text-gray-500">Most popular scholarships this month</p>
-            </div>
-          </div>
-          {topViewedScholarships && topViewedScholarships.length > 0 && (
-            <Link href="/provider/scholarships">
-              <Button className="bg-primary-brand text-white hover:bg-primary-brand/90 shadow-sm">
-                View All
-              </Button>
-            </Link>
-          )}
-        </div>
-
-        {isLoadingScholarships ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <ScholarshipCardSkeleton key={index} variant="small" className="bg-white" />
-            ))}
-          </div>
-        ) : topViewedScholarships && topViewedScholarships.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {topViewedScholarships.slice(0, 6).map((scholarship) => (
-              <div
-                key={scholarship.id}
-                onClick={() => handleViewScholarship(scholarship.id)}
-                className="cursor-pointer"
-              >
-                <ScholarshipCard
-                  scholarship={scholarship}
-                  variant="small"
-                  className="h-full hover:shadow-lg transition-shadow bg-white"
-                />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12 text-gray-500">
-            <BookText className="w-12 h-12 mx-auto mb-3 text-gray-400" />
-            <p className="text-lg">No scholarships found</p>
-            <p className="text-sm mt-1">Start creating scholarships to see them here</p>
-          </div>
-        )}
-      </div>
+      <Top5Scholarship
+        top5ByView={statistics?.top5ByView || []}
+        top5ByApply={statistics?.top5ByApply || []}
+      />
 
       {/* Recent Applications Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -140,14 +63,14 @@ const DashboardPage = () => {
               <FileText className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Recent Applications</h2>
-              <p className="text-sm text-gray-500">Latest applications from applicants</p>
+              <h2 className="text-xl font-bold text-gray-900">{t('recentApplications.title')}</h2>
+              <p className="text-sm text-gray-500">{t('recentApplications.subtitle')}</p>
             </div>
           </div>
           {allApplications && allApplications.length > 0 && (
             <Link href="/provider/applications">
               <Button className="bg-primary-brand text-white hover:bg-primary-brand/90 shadow-sm">
-                View All
+                {t('recentApplications.viewAll')}
               </Button>
             </Link>
           )}
@@ -167,20 +90,20 @@ const DashboardPage = () => {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Applicant
+                    {t('recentApplications.applicant')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Scholarship
+                    {t('recentApplications.scholarship')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Major
+                    {t('recentApplications.major')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    GPA
+                    {t('recentApplications.gpa')}
                   </th>
 
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Status
+                    {t('recentApplications.status')}
                   </th>
                 </tr>
               </thead>
@@ -226,7 +149,7 @@ const DashboardPage = () => {
                             getStatusColor(status)
                           )}
                         >
-                          {t(formatStatus(status))}
+                          {tApplications(formatStatus(status))}
                         </span>
                       </td>
                     </tr>
@@ -238,10 +161,8 @@ const DashboardPage = () => {
         ) : (
           <div className="text-center py-12 text-gray-500">
             <FileText className="w-12 h-12 mx-auto mb-3 text-gray-400" />
-            <p className="text-lg">No applications yet</p>
-            <p className="text-sm mt-1">
-              Applications will appear here when applicants apply to your scholarships
-            </p>
+            <p className="text-lg">{t('recentApplications.noApplicationsYet')}</p>
+            <p className="text-sm mt-1">{t('recentApplications.noApplicationsDescription')}</p>
           </div>
         )}
       </div>

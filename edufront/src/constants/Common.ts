@@ -413,7 +413,7 @@ export const ORGANIZATION_TYPES = [
 export const GENDER_OPTIONS = [
   { value: 'Male', label: 'Male' },
   { value: 'Female', label: 'Female' },
-  { value: 'Other', label: 'Other' },
+  { value: 'Any', label: 'Any' },
 ];
 
 export const MAJOR_CATEGORIES = [
