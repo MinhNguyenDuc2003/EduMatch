@@ -44,7 +44,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -283,7 +282,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         scholarshipEntities.forEach(entity -> {
             ScholarshipVo scholarshipVo = this.getById(entity.getId());
             ScholarshipViewProjection entities = scholarshipViewRepository.getViewsByScholarshipId(scholarshipVo.getId());
-            scholarshipVo.setViews(entities.getView());
+            if (ObjectUtils.isNotEmpty(entities)) {
+                scholarshipVo.setViews(entities.getView());
+            }
             scholarshipVos.add(scholarshipVo);
         });
         return scholarshipVos;

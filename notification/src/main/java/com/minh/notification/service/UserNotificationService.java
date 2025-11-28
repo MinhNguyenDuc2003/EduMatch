@@ -12,4 +12,5 @@ public interface UserNotificationService {
 
     List<UserNotificationDto> getByUser();
 
+    List<UserNotificationDto> getAllSystem();
 }

@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface UserNotificationRepository extends JpaRepository<UserNotificationEntity, Long> {
     List<UserNotificationEntity> findAllByUserId(String userId);
+
+    List<UserNotificationEntity> findAllByIsAdmin(Boolean isAdmin);
 }

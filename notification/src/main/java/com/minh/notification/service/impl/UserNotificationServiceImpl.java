@@ -19,13 +19,13 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     @Autowired
     private UserNotificationRepository userNotificationRepository;
 
-    @Transactional(rollbackOn =  Exception.class)
+    @Transactional(rollbackOn = Exception.class)
     @Override
     public UserNotificationDto createOne(UserNotificationDto userNotificationDto) {
         return userNotificationMapper.toDto(userNotificationRepository.save(userNotificationMapper.toEntity(userNotificationDto)));
     }
 
-    @Transactional(rollbackOn =  Exception.class)
+    @Transactional(rollbackOn = Exception.class)
     @Override
     public List<UserNotificationDto> createAll(List<UserNotificationDto> userNotificationDto) {
         return userNotificationMapper.toDto(userNotificationRepository.saveAll(userNotificationMapper.toEntity(userNotificationDto)));
@@ -34,5 +34,10 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     @Override
     public List<UserNotificationDto> getByUser() {
         return userNotificationMapper.toDto(userNotificationRepository.findAllByUserId(UaaContextHolder.getUserId()));
+    }
+
+    @Override
+    public List<UserNotificationDto> getAllSystem() {
+        return userNotificationMapper.toDto(userNotificationRepository.findAllByIsAdmin(true));
     }
 }

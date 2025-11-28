@@ -2,10 +2,9 @@ package com.minh.notification.controller;
 
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
-import com.minh.model.dto.notification.SystemNotificationDto;
 import com.minh.model.dto.notification.UserNotificationDto;
+import com.minh.notification.data.mapper.UserNotificationMapper;
 import com.minh.notification.data.vo.NotificationVo;
-import com.minh.notification.service.SystemNotificationService;
 import com.minh.notification.service.UserNotificationService;
 import com.minh.notification.service.helper.NotificationWebSocketHandler;
 import com.minh.service.aspect.Authorized;
@@ -22,7 +21,7 @@ public class UserNotificationController {
 
     private final UserNotificationService userNotificationService;
     private final NotificationWebSocketHandler notificationWebSocketHandler;
-    private final SystemNotificationService systemNotificationService;
+    private final UserNotificationMapper userNotificationMapper;
 
     @Authorized
     @GetMapping("/user")
@@ -49,12 +48,14 @@ public class UserNotificationController {
     @PostMapping("system/notify")
     public ApiResponse<Boolean> notifyGlobal(@RequestBody NotificationVo notification) {
         notificationWebSocketHandler.sendToGlobal(notification);
-        systemNotificationService.createFromVo(notification);
+        UserNotificationDto userNotificationDto = userNotificationMapper.voToDto(notification);
+        userNotificationDto.setIsAdmin(true);
+        userNotificationService.createOne(userNotificationDto);
         return ApiResponse.ok(true);
     }
 
     @GetMapping("system")
-    public ApiResponse<List<SystemNotificationDto>> getAllSystemNotification() {
-        return ApiResponse.ok(systemNotificationService.getAll());
+    public ApiResponse<List<UserNotificationDto>> getAllSystemNotification() {
+        return ApiResponse.ok(userNotificationService.getAllSystem());
     }
 }

@@ -39,4 +39,7 @@ public class UserNotificationEntity extends BaseEntity {
     @Column(name = "SLUG")
     private String slug;
 
+    @Column(name = "IS_ADMIN")
+    private Boolean isAdmin;
+
 }

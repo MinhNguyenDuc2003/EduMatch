@@ -33,4 +33,6 @@ public class UserNotificationDto extends BaseDto {
 
     private String slug;
 
+    private Boolean isAdmin;
+
 }
