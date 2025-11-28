@@ -20,6 +20,7 @@ import {
   EducationHistory,
   Intentions,
   Preferences,
+  PreferredPreferences,
   Skills,
   StudentInformation,
 } from './components';
@@ -100,6 +101,8 @@ const ProfileUpdatePage = () => {
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className="space-y-6">
               <StudentInformation />
+              <Separator />
+              <PreferredPreferences />
               <Separator />
               <Activities />
               <Separator />

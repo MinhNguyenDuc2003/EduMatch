@@ -1,4 +1,11 @@
-import { CITIZENSHIP_STATUS, COUNTRIES, ETHNICITIES, RACES, RELIGIONS } from '@/constants/Common';
+import {
+  CITIZENSHIP_STATUS,
+  COUNTRIES,
+  ETHNICITIES,
+  RACES,
+  RELIGIONS,
+  STUDY_LEVELS,
+} from '@/constants/Common';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import Header from '@/pattern/share/Header';
 import { useTranslations } from 'next-intl';
@@ -62,6 +69,87 @@ const StudentInformation = () => {
           label={tFields('overallGpa')}
           type="number"
           placeholder="3.8"
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
+          name="applicantProfile.educationLevel"
+          label={tFields('educationLevel')}
+          type="select"
+          placeholder={t('selectEducationLevel')}
+          options={STUDY_LEVELS}
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
+          name="applicantProfile.satScore"
+          label={tFields('satScore')}
+          type="number"
+          placeholder={tFields('satScorePlaceholder')}
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
+          name="applicantProfile.actScore"
+          label={tFields('actScore')}
+          type="number"
+          placeholder={tFields('actScorePlaceholder')}
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
+          name="applicantProfile.toeflScore"
+          label={tFields('toeflScore')}
+          type="number"
+          placeholder={tFields('toeflScorePlaceholder')}
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
+          name="applicantProfile.ieltsScore"
+          label={tFields('ieltsScore')}
+          type="number"
+          placeholder={tFields('ieltsScorePlaceholder')}
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
+          name="applicantProfile.greScore"
+          label={tFields('greScore')}
+          type="number"
+          placeholder={tFields('greScorePlaceholder')}
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
+          name="applicantProfile.languages"
+          label={tFields('languages')}
+          placeholder={tCommon('addInfo')}
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
+          name="applicantProfile.academicAwards"
+          label={tFields('academicAwards')}
+          type="textarea"
+          placeholder={tCommon('addInfo')}
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
+          name="applicantProfile.publicationCount"
+          label={tFields('publicationCount')}
+          type="number"
+          placeholder="0"
           inlineLabel
           isBorder
         />

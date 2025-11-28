@@ -519,7 +519,26 @@
       "password": "Mật khẩu",
       "yes": "Có",
       "no": "Không",
-      "addInfo": "Thêm thông tin"
+      "addInfo": "Thêm thông tin",
+      "educationLevel": "Trình độ học vấn",
+      "satScore": "Điểm SAT",
+      "satScorePlaceholder": "Nhập điểm SAT (400-1600)",
+      "actScore": "Điểm ACT",
+      "actScorePlaceholder": "Nhập điểm ACT (1-36)",
+      "toeflScore": "Điểm TOEFL",
+      "toeflScorePlaceholder": "Nhập điểm TOEFL (0-120)",
+      "ieltsScore": "Điểm IELTS",
+      "ieltsScorePlaceholder": "Nhập điểm IELTS (0.0-9.0)",
+      "greScore": "Điểm GRE",
+      "greScorePlaceholder": "Nhập điểm GRE (260-340)",
+      "languages": "Ngôn ngữ",
+      "academicAwards": "Giải thưởng học thuật",
+      "publicationCount": "Số lượng xuất bản phẩm",
+      "researchInterest": "Sở thích nghiên cứu",
+      "extracurricularActivities": "Hoạt động ngoại khóa",
+      "preferredScholarshipType": "Loại học bổng ưa thích",
+      "preferredCountry": "Quốc gia ưa thích",
+      "preferredUniversity": "Trường đại học ưa thích"
     },
     "common": {
       "edit": "Chỉnh sửa",
@@ -542,7 +561,8 @@
       "selectReligion": "Chọn tôn giáo",
       "selectEthnicity": "Chọn dân tộc",
       "selectRace": "Chọn chủng tộc",
-      "selectCitizenshipStatus": "Chọn tình trạng công dân"
+      "selectCitizenshipStatus": "Chọn tình trạng công dân",
+      "selectEducationLevel": "Chọn trình độ học vấn"
     },
     "skillsDialog": {
       "title": "Kỹ năng",
@@ -667,7 +687,11 @@
       "researchExperience": "Kinh nghiệm nghiên cứu",
       "researchExperiencePlaceholder": "ví dụ: Phòng thí nghiệm AI, Nghiên cứu Sinh học",
       "careerGoals": "Mục tiêu nghề nghiệp",
-      "careerGoalsPlaceholder": "ví dụ: Kỹ sư phần mềm, Bác sĩ"
+      "careerGoalsPlaceholder": "ví dụ: Kỹ sư phần mềm, Bác sĩ",
+      "researchInterest": "Sở thích nghiên cứu",
+      "researchInterestPlaceholder": "ví dụ: Học máy, Máy tính lượng tử",
+      "extracurricularActivities": "Hoạt động ngoại khóa",
+      "extracurricularActivitiesPlaceholder": "ví dụ: Công việc tình nguyện, Vai trò lãnh đạo"
     },
     "preferencesDialog": {
       "title": "Sở thích ứng viên",
@@ -692,7 +716,15 @@
       "financialAid": "Hỗ trợ tài chính",
       "diversity": "Đa dạng",
       "athletics": "Thể thao",
-      "other": "Khác"
+      "other": "Khác",
+      "preferredPreferences": "Mong muốn",
+      "preferredPreferencesDescription": "Chỉ định loại học bổng, quốc gia và trường đại học ưa thích của bạn",
+      "preferredScholarshipType": "Loại học bổng ưa thích",
+      "selectPreferredScholarshipType": "Chọn loại học bổng ưa thích",
+      "preferredCountry": "Quốc gia ưa thích",
+      "selectPreferredCountry": "Chọn quốc gia ưa thích",
+      "preferredUniversity": "Trường đại học ưa thích",
+      "preferredUniversityPlaceholder": "ví dụ: Đại học Harvard, MIT"
     },
     "cards": {
       "historyDetails": "Chi tiết lịch sử",
@@ -1070,5 +1102,8 @@
     "enterRoleTitle": "Nhập chức vụ",
     "enterEmail": "Nhập email",
     "enterPhone": "Nhập số điện thoại"
+  },
+  "inputSelect": {
+    "placeholder": "Chọn một tùy chọn"
   }
 }

@@ -24,6 +24,24 @@ export const applicantProfileSchema = z.object({
     researchExperience: z.string().optional(),
     careerGoals: z.string().optional(),
     overallGpa: z.coerce.number<number>().min(0).max(4),
+    educationLevel: z.string().optional(),
+    satScore: z.coerce.number<number>().min(0).max(1600).optional(),
+    actScore: z.coerce.number<number>().min(0).max(36).optional(),
+    toeflScore: z.coerce.number<number>().min(0).max(120).optional(),
+    ieltsScore: z.coerce.number<number>().min(0).max(9).optional(),
+    greScore: z.coerce
+      .number<number>()
+      .min(260, 'GRE score must be greater than 260')
+      .max(340, 'GRE score must be less than 340')
+      .optional(),
+    languages: z.string().optional(),
+    academicAwards: z.string().optional(),
+    publicationCount: z.coerce.number<number>().min(0).optional(),
+    researchInterest: z.string().optional(),
+    extracurricularActivities: z.string().optional(),
+    preferredScholarshipType: z.string().optional(),
+    preferredCountry: z.string().optional(),
+    preferredUniversity: z.string().optional(),
     certificates: z
       .array(
         z.object({

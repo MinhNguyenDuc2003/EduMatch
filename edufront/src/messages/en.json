@@ -519,7 +519,26 @@
       "password": "Password",
       "yes": "Yes",
       "no": "No",
-      "addInfo": "Add Info"
+      "addInfo": "Add Info",
+      "educationLevel": "Education Level",
+      "satScore": "SAT Score",
+      "satScorePlaceholder": "Enter SAT score (400-1600)",
+      "actScore": "ACT Score",
+      "actScorePlaceholder": "Enter ACT score (1-36)",
+      "toeflScore": "TOEFL Score",
+      "toeflScorePlaceholder": "Enter TOEFL score (0-120)",
+      "ieltsScore": "IELTS Score",
+      "ieltsScorePlaceholder": "Enter IELTS score (0.0-9.0)",
+      "greScore": "GRE Score",
+      "greScorePlaceholder": "Enter GRE score (260-340)",
+      "languages": "Languages",
+      "academicAwards": "Academic Awards",
+      "publicationCount": "Publication Count",
+      "researchInterest": "Research Interest",
+      "extracurricularActivities": "Extracurricular Activities",
+      "preferredScholarshipType": "Preferred Scholarship Type",
+      "preferredCountry": "Preferred Country",
+      "preferredUniversity": "Preferred University"
     },
     "common": {
       "edit": "Edit",
@@ -542,7 +561,8 @@
       "selectReligion": "Select Religion",
       "selectEthnicity": "Select Ethnicity",
       "selectRace": "Select Race",
-      "selectCitizenshipStatus": "Select Citizenship Status"
+      "selectCitizenshipStatus": "Select Citizenship Status",
+      "selectEducationLevel": "Select Education Level"
     },
     "skillsDialog": {
       "title": "Skills",
@@ -667,7 +687,11 @@
       "researchExperience": "Research Experience",
       "researchExperiencePlaceholder": "e.g., AI Lab, Biology Research",
       "careerGoals": "Career Goals",
-      "careerGoalsPlaceholder": "e.g., Software Engineer, Doctor"
+      "careerGoalsPlaceholder": "e.g., Software Engineer, Doctor",
+      "researchInterest": "Research Interest",
+      "researchInterestPlaceholder": "e.g., Machine Learning, Quantum Computing",
+      "extracurricularActivities": "Extracurricular Activities",
+      "extracurricularActivitiesPlaceholder": "e.g., Volunteer work, Leadership roles"
     },
     "preferencesDialog": {
       "title": "Applicant Preferences",
@@ -692,7 +716,15 @@
       "financialAid": "Financial Aid",
       "diversity": "Diversity",
       "athletics": "Athletics",
-      "other": "Other"
+      "other": "Other",
+      "preferredPreferences": "Preferred Scholarship Preferences",
+      "preferredPreferencesDescription": "Specify your preferred scholarship type, country, and university",
+      "preferredScholarshipType": "Preferred Scholarship Type",
+      "selectPreferredScholarshipType": "Select preferred scholarship type",
+      "preferredCountry": "Preferred Country",
+      "selectPreferredCountry": "Select preferred country",
+      "preferredUniversity": "Preferred University",
+      "preferredUniversityPlaceholder": "e.g., Harvard University, MIT"
     },
     "cards": {
       "historyDetails": "History Details",
@@ -1070,5 +1102,8 @@
       "titleHighlight": "Scholarship Recommendations",
       "description": "Discover scholarships perfectly matched to your profile. Our AI-powered system analyzes your academic background, interests, and goals to recommend the best opportunities for your educational journey."
     }
+  },
+  "inputSelect": {
+    "placeholder": "Select an option"
   }
 }
