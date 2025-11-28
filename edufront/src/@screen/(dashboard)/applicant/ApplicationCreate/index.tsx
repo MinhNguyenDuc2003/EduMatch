@@ -10,8 +10,10 @@ import { Download } from 'lucide-react';
 import { mapProfileToApplication } from '@/lib/utils';
 import Loading from '@/pattern/share/Loading';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 const ApplicationCreatePage = () => {
+  const t = useTranslations('applicationForm');
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const formRef = useRef<ApplicationsFormRef>(null);
   const router = useRouter();
@@ -33,7 +35,7 @@ const ApplicationCreatePage = () => {
 
       await createApplication(formData).unwrap();
 
-      router.push('/applicant/activity');
+      router.push('/applicant/activity?tab=application');
     } catch (error) {
       console.log('Error creating application:', error);
       throw error;
@@ -68,7 +70,7 @@ const ApplicationCreatePage = () => {
           disabled={!profileData?.applicantProfile}
         >
           <Download className="w-4 h-4 mr-2" />
-          Import từ Profile
+          {t('importFromProfile')}
         </Button>
       </div>
       <ApplicationsForm

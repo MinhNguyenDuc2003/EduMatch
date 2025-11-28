@@ -177,7 +177,15 @@ export default function ActivityManagement() {
               ) : isFollowingTab && followedProvidersData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isApplicationTab && applicationsData?.length === 0 ? (
-                <EmptyState tab={activeTab} />
+                <div className="flex flex-col gap-4 ">
+                  <Button
+                    variant="custom"
+                    color="gray"
+                    onClick={handleCreateNew}
+                    value={t('activity.applicationDetail.createNewApplication')}
+                  />
+                  <EmptyState tab={activeTab} />
+                </div>
               ) : isAppliedTab && appliedScholarshipsData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : // Display Data

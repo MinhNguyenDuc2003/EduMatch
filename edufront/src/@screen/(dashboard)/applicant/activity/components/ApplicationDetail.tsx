@@ -142,6 +142,25 @@ export default function ApplicationDetail({
     major,
     createdDate,
     applicationMedias,
+    age,
+    citizenship,
+    classRank,
+    classSize,
+    classRankPercentile,
+    satScore,
+    actScore,
+    greScore,
+    gmatScore,
+    toeflScore,
+    ieltsScore,
+    languages,
+    careerGoal,
+    researchInterest,
+    academicAwards,
+    publicationCount,
+    workExperienceYears,
+    isAthlete,
+    athleticAchievements,
   } = applicationVo || application || {};
 
   const imageFiles = applicationMedias?.filter((media) => isImageFile(media.contentType));
@@ -296,6 +315,13 @@ export default function ApplicationDetail({
                       {t('dateOfBirth')} {formatDate(dateOfBirth) || 'N/A'}
                     </span>
                   </div>
+                  {age !== undefined && age !== null && (
+                    <div className="flex items-center gap-2">
+                      <span>
+                        {t('age')} {age}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex items-center gap-2">
                     <span>
                       {t('address')} {address || 'N/A'}
@@ -306,6 +332,13 @@ export default function ApplicationDetail({
                       {t('nationality')} {nationality || 'N/A'}
                     </span>
                   </div>
+                  {citizenship && (
+                    <div className="flex items-center gap-2">
+                      <span>
+                        {t('citizenship')} {citizenship}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -314,7 +347,7 @@ export default function ApplicationDetail({
           {/* Education Background Section */}
           <section>
             <h3 className="text-base font-bold text-gray-900 mb-2">{t('educationBackground')}</h3>
-            <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4">
+            <div className="bg-white rounded-lg border-2 border-gray-200 p-3 mb-4 space-y-4">
               <div className="grid text-sm text-gray-700 items-start font-medium grid-cols-2 gap-2">
                 <div className="col-span-2 flex items-center gap-2">
                   <span>
@@ -341,7 +374,90 @@ export default function ApplicationDetail({
                     {t('graduationYear')} {graduationYear || 'N/A'}
                   </span>
                 </div>
+                {(classRank !== undefined && classRank !== null) ||
+                (classSize !== undefined && classSize !== null) ||
+                (classRankPercentile !== undefined && classRankPercentile !== null) ? (
+                  <>
+                    {classRank !== undefined && classRank !== null && (
+                      <div className="flex items-center gap-2">
+                        <span>
+                          {t('classRank')} {classRank}
+                        </span>
+                      </div>
+                    )}
+                    {classSize !== undefined && classSize !== null && (
+                      <div className="flex items-center gap-2">
+                        <span>
+                          {t('classSize')} {classSize}
+                        </span>
+                      </div>
+                    )}
+                    {classRankPercentile !== undefined && classRankPercentile !== null && (
+                      <div className="flex items-center gap-2">
+                        <span>
+                          {t('classRankPercentile')} {classRankPercentile}%
+                        </span>
+                      </div>
+                    )}
+                  </>
+                ) : null}
               </div>
+
+              {/* Test Scores */}
+              {(satScore !== undefined && satScore !== null) ||
+              (actScore !== undefined && actScore !== null) ||
+              (greScore !== undefined && greScore !== null) ||
+              (gmatScore !== undefined && gmatScore !== null) ||
+              (toeflScore !== undefined && toeflScore !== null) ||
+              (ieltsScore !== undefined && ieltsScore !== null) ? (
+                <div className="border-t pt-4">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">{t('testScores')}</h4>
+                  <div className="grid text-sm text-gray-700 items-start font-medium grid-cols-2 gap-2">
+                    {satScore !== undefined && satScore !== null && (
+                      <div className="flex items-center gap-2">
+                        <span>
+                          {t('satScore')} {satScore}
+                        </span>
+                      </div>
+                    )}
+                    {actScore !== undefined && actScore !== null && (
+                      <div className="flex items-center gap-2">
+                        <span>
+                          {t('actScore')} {actScore}
+                        </span>
+                      </div>
+                    )}
+                    {greScore !== undefined && greScore !== null && (
+                      <div className="flex items-center gap-2">
+                        <span>
+                          {t('greScore')} {greScore}
+                        </span>
+                      </div>
+                    )}
+                    {gmatScore !== undefined && gmatScore !== null && (
+                      <div className="flex items-center gap-2">
+                        <span>
+                          {t('gmatScore')} {gmatScore}
+                        </span>
+                      </div>
+                    )}
+                    {toeflScore !== undefined && toeflScore !== null && (
+                      <div className="flex items-center gap-2">
+                        <span>
+                          {t('toeflScore')} {toeflScore}
+                        </span>
+                      </div>
+                    )}
+                    {ieltsScore !== undefined && ieltsScore !== null && (
+                      <div className="flex items-center gap-2">
+                        <span>
+                          {t('ieltsScore')} {ieltsScore}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : null}
             </div>
           </section>
 
@@ -396,6 +512,77 @@ export default function ApplicationDetail({
                   </div>
                 )}
               </div>
+
+              {/* Languages */}
+              {languages && (
+                <div>
+                  <p className="text-sm font-semibold text-gray-500">{t('languages')}</p>
+                  <p className="text-sm text-gray-700 font-medium">{languages}</p>
+                </div>
+              )}
+
+              {/* Career Goal */}
+              {careerGoal && (
+                <div>
+                  <p className="text-sm font-semibold text-gray-500">{t('careerGoal')}</p>
+                  <p className="text-sm text-gray-700 font-medium">{careerGoal}</p>
+                </div>
+              )}
+
+              {/* Research Interest */}
+              {researchInterest && (
+                <div>
+                  <p className="text-sm font-semibold text-gray-500">{t('researchInterest')}</p>
+                  <p className="text-sm text-gray-700 font-medium">{researchInterest}</p>
+                </div>
+              )}
+
+              {/* Academic Awards */}
+              {academicAwards && (
+                <div>
+                  <p className="text-sm font-semibold text-gray-500">{t('academicAwards')}</p>
+                  <p className="text-sm text-gray-700 font-medium">{academicAwards}</p>
+                </div>
+              )}
+
+              {/* Publication Count */}
+              {publicationCount !== undefined && publicationCount !== null && (
+                <div>
+                  <p className="text-sm font-semibold text-gray-500">{t('publicationCount')}</p>
+                  <p className="text-sm text-gray-700 font-medium">{publicationCount}</p>
+                </div>
+              )}
+
+              {/* Work Experience Years */}
+              {workExperienceYears !== undefined && workExperienceYears !== null && (
+                <div>
+                  <p className="text-sm font-semibold text-gray-500">{t('workExperienceYears')}</p>
+                  <p className="text-sm text-gray-700 font-medium">
+                    {workExperienceYears} {t('years')}
+                  </p>
+                </div>
+              )}
+
+              {/* Athletic Information */}
+              {isAthlete && (
+                <div>
+                  <p className="text-sm font-semibold text-gray-500">{t('isAthlete')}</p>
+                  <Badge
+                    variant="outline"
+                    className="text-xs bg-green-50 text-blue-700 border-blue-200"
+                  >
+                    {t('yes')}
+                  </Badge>
+                  {athleticAchievements && (
+                    <div className="mt-2">
+                      <p className="text-sm font-semibold text-gray-500">
+                        {t('athleticAchievements')}
+                      </p>
+                      <p className="text-sm text-gray-700 font-medium">{athleticAchievements}</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </section>
 
