@@ -91,4 +91,5 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     List<ScholarshipProjection> getVosWithFollowByProviderId(@Param("providerId") Long providerId, @Param("userId") String userId);
 
     List<ScholarshipEntity> findAllByProviderIdAndActive(Long id, boolean b);
+
 }

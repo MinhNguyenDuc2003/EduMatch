@@ -179,8 +179,8 @@ public class ScholarshipController {
     }
 
     @Authorized
-    @GetMapping("/provider/{id}/statistics")
-    public ApiResponse<ScholarshipStatisticsDto> getProviderStatistics(@PathVariable("id") String providerId) {
-        return ApiResponse.ok(scholarshipService.getStatisticsByProvider(providerId));
+    @GetMapping("/provider/statistics")
+    public ApiResponse<ScholarshipStatisticsDto> getProviderStatistics() {
+        return ApiResponse.ok(scholarshipService.getStatisticsByProvider());
     }
 }

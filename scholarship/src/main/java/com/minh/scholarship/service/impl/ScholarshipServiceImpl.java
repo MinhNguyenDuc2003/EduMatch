@@ -521,7 +521,13 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     }
 
     @Override
-    public ScholarshipStatisticsDto getStatisticsByProvider(String providerId) {
+    public ScholarshipStatisticsDto getStatisticsByProvider() {
+
+        ProviderProfileVo providerProfileVo = this.parseResponse(providerProfileFeign.getMyProviderInfo());
+        if (providerProfileVo == null) {
+            throw new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST);
+        }
+        Long providerId = providerProfileVo.getId();
         // 1. Retrieve all scholarships for the provider
         List<ScholarshipEntity> scholarships = scholarshipRepository.getAllByProviderIdAndActive(Long.valueOf(providerId), true);
         long totalScholarships = scholarships.size();
