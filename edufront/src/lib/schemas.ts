@@ -25,10 +25,26 @@ export const applicantProfileSchema = z.object({
     careerGoals: z.string().optional(),
     overallGpa: z.coerce.number<number>().min(0).max(4),
     educationLevel: z.string().optional(),
-    satScore: z.coerce.number<number>().min(0).max(1600).optional(),
-    actScore: z.coerce.number<number>().min(0).max(36).optional(),
-    toeflScore: z.coerce.number<number>().min(0).max(120).optional(),
-    ieltsScore: z.coerce.number<number>().min(0).max(9).optional(),
+    satScore: z.coerce
+      .number<number>()
+      .min(400, 'SAT score must be at least 400')
+      .max(1600, 'SAT score must be at most 1600')
+      .optional(),
+    actScore: z.coerce
+      .number<number>()
+      .min(1, 'ACT score must be at least 1')
+      .max(36, 'ACT score must be at most 36')
+      .optional(),
+    toeflScore: z.coerce
+      .number<number>()
+      .min(0, 'TOEFL score must be at least 0')
+      .max(120, 'TOEFL score must be at most 120')
+      .optional(),
+    ieltsScore: z.coerce
+      .number<number>()
+      .min(0, 'IELTS score must be at least 0')
+      .max(9, 'IELTS score must be at most 9')
+      .optional(),
     greScore: z.coerce
       .number<number>()
       .min(260, 'GRE score must be greater than 260')
@@ -256,6 +272,49 @@ export const applicationSchema = z.object({
   extracurricular: z.string().min(1, 'Extracurricular is required'),
   motivation: z.string().min(1, 'Motivation is required'),
   personalStatement: z.string().min(1, 'Personal statement is required'),
+  languages: z.string().optional(),
+  careerGoal: z.string().optional(),
+  researchInterest: z.string().optional(),
+  academicAwards: z.string().optional(),
+  publicationCount: z.coerce.number<number>().min(0).optional(),
+  satScore: z.coerce
+    .number<number>()
+    .min(400, 'SAT score must be at least 400')
+    .max(1600, 'SAT score must be at most 1600')
+    .optional(),
+  actScore: z.coerce
+    .number<number>()
+    .min(1, 'ACT score must be at least 1')
+    .max(36, 'ACT score must be at most 36')
+    .optional(),
+  greScore: z.coerce
+    .number<number>()
+    .min(260, 'GRE score must be at least 260')
+    .max(340, 'GRE score must be at most 340')
+    .optional(),
+  gmatScore: z.coerce
+    .number<number>()
+    .min(200, 'GMAT score must be at least 200')
+    .max(800, 'GMAT score must be at most 800')
+    .optional(),
+  toeflScore: z.coerce
+    .number<number>()
+    .min(0, 'TOEFL score must be at least 0')
+    .max(120, 'TOEFL score must be at most 120')
+    .optional(),
+  ieltsScore: z.coerce
+    .number<number>()
+    .min(0, 'IELTS score must be at least 0')
+    .max(9, 'IELTS score must be at most 9')
+    .optional(),
+  workExperienceYears: z.coerce.number<number>().min(0).optional(),
+  classRank: z.coerce.number<number>().min(0).optional(),
+  classSize: z.coerce.number<number>().min(1).optional(),
+  classRankPercentile: z.coerce.number<number>().min(0).max(100).optional(),
+  age: z.coerce.number<number>().min(0).optional(),
+  citizenship: z.string().optional(),
+  isAthlete: z.boolean().optional(),
+  athleticAchievements: z.string().optional(),
   applicationAttributes: z.array(
     z
       .object({

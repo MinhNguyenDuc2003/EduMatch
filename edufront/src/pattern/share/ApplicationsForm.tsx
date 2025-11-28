@@ -256,6 +256,28 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Age */}
+                  <CustomFormField
+                    name="age"
+                    label={t('fields.age')}
+                    type="number"
+                    placeholder={t('fields.agePlaceholder')}
+                    isBorder={true}
+                  />
+
+                  {/* Citizenship */}
+                  <CustomFormField
+                    name="citizenship"
+                    label={t('fields.citizenship')}
+                    type="input-select"
+                    placeholder={t('fields.citizenshipPlaceholder')}
+                    options={COUNTRIES}
+                    initialValue={application?.citizenship}
+                    isBorder={true}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Email */}
                   <CustomFormField
                     name="email"
@@ -359,6 +381,82 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   initialValue={application?.graduationYear}
                   isBorder={true}
                 />
+
+                {/* Class Rank & Size */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <CustomFormField
+                    name="classRank"
+                    label={t('fields.classRank')}
+                    type="number"
+                    placeholder={t('fields.classRankPlaceholder')}
+                    isBorder={true}
+                  />
+                  <CustomFormField
+                    name="classSize"
+                    label={t('fields.classSize')}
+                    type="number"
+                    placeholder={t('fields.classSizePlaceholder')}
+                    isBorder={true}
+                  />
+                  <CustomFormField
+                    name="classRankPercentile"
+                    label={t('fields.classRankPercentile')}
+                    type="number"
+                    placeholder={t('fields.classRankPercentilePlaceholder')}
+                    isBorder={true}
+                  />
+                </div>
+
+                {/* Test Scores */}
+                <div className="space-y-4">
+                  <h3 className="text-md font-semibold text-gray-800">
+                    {t('sections.testScores')}
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <CustomFormField
+                      name="satScore"
+                      label={t('fields.satScore')}
+                      type="number"
+                      placeholder={t('fields.satScorePlaceholder')}
+                      isBorder={true}
+                    />
+                    <CustomFormField
+                      name="actScore"
+                      label={t('fields.actScore')}
+                      type="number"
+                      placeholder={t('fields.actScorePlaceholder')}
+                      isBorder={true}
+                    />
+                    <CustomFormField
+                      name="greScore"
+                      label={t('fields.greScore')}
+                      type="number"
+                      placeholder={t('fields.greScorePlaceholder')}
+                      isBorder={true}
+                    />
+                    <CustomFormField
+                      name="gmatScore"
+                      label={t('fields.gmatScore')}
+                      type="number"
+                      placeholder={t('fields.gmatScorePlaceholder')}
+                      isBorder={true}
+                    />
+                    <CustomFormField
+                      name="toeflScore"
+                      label={t('fields.toeflScore')}
+                      type="number"
+                      placeholder={t('fields.toeflScorePlaceholder')}
+                      isBorder={true}
+                    />
+                    <CustomFormField
+                      name="ieltsScore"
+                      label={t('fields.ieltsScore')}
+                      type="number"
+                      placeholder={t('fields.ieltsScorePlaceholder')}
+                      isBorder={true}
+                    />
+                  </div>
+                </div>
               </div>
 
               {/* Skills & Achievements */}
@@ -391,6 +489,77 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
                   label={t('fields.extracurricular')}
                   type="textarea"
                   placeholder={t('fields.extracurricularPlaceholder')}
+                  isBorder={true}
+                />
+
+                {/* Languages */}
+                <CustomFormField
+                  name="languages"
+                  label={t('fields.languages')}
+                  type="textarea"
+                  placeholder={t('fields.languagesPlaceholder')}
+                  isBorder={true}
+                />
+
+                {/* Career Goal */}
+                <CustomFormField
+                  name="careerGoal"
+                  label={t('fields.careerGoal')}
+                  type="textarea"
+                  placeholder={t('fields.careerGoalPlaceholder')}
+                  isBorder={true}
+                />
+
+                {/* Research Interest */}
+                <CustomFormField
+                  name="researchInterest"
+                  label={t('fields.researchInterest')}
+                  type="textarea"
+                  placeholder={t('fields.researchInterestPlaceholder')}
+                  isBorder={true}
+                />
+
+                {/* Academic Awards */}
+                <CustomFormField
+                  name="academicAwards"
+                  label={t('fields.academicAwards')}
+                  type="textarea"
+                  placeholder={t('fields.academicAwardsPlaceholder')}
+                  isBorder={true}
+                />
+
+                {/* Publication Count */}
+                <CustomFormField
+                  name="publicationCount"
+                  label={t('fields.publicationCount')}
+                  type="number"
+                  placeholder={t('fields.publicationCountPlaceholder')}
+                  isBorder={true}
+                />
+
+                {/* Work Experience Years */}
+                <CustomFormField
+                  name="workExperienceYears"
+                  label={t('fields.workExperienceYears')}
+                  type="number"
+                  placeholder={t('fields.workExperienceYearsPlaceholder')}
+                  isBorder={true}
+                />
+
+                {/* Is Athlete */}
+                <CustomFormField
+                  name="isAthlete"
+                  label={t('fields.isAthlete')}
+                  type="switch"
+                  isBorder={true}
+                />
+
+                {/* Athletic Achievements */}
+                <CustomFormField
+                  name="athleticAchievements"
+                  label={t('fields.athleticAchievements')}
+                  type="textarea"
+                  placeholder={t('fields.athleticAchievementsPlaceholder')}
                   isBorder={true}
                 />
               </div>
