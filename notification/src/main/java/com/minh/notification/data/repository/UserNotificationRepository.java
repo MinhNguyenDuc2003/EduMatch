@@ -11,4 +11,6 @@ public interface UserNotificationRepository extends JpaRepository<UserNotificati
     List<UserNotificationEntity> findAllByUserId(String userId);
 
     List<UserNotificationEntity> findAllByIsAdmin(Boolean isAdmin);
+
+    List<UserNotificationEntity> findAllByUserIdOrIsAdmin(String userId, boolean b);
 }

@@ -33,7 +33,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
     @Override
     public List<UserNotificationDto> getByUser() {
-        return userNotificationMapper.toDto(userNotificationRepository.findAllByUserId(UaaContextHolder.getUserId()));
+        return userNotificationMapper.toDto(userNotificationRepository.findAllByUserIdOrIsAdmin(UaaContextHolder.getUserId(), true));
     }
 
     @Override
