@@ -12,9 +12,11 @@ import { mockProfileData } from "@/constants/mockData";
 import { transformProfileData } from "@/lib/utils";
 import { ProfileData } from "@/types/profile";
 import React, { useEffect, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router"; // dùng để chuyển trang
 
 const Profile = () => {
+  const router = useRouter(); // hook để điều hướng
   const [uiData, setUiData] = useState<ProfileData>({
     name: "",
     role: "",
@@ -49,6 +51,8 @@ const Profile = () => {
     loadProfileData();
   }, []);
 
+  const [activeTab, setActiveTab] = useState("information");
+
   const handleEdit = (section: string) => {
     setDialogOpen(true);
     setValue(section);
@@ -72,9 +76,43 @@ const Profile = () => {
     );
   }
 
+  // danh sách tab
+  const tabs = [
+    { id: "information", label: "Information" },
+    { id: "application", label: "Application" },
+    { id: "favourites", label: "Favourites" },
+  ];
+
   return (
     <ScrollView className="bg-gray-50 py-8 px-4 flex-1 flex flex-col mb-40">
       <View className="max-w-7xl mx-auto flex flex-col gap-6">
+        {/* Tab Bar */}
+        <View className="flex-row justify-around bg-white py-2 border-b border-gray-300">
+          {tabs.map((tab) => (
+            <TouchableOpacity
+              key={tab.id}
+              onPress={() => {
+                setActiveTab(tab.id);
+                if (tab.id === "information") {
+                  router.push("/Profile"); // giữ ở màn hình hiện tại
+                } else if (tab.id === "application") {
+                  router.push("/ApplicationScreen");
+                } else if (tab.id === "favourites") {
+                  router.push("/FavouritesScreen");
+                }
+              }}
+            >
+              <Text
+                className={`text-lg font-bold ${
+                  activeTab === tab.id ? "text-blue-600" : "text-gray-500"
+                }`}
+              >
+                {tab.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
         <View className="flex flex-col gap-6">
           <ProfileHeader
             name={uiData.name}
