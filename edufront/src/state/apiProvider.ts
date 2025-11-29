@@ -261,7 +261,7 @@ export const apiProvider = createApi({
 
     getStatistics: build.query<Statistics, void>({
       query: () => ({
-        url: `${API_ENDPOINTS.APPLICATION}/statistics`,
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/provider/statistics`,
         method: 'GET',
       }),
     }),

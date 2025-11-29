@@ -36,7 +36,7 @@ function DecisionStatusCard({
           <div>
             <div className="flex items-center justify-between mb-2">
               <p className="text-sm font-medium text-foreground">
-                {t('approved')} ({approveRate}%)
+                {t('approved')} ({approveRate.toFixed(2)}%)
               </p>
               <p className="text-lg font-semibold text-green-600">
                 {approveCount.toLocaleString()}
@@ -45,7 +45,7 @@ function DecisionStatusCard({
             <div className="bg-muted rounded-full h-2.5 overflow-hidden">
               <div
                 className="h-full rounded-full bg-green-500"
-                style={{ width: `${approveRate}%` }}
+                style={{ width: `${approveRate.toFixed(2)}%` }}
               />
             </div>
           </div>
@@ -54,12 +54,15 @@ function DecisionStatusCard({
           <div>
             <div className="flex items-center justify-between mb-2">
               <p className="text-sm font-medium text-foreground">
-                {t('rejected')} ({rejectRate}%)
+                {t('rejected')} ({rejectRate.toFixed(2)}%)
               </p>
               <p className="text-lg font-semibold text-red-600">{rejectCount.toLocaleString()}</p>
             </div>
             <div className="bg-muted rounded-full h-2.5 overflow-hidden">
-              <div className="h-full rounded-full bg-red-500" style={{ width: `${rejectRate}%` }} />
+              <div
+                className="h-full rounded-full bg-red-500"
+                style={{ width: `${rejectRate.toFixed(2)}%` }}
+              />
             </div>
           </div>
 
