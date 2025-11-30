@@ -35,7 +35,7 @@ const Notifications = () => {
 
     // Initialize STOMP client
     const client = new Client({
-      brokerURL: `ws://159.89.200.244/api/notification/ws?token=${encodeURIComponent(`Bearer ${token}`)}`,
+      brokerURL: `wss://fpt.edumatch.space/api/notification/ws?token=${encodeURIComponent(`Bearer ${token}`)}`,
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
@@ -88,6 +88,24 @@ const Notifications = () => {
     () => (notifications ? notifications.filter((n) => !n.isRead).length : 0),
     [notifications]
   );
+
+  const handleClickNotification = (notification: UserNotification) => {
+    if (notification.referenceType === 'SYSTEM') {
+      return;
+    }
+    if (
+      notification.referenceType === 'SCHOLARSHIP' ||
+      notification.referenceType === 'APPLICATION_REFERRAL'
+    ) {
+      router.push(`/scholarships/${notification.slug}`);
+    }
+    if (notification.referenceType === 'SCHOLARSHIP_APPLICATION') {
+      router.push(`/provider/applications`);
+    }
+    if (notification.referenceType === 'APPLICATION') {
+      router.push(`/applicant/activity?tab=application`);
+    }
+  };
 
   return (
     <div className="flex items-center gap-2 sm:gap-3">
@@ -142,27 +160,34 @@ const Notifications = () => {
             {notifications &&
               !isLoading &&
               notifications.map((notification) => {
+                const isSystemNotification = notification.referenceType === 'SYSTEM';
                 return (
                   <DropdownMenuItem
                     key={notification.id}
                     className={cn(
                       'flex flex-col items-start gap-1 p-3 cursor-pointer',
-                      !notification.isRead && 'bg-primary-light'
+                      !notification.isRead && 'bg-primary-light',
+                      isSystemNotification && 'border-l-4 border-red-500 bg-blue-50/50'
                     )}
                     onClick={() => {
-                      if (notification.slug) {
-                        router.push(`/scholarships/${notification.slug}`);
-                      }
+                      handleClickNotification(notification);
                     }}
                   >
                     <div className="flex items-start justify-between w-full">
-                      <p className="font-semibold text-sm text-gray-900">
-                        {t(
-                          NOTIFICATION_TYPES[
-                            notification.referenceType as keyof typeof NOTIFICATION_TYPES
-                          ]
+                      <div className="flex items-center gap-2">
+                        <p className="font-semibold text-sm text-gray-900">
+                          {t(
+                            NOTIFICATION_TYPES[
+                              notification.referenceType as keyof typeof NOTIFICATION_TYPES
+                            ]
+                          )}
+                        </p>
+                        {isSystemNotification && (
+                          <span className="px-1.5 py-0.5 text-[10px] font-semibold text-blue-700 bg-blue-100 rounded">
+                            SYSTEM
+                          </span>
                         )}
-                      </p>
+                      </div>
                       {!notification.isRead && (
                         <span className="w-2 h-2 bg-primary-brand rounded-full mt-1"></span>
                       )}

@@ -667,6 +667,7 @@ export const NOTIFICATION_TYPES = {
   SCHOLARSHIP_UPDATED: 'scholarshipUpdated',
   SCHOLARSHIP_NEWS: 'scholarshipNews',
   APPLICATION: 'application',
+  SYSTEM: 'system',
   SCHOLARSHIP_APPLICATION: 'scholarshipApplication',
   APPLICATION_REFERRAL: 'applicationReferral',
 };

@@ -1,12 +1,22 @@
 import apiClientService from "@/apiController/ApiClientService";
+import { useRouter } from "expo-router";
 import { HeartIcon, X } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
-import { FlatList, Image, Modal, Pressable, ScrollView, Text, View } from "react-native";
-import { useRouter } from "expo-router";
+import {
+  FlatList,
+  Image,
+  Modal,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 
 const Application = () => {
   const [data, setData] = useState<any[]>([]);
-  const [selectedApplication, setSelectedApplication] = useState<any | null>(null);
+  const [selectedApplication, setSelectedApplication] = useState<any | null>(
+    null
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
@@ -32,7 +42,9 @@ const Application = () => {
     return (
       <View className="bg-white rounded-2xl shadow-lg mb-4 p-4 border border-gray-300">
         <Pressable
-          onPress={() => router.push(`/scholarshipdetails/${scholarship.id}`)}
+          onPress={() =>
+            router.push(`/scholarshipdetails/${scholarship.id}` as any)
+          }
           className="flex-row items-center mb-3"
         >
           <Image
@@ -40,8 +52,12 @@ const Application = () => {
             className="w-16 h-16 rounded-md mr-3"
           />
           <View className="flex-1">
-            <Text className="text-lg font-semibold text-gray-800">{scholarship.title}</Text>
-            <Text className="text-sm text-gray-500">{scholarship.university}</Text>
+            <Text className="text-lg font-semibold text-gray-800">
+              {scholarship.title}
+            </Text>
+            <Text className="text-sm text-gray-500">
+              {scholarship.university}
+            </Text>
           </View>
         </Pressable>
 
@@ -54,7 +70,10 @@ const Application = () => {
               {scholarship.country}
             </Text>
           </View>
-          <HeartIcon size={20} color={scholarship.isFollow ? "#22c55e" : "#ccc"} />
+          <HeartIcon
+            size={20}
+            color={scholarship.isFollow ? "#22c55e" : "#ccc"}
+          />
         </View>
 
         <Pressable
@@ -64,7 +83,9 @@ const Application = () => {
           }}
           className="mt-2 bg-green-500 px-4 py-2 rounded-lg"
         >
-          <Text className="text-white text-center font-semibold">Show Application</Text>
+          <Text className="text-white text-center font-semibold">
+            Show Application
+          </Text>
         </Pressable>
       </View>
     );
@@ -89,7 +110,9 @@ const Application = () => {
   return (
     <View className="flex-1 bg-gray-100 p-4">
       {data.length === 0 ? (
-        <Text className="text-center text-gray-500 mt-10">Loading scholarships...</Text>
+        <Text className="text-center text-gray-500 mt-10">
+          Loading scholarships...
+        </Text>
       ) : (
         <FlatList
           data={data}
@@ -114,14 +137,18 @@ const Application = () => {
             <ScrollView>
               {selectedApplication && (
                 <>
-                  <Text className="text-xl font-bold mb-4">Application Details</Text>
+                  <Text className="text-xl font-bold mb-4">
+                    Application Details
+                  </Text>
                   <View className="flex flex-row flex-wrap justify-between">
                     {applicationFields.map((field) => (
                       <View
                         key={field.key}
                         className="w-[48%] bg-gray-100 rounded-lg p-3 mb-3"
                       >
-                        <Text className="font-semibold text-gray-700">{field.label}</Text>
+                        <Text className="font-semibold text-gray-700">
+                          {field.label}
+                        </Text>
                         <Text className="text-gray-800 mt-1">
                           {selectedApplication[field.key] ?? "-"}
                         </Text>
