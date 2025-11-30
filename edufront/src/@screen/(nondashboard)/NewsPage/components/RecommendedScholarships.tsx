@@ -1,25 +1,25 @@
-import { TrendingUp, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import TopViewedScholarshipCard from './TopViewedScholarshipCard';
 import { useTranslations } from 'next-intl';
 
-interface TopViewedScholarshipsProps {
+interface RecommendedScholarshipsProps {
   scholarships: Scholarship[];
   isLoading: boolean;
   onViewScholarship: (slug?: string) => void;
 }
 
-export default function TopViewedScholarships({
+export default function RecommendedScholarships({
   scholarships,
   isLoading,
   onViewScholarship,
-}: TopViewedScholarshipsProps) {
+}: RecommendedScholarshipsProps) {
   const t = useTranslations('newsPage');
   return (
     <div className="sticky top-20 rounded-lg shadow-md overflow-hidden max-h-[calc(100vh-6rem)] flex flex-col">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#1B3053] to-[#3D6CB9] rounded-t-lg px-3 py-2 flex-shrink-0">
-        <div className="flex items-center gap-2">
-          <h2 className="text-base font-semibold text-white">{t('topViewed')}</h2>
+      <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-t-lg px-3 py-2 flex-shrink-0">
+        <div className="flex items-center gap-1.5">
+          <h2 className="text-base font-semibold text-white">{t('recommended')}</h2>
         </div>
       </div>
 
@@ -60,7 +60,9 @@ export default function TopViewedScholarships({
         ) : (
           <div className="border border-gray-200 p-4 text-center">
             <Sparkles className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-            <p className="text-xs text-gray-500">{t('noTopScholarships')}</p>
+            <p className="text-xs text-gray-500">
+              {t('noRecommendedScholarships') || 'Chưa có học bổng đề xuất'}
+            </p>
           </div>
         )}
       </div>

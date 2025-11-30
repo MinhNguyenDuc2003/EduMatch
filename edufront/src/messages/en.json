@@ -1157,8 +1157,16 @@
     "title": "EduMatch News",
     "topViewed": "Top Viewed Scholarships",
     "noTopScholarships": "No top viewed scholarships available",
+    "recommended": "Recommended scholarships",
+    "noRecommendedScholarships": "No recommended scholarships available",
     "noNewsAvailable": "No news available",
-    "noNewsDescription": "There are no news articles at the moment. Check back later for updates and new content."
+    "noNewsDescription": "There are no news articles at the moment. Check back later for updates and new content.",
+    "premiumBanner": {
+      "badge": "PREMIUM",
+      "title": "Upgrade to Premium to view recommended scholarships",
+      "description": "Get scholarship recommendations tailored to your profile",
+      "upgradeNow": "Upgrade Now"
+    }
   },
   "recommendedScholarships": {
     "heroSection": {

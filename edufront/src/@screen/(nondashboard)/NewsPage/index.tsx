@@ -1,23 +1,37 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { NewsHeader, NewsCard, TopViewedScholarships } from './components';
+import {
+  NewsHeader,
+  NewsCard,
+  TopViewedScholarships,
+  RecommendedScholarships,
+  PremiumBanner,
+} from './components';
 import {
   useGetAllNewsQuery,
   useFollowProviderMutation,
   useUnfollowProviderMutation,
 } from '@/state/apiProvider';
-import { useGetScholarshipTopViewByMonthQuery } from '@/state/apiScholarship';
+import {
+  useGetRecommendedScholarshipsQuery,
+  useGetScholarshipTopViewByMonthQuery,
+} from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
 import Loading from '@/pattern/share/Loading';
 import EmptyNews from './components/EmptyNews';
 
 export default function NewsPage() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, subscriptions } = useAuth();
   const { data: newsData, isLoading, refetch } = useGetAllNewsQuery();
   const { data: scholarshipTopView, isLoading: isLoadingScholarshipTopView } =
     useGetScholarshipTopViewByMonthQuery();
+  const hasApplicantSubscription = subscriptions.some(
+    (subscription) => subscription.userType === 'APPLICANT'
+  );
+  const { data: recommendedScholarships, isLoading: isLoadingRecommended } =
+    useGetRecommendedScholarshipsQuery({ topK: 12 }, { skip: !hasApplicantSubscription });
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
@@ -67,8 +81,22 @@ export default function NewsPage() {
       <NewsHeader />
 
       <section className="py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="space-y-4 lg:col-span-2">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Left Sidebar - Recommended Scholarships or Premium Banner */}
+          <div className="lg:col-span-1 order-2 lg:order-1">
+            {hasApplicantSubscription ? (
+              <RecommendedScholarships
+                scholarships={recommendedScholarships || []}
+                isLoading={isLoadingRecommended}
+                onViewScholarship={handleViewScholarship}
+              />
+            ) : (
+              <PremiumBanner />
+            )}
+          </div>
+
+          {/* Main Content - News */}
+          <div className="space-y-4 lg:col-span-2 order-1 lg:order-2">
             {!newsData || newsData.length === 0 ? (
               <EmptyNews />
             ) : (
@@ -85,8 +113,9 @@ export default function NewsPage() {
               ))
             )}
           </div>
-          {/* Top Viewed Scholarships Sidebar */}
-          <div className="lg:col-span-1 ">
+
+          {/* Right Sidebar - Top Viewed Scholarships */}
+          <div className="lg:col-span-1 order-3">
             <TopViewedScholarships
               scholarships={scholarshipTopView || []}
               isLoading={isLoadingScholarshipTopView}

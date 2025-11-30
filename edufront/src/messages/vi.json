@@ -1108,8 +1108,16 @@
     "title": "Tin Tức EduMatch",
     "topViewed": "Học bổng được xem nhiều nhất",
     "noTopScholarships": "Chưa có học bổng được xem nhiều",
+    "recommended": "Học bổng đề xuất",
+    "noRecommendedScholarships": "Chưa có học bổng đề xuất",
     "noNewsAvailable": "Không có tin tức",
-    "noNewsDescription": "Hiện tại chưa có bài viết tin tức nào. Vui lòng quay lại sau để xem các cập nhật và nội dung mới."
+    "noNewsDescription": "Hiện tại chưa có bài viết tin tức nào. Vui lòng quay lại sau để xem các cập nhật và nội dung mới.",
+    "premiumBanner": {
+      "badge": "PREMIUM",
+      "title": "Nâng cấp Premium để xem học bổng đề xuất",
+      "description": "Nhận các đề xuất học bổng phù hợp với hồ sơ của bạn",
+      "upgradeNow": "Nâng cấp ngay"
+    }
   },
   "recommendedScholarships": {
     "heroSection": {
