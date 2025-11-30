@@ -12,31 +12,34 @@ import { Bell } from 'lucide-react';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Client, IMessage } from '@stomp/stompjs';
 import { toast } from 'sonner';
-import { useGetNotificationsQuery, useLazyReadNotificationsQuery } from '@/state/apiAuth';
+import {
+  useGetNotificationsQuery,
+  useGetTokenQuery,
+  useLazyReadNotificationsQuery,
+} from '@/state/apiAuth';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { NOTIFICATION_TYPES } from '@/constants/Common';
 
 const Notifications = () => {
   const clientRef = useRef<Client | null>(null);
-  const token = useMemo(() => process.env.NEXT_PUBLIC_API_TOKEN || '', []);
 
   const t = useTranslations('notifications');
   const tError = useTranslations('error');
 
   const { data: notifications, isLoading, isError, refetch } = useGetNotificationsQuery();
+  const { data: token, isLoading: isLoadingToken } = useGetTokenQuery();
   const [readNotifications] = useLazyReadNotificationsQuery();
   const router = useRouter();
 
   useEffect(() => {
     if (!token) {
-      console.warn('No API token found for WebSocket connection');
       return;
     }
 
     // Initialize STOMP client
     const client = new Client({
-      brokerURL: `wss://fpt.edumatch.space/api/notification/ws?token=${encodeURIComponent(`Bearer ${token}`)}`,
+      brokerURL: `wss://fpt.edumatch.space/api/notification/ws?token=${encodeURIComponent(token)}`,
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
@@ -83,7 +86,7 @@ const Notifications = () => {
       }
       clientRef.current = null;
     };
-  }, [token, refetch]);
+  }, [token, refetch, isLoadingToken]);
 
   const unreadCount = useMemo(
     () => (notifications ? notifications.filter((n) => !n.isRead).length : 0),

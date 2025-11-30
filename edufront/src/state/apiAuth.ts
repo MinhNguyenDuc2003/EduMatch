@@ -20,6 +20,12 @@ export const apiAuth = createApi({
       }),
       providesTags: ['Auth'],
     }),
+    getToken: build.query<string, void>({
+      query: () => ({
+        url: '/api/notification/users/token',
+        method: 'GET',
+      }),
+    }),
     getNotifications: build.query<UserNotification[], void>({
       query: () => ({
         url: '/api/notification/users/user',
@@ -83,6 +89,7 @@ export const apiAuth = createApi({
 
 export const {
   useAuthenticatedQuery,
+  useGetTokenQuery,
   useGetNotificationsQuery,
   useLazyReadNotificationsQuery,
   useGetSubscriptionPlanByIdQuery,
