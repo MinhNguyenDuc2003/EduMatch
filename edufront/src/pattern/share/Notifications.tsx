@@ -12,7 +12,7 @@ import { Bell } from 'lucide-react';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Client, IMessage } from '@stomp/stompjs';
 import { toast } from 'sonner';
-import { useGetNotificationsQuery } from '@/state/apiAuth';
+import { useGetNotificationsQuery, useLazyReadNotificationsQuery } from '@/state/apiAuth';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { NOTIFICATION_TYPES } from '@/constants/Common';
@@ -25,6 +25,7 @@ const Notifications = () => {
   const tError = useTranslations('error');
 
   const { data: notifications, isLoading, isError, refetch } = useGetNotificationsQuery();
+  const [readNotifications] = useLazyReadNotificationsQuery();
   const router = useRouter();
 
   useEffect(() => {
@@ -90,6 +91,11 @@ const Notifications = () => {
   );
 
   const handleClickNotification = (notification: UserNotification) => {
+    readNotifications(notification.id)
+      .unwrap()
+      .then(() => {
+        refetch();
+      });
     if (notification.referenceType === 'SYSTEM') {
       return;
     }

@@ -192,7 +192,7 @@ export const scholarshipSchema = z
       .min(0, 'GPA must be greater than 0')
       .max(4, 'GPA must be less than 4')
       .optional(),
-    requiredMajor: z.string().min(1, 'Required major is required'),
+    requiredMajor: z.string().optional(),
     restrictedNationalities: z.string().optional(),
     minAge: z.coerce
       .number<number>()
