@@ -1,6 +1,7 @@
 package com.minh.notification.controller;
 
 import com.minh.constants.EndPoint;
+import com.minh.enumeration.notification.NotificationReferenceEnum;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.notification.UserNotificationDto;
 import com.minh.notification.data.mapper.UserNotificationMapper;
@@ -40,6 +41,11 @@ public class UserNotificationController {
         return ApiResponse.ok(userNotificationService.createOne(userNotificationDto));
     }
 
+    @GetMapping("/read/{id}")
+    public ApiResponse<UserNotificationDto> updateReadStatus(@PathVariable Long id) {
+        return ApiResponse.ok(userNotificationService.updateReadStatus(id));
+    }
+
     @PostMapping("/all")
     public ApiResponse<List<UserNotificationDto>> createAll(@RequestBody List<UserNotificationDto> userNotificationDto) {
         return ApiResponse.ok(userNotificationService.createAll(userNotificationDto));
@@ -50,6 +56,7 @@ public class UserNotificationController {
         notificationWebSocketHandler.sendToGlobal(notification);
         UserNotificationDto userNotificationDto = userNotificationMapper.voToDto(notification);
         userNotificationDto.setIsAdmin(true);
+        userNotificationDto.setReferenceType(NotificationReferenceEnum.SYSTEM.getCode());
         userNotificationService.createOne(userNotificationDto);
         return ApiResponse.ok(true);
     }

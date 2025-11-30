@@ -15,6 +15,7 @@ public enum NotificationReferenceEnum {
     APPLICATION("APPLICATION"),
     SCHOLARSHIP_APPLICATION("SCHOLARSHIP_APPLICATION"),
     APPLICATION_REFERRAL("APPLICATION_REFERRAL"),
+    SYSTEM("SYSTEM"),
     INVALID("INVALID");
 
     private final String code;
