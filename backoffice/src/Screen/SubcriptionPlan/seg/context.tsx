@@ -66,16 +66,18 @@ export default GenCtx({
       async onCreate(plan: ISubscriptionPlanList) {
         onSetLoading(true);
         try {
+          const featuresString = (plan?.features as any).join(", ");
+
           const data = await apiClientService.post(
             `/api/subscription/subscription/subscription/plans`,
             {
               name: plan.name,
               description: plan.description,
               currency: plan.currency,
-              price: plan.price,
-              durationDays: plan.durationDays,
+              price: Number(plan.price),          // chuyển string -> number
+              durationDays: Number(plan.durationDays), // chuyển string -> number
               targetType: plan.targetType,
-              features: plan.features,
+               features: plan.features,
             }
           );
           console.log('Created plan:', data.data);
@@ -96,8 +98,8 @@ export default GenCtx({
               name: plan.name,
               description: plan.description,
               currency: plan.currency,
-              price: plan.price,
-              durationDays: plan.durationDays,
+              price: Number(plan.price),
+              durationDays: Number(plan.durationDays),
               targetType: plan.targetType,
               features: plan.features,
             }

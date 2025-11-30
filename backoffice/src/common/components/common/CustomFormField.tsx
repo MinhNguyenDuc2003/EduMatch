@@ -204,6 +204,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
           <MultiInputField
             name={name || ''}
             control={control}
+            disabled={disabled}
             placeholder={placeholder}
             inputClassName={inputClassName}
           />
@@ -266,12 +267,14 @@ interface MultiInputFieldProps {
   control: any;
   placeholder?: string;
   inputClassName?: string;
+  disabled?:any
 }
 
 const MultiInputField: React.FC<MultiInputFieldProps> = ({
   name,
   control,
   placeholder,
+  disabled,
   inputClassName,
 }) => {
   const { fields, append, remove } = useFieldArray({
@@ -291,6 +294,7 @@ const MultiInputField: React.FC<MultiInputFieldProps> = ({
                 <Input
                   {...field}
                   placeholder={placeholder}
+                  disabled={disabled}
                   className={`flex-1 border-none bg-customgreys-darkGrey p-4 ${inputClassName}`}
                 />
               </FormControl>

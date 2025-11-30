@@ -126,13 +126,17 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
         </div>
 
         <div>
-          <CustomFormField
-            label="Features"
-            name="fields.SubcriptionPlan.features"
-            placeholder="Comma-separated, e.g. AI_MATCHING,PROFILE_SCORING"
-            isBorder
-            rules={{ required: 'Features are required' }}
-          />
+
+          <div>
+            <CustomFormField
+              type="multi-input"
+              label="Features"
+              name="fields.SubcriptionPlan.features"
+              placeholder="Comma-separated, e.g. AI_MATCHING,PROFILE_SCORING"
+              isBorder
+
+            />
+          </div>
         </div>
       </form>
     </FormProvider>

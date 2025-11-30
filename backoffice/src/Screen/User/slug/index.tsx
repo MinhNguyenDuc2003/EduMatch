@@ -135,13 +135,12 @@ function ProviderView({ provider, meds }: { provider: any , meds : any}) {
   const [loading, setLoading] = useState(false);
 
   const handleVerify = async () => {
-    if (verified) return; // đã verified thì không làm gì
+    if (verified) return; 
     setLoading(true);
     try {
-      // gọi API verify provider
         const res = await meds.onUpdateProviderVerifyByID(provider.id);
       if (res?.data) {
-        setVerified(true); // cập nhật trạng thái verify
+        setVerified(true); 
       }
     } catch (error) {
       console.error('Verify provider failed', error);
@@ -200,7 +199,6 @@ function ProviderView({ provider, meds }: { provider: any , meds : any}) {
   );
 }
 
-// Shared Components
 function Section({ title, children }: { title: string; children: any }) {
   return (
     <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">

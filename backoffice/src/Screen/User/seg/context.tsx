@@ -86,7 +86,7 @@ export default GenCtx({
        async onUpdateProviderVerifyByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/api/profile/providers/${id}/verified?verified=true`);
+          const data = await apiClientService.put(`/api/profile/providers/${id}/verified?verified=true`,{});
           return data.data;
         } catch (error) {
           console.error({ error });
