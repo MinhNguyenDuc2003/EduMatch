@@ -71,7 +71,7 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
     <FormProvider {...methods}>
       <form
         onSubmit={handleSave}
-        className="max-w-5xl mx-auto bg-white p-10 mt-10 rounded-2xl shadow-lg border border-gray-100 space-y-10"
+        className="w-[95%] mx-auto bg-white p-10 mt-10 rounded-2xl shadow-lg border border-gray-100 space-y-10"
       >
         {/* Header */}
         <div className="flex justify-between items-center border-b pb-4">

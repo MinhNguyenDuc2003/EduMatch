@@ -53,9 +53,8 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
     <FormProvider {...methods}>
       <form
         onSubmit={onSubmit}
-        className="max-w-5xl mx-auto bg-white p-10 mt-10 rounded-2xl shadow-lg border border-gray-100 space-y-10"
+        className="w-[95%] mx-auto bg-white p-10 mt-10 rounded-2xl shadow-lg border border-gray-100 space-y-10"
       >
-        {/* Header */}
         <div className="flex justify-between items-center border-b pb-4">
           <h1 className="text-2xl font-semibold text-gray-800">Create Subscription Plan</h1>
           <div className="flex gap-3">
@@ -69,7 +68,6 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
           </div>
         </div>
 
-        {/* Basic Info */}
         <div className="grid md:grid-cols-2 gap-6">
           <CustomFormField
             name="fields.SubcriptionPlan.name"
@@ -116,7 +114,6 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
           />
         </div>
 
-        {/* Description */}
         <div>
           <CustomFormField
             label="Description"
@@ -128,7 +125,6 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
           />
         </div>
 
-        {/* Features */}
         <div>
           <CustomFormField
             label="Features"

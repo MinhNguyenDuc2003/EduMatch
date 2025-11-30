@@ -1,8 +1,9 @@
 'use client';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Context from '../seg/context';
+import { onSetLoading } from 'src/utils/eventBus';
 
 export default function ScholarshipDetail() {
   const { id } = useParams();
@@ -17,22 +18,24 @@ export default function ScholarshipDetail() {
 }
 
 function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
+  const router = useRouter();
   const [data, setData] = useState<any>(null);
-  const [form, setForm] = useState<any>({});
 
   useEffect(() => {
-    if (id && meds?.onGetByID) {
-      (async () => {
+    if (!id || !meds?.onGetByID) return;
+    const fetchData = async () => {
+      onSetLoading(true);
+      try {
         const res = await meds.onGetByID(id);
         setData(res);
-        setForm(res);
-      })();
-    }
-  }, [id]);
-
-  const handleChange = (key: string, value: any) => {
-    setForm((prev: any) => ({ ...prev, [key]: value }));
-  };
+      } catch (error) {
+        console.error(error);
+      } finally {
+        onSetLoading(false);
+      }
+    };
+    fetchData();
+  }, [id, meds]);
 
   if (!data)
     return (
@@ -45,86 +48,63 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
   const provider = data.providerProfileVo;
 
   return (
-    <div className="max-w-6xl mx-auto bg-white p-10 mt-10 rounded-2xl shadow-lg border border-gray-100 space-y-10">
-      {/* Header */}
-      <div className="flex justify-between items-center border-b pb-4">
-        <h1 className="text-2xl font-semibold text-gray-800">
-          Scholarship Details
-        </h1>
-      </div>
+    <div className="w-[95%] mx-auto bg-white p-8 mt-10 rounded-2xl shadow-md border border-gray-100 space-y-6">
+      <h1 className="text-2xl font-bold text-gray-800 border-b pb-3">
+        Scholarship Details
+      </h1>
 
-      {/* Banner */}
       {banner && (
-        <div className="relative w-full h-80 rounded-2xl overflow-hidden shadow-md">
+        <div className="relative w-full h-80 rounded-2xl overflow-hidden shadow-md mb-6">
           <Image
             width={1200}
             height={400}
             src={banner}
-            alt={form.title}
+            alt={data.title}
             className="object-cover w-full h-full"
           />
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-white">{form.title}</h1>
-            <p className="text-gray-200 text-sm mt-2">{form.shortDescription}</p>
+            <h2 className="text-3xl font-bold text-white">{data.title}</h2>
+            {data.shortDescription && (
+              <p className="text-gray-200 text-sm mt-2">{data.shortDescription}</p>
+            )}
           </div>
         </div>
       )}
 
-      {/* Basic Info */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <FieldView label="Title" value={form.title} />
-        <FieldView label="University" value={form.university} />
-        <FieldView label="Country" value={form.country} />
-        <FieldView label="Study Level" value={form.studyLevel} />
-        <FieldView label="Scholarship Type" value={form.scholarshipType} />
-        <FieldView label="Funding Amount" value={form.fundingAmount} />
-        <FieldView label="Available Slots" value={form.availableSlots} />
-        <FieldView label="Fields" value={form.fields} />
-      </div>
+      <Section title="Basic Information">
+        <InfoRow label="Title" value={data.title} />
+        <InfoRow label="University" value={data.university} />
+        <InfoRow label="Country" value={data.country} />
+        <InfoRow label="Study Level" value={data.studyLevel} />
+        <InfoRow label="Scholarship Type" value={data.scholarshipType} />
+        <InfoRow label="Funding Amount" value={data.fundingAmount} />
+        <InfoRow label="Available Slots" value={data.availableSlots} />
+        <InfoRow label="Fields" value={data.fields} />
+      </Section>
 
-      {/* Description */}
-      <TextAreaSection
-        label="Description"
-        value={form.description}
-        editable={false}
-        onChange={(v) => handleChange('description', v)}
-      />
+      <Section title="Description & Requirements">
+        <InfoRow label="Description" value={data.description} />
+        <InfoRow label="Requirements" value={data.requirements} />
+        <InfoRow label="Benefits" value={data.benefits} />
+      </Section>
 
-      {/* Requirements & Benefits */}
-      <div className="grid md:grid-cols-2 gap-8">
-        <TextAreaSection
-          label="Requirements"
-          value={form.requirements}
-          editable={false}
-          onChange={(v) => handleChange('requirements', v)}
-        />
-        <TextAreaSection
-          label="Benefits"
-          value={form.benefits}
-          editable={false}
-          onChange={(v) => handleChange('benefits', v)}
-        />
-      </div>
-
-      {/* Other Info */}
-      <div className="grid md:grid-cols-2 gap-8">
-        <FieldView label="Language Requirement" value={form.languageRequirement} />
-        <FieldView label="GPA Requirement" value={form.gpaRequirement} />
-        <FieldView
+      <Section title="Other Details">
+        <InfoRow
           label="Start Date"
-          value={new Date(form.startDate).toLocaleDateString()}
+          value={data.startDate ? new Date(data.startDate).toLocaleDateString() : '—'}
         />
-        <FieldView
+        <InfoRow
           label="End Date"
-          value={new Date(form.endDate).toLocaleDateString()}
+          value={data.endDate ? new Date(data.endDate).toLocaleDateString() : '—'}
         />
-      </div>
+        <InfoRow label="Language Requirement" value={data.languageRequirement} />
+        <InfoRow label="GPA Requirement" value={data.gpaRequirement} />
+      </Section>
 
-      {/* Provider Info */}
+      {/* Provider Information */}
       {provider && (
-        <div className="mt-10 border-t pt-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Provider Information</h2>
-          <div className="flex gap-6">
+        <Section title="Provider Information">
+          <div className="flex gap-6 items-center">
             {provider.logoUrl && (
               <Image
                 src={provider.logoUrl}
@@ -134,25 +114,42 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
                 className="rounded-xl border object-contain bg-gray-50 p-2"
               />
             )}
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-gray-800">{provider.organizationName}</h3>
-              <p className="text-gray-600 text-sm">{provider.organizationType}</p>
-              <p className="text-gray-600 text-sm">{provider.addressSummary}</p>
-              <a
-                href={provider.website}
-                target="_blank"
-                className="text-blue-600 hover:underline text-sm"
-              >
-                {provider.website}
-              </a>
+            <div className="space-y-1">
+              {/* Click vào tên để chuyển trang ProviderDetail */}
+              <InfoRow
+                label="Organization Name"
+                value={
+                  <span
+                    className="text-blue-600 hover:underline cursor-pointer"
+                    onClick={() =>
+                      router.push(`/backoffice/user/${provider.id}/Provider`)
+                    }
+                  >
+                    {provider.organizationName}
+                  </span>
+                }
+              />
+              <InfoRow label="Type" value={provider.organizationType} />
+              <InfoRow label="Address" value={provider.addressSummary} />
+              <InfoRow
+                label="Website"
+                value={
+                  <a
+                    href={provider.website}
+                    target="_blank"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {provider.website}
+                  </a>
+                }
+              />
             </div>
           </div>
 
           {/* Provider Contacts */}
-          <div className="mt-6">
-            <h4 className="font-semibold text-gray-700 mb-2">Contacts</h4>
-            <div className="grid md:grid-cols-2 gap-4">
-              {provider.providerContactDtos?.map((c: any) => (
+          {provider.providerContactDtos?.length > 0 && (
+            <div className="mt-4 grid md:grid-cols-2 gap-4">
+              {provider.providerContactDtos.map((c: any) => (
                 <div
                   key={c.id}
                   className="p-4 border rounded-xl bg-gray-50 hover:bg-gray-100 transition"
@@ -173,54 +170,29 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+          )}
+        </Section>
       )}
     </div>
   );
 }
 
-/* --------------------------
-   Helper Components
----------------------------*/
+/* -------------------------- Helper Components --------------------------- */
 
-function FieldView({ label, value }: { label: string; value: any }) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="space-y-1">
-      <p className="text-gray-500 text-sm">{label}</p>
-      <div className="w-full border border-gray-200 bg-gray-50 rounded-lg p-3 text-gray-800">
-        {value ?? ''}
-      </div>
+    <div className="bg-gray-50 rounded-xl p-5 border border-gray-200 space-y-4">
+      <h2 className="text-lg font-semibold mb-2">{title}</h2>
+      <div className="grid grid-cols-2 gap-4">{children}</div>
     </div>
   );
 }
 
-function TextAreaSection({
-  label,
-  value,
-  editable,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  editable: boolean;
-  onChange: (v: string) => void;
-}) {
+function InfoRow({ label, value }: { label: string; value: any }) {
   return (
-    <div>
-      <label className="block text-gray-700 font-medium mb-2">{label}</label>
-      {editable ? (
-        <textarea
-          value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg p-3 focus:ring focus:ring-blue-200 focus:border-blue-400"
-          rows={4}
-        />
-      ) : (
-        <div className="bg-gray-50 border rounded-lg p-4 text-gray-700 leading-relaxed">
-          {value || `No ${label.toLowerCase()} provided.`}
-        </div>
-      )}
+    <div className="flex flex-col">
+      <span className="text-gray-500 text-sm">{label}</span>
+      <span className="text-gray-800 font-medium mt-1">{value ?? '—'}</span>
     </div>
   );
 }

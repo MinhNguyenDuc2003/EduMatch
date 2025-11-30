@@ -18,7 +18,6 @@ const ApplicantScholarship = () => {
         {({ ss }) => {
           const list = (ss?.Joint?.ApplicationItem as any)?.data || [];
 
-          // ✅ Format dữ liệu phù hợp cho UI
           const applications =
             list?.map((item: any) => {
               const scholarship = item.scholarshipVo || {};
@@ -38,7 +37,6 @@ const ApplicantScholarship = () => {
               };
             }) || [];
 
-          // ✅ Thống kê
           const total = applications.length;
           const pending = applications.filter((a: any) => a.status === 'PENDING').length;
           const approved = applications.filter((a: any) => a.status === 'APPROVED').length;

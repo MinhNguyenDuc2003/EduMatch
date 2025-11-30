@@ -28,8 +28,7 @@ const SubscriptionPlanPage = () => {
               price: `${item.price} ${item.currency}`,
               duration: `${item.durationDays} days`,
               target: item.targetType,
-              features:
-                typeof item?.features === 'string' ? item.features.split(',').join(', ') : '—',
+           
             })) || [];
 
           const total = plans.length;
@@ -84,7 +83,6 @@ const SubscriptionPlanPage = () => {
                   'Price',
                   'Duration',
                   'Target Type',
-                  'Features',
                 ]}
                 externalFilterText={filterText}
                 isCreate
