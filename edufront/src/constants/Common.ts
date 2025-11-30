@@ -413,7 +413,7 @@ export const ORGANIZATION_TYPES = [
 export const GENDER_OPTIONS = [
   { value: 'Male', label: 'Male' },
   { value: 'Female', label: 'Female' },
-  { value: 'Other', label: 'Other' },
+  { value: 'Any', label: 'Any' },
 ];
 
 export const MAJOR_CATEGORIES = [
@@ -667,6 +667,7 @@ export const NOTIFICATION_TYPES = {
   SCHOLARSHIP_UPDATED: 'scholarshipUpdated',
   SCHOLARSHIP_NEWS: 'scholarshipNews',
   APPLICATION: 'application',
+  SYSTEM: 'system',
   SCHOLARSHIP_APPLICATION: 'scholarshipApplication',
   APPLICATION_REFERRAL: 'applicationReferral',
 };

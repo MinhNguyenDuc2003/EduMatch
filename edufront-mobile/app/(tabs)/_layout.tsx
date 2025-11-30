@@ -4,7 +4,7 @@ import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
 export default function RootLayout() {
   return (
     <>
-      <NativeTabs>
+      <NativeTabs >
         <NativeTabs.Trigger name="home">
           <Label>Home</Label>
           <Icon
@@ -19,6 +19,14 @@ export default function RootLayout() {
             drawable="profile_drawable"
           />
         </NativeTabs.Trigger>
+        <NativeTabs.Trigger name="scholarship">
+          <Label>Scholarship</Label>
+          <Icon
+            sf={{ default: "person", selected: "person" }}
+            drawable="profile_drawable"
+          />
+        </NativeTabs.Trigger>
+       
       </NativeTabs>
       <PortalHost />
     </>

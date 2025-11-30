@@ -28,6 +28,7 @@
     "application": "Trạng thái của hồ sơ của bạn đã được cập nhật",
     "scholarshipApplication": "Đã có hồ sơ đăng ký học bổng của bạn",
     "applicationReferral": "Bạn có nhận được đề xuất học bổng mới",
+    "system": "THÔNG BÁO HỆ THỐNG !!!!!",
     "noNotifications": "Không có thông báo nào",
     "viewAllNotifications": "Xem tất cả thông báo"
   },
@@ -129,6 +130,24 @@
     "availableSlots": "Số lượng học bổng*",
     "languageRequirement": "Yêu cầu ngôn ngữ*",
     "gpaRequirement": "Yêu cầu GPA*",
+    "requiredMajor": "Chuyên ngành yêu cầu*",
+    "genderRequirement": "Giới tính yêu cầu*",
+    "demographicRequirements": "Yêu cầu dân số",
+    "minAge": "Tuổi tối thiểu",
+    "maxAge": "Tuổi tối đa",
+    "restrictedNationalities": "Quốc tịch không được phép",
+    "testScoreRequirements": "Yêu cầu điểm thi",
+    "subtitleTestScores": "Nhập điểm thi tối thiểu nếu cần (để trống nếu không áp dụng)",
+    "requiredSatScore": "Điểm SAT tối thiểu",
+    "requiredActScore": "Điểm ACT tối thiểu",
+    "requiredGreScore": "Điểm GRE tối thiểu",
+    "requiredToeflScore": "Điểm TOEFL tối thiểu",
+    "requiredIeltsScore": "Điểm IELTS tối thiểu",
+    "experienceRequirements": "Yêu cầu kinh nghiệm & Thành tích",
+    "requiredWorkExperienceYears": "Kinh nghiệm làm việc (năm)",
+    "requiredPublicationCount": "Số lượng bài báo yêu cầu",
+    "requiredAcademicAwards": "Thành tích học tập yêu cầu",
+    "requiredClassRankPercentile": "Xếp hạng lớp yêu cầu",
     "images": "Hình ảnh*",
     "subtitleImages": "Tải lên hình ảnh liên quan đến chương trình học bổng (ví dụ: ảnh trường học, ảnh sự kiện)",
     "addImages": "Thêm hình ảnh",
@@ -1109,6 +1128,38 @@
           "3": "Chỉ rõ loại sinh viên mà học bổng đó tập trung và đảm bảo xem xét và chỉnh sửa tất cả các tiêu chí lọc để đảm bảo chỉ có những sinh viên đủ điều kiện để nhận học bổng được đưa ra."
         }
       }
+    }
+  },
+  "providerDashboard": {
+    "title": "Bảng điều khiển",
+    "subtitle": "Chào mừng trở lại! Đây là những gì đang xảy ra hôm nay.",
+    "conversionFunnel": {
+      "scholarships": "Học bổng",
+      "totalViews": "Tổng lượt xem",
+      "appliedApplications": "Hồ sơ ứng tuyển",
+      "viewedButNoApply": "Xem nhưng không ứng tuyển"
+    },
+    "decisionStatus": {
+      "applicationDecisions": "Quyết định ứng tuyển",
+      "approved": "Đã duyệt",
+      "rejected": "Từ chối",
+      "pending": "Chờ xét duyệt"
+    },
+    "top5Scholarship": {
+      "top5ByViews": "Top 5 theo lượt xem",
+      "top5ByApplications": "Top 5 theo hồ sơ ứng tuyển"
+    },
+    "recentApplications": {
+      "title": "Hồ sơ ứng tuyển gần đây",
+      "subtitle": "Hồ sơ ứng tuyển gần đây từ người ứng tuyển",
+      "viewAll": "Xem tất cả",
+      "applicant": "Người ứng tuyển",
+      "scholarship": "Học bổng",
+      "major": "Chuyên ngành",
+      "gpa": "GPA",
+      "status": "Trạng thái",
+      "noApplicationsYet": "Chưa có hồ sơ nào",
+      "noApplicationsDescription": "Hồ sơ sẽ xuất hiện ở đây khi người ứng tuyển ứng tuyển cho học bổng của bạn"
     }
   },
   "newsPage": {

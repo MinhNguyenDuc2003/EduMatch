@@ -1,86 +1,113 @@
-import React from 'react';
+'use client';
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import CustomChart from 'src/common/components/common/CustomChart';
 import Context from './seg/context';
 
-const Dashboard = () => {
-  const users = [
-    {
-      id: 1,
-      name: 'Nguyễn Đức Minh',
-      role: 'Sinh viên',
-      school: 'ĐH FPT Hà Nội',
-      email: 'minhndse173515@fpt.edu.vn',
-      registeredScholarships: 3,
-      joinDate: '01/12/2024',
-      status: 'Đang hoạt động',
-    },
-    {
-      id: 2,
-      name: 'Đỗ Minh Hiếu',
-      role: 'Quản trị viên',
-      school: 'ĐH FPT Đà Nẵng',
-      email: 'hieudmse173419@fpt.edu.vn',
-      registeredScholarships: 5,
-      joinDate: '05/15/2024',
-      status: 'Đang hoạt động',
-    },
-    {
-      id: 3,
-      name: 'Võ Tấn Tài',
-      role: 'Sinh viên',
-      school: 'ĐH FPT TP.HCM',
-      email: 'taivtse173519@fpt.edu.vn',
-      registeredScholarships: 1,
-      joinDate: '08/10/2024',
-      status: 'Bị khóa',
-    },
-    {
-      id: 4,
-      name: 'Trần Thế Khang',
-      role: 'Nhà tài trợ',
-      school: 'VinUniversity',
-      email: 'khangttse173509@vinuni.edu.vn',
-      registeredScholarships: 8,
-      joinDate: '02/20/2025',
-      status: 'Đang hoạt động',
-    },
-  ];
-
-  const totalUsers = users.length;
-  const activeUsers = users.filter((u) => u.status === 'Đang hoạt động').length;
-  const sponsors = users.filter((u) => u.role === 'Nhà tài trợ').length;
-  const students = users.filter((u) => u.role === 'Sinh viên').length;
+const DashboardPage = () => {
   return (
     <Context.Provider>
       <Context.Consumer>
-        {({ data }) => {
-          console.log('data', data);
-          return (
-            <>
-              <div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6  p-14">
-                  <CustomChart
-                    title="Phân bố người dùng theo vai trò"
-                    type="pie"
-                    data={[
-                      { name: 'Sinh viên', value: students },
-                      { name: 'Nhà tài trợ', value: sponsors },
-                      { name: 'Quản trị viên', value: 1 },
-                    ]}
-                  />
+        {({ ss }) => {
+          const listRevenueByUsertype = (ss.Joint.RevenueByUsertype as any)?.data ?? [];
+          const listRevenueByMonthly = (ss.Joint.RevenueMonthly as any)?.data ?? [];
+          const listRevenueByMonth = (ss.Joint.RevenueByMonth as any)?.data ?? [];
+          const listTopView = (ss.Joint.TopView as any)?.data ?? [];
+          const listTopApply = (ss.Joint.TopApply as any)?.data ?? [];
 
-                  <CustomChart
-                    title="Tình trạng hoạt động"
-                    type="bar"
-                    data={[
-                      { name: 'Đang hoạt động', value: activeUsers },
-                      { name: 'Bị khóa', value: totalUsers - activeUsers },
-                    ]}
-                    color="#10b981"
-                  />
-                </div>
+          const userTypeChartData = listRevenueByUsertype.map((x: any) => ({
+            name: x.userType,
+            value: x.total,
+          }));
+
+          const revenueByMonthChartData = listRevenueByMonth.map((x: any) => ({
+            name: `${x.month}/${x.year}`,
+            value: x.total,
+          }));
+
+          const monthlyRevenueChartData = listRevenueByMonthly.map((x: any) => ({
+            name: `${x.month}/${x.year}`,
+            value: x.total,
+          }));
+
+          // --- Dữ liệu chart top scholarships ---
+          const topScholarships = [...listTopView]
+            .sort((a, b) => b.views - a.views)
+            .slice(0, 5);
+
+          const topScholarshipChartData = topScholarships.map(item => {
+            const applyItem = listTopApply.find((x : any) => x.scholarshipTitle === item.title);
+            return {
+              name: item.title,
+              views: item.views,
+              apply: applyItem?.totalApply ?? 0,
+            };
+          });
+
+          return (
+            <div className="p-10 space-y-6">
+              {/* 2 biểu đồ nhỏ (2 cột) */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <CustomChart
+                  title="Revenue by user type"
+                  type="pie"
+                  data={userTypeChartData}
+                />
+                <CustomChart
+                  title="Revenue for the month"
+                  type="bar"
+                  data={revenueByMonthChartData}
+                  color="#10b981"
+                />
               </div>
-            </>
+
+              {/* Biểu đồ line nhỏ hơn */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <CustomChart
+                  title="Monthly revenue"
+                  type="line"
+                  data={monthlyRevenueChartData}
+                />
+              </div>
+
+              {/* Biểu đồ đường Top Scholarships full width */}
+           {/* Biểu đồ đường Top Scholarships full width */}
+<div className="w-full">
+  <h2 className="text-xl font-semibold mb-4">
+    Top Scholarships: Views vs Apply
+  </h2>
+  <div style={{ width: '100%', minHeight: 400 }}>
+    <ResponsiveContainer width="100%" height={400}>
+      <LineChart
+        data={topScholarshipChartData}
+        margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis 
+          dataKey="name" 
+          tick={{ fontSize: 12 }} 
+          interval={0} 
+          textAnchor="end" 
+        />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey="views" stroke="#3b82f6" activeDot={{ r: 8 }} />
+        <Line type="monotone" dataKey="apply" stroke="#f97316" />
+      </LineChart>
+    </ResponsiveContainer>
+  </div>
+</div>
+
+            </div>
           );
         }}
       </Context.Consumer>
@@ -88,4 +115,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

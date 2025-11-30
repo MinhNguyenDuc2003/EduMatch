@@ -34,12 +34,25 @@ export default GenCtx({
       async onGetData() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.post('/api/scholarship/scholarships/page', {});
+          const data = await apiClientService.get('/api/subscription/subscription/orders/all');
           if (data) {
-            ss.Joint.ScholarshipList = data;
+            ss.setJointData({
+              OrderList: data || [],
+            });
             console.log('first', data);
           }
           return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+       async onGetByID(id: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get(`/api/subscription/subscription/orders/${id}`);
+          return data.data;
         } catch (error) {
           console.error({ error });
         } finally {

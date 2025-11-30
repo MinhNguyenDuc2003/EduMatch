@@ -28,14 +28,19 @@ const AppSidebar = () => {
 
   const navLinks = {
     Admin: [
-      { icon: ChartBar, label: 'Dashboard', href: '/dashboard' },
-      { icon: User, label: 'Users', href: '/user' },
-      { icon: BookOpen, label: 'Scholarship', href: '/scholarship' },
-      { icon: Package, label: 'Application Scholarship', href: '/applicationScholarship' },
-      { icon: Bell, label: 'Payment', href: '/payment' },
-      { icon: Package, label: 'Subcription', href: '/subscription' },
-      { icon: Bell, label: 'Subcription Plan', href: '/subscriptionPlan' },
-      { icon: Bell, label: 'News', href: '/news' },
+      { icon: ChartBar, label: 'Dashboard', href: '/backoffice/dashboard' },
+      { icon: User, label: 'Users', href: '/backoffice/user' },
+      { icon: BookOpen, label: 'Scholarship', href: '/backoffice/scholarship' },
+      {
+        icon: Package,
+        label: 'Application Scholarship',
+        href: '/backoffice/applicationScholarship',
+      },
+      { icon: Bell, label: 'Orders', href: '/backoffice/order' },
+      { icon: Package, label: 'Subcriptions', href: '/backoffice/subscriptions' },
+      { icon: Bell, label: 'Subcription Plan', href: '/backoffice/subscriptionPlan' },
+      { icon: Bell, label: 'News', href: '/backoffice/news' },
+      { icon: Bell, label: 'Report & Feedback', href: '/backoffice/reportFeedback' },
     ],
   };
 
@@ -74,7 +79,7 @@ const AppSidebar = () => {
       <SidebarContent>
         <SidebarMenu className="mt-4 space-y-1 p-3">
           {navLinks.Admin.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = pathname.includes(link.href);
             return (
               <SidebarMenuItem key={link.href}>
                 <SidebarMenuButton

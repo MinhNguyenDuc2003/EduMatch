@@ -1,6 +1,13 @@
 import { IApplicationItem } from 'src/assets/types/ApplicationScholarship';
+import { INews } from 'src/assets/types/News';
+import { IOrderList } from 'src/assets/types/Orders';
+import { IReportList } from 'src/assets/types/Report';
+import { IRevenueByMonth } from 'src/assets/types/RevenueByMonth';
+import { IRevenueByUsertype } from 'src/assets/types/RevenueByUsertype';
+import { IRevenueMonthly } from 'src/assets/types/RevenueMonthly';
 import { ISubcriptionList } from 'src/assets/types/SubcriptionList';
 import { ISubscriptionPlanList } from 'src/assets/types/SubscriptionPlanList';
+import { IUsers } from 'src/assets/types/Users';
 import { StateCreator } from 'zustand';
 
 type State = {
@@ -9,6 +16,15 @@ type State = {
     SubscriptionPlanList?: ISubscriptionPlanList[];
     SubcriptionList?: ISubcriptionList[];
     ApplicationItem?: IApplicationItem[];
+    ReportList?: IReportList[];
+    OrderList?: IOrderList[];
+    RevenueByUsertype?: IRevenueByUsertype[];
+    RevenueByMonth?: IRevenueByMonth[];
+    RevenueMonthly?: IRevenueMonthly[];
+    News?: INews[];
+    Users?: IUsers[];
+    TopApply?: ITopApply[];
+    TopView?: ITopView[];
     formFocusID?: string;
   };
   setJointData(Obj: State['Joint']): void;
