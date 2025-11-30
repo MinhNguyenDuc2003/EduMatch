@@ -56,6 +56,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         boolean hasScholarshipType = criteria.getCriteria().getScholarshipType() != null && !criteria.getCriteria().getScholarshipType().isEmpty();
         boolean hasGpa = criteria.getMinGpa() != null || criteria.getMaxGpa() != null;
         boolean hasUniversity = criteria.getCriteria().getUniversity() != null && !criteria.getCriteria().getUniversity().isEmpty();
+        boolean hasFields = criteria.getCriteria().getFields() != null && !criteria.getCriteria().getFields().isEmpty();
 
         if (hasKeyword) {
             nativeQuery.withQuery(q -> q
@@ -64,6 +65,21 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                                 .match(m -> m
                                         .field(ScholarshipField.TITLE)
                                         .query(criteria.getKeyword())
+                                        .fuzziness(Fuzziness.ONE.asString())
+                                )
+                        );
+                        return b;
+                    })
+            );
+        }
+
+        if (hasFields) {
+            nativeQuery.withQuery(q -> q
+                    .bool(b -> {
+                        b.should(s -> s
+                                .match(m -> m
+                                        .field(ScholarshipField.SCHOLARSHIP_FIELDS)
+                                        .query(criteria.getCriteria().getFields())
                                         .fuzziness(Fuzziness.ONE.asString())
                                 )
                         );
