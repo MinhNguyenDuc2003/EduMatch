@@ -9,22 +9,26 @@ export const applicantProfileSchema = z.object({
     firstName: z.string().min(1, 'First name is required'),
     lastName: z.string().min(1, 'Last name is required'),
     phoneNumber: z.string().optional(),
+    citizenshipStatus: z.string().min(1, 'Citizenship status is required'),
+    hometown: z.string().min(1, 'Hometown is required'),
     religion: z.string().optional(),
-    hometown: z.string().optional(),
-    citizenshipStatus: z.string().optional(),
     ethnicity: z.string().optional(),
     race: z.string().optional(),
     militaryFamilyHistory: z.boolean().optional(),
     disabilities: z.string().optional(),
     medicalConditions: z.string().optional(),
+    careerGoals: z.string().min(1, 'Career goals is required'),
+    researchInterest: z.string().min(1, 'Research interest is required'),
     favoriteActivities: z.string().optional(),
     sportsParticipated: z.string().optional(),
     studentActivities: z.string().optional(),
     organizationsJoined: z.string().optional(),
     researchExperience: z.string().optional(),
-    careerGoals: z.string().optional(),
-    overallGpa: z.coerce.number<number>().min(0).max(4),
-    educationLevel: z.string().optional(),
+    overallGpa: z.coerce
+      .number<number>()
+      .min(0, 'GPA must be at least 0')
+      .max(4, 'GPA must be at most 4'),
+    educationLevel: z.string().min(1, 'Education level is required'),
     satScore: z.coerce
       .number<number>()
       .min(400, 'SAT score must be at least 400')
@@ -50,14 +54,13 @@ export const applicantProfileSchema = z.object({
       .min(260, 'GRE score must be greater than 260')
       .max(340, 'GRE score must be less than 340')
       .optional(),
-    languages: z.string().optional(),
+    languages: z.string().min(1, 'Languages is required'),
     academicAwards: z.string().optional(),
     publicationCount: z.coerce.number<number>().min(0).optional(),
-    researchInterest: z.string().optional(),
     extracurricularActivities: z.string().optional(),
-    preferredScholarshipType: z.string().optional(),
-    preferredCountry: z.string().optional(),
-    preferredUniversity: z.string().optional(),
+    preferredScholarshipType: z.string().min(1, 'Preferred scholarship type is required'),
+    preferredCountry: z.string().min(1, 'Preferred country is required'),
+    preferredUniversity: z.string().min(1, 'Preferred university is required'),
     certificates: z
       .array(
         z.object({
@@ -84,8 +87,7 @@ export const applicantProfileSchema = z.object({
             gpa: z.coerce
               .number<number>()
               .min(0, 'GPA must be greater than 0')
-              .max(4, 'GPA must be less than 4')
-              .optional(),
+              .max(4, 'GPA must be less than 4'),
             classRank: z.string().optional(),
             classSize: z.coerce
               .number<number>()
@@ -98,7 +100,8 @@ export const applicantProfileSchema = z.object({
                 message: 'Start date must be in the past',
               }),
             enrollmentEndDate: z.union([z.string(), z.number()]),
-            graduationYear: z.coerce.number<number>().optional(),
+            // Required: Graduation year
+            graduationYear: z.coerce.number<number>().min(1900).max(2100),
             isDualEnrolled: z.boolean().optional(),
             isTransfer: z.boolean().optional(),
             isReturningStudent: z.boolean().optional(),
@@ -109,7 +112,7 @@ export const applicantProfileSchema = z.object({
             path: ['enrollmentEndDate'],
           })
       )
-      .optional(),
+      .min(1, 'At least one education history is required'),
     applicantPreferences: z
       .array(
         z.object({
@@ -136,7 +139,7 @@ export const applicantProfileSchema = z.object({
             .max(50, 'Years of experience cannot exceed 50 years'),
         })
       )
-      .optional(),
+      .min(1, 'At least one skill is required'),
     intentions: z
       .array(
         z.object({

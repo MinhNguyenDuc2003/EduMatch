@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl';
 import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
 import { useGetProfileQuery } from '@/state/apiApplicant';
-import { transformProfileData } from '@/@screen/(dashboard)/applicant/Profile/utils';
 import ProfileStrengthDialog from './ProfileStrengthDialog';
 
 export default function PremiumBanner() {
@@ -18,7 +17,7 @@ export default function PremiumBanner() {
   const { data: applicantProfile } = useGetProfileQuery(undefined, { skip: !isAuthenticated });
   const { data: scholarships } = useGetRecommendedScholarshipsQuery(
     { topK: 12 },
-    { skip: isUpgraded === false }
+    { skip: isUpgraded === false || !applicantProfile }
   );
 
   useEffect(() => {
@@ -27,10 +26,8 @@ export default function PremiumBanner() {
     }
   }, [subscriptions]);
 
-  const uiData = applicantProfile ? transformProfileData(applicantProfile) : null;
-
   const handleUpdate = () => {
-    if (uiData?.profileStrength && uiData.profileStrength < 70) {
+    if (!applicantProfile) {
       setShowProfileDialog(true);
     } else if (isUpgraded) {
       router.push('/recommended-scholarships');
@@ -147,14 +144,11 @@ export default function PremiumBanner() {
       </div>
 
       {/* Profile Strength Dialog */}
-      {uiData && (
-        <ProfileStrengthDialog
-          open={showProfileDialog}
-          onOpenChange={setShowProfileDialog}
-          profileStrength={uiData.profileStrength}
-          profileId={applicantProfile?.applicantProfile?.id}
-        />
-      )}
+      <ProfileStrengthDialog
+        open={showProfileDialog}
+        onOpenChange={setShowProfileDialog}
+        profileId={applicantProfile?.applicantProfile?.id}
+      />
     </div>
   );
 }

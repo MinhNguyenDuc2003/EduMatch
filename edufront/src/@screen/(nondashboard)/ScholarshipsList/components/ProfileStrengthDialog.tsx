@@ -16,24 +16,20 @@ import { Button } from '@/lib/cus/button';
 interface ProfileStrengthDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  profileStrength: number;
   profileId?: number;
 }
 
 export default function ProfileStrengthDialog({
   open,
   onOpenChange,
-  profileStrength,
   profileId,
 }: ProfileStrengthDialogProps) {
   const router = useRouter();
   const t = useTranslations('scholarshipsList.premiumBanner.profileStrengthDialog');
 
   const handleGoToProfile = () => {
-    if (profileId) {
-      router.push(`/applicant/profile/update`);
-      onOpenChange(false);
-    }
+    router.push('/applicant/profile/update');
+    onOpenChange(false);
   };
 
   return (
@@ -44,44 +40,13 @@ export default function ProfileStrengthDialog({
             <AlertCircle className="w-5 h-5 text-gray-600 flex-shrink-0" />
             <DialogTitle className="text-left flex-1">{t('title')}</DialogTitle>
           </div>
-          <DialogDescription className="text-left mt-2">
-            {t('description', { strength: profileStrength })}
-          </DialogDescription>
+          <DialogDescription className="text-left mt-2">{t('description')}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          {/* Profile Strength Info */}
+          {/* Empathetic Message */}
           <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-            <p className="text-sm font-semibold text-gray-900 mb-2">{t('currentStrength')}</p>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 bg-gray-200 rounded-full h-2.5">
-                <div
-                  className="bg-gray-600 h-2.5 rounded-full transition-all"
-                  style={{ width: `${profileStrength}%` }}
-                />
-              </div>
-              <span className="text-sm font-bold text-gray-900">{profileStrength}%</span>
-            </div>
-            <p className="text-xs text-gray-600 mt-2">{t('strengthRequirement')}</p>
-          </div>
-
-          {/* Optimization Tips */}
-          <div className="space-y-3">
-            <p className="text-sm font-semibold text-gray-900">{t('optimizationTitle')}</p>
-            <div className="space-y-2.5">
-              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <p className="text-sm font-medium text-gray-900">{t('preferredScholarshipType')}</p>
-                <p className="text-xs text-gray-600 mt-0.5">{t('preferredScholarshipTypeDesc')}</p>
-              </div>
-              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <p className="text-sm font-medium text-gray-900">{t('preferredCountry')}</p>
-                <p className="text-xs text-gray-600 mt-0.5">{t('preferredCountryDesc')}</p>
-              </div>
-              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <p className="text-sm font-medium text-gray-900">{t('preferredUniversity')}</p>
-                <p className="text-xs text-gray-600 mt-0.5">{t('preferredUniversityDesc')}</p>
-              </div>
-            </div>
+            <p className="text-sm text-gray-700 leading-relaxed">{t('empatheticMessage')}</p>
           </div>
         </div>
 
