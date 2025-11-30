@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { CustomFormField } from 'src/common/components/common/CustomFormField';
 import Context from '../seg/context';
 
 export default function ScholarshipDetail() {
@@ -20,8 +19,6 @@ export default function ScholarshipDetail() {
 function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
   const [data, setData] = useState<any>(null);
   const [form, setForm] = useState<any>({});
-  // const [isEditing, setIsEditing] = useState(false);
-  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (id && meds?.onGetByID) {
@@ -31,26 +28,11 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
         setForm(res);
       })();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleChange = (key: string, value: any) => {
     setForm((prev: any) => ({ ...prev, [key]: value }));
   };
-
-  // const handleSave = async () => {
-  //   try {
-  //     setLoading(true);
-  //     await meds.onUpdate(id, form);
-  //     setData(form);
-  //     setIsEditing(false);
-  //   } catch (error) {
-  //     console.error('Update failed:', error);
-  //     alert('Failed to update scholarship.');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   if (!data)
     return (
@@ -69,34 +51,6 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
         <h1 className="text-2xl font-semibold text-gray-800">
           Scholarship Details
         </h1>
-
-        {/* {!isEditing ? (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
-          >
-            <Pencil size={18} /> Edit
-          </button>
-        ) : ( */}
-        {/* <div className="flex gap-3">
-            <button
-              onClick={handleSave}
-              disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition"
-            >
-              <Check size={18} /> {loading ? 'Saving...' : 'Save'}
-            </button>
-            <button
-              onClick={() => {
-                setIsEditing(false);
-                setForm(data);
-              }}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg transition"
-            >
-              <X size={18} /> Cancel
-            </button>
-          </div> */}
-        {/* )} */}
       </div>
 
       {/* Banner */}
@@ -118,48 +72,14 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
 
       {/* Basic Info */}
       <div className="grid md:grid-cols-2 gap-6">
-        <CustomFormField label="Title" initialValue={form.title} 
-        // disabled={!isEditing} 
-        isBorder />
-        <CustomFormField
-          label="University"
-          initialValue={form.university}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="Country"
-          initialValue={form.country}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="Study Level"
-          initialValue={form.studyLevel}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="Scholarship Type"
-          initialValue={form.scholarshipType}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="Funding Amount"
-          initialValue={form.fundingAmount}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="Available Slots"
-          initialValue={form.availableSlots}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField label="Fields" initialValue={form.fields} 
-        // disabled={!isEditing} 
-        isBorder />
+        <FieldView label="Title" value={form.title} />
+        <FieldView label="University" value={form.university} />
+        <FieldView label="Country" value={form.country} />
+        <FieldView label="Study Level" value={form.studyLevel} />
+        <FieldView label="Scholarship Type" value={form.scholarshipType} />
+        <FieldView label="Funding Amount" value={form.fundingAmount} />
+        <FieldView label="Available Slots" value={form.availableSlots} />
+        <FieldView label="Fields" value={form.fields} />
       </div>
 
       {/* Description */}
@@ -188,29 +108,15 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
 
       {/* Other Info */}
       <div className="grid md:grid-cols-2 gap-8">
-        <CustomFormField
-          label="Language Requirement"
-          initialValue={form.languageRequirement}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="GPA Requirement"
-          initialValue={form.gpaRequirement}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
+        <FieldView label="Language Requirement" value={form.languageRequirement} />
+        <FieldView label="GPA Requirement" value={form.gpaRequirement} />
+        <FieldView
           label="Start Date"
-          initialValue={new Date(form.startDate).toLocaleDateString()}
-          disabled
-          isBorder
+          value={new Date(form.startDate).toLocaleDateString()}
         />
-        <CustomFormField
+        <FieldView
           label="End Date"
-          initialValue={new Date(form.endDate).toLocaleDateString()}
-          disabled
-          isBorder
+          value={new Date(form.endDate).toLocaleDateString()}
         />
       </div>
 
@@ -274,7 +180,21 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
   );
 }
 
-// Small helper subcomponent
+/* --------------------------
+   Helper Components
+---------------------------*/
+
+function FieldView({ label, value }: { label: string; value: any }) {
+  return (
+    <div className="space-y-1">
+      <p className="text-gray-500 text-sm">{label}</p>
+      <div className="w-full border border-gray-200 bg-gray-50 rounded-lg p-3 text-gray-800">
+        {value ?? ''}
+      </div>
+    </div>
+  );
+}
+
 function TextAreaSection({
   label,
   value,

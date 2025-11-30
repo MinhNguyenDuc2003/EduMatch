@@ -31,12 +31,12 @@ export default GenCtx({
     });
     // const loading = useState(false);
     const meds = {
-      async onGetData() {
+      async onGetDataProvider() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/api/customer/backoffice/customers?pageNo=0`);
+          const data = await apiClientService.get(`/api/profile/providers/all`);
           if (data) {
-            ss.Joint.Users = data;
+            ss.Joint.Provider = data;
             console.log('first', data);
           }
           return;
@@ -46,10 +46,47 @@ export default GenCtx({
           onSetLoading(false);
         }
       },
-       async onGetByID(id: string) {
+      async onGetDataApplicant() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/api/customer/backoffice/customers/profile/${id}`);
+          const data = await apiClientService.get(`/api/profile/applicants/all`);
+          if (data) {
+            ss.Joint.Students = data;
+            console.log('first', data);
+          }
+          return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+       async onGetProviderByID(id: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get(`/api/profile/providers/${id}`);
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+       async onGetApplicantByID(id: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get(`/api/profile/applicants/${id}`);
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+       async onUpdateProviderVerifyByID(id: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get(`/api/profile/providers/${id}/verified?verified=true`);
           return data.data;
         } catch (error) {
           console.error({ error });
@@ -61,7 +98,8 @@ export default GenCtx({
 
     
     useEffect(() => {
-      meds.onGetData();
+      meds.onGetDataApplicant();
+      meds.onGetDataProvider();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {

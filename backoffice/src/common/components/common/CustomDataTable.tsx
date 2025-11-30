@@ -75,13 +75,21 @@ const CustomDataTable = ({
     setShowConfirm(true);
   };
 
-  const handleView = (row: any) => {
-    if (onView) return onView(row);
-    if (detailPath && row?.id !== undefined && row?.id !== null) {
-      const id = encodeURIComponent(String(row.id));
-      router.push(`${detailPath.replace(/\/$/, '')}/${id}`);
-    }
-  };
+const handleView = (row: any) => {
+  if (onView) return onView(row);
+  if (detailPath && row?.id !== undefined && row?.id !== null) {
+    const id = encodeURIComponent(String(row.id));
+    const role = row.role ? encodeURIComponent(String(row.role)) : null;
+
+    const url = role
+      ? `${detailPath.replace(/\/$/, '')}/${id}/${role}`
+      : `${detailPath.replace(/\/$/, '')}/${id}`;
+
+    router.push(url);
+  }
+};
+
+
 
   const baseColumns = useMemo(() => {
     if (!data || data.length === 0) return [];

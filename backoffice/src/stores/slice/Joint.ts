@@ -1,13 +1,14 @@
 import { IApplicationItem } from 'src/assets/types/ApplicationScholarship';
 import { INews } from 'src/assets/types/News';
 import { IOrderList } from 'src/assets/types/Orders';
+import { IProviders } from 'src/assets/types/Providers';
 import { IReportList } from 'src/assets/types/Report';
 import { IRevenueByMonth } from 'src/assets/types/RevenueByMonth';
 import { IRevenueByUsertype } from 'src/assets/types/RevenueByUsertype';
 import { IRevenueMonthly } from 'src/assets/types/RevenueMonthly';
+import { IStudents } from 'src/assets/types/Student';
 import { ISubcriptionList } from 'src/assets/types/SubcriptionList';
 import { ISubscriptionPlanList } from 'src/assets/types/SubscriptionPlanList';
-import { IUsers } from 'src/assets/types/Users';
 import { StateCreator } from 'zustand';
 
 type State = {
@@ -22,7 +23,8 @@ type State = {
     RevenueByMonth?: IRevenueByMonth[];
     RevenueMonthly?: IRevenueMonthly[];
     News?: INews[];
-    Users?: IUsers[];
+    Provider?: IProviders[];
+    Students?: IStudents[];
     TopApply?: ITopApply[];
     TopView?: ITopView[];
     formFocusID?: string;
