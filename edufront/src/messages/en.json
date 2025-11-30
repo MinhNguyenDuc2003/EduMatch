@@ -465,7 +465,22 @@
       "description": "Upgrade to premium and let AI automatically find scholarships tailored to your profile",
       "updateNow": "Update Now",
       "foundMatches": "We Found {count} Perfect Matches!",
-      "matchedDescription": "AI has matched you with scholarships tailored to your profile"
+      "matchedDescription": "AI has matched you with scholarships tailored to your profile",
+      "profileStrengthDialog": {
+        "title": "Profile Not Complete Enough",
+        "description": "Your profile is currently only {strength}% complete. To use the scholarship recommendation feature, please complete your profile to at least 70%.",
+        "currentStrength": "Current Completion",
+        "strengthRequirement": "At least 70% required to use scholarship recommendations",
+        "optimizationTitle": "To optimize recommendation results, please update:",
+        "preferredScholarshipType": "Preferred Scholarship Type",
+        "preferredScholarshipTypeDesc": "Select the type of scholarship you're interested in to receive more relevant recommendations",
+        "preferredCountry": "Preferred Country",
+        "preferredCountryDesc": "Choose the country you want to study in to find matching scholarships",
+        "preferredUniversity": "Preferred University",
+        "preferredUniversityDesc": "Enter the name of the university you want to attend to receive more accurate recommendations",
+        "cancel": "Cancel",
+        "updateProfile": "Update Profile"
+      }
     }
   },
   "applicantProfile": {

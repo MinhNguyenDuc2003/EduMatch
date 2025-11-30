@@ -465,7 +465,22 @@
       "description": "Nâng cấp lên Premium để AI tự động tìm các học bổng phù hợp với hồ sơ của bạn",
       "updateNow": "Nâng Cấp Ngay",
       "foundMatches": "Chúng tôi đã tìm thấy {count} học bổng phù hợp!",
-      "matchedDescription": "AI đã ghép nối bạn với các học bổng phù hợp với hồ sơ của bạn"
+      "matchedDescription": "AI đã ghép nối bạn với các học bổng phù hợp với hồ sơ của bạn",
+      "profileStrengthDialog": {
+        "title": "Hồ sơ chưa đủ hoàn thiện",
+        "description": "Hồ sơ của bạn hiện tại chỉ hoàn thiện {strength}%. Để sử dụng tính năng đề xuất học bổng, vui lòng hoàn thiện hồ sơ ít nhất 70%.",
+        "currentStrength": "Độ hoàn thiện hiện tại",
+        "strengthRequirement": "Cần ít nhất 70% để sử dụng tính năng đề xuất học bổng",
+        "optimizationTitle": "Để tối ưu hóa kết quả đề xuất, hãy cập nhật:",
+        "preferredScholarshipType": "Loại học bổng ưa thích",
+        "preferredScholarshipTypeDesc": "Chọn loại học bổng bạn quan tâm để nhận đề xuất phù hợp hơn",
+        "preferredCountry": "Quốc gia ưa thích",
+        "preferredCountryDesc": "Chọn quốc gia bạn muốn du học để tìm học bổng phù hợp",
+        "preferredUniversity": "Trường đại học ưa thích",
+        "preferredUniversityDesc": "Nhập tên trường đại học bạn muốn theo học để nhận đề xuất chính xác hơn",
+        "cancel": "Hủy",
+        "updateProfile": "Cập nhật hồ sơ"
+      }
     }
   },
   "applicantProfile": {

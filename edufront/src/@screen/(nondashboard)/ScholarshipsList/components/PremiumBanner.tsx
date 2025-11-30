@@ -5,13 +5,21 @@ import { Zap } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
+import { useGetProfileQuery } from '@/state/apiApplicant';
+import { transformProfileData } from '@/@screen/(dashboard)/applicant/Profile/utils';
+import ProfileStrengthDialog from './ProfileStrengthDialog';
 
 export default function PremiumBanner() {
   const router = useRouter();
   const [isUpgraded, setIsUpgraded] = useState(false);
+  const [showProfileDialog, setShowProfileDialog] = useState(false);
   const t = useTranslations('scholarshipsList.premiumBanner');
-  const { subscriptions } = useAuth();
-  const { data: scholarships } = useGetRecommendedScholarshipsQuery({ topK: 10 });
+  const { isAuthenticated, subscriptions } = useAuth();
+  const { data: applicantProfile } = useGetProfileQuery(undefined, { skip: !isAuthenticated });
+  const { data: scholarships } = useGetRecommendedScholarshipsQuery(
+    { topK: 12 },
+    { skip: isUpgraded === false }
+  );
 
   useEffect(() => {
     if (subscriptions.some((subscription) => subscription.userType === 'APPLICANT')) {
@@ -19,8 +27,12 @@ export default function PremiumBanner() {
     }
   }, [subscriptions]);
 
+  const uiData = applicantProfile ? transformProfileData(applicantProfile) : null;
+
   const handleUpdate = () => {
-    if (isUpgraded) {
+    if (uiData?.profileStrength && uiData.profileStrength < 70) {
+      setShowProfileDialog(true);
+    } else if (isUpgraded) {
       router.push('/recommended-scholarships');
     } else {
       router.push('/subscriptions?type=APPLICANT');
@@ -133,6 +145,16 @@ export default function PremiumBanner() {
           </>
         )}
       </div>
+
+      {/* Profile Strength Dialog */}
+      {uiData && (
+        <ProfileStrengthDialog
+          open={showProfileDialog}
+          onOpenChange={setShowProfileDialog}
+          profileStrength={uiData.profileStrength}
+          profileId={applicantProfile?.applicantProfile?.id}
+        />
+      )}
     </div>
   );
 }
