@@ -31,4 +31,5 @@ public class NotificationController {
         notificationWebSocketHandler.sendToGlobal(notification);
     }
 
+
 }
