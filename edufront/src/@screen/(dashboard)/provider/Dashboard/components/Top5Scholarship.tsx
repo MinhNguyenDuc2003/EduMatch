@@ -19,7 +19,7 @@ const Top5Scholarship = ({ top5ByView, top5ByApply }: Top5ScholarshipProps) => {
           <ul className="space-y-3">
             {top5ByView.map((scholarship, idx) => (
               <li key={idx} className="flex items-start gap-3 pb-3 border-b last:border-b-0">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-brand text-xs font-bold text-primary-foreground">
                   {idx + 1}
                 </span>
                 <div className="flex-1 min-w-0">
@@ -39,7 +39,7 @@ const Top5Scholarship = ({ top5ByView, top5ByApply }: Top5ScholarshipProps) => {
           <ul className="space-y-3">
             {top5ByApply.map((scholarship, idx) => (
               <li key={idx} className="flex items-start gap-3 pb-3 border-b last:border-b-0">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-brand text-xs font-bold text-primary-foreground">
                   {idx + 1}
                 </span>
                 <div className="flex-1 min-w-0">
