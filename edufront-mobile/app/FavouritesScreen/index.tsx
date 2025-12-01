@@ -1,28 +1,25 @@
 import apiClientService from "@/apiController/ApiClientService";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import {
-  HeartIcon,
-  Calendar,
-  GraduationCap,
-  Globe,
-  DollarSign,
-  BookOpen,
   ArrowLeft,
+  BookOpen,
+  Calendar,
+  DollarSign,
+  Globe,
+  GraduationCap,
+  HeartIcon,
 } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Image,
-  Text,
-  View,
-  ScrollView,
   Animated,
-  TouchableOpacity,
-  Dimensions,
+  Image,
   Modal,
+  ScrollView,
+  Text,
   TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
-const { width, height } = Dimensions.get("window");
 
 const ScholarshipDetail = () => {
   const [dataScholarships, setDataScholarship] = useState<any | null>(null);
@@ -69,11 +66,14 @@ const ScholarshipDetail = () => {
 
   const handleSubmitApplication = async (applicationId: string) => {
     try {
-      const res = await apiClientService.post("/api/scholarship/applications-scholarship", {
-        scholarshipId: id,
-        applicationId: applicationId,
-        status: "Pending"
-      });
+      const res = await apiClientService.post(
+        "/api/scholarship/applications-scholarship",
+        {
+          scholarshipId: id,
+          applicationId: applicationId,
+          status: "Pending",
+        }
+      );
 
       console.log("SUCCESS:", res);
       alert("Application created successfully!");
@@ -235,7 +235,7 @@ const ScholarshipDetail = () => {
       <Image
         source={{ uri: provider.bannerUrl }}
         style={{
-          width: width,
+          width: "100%",
           height: 200,
           borderBottomLeftRadius: 24,
           borderBottomRightRadius: 24,
@@ -391,7 +391,6 @@ const ScholarshipDetail = () => {
         </Text>
       </TouchableOpacity>
 
-      
       <Modal visible={showApplicationModal} animationType="slide" transparent>
         <View
           style={{
@@ -406,7 +405,7 @@ const ScholarshipDetail = () => {
               padding: 20,
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
-              maxHeight: height * 0.7,
+              maxHeight: "70%",
             }}
           >
             <Text
@@ -415,7 +414,7 @@ const ScholarshipDetail = () => {
               My Applications
             </Text>
 
-            <ScrollView style={{ maxHeight: height * 0.5 }}>
+            <ScrollView style={{ maxHeight: "50%" }}>
               {dataApplications.map((item: any) => {
                 const isSelected = selectedApplicationId === item.id;
 
@@ -513,7 +512,6 @@ const ScholarshipDetail = () => {
         </View>
       </Modal>
 
-    
       <Modal visible={showCreateModal} animationType="slide">
         <ScrollView style={{ padding: 20 }}>
           <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 20 }}>

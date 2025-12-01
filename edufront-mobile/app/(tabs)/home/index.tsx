@@ -1,38 +1,24 @@
-import apiClientService from "@/apiController/ApiClientService";
+import { usePageScholarshipsQuery } from "@/state/api";
 import { useRouter } from "expo-router";
 import { HeartIcon } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 const Home = () => {
-  const [data, setData] = useState<any[]>([]);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await apiClientService.post(
-          "/api/scholarship/scholarships/page",
-          {
-            criteria: {
-              country: "",
-              university: "",
-              studyLevel: "",
-              scholarshipType: "",
-            },
-            sortBy: "id",
-            sortDirection: "DESC",
-            page: 0,
-            size: 5,
-          }
-        );
-        setData(response.data.content);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const { data, isLoading } = usePageScholarshipsQuery({
+    criteria: {
+      country: "",
+      studyLevel: "",
+      scholarshipType: "",
+    },
+    sortBy: "id",
+    sortDirection: "DESC",
+    page: 0,
+    size: 9,
+  });
 
-    fetchData();
-  }, []);
+  const scholarships = data?.content ?? [];
 
   const renderItem = ({ item }: { item: any }) => {
     const startDate = new Date(item.startDate).toLocaleDateString();
@@ -81,7 +67,7 @@ const Home = () => {
 
   return (
     <View className="flex-1 bg-gray-100 p-4 ">
-      {data.length === 0 ? (
+      {isLoading ? (
         <Text className="text-center text-gray-500 mt-10">
           Loading scholarships...
         </Text>
@@ -94,7 +80,7 @@ const Home = () => {
             </Text>
           </View>
           <FlatList
-            data={data}
+            data={scholarships}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={false}

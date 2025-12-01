@@ -1,4 +1,41 @@
+import onboarding1 from "@/assets/images/onboarding/1.png";
+import onboarding2 from "@/assets/images/onboarding/2.png";
+import onboarding3 from "@/assets/images/onboarding/3.png";
 import { IProfileForm } from "@/lib/schemas";
+
+export const images = {
+  onboarding1,
+  onboarding2,
+  onboarding3,
+};
+
+// onboarding for the scholarship application
+export const onboarding = [
+  {
+    id: 1,
+    title: "Explore",
+    secondTitle: "Our Community",
+    description:
+      "Explore scholarships from top universities and organizations worldwide",
+    image: images.onboarding1,
+  },
+  {
+    id: 2,
+    title: "Set Your",
+    secondTitle: "Own Goal",
+    description:
+      "Apply for scholarships that match your academic background and career goals",
+    image: images.onboarding2,
+  },
+  {
+    id: 3,
+    title: "Complete full",
+    secondTitle: "Course",
+    description:
+      "Track your application status and receive updates on your scholarship progress",
+    image: images.onboarding3,
+  },
+];
 
 export const DEFAULT_PROFILE_FORM_VALUES: IProfileForm = {
   applicantProfile: {

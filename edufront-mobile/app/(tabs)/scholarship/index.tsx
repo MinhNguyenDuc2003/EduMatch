@@ -58,17 +58,19 @@ const ScholarshipPage = () => {
 
         {/* Details */}
         <View className="flex-row justify-between items-center pl-3 pr-3">
-          
-        <View className="flex-row   gap-7 items-center">
-          <Text className="text-sm text-gray-800 font-medium bg-gray-200 p-2 rounded-2xl">{item.fundingAmount}</Text>
-          <Text className="text-sm text-gray-800 font-medium bg-gray-200 p-2 rounded-2xl">{item.country}</Text>
-          {/* <Text className="text-sm text-gray-800 font-medium bg-gray-200 p-2 rounded-2xl">{item.availableSlots}</Text> */}
+          <View className="flex-row   gap-7 items-center">
+            <Text className="text-sm text-gray-800 font-medium bg-gray-200 p-2 rounded-2xl">
+              {item.fundingAmount}
+            </Text>
+            <Text className="text-sm text-gray-800 font-medium bg-gray-200 p-2 rounded-2xl">
+              {item.country}
+            </Text>
+            {/* <Text className="text-sm text-gray-800 font-medium bg-gray-200 p-2 rounded-2xl">{item.availableSlots}</Text> */}
+          </View>
+          <View className="border border-green-500 flex items-center rounded-full p-2 ">
+            <HeartIcon size={16} color={"#22c55e"} />
+          </View>
         </View>
-        <View className="border border-green-500 flex items-center rounded-full p-2 ">
-           <HeartIcon size={16} color={"#22c55e"}/> 
-        </View>
-        </View>
-       
       </View>
     );
   };
@@ -76,21 +78,23 @@ const ScholarshipPage = () => {
   return (
     <View className="flex-1 bg-gray-100 p-4 mb-36">
       {data.length === 0 ? (
-        <Text className="text-center text-gray-500 mt-10">Loading scholarships...</Text>
+        <Text className="text-center text-gray-500 mt-10">
+          Loading scholarships...
+        </Text>
       ) : (
         <View>
           <View className="flex-row justify-start items-center pb-5 gap-5">
-          <ArrowLeft/>
-          <Text className="text-xl font-bold">Việc làm tốt nhấtdd</Text>
+            <ArrowLeft />
+            <Text className="text-xl font-bold">Việc làm tốt nhấtdd</Text>
           </View>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 16 }}
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 16 }}
           />
-      </View>
+        </View>
       )}
     </View>
   );

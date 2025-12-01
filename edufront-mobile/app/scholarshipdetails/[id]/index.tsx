@@ -12,7 +12,6 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
-  Dimensions,
   Image,
   Modal,
   ScrollView,
@@ -21,8 +20,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
-const { width, height } = Dimensions.get("window");
 
 const ScholarshipDetail = () => {
   const [dataScholarships, setDataScholarship] = useState<any | null>(null);
@@ -238,7 +235,7 @@ const ScholarshipDetail = () => {
       <Image
         source={{ uri: provider.bannerUrl }}
         style={{
-          width: width,
+          width: "100%",
           height: 200,
           borderBottomLeftRadius: 24,
           borderBottomRightRadius: 24,
@@ -408,7 +405,7 @@ const ScholarshipDetail = () => {
               padding: 20,
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
-              maxHeight: height * 0.7,
+              maxHeight: "70%",
             }}
           >
             <Text
@@ -417,7 +414,7 @@ const ScholarshipDetail = () => {
               My Applications
             </Text>
 
-            <ScrollView style={{ maxHeight: height * 0.5 }}>
+            <ScrollView style={{ maxHeight: "50%" }}>
               {dataApplications.map((item: any) => {
                 const isSelected = selectedApplicationId === item.id;
 
