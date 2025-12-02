@@ -129,12 +129,18 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
 
           <div>
             <CustomFormField
-              type="multi-input"
+              type="multi-select"
               label="Features"
+              options={[
+                { value: "AI_SCHOLARSHIP_NOTIFICATION", label: "AI Scholarship Notification" },
+                { value: "AI_SCHOLARSHIP_RECOMMENDATION", label: "AI Scholarship Recommendation" },
+                { value: "POST_SCHOLARSHIP", label: "Post Scholarship" },
+                { value: "APPLICATION_FILTERING", label: "Application Filtering" },
+                { value: "AI_PROFILE_RECOMMENDATION", label: "AI Profile Recommendation" },
+              ]}
               name="fields.SubcriptionPlan.features"
               placeholder="Comma-separated, e.g. AI_MATCHING,PROFILE_SCORING"
               isBorder
-
             />
           </div>
         </div>

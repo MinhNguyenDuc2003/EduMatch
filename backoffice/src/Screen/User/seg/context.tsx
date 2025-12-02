@@ -31,63 +31,75 @@ export default GenCtx({
     });
     // const loading = useState(false);
     const meds = {
-      async onGetDataProvider() {
+      async onGetData() {
         onSetLoading(true);
+
         try {
-          const data = await apiClientService.get(`/api/profile/providers/all`);
-          if (data) {
-            ss.Joint.Provider = data;
-            console.log('first', data);
+          const results: any[] = [];
+          let page = 0;
+
+          while (true) {
+            const res = await apiClientService.get(
+              `/api/customer/backoffice/customers?pageNo=${page}`
+            );
+
+            const totalUser = res?.totalUser ?? 0;
+            const customers = res?.customers ?? [];
+
+            console.log(`Page ${page} → totalUser: ${totalUser}`);
+
+            if (customers.length > 0) {
+              results.push(...customers);
+            }
+
+            if (totalUser === 0) {
+              console.log("Stop fetching — totalUser = 0");
+              break;
+            }
+
+            page++;
           }
-          return;
-        } catch (error) {
-          console.error({ error });
+
+          ss.Joint.Users = results;
+          console.log("Total users loaded:", results.length);
+
+          return results;
+
+        } catch (err) {
+          console.error(err);
         } finally {
           onSetLoading(false);
         }
       },
-      async onGetDataApplicant() {
+
+      async onCreate(user: any) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/api/profile/applicants/all`);
-          if (data) {
-            ss.Joint.Students = data;
-            console.log('first', data);
+          const data = await apiClientService.post(`/api/customer/backoffice/customers`, {
+            "username": user.username,
+            "email": user.email,
+            "firstName": user.firstName,
+            "lastName": user.lastName,
+            "password": user.password,
+            "role": user.role[0]
+          });
+          if (data !== null) {
+            alert("User created successfully");
           }
-          return;
+          window.location.reload()
+          return data.data;
+
         } catch (error) {
           console.error({ error });
         } finally {
           onSetLoading(false);
         }
       },
-       async onGetProviderByID(id: string) {
+       async onGetByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/api/profile/providers/${id}`);
-          return data.data;
-        } catch (error) {
-          console.error({ error });
-        } finally {
-          onSetLoading(false);
-        }
-      },
-       async onGetApplicantByID(id: string) {
-        onSetLoading(true);
-        try {
-          const data = await apiClientService.get(`/api/profile/applicants/${id}`);
-          return data.data;
-        } catch (error) {
-          console.error({ error });
-        } finally {
-          onSetLoading(false);
-        }
-      },
-       async onUpdateProviderVerifyByID(id: string) {
-        onSetLoading(true);
-        try {
-          const data = await apiClientService.put(`/api/profile/providers/${id}/verified?verified=true`,{});
-          return data.data;
+          const data = await apiClientService.get(`/api/customer/backoffice/customers/profile/${id}`);
+          return data.data.data;
         } catch (error) {
           console.error({ error });
         } finally {
@@ -96,11 +108,10 @@ export default GenCtx({
       },
     };
 
-    
+
     useEffect(() => {
-      meds.onGetDataApplicant();
-      meds.onGetDataProvider();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      meds.onGetData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {
       ss,

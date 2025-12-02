@@ -12,7 +12,7 @@ export default GenCtx({
   useLogic() {
     type IForm = {
       fields: {
-        SubcriptionPlan: ISubscriptionPlanList;
+        SubscriptionPlan: ISubscriptionPlanList;
       };
       filters: object;
     };
@@ -77,12 +77,18 @@ export default GenCtx({
               price: Number(plan.price),          // chuyển string -> number
               durationDays: Number(plan.durationDays), // chuyển string -> number
               targetType: plan.targetType,
-               features: plan.features,
+              features: featuresString,
             }
           );
           console.log('Created plan:', data.data);
+          if (data !== null) {
+            alert('Create subscriptions successfull')
+            window.location.reload()
+
+          }
           return data.data;
         } catch (error) {
+          alert('Create subscriptions failed')
           console.error({ error });
         } finally {
           onSetLoading(false);
@@ -90,6 +96,7 @@ export default GenCtx({
       },
       async onUpdate(id: string, plan: ISubscriptionPlanList) {
         onSetLoading(true);
+
         try {
           const data = await apiClientService.put(
             `/api/subscription/subscription/subscription/plans`,
@@ -101,17 +108,23 @@ export default GenCtx({
               price: Number(plan.price),
               durationDays: Number(plan.durationDays),
               targetType: plan.targetType,
-              features: plan.features,
+              features: Array.isArray(plan.features) ? plan.features : plan.features?.split(',') || [],
             }
           );
           console.log('Update plan:', data.data);
+          if (data !== null) {
+            alert('Update subscriptions successfull')
+            window.location.reload()
+          }
           return data.data;
         } catch (error) {
+          alert('Update subscriptions failed')
           console.error({ error });
         } finally {
           onSetLoading(false);
         }
       },
+
       async onDelete(id: string) {
         onSetLoading(true);
         try {
@@ -119,8 +132,13 @@ export default GenCtx({
             `/api/subscription/subscription/subscription/plans/${id}`
           );
           console.log('Delete plan:', data.data);
+          if (data !== null) {
+            alert('Delete subscriptions successfull')
+            window.location.reload()
+          }
           return data.data;
         } catch (error) {
+          alert('Delete subscriptions failed')
           console.error({ error });
         } finally {
           onSetLoading(false);

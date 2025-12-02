@@ -122,7 +122,7 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
                   <span
                     className="text-blue-600 hover:underline cursor-pointer"
                     onClick={() =>
-                      router.push(`/backoffice/user/${provider.id}/Provider`)
+                      router.push(`/backoffice/profile/${provider.id}/Provider`)
                     }
                   >
                     {provider.organizationName}

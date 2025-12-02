@@ -3,14 +3,20 @@
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from 'common/services/components/ui/sidebar';
 import {
+  Activity,
+  AlertCircle,
   Bell,
   BookOpen,
-  ChartBar,
+  CreditCard,
+  FileText,
   LayoutDashboard,
   LogOut,
+  MessageCircle,
   Package,
   PanelLeft,
-  User,
+  ShoppingCart,
+  UserCircle,
+  Users
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -21,16 +27,19 @@ const AppSidebar = () => {
 
   const navLinks = {
     Admin: [
-      { icon: ChartBar, label: 'Dashboard', href: '/backoffice/dashboard' },
-      { icon: User, label: 'Users', href: '/backoffice/user' },
+      { icon: Activity, label: 'Dashboard', href: '/backoffice/dashboard' },
+      { icon: Users, label: 'Users', href: '/backoffice/user' },
+      { icon: UserCircle, label: 'Profile', href: '/backoffice/profile' },
       { icon: BookOpen, label: 'Scholarship', href: '/backoffice/scholarship' },
-      { icon: Package, label: 'Application Scholarship', href: '/backoffice/applicationScholarship' },
-      { icon: Bell, label: 'Orders', href: '/backoffice/order' },
-      { icon: Package, label: 'Subcriptions', href: '/backoffice/subscriptions' },
-      { icon: Bell, label: 'Subcription Plan', href: '/backoffice/subscriptionPlan' },
-      { icon: Bell, label: 'News', href: '/backoffice/news' },
+      { icon: FileText, label: 'Application Scholarship', href: '/backoffice/applicationScholarship' },
+      { icon: ShoppingCart, label: 'Orders', href: '/backoffice/order' },
+      { icon: Package, label: 'Subscriptions', href: '/backoffice/subscriptions' },
+      { icon: CreditCard, label: 'Subscription Plan', href: '/backoffice/subscriptionPlan' },
+      { icon: MessageCircle, label: 'News', href: '/backoffice/news' },
       { icon: Bell, label: 'Report & Feedback', href: '/backoffice/reportFeedback' },
-    ],
+      { icon: AlertCircle, label: 'System Notification', href: '/backoffice/systemNotification' },
+    ]
+
   };
 
   return (

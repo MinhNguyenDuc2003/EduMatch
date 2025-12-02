@@ -1,11 +1,11 @@
 'use client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Context from '../seg/context';
 
 export default function OrderDetail() {
   const { id } = useParams();
-
+  
   return (
     <Context.Provider>
       <Context.Consumer>
@@ -17,7 +17,7 @@ export default function OrderDetail() {
 
 function OrderDetailInner({ meds, id }: { meds: any; id: string }) {
   const [data, setData] = useState<any>(null);
-
+  const router = useRouter();
   useEffect(() => {
     if (id && meds?.onGetByID) {
       (async () => {
@@ -43,7 +43,19 @@ function OrderDetailInner({ meds, id }: { meds: any; id: string }) {
 
       <div className="grid grid-cols-2 gap-4">
         <InfoRow label="ID" value={data.id} />
-        <InfoRow label="Order ID" value={data.OrderId} />
+        <InfoRow
+                label="Subscription ID"
+                value={
+                  <span
+                    className="text-blue-600 hover:underline cursor-pointer"
+                    onClick={() =>
+                      router.push(`/backoffice/subscriptions/${data.subscriptionId}`)
+                    }
+                  >
+                    {data.subscriptionId}
+                  </span>
+                }
+              />
         <InfoRow label="User ID" value={data.userId} />
         <InfoRow label="Amount" value={`${data.amount.toFixed(2)} ${data.currency}`} />
         <InfoRow label="Payment Method" value={data.paymentMethod} />
@@ -68,7 +80,7 @@ function InfoRow({
   status,
 }: {
   label: string;
-  value: string | number;
+  value: any;
   status?: boolean;
 }) {
   const statusColor =
@@ -93,3 +105,4 @@ function InfoRow({
     </div>
   );
 }
+

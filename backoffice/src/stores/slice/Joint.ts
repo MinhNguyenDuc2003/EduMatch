@@ -9,6 +9,7 @@ import { IRevenueMonthly } from 'src/assets/types/RevenueMonthly';
 import { IStudents } from 'src/assets/types/Student';
 import { ISubcriptionList } from 'src/assets/types/SubcriptionList';
 import { ISubscriptionPlanList } from 'src/assets/types/SubscriptionPlanList';
+import { ISystemNotification } from 'src/assets/types/SystemNotification';
 import { StateCreator } from 'zustand';
 
 type State = {
@@ -28,6 +29,8 @@ type State = {
     TopApply?: ITopApply[];
     TopView?: ITopView[];
     formFocusID?: string;
+    Users? : IUser[];
+    SystemNotification? : ISystemNotification[];
   };
   setJointData(Obj: State['Joint']): void;
   resetJoint(): void;

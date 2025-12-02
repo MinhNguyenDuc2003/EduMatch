@@ -30,10 +30,22 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
     if (id && meds?.onGetByID) {
       (async () => {
         const res = await meds.onGetByID(id);
+
+        // Chuyển features từ string -> array
+        const featuresArray = res.features
+          ? typeof res.features === 'string'
+            ? res.features.split(',').map((f: string) => f.trim())
+            : res.features
+          : [];
+
         setData(res);
+
         reset({
           fields: {
-            SubcriptionPlan: res,
+            SubcriptionPlan: {
+              ...res,
+              features: featuresArray,
+            },
           },
           filters: {},
         });
@@ -45,9 +57,19 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
   const handleSave = handleSubmit(async (formData) => {
     try {
       setLoading(true);
-      const data = formData.fields.SubcriptionPlan;
-      await meds.onUpdate(id, data);
-      setData(formData);
+      const planData = formData.fields.SubcriptionPlan;
+
+      // Đảm bảo features là array
+      const featuresArray = Array.isArray(planData.features)
+        ? planData.features
+        : planData.features?.split(',').map((f: string) => f.trim()) || [];
+
+      await meds.onUpdate(id, {
+        ...planData,
+        features: featuresArray,
+      });
+
+      setData({ ...planData, features: featuresArray });
       setIsEditing(false);
     } catch (error) {
       console.error(error);
@@ -63,9 +85,6 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
         Loading subscription detail...
       </div>
     );
-
-  // const featureList =
-  //   typeof data?.features === 'string' ? data.features.split(',').map((f: string) => f.trim()) : [];
 
   return (
     <FormProvider {...methods}>
@@ -164,11 +183,18 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
         {/* Features */}
         <div>
           <CustomFormField
-            type="multi-input"
+            type="multi-select"
             label="Features"
             name="fields.SubcriptionPlan.features"
-            placeholder="Comma-separated, e.g. AI_MATCHING,PROFILE_SCORING"
+            options={[
+              { value: "AI_SCHOLARSHIP_NOTIFICATION", label: "AI Scholarship Notification" },
+              { value: "AI_SCHOLARSHIP_RECOMMENDATION", label: "AI Scholarship Recommendation" },
+              { value: "POST_SCHOLARSHIP", label: "Post Scholarship" },
+              { value: "APPLICATION_FILTERING", label: "Application Filtering" },
+              { value: "AI_PROFILE_RECOMMENDATION", label: "AI Profile Recommendation" },
+            ]}
             disabled={!isEditing}
+            placeholder="Select features"
             isBorder
           />
         </div>

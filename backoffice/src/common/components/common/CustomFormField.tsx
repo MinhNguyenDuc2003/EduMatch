@@ -48,17 +48,17 @@ interface FormFieldProps {
   name?: string;
   label: React.ReactNode;
   type?:
-    | 'text'
-    | 'email'
-    | 'textarea'
-    | 'number'
-    | 'date'
-    | 'select'
-    | 'switch'
-    | 'password'
-    | 'file'
-    | 'multi-input'
-    | 'multi-select';
+  | 'text'
+  | 'email'
+  | 'textarea'
+  | 'number'
+  | 'date'
+  | 'select'
+  | 'switch'
+  | 'password'
+  | 'file'
+  | 'multi-input'
+  | 'multi-select';
   placeholder?: string;
   options?: { value: string | number; label: string }[];
   accept?: string;
@@ -140,16 +140,19 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
       case 'multi-select':
         return (
           <StringMultiSelect
-            value={field.value || ''}
-            onChange={field.onChange}
+            value={Array.isArray(field.value) ? field.value.join(',') : field.value || ''}
+            onChange={(val) => {
+              // Convert string back to array for form
+              const arr = val ? val.split(',').map((v) => v.trim()) : [];
+              field.onChange(arr);
+            }}
             options={options || []}
             placeholder={placeholder}
             disabled={disabled}
             className={inputClassName}
             stringFormat={stringFormat}
-            hideClearAllButton
-            hidePlaceholderWhenSelected
           />
+
         );
       case 'switch':
         return (
@@ -230,15 +233,13 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
       rules={rules}
       render={({ field }) => (
         <FormItem
-          className={`${type !== 'switch' && 'rounded-md'} relative ${className} ${
-            inlineLabel ? 'flex items-center gap-3' : ''
-          }`}
+          className={`${type !== 'switch' && 'rounded-md'} relative ${className} ${inlineLabel ? 'flex items-center gap-3' : ''
+            }`}
         >
           {type !== 'switch' && (
             <FormLabel
-              className={`text-customgreys-dirtyGrey text-sm ${labelClassName} ${
-                inlineLabel ? 'mb-0 w-20 flex-shrink-0' : ''
-              }`}
+              className={`text-customgreys-dirtyGrey text-sm ${labelClassName} ${inlineLabel ? 'mb-0 w-20 flex-shrink-0' : ''
+                }`}
             >
               {label}
             </FormLabel>
@@ -267,7 +268,7 @@ interface MultiInputFieldProps {
   control: any;
   placeholder?: string;
   inputClassName?: string;
-  disabled?:any
+  disabled?: any
 }
 
 const MultiInputField: React.FC<MultiInputFieldProps> = ({

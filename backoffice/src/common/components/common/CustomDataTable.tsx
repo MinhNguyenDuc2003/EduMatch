@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import DataTable from 'react-data-table-component';
+import DataTable, { TableColumn } from 'react-data-table-component';
 import * as XLSX from 'xlsx-js-style';
 import CustomConfirm from './CustomConfirm';
 import CustomModal from './CustomModal';
@@ -28,6 +28,8 @@ interface CustomDataTableProps {
   detailPath?: string;
   isCreate?: boolean;
   isEdit?: boolean;
+  isDelete?: boolean;
+  isUser?: boolean;
 }
 
 const CustomDataTable = ({
@@ -42,6 +44,8 @@ const CustomDataTable = ({
   isCreate,
   detailPath,
   isEdit,
+  isDelete,
+  isUser
 }: CustomDataTableProps) => {
   const router = useRouter();
   const [filterText, setFilterText] = useState(externalFilterText);
@@ -75,19 +79,19 @@ const CustomDataTable = ({
     setShowConfirm(true);
   };
 
-const handleView = (row: any) => {
-  if (onView) return onView(row);
-  if (detailPath && row?.id !== undefined && row?.id !== null) {
-    const id = encodeURIComponent(String(row.id));
-    const role = row.role ? encodeURIComponent(String(row.role)) : null;
+  const handleView = (row: any) => {
+    if (onView) return onView(row);
+    if (detailPath && row?.id !== undefined && row?.id !== null) {
+      const id = encodeURIComponent(String(row.id));
+      const role = row.role ? encodeURIComponent(String(row.role)) : null;
 
-    const url = role
-      ? `${detailPath.replace(/\/$/, '')}/${id}/${role}`
-      : `${detailPath.replace(/\/$/, '')}/${id}`;
+      const url = role
+        ? `${detailPath.replace(/\/$/, '')}/${id}/${role}`
+        : `${detailPath.replace(/\/$/, '')}/${id}`;
 
-    router.push(url);
-  }
-};
+      router.push(url);
+    }
+  };
 
 
 
@@ -103,6 +107,8 @@ const handleView = (row: any) => {
         </div>
       ),
     }));
+
+
 
     const actionCol = {
       name: 'Actions',
@@ -143,19 +149,23 @@ const handleView = (row: any) => {
                   <Edit size={16} className="mr-2 text-blue-600" /> Edit
                 </button>
               )}
-              <button
-                onClick={() => handleDelete(row)}
-                className="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-red-50"
-              >
-                <Trash2 size={16} className="mr-2 text-red-600" /> Delete
-              </button>
+              {isDelete && (
+                <button
+                  onClick={() => handleDelete(row)}
+                  className="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-red-50"
+                >
+                  <Trash2 size={16} className="mr-2 text-red-600" /> Delete
+                </button>
+              )}
             </motion.div>
           )}
         </div>
       ),
     };
 
-    return [...dataCols, actionCol];
+
+    return [...dataCols, !isUser ? actionCol : null].filter(Boolean) as TableColumn<any>[];
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, customTitles, openDropdown]);
 
@@ -231,9 +241,8 @@ const handleView = (row: any) => {
         {Object.entries(data).map(([key, value], index) => (
           <div
             key={key}
-            className={`flex justify-between items-center px-4 py-2 ${
-              index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
-            } hover:bg-blue-50 transition-colors duration-150`}
+            className={`flex justify-between items-center px-4 py-2 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+              } hover:bg-blue-50 transition-colors duration-150`}
           >
             <span className="text-sm font-medium text-gray-600 w-1/3">
               {(customTitles as string[])[index] || key.charAt(0).toUpperCase() + key.slice(1)}
