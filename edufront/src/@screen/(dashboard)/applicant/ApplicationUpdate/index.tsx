@@ -24,8 +24,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/lib/cus/dropdown-menu';
+import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 const ApplicationUpdate = ({ applicationId }: { applicationId: string }) => {
+  const t = useTranslations('activity.applicationForm.toast');
   const router = useRouter();
   const { data: application, isLoading: isLoadingApplication } =
     useGetApplicationByIdQuery(applicationId);
@@ -49,7 +52,8 @@ const ApplicationUpdate = ({ applicationId }: { applicationId: string }) => {
     try {
       await updateApplication(data).unwrap();
 
-      router.push('/applicant/applications');
+      router.push('/applicant/activity?tab=application');
+      toast.success(t('applicationUpdated'));
     } catch (error) {
       console.log('Error updating application:', error);
     }

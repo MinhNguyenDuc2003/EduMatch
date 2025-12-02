@@ -32,8 +32,8 @@ export const apiScholarship = createApi({
       providesTags: ['Scholarships'],
     }),
 
-    // search scholarships by University
-    searchScholarshipsByUniversity: build.query<SearchScholarshipsByUniversityResponse[], string>({
+    // Get Universities
+    getUniversity: build.query<SearchScholarshipsByUniversityResponse[], string>({
       query: (keyword) => ({
         url: `${API_ENDPOINTS.SCHOLARSHIPS_SEARCH}/autocomplete/university?keyword=${encodeURIComponent(keyword)}`,
         method: 'GET',
@@ -107,10 +107,28 @@ export const apiScholarship = createApi({
       providesTags: ['Scholarships'],
     }),
 
-    getScholarshipTopView: build.query<Scholarship[], void>({
+    // Top view by month
+    getScholarshipTopViewByMonth: build.query<Scholarship[], void>({
       query: () => ({
-        url: `${API_ENDPOINTS.SCHOLARSHIP}/top-views`,
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/top-views/month`,
         method: 'GET',
+      }),
+      providesTags: ['Scholarships'],
+    }),
+
+    // Analyze scholarship
+    analyzeScholarship: build.query<string, number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/analyze?scholarshipId=${id}`,
+        method: 'GET',
+      }),
+    }),
+
+    getRecommendedScholarships: build.query<Scholarship[], { topK: number }>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/recommendation`,
+        method: 'GET',
+        params: data,
       }),
       providesTags: ['Scholarships'],
     }),
@@ -120,7 +138,7 @@ export const apiScholarship = createApi({
 export const {
   usePageScholarshipsQuery,
   useSearchScholarshipsQuery,
-  useSearchScholarshipsByUniversityQuery,
+  useGetUniversityQuery,
   useGetScholarshipByIdQuery,
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,
@@ -128,5 +146,7 @@ export const {
   useCheckIsTrackedScholarshipQuery,
   useGetScholarshipBySlugQuery,
   useGetScholarshipsByProviderIdQuery,
-  useGetScholarshipTopViewQuery,
+  useGetScholarshipTopViewByMonthQuery,
+  useAnalyzeScholarshipQuery,
+  useGetRecommendedScholarshipsQuery,
 } = apiScholarship;

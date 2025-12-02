@@ -368,6 +368,8 @@
     "backToScholarships": "Back to Scholarships",
     "scholarships": "Scholarships",
     "applyNow": "Apply Now",
+    "upgradeToPremium": "Upgrade to Premium",
+    "analyzeScholarship": "Analyze Scholarship",
     "noDeadline": "No deadline",
     "metadata": {
       "track": "Track",
@@ -395,6 +397,18 @@
       "follow": "Follow",
       "scholarshipLogo": "Scholarship logo",
       "about": "About"
+    },
+    "analysis": {
+      "title": "Scholarship Analysis",
+      "analysisResult": "Analysis Result",
+      "loading": "Analyzing scholarship...",
+      "noData": "No analysis data available",
+      "matchReasons": "Match Reasons",
+      "studentStrengths": "Student Strengths",
+      "improvementAreas": "Areas for Improvement",
+      "applicationTips": "Application Tips",
+      "overallStrategy": "Overall Strategy",
+      "timeline": "Timeline"
     }
   },
   "viewProviderProfile": {
@@ -470,7 +484,14 @@
       "description": "Upgrade to premium and let AI automatically find scholarships tailored to your profile",
       "updateNow": "Update Now",
       "foundMatches": "We Found {count} Perfect Matches!",
-      "matchedDescription": "AI has matched you with scholarships tailored to your profile"
+      "matchedDescription": "AI has matched you with scholarships tailored to your profile",
+      "profileStrengthDialog": {
+        "title": "Profile is not complete",
+        "description": "You need to create a profile and fill in all required information to use the scholarship recommendation feature. Please complete your profile with the required information.",
+        "empatheticMessage": "We understand that creating a profile may take a few minutes, but this will help us better understand you and recommend scholarships that best match your educational goals. A complete profile is an important first step to help you access the best scholarship opportunities.",
+        "cancel": "Cancel",
+        "updateProfile": "Create Profile"
+      }
     }
   },
   "applicantProfile": {
@@ -524,7 +545,26 @@
       "password": "Password",
       "yes": "Yes",
       "no": "No",
-      "addInfo": "Add Info"
+      "addInfo": "Add Info",
+      "educationLevel": "Education Level",
+      "satScore": "SAT Score",
+      "satScorePlaceholder": "Enter SAT score (400-1600)",
+      "actScore": "ACT Score",
+      "actScorePlaceholder": "Enter ACT score (1-36)",
+      "toeflScore": "TOEFL Score",
+      "toeflScorePlaceholder": "Enter TOEFL score (0-120)",
+      "ieltsScore": "IELTS Score",
+      "ieltsScorePlaceholder": "Enter IELTS score (0.0-9.0)",
+      "greScore": "GRE Score",
+      "greScorePlaceholder": "Enter GRE score (260-340)",
+      "languages": "Languages",
+      "academicAwards": "Academic Awards",
+      "publicationCount": "Publication Count",
+      "researchInterest": "Research Interest",
+      "extracurricularActivities": "Extracurricular Activities",
+      "preferredScholarshipType": "Preferred Scholarship Type",
+      "preferredCountry": "Preferred Country",
+      "preferredUniversity": "Preferred University"
     },
     "common": {
       "edit": "Edit",
@@ -547,7 +587,8 @@
       "selectReligion": "Select Religion",
       "selectEthnicity": "Select Ethnicity",
       "selectRace": "Select Race",
-      "selectCitizenshipStatus": "Select Citizenship Status"
+      "selectCitizenshipStatus": "Select Citizenship Status",
+      "selectEducationLevel": "Select Education Level"
     },
     "skillsDialog": {
       "title": "Skills",
@@ -672,7 +713,11 @@
       "researchExperience": "Research Experience",
       "researchExperiencePlaceholder": "e.g., AI Lab, Biology Research",
       "careerGoals": "Career Goals",
-      "careerGoalsPlaceholder": "e.g., Software Engineer, Doctor"
+      "careerGoalsPlaceholder": "e.g., Software Engineer, Doctor",
+      "researchInterest": "Research Interest",
+      "researchInterestPlaceholder": "e.g., Machine Learning, Quantum Computing",
+      "extracurricularActivities": "Extracurricular Activities",
+      "extracurricularActivitiesPlaceholder": "e.g., Volunteer work, Leadership roles"
     },
     "preferencesDialog": {
       "title": "Applicant Preferences",
@@ -697,7 +742,15 @@
       "financialAid": "Financial Aid",
       "diversity": "Diversity",
       "athletics": "Athletics",
-      "other": "Other"
+      "other": "Other",
+      "preferredPreferences": "Preferred Scholarship Preferences",
+      "preferredPreferencesDescription": "Specify your preferred scholarship type, country, and university",
+      "preferredScholarshipType": "Preferred Scholarship Type",
+      "selectPreferredScholarshipType": "Select preferred scholarship type",
+      "preferredCountry": "Preferred Country",
+      "selectPreferredCountry": "Select preferred country",
+      "preferredUniversity": "Preferred University",
+      "preferredUniversityPlaceholder": "e.g., Harvard University, MIT"
     },
     "cards": {
       "historyDetails": "History Details",
@@ -813,16 +866,38 @@
       "dateOfBirth": "Date of Birth:",
       "address": "Address:",
       "nationality": "Nationality:",
+      "age": "Age:",
+      "citizenship": "Citizenship:",
       "educationBackground": "Education Background",
       "school": "School:",
       "educationLevel": "Education Level:",
       "major": "Major:",
       "gpa": "GPA:",
       "graduationYear": "Graduation Year:",
+      "classRank": "Class Rank:",
+      "classSize": "Class Size:",
+      "classRankPercentile": "Class Rank Percentile:",
+      "testScores": "Test Scores",
+      "satScore": "SAT Score:",
+      "actScore": "ACT Score:",
+      "greScore": "GRE Score:",
+      "gmatScore": "GMAT Score:",
+      "toeflScore": "TOEFL Score:",
+      "ieltsScore": "IELTS Score:",
       "skillsAchievements": "Skills & Achievements",
       "skills": "Skills",
       "achievements": "Achievements",
       "extracurricularActivities": "Extracurricular Activities",
+      "languages": "Languages",
+      "careerGoal": "Career Goal",
+      "researchInterest": "Research Interest",
+      "academicAwards": "Academic Awards",
+      "publicationCount": "Publication Count",
+      "workExperienceYears": "Work Experience",
+      "years": "years",
+      "isAthlete": "Athlete",
+      "athleticAchievements": "Athletic Achievements",
+      "yes": "Yes",
       "reason": "Reason",
       "noMotivationProvided": "No motivation provided",
       "goals": "Goals",
@@ -875,6 +950,7 @@
     },
     "applicationForm": {
       "title": "Application Form",
+      "importFromProfile": "Import from profile",
       "guidelines": {
         "title": "To ensure your scholarship application is as strong as possible, please keep these important points in mind before you finalize and submit:",
         "accuracy": "Accuracy and Completeness: Double-check that all the information you've provided is accurate and complete. Incomplete or inaccurate details can lead to delays or disqualification.",
@@ -888,6 +964,7 @@
         "educationalBackground": "Educational Background",
         "skillsAchievements": "Skills & Achievements",
         "motivationPersonalStatement": "Motivation & Personal Statement",
+        "testScores": "Test Scores",
         "images": "Images",
         "additionalInformation": "Additional Information"
       },
@@ -925,7 +1002,44 @@
         "motivation": "Motivation *",
         "motivationPlaceholder": "Explain why you are applying for this scholarship and what motivates you",
         "personalStatement": "Personal Statement *",
-        "personalStatementPlaceholder": "Write a personal statement about yourself, your goals, and how this scholarship will help you achieve them"
+        "personalStatementPlaceholder": "Write a personal statement about yourself, your goals, and how this scholarship will help you achieve them",
+        "age": "Age",
+        "agePlaceholder": "Your age will be calculated automatically",
+        "citizenship": "Citizenship",
+        "citizenshipPlaceholder": "Select citizenship",
+        "classRank": "Class Rank",
+        "classRankPlaceholder": "Enter your class rank (e.g., 1, 2, Top 10%)",
+        "classSize": "Class Size",
+        "classSizePlaceholder": "Enter total class size",
+        "classRankPercentile": "Class Rank Percentile",
+        "classRankPercentilePlaceholder": "Enter percentile (0-100)",
+        "satScore": "SAT Score",
+        "satScorePlaceholder": "Enter SAT score (400-1600)",
+        "actScore": "ACT Score",
+        "actScorePlaceholder": "Enter ACT score (1-36)",
+        "greScore": "GRE Score",
+        "greScorePlaceholder": "Enter GRE score (260-340)",
+        "gmatScore": "GMAT Score",
+        "gmatScorePlaceholder": "Enter GMAT score (200-800)",
+        "toeflScore": "TOEFL Score",
+        "toeflScorePlaceholder": "Enter TOEFL score (0-120)",
+        "ieltsScore": "IELTS Score",
+        "ieltsScorePlaceholder": "Enter IELTS score (0.0-9.0)",
+        "languages": "Languages",
+        "languagesPlaceholder": "List languages you speak and proficiency levels",
+        "careerGoal": "Career Goal",
+        "careerGoalPlaceholder": "Describe your career goals and aspirations",
+        "researchInterest": "Research Interest",
+        "researchInterestPlaceholder": "Describe your research interests and areas of focus",
+        "academicAwards": "Academic Awards",
+        "academicAwardsPlaceholder": "List your academic awards and recognitions",
+        "publicationCount": "Publication Count",
+        "publicationCountPlaceholder": "Enter number of publications",
+        "workExperienceYears": "Work Experience (Years)",
+        "workExperienceYearsPlaceholder": "Enter years of work experience",
+        "isAthlete": "Are you an athlete?",
+        "athleticAchievements": "Athletic Achievements",
+        "athleticAchievementsPlaceholder": "Describe your athletic achievements and sports participation"
       },
       "images": {
         "description": "Upload images related to this application (e.g., university photos, event photos)",
@@ -961,6 +1075,9 @@
         "cancel": "Cancel",
         "complete": "Complete",
         "completing": "Completing..."
+      },
+      "toast": {
+        "applicationUpdated": "Application updated successfully"
       }
     }
   },
@@ -1093,5 +1210,30 @@
     "enterRoleTitle": "Enter role title",
     "enterEmail": "Enter email",
     "enterPhone": "Enter phone"
+  },
+  "newsPage": {
+    "title": "EduMatch News",
+    "topViewed": "Top Viewed Scholarships",
+    "noTopScholarships": "No top viewed scholarships available",
+    "recommended": "Recommended scholarships",
+    "noRecommendedScholarships": "No recommended scholarships available",
+    "noNewsAvailable": "No news available",
+    "noNewsDescription": "There are no news articles at the moment. Check back later for updates and new content.",
+    "premiumBanner": {
+      "badge": "PREMIUM",
+      "title": "Upgrade to Premium to view recommended scholarships",
+      "description": "Get scholarship recommendations tailored to your profile",
+      "upgradeNow": "Upgrade Now"
+    }
+  },
+  "recommendedScholarships": {
+    "heroSection": {
+      "title": "EduMatch Premium",
+      "titleHighlight": "Scholarship Recommendations",
+      "description": "Discover scholarships perfectly matched to your profile. Our AI-powered system analyzes your academic background, interests, and goals to recommend the best opportunities for your educational journey."
+    }
+  },
+  "inputSelect": {
+    "placeholder": "Select an option"
   }
 }

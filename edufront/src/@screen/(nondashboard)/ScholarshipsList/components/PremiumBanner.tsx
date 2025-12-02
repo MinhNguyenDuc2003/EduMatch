@@ -1,17 +1,39 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Zap } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
+import { useAuth } from '@/hooks/useAuth';
+import { useGetProfileQuery } from '@/state/apiApplicant';
+import ProfileStrengthDialog from './ProfileStrengthDialog';
 
 export default function PremiumBanner() {
   const router = useRouter();
   const [isUpgraded, setIsUpgraded] = useState(false);
-  const recommendedCount = 12; // Hardcoded for now
+  const [showProfileDialog, setShowProfileDialog] = useState(false);
   const t = useTranslations('scholarshipsList.premiumBanner');
+  const { isAuthenticated, subscriptions } = useAuth();
+  const { data: applicantProfile } = useGetProfileQuery(undefined, { skip: !isAuthenticated });
+  const { data: scholarships } = useGetRecommendedScholarshipsQuery(
+    { topK: 12 },
+    { skip: isUpgraded === false || !applicantProfile }
+  );
+
+  useEffect(() => {
+    if (subscriptions.some((subscription) => subscription.userType === 'APPLICANT')) {
+      setIsUpgraded(true);
+    }
+  }, [subscriptions]);
 
   const handleUpdate = () => {
-    router.push('/subscriptions?type=APPLICANT');
+    if (!applicantProfile) {
+      setShowProfileDialog(true);
+    } else if (isUpgraded) {
+      router.push('/recommended-scholarships');
+    } else {
+      router.push('/subscriptions?type=APPLICANT');
+    }
   };
 
   return (
@@ -101,18 +123,18 @@ export default function PremiumBanner() {
         ) : (
           <>
             {/* After Upgrade - Mobile */}
-            <div className="md:hidden text-center space-y-3">
+            <div className="md:hidden text-center space-y-3" onClick={handleUpdate}>
               <h3 className="text-white font-bold text-xl">
-                {t('foundMatches', { count: recommendedCount })}
+                {t('foundMatches', { count: scholarships?.length ?? 0 })}
               </h3>
               <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
             </div>
 
             {/* After Upgrade - Desktop */}
-            <div className="hidden md:flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-4" onClick={handleUpdate}>
               <div>
                 <h3 className="text-white font-bold text-xl mb-1">
-                  {t('foundMatches', { count: recommendedCount })}
+                  {t('foundMatches', { count: scholarships?.length ?? 0 })}
                 </h3>
                 <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
               </div>
@@ -120,6 +142,13 @@ export default function PremiumBanner() {
           </>
         )}
       </div>
+
+      {/* Profile Strength Dialog */}
+      <ProfileStrengthDialog
+        open={showProfileDialog}
+        onOpenChange={setShowProfileDialog}
+        profileId={applicantProfile?.applicantProfile?.id}
+      />
     </div>
   );
 }

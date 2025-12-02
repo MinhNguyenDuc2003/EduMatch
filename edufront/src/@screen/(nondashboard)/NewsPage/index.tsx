@@ -1,32 +1,39 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { NewsHeader, NewsCard } from './components';
+import {
+  NewsHeader,
+  NewsCard,
+  TopViewedScholarships,
+  RecommendedScholarships,
+  PremiumBanner,
+} from './components';
 import {
   useGetAllNewsQuery,
   useFollowProviderMutation,
   useUnfollowProviderMutation,
 } from '@/state/apiProvider';
 import {
-  useFollowScholarshipMutation,
-  useGetScholarshipTopViewQuery,
-  useUnfollowScholarshipMutation,
+  useGetRecommendedScholarshipsQuery,
+  useGetScholarshipTopViewByMonthQuery,
 } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
 import Loading from '@/pattern/share/Loading';
-import { Newspaper } from 'lucide-react';
-import CardSmalPic from '@/pattern/share/CardSmalPic';
+import EmptyNews from './components/EmptyNews';
 
 export default function NewsPage() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, subscriptions } = useAuth();
   const { data: newsData, isLoading, refetch } = useGetAllNewsQuery();
   const { data: scholarshipTopView, isLoading: isLoadingScholarshipTopView } =
-    useGetScholarshipTopViewQuery();
+    useGetScholarshipTopViewByMonthQuery();
+  const hasApplicantSubscription = subscriptions.some(
+    (subscription) => subscription.userType === 'APPLICANT'
+  );
+  const { data: recommendedScholarships, isLoading: isLoadingRecommended } =
+    useGetRecommendedScholarshipsQuery({ topK: 12 }, { skip: !hasApplicantSubscription });
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
-  const [followScholarship] = useFollowScholarshipMutation();
-  const [unfollowScholarship] = useUnfollowScholarshipMutation();
 
   const handleViewNews = (newsId: number) => {
     router.push(`/news/${newsId}`);
@@ -65,67 +72,55 @@ export default function NewsPage() {
     }
   };
 
-  const handleToggleTracking = (scholarshipId: number) => {};
-
   if (isLoading) {
     return <Loading />;
   }
 
-  if (!newsData || newsData.length === 0) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-        <NewsHeader />
-        <section className="py-8 px-4 md:px-10 lg:px-40">
-          <div className="max-w-[800px] mx-auto">
-            <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-200 bg-white px-8 py-20 text-center shadow-sm">
-              <div className="mb-6 rounded-full bg-slate-50 p-6">
-                <Newspaper className="h-12 w-12 text-slate-400" />
-              </div>
-              <h2 className="mb-3 text-xl font-bold text-slate-800">No news available</h2>
-              <p className="max-w-md text-sm leading-relaxed text-slate-600">
-                There are no news articles at the moment. Check back later for updates and new
-                content.
-              </p>
-            </div>
-          </div>
-        </section>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 px-4 md:px-10 lg:px-40">
       <NewsHeader />
 
-      <section className="py-8 px-4 md:px-10 lg:px-40">
-        <div className="max-w-[800px] mx-auto">
-          <div className="space-y-4">
-            {newsData.map((news) => (
-              <NewsCard
-                key={news.id}
-                news={news}
-                onViewNews={handleViewNews}
-                onViewProvider={handleViewProvider}
-                onFollowProvider={handleFollowProvider}
+      <section className="py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Left Sidebar - Recommended Scholarships or Premium Banner */}
+          <div className="lg:col-span-1 order-2 lg:order-1">
+            {hasApplicantSubscription ? (
+              <RecommendedScholarships
+                scholarships={recommendedScholarships || []}
+                isLoading={isLoadingRecommended}
                 onViewScholarship={handleViewScholarship}
-                isAuthenticated={isAuthenticated}
               />
-            ))}
+            ) : (
+              <PremiumBanner />
+            )}
           </div>
-          <div>
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">Top Viewed Scholarships</h2>
-            </div>
-            <div>
-              {scholarshipTopView?.map((scholarship) => (
-                <CardSmalPic
-                  key={scholarship.id}
-                  scholarship={scholarship}
-                  onViewDetails={() => handleViewScholarship(scholarship.slug)}
-                  onToggleTracking={() => handleToggleTracking(scholarship.id)}
+
+          {/* Main Content - News */}
+          <div className="space-y-4 lg:col-span-2 order-1 lg:order-2">
+            {!newsData || newsData.length === 0 ? (
+              <EmptyNews />
+            ) : (
+              newsData?.map((news) => (
+                <NewsCard
+                  key={news.id}
+                  news={news}
+                  onViewNews={handleViewNews}
+                  onViewProvider={handleViewProvider}
+                  onFollowProvider={handleFollowProvider}
+                  onViewScholarship={handleViewScholarship}
+                  isAuthenticated={isAuthenticated}
                 />
-              ))}
-            </div>
+              ))
+            )}
+          </div>
+
+          {/* Right Sidebar - Top Viewed Scholarships */}
+          <div className="lg:col-span-1 order-3">
+            <TopViewedScholarships
+              scholarships={scholarshipTopView || []}
+              isLoading={isLoadingScholarshipTopView}
+              onViewScholarship={handleViewScholarship}
+            />
           </div>
         </div>
       </section>
