@@ -353,6 +353,12 @@
       "contactUs": "Contact Us",
       "footer": "No credit card required • Free forever • Cancel anytime"
     },
+    "topViewScholarships": {
+      "badge": "Trending",
+      "title": "Top 5 Most Viewed Scholarships",
+      "description": "Discover the most popular scholarships this month",
+      "viewCountDescription": "View count represents the number of people who have viewed this scholarship"
+    },
     "cardSmalPic": {
       "trackScholarship": "Track scholarship",
       "organizationLogo": "Organization logo"

@@ -353,6 +353,12 @@
       "contactUs": "Liên hệ",
       "footer": "Không cần thẻ tín dụng • Miễn phí vĩnh viễn • Hủy bất cứ lúc nào"
     },
+    "topViewScholarships": {
+      "badge": "Xu hướng",
+      "title": "5 Học Bổng Được Xem Nhiều Nhất",
+      "description": "Khám phá những học bổng được quan tâm nhiều nhất trong tháng này",
+      "viewCountDescription": "Số lượt xem thể hiện số người đã xem học bổng này"
+    },
     "cardSmalPic": {
       "trackScholarship": "Theo dõi học bổng",
       "organizationLogo": "Logo tổ chức"
