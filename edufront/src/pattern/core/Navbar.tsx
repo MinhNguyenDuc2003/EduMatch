@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { Begin, RText } from '@/lib/by/Div';
 import Link from 'next/link';
 import { Button } from '../../lib/cus/button';
@@ -21,9 +22,11 @@ import Notifications from '../share/Notifications';
 import { useAuth } from '@/hooks/useAuth';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslations } from 'next-intl';
+import ReportDialog from '../share/ReportDialog';
 
 const Header = () => {
   const { isAuthenticated, isLoading, isProvider, subscriptions, handleLogout } = useAuth();
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
 
   const t = useTranslations('navbar');
 
@@ -162,6 +165,10 @@ const Header = () => {
                       </DropdownMenuItem>
                     )}
 
+                  <DropdownMenuItem onClick={() => setIsReportDialogOpen(true)}>
+                    {t('dropdown.report')}
+                  </DropdownMenuItem>
+
                   <DropdownMenuItem onClick={handleLogout}>{t('dropdown.logout')}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -169,6 +176,12 @@ const Header = () => {
           )}
         </div>
       </div>
+
+      <ReportDialog
+        open={isReportDialogOpen}
+        onOpenChange={setIsReportDialogOpen}
+        initialType="SYSTEM"
+      />
     </Begin>
   );
 };

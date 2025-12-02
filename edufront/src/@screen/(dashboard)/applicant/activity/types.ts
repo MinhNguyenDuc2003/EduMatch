@@ -1,4 +1,4 @@
-export type ShortlistTab = 'tracking' | 'applied' | 'following' | 'application';
+export type ShortlistTab = 'tracking' | 'applied' | 'following' | 'application' | 'report';
 
 export type TabConfig = {
   key: ShortlistTab;
@@ -36,5 +36,12 @@ export const getTabConfigs = (t: (key: string) => string): TabConfig[] => [
     title: t('activity.tabs.application.title'),
     description: t('activity.tabs.application.description'),
     bgGradient: 'from-green-600 via-lime-600 to-emerald-500',
+  },
+  {
+    key: 'report',
+    label: t('activity.tabs.report.label'),
+    title: t('activity.tabs.report.title'),
+    description: t('activity.tabs.report.description'),
+    bgGradient: 'from-purple-600 via-pink-600 to-red-600',
   },
 ];

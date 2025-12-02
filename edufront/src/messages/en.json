@@ -16,6 +16,7 @@
       "providerDashboard": "Provider Dashboard",
       "subscription": "Extend Subscription",
       "createProvider": "Become a Provider",
+      "report": "Report System",
       "logout": "Logout"
     }
   },
@@ -802,6 +803,11 @@
         "label": "Application",
         "title": "Your Applications",
         "description": "Track all scholarships you have applied to. Monitor application status, review submission details, and follow up on your opportunities."
+      },
+      "report": {
+        "label": "Report",
+        "title": "Your Reports",
+        "description": "Track all reports you have posted. See feedback and report status."
       }
     },
     "emptyState": {
@@ -820,6 +826,10 @@
       "application": {
         "title": "You are not created any applications yet",
         "description": "Once you create an application, it will show up here so you can monitor application status and next steps."
+      },
+      "report": {
+        "title": "No reports yet",
+        "description": "You haven't submitted any reports to the system. When you submit reports, they will appear here so you can track their status and responses."
       }
     },
     "applicationCard": {
@@ -1079,6 +1089,20 @@
       "toast": {
         "applicationUpdated": "Application updated successfully"
       }
+    },
+    "reportCard": {
+      "noTitle": "No title",
+      "category": "Category",
+      "description": "Description",
+      "delete": "Delete"
+    },
+    "reportDetail": {
+      "title": "Report an issue",
+      "categoryDescription": "Category Description",
+      "comment": "Comment",
+      "response": "Response",
+      "noResponse": "No response yet",
+      "delete": "Delete Report"
     }
   },
   "reportDialog": {
@@ -1235,5 +1259,9 @@
   },
   "inputSelect": {
     "placeholder": "Select an option"
+  },
+  "toast": {
+    "reportDeleted": "Report deleted successfully",
+    "reportDeletedFailed": "Report deleted failed"
   }
 }

@@ -16,6 +16,7 @@
       "providerDashboard": "Bảng thống kê của nhà cung cấp",
       "subscription": "Gia hạn tài khoản",
       "createProvider": "Đăng ký nhà cung cấp",
+      "report": "Báo cáo hệ thống",
       "logout": "Đăng xuất"
     }
   },
@@ -802,6 +803,11 @@
         "label": "Đơn ứng tuyển",
         "title": "Đơn ứng tuyển của bạn",
         "description": "Theo dõi tất cả các học bổng bạn đã ứng tuyển. Giám sát trạng thái đơn, xem lại chi tiết nộp đơn và theo dõi các cơ hội của bạn."
+      },
+      "report": {
+        "label": "Báo cáo",
+        "title": "Báo cáo của bạn",
+        "description": "Theo dõi tất cả các báo cáo bạn đã gửi lên hệ thống. Xem phản hồi và trạng thái báo cáo."
       }
     },
     "emptyState": {
@@ -820,6 +826,10 @@
       "application": {
         "title": "Bạn chưa tạo đơn ứng tuyển nào",
         "description": "Khi bạn tạo một đơn ứng tuyển, nó sẽ hiển thị ở đây để bạn có thể theo dõi trạng thái đơn và các bước tiếp theo."
+      },
+      "report": {
+        "title": "Chưa có báo cáo nào",
+        "description": "Bạn chưa gửi báo cáo nào lên hệ thống. Khi bạn gửi báo cáo, chúng sẽ hiển thị ở đây để bạn có thể theo dõi trạng thái và phản hồi."
       }
     },
     "applicationCard": {
@@ -1079,6 +1089,20 @@
       "toast": {
         "applicationUpdated": "Đơn ứng tuyển đã được cập nhật thành công"
       }
+    },
+    "reportCard": {
+      "noTitle": "Không có tiêu đề",
+      "category": "Loại",
+      "description": "Mô tả",
+      "delete": "Xóa"
+    },
+    "reportDetail": {
+      "title": "Báo cáo vấn đề",
+      "categoryDescription": "Mô tả danh mục",
+      "comment": "Bình luận",
+      "response": "Phản hồi",
+      "noResponse": "Chưa có phản hồi",
+      "delete": "Xóa báo cáo"
     }
   },
   "reportDialog": {
@@ -1235,5 +1259,9 @@
   },
   "inputSelect": {
     "placeholder": "Chọn một tùy chọn"
+  },
+  "toast": {
+    "reportDeleted": "Xóa báo cáo thành công",
+    "reportDeletedFailed": "Xóa báo cáo thất bại"
   }
 }

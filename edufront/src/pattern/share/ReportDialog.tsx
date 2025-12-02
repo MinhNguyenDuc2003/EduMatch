@@ -66,13 +66,13 @@ export default function ReportDialog({
           await reportSystem(data).unwrap();
           break;
         case 'PROVIDER':
-          if (id) {
-            await reportProvider({ ...data, providerId: id }).unwrap();
+          if (providerData?.id) {
+            await reportProvider({ ...data, providerId: providerData.id }).unwrap();
           }
           break;
         case 'SCHOLARSHIP':
-          if (id) {
-            await reportScholarship({ ...data, scholarshipId: id }).unwrap();
+          if (scholarshipData?.id) {
+            await reportScholarship({ ...data, scholarshipId: scholarshipData.id }).unwrap();
           }
           break;
         case 'PROFILE':
@@ -85,7 +85,7 @@ export default function ReportDialog({
       onOpenChange(false);
       toast.success(t('submitSuccess'));
     } catch (error) {
-      console.error('Failed to create report:', error);
+      console.log('Failed to create report:', error);
     }
   };
 
