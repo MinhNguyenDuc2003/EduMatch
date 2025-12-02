@@ -26,6 +26,7 @@ const Application = () => {
         const response = await apiClientService.get(
           "/api/scholarship/applications-scholarship/my"
         );
+        console.log(response);
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

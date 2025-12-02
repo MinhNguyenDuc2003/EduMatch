@@ -11,6 +11,7 @@ export const customBaseQuery = async (
     baseUrl: process.env.EXPO_PUBLIC_API_BASE_PATH || "",
     prepareHeaders: async (headers) => {
       const token = process.env.EXPO_PUBLIC_API_TOKEN || "";
+
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -27,6 +28,7 @@ export const customBaseQuery = async (
         errorData?.message ||
         result.error.status.toString() ||
         "An error occurred";
+
       Toast.error(`Error: ${errorMessage}`);
     }
 

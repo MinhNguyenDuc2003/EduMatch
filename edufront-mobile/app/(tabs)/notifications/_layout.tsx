@@ -1,6 +1,7 @@
 import { Stack } from "expo-router";
+import React from "react";
 
-export default function HomeLayout() {
+const _layout = () => {
   return (
     <Stack>
       <Stack.Screen
@@ -11,4 +12,6 @@ export default function HomeLayout() {
       />
     </Stack>
   );
-}
+};
+
+export default _layout;

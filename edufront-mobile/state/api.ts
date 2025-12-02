@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { customBaseQuery } from "./customBaseQuery";
 
 const API_ENDPOINTS = {
-  SCHOLARSHIP: "/api/scholarship/scholarships",
+  SCHOLARSHIP: "api/scholarship/scholarships",
   SCHOLARSHIPS_SEARCH: "/api/search/scholarships",
 } as const;
 
@@ -36,7 +36,18 @@ export const api = createApi({
       }),
       providesTags: ["Scholarships"],
     }),
+
+    getTopViewedScholarships: build.query<Scholarship[], void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/top-views/month`,
+      }),
+      providesTags: ["Scholarships"],
+    }),
   }),
 });
 
-export const { usePageScholarshipsQuery, useSearchScholarshipsQuery } = api;
+export const {
+  usePageScholarshipsQuery,
+  useSearchScholarshipsQuery,
+  useGetTopViewedScholarshipsQuery,
+} = api;

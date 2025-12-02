@@ -1,5 +1,3 @@
-"use client";
-
 import StoreProvider from "@/state/redux";
 import React from "react";
 

@@ -64,6 +64,24 @@ const Notifications = () => {
             console.log('Error parsing private notification:', error);
           }
         });
+
+        client.subscribe('/topic/global', (message: IMessage) => {
+          try {
+            const notification = JSON.parse(message.body);
+            console.log('Global notification:', notification);
+
+            toast.custom((t) => (
+              <div className="flex flex-col items-start rounded-lg gap-1 p-4 border border-primary-brand cursor-pointer bg-primary-light">
+                <p className="font-semibold text-sm text-gray-900">{notification.title}</p>
+                <p className="text-xs text-gray-600 line-clamp-2">{notification.content}</p>
+              </div>
+            ));
+
+            refetch();
+          } catch (error) {
+            console.log('Error parsing private notification:', error);
+          }
+        });
       },
       onDisconnect: () => {
         console.log('WebSocket Disconnected');

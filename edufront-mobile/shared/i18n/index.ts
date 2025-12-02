@@ -1,6 +1,5 @@
 import translationEn from "@/assets/locales/en/translation.json";
 import translationVi from "@/assets/locales/vi/translation.json";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { NativeModules, Platform } from "react-native";
@@ -20,9 +19,11 @@ const getDeviceLanguage = () => {
 };
 
 const initI18n = async () => {
-  const savedLanguage = await AsyncStorage.getItem("language");
+  // const savedLanguage = await AsyncStorage.getItem("language");
   //   const language = savedLanguage || getDeviceLanguage();
-  const language = savedLanguage || "en";
+  // const language = savedLanguage || "en";
+  const language = "en";
+
   i18n.use(initReactI18next).init({
     resources,
     lng: language,

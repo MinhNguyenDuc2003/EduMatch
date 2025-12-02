@@ -1,11 +1,12 @@
+import SearchBar from "@/components/home/SearchBar";
+import TopScholarshipView from "@/components/home/TopScholarshipView";
+import ScholarshipCard from "@/components/ScholarshipCard";
 import { usePageScholarshipsQuery } from "@/state/api";
-import { useRouter } from "expo-router";
-import { HeartIcon } from "lucide-react-native";
 import React from "react";
-import { FlatList, Image, Pressable, Text, View } from "react-native";
-const Home = () => {
-  const router = useRouter();
+import { FlatList, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
+const Home = () => {
   const { data, isLoading } = usePageScholarshipsQuery({
     criteria: {
       country: "",
@@ -15,80 +16,42 @@ const Home = () => {
     sortBy: "id",
     sortDirection: "DESC",
     page: 0,
-    size: 9,
+    size: 5,
   });
 
   const scholarships = data?.content ?? [];
 
-  const renderItem = ({ item }: { item: any }) => {
-    const startDate = new Date(item.startDate).toLocaleDateString();
-    const endDate = new Date(item.endDate).toLocaleDateString();
-
-    return (
-      <Pressable
-        onPress={() => {
-          console.log("Clicked", item.id);
-          router.push(`/scholarshipdetails/${item.id}` as any);
-        }}
-        className="bg-green-50 rounded-2xl shadow-lg pt-4 pb-4 mb-4 cursor-pointer border border-green-500 border-3px"
-      >
-        {/* Header: Logo + Organization */}
-        <View className="flex-row items-center mb-3 pl-3 pr-3">
-          <Image
-            source={{ uri: item.providerProfileVo.logoUrl }}
-            className="w-16 h-16 rounded-sm mr-3"
-          />
-          <View className="flex-1">
-            <Text className="text-lg font-semibold text-gray-800">
-              {item.title}
-            </Text>
-            <Text className="text-sm text-gray-500">{item.university}</Text>
-          </View>
-        </View>
-
-        {/* Details */}
-        <View className="flex-row justify-between items-center pl-3 pr-3">
-          <View className="flex-row   gap-7 items-center">
-            <Text className="text-sm text-gray-800 font-medium bg-gray-200 p-2 rounded-2xl">
-              {item.fundingAmount}
-            </Text>
-            <Text className="text-sm text-gray-800 font-medium bg-gray-200 p-2 rounded-2xl">
-              {item.country}
-            </Text>
-            {/* <Text className="text-sm text-gray-800 font-medium bg-gray-200 p-2 rounded-2xl">{item.availableSlots}</Text> */}
-          </View>
-          <View className="border border-green-500 flex items-center rounded-full p-2 ">
-            <HeartIcon size={16} color={"#22c55e"} />
-          </View>
-        </View>
-      </Pressable>
-    );
-  };
-
   return (
-    <View className="flex-1 bg-gray-100 p-4 ">
-      {isLoading ? (
-        <Text className="text-center text-gray-500 mt-10">
-          Loading scholarships...
-        </Text>
-      ) : (
-        <View>
-          <View className="flex-row justify-between items-center pb-5">
-            <Text className="text-xl font-bold">Việc làm tốt nhất</Text>
-            <Text className="text-md font-normal text-green-500">
-              Xem tất cả
-            </Text>
-          </View>
-          <FlatList
-            data={scholarships}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 16 }}
-          />
-        </View>
-      )}
-    </View>
+    <SafeAreaView className="flex-1 bg-gray-100 px-4">
+      <SearchBar />
+      <View className="flex-1">
+        {isLoading ? (
+          <Text className="text-center text-gray-500 mt-10">
+            Loading scholarships...
+          </Text>
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <TopScholarshipView />
+
+            <FlatList
+              ListHeaderComponent={() => (
+                <View className="flex-row justify-between items-center pb-5">
+                  <Text className="text-xl font-bold">Scholarships</Text>
+                  <Text className="text-md font-normal text-primary-brand">
+                    All scholarships
+                  </Text>
+                </View>
+              )}
+              data={scholarships}
+              renderItem={({ item }) => <ScholarshipCard item={item} />}
+              keyExtractor={(item) => item.id.toString()}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 16 }}
+            />
+          </ScrollView>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
