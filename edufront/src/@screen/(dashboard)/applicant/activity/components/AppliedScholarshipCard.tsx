@@ -8,10 +8,10 @@ type AppliedScholarshipCardProps = {
   onViewScholarship?: (slug: string) => void;
 };
 
-const formatDate = (date?: number) => {
+const formatDate = (date?: number | string) => {
   if (!date) return 'N/A';
   try {
-    const dateObj = new Date(date);
+    const dateObj = new Date(typeof date === 'string' ? date : date > 1e12 ? date : date * 1000);
     return dateObj.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -44,7 +44,8 @@ export default function AppliedScholarshipCard({
   onViewScholarship,
 }: AppliedScholarshipCardProps) {
   const t = useTranslations('activity.appliedScholarshipCard');
-  const { applicationVo, scholarshipVo, status, note, reviewedAt } = appliedScholarship;
+  const { applicationVo, scholarshipVo, status, note, reviewedAt, createdDate } =
+    appliedScholarship;
   const { title, fundingAmount, providerProfileVo, slug } = scholarshipVo;
   const { applicationName } = applicationVo;
   const { organizationName } = providerProfileVo;
@@ -66,9 +67,13 @@ export default function AppliedScholarshipCard({
           </div>
 
           {/* Right side: Manage button (reviewedAt date) */}
-          {reviewedAt && (
+          {reviewedAt ? (
             <div className="px-3 py-1.5 rounded-sm text-sm font-medium  text-gray-700 bg-zinc-100 ">
               {formatDate(reviewedAt)}
+            </div>
+          ) : (
+            <div className="px-3 py-1.5 rounded-sm text-sm font-medium  text-gray-700 bg-zinc-100 ">
+              {formatDate(createdDate)}
             </div>
           )}
         </div>

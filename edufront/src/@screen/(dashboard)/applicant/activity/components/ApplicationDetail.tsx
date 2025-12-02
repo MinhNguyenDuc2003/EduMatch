@@ -32,10 +32,10 @@ const formatDate = (date?: number | string) => {
   }
 };
 
-const formatDateTime = (date?: number) => {
+const formatDateTime = (date?: number | string) => {
   if (!date) return 'N/A';
   try {
-    const dateObj = new Date(date > 1e12 ? date : date * 1000);
+    const dateObj = new Date(typeof date === 'string' ? date : date > 1e12 ? date : date * 1000);
     return dateObj.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -114,6 +114,7 @@ export default function ApplicationDetail({
     note,
     scholarshipVo: scholarship,
     applicationVo,
+    createdDate: appliedAt,
   } = appliedScholarship || {};
   const {
     id: providerId,
@@ -140,7 +141,7 @@ export default function ApplicationDetail({
     schoolName,
     educationLevel,
     major,
-    createdDate,
+    createdDate: applicationCreatedDate,
     applicationMedias,
     age,
     citizenship,
@@ -163,8 +164,8 @@ export default function ApplicationDetail({
     athleticAchievements,
   } = applicationVo || application || {};
 
-  const imageFiles = applicationMedias?.filter((media) => isImageFile(media.contentType));
-  const documentFiles = applicationMedias?.filter((media) => !isImageFile(media.contentType));
+  const imageFiles = applicationMedias?.filter((media) => isImageFile(media.contentType)) || [];
+  const documentFiles = applicationMedias?.filter((media) => !isImageFile(media.contentType)) || [];
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -721,13 +722,25 @@ export default function ApplicationDetail({
                   </div>
                 )}
                 {/* submission date */}
-                {createdDate && (
+                {appliedAt && (
                   <div className="flex items-start gap-4">
                     <div className="w-4 h-4 rounded-full bg-blue-500 border-2 mt-1 border-white"></div>
                     <div className="flex flex-col gap-1">
                       <p className="text-sm font-medium text-blue-500">{t('submissionDate')}</p>
-                      <p className="text-sm text-gray-500">{formatDateTime(createdDate)}</p>
+                      <p className="text-sm text-gray-500">{formatDateTime(appliedAt)}</p>
                       {scholarship && <p className="text-sm text-gray-500">{scholarship.title}</p>}
+                    </div>
+                  </div>
+                )}
+                {/* created date */}
+                {applicationCreatedDate && (
+                  <div className="flex items-start gap-4">
+                    <div className="w-4 h-4 rounded-full bg-gray-500 border-2 mt-1 border-white"></div>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-sm font-medium text-gray-500">{t('createdDate')}</p>
+                      <p className="text-sm text-gray-500">
+                        {formatDateTime(applicationCreatedDate)}
+                      </p>
                     </div>
                   </div>
                 )}

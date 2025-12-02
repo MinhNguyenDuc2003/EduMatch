@@ -63,21 +63,25 @@ export default function ReportDialog({
     try {
       switch (initialType) {
         case 'SYSTEM':
-          await reportSystem(data).unwrap();
+          await reportSystem({ ...data, isRead: false }).unwrap();
           break;
         case 'PROVIDER':
           if (providerData?.id) {
-            await reportProvider({ ...data, providerId: providerData.id }).unwrap();
+            await reportProvider({ ...data, providerId: providerData.id, isRead: false }).unwrap();
           }
           break;
         case 'SCHOLARSHIP':
           if (scholarshipData?.id) {
-            await reportScholarship({ ...data, scholarshipId: scholarshipData.id }).unwrap();
+            await reportScholarship({
+              ...data,
+              scholarshipId: scholarshipData.id,
+              isRead: false,
+            }).unwrap();
           }
           break;
         case 'PROFILE':
           if (id) {
-            await reportProfile({ ...data, profileId: id }).unwrap();
+            await reportProfile({ ...data, profileId: id, isRead: false }).unwrap();
           }
           break;
       }

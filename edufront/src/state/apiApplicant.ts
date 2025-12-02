@@ -149,7 +149,7 @@ export const apiApplicant = createApi({
     }),
 
     // REPORT SYSTEM
-    reportSystem: build.mutation<boolean, FormReport>({
+    reportSystem: build.mutation<boolean, FormReport & { isRead: boolean }>({
       query: (data) => ({
         url: API_ENDPOINTS.REPORT,
         method: 'POST',
@@ -159,7 +159,7 @@ export const apiApplicant = createApi({
     }),
 
     // REPORT PROVIDER
-    reportProvider: build.mutation<boolean, FormReport & { providerId: number }>({
+    reportProvider: build.mutation<boolean, FormReport & { providerId: number; isRead: boolean }>({
       query: (data) => ({
         url: `${API_ENDPOINTS.REPORT}/provider-report`,
         method: 'POST',
@@ -168,7 +168,10 @@ export const apiApplicant = createApi({
       invalidatesTags: ['Report'],
     }),
     // REPORT SCHOLARSHIP
-    reportScholarship: build.mutation<boolean, FormReport & { scholarshipId: number }>({
+    reportScholarship: build.mutation<
+      boolean,
+      FormReport & { scholarshipId: number; isRead: boolean }
+    >({
       query: (data) => ({
         url: `${API_ENDPOINTS.REPORT}/scholarship-report`,
         method: 'POST',
@@ -177,7 +180,7 @@ export const apiApplicant = createApi({
       invalidatesTags: ['Report'],
     }),
     // REPORT PROFILE
-    reportProfile: build.mutation<boolean, FormReport & { profileId: number }>({
+    reportProfile: build.mutation<boolean, FormReport & { profileId: number; isRead: boolean }>({
       query: (data) => ({
         url: `${API_ENDPOINTS.REPORT}/profile-report`,
         method: 'POST',

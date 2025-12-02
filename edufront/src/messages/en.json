@@ -927,7 +927,8 @@
       "download": "Download",
       "viewFullSize": "View full size",
       "clickToView": "Click to view",
-      "submissionDate": "Submission Date"
+      "submissionDate": "Submission Date",
+      "createdDate": "Created Date"
     },
     "submitApplicationDialog": {
       "title": "Submit Scholarship Application",

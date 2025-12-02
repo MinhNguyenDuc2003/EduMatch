@@ -921,6 +921,7 @@
       "note": "Ghi chú:",
       "createNewApplication": "Tạo Đơn Ứng Tuyển Mới",
       "submissionDate": "Ngày nộp đơn",
+      "createdDate": "Ngày tạo đơn",
       "documents": "Tài liệu",
       "noDocumentsProvided": "Chưa cung cấp tài liệu",
       "images": "Hình ảnh",
