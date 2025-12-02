@@ -128,6 +128,9 @@ export default function PremiumBanner() {
                 {t('foundMatches', { count: scholarships?.length ?? 0 })}
               </h3>
               <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
+              <p className="text-white/90 italic text-sm leading-relaxed mb-1">
+                &#40;{t('clickHere')}&#41;
+              </p>
             </div>
 
             {/* After Upgrade - Desktop */}
@@ -136,7 +139,10 @@ export default function PremiumBanner() {
                 <h3 className="text-white font-bold text-xl mb-1">
                   {t('foundMatches', { count: scholarships?.length ?? 0 })}
                 </h3>
-                <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
+                <p className="text-white/90 text-sm mb-1">{t('matchedDescription')}</p>
+                <p className="text-white/90 italic text-sm leading-relaxed">
+                  &#40;{t('clickHere')}&#41;
+                </p>
               </div>
             </div>
           </>

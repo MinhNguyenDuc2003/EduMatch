@@ -10,6 +10,8 @@
     "login": "Đăng nhập / Đăng ký",
     "scholarships": "Học bổng",
     "news": "Tin tức",
+    "day": "ngày",
+    "days": "ngày",
     "dropdown": {
       "profile": "Hồ sơ",
       "myActivity": "Hoạt động của tôi",
@@ -369,7 +371,7 @@
     "backToScholarships": "Quay lại danh sách học bổng",
     "scholarships": "Học bổng",
     "applyNow": "Ứng tuyển ngay",
-    "upgradeToPremium": "Nâng cấp Premium",
+    "upgradeToPremium": "Nâng cấp AI Scholarship",
     "analyzeScholarship": "Phân tích học bổng",
     "noDeadline": "Không có hạn chót",
     "metadata": {
@@ -451,6 +453,7 @@
       "availableFilters": "Bộ lọc có sẵn",
       "studyLevel": "Trình độ học vấn",
       "university": "Trường đại học",
+      "fields": "Lĩnh vực",
       "allLevels": "Tất cả",
       "country": "Quốc gia",
       "allCountries": "Tất cả quốc gia",
@@ -480,9 +483,10 @@
       "noDeadline": "Không có hạn chót"
     },
     "premiumBanner": {
-      "badge": "Premium",
+      "badge": "AI Scholarship",
       "title": "Tự Động Ghép Nối Học Bổng",
-      "description": "Nâng cấp lên Premium để AI tự động tìm các học bổng phù hợp với hồ sơ của bạn",
+      "description": "Nâng cấp lên AI Scholarship để AI tự động tìm các học bổng phù hợp với hồ sơ của bạn",
+      "clickHere": "Nhấp vào đây để xem các học bổng phù hợp với bạn",
       "updateNow": "Nâng Cấp Ngay",
       "foundMatches": "Chúng tôi đã tìm thấy {count} học bổng phù hợp!",
       "matchedDescription": "AI đã ghép nối bạn với các học bổng phù hợp với hồ sơ của bạn",
@@ -1195,15 +1199,15 @@
     "noNewsAvailable": "Không có tin tức",
     "noNewsDescription": "Hiện tại chưa có bài viết tin tức nào. Vui lòng quay lại sau để xem các cập nhật và nội dung mới.",
     "premiumBanner": {
-      "badge": "PREMIUM",
-      "title": "Nâng cấp Premium để xem học bổng đề xuất",
+      "badge": "AI Scholarship",
+      "title": "Nâng cấp AI Scholarship để xem học bổng đề xuất",
       "description": "Nhận các đề xuất học bổng phù hợp với hồ sơ của bạn",
       "upgradeNow": "Nâng cấp ngay"
     }
   },
   "recommendedScholarships": {
     "heroSection": {
-      "title": "EduMatch Premium",
+      "title": "AI Scholarship",
       "titleHighlight": "Gợi ý học bổng cho bạn",
       "description": "Khám phá các học bổng phù hợp nhất với hồ sơ của bạn. Hệ thống AI của chúng tôi phân tích nền tảng học vấn, sở thích và mục tiêu của bạn để đề xuất những cơ hội tốt nhất cho hành trình giáo dục của bạn."
     }

@@ -49,17 +49,19 @@ export default function ActivityManagement() {
   const TAB_CONFIGS = getTabConfigs(t);
 
   const { data: trackedScholarshipsData, isLoading: isLoadingTrackedScholarships } =
-    useGetTrackedScholarshipsQuery();
+    useGetTrackedScholarshipsQuery(undefined, { skip: activeTab !== 'tracking' });
   const { data: followedProvidersData, isLoading: isLoadingFollowedProviders } =
-    useGetFollowedProvidersQuery();
+    useGetFollowedProvidersQuery(undefined, { skip: activeTab !== 'following' });
   const { data: appliedScholarshipsData, isLoading: isLoadingAppliedScholarships } =
-    useGetAppliedApplicationQuery();
+    useGetAppliedApplicationQuery(undefined, { skip: activeTab !== 'applied' });
   const {
     data: applicationsData,
     isLoading: isLoadingApplications,
     refetch: refetchApplications,
-  } = useGetApplicationsQuery();
-  const { data: reportData, isLoading: isLoadingReport } = useGetMyReportQuery();
+  } = useGetApplicationsQuery(undefined, { skip: activeTab !== 'application' });
+  const { data: reportData, isLoading: isLoadingReport } = useGetMyReportQuery(undefined, {
+    skip: activeTab !== 'report',
+  });
   const [deleteReport] = useDeleteReportMutation();
   const [deleteApplication] = useDeleteApplicationMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();

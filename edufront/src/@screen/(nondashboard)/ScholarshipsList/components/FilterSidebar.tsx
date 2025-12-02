@@ -30,7 +30,9 @@ export default function FilterSidebar({
 }: FilterSidebarProps) {
   const t = useTranslations('scholarshipsList.filters');
   const [universitySearch, setUniversitySearch] = useState('');
+  const [fieldsSearch, setFieldsSearch] = useState('');
   const debouncedSearch = useDebounce(universitySearch, 500);
+  const debouncedFieldsSearch = useDebounce(fieldsSearch, 500);
 
   const { data: universities, isLoading: isLoadingUniversities } = useGetUniversityQuery(
     debouncedSearch,
@@ -48,6 +50,11 @@ export default function FilterSidebar({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [universitySearch, universities]);
 
+  useEffect(() => {
+    setFilters({ ...filters, fields: debouncedFieldsSearch, page: 0 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedFieldsSearch]);
+
   const handleFilterChange = (field: keyof FilterState, value: string) => {
     setFilters({
       ...filters,
@@ -63,20 +70,24 @@ export default function FilterSidebar({
       studyLevel: '',
       scholarshipType: '',
       university: '',
+      fields: '',
       minGpa: 0,
       maxGpa: 4,
       page: 0,
       size: 100,
     });
     setUniversitySearch('');
+    setFieldsSearch('');
   };
 
   const activeFiltersCount =
     (filters.keyword ? 1 : 0) +
     (filters.country ? 1 : 0) +
     (filters.studyLevel ? 1 : 0) +
+    (filters.scholarshipType ? 1 : 0) +
     (filters.minGpa > 0 ? 1 : 0) +
-    (filters.maxGpa < 4 ? 1 : 0);
+    (filters.maxGpa < 4 ? 1 : 0) +
+    (filters.fields ? 1 : 0);
 
   const showResults = universitySearch.length >= 2 && !isLoadingUniversities;
   const showLoading = universitySearch.length >= 2 && isLoadingUniversities;
@@ -169,6 +180,18 @@ export default function FilterSidebar({
               {t('noUniversitiesFound') || 'No universities found'}
             </p>
           )}
+        </div>
+
+        {/* Fields Filter */}
+        <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+          <h3 className="text-sm font-semibold text-gray-900">
+            {t('fields')} {filters.fields && '(1)'}
+          </h3>
+          <SearchBar
+            value={fieldsSearch}
+            onChange={(value) => setFieldsSearch(value)}
+            placeholder={t('fields')}
+          />
         </div>
 
         {/* Study Level Filter */}

@@ -10,6 +10,8 @@
     "login": "Sign In / Sign Up",
     "scholarships": "Scholarships",
     "news": "News",
+    "day": "day",
+    "days": "days",
     "dropdown": {
       "profile": "Profile",
       "myActivity": "My Activity",
@@ -369,7 +371,7 @@
     "backToScholarships": "Back to Scholarships",
     "scholarships": "Scholarships",
     "applyNow": "Apply Now",
-    "upgradeToPremium": "Upgrade to Premium",
+    "upgradeToPremium": "Upgrade to AI Scholarship",
     "analyzeScholarship": "Analyze Scholarship",
     "noDeadline": "No deadline",
     "metadata": {
@@ -451,6 +453,7 @@
       "availableFilters": "Available Filters",
       "studyLevel": "Study Level",
       "university": "University",
+      "fields": "Field",
       "allLevels": "All Levels",
       "country": "Country",
       "allCountries": "All Countries",
@@ -480,9 +483,10 @@
       "noDeadline": "No deadline"
     },
     "premiumBanner": {
-      "badge": "Premium",
+      "badge": "AI Scholarship",
       "title": "Auto-Match Scholarships",
-      "description": "Upgrade to premium and let AI automatically find scholarships tailored to your profile",
+      "description": "Upgrade to AI Scholarship and let AI automatically find scholarships tailored to your profile",
+      "clickHere": "Click here to view the scholarships that match your profile",
       "updateNow": "Update Now",
       "foundMatches": "We Found {count} Perfect Matches!",
       "matchedDescription": "AI has matched you with scholarships tailored to your profile",
@@ -1244,15 +1248,15 @@
     "noNewsAvailable": "No news available",
     "noNewsDescription": "There are no news articles at the moment. Check back later for updates and new content.",
     "premiumBanner": {
-      "badge": "PREMIUM",
-      "title": "Upgrade to Premium to view recommended scholarships",
-      "description": "Get scholarship recommendations tailored to your profile",
+      "badge": "AI Scholarship",
+      "title": "Upgrade to AI Scholarship to view recommended scholarships",
+      "description": "Upgrade to AI Scholarship and let AI automatically find scholarships tailored to your profile",
       "upgradeNow": "Upgrade Now"
     }
   },
   "recommendedScholarships": {
     "heroSection": {
-      "title": "EduMatch Premium",
+      "title": "AI Scholarship",
       "titleHighlight": "Scholarship Recommendations",
       "description": "Discover scholarships perfectly matched to your profile. Our AI-powered system analyzes your academic background, interests, and goals to recommend the best opportunities for your educational journey."
     }

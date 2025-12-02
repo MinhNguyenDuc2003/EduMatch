@@ -75,6 +75,7 @@ declare global {
     university?: string;
     studyLevel?: string;
     scholarshipType?: string;
+    fields?: string;
   };
 
   type ScholarshipPageRequest = {
@@ -112,6 +113,7 @@ declare global {
     studyLevel: string;
     scholarshipType: string;
     university: string;
+    fields: string;
     minGpa: number;
     maxGpa: number;
     page: number;
