@@ -63,7 +63,7 @@ export default function TopViewScholarshipCard({
               }
               alt={organizationName || 'Organization'}
               fill
-              className="rounded-full object-cover bg-white"
+              className="rounded-full object-contain bg-white"
             />
           </div>
           <p className="text-xs text-gray-600 line-clamp-1">{organizationName}</p>

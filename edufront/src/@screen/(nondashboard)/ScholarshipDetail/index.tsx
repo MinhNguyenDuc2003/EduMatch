@@ -23,6 +23,7 @@ import ScholarshipAnalysisDialog from './components/ScholarshipAnalysisDialog';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/hooks/useAuth';
 import { useGetApplicationsQuery } from '@/state/apiApplicant';
+import PremiumBanner from './components/PremiumBanner';
 
 export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
@@ -212,6 +213,14 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
                 onToggleFollow={handleToggleFollow}
               />
               {/* Action Button */}
+              <Button
+                value={t('applyNow')}
+                variant="ok"
+                size="lg"
+                full
+                onClick={handleApplyNow}
+                className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
+              />
               {subscriptions.some((subscription) => subscription.userType === 'APPLICANT') ? (
                 <Button
                   value={t('analyzeScholarship')}
@@ -222,23 +231,8 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
                   className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
                 />
               ) : (
-                <Button
-                  value={t('upgradeToPremium')}
-                  variant="ok"
-                  size="lg"
-                  full
-                  onClick={() => router.push('/subscriptions?type=APPLICANT')}
-                  className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
-                />
+                <PremiumBanner />
               )}
-              <Button
-                value={t('applyNow')}
-                variant="ok"
-                size="lg"
-                full
-                onClick={handleApplyNow}
-                className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
-              />
             </div>
           </div>
         </div>

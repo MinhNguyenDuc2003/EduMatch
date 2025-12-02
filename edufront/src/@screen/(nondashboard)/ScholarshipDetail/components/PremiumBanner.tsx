@@ -58,10 +58,10 @@ export default function PremiumBanner() {
             </span>
           </div>
           <h3 className="text-white font-bold text-sm leading-tight">
-            {t('title1') || 'Nâng cấp Premium để xem học bổng đề xuất'}
+            {t('title2') || 'Nâng cấp Premium để xem học bổng đề xuất'}
           </h3>
           <p className="text-white/90 text-xs leading-relaxed">
-            {t('description1') || 'Nhận các đề xuất học bổng phù hợp với hồ sơ của bạn'}
+            {t('description2') || 'Nhận các đề xuất học bổng phù hợp với hồ sơ của bạn'}
           </p>
           <button
             onClick={handleUpgrade}
@@ -80,16 +80,16 @@ export default function PremiumBanner() {
             </span>
           </div>
           <div>
-            <h3 className="text-white font-bold text-sm mb-1.5 leading-tight">
-              {t('title1') || 'Nâng cấp Premium để xem học bổng đề xuất'}
+            <h3 className="text-white font-bold text-base mb-1.5 leading-tight">
+              {t('title2') || 'Nâng cấp Premium để xem học bổng đề xuất'}
             </h3>
-            <p className="text-white/90 text-xs leading-relaxed mb-3">
-              {t('description1') || 'Nhận các đề xuất học bổng phù hợp với hồ sơ của bạn'}
+            <p className="text-white/90 text-sm leading-relaxed mb-3">
+              {t('description2') || 'Nhận các đề xuất học bổng phù hợp với hồ sơ của bạn'}
             </p>
           </div>
           <button
             onClick={handleUpgrade}
-            className="flex items-center justify-center gap-1.5 bg-white text-blue-900 font-semibold py-2 px-4 text-xs rounded-lg hover:cursor-pointer hover:bg-gray-100 transition-all duration-200 shadow-lg w-full"
+            className="flex items-center justify-center gap-1.5 bg-white text-blue-900 font-semibold py-2 px-4 text-sm rounded-lg hover:cursor-pointer hover:bg-gray-100 transition-all duration-200 shadow-lg w-full"
           >
             {t('upgradeNow') || 'Nâng cấp ngay'}
           </button>
