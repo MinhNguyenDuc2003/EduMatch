@@ -73,6 +73,7 @@ declare global {
     university?: string;
     studyLevel?: string;
     scholarshipType?: string;
+    fields?: string;
   };
 
   type ScholarshipPageRequest = {
@@ -101,6 +102,10 @@ declare global {
   type ScholarshipSearchResponse = {
     scholarship: Scholarship[];
     aggregations?: ScholarshipSearchAggregations;
+    totalElements: number;
+    totalPages: number;
+    pageSize: number;
+    pageNum: number;
   };
 
   // Search Filters (for UI state management)

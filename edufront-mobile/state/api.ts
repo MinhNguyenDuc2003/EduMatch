@@ -48,6 +48,6 @@ export const api = createApi({
 
 export const {
   usePageScholarshipsQuery,
-  useSearchScholarshipsQuery,
+  useLazySearchScholarshipsQuery,
   useGetTopViewedScholarshipsQuery,
 } = api;

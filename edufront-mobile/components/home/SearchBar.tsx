@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { XIcon } from "lucide-react-native";
 import React, { useState } from "react";
 import { Pressable, TextInput, View } from "react-native";
@@ -21,7 +22,14 @@ const SearchBar = () => {
         className=" border-primary-brand border-2 rounded-lg p-4"
         value={keyword}
         onChangeText={handleSearch}
-        onSubmitEditing={() => console.log("keyword", keyword)}
+        onSubmitEditing={() =>
+          router.push({
+            pathname: "/(routes)/scholarships",
+            params: {
+              keyword: keyword,
+            },
+          })
+        }
       />
       {keyword && (
         <Pressable
