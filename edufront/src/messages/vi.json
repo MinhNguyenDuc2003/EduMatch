@@ -1133,6 +1133,38 @@
       "description": "Khám phá các học bổng phù hợp nhất với hồ sơ của bạn. Hệ thống AI của chúng tôi phân tích nền tảng học vấn, sở thích và mục tiêu của bạn để đề xuất những cơ hội tốt nhất cho hành trình giáo dục của bạn."
     }
   },
+  "providerDashboard": {
+    "title": "Bảng điều khiển",
+    "subtitle": "Chào mừng trở lại! Đây là những gì đang xảy ra hôm nay.",
+    "conversionFunnel": {
+      "scholarships": "Học bổng",
+      "totalViews": "Tổng số lượt xem",
+      "appliedApplications": "Đơn ứng tuyển đã nộp",
+      "viewedButNoApply": "Đã xem nhưng không nộp"
+    },
+    "decisionStatus": {
+      "applicationDecisions": "Quyết định đơn ứng tuyển",
+      "approved": "Đã phê duyệt",
+      "rejected": "Từ chối",
+      "pending": "Chờ xét duyệt"
+    },
+    "top5Scholarship": {
+      "top5ByViews": "Top 5 theo lượt xem",
+      "top5ByApplications": "Top 5 theo đơn ứng tuyển"
+    },
+    "recentApplications": {
+      "title": "Đơn ứng tuyển gần đây",
+      "subtitle": "Đơn ứng tuyển gần đây từ người ứng tuyển",
+      "viewAll": "Xem tất cả",
+      "applicant": "Người ứng tuyển",
+      "scholarship": "Học bổng",
+      "major": "Chuyên ngành",
+      "gpa": "GPA",
+      "status": "Trạng thái",
+      "noApplicationsYet": "Chưa có đơn ứng tuyển nào",
+      "noApplicationsDescription": "Đơn ứng tuyển sẽ xuất hiện ở đây khi người ứng tuyển ứng tuyển cho học bổng của bạn"
+    }
+  },
   "providerProfile": {
     "organizationInformation": "Thông tin tổ chức",
     "organizationName": "Tên tổ chức",
