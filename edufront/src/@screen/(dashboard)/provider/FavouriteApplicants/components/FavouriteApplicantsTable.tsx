@@ -1,18 +1,56 @@
-import { MapPin, Eye, Trash } from 'lucide-react';
+import { MapPin, Eye, Trash, Send } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { Checkbox } from '@/lib/cus/checkbox';
+import { Button } from '@/lib/cus/button';
 
 interface FavouriteApplicantsTableProps {
   applicants: FavouriteApplicant[];
   onViewDetail: (applicant: ApplicantProfile) => void;
   onRemoveFavourite: (favouriteApplicantId: number) => void;
+  onSelectedApplicantsChange?: (userIds: string[]) => void;
 }
 
 export default function FavouriteApplicantsTable({
   applicants,
   onViewDetail,
   onRemoveFavourite,
+  onSelectedApplicantsChange,
 }: FavouriteApplicantsTableProps) {
   const t = useTranslations('provider.favourite');
+  const [selectedApplicants, setSelectedApplicants] = useState<number[]>([]);
+
+  const notifyParent = (newSelectedIds: number[]) => {
+    if (onSelectedApplicantsChange) {
+      const selectedFavouriteApplicants = applicants.filter((a) => newSelectedIds.includes(a.id));
+      const userIds = selectedFavouriteApplicants
+        .map((a) => a.applicantProfileVo?.userId)
+        .filter((id): id is string => !!id);
+      onSelectedApplicantsChange(userIds);
+    }
+  };
+
+  const toggleApplicantSelection = (favouriteApplicantId: number) => {
+    let newSelected: number[];
+    if (selectedApplicants.includes(favouriteApplicantId)) {
+      newSelected = selectedApplicants.filter((id) => id !== favouriteApplicantId);
+    } else {
+      newSelected = [...selectedApplicants, favouriteApplicantId];
+    }
+    setSelectedApplicants(newSelected);
+    notifyParent(newSelected);
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    let newSelected: number[];
+    if (checked) {
+      newSelected = applicants.map((a) => a.id);
+    } else {
+      newSelected = [];
+    }
+    setSelectedApplicants(newSelected);
+    notifyParent(newSelected);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -20,6 +58,12 @@ export default function FavouriteApplicantsTable({
         <table className="w-full">
           <thead className="bg-gray-50 border-b">
             <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-10">
+                <Checkbox
+                  checked={selectedApplicants.length === applicants.length && applicants.length > 0}
+                  onCheckedChange={handleSelectAll}
+                />
+              </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 {t('table.applicant') || 'Applicant'}
               </th>
@@ -47,6 +91,13 @@ export default function FavouriteApplicantsTable({
 
               return (
                 <tr key={applicant.id} className="hover:bg-gray-50 transition-colors">
+                  {/* Checkbox */}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <Checkbox
+                      checked={selectedApplicants.includes(favouriteApplicant.id)}
+                      onCheckedChange={() => toggleApplicantSelection(favouriteApplicant.id)}
+                    />
+                  </td>
                   {/* Applicant Info */}
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
@@ -141,6 +192,18 @@ export default function FavouriteApplicantsTable({
           </tbody>
         </table>
       </div>
+
+      {/* Action buttons when applicants are selected */}
+      {selectedApplicants.length > 0 && (
+        <div className="border-t pt-4 px-6 pb-4 flex flex-col sm:flex-row justify-end gap-2">
+          <Button
+            onClick={() => setSelectedApplicants([])}
+            className="w-full sm:w-auto bg-gray-200 text-gray-900 hover:bg-gray-300 shadow-sm"
+          >
+            {t('clearSelection') || 'Clear Selection'}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

@@ -245,7 +245,17 @@
       "detail": {
         "title": "Applicant Detail",
         "description": "View the details of the applicant."
-      }
+      },
+      "clearSelection": "Clear Selection",
+      "sendReferral": "Send Referral",
+      "selectScholarship": "Select Scholarship",
+      "selectedScholarship": "Selected Scholarship",
+      "cancel": "Cancel",
+      "sending": "Sending...",
+      "selectScholarshipFirst": "Please select a scholarship first",
+      "referralSentSuccess": "Referral sent successfully",
+      "referralSentFailed": "Failed to send referral",
+      "noScholarships": "No scholarships found"
     }
   },
   "action": {

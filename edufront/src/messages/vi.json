@@ -245,7 +245,17 @@
       "detail": {
         "title": "Chi tiết ứng viên",
         "description": "Xem chi tiết của ứng viên."
-      }
+      },
+      "clearSelection": "Xóa lựa chọn",
+      "sendReferral": "Gửi đề xuất",
+      "selectScholarship": "Chọn học bổng",
+      "selectedScholarship": "Học bổng đã chọn",
+      "cancel": "Hủy",
+      "sending": "Đang gửi...",
+      "selectScholarshipFirst": "Vui lòng chọn học bổng trước",
+      "referralSentSuccess": "Gửi đề xuất thành công",
+      "referralSentFailed": "Gửi đề xuất thất bại",
+      "noScholarships": "Không tìm thấy học bổng nào"
     }
   },
   "action": {
