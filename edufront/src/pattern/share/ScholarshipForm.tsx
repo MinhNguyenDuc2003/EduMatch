@@ -1,6 +1,7 @@
-import { SCHOLARSHIP_TYPES, STUDY_LEVELS } from '@/constants/Common';
+import { SCHOLARSHIP_TYPES, STUDY_LEVELS, GENDER_OPTIONS, MAJOR_NAMES } from '@/constants/Common';
 import { COUNTRIES } from '@/constants/Common';
 import { DEFAULT_SCHOLARSHIP_FORM_VALUES } from '@/constants/DefaultValues';
+import { University } from '@/constants/University';
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { Form } from '@/lib/cus/form';
@@ -27,6 +28,10 @@ const ScholarshipForm = ({
   isLoading?: boolean;
 }) => {
   const t = useTranslations('scholarshipForm');
+  const universityOptions = University.map((university) => ({
+    value: university.value,
+    label: university.label,
+  }));
   // Form setup
   const methods = useForm<IScholarship>({
     reValidateMode: 'onSubmit',
@@ -47,7 +52,9 @@ const ScholarshipForm = ({
   const { watch, setValue } = methods;
   const titleValue = watch('title');
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<Array<{ url: string; id?: number }>>([]);
+  const [imagePreviews, setImagePreviews] = useState<
+    Array<{ url: string; id?: number; isNew?: boolean }>
+  >([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load initial images from scholarship
@@ -82,7 +89,7 @@ const ScholarshipForm = ({
     files.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreviews((prev) => [...prev, { url: reader.result as string, type: 'new' }]);
+        setImagePreviews((prev) => [...prev, { url: reader.result as string, isNew: true }]);
       };
       reader.readAsDataURL(file);
     });
@@ -96,11 +103,23 @@ const ScholarshipForm = ({
   const handleRemoveImage = (index: number) => {
     const imageToRemove = imagePreviews[index];
 
-    // If it's a new image, remove from uploadedImages
+    // If it's an existing image (has id), call onDeleteImage
     if (imageToRemove.id) {
       onDeleteImage?.(imageToRemove.id);
+    } else if (imageToRemove.isNew) {
+      // If it's a new image, find and remove the corresponding file from uploadedImages
+      // Count how many new images appear before this index
+      const newImagesBeforeIndex = imagePreviews
+        .slice(0, index)
+        .filter((img) => img.isNew && !img.id).length;
+
+      // Remove the corresponding file from uploadedImages
+      const newUploadedImages = uploadedImages.filter((_, i) => i !== newImagesBeforeIndex);
+      setUploadedImages(newUploadedImages);
+      onImagesChange?.(newUploadedImages);
     }
 
+    // Remove from previews
     setImagePreviews(imagePreviews.filter((_, i) => i !== index));
   };
 
@@ -284,8 +303,10 @@ const ScholarshipForm = ({
               <CustomFormField
                 name="university"
                 label={t('university')}
-                type="text"
-                placeholder="Enter university name"
+                type="select"
+                placeholder="Select university"
+                options={universityOptions}
+                initialValue={scholarship?.country}
                 isBorder={true}
               />
             </div>
@@ -378,7 +399,6 @@ const ScholarshipForm = ({
               />
 
               {/* GPA Requirement */}
-
               <CustomFormField
                 name="gpaRequirement"
                 label={t('gpaRequirement')}
@@ -388,6 +408,165 @@ const ScholarshipForm = ({
                 min={0}
                 max={4}
                 step={0.1}
+              />
+
+              {/* Required Major */}
+              <CustomFormField
+                name="requiredMajor"
+                label={t('requiredMajor')}
+                type="multi-select"
+                placeholder="Select required major"
+                options={MAJOR_NAMES}
+                initialValue={scholarship?.requiredMajor}
+                isBorder={true}
+              />
+
+              {/* Gender Requirement */}
+              <CustomFormField
+                name="genderRequirement"
+                label={t('genderRequirement')}
+                type="select"
+                placeholder="Select gender requirement"
+                options={GENDER_OPTIONS}
+                initialValue={scholarship?.genderRequirement}
+                isBorder={true}
+              />
+            </div>
+          </div>
+
+          {/* Demographic Requirements */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold text-gray-900">{t('demographicRequirements')}</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Min Age */}
+              <CustomFormField
+                name="minAge"
+                label={t('minAge')}
+                type="number"
+                placeholder="Enter minimum age (16-100)"
+                isBorder={true}
+              />
+
+              {/* Max Age */}
+              <CustomFormField
+                name="maxAge"
+                label={t('maxAge')}
+                type="number"
+                placeholder="Enter maximum age (16-100)"
+                isBorder={true}
+              />
+
+              {/* Restricted Nationalities */}
+              <CustomFormField
+                name="restrictedNationalities"
+                label={t('restrictedNationalities')}
+                type="multi-select"
+                options={COUNTRIES}
+                placeholder="Select restricted nationalities"
+                isBorder={true}
+              />
+            </div>
+          </div>
+
+          {/* Test Score Requirements */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold text-gray-900">{t('testScoreRequirements')}</h2>
+            <p className="text-sm text-gray-600">{t('subtitleTestScores')}</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* SAT Score */}
+              <CustomFormField
+                name="requiredSatScore"
+                label={t('requiredSatScore')}
+                type="number"
+                placeholder="Enter minimum SAT score (100-1600)"
+                isBorder={true}
+              />
+
+              {/* ACT Score */}
+              <CustomFormField
+                name="requiredActScore"
+                label={t('requiredActScore')}
+                type="number"
+                placeholder="Enter minimum ACT score (1-36)"
+                isBorder={true}
+              />
+
+              {/* GRE Score */}
+              <CustomFormField
+                name="requiredGreScore"
+                label={t('requiredGreScore')}
+                type="number"
+                placeholder="Enter minimum GRE score (100-340)"
+                isBorder={true}
+              />
+
+              {/* TOEFL Score */}
+              <CustomFormField
+                name="requiredToeflScore"
+                label={t('requiredToeflScore')}
+                type="number"
+                placeholder="Enter minimum TOEFL score (0-120)"
+                isBorder={true}
+              />
+
+              {/* IELTS Score */}
+              <CustomFormField
+                name="requiredIeltsScore"
+                label={t('requiredIeltsScore')}
+                type="range"
+                placeholder="Enter minimum IELTS score (0-9)"
+                isBorder={true}
+                min={0}
+                max={9}
+                step={0.5}
+              />
+            </div>
+          </div>
+
+          {/* Experience & Achievement Requirements */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold text-gray-900">{t('experienceRequirements')}</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Work Experience Years */}
+              <CustomFormField
+                name="requiredWorkExperienceYears"
+                label={t('requiredWorkExperienceYears')}
+                type="number"
+                placeholder="Enter required work experience years (0-10)"
+                isBorder={true}
+              />
+
+              {/* Publication Count */}
+              <CustomFormField
+                name="requiredPublicationCount"
+                label={t('requiredPublicationCount')}
+                type="number"
+                placeholder="Enter required publication count (0-10)"
+                isBorder={true}
+              />
+
+              {/* Academic Awards */}
+              <CustomFormField
+                name="requiredAcademicAwards"
+                label={t('requiredAcademicAwards')}
+                type="text"
+                placeholder="e.g., Dean's List, Honor Roll, Academic Excellence Award"
+                isBorder={true}
+              />
+
+              {/* Class Rank Percentile */}
+              <CustomFormField
+                name="requiredClassRankPercentile"
+                label={t('requiredClassRankPercentile')}
+                type="range"
+                placeholder="Enter required class rank percentile (0-100)"
+                isBorder={true}
+                min={0}
+                max={100}
+                step={1}
               />
             </div>
           </div>

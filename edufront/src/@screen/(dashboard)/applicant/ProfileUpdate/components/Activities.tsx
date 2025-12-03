@@ -78,6 +78,24 @@ const Activities = () => {
           inlineLabel
           isBorder
         />
+
+        <CustomFormField
+          name="applicantProfile.researchInterest"
+          label={t('researchInterest')}
+          type="textarea"
+          placeholder={t('researchInterestPlaceholder')}
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
+          name="applicantProfile.extracurricularActivities"
+          label={t('extracurricularActivities')}
+          type="textarea"
+          placeholder={t('extracurricularActivitiesPlaceholder')}
+          inlineLabel
+          isBorder
+        />
       </div>
     </div>
   );

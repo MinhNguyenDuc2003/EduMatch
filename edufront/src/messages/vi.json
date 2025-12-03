@@ -10,12 +10,15 @@
     "login": "Đăng nhập / Đăng ký",
     "scholarships": "Học bổng",
     "news": "Tin tức",
+    "day": "ngày",
+    "days": "ngày",
     "dropdown": {
       "profile": "Hồ sơ",
       "myActivity": "Hoạt động của tôi",
       "providerDashboard": "Bảng thống kê của nhà cung cấp",
       "subscription": "Gia hạn tài khoản",
       "createProvider": "Đăng ký nhà cung cấp",
+      "report": "Báo cáo hệ thống",
       "logout": "Đăng xuất"
     }
   },
@@ -28,6 +31,7 @@
     "application": "Trạng thái của hồ sơ của bạn đã được cập nhật",
     "scholarshipApplication": "Đã có hồ sơ đăng ký học bổng của bạn",
     "applicationReferral": "Bạn có nhận được đề xuất học bổng mới",
+    "system": "THÔNG BÁO HỆ THỐNG !!!!!",
     "noNotifications": "Không có thông báo nào",
     "viewAllNotifications": "Xem tất cả thông báo"
   },
@@ -110,7 +114,30 @@
     "note": "Ghi chú (Tùy chọn)",
     "notePlaceholder": "Thêm một ghi chú cho hồ sơ này...",
     "reject": "Từ chối",
-    "approve": "Duyệt"
+    "approve": "Duyệt",
+    "age": "Tuổi",
+    "citizenship": "Quốc tịch",
+    "languages": "Ngôn ngữ",
+    "classRank": "Xếp hạng lớp",
+    "classSize": "Quy mô lớp",
+    "classRankPercentile": "Xếp hạng lớp %",
+    "academicAwards": "Giải thưởng học thuật",
+    "publicationCount": "Số lượng xuất bản phẩm",
+    "testScores": "Điểm thi",
+    "satScore": "Điểm SAT",
+    "actScore": "Điểm ACT",
+    "greScore": "Điểm GRE",
+    "gmatScore": "Điểm GMAT",
+    "toeflScore": "Điểm TOEFL",
+    "ieltsScore": "Điểm IELTS",
+    "workExperience": "Kinh nghiệm làm việc",
+    "years": "năm",
+    "athleticInformation": "Thông tin thể thao",
+    "isAthlete": "Vận động viên",
+    "athleticAchievements": "Thành tích thể thao",
+    "careerGoal": "Mục tiêu nghề nghiệp",
+    "researchInterest": "Sở thích nghiên cứu",
+    "yes": "Có"
   },
   "scholarshipForm": {
     "basicInformation": "Thông tin cơ bản",
@@ -129,6 +156,24 @@
     "availableSlots": "Số lượng học bổng*",
     "languageRequirement": "Yêu cầu ngôn ngữ*",
     "gpaRequirement": "Yêu cầu GPA*",
+    "requiredMajor": "Chuyên ngành yêu cầu*",
+    "genderRequirement": "Giới tính yêu cầu*",
+    "demographicRequirements": "Yêu cầu dân số",
+    "minAge": "Tuổi tối thiểu",
+    "maxAge": "Tuổi tối đa",
+    "restrictedNationalities": "Quốc tịch không được phép",
+    "testScoreRequirements": "Yêu cầu điểm thi",
+    "subtitleTestScores": "Nhập điểm thi tối thiểu nếu cần (để trống nếu không áp dụng)",
+    "requiredSatScore": "Điểm SAT tối thiểu",
+    "requiredActScore": "Điểm ACT tối thiểu",
+    "requiredGreScore": "Điểm GRE tối thiểu",
+    "requiredToeflScore": "Điểm TOEFL tối thiểu",
+    "requiredIeltsScore": "Điểm IELTS tối thiểu",
+    "experienceRequirements": "Yêu cầu kinh nghiệm & Thành tích",
+    "requiredWorkExperienceYears": "Kinh nghiệm làm việc (năm)",
+    "requiredPublicationCount": "Số lượng bài báo yêu cầu",
+    "requiredAcademicAwards": "Thành tích học tập yêu cầu",
+    "requiredClassRankPercentile": "Xếp hạng lớp yêu cầu",
     "images": "Hình ảnh*",
     "subtitleImages": "Tải lên hình ảnh liên quan đến chương trình học bổng (ví dụ: ảnh trường học, ảnh sự kiện)",
     "addImages": "Thêm hình ảnh",
@@ -200,7 +245,17 @@
       "detail": {
         "title": "Chi tiết ứng viên",
         "description": "Xem chi tiết của ứng viên."
-      }
+      },
+      "clearSelection": "Xóa lựa chọn",
+      "sendReferral": "Gửi đề xuất",
+      "selectScholarship": "Chọn học bổng",
+      "selectedScholarship": "Học bổng đã chọn",
+      "cancel": "Hủy",
+      "sending": "Đang gửi...",
+      "selectScholarshipFirst": "Vui lòng chọn học bổng trước",
+      "referralSentSuccess": "Gửi đề xuất thành công",
+      "referralSentFailed": "Gửi đề xuất thất bại",
+      "noScholarships": "Không tìm thấy học bổng nào"
     }
   },
   "action": {
@@ -255,7 +310,23 @@
       "expectedGraduation": "Dự kiến Tốt nghiệp",
       "preferences": "Sở thích",
       "weight": "Trọng số",
-      "militaryFamilyHistory": "Lịch sử Gia đình Quân đội"
+      "militaryFamilyHistory": "Lịch sử Gia đình Quân đội",
+      "educationLevel": "Trình độ học vấn",
+      "testScores": "Điểm thi",
+      "satScore": "Điểm SAT",
+      "actScore": "Điểm ACT",
+      "greScore": "Điểm GRE",
+      "toeflScore": "Điểm TOEFL",
+      "ieltsScore": "Điểm IELTS",
+      "languages": "Ngôn ngữ",
+      "academicAwards": "Giải thưởng học thuật",
+      "publicationCount": "Số lượng xuất bản phẩm",
+      "researchInterest": "Sở thích nghiên cứu",
+      "extracurricularActivities": "Hoạt động ngoại khóa",
+      "preferredScholarship": "Học bổng ưa thích",
+      "preferredType": "Loại học bổng",
+      "preferredCountry": "Quốc gia",
+      "preferredUniversity": "Trường đại học"
     }
   },
   "error": {
@@ -331,6 +402,12 @@
       "contactUs": "Liên hệ",
       "footer": "Không cần thẻ tín dụng • Miễn phí vĩnh viễn • Hủy bất cứ lúc nào"
     },
+    "topViewScholarships": {
+      "badge": "Xu hướng",
+      "title": "5 Học Bổng Được Xem Nhiều Nhất",
+      "description": "Khám phá những học bổng được quan tâm nhiều nhất trong tháng này",
+      "viewCountDescription": "Số lượt xem thể hiện số người đã xem học bổng này"
+    },
     "cardSmalPic": {
       "trackScholarship": "Theo dõi học bổng",
       "organizationLogo": "Logo tổ chức"
@@ -349,7 +426,7 @@
     "backToScholarships": "Quay lại danh sách học bổng",
     "scholarships": "Học bổng",
     "applyNow": "Ứng tuyển ngay",
-    "upgradeToPremium": "Nâng cấp Premium",
+    "upgradeToPremium": "Nâng cấp AI Scholarship",
     "analyzeScholarship": "Phân tích học bổng",
     "noDeadline": "Không có hạn chót",
     "metadata": {
@@ -371,7 +448,31 @@
       "languageRequirement": "Yêu cầu ngôn ngữ",
       "availableSlots": "Số lượng học bổng",
       "notAvailable": "Không có",
-      "note": "Ghi chú"
+      "note": "Ghi chú",
+      "country": "Quốc gia",
+      "university": "Trường đại học",
+      "requiredMajor": "Chuyên ngành yêu cầu",
+      "ageRange": "Độ tuổi",
+      "years": "tuổi",
+      "minimum": "Tối thiểu",
+      "maximum": "Tối đa",
+      "genderRequirement": "Yêu cầu giới tính",
+      "restrictedNationalities": "Quốc tịch bị hạn chế",
+      "requiredSatScore": "Điểm SAT yêu cầu",
+      "requiredActScore": "Điểm ACT yêu cầu",
+      "requiredGreScore": "Điểm GRE yêu cầu",
+      "requiredToeflScore": "Điểm TOEFL yêu cầu",
+      "requiredIeltsScore": "Điểm IELTS yêu cầu",
+      "requiredWorkExperienceYears": "Kinh nghiệm làm việc yêu cầu",
+      "requiredPublicationCount": "Số lượng công bố yêu cầu",
+      "publications": "bài báo",
+      "requiredAcademicAwards": "Giải thưởng học thuật yêu cầu",
+      "requiredClassRankPercentile": "Yêu cầu xếp hạng lớp",
+      "basicInformation": "Thông tin cơ bản",
+      "academicRequirements": "Yêu cầu học thuật",
+      "testScoreRequirements": "Yêu cầu điểm thi",
+      "demographicRequirements": "Yêu cầu nhân khẩu học",
+      "otherRequirements": "Yêu cầu khác"
     },
     "sidebar": {
       "following": "Đang theo dõi",
@@ -431,6 +532,7 @@
       "availableFilters": "Bộ lọc có sẵn",
       "studyLevel": "Trình độ học vấn",
       "university": "Trường đại học",
+      "fields": "Lĩnh vực",
       "allLevels": "Tất cả",
       "country": "Quốc gia",
       "allCountries": "Tất cả quốc gia",
@@ -457,15 +559,25 @@
       "university": "Trường đại học",
       "level": "Trình độ",
       "type": "Loại",
-      "noDeadline": "Không có hạn chót"
+      "noDeadline": "Không có hạn chót",
+      "compare": "So sánh",
+      "alreadySelected": "Đã được chọn"
     },
     "premiumBanner": {
-      "badge": "Premium",
+      "badge": "AI Scholarship",
       "title": "Tự Động Ghép Nối Học Bổng",
-      "description": "Nâng cấp lên Premium để AI tự động tìm các học bổng phù hợp với hồ sơ của bạn",
+      "description": "Nâng cấp lên AI Scholarship để AI tự động tìm các học bổng phù hợp với hồ sơ của bạn",
+      "clickHere": "Nhấp vào đây để xem các học bổng phù hợp với bạn",
       "updateNow": "Nâng Cấp Ngay",
       "foundMatches": "Chúng tôi đã tìm thấy {count} học bổng phù hợp!",
-      "matchedDescription": "AI đã ghép nối bạn với các học bổng phù hợp với hồ sơ của bạn"
+      "matchedDescription": "AI đã ghép nối bạn với các học bổng phù hợp với hồ sơ của bạn",
+      "profileStrengthDialog": {
+        "title": "Hồ sơ chưa hoàn thiện",
+        "description": "Bạn cần tạo hồ sơ và nhập đầy đủ thông tin để sử dụng tính năng đề xuất học bổng. Vui lòng hoàn thiện hồ sơ với các thông tin bắt buộc.",
+        "empatheticMessage": "Chúng tôi hiểu rằng việc tạo hồ sơ có thể mất một chút thời gian, nhưng điều này sẽ giúp chúng tôi hiểu rõ hơn về bạn và đề xuất những học bổng phù hợp nhất với mục tiêu học tập của bạn. Hồ sơ hoàn chỉnh là bước đầu tiên quan trọng để bạn có thể tiếp cận với những cơ hội học bổng tốt nhất.",
+        "cancel": "Hủy",
+        "updateProfile": "Tạo hồ sơ"
+      }
     }
   },
   "applicantProfile": {
@@ -519,7 +631,26 @@
       "password": "Mật khẩu",
       "yes": "Có",
       "no": "Không",
-      "addInfo": "Thêm thông tin"
+      "addInfo": "Thêm thông tin",
+      "educationLevel": "Trình độ học vấn",
+      "satScore": "Điểm SAT",
+      "satScorePlaceholder": "Nhập điểm SAT (400-1600)",
+      "actScore": "Điểm ACT",
+      "actScorePlaceholder": "Nhập điểm ACT (1-36)",
+      "toeflScore": "Điểm TOEFL",
+      "toeflScorePlaceholder": "Nhập điểm TOEFL (0-120)",
+      "ieltsScore": "Điểm IELTS",
+      "ieltsScorePlaceholder": "Nhập điểm IELTS (0.0-9.0)",
+      "greScore": "Điểm GRE",
+      "greScorePlaceholder": "Nhập điểm GRE (260-340)",
+      "languages": "Ngôn ngữ",
+      "academicAwards": "Giải thưởng học thuật",
+      "publicationCount": "Số lượng xuất bản phẩm",
+      "researchInterest": "Sở thích nghiên cứu",
+      "extracurricularActivities": "Hoạt động ngoại khóa",
+      "preferredScholarshipType": "Loại học bổng ưa thích",
+      "preferredCountry": "Quốc gia ưa thích",
+      "preferredUniversity": "Trường đại học ưa thích"
     },
     "common": {
       "edit": "Chỉnh sửa",
@@ -542,7 +673,8 @@
       "selectReligion": "Chọn tôn giáo",
       "selectEthnicity": "Chọn dân tộc",
       "selectRace": "Chọn chủng tộc",
-      "selectCitizenshipStatus": "Chọn tình trạng công dân"
+      "selectCitizenshipStatus": "Chọn tình trạng công dân",
+      "selectEducationLevel": "Chọn trình độ học vấn"
     },
     "skillsDialog": {
       "title": "Kỹ năng",
@@ -667,7 +799,11 @@
       "researchExperience": "Kinh nghiệm nghiên cứu",
       "researchExperiencePlaceholder": "ví dụ: Phòng thí nghiệm AI, Nghiên cứu Sinh học",
       "careerGoals": "Mục tiêu nghề nghiệp",
-      "careerGoalsPlaceholder": "ví dụ: Kỹ sư phần mềm, Bác sĩ"
+      "careerGoalsPlaceholder": "ví dụ: Kỹ sư phần mềm, Bác sĩ",
+      "researchInterest": "Sở thích nghiên cứu",
+      "researchInterestPlaceholder": "ví dụ: Học máy, Máy tính lượng tử",
+      "extracurricularActivities": "Hoạt động ngoại khóa",
+      "extracurricularActivitiesPlaceholder": "ví dụ: Công việc tình nguyện, Vai trò lãnh đạo"
     },
     "preferencesDialog": {
       "title": "Sở thích ứng viên",
@@ -692,7 +828,15 @@
       "financialAid": "Hỗ trợ tài chính",
       "diversity": "Đa dạng",
       "athletics": "Thể thao",
-      "other": "Khác"
+      "other": "Khác",
+      "preferredPreferences": "Mong muốn",
+      "preferredPreferencesDescription": "Chỉ định loại học bổng, quốc gia và trường đại học ưa thích của bạn",
+      "preferredScholarshipType": "Loại học bổng ưa thích",
+      "selectPreferredScholarshipType": "Chọn loại học bổng ưa thích",
+      "preferredCountry": "Quốc gia ưa thích",
+      "selectPreferredCountry": "Chọn quốc gia ưa thích",
+      "preferredUniversity": "Trường đại học ưa thích",
+      "preferredUniversityPlaceholder": "ví dụ: Đại học Harvard, MIT"
     },
     "cards": {
       "historyDetails": "Chi tiết lịch sử",
@@ -744,6 +888,11 @@
         "label": "Đơn ứng tuyển",
         "title": "Đơn ứng tuyển của bạn",
         "description": "Theo dõi tất cả các học bổng bạn đã ứng tuyển. Giám sát trạng thái đơn, xem lại chi tiết nộp đơn và theo dõi các cơ hội của bạn."
+      },
+      "report": {
+        "label": "Báo cáo",
+        "title": "Báo cáo của bạn",
+        "description": "Theo dõi tất cả các báo cáo bạn đã gửi lên hệ thống. Xem phản hồi và trạng thái báo cáo."
       }
     },
     "emptyState": {
@@ -762,6 +911,10 @@
       "application": {
         "title": "Bạn chưa tạo đơn ứng tuyển nào",
         "description": "Khi bạn tạo một đơn ứng tuyển, nó sẽ hiển thị ở đây để bạn có thể theo dõi trạng thái đơn và các bước tiếp theo."
+      },
+      "report": {
+        "title": "Chưa có báo cáo nào",
+        "description": "Bạn chưa gửi báo cáo nào lên hệ thống. Khi bạn gửi báo cáo, chúng sẽ hiển thị ở đây để bạn có thể theo dõi trạng thái và phản hồi."
       }
     },
     "applicationCard": {
@@ -808,16 +961,38 @@
       "dateOfBirth": "Ngày sinh:",
       "address": "Địa chỉ:",
       "nationality": "Quốc tịch:",
+      "age": "Tuổi:",
+      "citizenship": "Quốc tịch:",
       "educationBackground": "Học vấn",
       "school": "Trường:",
       "educationLevel": "Trình độ học vấn:",
       "major": "Chuyên ngành:",
       "gpa": "GPA:",
       "graduationYear": "Năm tốt nghiệp:",
+      "classRank": "Xếp hạng lớp:",
+      "classSize": "Quy mô lớp:",
+      "classRankPercentile": "Phần trăm xếp hạng lớp:",
+      "testScores": "Điểm Thi",
+      "satScore": "Điểm SAT:",
+      "actScore": "Điểm ACT:",
+      "greScore": "Điểm GRE:",
+      "gmatScore": "Điểm GMAT:",
+      "toeflScore": "Điểm TOEFL:",
+      "ieltsScore": "Điểm IELTS:",
       "skillsAchievements": "Kỹ Năng & Thành Tích",
       "skills": "Kỹ năng",
       "achievements": "Thành tích",
       "extracurricularActivities": "Hoạt Động Ngoại Khóa",
+      "languages": "Ngôn ngữ",
+      "careerGoal": "Mục tiêu nghề nghiệp",
+      "researchInterest": "Sở thích nghiên cứu",
+      "academicAwards": "Giải thưởng học thuật",
+      "publicationCount": "Số lượng xuất bản phẩm",
+      "workExperienceYears": "Kinh nghiệm làm việc",
+      "years": "năm",
+      "isAthlete": "Vận động viên",
+      "athleticAchievements": "Thành tích thể thao",
+      "yes": "Có",
       "reason": "Lý do xin ứng tuyển",
       "noMotivationProvided": "Chưa cung cấp động lực",
       "goals": "Mục tiêu",
@@ -827,6 +1002,7 @@
       "note": "Ghi chú:",
       "createNewApplication": "Tạo Đơn Ứng Tuyển Mới",
       "submissionDate": "Ngày nộp đơn",
+      "createdDate": "Ngày tạo đơn",
       "documents": "Tài liệu",
       "noDocumentsProvided": "Chưa cung cấp tài liệu",
       "images": "Hình ảnh",
@@ -870,6 +1046,7 @@
     },
     "applicationForm": {
       "title": "Đơn Ứng Tuyển",
+      "importFromProfile": "Nhập từ hồ sơ cá nhân",
       "guidelines": {
         "title": "Để đảm bảo đơn ứng tuyển học bổng của bạn mạnh nhất có thể, vui lòng lưu ý những điểm quan trọng sau trước khi hoàn tất và nộp:",
         "accuracy": "Tính chính xác và đầy đủ: Kiểm tra kỹ lại rằng tất cả thông tin bạn đã cung cấp là chính xác và đầy đủ. Chi tiết không đầy đủ hoặc không chính xác có thể dẫn đến trì hoãn hoặc bị loại.",
@@ -877,14 +1054,6 @@
         "proofread": "Đọc kỹ lại: Trước khi nhấn nộp, hãy đọc kỹ lại toàn bộ đơn ứng tuyển để tìm lỗi chính tả hoặc ngữ pháp. Một đơn ứng tuyển được trau chuốt thể hiện sự chú ý đến chi tiết.",
         "deadlines": "Tuân thủ thời hạn: Hãy lưu ý thời hạn nộp đơn. Các đơn nộp muộn thường không được xem xét.",
         "instructions": "Tuân thủ hướng dẫn một cách chính xác: Hãy xem xét cẩn thận và tuân theo tất cả các hướng dẫn được cung cấp cho mẫu đơn ứng tuyển và bất kỳ tài liệu kèm theo nào."
-      },
-      "sections": {
-        "personalInformation": "Thông Tin Cá Nhân",
-        "educationalBackground": "Học Vấn",
-        "skillsAchievements": "Kỹ Năng & Thành Tích",
-        "motivationPersonalStatement": "Động Lực & Tuyên Bố Cá Nhân",
-        "images": "Hình Ảnh",
-        "additionalInformation": "Thông Tin Bổ Sung"
       },
       "fields": {
         "fullName": "Họ và tên *",
@@ -920,7 +1089,53 @@
         "motivation": "Động lực *",
         "motivationPlaceholder": "Giải thích lý do bạn ứng tuyển học bổng này và điều gì thúc đẩy bạn",
         "personalStatement": "Mục tiêu *",
-        "personalStatementPlaceholder": "Viết mục tiêu của bạn và phương pháp sẽ giúp bạn đạt được học bổng này"
+        "personalStatementPlaceholder": "Viết mục tiêu của bạn và phương pháp sẽ giúp bạn đạt được học bổng này",
+        "age": "Tuổi",
+        "agePlaceholder": "Điền ngày sinh của bạn để tính tuổi tự động",
+        "citizenship": "Quốc tịch",
+        "citizenshipPlaceholder": "Chọn quốc tịch",
+        "classRank": "Xếp hạng lớp",
+        "classRankPlaceholder": "Nhập xếp hạng lớp (ví dụ: 1, 2, Top 10%)",
+        "classSize": "Quy mô lớp",
+        "classSizePlaceholder": "Nhập tổng số học sinh trong lớp",
+        "classRankPercentile": "Phần trăm xếp hạng lớp",
+        "classRankPercentilePlaceholder": "Nhập phần trăm (0-100)",
+        "satScore": "Điểm SAT",
+        "satScorePlaceholder": "Nhập điểm SAT (400-1600)",
+        "actScore": "Điểm ACT",
+        "actScorePlaceholder": "Nhập điểm ACT (1-36)",
+        "greScore": "Điểm GRE",
+        "greScorePlaceholder": "Nhập điểm GRE (260-340)",
+        "gmatScore": "Điểm GMAT",
+        "gmatScorePlaceholder": "Nhập điểm GMAT (200-800)",
+        "toeflScore": "Điểm TOEFL",
+        "toeflScorePlaceholder": "Nhập điểm TOEFL (0-120)",
+        "ieltsScore": "Điểm IELTS",
+        "ieltsScorePlaceholder": "Nhập điểm IELTS (0.0-9.0)",
+        "languages": "Ngôn ngữ",
+        "languagesPlaceholder": "Liệt kê các ngôn ngữ bạn nói và mức độ thành thạo",
+        "careerGoal": "Mục tiêu nghề nghiệp",
+        "careerGoalPlaceholder": "Mô tả mục tiêu và nguyện vọng nghề nghiệp của bạn",
+        "researchInterest": "Sở thích nghiên cứu",
+        "researchInterestPlaceholder": "Mô tả sở thích nghiên cứu và lĩnh vực tập trung của bạn",
+        "academicAwards": "Giải thưởng học thuật",
+        "academicAwardsPlaceholder": "Liệt kê các giải thưởng và công nhận học thuật của bạn",
+        "publicationCount": "Số lượng xuất bản phẩm",
+        "publicationCountPlaceholder": "Nhập số lượng xuất bản phẩm",
+        "workExperienceYears": "Kinh nghiệm làm việc (Năm)",
+        "workExperienceYearsPlaceholder": "Nhập số năm kinh nghiệm làm việc",
+        "isAthlete": "Bạn có phải là vận động viên không?",
+        "athleticAchievements": "Thành tích thể thao",
+        "athleticAchievementsPlaceholder": "Mô tả thành tích thể thao và sự tham gia thể thao của bạn"
+      },
+      "sections": {
+        "personalInformation": "Thông Tin Cá Nhân",
+        "educationalBackground": "Học Vấn",
+        "skillsAchievements": "Kỹ Năng & Thành Tích",
+        "motivationPersonalStatement": "Động Lực & Tuyên Bố Cá Nhân",
+        "testScores": "Điểm Thi",
+        "images": "Hình Ảnh",
+        "additionalInformation": "Thông Tin Bổ Sung"
       },
       "images": {
         "description": "Tải lên hình ảnh liên quan đến đơn ứng tuyển này (ví dụ: ảnh trường đại học, ảnh sự kiện)",
@@ -956,7 +1171,24 @@
         "cancel": "Hủy",
         "complete": "Hoàn Tất",
         "completing": "Đang hoàn tất..."
+      },
+      "toast": {
+        "applicationUpdated": "Đơn ứng tuyển đã được cập nhật thành công"
       }
+    },
+    "reportCard": {
+      "noTitle": "Không có tiêu đề",
+      "category": "Loại",
+      "description": "Mô tả",
+      "delete": "Xóa"
+    },
+    "reportDetail": {
+      "title": "Báo cáo vấn đề",
+      "categoryDescription": "Mô tả danh mục",
+      "comment": "Bình luận",
+      "response": "Phản hồi",
+      "noResponse": "Chưa có phản hồi",
+      "delete": "Xóa báo cáo"
     }
   },
   "reportDialog": {
@@ -1008,16 +1240,58 @@
       }
     }
   },
+  "providerDashboard": {
+    "title": "Bảng điều khiển",
+    "subtitle": "Chào mừng trở lại! Đây là những gì đang xảy ra hôm nay.",
+    "conversionFunnel": {
+      "scholarships": "Học bổng",
+      "totalViews": "Tổng lượt xem",
+      "appliedApplications": "Hồ sơ ứng tuyển",
+      "viewedButNoApply": "Xem nhưng không ứng tuyển"
+    },
+    "decisionStatus": {
+      "applicationDecisions": "Quyết định ứng tuyển",
+      "approved": "Đã duyệt",
+      "rejected": "Từ chối",
+      "pending": "Chờ xét duyệt"
+    },
+    "top5Scholarship": {
+      "top5ByViews": "Top 5 theo lượt xem",
+      "top5ByApplications": "Top 5 theo hồ sơ ứng tuyển"
+    },
+    "recentApplications": {
+      "title": "Hồ sơ ứng tuyển gần đây",
+      "subtitle": "Hồ sơ ứng tuyển gần đây từ người ứng tuyển",
+      "viewAll": "Xem tất cả",
+      "applicant": "Người ứng tuyển",
+      "scholarship": "Học bổng",
+      "major": "Chuyên ngành",
+      "gpa": "GPA",
+      "status": "Trạng thái",
+      "noApplicationsYet": "Chưa có hồ sơ nào",
+      "noApplicationsDescription": "Hồ sơ sẽ xuất hiện ở đây khi người ứng tuyển ứng tuyển cho học bổng của bạn"
+    }
+  },
   "newsPage": {
     "title": "Tin Tức EduMatch",
     "topViewed": "Học bổng được xem nhiều nhất",
     "noTopScholarships": "Chưa có học bổng được xem nhiều",
+    "recommended": "Học bổng đề xuất",
+    "noRecommendedScholarships": "Chưa có học bổng đề xuất",
     "noNewsAvailable": "Không có tin tức",
-    "noNewsDescription": "Hiện tại chưa có bài viết tin tức nào. Vui lòng quay lại sau để xem các cập nhật và nội dung mới."
+    "noNewsDescription": "Hiện tại chưa có bài viết tin tức nào. Vui lòng quay lại sau để xem các cập nhật và nội dung mới.",
+    "premiumBanner": {
+      "badge": "AI Scholarship",
+      "title1": "Nâng cấp AI Scholarship để xem học bổng đề xuất",
+      "title2": "Nâng cấp AI Scholarship để sử dụng phân tích học bổng",
+      "description1": "Nâng cấp AI Scholarship và để AI tự động tìm học bổng phù hợp với hồ sơ của bạn",
+      "description2": "Nâng cấp AI Scholarship và để AI tự động phân tích học bổng phù hợp với hồ sơ của bạn",
+      "upgradeNow": "Nâng cấp ngay"
+    }
   },
   "recommendedScholarships": {
     "heroSection": {
-      "title": "EduMatch Premium",
+      "title": "AI Scholarship",
       "titleHighlight": "Gợi ý học bổng cho bạn",
       "description": "Khám phá các học bổng phù hợp nhất với hồ sơ của bạn. Hệ thống AI của chúng tôi phân tích nền tảng học vấn, sở thích và mục tiêu của bạn để đề xuất những cơ hội tốt nhất cho hành trình giáo dục của bạn."
     }
@@ -1070,5 +1344,38 @@
     "enterRoleTitle": "Nhập chức vụ",
     "enterEmail": "Nhập email",
     "enterPhone": "Nhập số điện thoại"
+  },
+  "inputSelect": {
+    "placeholder": "Chọn một tùy chọn"
+  },
+  "toast": {
+    "reportDeleted": "Xóa báo cáo thành công",
+    "reportDeletedFailed": "Xóa báo cáo thất bại",
+    "scholarshipAdded": "Đã thêm học bổng vào danh sách so sánh",
+    "scholarshipAddedFailed": "Thêm học bổng vào danh sách so sánh thất bại",
+    "scholarshipMaxSelected": "Bạn chỉ có thể so sánh tối đa 3 học bổng",
+    "scholarshipAlreadySelected": "Đã được chọn"
+  },
+  "selectedScholarshipCompare": {
+    "title": "Đã chọn ({number}/3)",
+    "compare": "So sánh",
+    "remove": "Xóa",
+    "clearAll": "Xóa tất cả",
+    "compareButton": "So sánh học bổng"
+  },
+  "scholarshipCompare": {
+    "title": "So sánh học bổng",
+    "scholarship": "Học bổng",
+    "provider": "Tổ chức",
+    "country": "Quốc gia",
+    "university": "Trường đại học",
+    "studyLevel": "Bậc học",
+    "scholarshipType": "Loại học bổng",
+    "fundingAmount": "Giá trị học bổng",
+    "deadline": "Hạn nộp",
+    "gpaRequirement": "Yêu cầu GPA",
+    "languageRequirement": "Yêu cầu ngôn ngữ",
+    "availableSlots": "Số lượng",
+    "description": "Mô tả"
   }
 }

@@ -87,6 +87,42 @@ export default function Profile() {
                     : undefined,
                 },
                 {
+                  label: t('fields.educationLevel'),
+                  value: applicantProfile?.educationLevel,
+                },
+                {
+                  label: t('fields.satScore'),
+                  value: applicantProfile?.satScore?.toString(),
+                },
+                {
+                  label: t('fields.actScore'),
+                  value: applicantProfile?.actScore?.toString(),
+                },
+                {
+                  label: t('fields.toeflScore'),
+                  value: applicantProfile?.toeflScore?.toString(),
+                },
+                {
+                  label: t('fields.ieltsScore'),
+                  value: applicantProfile?.ieltsScore?.toString(),
+                },
+                {
+                  label: t('fields.greScore'),
+                  value: applicantProfile?.greScore?.toString(),
+                },
+                {
+                  label: t('fields.languages'),
+                  value: applicantProfile?.languages,
+                },
+                {
+                  label: t('fields.academicAwards'),
+                  value: applicantProfile?.academicAwards,
+                },
+                {
+                  label: t('fields.publicationCount'),
+                  value: applicantProfile?.publicationCount?.toString(),
+                },
+                {
                   label: t('fields.hometown'),
                   value: applicantProfile?.hometown,
                 },
@@ -123,6 +159,18 @@ export default function Profile() {
                   label: t('fields.medicalConditions'),
                   value: applicantProfile?.medicalConditions,
                 },
+                {
+                  label: t('fields.preferredScholarshipType'),
+                  value: applicantProfile?.preferredScholarshipType,
+                },
+                {
+                  label: t('fields.preferredCountry'),
+                  value: applicantProfile?.preferredCountry,
+                },
+                {
+                  label: t('fields.preferredUniversity'),
+                  value: applicantProfile?.preferredUniversity,
+                },
               ]}
               className="lg:row-span-4"
             />
@@ -156,6 +204,14 @@ export default function Profile() {
                 {
                   label: t('fields.researchExperience'),
                   value: applicantProfile?.researchExperience,
+                },
+                {
+                  label: t('fields.researchInterest'),
+                  value: applicantProfile?.researchInterest,
+                },
+                {
+                  label: t('fields.extracurricularActivities'),
+                  value: applicantProfile?.extracurricularActivities,
                 },
               ]}
               className="lg:row-span-2"

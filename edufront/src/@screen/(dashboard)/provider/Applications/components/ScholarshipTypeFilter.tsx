@@ -21,7 +21,7 @@ const ScholarshipTypeFilter = React.memo(({ value, onChange }: ScholarshipTypeFi
           <SelectItem value="all">{t('allTypes')}</SelectItem>
           {SCHOLARSHIP_TYPES.map((type) => (
             <SelectItem key={type.value} value={type.value}>
-              {t(type.label)}
+              {type.label}
             </SelectItem>
           ))}
         </SelectContent>

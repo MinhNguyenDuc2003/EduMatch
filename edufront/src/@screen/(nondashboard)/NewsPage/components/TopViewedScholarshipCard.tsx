@@ -14,13 +14,13 @@ export default function TopViewedScholarshipCard({
 
   return (
     <div
-      className="px-4 py-3 hover:bg-blue-100/50 transition-colors cursor-pointer group"
+      className="px-3 py-2.5 hover:bg-blue-100/50 transition-colors cursor-pointer group"
       onClick={onViewDetails}
     >
       {/* Logo and Organization Name - Horizontal */}
-      <div className="flex items-center gap-2.5 mb-2">
+      <div className="flex items-center gap-2 mb-2">
         {/* Logo */}
-        <div className=" w-8 h-8 border border-gray-200 rounded-full relative">
+        <div className="w-6 h-6 border border-gray-200 rounded-full relative">
           {logoUrl ? (
             <Image
               src={logoUrl}
@@ -29,7 +29,7 @@ export default function TopViewedScholarshipCard({
               className="rounded-full object-cover ring-1 ring-gray-100"
             />
           ) : (
-            <div className="w-8 h-8 rounded-full flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full flex items-center justify-center">
               <Image
                 src="https://es5urvh1np.ufs.sh/f/DHR6tEJ9PQoz85HjSO62tcmI7ElP8Ygn01Oa3ze6iFwADrsH"
                 alt="logo"

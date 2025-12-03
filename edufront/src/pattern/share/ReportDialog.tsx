@@ -30,6 +30,7 @@ interface ReportDialogProps {
   id?: number;
   scholarshipData?: Scholarship;
   providerData?: ProviderProfile;
+  applicantData?: ApplicantProfile;
 }
 
 export default function ReportDialog({
@@ -39,6 +40,7 @@ export default function ReportDialog({
   id,
   scholarshipData,
   providerData,
+  applicantData,
 }: ReportDialogProps) {
   const t = useTranslations('reportDialog');
 
@@ -63,21 +65,25 @@ export default function ReportDialog({
     try {
       switch (initialType) {
         case 'SYSTEM':
-          await reportSystem(data).unwrap();
+          await reportSystem({ ...data, isRead: false }).unwrap();
           break;
         case 'PROVIDER':
-          if (id) {
-            await reportProvider({ ...data, providerId: id }).unwrap();
+          if (providerData?.id) {
+            await reportProvider({ ...data, providerId: providerData.id, isRead: false }).unwrap();
           }
           break;
         case 'SCHOLARSHIP':
-          if (id) {
-            await reportScholarship({ ...data, scholarshipId: id }).unwrap();
+          if (scholarshipData?.id) {
+            await reportScholarship({
+              ...data,
+              scholarshipId: scholarshipData.id,
+              isRead: false,
+            }).unwrap();
           }
           break;
         case 'PROFILE':
-          if (id) {
-            await reportProfile({ ...data, profileId: id }).unwrap();
+          if (applicantData?.id) {
+            await reportProfile({ ...data, profileId: applicantData.id, isRead: false }).unwrap();
           }
           break;
       }
@@ -85,7 +91,7 @@ export default function ReportDialog({
       onOpenChange(false);
       toast.success(t('submitSuccess'));
     } catch (error) {
-      console.error('Failed to create report:', error);
+      console.log('Failed to create report:', error);
     }
   };
 

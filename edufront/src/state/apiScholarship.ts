@@ -32,8 +32,8 @@ export const apiScholarship = createApi({
       providesTags: ['Scholarships'],
     }),
 
-    // search scholarships by University
-    searchScholarshipsByUniversity: build.query<SearchScholarshipsByUniversityResponse[], string>({
+    // Get Universities
+    getUniversity: build.query<SearchScholarshipsByUniversityResponse[], string>({
       query: (keyword) => ({
         url: `${API_ENDPOINTS.SCHOLARSHIPS_SEARCH}/autocomplete/university?keyword=${encodeURIComponent(keyword)}`,
         method: 'GET',
@@ -138,7 +138,7 @@ export const apiScholarship = createApi({
 export const {
   usePageScholarshipsQuery,
   useSearchScholarshipsQuery,
-  useSearchScholarshipsByUniversityQuery,
+  useGetUniversityQuery,
   useGetScholarshipByIdQuery,
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,

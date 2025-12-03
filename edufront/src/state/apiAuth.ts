@@ -27,6 +27,11 @@ export const apiAuth = createApi({
       }),
       providesTags: ['Notifications'],
     }),
+    readNotifications: build.query<void, number>({
+      query: (notificationId) => ({
+        url: `/api/notification/users/read/${notificationId}`,
+      }),
+    }),
     createPaymentIntent: build.mutation<PaymentIntent, { amount: number; email: string }>({
       query: ({ amount, email }) => ({
         url: `${API_ENDPOINTS.PAYMENT}/payment-intent`,
@@ -79,6 +84,7 @@ export const apiAuth = createApi({
 export const {
   useAuthenticatedQuery,
   useGetNotificationsQuery,
+  useLazyReadNotificationsQuery,
   useGetSubscriptionPlanByIdQuery,
   useCreatePaymentIntentMutation,
   useGetSubscriptionByTargetTypeQuery,

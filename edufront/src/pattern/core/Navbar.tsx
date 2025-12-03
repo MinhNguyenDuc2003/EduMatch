@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { Begin, RText } from '@/lib/by/Div';
 import Link from 'next/link';
 import { Button } from '../../lib/cus/button';
@@ -10,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/lib/cus/dropdown-menu';
-import { CircleUserRound } from 'lucide-react';
+import { CircleUserRound, GemIcon, Sparkles } from 'lucide-react';
 import MobileNavigation from '../share/MobileNavigation';
 import {
   NavigationMenu,
@@ -21,11 +22,19 @@ import Notifications from '../share/Notifications';
 import { useAuth } from '@/hooks/useAuth';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslations } from 'next-intl';
+import ReportDialog from '../share/ReportDialog';
 
 const Header = () => {
   const { isAuthenticated, isLoading, isProvider, subscriptions, handleLogout } = useAuth();
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
 
   const t = useTranslations('navbar');
+
+  // Calculate total days for APPLICANT subscription
+  const applicantSubscription = subscriptions.find((sub) => sub.userType === 'APPLICANT');
+  const totalDays = applicantSubscription
+    ? Math.ceil((applicantSubscription.endDate - new Date().getTime()) / (1000 * 60 * 60 * 24))
+    : null;
 
   return (
     <Begin className="px-4 lg:px-40 py-3 flex items-center border-b bg-[#fafaf6] sticky top-0 z-50">
@@ -91,21 +100,29 @@ const Header = () => {
                   {t('news')}
                 </Link>
               </NavMenuItem>
-              {subscriptions.some((subscription) => subscription.userType === 'APPLICANT') && (
-                <NavMenuItem className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium hover:bg-zinc-200 hover:text-accent-foreground focus:bg-zinc-200 focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-zinc-200 data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-accent data-[state=open]:bg-accent/50 focus-visible:ring-ring/50 outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1">
-                  <Link
-                    href="/recommended-scholarships"
-                    className="text-sm font-medium hover:text-primary transition-colors"
-                  >
-                    Premium
-                  </Link>
-                </NavMenuItem>
-              )}
             </NavigationMenuList>
           </NavigationMenu>
         </div>
 
         <div className="flex items-center space-x-2">
+          <Link
+            href={
+              subscriptions.some((subscription) => subscription.userType === 'APPLICANT')
+                ? '/recommended-scholarships'
+                : '/subscriptions?type=APPLICANT'
+            }
+            className="relative inline-flex items-center gap-1.5 px-4 py-1.5 rounded-md bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white font-semibold text-sm shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:scale-105 transition-all duration-200 border border-blue-400/50"
+          >
+            <div className="flex items-center gap-1">
+              <span>AI Scholarship</span>
+            </div>
+            {totalDays !== null && totalDays > 0 && (
+              <span className="text-xs opacity-90">
+                ({totalDays} {totalDays === 1 ? t('day') : t('days')})
+              </span>
+            )}
+            <span className="absolute inset-0 rounded-md bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 blur-sm -z-10 transition-opacity duration-200"></span>
+          </Link>
           <LanguageSwitcher />
 
           {!isAuthenticated && !isLoading && (
@@ -160,6 +177,10 @@ const Header = () => {
                       </DropdownMenuItem>
                     )}
 
+                  <DropdownMenuItem onClick={() => setIsReportDialogOpen(true)}>
+                    {t('dropdown.report')}
+                  </DropdownMenuItem>
+
                   <DropdownMenuItem onClick={handleLogout}>{t('dropdown.logout')}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -167,6 +188,12 @@ const Header = () => {
           )}
         </div>
       </div>
+
+      <ReportDialog
+        open={isReportDialogOpen}
+        onOpenChange={setIsReportDialogOpen}
+        initialType="SYSTEM"
+      />
     </Begin>
   );
 };

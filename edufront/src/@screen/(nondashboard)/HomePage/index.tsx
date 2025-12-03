@@ -8,6 +8,7 @@ import {
   FeaturesSection,
   HowItWorksSection,
   ScholarshipsSection,
+  TopViewScholarshipSection,
   CTASection,
 } from './components';
 import { usePageScholarshipsQuery } from '@/state/apiScholarship';
@@ -50,6 +51,7 @@ export default function HomePage() {
         totalPages={totalPages}
         onPageChange={handlePageChange}
       />
+      <TopViewScholarshipSection />
       <FeaturesSection />
 
       <HowItWorksSection />

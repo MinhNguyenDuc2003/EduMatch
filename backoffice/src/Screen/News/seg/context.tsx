@@ -34,12 +34,26 @@ export default GenCtx({
       async onGetData() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.post('/scholarship/scholarships/page', {});
+          const data = await apiClientService.get('/api/profile/provider-new');
           if (data) {
-            ss.Joint.ScholarshipList = data;
+             ss.setJointData({
+              News: data || [],
+            });
             console.log('first', data);
           }
           return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+
+       async onGetByID(id: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get(`/api/profile/provider-new/${id}`);
+          return data.data;
         } catch (error) {
           console.error({ error });
         } finally {

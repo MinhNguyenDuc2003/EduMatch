@@ -307,7 +307,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
         List<ApplicationScholarshipVo> vos = new ArrayList<>();
         scholarshipEntities.forEach(item -> {
             List<ApplicationScholarshipVo> allByScholarshipId = this.getAllByScholarshipId(item.getId());
-            if (ObjectUtils.isNotEmpty(allByScholarshipId.isEmpty())) {
+            if (ObjectUtils.isNotEmpty(allByScholarshipId)) {
                 vos.addAll(allByScholarshipId);
             }
         });

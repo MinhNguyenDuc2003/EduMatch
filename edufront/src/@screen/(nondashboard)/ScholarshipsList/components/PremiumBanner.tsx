@@ -5,13 +5,20 @@ import { Zap } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
+import { useGetProfileQuery } from '@/state/apiApplicant';
+import ProfileStrengthDialog from './ProfileStrengthDialog';
 
 export default function PremiumBanner() {
   const router = useRouter();
   const [isUpgraded, setIsUpgraded] = useState(false);
+  const [showProfileDialog, setShowProfileDialog] = useState(false);
   const t = useTranslations('scholarshipsList.premiumBanner');
-  const { subscriptions } = useAuth();
-  const { data: scholarships } = useGetRecommendedScholarshipsQuery({ topK: 10 });
+  const { isAuthenticated, subscriptions } = useAuth();
+  const { data: applicantProfile } = useGetProfileQuery(undefined, { skip: !isAuthenticated });
+  const { data: scholarships } = useGetRecommendedScholarshipsQuery(
+    { topK: 12 },
+    { skip: isUpgraded === false || !applicantProfile }
+  );
 
   useEffect(() => {
     if (subscriptions.some((subscription) => subscription.userType === 'APPLICANT')) {
@@ -20,7 +27,9 @@ export default function PremiumBanner() {
   }, [subscriptions]);
 
   const handleUpdate = () => {
-    if (isUpgraded) {
+    if (!applicantProfile) {
+      setShowProfileDialog(true);
+    } else if (isUpgraded) {
       router.push('/recommended-scholarships');
     } else {
       router.push('/subscriptions?type=APPLICANT');
@@ -119,6 +128,9 @@ export default function PremiumBanner() {
                 {t('foundMatches', { count: scholarships?.length ?? 0 })}
               </h3>
               <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
+              <p className="text-white/90 italic text-sm leading-relaxed mb-1">
+                &#40;{t('clickHere')}&#41;
+              </p>
             </div>
 
             {/* After Upgrade - Desktop */}
@@ -127,12 +139,22 @@ export default function PremiumBanner() {
                 <h3 className="text-white font-bold text-xl mb-1">
                   {t('foundMatches', { count: scholarships?.length ?? 0 })}
                 </h3>
-                <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
+                <p className="text-white/90 text-sm mb-1">{t('matchedDescription')}</p>
+                <p className="text-white/90 italic text-sm leading-relaxed">
+                  &#40;{t('clickHere')}&#41;
+                </p>
               </div>
             </div>
           </>
         )}
       </div>
+
+      {/* Profile Strength Dialog */}
+      <ProfileStrengthDialog
+        open={showProfileDialog}
+        onOpenChange={setShowProfileDialog}
+        profileId={applicantProfile?.applicantProfile?.id}
+      />
     </div>
   );
 }

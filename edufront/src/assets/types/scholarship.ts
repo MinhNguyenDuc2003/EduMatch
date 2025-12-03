@@ -40,6 +40,20 @@ declare global {
     availableSlots: number;
     languageRequirement: string;
     gpaRequirement: number;
+    requiredMajor: string;
+    restrictedNationalities: string;
+    minAge: number;
+    maxAge: number;
+    genderRequirement: string;
+    requiredSatScore: number;
+    requiredActScore: number;
+    requiredGreScore: number;
+    requiredToeflScore: number;
+    requiredIeltsScore: number;
+    requiredWorkExperienceYears: number;
+    requiredPublicationCount: number;
+    requiredAcademicAwards: string;
+    requiredClassRankPercentile: number;
     isDeleted?: boolean;
     providerProfileVo: ProviderProfile;
     scholarshipPreferences?: ScholarshipPreference[];
@@ -61,6 +75,7 @@ declare global {
     university?: string;
     studyLevel?: string;
     scholarshipType?: string;
+    fields?: string;
   };
 
   type ScholarshipPageRequest = {
@@ -98,6 +113,7 @@ declare global {
     studyLevel: string;
     scholarshipType: string;
     university: string;
+    fields: string;
     minGpa: number;
     maxGpa: number;
     page: number;

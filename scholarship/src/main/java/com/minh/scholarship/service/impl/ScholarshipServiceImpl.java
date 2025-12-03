@@ -446,7 +446,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(userId));
         AiRequestDto requestDto = new AiRequestDto();
         if (ObjectUtils.isEmpty(applicantProfileVo)) {
-            throw new BusinessException(CoreMessageCode.APPLICANT_ID_IS_NOT_EXIST);
+            return null;
         }
         requestDto.setApplicantId(applicantProfileVo.getId());
         requestDto.setTopK(topK);

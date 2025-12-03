@@ -378,8 +378,25 @@ export const STUDY_LEVELS = [
 ];
 
 export const SCHOLARSHIP_TYPES = [
-  { value: 'Scholarship', label: 'scholarship' },
-  { value: 'Research Lab', label: 'researchLab' },
+  { value: 'Scholarship', label: 'Scholarship' },
+  { value: 'Research Lab', label: 'Research Lab' },
+  { value: 'Merit‑based Scholarship', label: 'Merit‑based Scholarship' },
+  { value: 'Need‑based Scholarship', label: 'Need‑based Scholarship' },
+  { value: 'Full Scholarship', label: 'Full Scholarship' },
+  { value: 'Partial Scholarship', label: 'Partial Scholarship' },
+  { value: 'Sports / Athletic Scholarship', label: 'Sports / Athletic Scholarship' },
+  { value: 'Artistic / Talent‑based Scholarship ', label: 'Artistic / Talent‑based Scholarship ' },
+  {
+    value: 'Field‑specific Scholarship / Major‑based Scholarship',
+    label: 'Field‑specific Scholarship / Major‑based Scholarship',
+  },
+  { value: 'Need + Merit Hybrid Scholarship', label: 'Need + Merit Hybrid Scholarship' },
+  { value: 'Research / Fellowship Scholarship', label: 'Research / Fellowship Scholarship' },
+  {
+    value: 'Service / Community‑based Scholarship',
+    label: 'Service / Community‑based Scholarship',
+  },
+  { value: 'Student‑specific Scholarship', label: 'Student‑specific Scholarship' },
 ];
 
 export const ORGANIZATION_TYPES = [
@@ -396,7 +413,7 @@ export const ORGANIZATION_TYPES = [
 export const GENDER_OPTIONS = [
   { value: 'Male', label: 'Male' },
   { value: 'Female', label: 'Female' },
-  { value: 'Other', label: 'Other' },
+  { value: 'Any', label: 'Any' },
 ];
 
 export const MAJOR_CATEGORIES = [
@@ -650,6 +667,7 @@ export const NOTIFICATION_TYPES = {
   SCHOLARSHIP_UPDATED: 'scholarshipUpdated',
   SCHOLARSHIP_NEWS: 'scholarshipNews',
   APPLICATION: 'application',
+  SYSTEM: 'system',
   SCHOLARSHIP_APPLICATION: 'scholarshipApplication',
   APPLICATION_REFERRAL: 'applicationReferral',
 };

@@ -13,6 +13,9 @@ import {
   ApplicationCardSkeleton,
   AppliedScholarshipCard,
   ApplicationDetail,
+  ReportCard,
+  ReportCardSkeleton,
+  ReportDetail,
 } from './components';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { type ShortlistTab, getTabConfigs } from './types';
@@ -24,10 +27,13 @@ import {
 import ApplicationCard from './components/ApplicationCard';
 import {
   useDeleteApplicationMutation,
+  useDeleteReportMutation,
   useGetApplicationsQuery,
   useGetAppliedApplicationQuery,
+  useGetMyReportQuery,
 } from '@/state/apiApplicant';
 import { Button } from '@/lib/cus/button';
+import { toast } from 'sonner';
 
 export default function ActivityManagement() {
   const router = useRouter();
@@ -38,19 +44,25 @@ export default function ActivityManagement() {
   const [selectedAppliedScholarship, setSelectedAppliedScholarship] =
     useState<ApplicationScholarship | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [selectedReport, setSelectedReport] = useState<MyReport | null>(null);
+  const [isReportDetailOpen, setIsReportDetailOpen] = useState(false);
   const TAB_CONFIGS = getTabConfigs(t);
 
   const { data: trackedScholarshipsData, isLoading: isLoadingTrackedScholarships } =
-    useGetTrackedScholarshipsQuery();
+    useGetTrackedScholarshipsQuery(undefined, { skip: activeTab !== 'tracking' });
   const { data: followedProvidersData, isLoading: isLoadingFollowedProviders } =
-    useGetFollowedProvidersQuery();
+    useGetFollowedProvidersQuery(undefined, { skip: activeTab !== 'following' });
   const { data: appliedScholarshipsData, isLoading: isLoadingAppliedScholarships } =
-    useGetAppliedApplicationQuery();
+    useGetAppliedApplicationQuery(undefined, { skip: activeTab !== 'applied' });
   const {
     data: applicationsData,
     isLoading: isLoadingApplications,
     refetch: refetchApplications,
-  } = useGetApplicationsQuery();
+  } = useGetApplicationsQuery(undefined, { skip: activeTab !== 'application' });
+  const { data: reportData, isLoading: isLoadingReport } = useGetMyReportQuery(undefined, {
+    skip: activeTab !== 'report',
+  });
+  const [deleteReport] = useDeleteReportMutation();
   const [deleteApplication] = useDeleteApplicationMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
@@ -71,6 +83,7 @@ export default function ActivityManagement() {
   const isAppliedTab = activeTab === 'applied';
   const isTrackedTab = activeTab === 'tracking';
   const isApplicationTab = activeTab === 'application';
+  const isReportTab = activeTab === 'report';
 
   const handleViewDetails = (slug?: string) => {
     router.push(`/scholarships/${slug}`);
@@ -134,6 +147,14 @@ export default function ActivityManagement() {
     setIsDetailOpen(true);
   };
 
+  const handleDeleteReport = async (reportId: number) => {
+    try {
+      await deleteReport({ reportId }).unwrap();
+      toast.success(t('toast.reportDeleted'));
+    } catch (error) {
+      toast.error(t('toast.reportDeletedFailed'));
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       <HeroSection />
@@ -171,14 +192,30 @@ export default function ActivityManagement() {
                     <ApplicationCardSkeleton key={`skeleton-application-${index}`} />
                   ))}
                 </div>
+              ) : isReportTab && isLoadingReport ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {[...Array(6)].map((_, index) => (
+                    <ReportCardSkeleton key={`skeleton-report-${index}`} />
+                  ))}
+                </div>
               ) : // Empty State
               isTrackedTab && trackedScholarshipsData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isFollowingTab && followedProvidersData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : isApplicationTab && applicationsData?.length === 0 ? (
-                <EmptyState tab={activeTab} />
+                <div className="flex flex-col gap-4 ">
+                  <Button
+                    variant="custom"
+                    color="gray"
+                    onClick={handleCreateNew}
+                    value={t('activity.applicationDetail.createNewApplication')}
+                  />
+                  <EmptyState tab={activeTab} />
+                </div>
               ) : isAppliedTab && appliedScholarshipsData?.length === 0 ? (
+                <EmptyState tab={activeTab} />
+              ) : isReportTab && reportData?.length === 0 ? (
                 <EmptyState tab={activeTab} />
               ) : // Display Data
               isTrackedTab ? (
@@ -234,6 +271,19 @@ export default function ActivityManagement() {
                     />
                   ))}
                 </div>
+              ) : isReportTab ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {reportData?.map((report) => (
+                    <ReportCard
+                      key={report.id}
+                      report={report}
+                      onViewDetails={(report) => {
+                        setSelectedReport(report);
+                        setIsReportDetailOpen(true);
+                      }}
+                    />
+                  ))}
+                </div>
               ) : (
                 <EmptyState tab={activeTab} />
               )}
@@ -250,6 +300,14 @@ export default function ActivityManagement() {
         appliedScholarship={selectedAppliedScholarship}
         onViewProvider={handleViewProvider}
         onViewScholarship={handleViewDetails}
+      />
+
+      {/* Report Detail Sheet */}
+      <ReportDetail
+        open={isReportDetailOpen}
+        onOpenChange={setIsReportDetailOpen}
+        report={selectedReport}
+        onDelete={handleDeleteReport}
       />
     </div>
   );

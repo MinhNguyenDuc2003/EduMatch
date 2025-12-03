@@ -31,13 +31,83 @@ export default GenCtx({
     });
     // const loading = useState(false);
     const meds = {
-      async onGetData() {
+      async onGetDataTopApply() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.post('/scholarship/scholarships/page', {});
+          const data = await apiClientService.get('/api/scholarship/applications-scholarship/top-applied');
           if (data) {
-            ss.Joint.ScholarshipList = data;
-            console.log('first', data);
+             ss.setJointData({
+              TopApply : data || [],
+            });
+            console.log('TopApply', data);
+          }
+          return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+      async onGetDataTopView() {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get('/api/scholarship/scholarships/top-views/month');
+          if (data) {
+             ss.setJointData({
+              TopView : data || [],
+            });
+            console.log('TopView', data);
+          }
+          return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+      async onGetDataRevenueByUsertype() {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get('/api/subscription/subscription/orders/revenue-by-usertype');
+          if (data) {
+             ss.setJointData({
+              RevenueByUsertype: data || [],
+            });
+            console.log('revenue-by-usertype', data);
+          }
+          return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+      async onGetDataRevenueByMonth() {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get('/api/subscription/subscription/orders/revenue-by-month');
+          if (data) {
+            ss.setJointData({
+              RevenueByMonth: data || [],
+            });
+            console.log('revenue-by-month', data);
+          }
+          return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+      async onGetDataRevenueMonthly() {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get('/api/subscription/subscription/orders/monthly-revenue');
+          if (data) {
+            ss.setJointData({
+              RevenueMonthly: data || [],
+            });
+            console.log('monthly-revenue', data);
           }
           return;
         } catch (error) {
@@ -49,7 +119,11 @@ export default GenCtx({
     };
 
     useEffect(() => {
-      meds.onGetData();
+      meds.onGetDataRevenueByMonth();
+      meds.onGetDataRevenueByUsertype();
+      meds.onGetDataRevenueMonthly();
+      meds.onGetDataTopApply();
+      meds.onGetDataTopView();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {

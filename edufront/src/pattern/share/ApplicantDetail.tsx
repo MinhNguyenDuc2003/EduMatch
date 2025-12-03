@@ -76,16 +76,107 @@ const ApplicantDetail = ({ applicant }: { applicant: ApplicantProfile }) => {
           </div>
         </div>
 
-        <div className="bg-muted/30 p-3 sm:p-4 rounded">
-          <h4 className="font-semibold mb-3 flex flex-col sm:flex-row items-start sm:items-center gap-2">
-            {t('detail.overallGpa')}
-            <span
-              className="text-lg font-bold px-3 py-1 rounded"
-              style={{ backgroundColor: '#3d6cb9', color: 'white' }}
-            >
-              {applicant.overallGpa}
-            </span>
-          </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+          <div className="bg-muted/30 p-3 sm:p-4 rounded">
+            <h4 className="font-semibold mb-3 flex flex-col sm:flex-row items-start sm:items-center gap-2">
+              {t('detail.overallGpa')}
+              <span
+                className="text-lg font-bold px-3 py-1 rounded"
+                style={{ backgroundColor: '#3d6cb9', color: 'white' }}
+              >
+                {applicant.overallGpa}
+              </span>
+            </h4>
+          </div>
+          {applicant.educationLevel && (
+            <div className="bg-muted/30 p-3 sm:p-4 rounded">
+              <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                {t('detail.educationLevel')}
+              </p>
+              <p className="font-medium text-sm sm:text-base">{applicant.educationLevel}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Test Scores */}
+        {(applicant.satScore ||
+          applicant.actScore ||
+          applicant.greScore ||
+          applicant.toeflScore ||
+          applicant.ieltsScore) && (
+          <div className="bg-muted/30 p-3 sm:p-4 rounded">
+            <h4 className="font-semibold mb-3 text-base sm:text-lg">{t('detail.testScores')}</h4>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {applicant.satScore && (
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                    {t('detail.satScore')}
+                  </p>
+                  <p className="font-medium text-sm sm:text-base">{applicant.satScore}/1600</p>
+                </div>
+              )}
+              {applicant.actScore && (
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                    {t('detail.actScore')}
+                  </p>
+                  <p className="font-medium text-sm sm:text-base">{applicant.actScore}/36</p>
+                </div>
+              )}
+              {applicant.greScore && (
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                    {t('detail.greScore')}
+                  </p>
+                  <p className="font-medium text-sm sm:text-base">{applicant.greScore}/340</p>
+                </div>
+              )}
+              {applicant.toeflScore && (
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                    {t('detail.toeflScore')}
+                  </p>
+                  <p className="font-medium text-sm sm:text-base">{applicant.toeflScore}/120</p>
+                </div>
+              )}
+              {applicant.ieltsScore && (
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                    {t('detail.ieltsScore')}
+                  </p>
+                  <p className="font-medium text-sm sm:text-base">{applicant.ieltsScore}/9.0</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Languages and Academic Info */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+          {applicant.languages && (
+            <div className="bg-muted/30 p-3 sm:p-4 rounded">
+              <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
+                {t('detail.languages')}
+              </p>
+              <p className="text-xs sm:text-sm">{applicant.languages}</p>
+            </div>
+          )}
+          {applicant.academicAwards && (
+            <div className="bg-muted/30 p-3 sm:p-4 rounded">
+              <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
+                {t('detail.academicAwards')}
+              </p>
+              <p className="text-xs sm:text-sm">{applicant.academicAwards}</p>
+            </div>
+          )}
+          {applicant.publicationCount !== undefined && applicant.publicationCount !== null && (
+            <div className="bg-muted/30 p-3 sm:p-4 rounded">
+              <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                {t('detail.publicationCount')}
+              </p>
+              <p className="font-medium text-sm sm:text-base">{applicant.publicationCount}</p>
+            </div>
+          )}
         </div>
 
         {applicant.educationHistories && applicant.educationHistories.length > 0 && (
@@ -216,12 +307,71 @@ const ApplicantDetail = ({ applicant }: { applicant: ApplicantProfile }) => {
           </div>
         )}
 
+        {applicant.researchInterest && (
+          <div className="bg-muted/30 p-3 sm:p-4 rounded">
+            <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
+              {t('detail.researchInterest')}
+            </p>
+            <p className="text-xs sm:text-sm">{applicant.researchInterest}</p>
+          </div>
+        )}
+
+        {applicant.extracurricularActivities && (
+          <div className="bg-muted/30 p-3 sm:p-4 rounded">
+            <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
+              {t('detail.extracurricularActivities')}
+            </p>
+            <p className="text-xs sm:text-sm">{applicant.extracurricularActivities}</p>
+          </div>
+        )}
+
         {applicant.careerGoals && (
           <div className="bg-muted/30 p-3 sm:p-4 rounded">
             <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
               {t('detail.careerGoals')}
             </p>
             <p className="text-xs sm:text-sm">{applicant.careerGoals}</p>
+          </div>
+        )}
+
+        {/* Preferred Scholarship Information */}
+        {(applicant.preferredScholarshipType ||
+          applicant.preferredCountry ||
+          applicant.preferredUniversity) && (
+          <div className="bg-muted/30 p-3 sm:p-4 rounded">
+            <h4 className="font-semibold mb-3 text-base sm:text-lg">
+              {t('detail.preferredScholarship')}
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {applicant.preferredScholarshipType && (
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                    {t('detail.preferredType')}
+                  </p>
+                  <p className="font-medium text-sm sm:text-base">
+                    {applicant.preferredScholarshipType}
+                  </p>
+                </div>
+              )}
+              {applicant.preferredCountry && (
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                    {t('detail.preferredCountry')}
+                  </p>
+                  <p className="font-medium text-sm sm:text-base">{applicant.preferredCountry}</p>
+                </div>
+              )}
+              {applicant.preferredUniversity && (
+                <div className="sm:col-span-2">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                    {t('detail.preferredUniversity')}
+                  </p>
+                  <p className="font-medium text-sm sm:text-base">
+                    {applicant.preferredUniversity}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         )}
 

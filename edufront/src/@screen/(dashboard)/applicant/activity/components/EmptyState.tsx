@@ -14,6 +14,7 @@ const iconMap: Record<ShortlistTab, React.ComponentType<{ className?: string }>>
   applied: CheckCircle2,
   following: Users,
   application: FileQuestion,
+  report: FileQuestion,
 };
 
 export default function EmptyState({ tab }: EmptyStateProps) {

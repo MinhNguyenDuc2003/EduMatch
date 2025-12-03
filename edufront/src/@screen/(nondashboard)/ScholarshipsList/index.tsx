@@ -31,6 +31,7 @@ export default function ScholarshipsList() {
     studyLevel: '',
     scholarshipType: '',
     university: '',
+    fields: '',
     minGpa: 0,
     maxGpa: 4,
     page: 0,
@@ -48,6 +49,7 @@ export default function ScholarshipsList() {
       country: filters.country || '',
       scholarshipType: filters.scholarshipType || '',
       university: filters.university || '',
+      fields: filters.fields || '',
     },
     page: filters.page,
     size: filters.size,
@@ -129,6 +131,7 @@ export default function ScholarshipsList() {
     if (filters.scholarshipType) count++;
     if (filters.minGpa > 0) count++;
     if (filters.maxGpa < 4) count++;
+    if (filters.fields) count++;
     return count;
   })();
 

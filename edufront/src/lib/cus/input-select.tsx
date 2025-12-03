@@ -13,6 +13,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/lib/cus/popover';
 import { Separator } from './separator';
 import { Button } from './button';
+import { useTranslations } from 'next-intl';
 
 type SelectOption = {
   value: string;
@@ -35,8 +36,9 @@ const InputSelect = ({
   onValueChange,
   className,
   children,
-  placeholder = 'Select an option',
+  placeholder = '',
 }: InputSelectProps) => {
+  const t = useTranslations('inputSelect');
   const [selectedValue, setSelectedValue] = React.useState<string>(value);
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
@@ -85,7 +87,7 @@ const InputSelect = ({
             </div>
           ) : (
             <div className="flex items-center justify-between w-full">
-              <span className="px-3 text-sm text-muted-foreground">{placeholder}</span>
+              <span className="px-3 text-sm text-muted-foreground">{t('placeholder')}</span>
               <ChevronDown className="h-4 mx-1 cursor-pointer text-muted-foreground" />
             </div>
           )}

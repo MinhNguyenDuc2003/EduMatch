@@ -8,10 +8,10 @@ type AppliedScholarshipCardProps = {
   onViewScholarship?: (slug: string) => void;
 };
 
-const formatDate = (date?: number) => {
+const formatDate = (date?: number | string) => {
   if (!date) return 'N/A';
   try {
-    const dateObj = new Date(date);
+    const dateObj = new Date(typeof date === 'string' ? date : date > 1e12 ? date : date * 1000);
     return dateObj.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -44,7 +44,8 @@ export default function AppliedScholarshipCard({
   onViewScholarship,
 }: AppliedScholarshipCardProps) {
   const t = useTranslations('activity.appliedScholarshipCard');
-  const { applicationVo, scholarshipVo, status, note, reviewedAt } = appliedScholarship;
+  const { applicationVo, scholarshipVo, status, note, reviewedAt, createdDate } =
+    appliedScholarship;
   const { title, fundingAmount, providerProfileVo, slug } = scholarshipVo;
   const { applicationName } = applicationVo;
   const { organizationName } = providerProfileVo;
@@ -56,7 +57,7 @@ export default function AppliedScholarshipCard({
     >
       {/* Header Section */}
       <div className="p-4">
-        <div className="flex items-center justify-between gap-3 mb-2">
+        <div className="flex items-center justify-between gap-3 mb-1">
           {/* Left side: */}
           <div className="flex items-center gap-2">
             <div className={`w-3 h-3 rounded-full ${getStatusColor(status)}`}></div>
@@ -66,15 +67,19 @@ export default function AppliedScholarshipCard({
           </div>
 
           {/* Right side: Manage button (reviewedAt date) */}
-          {reviewedAt && (
-            <button className="px-3 py-1.5 rounded-md text-xs font-medium  text-gray-700 bg-zinc-100 ">
+          {reviewedAt ? (
+            <div className="px-3 py-1.5 rounded-sm text-sm font-medium  text-gray-700 bg-zinc-100 ">
               {formatDate(reviewedAt)}
-            </button>
+            </div>
+          ) : (
+            <div className="px-3 py-1.5 rounded-sm text-sm font-medium  text-gray-700 bg-zinc-100 ">
+              {formatDate(createdDate)}
+            </div>
           )}
         </div>
 
         {/* Large Application Name */}
-        <h2 className="text-xl font-bold text-gray-900 mb-2">{applicationName}</h2>
+        <h3 className="text-base font-bold text-gray-900 mb-1">{applicationName}</h3>
 
         {/* Description text */}
         <p className="text-sm text-gray-600">
@@ -86,10 +91,10 @@ export default function AppliedScholarshipCard({
       <div className="border-t border-gray-100"></div>
 
       {/*Info Section */}
-      <div className="p-4 space-y-3">
+      <div className="p-4 space-y-2">
         {/* Scholarship Title */}
         <div
-          className="flex items-center justify-between hover:cursor-pointer "
+          className="flex justify-between gap-8 hover:cursor-pointer text-right"
           onClick={(e) => {
             e.stopPropagation();
             onViewScholarship?.(slug);

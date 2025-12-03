@@ -1,6 +1,6 @@
 declare global {
   type UserNotification = {
-    id?: number;
+    id: number;
     isRead: boolean;
     referenceType: string;
     referenceId: string;
