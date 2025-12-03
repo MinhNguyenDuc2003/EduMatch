@@ -200,10 +200,22 @@ const ApplicationDetailDialog = React.memo(
                   <p className="text-sm text-muted-foreground">{t('dateOfBirth')}</p>
                   <p className="font-semibold">{application.dateOfBirth || '-'}</p>
                 </div>
+                {application.age && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t('age')}</p>
+                    <p className="font-semibold">{application.age}</p>
+                  </div>
+                )}
                 <div>
                   <p className="text-sm text-muted-foreground">{t('nationality')}</p>
                   <p className="font-semibold">{application.nationality || '-'}</p>
                 </div>
+                {application.citizenship && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t('citizenship')}</p>
+                    <p className="font-semibold">{application.citizenship}</p>
+                  </div>
+                )}
                 <div>
                   <p className="text-sm text-muted-foreground">{t('email')}</p>
                   <p className="font-semibold">{application.email}</p>
@@ -216,6 +228,12 @@ const ApplicationDetailDialog = React.memo(
                   <p className="text-sm text-muted-foreground">{t('address')}</p>
                   <p className="font-semibold">{application.address || '-'}</p>
                 </div>
+                {application.languages && (
+                  <div className="sm:col-span-2">
+                    <p className="text-sm text-muted-foreground">{t('languages')}</p>
+                    <p className="font-semibold">{application.languages}</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -243,12 +261,97 @@ const ApplicationDetailDialog = React.memo(
                   <p className="text-sm text-muted-foreground">{t('major')}</p>
                   <p className="font-semibold">{application.major || '-'}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{t('gpa')}</p>
-                  <p className="font-semibold">{application.gpa || '-'}</p>
-                </div>
+                {application.gpa && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t('gpa')}</p>
+                    <p className="font-semibold">{application.gpa}/4.0</p>
+                  </div>
+                )}
+                {application.classRank && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t('classRank')}</p>
+                    <p className="font-semibold">{application.classRank}</p>
+                  </div>
+                )}
+                {application.classSize && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t('classSize')}</p>
+                    <p className="font-semibold">{application.classSize}</p>
+                  </div>
+                )}
+                {application.classRankPercentile && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t('classRankPercentile')}</p>
+                    <p className="font-semibold">{application.classRankPercentile}%</p>
+                  </div>
+                )}
+                {application.academicAwards && (
+                  <div className="sm:col-span-2">
+                    <p className="text-sm text-muted-foreground">{t('academicAwards')}</p>
+                    <p className="font-semibold">{application.academicAwards}</p>
+                  </div>
+                )}
+                {application.publicationCount !== undefined &&
+                  application.publicationCount !== null && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t('publicationCount')}</p>
+                      <p className="font-semibold">{application.publicationCount}</p>
+                    </div>
+                  )}
               </CardContent>
             </Card>
+
+            {/* Test Scores */}
+            {(application.satScore ||
+              application.actScore ||
+              application.greScore ||
+              application.gmatScore ||
+              application.toeflScore ||
+              application.ieltsScore) && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">{t('testScores')}</CardTitle>
+                </CardHeader>
+                <CardContent className="grid gap-6 sm:grid-cols-2">
+                  {application.satScore && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t('satScore')}</p>
+                      <p className="font-semibold">{application.satScore}/1600</p>
+                    </div>
+                  )}
+                  {application.actScore && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t('actScore')}</p>
+                      <p className="font-semibold">{application.actScore}/36</p>
+                    </div>
+                  )}
+                  {application.greScore && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t('greScore')}</p>
+                      <p className="font-semibold">{application.greScore}/340</p>
+                    </div>
+                  )}
+                  {application.gmatScore && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t('gmatScore')}</p>
+                      <p className="font-semibold">{application.gmatScore}/800</p>
+                    </div>
+                  )}
+                  {application.toeflScore && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t('toeflScore')}</p>
+                      <p className="font-semibold">{application.toeflScore}/120</p>
+                    </div>
+                  )}
+                  {application.ieltsScore && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t('ieltsScore')}</p>
+                      <p className="font-semibold">{application.ieltsScore}/9.0</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           {/* Experience Tab */}
@@ -314,6 +417,49 @@ const ApplicationDetailDialog = React.memo(
                 )}
               </CardContent>
             </Card>
+
+            {/* Work Experience */}
+            {application.workExperienceYears !== undefined &&
+              application.workExperienceYears !== null && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base">{t('workExperience')}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm">
+                      <span className="font-semibold">{application.workExperienceYears}</span>{' '}
+                      {t('years')}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+
+            {/* Athletic Information */}
+            {application.isAthlete && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">{t('athleticInformation')}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t('isAthlete')}</p>
+                    <Badge variant="outline" className="mt-1">
+                      {t('yes')}
+                    </Badge>
+                  </div>
+                  {application.athleticAchievements && (
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {t('athleticAchievements')}
+                      </p>
+                      <p className="text-sm whitespace-pre-wrap">
+                        {application.athleticAchievements}
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           {/* Personal Statement Tab */}
@@ -339,6 +485,32 @@ const ApplicationDetailDialog = React.memo(
                 </p>
               </CardContent>
             </Card>
+
+            {application.careerGoal && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">{t('careerGoal')}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed">
+                    {application.careerGoal}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            {application.researchInterest && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">{t('researchInterest')}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed">
+                    {application.researchInterest}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
 
             {application.applicationAttributes && application.applicationAttributes.length > 0 && (
               <Card>
