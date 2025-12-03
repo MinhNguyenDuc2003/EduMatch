@@ -300,7 +300,23 @@
       "expectedGraduation": "Dự kiến Tốt nghiệp",
       "preferences": "Sở thích",
       "weight": "Trọng số",
-      "militaryFamilyHistory": "Lịch sử Gia đình Quân đội"
+      "militaryFamilyHistory": "Lịch sử Gia đình Quân đội",
+      "educationLevel": "Trình độ học vấn",
+      "testScores": "Điểm thi",
+      "satScore": "Điểm SAT",
+      "actScore": "Điểm ACT",
+      "greScore": "Điểm GRE",
+      "toeflScore": "Điểm TOEFL",
+      "ieltsScore": "Điểm IELTS",
+      "languages": "Ngôn ngữ",
+      "academicAwards": "Giải thưởng học thuật",
+      "publicationCount": "Số lượng xuất bản phẩm",
+      "researchInterest": "Sở thích nghiên cứu",
+      "extracurricularActivities": "Hoạt động ngoại khóa",
+      "preferredScholarship": "Học bổng ưa thích",
+      "preferredType": "Loại học bổng",
+      "preferredCountry": "Quốc gia",
+      "preferredUniversity": "Trường đại học"
     }
   },
   "error": {

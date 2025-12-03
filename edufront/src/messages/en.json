@@ -300,7 +300,23 @@
       "expectedGraduation": "Expected Graduation",
       "preferences": "Preferences",
       "weight": "Weight",
-      "militaryFamilyHistory": "Military Family History"
+      "militaryFamilyHistory": "Military Family History",
+      "educationLevel": "Education Level",
+      "testScores": "Test Scores",
+      "satScore": "SAT Score",
+      "actScore": "ACT Score",
+      "greScore": "GRE Score",
+      "toeflScore": "TOEFL Score",
+      "ieltsScore": "IELTS Score",
+      "languages": "Languages",
+      "academicAwards": "Academic Awards",
+      "publicationCount": "Publication Count",
+      "researchInterest": "Research Interest",
+      "extracurricularActivities": "Extracurricular Activities",
+      "preferredScholarship": "Preferred Scholarship",
+      "preferredType": "Preferred Type",
+      "preferredCountry": "Preferred Country",
+      "preferredUniversity": "Preferred University"
     }
   },
   "error": {
