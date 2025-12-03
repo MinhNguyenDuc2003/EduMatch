@@ -86,14 +86,14 @@ function NewsDetailInner({ meds, id }: { meds: any; id: string }) {
   );
 }
 
-function InfoCard({ label, value }: { label: string; value: any }) {
-  return (
-    <div className="bg-white shadow-sm rounded-lg p-4 flex flex-col">
-      <div className="text-gray-500 text-sm">{label}</div>
-      <div className="text-gray-800 font-medium mt-1">{value ?? '—'}</div>
-    </div>
-  );
-}
+// function InfoCard({ label, value }: { label: string; value: any }) {
+//   return (
+//     <div className="bg-white shadow-sm rounded-lg p-4 flex flex-col">
+//       <div className="text-gray-500 text-sm">{label}</div>
+//       <div className="text-gray-800 font-medium mt-1">{value ?? '—'}</div>
+//     </div>
+//   );
+// }
 
 function CardLink({ title, value, link }: { title: string; value: string; link: string }) {
   return (

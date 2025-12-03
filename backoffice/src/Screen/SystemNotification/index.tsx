@@ -1,11 +1,11 @@
 'use client';
 
-import { CheckCircle, Clock, XCircle } from 'lucide-react';
+import { CheckCircle, Clock } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
-import { useRouter } from 'next/navigation';
 
 const SystemNotification = () => {
   const [filterText, setFilterText] = useState('');
@@ -18,7 +18,7 @@ const router = useRouter()
     <Context.Provider>
       <Context.Consumer>
         {({ ss }) => {
-          const list = (ss?.Joint?.SystemNotification as any).data || [];
+          const list = (ss?.Joint?.SystemNotification as any)?.data || [];
           console.log('list', list);
 
           const notifications = list.map((item :  any) => ({

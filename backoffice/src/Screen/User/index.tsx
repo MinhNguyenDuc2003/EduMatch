@@ -1,10 +1,10 @@
 'use client';
-import { Calendar, User, UserCheck, UserX } from 'lucide-react';
+import { User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
-import { useRouter } from 'next/navigation';
 
 const Users = () => {
   const [filterText, setFilterText] = useState('');
