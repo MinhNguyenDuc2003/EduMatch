@@ -510,7 +510,9 @@
       "university": "Trường đại học",
       "level": "Trình độ",
       "type": "Loại",
-      "noDeadline": "Không có hạn chót"
+      "noDeadline": "Không có hạn chót",
+      "compare": "So sánh",
+      "alreadySelected": "Đã được chọn"
     },
     "premiumBanner": {
       "badge": "AI Scholarship",
@@ -1299,6 +1301,32 @@
   },
   "toast": {
     "reportDeleted": "Xóa báo cáo thành công",
-    "reportDeletedFailed": "Xóa báo cáo thất bại"
+    "reportDeletedFailed": "Xóa báo cáo thất bại",
+    "scholarshipAdded": "Đã thêm học bổng vào danh sách so sánh",
+    "scholarshipAddedFailed": "Thêm học bổng vào danh sách so sánh thất bại",
+    "scholarshipMaxSelected": "Bạn chỉ có thể so sánh tối đa 3 học bổng",
+    "scholarshipAlreadySelected": "Đã được chọn"
+  },
+  "selectedScholarshipCompare": {
+    "title": "Đã chọn ({number}/3)",
+    "compare": "So sánh",
+    "remove": "Xóa",
+    "clearAll": "Xóa tất cả",
+    "compareButton": "So sánh học bổng"
+  },
+  "scholarshipCompare": {
+    "title": "So sánh học bổng",
+    "scholarship": "Học bổng",
+    "provider": "Tổ chức",
+    "country": "Quốc gia",
+    "university": "Trường đại học",
+    "studyLevel": "Bậc học",
+    "scholarshipType": "Loại học bổng",
+    "fundingAmount": "Giá trị học bổng",
+    "deadline": "Hạn nộp",
+    "gpaRequirement": "Yêu cầu GPA",
+    "languageRequirement": "Yêu cầu ngôn ngữ",
+    "availableSlots": "Số lượng",
+    "description": "Mô tả"
   }
 }

@@ -510,7 +510,9 @@
       "university": "University",
       "level": "Level",
       "type": "Type",
-      "noDeadline": "No deadline"
+      "noDeadline": "No deadline",
+      "compare": "Compare",
+      "alreadySelected": "Already selected"
     },
     "premiumBanner": {
       "badge": "AI Scholarship",
@@ -1299,6 +1301,32 @@
   },
   "toast": {
     "reportDeleted": "Report deleted successfully",
-    "reportDeletedFailed": "Report deleted failed"
+    "reportDeletedFailed": "Report deleted failed",
+    "scholarshipAdded": "Scholarship added to compare list successfully",
+    "scholarshipAddedFailed": "Failed to add scholarship to compare list",
+    "scholarshipMaxSelected": "You can only compare up to 3 scholarships",
+    "scholarshipAlreadySelected": "Already selected"
+  },
+  "selectedScholarshipCompare": {
+    "title": "Selected ({number}/3)",
+    "compare": "Compare",
+    "remove": "Remove",
+    "clearAll": "Clear All",
+    "compareButton": "Compare Scholarships"
+  },
+  "scholarshipCompare": {
+    "title": "Compare Scholarships",
+    "scholarship": "Scholarship",
+    "provider": "Provider",
+    "country": "Country",
+    "university": "University",
+    "studyLevel": "Study Level",
+    "scholarshipType": "Scholarship Type",
+    "fundingAmount": "Funding Amount",
+    "deadline": "Deadline",
+    "gpaRequirement": "GPA Requirement",
+    "languageRequirement": "Language Requirement",
+    "availableSlots": "Available Slots",
+    "description": "Description"
   }
 }
