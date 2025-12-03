@@ -1,6 +1,7 @@
 import { SCHOLARSHIP_TYPES, STUDY_LEVELS, GENDER_OPTIONS, MAJOR_NAMES } from '@/constants/Common';
 import { COUNTRIES } from '@/constants/Common';
 import { DEFAULT_SCHOLARSHIP_FORM_VALUES } from '@/constants/DefaultValues';
+import { University } from '@/constants/University';
 import { Button } from '@/lib/cus/button';
 import { CustomFormField } from '@/lib/cus/CustomFormField';
 import { Form } from '@/lib/cus/form';
@@ -27,6 +28,10 @@ const ScholarshipForm = ({
   isLoading?: boolean;
 }) => {
   const t = useTranslations('scholarshipForm');
+  const universityOptions = University.map((university) => ({
+    value: university.value,
+    label: university.label,
+  }));
   // Form setup
   const methods = useForm<IScholarship>({
     reValidateMode: 'onSubmit',
@@ -298,8 +303,10 @@ const ScholarshipForm = ({
               <CustomFormField
                 name="university"
                 label={t('university')}
-                type="text"
-                placeholder="Enter university name"
+                type="select"
+                placeholder="Select university"
+                options={universityOptions}
+                initialValue={scholarship?.country}
                 isBorder={true}
               />
             </div>
