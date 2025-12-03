@@ -1,0 +1,32 @@
+import { useAuthenticatedQuery } from "@/state/api";
+export const useAuth = () => {
+  const { data, isLoading, isError, error, refetch } = useAuthenticatedQuery();
+  //   const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
+
+  //   const handleLogout = async () => {
+  //     await logout()
+  //       .unwrap()
+  //       .then(() => {
+  //         toast.success('Logged out successfully');
+  //       });
+  //   };
+
+  return {
+    // User data
+    user: data?.customer ?? null,
+
+    // Authentication state
+    isAuthenticated: data?.isAuthenticated ?? false,
+    isProvider: data?.isProvider ?? false,
+    subscriptions: data?.subscriptions ?? [],
+    // Loading and error states
+    isLoading,
+    isError,
+    error,
+
+    //     handleLogout,
+
+    // Helper methods
+    refetch,
+  };
+};

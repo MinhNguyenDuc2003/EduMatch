@@ -2,13 +2,16 @@ import { ApplicationModal } from "@/components/scholarshipDetail/ApplicationModa
 import { ScholarshipHeader } from "@/components/scholarshipDetail/ScholarshipHeader";
 import { ScholarshipInfoTab } from "@/components/scholarshipDetail/ScholarshipInfoTab";
 import {
+  useFollowProviderMutation,
   useFollowScholarshipMutation,
   useGetApplicationsQuery,
   useGetScholarshipBySlugQuery,
   useSubmitApplicationMutation,
+  useUnfollowProviderMutation,
   useUnfollowScholarshipMutation,
 } from "@/state/api";
 import { router, useLocalSearchParams } from "expo-router";
+import { HeartIcon } from "lucide-react-native";
 import React, { useRef, useState } from "react";
 import { Animated, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -27,12 +30,13 @@ const ScholarshipDetail = () => {
       skip: !slug,
     });
 
-  const [followScholarship, { isLoading: isLoadingFollow }] =
-    useFollowScholarshipMutation();
-  const [unfollowScholarship, { isLoading: isLoadingUnfollow }] =
-    useUnfollowScholarshipMutation();
-  const [submitApplication, { isLoading: isLoadingSubmit }] =
-    useSubmitApplicationMutation();
+  const [followScholarship] = useFollowScholarshipMutation();
+  const [unfollowScholarship] = useUnfollowScholarshipMutation();
+
+  const [followProvider] = useFollowProviderMutation();
+  const [unfollowProvider] = useUnfollowProviderMutation();
+
+  const [submitApplication] = useSubmitApplicationMutation();
 
   const scaleHeart = useRef(new Animated.Value(1)).current;
 
@@ -62,7 +66,7 @@ const ScholarshipDetail = () => {
     }
   };
 
-  const handleFollow = async () => {
+  const handleFollowScholarship = async () => {
     if (!dataScholarship) return;
     if (dataScholarship.isFollow === 1) {
       await unfollowScholarship({ scholarshipId: dataScholarship.id });
@@ -73,6 +77,15 @@ const ScholarshipDetail = () => {
       Animated.spring(scaleHeart, { toValue: 1.4, useNativeDriver: true }),
       Animated.spring(scaleHeart, { toValue: 1, useNativeDriver: true }),
     ]).start();
+  };
+
+  const handleFollowProvider = async () => {
+    if (!dataScholarship) return;
+    if (dataScholarship.providerProfileVo.isFollow === 1) {
+      await unfollowProvider(dataScholarship.providerProfileVo.id);
+    } else {
+      await followProvider(dataScholarship.providerProfileVo.id);
+    }
   };
 
   if (isLoadingScholarship) {
@@ -100,9 +113,9 @@ const ScholarshipDetail = () => {
         logoUrl={provider.logoUrl}
         organizationName={provider.organizationName}
         organizationType={provider.organizationType}
-        isFollow={dataScholarship.isFollow}
+        isFollow={dataScholarship.providerProfileVo.isFollow}
         scaleHeart={scaleHeart}
-        onFollowPress={handleFollow}
+        onFollowPress={handleFollowProvider}
       />
 
       {/* Tab Content */}
@@ -110,15 +123,29 @@ const ScholarshipDetail = () => {
         <ScholarshipInfoTab scholarship={dataScholarship} />
       </View>
 
-      {/* Apply Button */}
-      <TouchableOpacity
-        className="bg-primary-brand p-2 rounded-xl absolute bottom-4 left-4 right-4 z-10"
-        onPress={() => setShowApplicationModal(true)}
-      >
-        <Text className="text-white text-center font-bold text-lg">
-          Apply Now
-        </Text>
-      </TouchableOpacity>
+      <View className="flex flex-row items-center absolute bottom-4 left-4 right-4 z-10 gap-2">
+        <TouchableOpacity
+          onPress={handleFollowScholarship}
+          className="p-2 rounded-lg border-primary-brand border"
+        >
+          <Animated.View style={{ transform: [{ scale: scaleHeart }] }}>
+            <HeartIcon
+              size={22}
+              color={"#3d6cb9"}
+              fill={dataScholarship.isFollow === 1 ? "#3d6cb9" : "transparent"}
+            />
+          </Animated.View>
+        </TouchableOpacity>
+        {/* Apply Button */}
+        <TouchableOpacity
+          className="bg-primary-brand p-2 rounded-xl flex-1"
+          onPress={() => setShowApplicationModal(true)}
+        >
+          <Text className="text-white text-center font-bold text-lg">
+            Apply Now
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Application Modal */}
       <ApplicationModal

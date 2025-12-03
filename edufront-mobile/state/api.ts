@@ -5,13 +5,27 @@ const API_ENDPOINTS = {
   SCHOLARSHIP: "api/scholarship/scholarships",
   SCHOLARSHIPS_SEARCH: "/api/search/scholarships",
   APPLICATION: "/api/scholarship/applications",
+  FOLLOW_PROVIDER: "/api/profile/followers",
 } as const;
 
 export const api = createApi({
   baseQuery: customBaseQuery,
   reducerPath: "api",
-  tagTypes: ["Scholarships", "Applications", "Notifications"],
+  tagTypes: [
+    "Scholarships",
+    "Applications",
+    "Notifications",
+    "Providers",
+    "Auth",
+  ],
   endpoints: (build) => ({
+    authenticated: build.query<AuthResponse, void>({
+      query: () => ({
+        url: "/api/customer/authenticated",
+        method: "GET",
+      }),
+      providesTags: ["Auth"],
+    }),
     getToken: build.query<string, void>({
       query: () => ({
         url: "/api/notification/users/token",
@@ -90,6 +104,26 @@ export const api = createApi({
       invalidatesTags: ["Scholarships"],
     }),
 
+    // Follow provider
+    followProvider: build.mutation<void, number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.FOLLOW_PROVIDER}/${id}`,
+        method: "POST",
+        body: { id },
+      }),
+      invalidatesTags: ["Providers", "Scholarships"],
+    }),
+
+    // Unfollow provider
+    unfollowProvider: build.mutation<void, number>({
+      query: (id) => ({
+        url: `${API_ENDPOINTS.FOLLOW_PROVIDER}/${id}`,
+        method: "DELETE",
+        body: { id },
+      }),
+      invalidatesTags: ["Providers", "Scholarships"],
+    }),
+
     getApplications: build.query<Application[], void>({
       query: () => ({
         url: API_ENDPOINTS.APPLICATION + "/my-application",
@@ -128,6 +162,7 @@ export const api = createApi({
 });
 
 export const {
+  useAuthenticatedQuery,
   useGetTokenQuery,
   usePageScholarshipsQuery,
   useLazySearchScholarshipsQuery,
@@ -135,6 +170,8 @@ export const {
   useGetScholarshipBySlugQuery,
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,
+  useFollowProviderMutation,
+  useUnfollowProviderMutation,
   useGetApplicationsQuery,
   useSubmitApplicationMutation,
   useCreateApplicationMutation,
