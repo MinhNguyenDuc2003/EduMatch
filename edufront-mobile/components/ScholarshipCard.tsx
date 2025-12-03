@@ -1,13 +1,17 @@
 import { router } from "expo-router";
-import { HeartIcon } from "lucide-react-native";
 import React from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 
 const ScholarshipCard = ({ item }: { item: Scholarship }) => {
   return (
     <Pressable
       onPress={() => {
-        router.push(`/scholarshipdetails/${item.id}` as any);
+        router.push({
+          pathname: "/(routes)/scholarshipdetails/[slug]",
+          params: {
+            slug: item.slug,
+          },
+        });
       }}
       className="bg-blue-50 rounded-2xl flex gap-3 p-3 cursor-pointer border border-primary-brand "
     >
@@ -28,16 +32,13 @@ const ScholarshipCard = ({ item }: { item: Scholarship }) => {
       {/* Details */}
       <View className="flex-row justify-between items-center ">
         <View className="flex-row gap-2 items-center">
-          <Text className="text-xs text-gray-800 font-medium bg-gray-200 p-1 rounded-2xl">
+          <Text className="text-xs text-gray-800 font-medium bg-gray-200 p-1 rounded-2xl line-clamp-1">
             {item.fundingAmount}
           </Text>
-          <Text className="text-xs text-gray-800 font-medium bg-gray-200 p-1 rounded-2xl">
+          <Text className="text-xs text-gray-800 font-medium bg-gray-200 p-1 rounded-2xl line-clamp-1">
             {item.country}
           </Text>
           {/* <Text className="text-sm text-gray-800 font-medium bg-gray-200 p-2 rounded-2xl">{item.availableSlots}</Text> */}
-        </View>
-        <View className="border border-primary-brand flex items-center rounded-full p-2 ">
-          <HeartIcon size={16} color={"#3d6cb9"} />
         </View>
       </View>
     </Pressable>
@@ -45,5 +46,3 @@ const ScholarshipCard = ({ item }: { item: Scholarship }) => {
 };
 
 export default ScholarshipCard;
-
-const styles = StyleSheet.create({});

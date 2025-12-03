@@ -2120,3 +2120,9 @@ export const COUNTRIES = [
   { value: "Zambia", label: "Zambia" },
   { value: "Zimbabwe", label: "Zimbabwe" },
 ];
+
+export const GENDER_OPTIONS = [
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
+  { value: "Any", label: "Any" },
+];

@@ -153,3 +153,84 @@ export const profileSchema = z.object({
 });
 
 export type IProfileForm = z.infer<typeof profileSchema>;
+
+export const applicationSchema = z.object({
+  id: z.number().optional(),
+  applicationName: z.string().min(1, "Create a name for your application"),
+  code: z.string().optional(),
+  versionApplication: z.number().optional(),
+  fullName: z.string().min(1, "Full name is required"),
+  gender: z.string().min(1, "Gender is required"),
+  dateOfBirth: z.string().min(1, "Date of birth is required"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(1, "Phone number is required"),
+  address: z.string().min(1, "Address is required"),
+  nationality: z.string().min(1, "Nationality is required"),
+  educationLevel: z.string().min(1, "Education level is required"),
+  schoolName: z.string().min(1, "School name is required"),
+  major: z.string().min(1, "Major is required"),
+  gpa: z.coerce
+    .number<number>()
+    .min(0, "GPA must be greater than 0")
+    .max(4, "GPA must be less than 4"),
+  graduationYear: z.string().min(1, "Graduation year is required"),
+  skills: z.string().min(1, "Skills is required"),
+  achievements: z.string().min(1, "Achievements is required"),
+  extracurricular: z.string().min(1, "Extracurricular is required"),
+  motivation: z.string().min(1, "Motivation is required"),
+  personalStatement: z.string().min(1, "Personal statement is required"),
+  languages: z.string().optional(),
+  careerGoal: z.string().optional(),
+  researchInterest: z.string().optional(),
+  academicAwards: z.string().optional(),
+  publicationCount: z.coerce.number<number>().min(0).optional(),
+  satScore: z.coerce
+    .number<number>()
+    .min(400, "SAT score must be at least 400")
+    .max(1600, "SAT score must be at most 1600")
+    .optional(),
+  actScore: z.coerce
+    .number<number>()
+    .min(1, "ACT score must be at least 1")
+    .max(36, "ACT score must be at most 36")
+    .optional(),
+  greScore: z.coerce
+    .number<number>()
+    .min(260, "GRE score must be at least 260")
+    .max(340, "GRE score must be at most 340")
+    .optional(),
+  gmatScore: z.coerce
+    .number<number>()
+    .min(200, "GMAT score must be at least 200")
+    .max(800, "GMAT score must be at most 800")
+    .optional(),
+  toeflScore: z.coerce
+    .number<number>()
+    .min(0, "TOEFL score must be at least 0")
+    .max(120, "TOEFL score must be at most 120")
+    .optional(),
+  ieltsScore: z.coerce
+    .number<number>()
+    .min(0, "IELTS score must be at least 0")
+    .max(9, "IELTS score must be at most 9")
+    .optional(),
+  workExperienceYears: z.coerce.number<number>().min(0).optional(),
+  classRank: z.coerce.number<number>().min(0).optional(),
+  classSize: z.coerce.number<number>().min(1).optional(),
+  classRankPercentile: z.coerce.number<number>().min(0).max(100).optional(),
+  age: z.coerce.number<number>().min(0).optional(),
+  citizenship: z.string().optional(),
+  isAthlete: z.boolean().optional(),
+  athleticAchievements: z.string().optional(),
+  applicationAttributes: z.array(
+    z
+      .object({
+        key: z.string().min(1, "Name is required"),
+        value: z.string().min(1, "Value is required"),
+        note: z.string().optional(),
+      })
+      .optional()
+  ),
+});
+
+export type IApplication = z.infer<typeof applicationSchema>;
