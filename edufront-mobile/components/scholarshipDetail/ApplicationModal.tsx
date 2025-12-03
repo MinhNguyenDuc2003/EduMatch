@@ -4,8 +4,8 @@ import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 interface ApplicationModalProps {
   visible: boolean;
   applications: any[];
-  selectedApplicationId: string | null;
-  onSelectApplication: (id: string) => void;
+  selectedApplicationId: number | null;
+  onSelectApplication: (id: number) => void;
   onClose: () => void;
   onSubmit: () => void;
   onCreateNew: () => void;
@@ -43,7 +43,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
           </Text>
 
           <ScrollView style={{ maxHeight: "50%" }}>
-            {applications?.map((item: any) => {
+            {applications?.map((item: Application) => {
               const isSelected = selectedApplicationId === item.id;
 
               return (
@@ -51,28 +51,28 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
                   key={item.id}
                   onPress={() => onSelectApplication(item.id)}
                   style={{
-                    backgroundColor: isSelected ? "#e0f7eb" : "#f3f4f6",
+                    backgroundColor: isSelected ? "#eff6ff" : "#f3f4f6",
                     padding: 12,
                     borderRadius: 12,
                     marginBottom: 10,
                     borderWidth: isSelected ? 2 : 0,
-                    borderColor: isSelected ? "#16a34a" : "transparent",
+                    borderColor: isSelected ? "#3b82f6" : "transparent",
                   }}
                 >
                   <Text
                     style={{
                       fontWeight: "bold",
-                      color: isSelected ? "#065f46" : "black",
+                      color: isSelected ? "#3b82f6" : "black",
                     }}
                   >
                     {item.applicationName}
                   </Text>
                   <Text
                     style={{
-                      color: isSelected ? "#059669" : "#6b7280",
+                      color: isSelected ? "#3b82f6" : "#6b7280",
                     }}
                   >
-                    {item.code}
+                    Major: {item.major}
                   </Text>
                 </TouchableOpacity>
               );
@@ -100,7 +100,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
               style={{
                 flex: 1,
                 padding: 12,
-                backgroundColor: selectedApplicationId ? "#16a34a" : "#d1d5db",
+                backgroundColor: selectedApplicationId ? "#3b82f6" : "#d1d5db",
                 borderRadius: 12,
                 alignItems: "center",
               }}

@@ -5,12 +5,14 @@ import {
   useFollowScholarshipMutation,
   useGetApplicationsQuery,
   useGetScholarshipBySlugQuery,
+  useSubmitApplicationMutation,
   useUnfollowScholarshipMutation,
 } from "@/state/api";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useRef, useState } from "react";
 import { Animated, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Toast } from "toastify-react-native";
 
 const ScholarshipDetail = () => {
   const { slug } = useLocalSearchParams();
@@ -29,31 +31,35 @@ const ScholarshipDetail = () => {
     useFollowScholarshipMutation();
   const [unfollowScholarship, { isLoading: isLoadingUnfollow }] =
     useUnfollowScholarshipMutation();
+  const [submitApplication, { isLoading: isLoadingSubmit }] =
+    useSubmitApplicationMutation();
 
   const scaleHeart = useRef(new Animated.Value(1)).current;
 
   const [showApplicationModal, setShowApplicationModal] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState<
-    string | null
+    number | null
   >(null);
 
-  const handleSubmitApplication = async (applicationId: string) => {
-    // try {
-    //   const res = await apiClientService.post(
-    //     "/api/scholarship/applications-scholarship",
-    //     {
-    //       scholarshipId: id,
-    //       applicationId: applicationId,
-    //       status: "Pending",
-    //     }
-    //   );
-    //   console.log("SUCCESS:", res);
-    //   alert("Application created successfully!");
-    //   setShowCreateModal(false);
-    // } catch (err: any) {
-    //   console.log("ERROR:", err.response?.data || err);
-    //   alert("Failed to submit application");
-    // }
+  const handleSubmitApplication = async (applicationId: number) => {
+    try {
+      if (!dataScholarship) return;
+
+      await submitApplication({
+        scholarshipId: dataScholarship.id,
+        applicationId: applicationId,
+        status: "Pending",
+        note: "",
+      })
+        .unwrap()
+        .then(() => {
+          Toast.success("Application submitted successfully!");
+          setShowApplicationModal(false);
+        });
+    } catch (err: any) {
+      console.log("ERROR:", err.response?.data || err);
+      Toast.error("Failed to submit application");
+    }
   };
 
   const handleFollow = async () => {

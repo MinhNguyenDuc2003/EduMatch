@@ -84,7 +84,7 @@ const Profile = () => {
   ];
 
   return (
-    <ScrollView className="bg-gray-50 py-8 px-4 flex-1 flex flex-col mb-40">
+    <ScrollView className="bg-gray-50 py-8 px-4 flex-1 flex flex-col ">
       <View className="max-w-7xl mx-auto flex flex-col gap-6">
         {/* Tab Bar */}
         <View className="flex-row justify-around bg-white py-2 border-b border-gray-300">

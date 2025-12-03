@@ -10,8 +10,27 @@ const API_ENDPOINTS = {
 export const api = createApi({
   baseQuery: customBaseQuery,
   reducerPath: "api",
-  tagTypes: ["Scholarships", "Applications"],
+  tagTypes: ["Scholarships", "Applications", "Notifications"],
   endpoints: (build) => ({
+    getToken: build.query<string, void>({
+      query: () => ({
+        url: "/api/notification/users/token",
+        method: "GET",
+      }),
+    }),
+    getNotifications: build.query<UserNotification[], void>({
+      query: () => ({
+        url: "/api/notification/users/user",
+        method: "GET",
+      }),
+      providesTags: ["Notifications"],
+    }),
+    readNotifications: build.query<void, number>({
+      query: (notificationId) => ({
+        url: `/api/notification/users/read/${notificationId}`,
+      }),
+    }),
+
     // page scholarships with pagination
     pageScholarships: build.query<
       ApiGetScholarshipResponse,
@@ -78,10 +97,38 @@ export const api = createApi({
       }),
       providesTags: ["Applications"],
     }),
+
+    // Create application
+    createApplication: build.mutation<Application, FormData>({
+      query: (data) => ({
+        url: API_ENDPOINTS.APPLICATION,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Applications"],
+    }),
+
+    submitApplication: build.mutation<
+      boolean,
+      {
+        applicationId: number;
+        scholarshipId: number;
+        status: string;
+        note: string;
+      }
+    >({
+      query: ({ applicationId, scholarshipId, status, note }) => ({
+        url: `${API_ENDPOINTS.APPLICATION}-scholarship`,
+        method: "POST",
+        body: { applicationId, scholarshipId, status, note },
+      }),
+      invalidatesTags: ["Applications"],
+    }),
   }),
 });
 
 export const {
+  useGetTokenQuery,
   usePageScholarshipsQuery,
   useLazySearchScholarshipsQuery,
   useGetTopViewedScholarshipsQuery,
@@ -89,4 +136,8 @@ export const {
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,
   useGetApplicationsQuery,
+  useSubmitApplicationMutation,
+  useCreateApplicationMutation,
+  useGetNotificationsQuery,
+  useLazyReadNotificationsQuery,
 } = api;

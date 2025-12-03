@@ -1,4 +1,3 @@
-import apiClientService from "@/apiController/ApiClientService";
 import ApplicationForm from "@/components/application/ApplicationForm";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { IApplication } from "@/lib/schemas";
+import { useCreateApplicationMutation } from "@/state/api";
+import { router } from "expo-router";
 import React, { useRef, useState } from "react";
 import { Alert, ScrollView, View } from "react-native";
 import "react-native-get-random-values";
@@ -32,6 +33,9 @@ const index = () => {
 
   const formRef = useRef<{ handleSubmit: () => void }>(null);
 
+  const [createApplication, { isLoading: isCreating }] =
+    useCreateApplicationMutation();
+
   const onSubmit = async (data: IApplication) => {
     try {
       setIsSubmitting(true);
@@ -42,6 +46,9 @@ const index = () => {
         "application",
         JSON.stringify({ ...data, code: uuidv4(), applicationName })
       );
+
+      console.log(uploadImages);
+
       // In React Native, you need to cast the image object as 'any' for FormData
       uploadImages.forEach((image, index) => {
         formData.append("mediaFiles", {
@@ -51,14 +58,13 @@ const index = () => {
         } as any);
       });
 
-      const response = await apiClientService.post(
-        "/api/scholarship/applications",
-        formData
-      );
-
-      Alert.alert("Success", "Application submitted successfully!");
-      setShowNameModal(false);
-      setApplicationName("");
+      await createApplication(formData)
+        .unwrap()
+        .then(() => {
+          router.back();
+          setShowNameModal(false);
+          setApplicationName("");
+        });
     } catch (error: any) {
       console.error("ERROR:", error.response?.data || error);
     } finally {

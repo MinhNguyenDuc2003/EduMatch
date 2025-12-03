@@ -52,8 +52,6 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
 
     const { setValue, watch, handleSubmit, getValues } = methods;
 
-    console.log(getValues());
-
     // Expose handleSubmit to parent via ref
     useImperativeHandle(ref, () => ({
       handleSubmit: () => {
@@ -132,7 +130,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
         const result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ["images"],
           allowsMultipleSelection: true,
-          quality: 0.8,
+          quality: 0.5,
           selectionLimit: 10,
         });
 
@@ -212,17 +210,6 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               placeholder="Select your date of birth"
               inlineLabel
               isBorder={true}
-            />
-
-            <CustomFormField
-              name="age"
-              label="Age*"
-              placeholder="Enter your age"
-              type="number"
-              isBorder={true}
-              editable={false}
-              initialValue={application?.age}
-              inlineLabel
             />
 
             <CustomFormField
