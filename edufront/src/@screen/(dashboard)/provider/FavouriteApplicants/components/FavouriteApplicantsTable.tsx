@@ -1,8 +1,9 @@
-import { MapPin, Eye, Trash, Send } from 'lucide-react';
+import { MapPin, Eye, Trash, Send, OctagonAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Checkbox } from '@/lib/cus/checkbox';
 import { Button } from '@/lib/cus/button';
+import ReportDialog from '@/pattern/share/ReportDialog';
 
 interface FavouriteApplicantsTableProps {
   applicants: FavouriteApplicant[];
@@ -19,6 +20,9 @@ export default function FavouriteApplicantsTable({
 }: FavouriteApplicantsTableProps) {
   const t = useTranslations('provider.favourite');
   const [selectedApplicants, setSelectedApplicants] = useState<number[]>([]);
+  const [reportDialogOpen, setReportDialogOpen] = useState(false);
+  const [selectedApplicantForReport, setSelectedApplicantForReport] =
+    useState<ApplicantProfile | null>(null);
 
   const notifyParent = (newSelectedIds: number[]) => {
     if (onSelectedApplicantsChange) {
@@ -179,6 +183,15 @@ export default function FavouriteApplicantsTable({
                         <Eye className="w-4 h-4" />
                       </button>
                       <button
+                        onClick={() => {
+                          setSelectedApplicantForReport(applicant);
+                          setReportDialogOpen(true);
+                        }}
+                        className="inline-flex items-center gap-1 text-orange-500 hover:text-orange-700 cursor-pointer font-medium text-sm transition-colors"
+                      >
+                        <OctagonAlert className="w-4 h-4" />
+                      </button>
+                      <button
                         onClick={() => onRemoveFavourite(favouriteApplicant.id)}
                         className="inline-flex items-center gap-1 text-red-500 hover:text-red-700 cursor-pointer font-medium text-sm transition-colors"
                       >
@@ -203,6 +216,16 @@ export default function FavouriteApplicantsTable({
             {t('clearSelection') || 'Clear Selection'}
           </Button>
         </div>
+      )}
+
+      {/* Report Dialog */}
+      {selectedApplicantForReport && (
+        <ReportDialog
+          open={reportDialogOpen}
+          onOpenChange={setReportDialogOpen}
+          initialType="PROFILE"
+          applicantData={selectedApplicantForReport}
+        />
       )}
     </div>
   );

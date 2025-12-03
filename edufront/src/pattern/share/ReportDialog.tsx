@@ -30,6 +30,7 @@ interface ReportDialogProps {
   id?: number;
   scholarshipData?: Scholarship;
   providerData?: ProviderProfile;
+  applicantData?: ApplicantProfile;
 }
 
 export default function ReportDialog({
@@ -39,6 +40,7 @@ export default function ReportDialog({
   id,
   scholarshipData,
   providerData,
+  applicantData,
 }: ReportDialogProps) {
   const t = useTranslations('reportDialog');
 
@@ -80,8 +82,8 @@ export default function ReportDialog({
           }
           break;
         case 'PROFILE':
-          if (id) {
-            await reportProfile({ ...data, profileId: id, isRead: false }).unwrap();
+          if (applicantData?.id) {
+            await reportProfile({ ...data, profileId: applicantData.id, isRead: false }).unwrap();
           }
           break;
       }
