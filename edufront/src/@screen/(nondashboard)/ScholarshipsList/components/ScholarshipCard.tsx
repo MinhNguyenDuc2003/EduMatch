@@ -19,7 +19,7 @@ import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
 import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
-import { useScholarshipCompareStore } from '@/store/scholarshipCompareStore';
+import { useScholarshipCompareStore } from '@/hooks/useScholarshipCompare';
 import { toast } from 'sonner';
 import {
   DropdownMenu,

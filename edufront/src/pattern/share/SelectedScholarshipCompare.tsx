@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useScholarshipCompareStore } from '@/store/scholarshipCompareStore';
+import { useScholarshipCompareStore } from '@/hooks/useScholarshipCompare';
 import {
   X,
   ChevronUp,
