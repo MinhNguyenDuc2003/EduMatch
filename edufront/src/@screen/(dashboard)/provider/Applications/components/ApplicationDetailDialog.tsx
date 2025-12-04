@@ -21,8 +21,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/cus/tabs';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { Button } from '@/lib/cus/button';
 import { Textarea } from '@/lib/cus/textarea';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, FileText, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 interface ApplicationDetailDialogProps {
   open: boolean;
@@ -541,24 +542,64 @@ const ApplicationDetailDialog = React.memo(
             <CardHeader>
               <CardTitle className="text-base">{t('attachments')}</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {application.applicationMedias.map((media, index) => (
-                  <div
-                    key={index}
-                    className="relative group aspect-video rounded-lg overflow-hidden border-2 border-gray-200"
-                  >
-                    <Image
-                      src={media.url}
-                      alt={`Scholarship image ${index + 1}`}
-                      width={100}
-                      height={100}
-                      unoptimized
-                      className="w-full h-full object-cover"
-                    />
+            <CardContent className="space-y-6">
+              {/* Images Section */}
+              {application.applicationMedias.some((media) =>
+                media.contentType.startsWith('image')
+              ) && (
+                <div>
+                  <h3 className="text-sm font-semibold text-muted-foreground mb-3">
+                    {t('images')}
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {application.applicationMedias
+                      .filter((media) => media.contentType.startsWith('image'))
+                      .map((media, index) => (
+                        <div
+                          key={index}
+                          className="relative group aspect-video rounded-lg overflow-hidden border-2 border-gray-200 hover:border-primary transition-colors"
+                        >
+                          <Image
+                            src={media.url}
+                            alt={`Scholarship image ${index + 1}`}
+                            width={100}
+                            height={100}
+                            unoptimized
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
+
+              {/* Documents Section */}
+              {application.applicationMedias.some(
+                (media) => media.contentType === 'application/pdf'
+              ) && (
+                <div>
+                  <h3 className="text-sm font-semibold text-muted-foreground mb-3">
+                    {t('documents')}
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {application.applicationMedias
+                      .filter((media) => media.contentType === 'application/pdf')
+                      .map((media, index) => (
+                        <Link
+                          key={index}
+                          href={media.url}
+                          target="_blank"
+                          className="relative group aspect-video rounded-lg overflow-hidden border-2 border-gray-200 hover:border-primary transition-colors flex items-center justify-center bg-gray-50 hover:bg-gray-100"
+                        >
+                          <div className="text-center">
+                            <FileText className="w-12 h-12 mx-auto text-primary mb-2" />
+                            <p className="text-xs text-muted-foreground">PDF {index + 1}</p>
+                          </div>
+                        </Link>
+                      ))}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
