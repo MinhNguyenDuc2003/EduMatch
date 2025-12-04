@@ -28,7 +28,7 @@ import { toast } from 'sonner';
 
 export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
-  const { subscriptions } = useAuth();
+  const { isAuthenticated, subscriptions } = useAuth();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAnalysisDialogOpen, setIsAnalysisDialogOpen] = useState(false);
   const [shouldAnalyze, setShouldAnalyze] = useState(false);
@@ -43,7 +43,10 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
   } = useAnalyzeScholarshipQuery(scholarship?.id || 0, {
     skip: !shouldAnalyze || !scholarship?.id,
   });
-  const { data: applications, isLoading: isLoadingApplications } = useGetApplicationsQuery();
+  const { data: applications, isLoading: isLoadingApplications } = useGetApplicationsQuery(
+    undefined,
+    { skip: !isAuthenticated }
+  );
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
   const [followScholarship] = useFollowScholarshipMutation();

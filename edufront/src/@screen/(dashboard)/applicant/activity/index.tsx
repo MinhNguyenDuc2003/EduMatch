@@ -34,11 +34,13 @@ import {
 } from '@/state/apiApplicant';
 import { Button } from '@/lib/cus/button';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function ActivityManagement() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const t = useTranslations();
+  const { isApplicant } = useAuth();
   const [activeTab, setActiveTab] = useState<ShortlistTab>('tracking');
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
   const [selectedAppliedScholarship, setSelectedAppliedScholarship] =
@@ -125,8 +127,10 @@ export default function ActivityManagement() {
   const handleDeleteApplication = async (applicationId: number) => {
     try {
       await deleteApplication({ applicationId }).unwrap();
+      toast.success(t('toast.deleteApplication.deleteSuccess'));
     } catch (error) {
       console.log('Failed to delete application:', error);
+      toast.error(t('toast.deleteApplication.deleteFailed'));
     }
     refetchApplications();
   };
@@ -209,12 +213,18 @@ export default function ActivityManagement() {
                 <EmptyState tab={activeTab} />
               ) : isApplicationTab && applicationsData?.length === 0 ? (
                 <div className="flex flex-col gap-4 ">
-                  <Button
-                    variant="custom"
-                    color="gray"
-                    onClick={handleCreateNew}
-                    value={t('activity.applicationDetail.createNewApplication')}
-                  />
+                  {isApplicant ? (
+                    <Button
+                      variant="custom"
+                      color="gray"
+                      onClick={handleCreateNew}
+                      value={t('activity.applicationDetail.createNewApplication')}
+                    />
+                  ) : (
+                    <div className="text-center text-gray-500 text-sm">
+                      {t('activity.applicationDetail.notApplicantProfileCreatedYet')}
+                    </div>
+                  )}
                   <EmptyState tab={activeTab} />
                 </div>
               ) : isAppliedTab &&

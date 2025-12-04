@@ -591,7 +591,9 @@
       "matchedScholarships": "Matched Scholarships",
       "matchedResearchOpportunities": "Matched Research Opportunities",
       "matchedScholarshipsAmount": "Matched Scholarships Amount",
-      "editProfile": "Edit Profile"
+      "editProfile": "Edit Profile",
+      "expandPackage": "Expand AI Scholarship package",
+      "upgradePackage": "Upgrade Package"
     },
     "profileStrength": {
       "title": "Profile Strength",
@@ -925,7 +927,13 @@
       "major": "Major",
       "skills": "Skills",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "deleteConfirmation": {
+        "title": "Confirm Delete",
+        "description": "Are you sure you want to delete the application for scholarship \"{scholarshipName}\"? This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
     },
     "appliedScholarshipCard": {
       "pending": "Pending",
@@ -946,6 +954,7 @@
       "title": "Application Information",
       "close": "Close",
       "notReviewedYet": "Not reviewed yet",
+      "notApplicantProfileCreatedYet": "You have not completed your profile yet. Please complete your profile to apply for scholarships.",
       "status": {
         "approved": "Approved",
         "rejected": "Rejected",
@@ -1344,7 +1353,9 @@
       "title": "AI Scholarship",
       "titleHighlight": "Scholarship Recommendations",
       "description": "Discover scholarships perfectly matched to your profile. Our AI-powered system analyzes your academic background, interests, and goals to recommend the best opportunities for your educational journey."
-    }
+    },
+    "title": "Recommended Scholarships",
+    "description": "We found {count} scholarships that match your profile"
   },
   "inputSelect": {
     "placeholder": "Select an option"
@@ -1367,6 +1378,10 @@
       "followFailed": "Failed to follow provider",
       "unfollow": "Provider unfollowed successfully",
       "unfollowFailed": "Failed to unfollow provider"
+    },
+    "deleteApplication": {
+      "deleteSuccess": "Application deleted successfully",
+      "deleteFailed": "Failed to delete application"
     }
   },
   "selectedScholarshipCompare": {

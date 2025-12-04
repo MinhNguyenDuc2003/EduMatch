@@ -5,7 +5,6 @@ import { Zap } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
-import { useGetProfileQuery } from '@/state/apiApplicant';
 import ProfileStrengthDialog from './ProfileStrengthDialog';
 
 export default function PremiumBanner() {
@@ -13,11 +12,10 @@ export default function PremiumBanner() {
   const [isUpgraded, setIsUpgraded] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
   const t = useTranslations('scholarshipsList.premiumBanner');
-  const { isAuthenticated, subscriptions } = useAuth();
-  const { data: applicantProfile } = useGetProfileQuery(undefined, { skip: !isAuthenticated });
+  const { isAuthenticated, subscriptions, isApplicant } = useAuth();
   const { data: scholarships } = useGetRecommendedScholarshipsQuery(
     { topK: 12 },
-    { skip: isUpgraded === false || !applicantProfile }
+    { skip: isUpgraded === false || !isApplicant }
   );
 
   useEffect(() => {
@@ -30,7 +28,7 @@ export default function PremiumBanner() {
     if (!isAuthenticated) {
       window.location.href = 'http://159.89.200.244/oauth2/authorization/keycloak';
     } else {
-      if (!applicantProfile?.applicantProfile) {
+      if (!isApplicant) {
         setShowProfileDialog(true);
       } else if (isUpgraded) {
         router.push('/recommended-scholarships');
@@ -154,11 +152,7 @@ export default function PremiumBanner() {
       </div>
 
       {/* Profile Strength Dialog */}
-      <ProfileStrengthDialog
-        open={showProfileDialog}
-        onOpenChange={setShowProfileDialog}
-        profileId={applicantProfile?.applicantProfile?.id}
-      />
+      <ProfileStrengthDialog open={showProfileDialog} onOpenChange={setShowProfileDialog} />
     </div>
   );
 }

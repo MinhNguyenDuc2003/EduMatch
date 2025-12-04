@@ -1,7 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/lib/cus/button';
 import { useTranslations } from 'next-intl';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/lib/cus/dialog';
 
 type ApplicationCardProps = {
   application: Application;
@@ -17,11 +26,34 @@ export default function ApplicationCard({
   onViewDetails,
 }: ApplicationCardProps) {
   const t = useTranslations('activity.applicationCard');
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDialogJustClosed, setIsDialogJustClosed] = useState(false);
+
+  const handleArticleClick = () => {
+    // Prevent opening detail if dialog was just interacted with
+    if (isDialogJustClosed) {
+      setIsDialogJustClosed(false);
+      return;
+    }
+    onViewDetails?.(application);
+  };
+
+  const handleDialogOpenChange = (open: boolean) => {
+    setIsDeleteDialogOpen(open);
+    if (!open) {
+      // Set flag to prevent article onClick from triggering
+      setIsDialogJustClosed(true);
+      // Reset flag after a short delay
+      setTimeout(() => {
+        setIsDialogJustClosed(false);
+      }, 100);
+    }
+  };
 
   return (
     <article
       className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md cursor-pointer"
-      onClick={() => onViewDetails?.(application)}
+      onClick={handleArticleClick}
     >
       {/* Header Section */}
       <div className="p-4">
@@ -94,7 +126,7 @@ export default function ApplicationCard({
                 className="flex-1 text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDelete(application.id);
+                  setIsDeleteDialogOpen(true);
                 }}
               >
                 {t('delete')}
@@ -103,6 +135,45 @@ export default function ApplicationCard({
           </div>
         </>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={handleDialogOpenChange}>
+        <DialogContent className="sm:max-w-[500px]" onClick={(e) => e.stopPropagation()}>
+          <DialogHeader>
+            <DialogTitle>{t('deleteConfirmation.title')}</DialogTitle>
+            <DialogDescription>
+              {t('deleteConfirmation.description', {
+                scholarshipName: application.applicationName || t('applicationName'),
+              })}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDialogJustClosed(true);
+                setIsDeleteDialogOpen(false);
+              }}
+              className="text-blue-600 border-blue-300 hover:bg-blue-50 hover:border-blue-400"
+            >
+              {t('deleteConfirmation.cancel')}
+            </Button>
+            <Button
+              variant="outline"
+              className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDialogJustClosed(true);
+                setIsDeleteDialogOpen(false);
+                onDelete?.(application.id);
+              }}
+            >
+              {t('deleteConfirmation.confirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </article>
   );
 }

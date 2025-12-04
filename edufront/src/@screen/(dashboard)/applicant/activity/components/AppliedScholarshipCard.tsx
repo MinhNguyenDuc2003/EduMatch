@@ -94,20 +94,22 @@ export default function AppliedScholarshipCard({
       <div className="p-4 space-y-2">
         {/* Scholarship Title */}
         <div
-          className="flex justify-between gap-8 hover:cursor-pointer text-right"
+          className="flex justify-between gap-8 hover:cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
             onViewScholarship?.(slug);
           }}
         >
-          <span className="text-sm text-gray-600">{t('scholarship')}</span>
-          <span className="text-sm font-medium text-gray-900 hover:text-blue-500">{title}</span>
+          <span className="text-sm text-gray-600 w-2/5">{t('scholarship')}</span>
+          <span className="text-sm font-medium text-gray-900 hover:text-blue-500 text-right">
+            {title}
+          </span>
         </div>
 
         {/* Funding Amount */}
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">{t('amount')}</span>
-          <span className="text-sm font-medium text-gray-900">{fundingAmount}</span>
+          <span className="text-sm text-gray-600 w-2/5">{t('amount')}</span>
+          <span className="text-sm font-medium text-gray-900 text-right">{fundingAmount}</span>
         </div>
       </div>
     </article>

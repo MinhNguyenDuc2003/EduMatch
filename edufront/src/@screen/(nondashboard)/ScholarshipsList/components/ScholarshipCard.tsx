@@ -143,21 +143,24 @@ export default function ScholarshipCard({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem
-                      onClick={() => onToggleTracking?.(scholarship.id)}
-                      className="cursor-pointer"
-                    >
-                      <Flag
-                        className={`w-4 h-4 mr-2 transition-colors ${
-                          scholarship.isFollow === 1
-                            ? 'fill-blue-600 text-blue-600'
-                            : 'text-gray-400'
-                        }`}
-                      />
-                      <span>
-                        {scholarship.isFollow === 1 ? 'Untrack Scholarship' : 'Track Scholarship'}
-                      </span>
-                    </DropdownMenuItem>
+                    {onToggleTracking && (
+                      <DropdownMenuItem
+                        onClick={() => onToggleTracking?.(scholarship.id)}
+                        className="cursor-pointer"
+                      >
+                        <Flag
+                          className={`w-4 h-4 mr-2 transition-colors ${
+                            scholarship.isFollow === 1
+                              ? 'fill-blue-600 text-blue-600'
+                              : 'text-gray-400'
+                          }`}
+                        />
+                        <span>
+                          {scholarship.isFollow === 1 ? 'Untrack Scholarship' : 'Track Scholarship'}
+                        </span>
+                      </DropdownMenuItem>
+                    )}
+
                     <DropdownMenuItem
                       onClick={() => setIsReportDialogOpen(true)}
                       className="cursor-pointer"
@@ -264,10 +267,12 @@ export default function ScholarshipCard({
             </div>
 
             {/* View */}
-            <div className="flex items-center gap-1.5 text-gray-600">
-              <Eye className="w-4 h-4" />
-              <span className="font-semibold">{scholarship.views || 0}</span>
-            </div>
+            {scholarship.views > 0 && (
+              <div className="flex items-center gap-1.5 text-gray-600">
+                <Eye className="w-4 h-4" />
+                <span className="font-semibold">{scholarship.views || 0}</span>
+              </div>
+            )}
 
             {/* Action Buttons
             <div className="flex items-center gap-2">

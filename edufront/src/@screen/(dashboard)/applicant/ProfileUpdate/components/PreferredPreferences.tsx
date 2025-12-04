@@ -41,7 +41,6 @@ const PreferredPreferences = () => {
           name="applicantProfile.preferredUniversity"
           label={t('preferredUniversity')}
           type="multi-select"
-          options={universityOptions}
           placeholder={t('preferredUniversityPlaceholder')}
           inlineLabel
           isBorder

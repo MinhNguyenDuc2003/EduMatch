@@ -573,7 +573,9 @@
       "matchedScholarships": "Học bổng phù hợp",
       "matchedResearchOpportunities": "Cơ hội nghiên cứu phù hợp",
       "matchedScholarshipsAmount": "Tổng giá trị học bổng phù hợp",
-      "editProfile": "Chỉnh sửa hồ sơ"
+      "editProfile": "Chỉnh sửa hồ sơ",
+      "expandPackage": "Mở rộng gói AI Scholarship",
+      "upgradePackage": "Nâng cấp gói"
     },
     "profileStrength": {
       "title": "Độ hoàn thiện hồ sơ",
@@ -907,7 +909,13 @@
       "major": "Chuyên ngành",
       "skills": "Kỹ năng",
       "edit": "Chỉnh sửa",
-      "delete": "Xóa"
+      "delete": "Xóa",
+      "deleteConfirmation": {
+        "title": "Xác nhận xóa",
+        "description": "Bạn có chắc chắn muốn xóa đơn ứng tuyển cho học bổng \"{scholarshipName}\"? Hành động này không thể hoàn tác.",
+        "cancel": "Hủy",
+        "confirm": "Xóa"
+      }
     },
     "appliedScholarshipCard": {
       "pending": "Đang chờ",
@@ -928,6 +936,7 @@
       "title": "Thông Tin Đơn Ứng Tuyển",
       "close": "Đóng",
       "notReviewedYet": "Chưa được xem xét",
+      "notApplicantProfileCreatedYet": "Bạn chưa hoàn thành hồ sơ cá nhân của bạn. Vui lòng hoàn thành hồ sơ cá nhân của bạn để ứng tuyển học bổng.",
       "status": {
         "approved": "Đã chấp nhận",
         "rejected": "Đã từ chối",
@@ -1277,7 +1286,9 @@
       "title": "AI Scholarship",
       "titleHighlight": "Gợi ý học bổng cho bạn",
       "description": "Khám phá các học bổng phù hợp nhất với hồ sơ của bạn. Hệ thống AI của chúng tôi phân tích nền tảng học vấn, sở thích và mục tiêu của bạn để đề xuất những cơ hội tốt nhất cho hành trình giáo dục của bạn."
-    }
+    },
+    "title": "Học bổng đề xuất",
+    "description": "Chúng tôi đã tìm thấy {count} học bổng phù hợp với hồ sơ của bạn"
   },
   "providerProfile": {
     "organizationInformation": "Thông tin tổ chức",
@@ -1345,10 +1356,14 @@
       "untrackFailed": "Bỏ theo dõi học bổng thất bại"
     },
     "followProvider": {
-      "followProvider": "Đã theo dõi tổ chức thành công",
-      "followProviderFailed": "Theo dõi tổ chức thất bại",
-      "unfollowProvider": "Đã bỏ theo dõi tổ chức thành công",
-      "unfollowProviderFailed": "Bỏ theo dõi tổ chức thất bại"
+      "follow": "Đã theo dõi tổ chức thành công",
+      "followFailed": "Theo dõi tổ chức thất bại",
+      "unfollow": "Đã bỏ theo dõi tổ chức thành công",
+      "unfollowFailed": "Bỏ theo dõi tổ chức thất bại"
+    },
+    "deleteApplication": {
+      "deleteSuccess": "Xóa hồ sơ ứng tuyển thành công",
+      "deleteFailed": "Xóa hồ sơ ứng tuyển thất bại"
     }
   },
   "selectedScholarshipCompare": {
