@@ -30,7 +30,7 @@ export default function PremiumBanner() {
     if (!isAuthenticated) {
       window.location.href = 'http://159.89.200.244/oauth2/authorization/keycloak';
     } else {
-      if (!applicantProfile) {
+      if (!applicantProfile?.applicantProfile) {
         setShowProfileDialog(true);
       } else if (isUpgraded) {
         router.push('/recommended-scholarships');

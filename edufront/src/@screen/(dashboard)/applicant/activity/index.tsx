@@ -213,7 +213,9 @@ export default function ActivityManagement() {
                   />
                   <EmptyState tab={activeTab} />
                 </div>
-              ) : isAppliedTab && appliedScholarshipsData?.length === 0 ? (
+              ) : isAppliedTab &&
+                appliedScholarshipsData?.length === 0 &&
+                !isLoadingAppliedScholarships ? (
                 <EmptyState tab={activeTab} />
               ) : isReportTab && reportData?.length === 0 ? (
                 <EmptyState tab={activeTab} />

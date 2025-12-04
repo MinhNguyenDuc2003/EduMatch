@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 const ApplicationCreatePage = () => {
-  const t = useTranslations('applicationForm');
+  const t = useTranslations('activity.applicationForm');
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const formRef = useRef<ApplicationsFormRef>(null);
   const router = useRouter();
@@ -67,7 +67,7 @@ const ApplicationCreatePage = () => {
           onClick={handleImportProfile}
           variant="outline"
           className="border-[#3D6CB9] text-[#3D6CB9] hover:bg-[#3D6CB9]/10"
-          disabled={!profileData?.applicantProfile}
+          // disabled={!profileData?.applicantProfile}
         >
           <Download className="w-4 h-4 mr-2" />
           {t('importFromProfile')}
