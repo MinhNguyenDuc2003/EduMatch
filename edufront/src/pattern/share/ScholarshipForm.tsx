@@ -303,10 +303,10 @@ const ScholarshipForm = ({
               <CustomFormField
                 name="university"
                 label={t('university')}
-                type="select"
+                type="input-select"
                 placeholder="Select university"
                 options={universityOptions}
-                initialValue={scholarship?.country}
+                initialValue={scholarship?.university}
                 isBorder={true}
               />
             </div>
