@@ -330,7 +330,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public List<ScholarshipVo> getScholarshipByProviderId(Long id) {
-        String userId = UaaContextHolder.getUserId();
+        String userId = SecurityUtil.getCurrentUserId();
         List<ScholarshipProjection> projections = scholarshipRepository.getVosWithFollowByProviderId(id, userId);
         List<ScholarshipVo> vos = scholarshipMapper.prosToVos(projections);
         vos.forEach(vo -> vo.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(vo.getProviderId()))));

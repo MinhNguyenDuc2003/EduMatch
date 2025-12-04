@@ -61,7 +61,6 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getByIds(ids));
     }
 
-    @Authorized
     @GetMapping("/provider/{id}")
     public ApiResponse<List<ScholarshipVo>> getScholarshipByProviderId(@PathVariable Long id) {
         return ApiResponse.ok(scholarshipService.getScholarshipByProviderId(id));

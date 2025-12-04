@@ -229,7 +229,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
         List<ApplicationScholarshipVo> vos = new ArrayList<>();
         List<ApplicationVo> allMyApplication = applicationService.getAllMyApplication();
         if (ObjectUtils.isEmpty(allMyApplication)) {
-            return null;
+            return vos;
         }
         for (ApplicationVo applicationVo : allMyApplication) {
             List<ApplicationScholarshipVo> allByApplicationId = this.getAllByApplicationId(applicationVo.getId());

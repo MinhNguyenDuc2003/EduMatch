@@ -18,6 +18,7 @@ import com.minh.service.base.BaseService;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.core.Response;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
@@ -282,5 +283,10 @@ public class CustomerService extends BaseService {
             throw new AccessDeniedException(
                     String.format(ERROR_FORMAT, exception.getMessage(), keycloakPropsConfig.getResource()));
         }
+    }
+
+    public Boolean isExistProfile(String userId) {
+        ApplicantProfileVo profileVo = this.parseResponse(profileFeign.getOneByUserId(userId));
+        return ObjectUtils.isNotEmpty(profileVo);
     }
 }
