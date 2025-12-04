@@ -112,15 +112,11 @@ export default function ScholarshipsList() {
   };
 
   const handleViewScholarship = (slug: string) => {
-    if (!isAuthenticated) {
-      router.push('http://159.89.200.244/oauth2/authorization/keycloak');
-    } else {
-      router.push(`/scholarships/${slug}`);
-    }
+    router.push(`/scholarships/${slug}`);
   };
 
   const handleViewProvider = (providerId: number) => {
-    router.push(`/applicant/providers/${providerId}`);
+    router.push(`/providers/${providerId}`);
   };
 
   const activeFiltersCount = (() => {
@@ -208,7 +204,7 @@ export default function ScholarshipsList() {
             {/* Middle Content - Scholarship Cards (6 columns desktop, full width mobile) */}
             <div className="lg:col-span-6 lg:col-start-4">
               {/* Premium Upgrade Banner */}
-              {isAuthenticated && <PremiumBanner />}
+              <PremiumBanner />
 
               {/* Search Bar - Desktop only */}
               <div className="mb-4">

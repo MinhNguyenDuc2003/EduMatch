@@ -476,6 +476,7 @@
     }
   },
   "viewProviderProfile": {
+    "itemReport": "Báo cáo",
     "notFound": "Không tìm thấy nhà cung cấp",
     "notFoundDescription": "Nhà cung cấp bạn đang tìm kiếm không tồn tại.",
     "goBack": "Quay lại",
@@ -550,7 +551,7 @@
       "title": "Tự Động Ghép Nối Học Bổng",
       "description": "Nâng cấp lên AI Scholarship để AI tự động tìm các học bổng phù hợp với hồ sơ của bạn",
       "clickHere": "Nhấp vào đây để xem các học bổng phù hợp với bạn",
-      "updateNow": "Nâng Cấp Ngay",
+      "updateNow": "Đăng Ký Ngay",
       "foundMatches": "Chúng tôi đã tìm thấy {count} học bổng phù hợp!",
       "matchedDescription": "AI đã ghép nối bạn với các học bổng phù hợp với hồ sơ của bạn",
       "profileStrengthDialog": {

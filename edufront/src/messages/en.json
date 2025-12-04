@@ -494,6 +494,7 @@
     }
   },
   "viewProviderProfile": {
+    "itemReport": "Report",
     "notFound": "Provider not found",
     "notFoundDescription": "The provider you're looking for doesn't exist or has been removed.",
     "goBack": "Go Back",

@@ -53,13 +53,14 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
 
   if (isError || !scholarship) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="h-full bg-white flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('notFound')}</h1>
           <Button
             value={t('backToScholarships')}
             onClick={() => router.push('/scholarships')}
-            variant="outline"
+            variant="custom"
+            className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
           />
         </div>
       </div>
@@ -111,7 +112,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
   };
 
   const handleViewProvider = (providerId: number) => {
-    router.push(`/applicant/providers/${providerId}`);
+    router.push(`/providers/${providerId}`);
   };
 
   const handleApplyNow = () => {

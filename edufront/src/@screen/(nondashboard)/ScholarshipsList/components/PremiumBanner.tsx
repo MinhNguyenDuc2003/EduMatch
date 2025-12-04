@@ -27,12 +27,16 @@ export default function PremiumBanner() {
   }, [subscriptions]);
 
   const handleUpdate = () => {
-    if (!applicantProfile) {
-      setShowProfileDialog(true);
-    } else if (isUpgraded) {
-      router.push('/recommended-scholarships');
+    if (!isAuthenticated) {
+      window.location.href = 'http://159.89.200.244/oauth2/authorization/keycloak';
     } else {
-      router.push('/subscriptions?type=APPLICANT');
+      if (!applicantProfile) {
+        setShowProfileDialog(true);
+      } else if (isUpgraded) {
+        router.push('/recommended-scholarships');
+      } else {
+        router.push('/subscriptions?type=APPLICANT');
+      }
     }
   };
 

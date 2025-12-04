@@ -10,7 +10,6 @@ import {
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
-import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
 
 type ScholarshipsSectionProps = {
@@ -30,7 +29,6 @@ export default function ScholarshipsSection({
   totalPages,
   onPageChange,
 }: ScholarshipsSectionProps) {
-  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const t = useTranslations('homepage.scholarships');
 
@@ -57,11 +55,7 @@ export default function ScholarshipsSection({
   };
 
   const handleViewDetails = (slug: string) => {
-    if (!isAuthenticated) {
-      router.push('http://159.89.200.244/oauth2/authorization/keycloak');
-    } else {
-      router.push(`/scholarships/${slug}`);
-    }
+    router.push(`/scholarships/${slug}`);
   };
 
   return (
