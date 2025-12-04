@@ -13,5 +13,16 @@ declare global {
     description: string;
     type: ReportType;
   };
+
+  type MyReport = {
+    id: number;
+    title?: string;
+    comment?: string;
+    userId?: string;
+    category?: ReportCategory;
+    isRead?: boolean;
+    status?: string;
+    response?: string;
+  };
 }
 export {};

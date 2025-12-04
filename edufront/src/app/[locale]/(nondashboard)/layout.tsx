@@ -1,5 +1,6 @@
 import Footer from '@/pattern/core/Footer';
 import Header from '@/pattern/core/Navbar';
+import SelectedScholarshipCompare from '@/pattern/share/SelectedScholarshipCompare';
 import React from 'react';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -8,6 +9,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Header />
       <main className="flex-1 ">{children}</main>
       <Footer />
+      <SelectedScholarshipCompare />
     </div>
   );
 };

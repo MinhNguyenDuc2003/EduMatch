@@ -10,12 +10,15 @@
     "login": "Sign In / Sign Up",
     "scholarships": "Scholarships",
     "news": "News",
+    "day": "day",
+    "days": "days",
     "dropdown": {
       "profile": "Profile",
       "myActivity": "My Activity",
       "providerDashboard": "Provider Dashboard",
       "subscription": "Extend Subscription",
       "createProvider": "Become a Provider",
+      "report": "Report System",
       "logout": "Logout"
     }
   },
@@ -111,7 +114,30 @@
     "note": "Note (Optional)",
     "notePlaceholder": "Add a note for this application...",
     "reject": "Reject",
-    "approve": "Approve"
+    "approve": "Approve",
+    "age": "Age",
+    "citizenship": "Citizenship",
+    "languages": "Languages",
+    "classRank": "Class Rank",
+    "classSize": "Class Size",
+    "classRankPercentile": "Class Rank Percentile",
+    "academicAwards": "Academic Awards",
+    "publicationCount": "Publication Count",
+    "testScores": "Test Scores",
+    "satScore": "SAT Score",
+    "actScore": "ACT Score",
+    "greScore": "GRE Score",
+    "gmatScore": "GMAT Score",
+    "toeflScore": "TOEFL Score",
+    "ieltsScore": "IELTS Score",
+    "workExperience": "Work Experience",
+    "years": "years",
+    "athleticInformation": "Athletic Information",
+    "isAthlete": "Athlete",
+    "athleticAchievements": "Athletic Achievements",
+    "careerGoal": "Career Goal",
+    "researchInterest": "Research Interest",
+    "yes": "Yes"
   },
   "scholarshipForm": {
     "basicInformation": "Basic Information",
@@ -219,7 +245,17 @@
       "detail": {
         "title": "Applicant Detail",
         "description": "View the details of the applicant."
-      }
+      },
+      "clearSelection": "Clear Selection",
+      "sendReferral": "Send Referral",
+      "selectScholarship": "Select Scholarship",
+      "selectedScholarship": "Selected Scholarship",
+      "cancel": "Cancel",
+      "sending": "Sending...",
+      "selectScholarshipFirst": "Please select a scholarship first",
+      "referralSentSuccess": "Referral sent successfully",
+      "referralSentFailed": "Failed to send referral",
+      "noScholarships": "No scholarships found"
     }
   },
   "action": {
@@ -274,7 +310,23 @@
       "expectedGraduation": "Expected Graduation",
       "preferences": "Preferences",
       "weight": "Weight",
-      "militaryFamilyHistory": "Military Family History"
+      "militaryFamilyHistory": "Military Family History",
+      "educationLevel": "Education Level",
+      "testScores": "Test Scores",
+      "satScore": "SAT Score",
+      "actScore": "ACT Score",
+      "greScore": "GRE Score",
+      "toeflScore": "TOEFL Score",
+      "ieltsScore": "IELTS Score",
+      "languages": "Languages",
+      "academicAwards": "Academic Awards",
+      "publicationCount": "Publication Count",
+      "researchInterest": "Research Interest",
+      "extracurricularActivities": "Extracurricular Activities",
+      "preferredScholarship": "Preferred Scholarship",
+      "preferredType": "Preferred Type",
+      "preferredCountry": "Preferred Country",
+      "preferredUniversity": "Preferred University"
     }
   },
   "error": {
@@ -350,6 +402,12 @@
       "contactUs": "Contact Us",
       "footer": "No credit card required • Free forever • Cancel anytime"
     },
+    "topViewScholarships": {
+      "badge": "Trending",
+      "title": "Top 5 Most Viewed Scholarships",
+      "description": "Discover the most popular scholarships this month",
+      "viewCountDescription": "View count represents the number of people who have viewed this scholarship"
+    },
     "cardSmalPic": {
       "trackScholarship": "Track scholarship",
       "organizationLogo": "Organization logo"
@@ -368,7 +426,7 @@
     "backToScholarships": "Back to Scholarships",
     "scholarships": "Scholarships",
     "applyNow": "Apply Now",
-    "upgradeToPremium": "Upgrade to Premium",
+    "upgradeToPremium": "Upgrade to AI Scholarship",
     "analyzeScholarship": "Analyze Scholarship",
     "noDeadline": "No deadline",
     "metadata": {
@@ -390,7 +448,31 @@
       "languageRequirement": "Language Requirement",
       "availableSlots": "Available Slots",
       "notAvailable": "N/A",
-      "note": "Note"
+      "note": "Note",
+      "country": "Country",
+      "university": "University",
+      "requiredMajor": "Required Major",
+      "ageRange": "Age Range",
+      "years": "years",
+      "minimum": "Minimum",
+      "maximum": "Maximum",
+      "genderRequirement": "Gender Requirement",
+      "restrictedNationalities": "Restricted Nationalities",
+      "requiredSatScore": "Required SAT Score",
+      "requiredActScore": "Required ACT Score",
+      "requiredGreScore": "Required GRE Score",
+      "requiredToeflScore": "Required TOEFL Score",
+      "requiredIeltsScore": "Required IELTS Score",
+      "requiredWorkExperienceYears": "Required Work Experience",
+      "requiredPublicationCount": "Required Publications",
+      "publications": "publications",
+      "requiredAcademicAwards": "Required Academic Awards",
+      "requiredClassRankPercentile": "Required Class Rank",
+      "basicInformation": "Basic Information",
+      "academicRequirements": "Academic Requirements",
+      "testScoreRequirements": "Test Score Requirements",
+      "demographicRequirements": "Demographic Requirements",
+      "otherRequirements": "Other Requirements"
     },
     "sidebar": {
       "following": "Following",
@@ -450,6 +532,7 @@
       "availableFilters": "Available Filters",
       "studyLevel": "Study Level",
       "university": "University",
+      "fields": "Field",
       "allLevels": "All Levels",
       "country": "Country",
       "allCountries": "All Countries",
@@ -476,12 +559,15 @@
       "university": "University",
       "level": "Level",
       "type": "Type",
-      "noDeadline": "No deadline"
+      "noDeadline": "No deadline",
+      "compare": "Compare",
+      "alreadySelected": "Already selected"
     },
     "premiumBanner": {
-      "badge": "Premium",
+      "badge": "AI Scholarship",
       "title": "Auto-Match Scholarships",
-      "description": "Upgrade to premium and let AI automatically find scholarships tailored to your profile",
+      "description": "Upgrade to AI Scholarship and let AI automatically find scholarships tailored to your profile",
+      "clickHere": "Click here to view the scholarships that match your profile",
       "updateNow": "Update Now",
       "foundMatches": "We Found {count} Perfect Matches!",
       "matchedDescription": "AI has matched you with scholarships tailored to your profile",
@@ -802,6 +888,11 @@
         "label": "Application",
         "title": "Your Applications",
         "description": "Track all scholarships you have applied to. Monitor application status, review submission details, and follow up on your opportunities."
+      },
+      "report": {
+        "label": "Report",
+        "title": "Your Reports",
+        "description": "Track all reports you have posted. See feedback and report status."
       }
     },
     "emptyState": {
@@ -820,6 +911,10 @@
       "application": {
         "title": "You are not created any applications yet",
         "description": "Once you create an application, it will show up here so you can monitor application status and next steps."
+      },
+      "report": {
+        "title": "No reports yet",
+        "description": "You haven't submitted any reports to the system. When you submit reports, they will appear here so you can track their status and responses."
       }
     },
     "applicationCard": {
@@ -913,7 +1008,8 @@
       "download": "Download",
       "viewFullSize": "View full size",
       "clickToView": "Click to view",
-      "submissionDate": "Submission Date"
+      "submissionDate": "Submission Date",
+      "createdDate": "Created Date"
     },
     "submitApplicationDialog": {
       "title": "Submit Scholarship Application",
@@ -1079,6 +1175,20 @@
       "toast": {
         "applicationUpdated": "Application updated successfully"
       }
+    },
+    "reportCard": {
+      "noTitle": "No title",
+      "category": "Category",
+      "description": "Description",
+      "delete": "Delete"
+    },
+    "reportDetail": {
+      "title": "Report an issue",
+      "categoryDescription": "Category Description",
+      "comment": "Comment",
+      "response": "Response",
+      "noResponse": "No response yet",
+      "delete": "Delete Report"
     }
   },
   "reportDialog": {
@@ -1220,20 +1330,52 @@
     "noNewsAvailable": "No news available",
     "noNewsDescription": "There are no news articles at the moment. Check back later for updates and new content.",
     "premiumBanner": {
-      "badge": "PREMIUM",
-      "title": "Upgrade to Premium to view recommended scholarships",
-      "description": "Get scholarship recommendations tailored to your profile",
+      "badge": "AI Scholarship",
+      "title1": "Upgrade to AI Scholarship to view recommended scholarships",
+      "title2": "Upgrade to AI Scholarship to use scholarship analysis",
+      "description1": "Upgrade to AI Scholarship and let AI automatically find scholarships tailored to your profile",
+      "description2": "Upgrade to AI Scholarship and let AI automatically analyze scholarships tailored to your profile",
       "upgradeNow": "Upgrade Now"
     }
   },
   "recommendedScholarships": {
     "heroSection": {
-      "title": "EduMatch Premium",
+      "title": "AI Scholarship",
       "titleHighlight": "Scholarship Recommendations",
       "description": "Discover scholarships perfectly matched to your profile. Our AI-powered system analyzes your academic background, interests, and goals to recommend the best opportunities for your educational journey."
     }
   },
   "inputSelect": {
     "placeholder": "Select an option"
+  },
+  "toast": {
+    "reportDeleted": "Report deleted successfully",
+    "reportDeletedFailed": "Report deleted failed",
+    "scholarshipAdded": "Scholarship added to compare list successfully",
+    "scholarshipAddedFailed": "Failed to add scholarship to compare list",
+    "scholarshipMaxSelected": "You can only compare up to 3 scholarships",
+    "scholarshipAlreadySelected": "Already selected"
+  },
+  "selectedScholarshipCompare": {
+    "title": "Selected ({number}/3)",
+    "compare": "Compare",
+    "remove": "Remove",
+    "clearAll": "Clear All",
+    "compareButton": "Compare Scholarships"
+  },
+  "scholarshipCompare": {
+    "title": "Compare Scholarships",
+    "scholarship": "Scholarship",
+    "provider": "Provider",
+    "country": "Country",
+    "university": "University",
+    "studyLevel": "Study Level",
+    "scholarshipType": "Scholarship Type",
+    "fundingAmount": "Funding Amount",
+    "deadline": "Deadline",
+    "gpaRequirement": "GPA Requirement",
+    "languageRequirement": "Language Requirement",
+    "availableSlots": "Available Slots",
+    "description": "Description"
   }
 }

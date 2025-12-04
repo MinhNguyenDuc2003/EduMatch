@@ -8,3 +8,6 @@ export { default as ApplicationCard } from './ApplicationCard';
 export { default as ApplicationCardSkeleton } from './ApplicationCardSkeleton';
 export { default as AppliedScholarshipCard } from './AppliedScholarshipCard';
 export { default as ApplicationDetail } from './ApplicationDetail';
+export { default as ReportCard } from './ReportCard';
+export { default as ReportCardSkeleton } from './ReportCardSkeleton';
+export { default as ReportDetail } from './ReportDetail';

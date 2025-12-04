@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { Begin, RText } from '@/lib/by/Div';
 import Link from 'next/link';
 import { Button } from '../../lib/cus/button';
@@ -21,11 +22,19 @@ import Notifications from '../share/Notifications';
 import { useAuth } from '@/hooks/useAuth';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslations } from 'next-intl';
+import ReportDialog from '../share/ReportDialog';
 
 const Header = () => {
   const { isAuthenticated, isLoading, isProvider, subscriptions, handleLogout } = useAuth();
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
 
   const t = useTranslations('navbar');
+
+  // Calculate total days for APPLICANT subscription
+  const applicantSubscription = subscriptions.find((sub) => sub.userType === 'APPLICANT');
+  const totalDays = applicantSubscription
+    ? Math.ceil((applicantSubscription.endDate - new Date().getTime()) / (1000 * 60 * 60 * 24))
+    : null;
 
   return (
     <Begin className="px-4 lg:px-40 py-3 flex items-center border-b bg-[#fafaf6] sticky top-0 z-50">
@@ -104,8 +113,14 @@ const Header = () => {
             }
             className="relative inline-flex items-center gap-1.5 px-4 py-1.5 rounded-md bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white font-semibold text-sm shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:scale-105 transition-all duration-200 border border-blue-400/50"
           >
-            <GemIcon className="w-3.5 h-3.5" />
-            <span>Premium</span>
+            <div className="flex items-center gap-1">
+              <span>AI Scholarship</span>
+            </div>
+            {totalDays !== null && totalDays > 0 && (
+              <span className="text-xs opacity-90">
+                ({totalDays} {totalDays === 1 ? t('day') : t('days')})
+              </span>
+            )}
             <span className="absolute inset-0 rounded-md bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 blur-sm -z-10 transition-opacity duration-200"></span>
           </Link>
           <LanguageSwitcher />
@@ -162,6 +177,10 @@ const Header = () => {
                       </DropdownMenuItem>
                     )}
 
+                  <DropdownMenuItem onClick={() => setIsReportDialogOpen(true)}>
+                    {t('dropdown.report')}
+                  </DropdownMenuItem>
+
                   <DropdownMenuItem onClick={handleLogout}>{t('dropdown.logout')}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -169,6 +188,12 @@ const Header = () => {
           )}
         </div>
       </div>
+
+      <ReportDialog
+        open={isReportDialogOpen}
+        onOpenChange={setIsReportDialogOpen}
+        initialType="SYSTEM"
+      />
     </Begin>
   );
 };

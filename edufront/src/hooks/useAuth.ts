@@ -2,15 +2,18 @@
 
 import { useAuthenticatedQuery, useLogoutMutation } from '@/state/apiAuth';
 import { toast } from 'sonner';
+import { useScholarshipCompareStore } from '@/store/scholarshipCompareStore';
 
 export const useAuth = () => {
   const { data, isLoading, isError, error, refetch } = useAuthenticatedQuery();
   const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
+  const clearStorage = useScholarshipCompareStore((state) => state.clearStorage);
 
   const handleLogout = async () => {
     await logout()
       .unwrap()
       .then(() => {
+        clearStorage();
         toast.success('Logged out successfully');
       });
   };

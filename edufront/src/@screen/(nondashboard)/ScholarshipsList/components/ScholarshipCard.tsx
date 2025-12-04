@@ -12,12 +12,15 @@ import {
   Eye,
   EllipsisVertical,
   OctagonAlert,
+  ArrowRightLeft,
 } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
 import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
+import { useScholarshipCompareStore } from '@/store/scholarshipCompareStore';
+import { toast } from 'sonner';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,9 +54,25 @@ export default function ScholarshipCard({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const t = useTranslations('scholarshipsList.scholarshipCard');
+  const tToast = useTranslations('toast');
+  const { addScholarship, isScholarshipSelected, scholarships } = useScholarshipCompareStore();
 
   const images = getScholarshipImages(scholarship);
   const { logoUrl, organizationName, isFollow, id } = scholarship.providerProfileVo;
+  const isSelected = isScholarshipSelected(scholarship.id);
+
+  const handleCompareClick = () => {
+    if (isSelected) {
+      toast.info(tToast('scholarshipAlreadySelected'));
+      return;
+    }
+    if (scholarships.length >= 3) {
+      toast.warning(tToast('scholarshipMaxSelected'));
+      return;
+    }
+    addScholarship(scholarship);
+    toast.success(tToast('scholarshipAdded'));
+  };
 
   return (
     <>
@@ -101,38 +120,55 @@ export default function ScholarshipCard({
               </div>
             </div>
             {isAuthenticated && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="custom"
-                    className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
-                  >
-                    <EllipsisVertical className="w-5 h-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem
-                    onClick={() => onToggleTracking?.(scholarship.id)}
-                    className="cursor-pointer"
-                  >
-                    <Flag
-                      className={`w-4 h-4 mr-2 transition-colors ${
-                        scholarship.isFollow === 1 ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
-                      }`}
-                    />
-                    <span>
-                      {scholarship.isFollow === 1 ? 'Untrack Scholarship' : 'Track Scholarship'}
-                    </span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => setIsReportDialogOpen(true)}
-                    className="cursor-pointer"
-                  >
-                    <OctagonAlert className="w-4 h-4 mr-2" />
-                    <span>Report</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="custom"
+                  className={`group relative ${
+                    isSelected ? 'text-blue-600' : 'text-[#3D6CB9]'
+                  } !border-none !shadow-none !p-0 hover:translate-none`}
+                  onClick={handleCompareClick}
+                >
+                  <ArrowRightLeft className="w-5 h-5" />
+                  <span className="absolute -bottom-full mb-2 hidden group-hover:block px-2 py-1 text-xs text-white bg-slate-800 rounded shadow-lg whitespace-nowrap">
+                    {isSelected ? t('alreadySelected') : t('compare')}
+                  </span>
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="custom"
+                      className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
+                    >
+                      <EllipsisVertical className="w-5 h-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem
+                      onClick={() => onToggleTracking?.(scholarship.id)}
+                      className="cursor-pointer"
+                    >
+                      <Flag
+                        className={`w-4 h-4 mr-2 transition-colors ${
+                          scholarship.isFollow === 1
+                            ? 'fill-blue-600 text-blue-600'
+                            : 'text-gray-400'
+                        }`}
+                      />
+                      <span>
+                        {scholarship.isFollow === 1 ? 'Untrack Scholarship' : 'Track Scholarship'}
+                      </span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setIsReportDialogOpen(true)}
+                      className="cursor-pointer"
+                    >
+                      <OctagonAlert className="w-4 h-4 mr-2" />
+                      <span>Report</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
               // <button
               //   onClick={() => onToggleTracking?.(scholarship.id)}
               //   className="p-2 rounded-full hover:bg-gray-100 transition-colors"

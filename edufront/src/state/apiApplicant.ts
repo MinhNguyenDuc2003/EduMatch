@@ -11,7 +11,7 @@ const API_ENDPOINTS = {
   APPLIED_APPLICATION: '/api/scholarship/applications-scholarship',
   FOLLOW_PROVIDER: '/api/profile/followers',
   SCHOLARSHIP_FOLLOW: '/api/scholarship/scholarships/follow',
-  CREATE_REPORT: '/api/report/reports',
+  REPORT: '/api/report/reports',
   GET_REPORTS: '/api/report/report/category/type',
 } as const;
 
@@ -149,9 +149,9 @@ export const apiApplicant = createApi({
     }),
 
     // REPORT SYSTEM
-    reportSystem: build.mutation<boolean, FormReport>({
+    reportSystem: build.mutation<boolean, FormReport & { isRead: boolean }>({
       query: (data) => ({
-        url: API_ENDPOINTS.CREATE_REPORT,
+        url: API_ENDPOINTS.REPORT,
         method: 'POST',
         body: data,
       }),
@@ -159,29 +159,50 @@ export const apiApplicant = createApi({
     }),
 
     // REPORT PROVIDER
-    reportProvider: build.mutation<boolean, FormReport & { providerId: number }>({
+    reportProvider: build.mutation<boolean, FormReport & { providerId: number; isRead: boolean }>({
       query: (data) => ({
-        url: `${API_ENDPOINTS.CREATE_REPORT}/provider-report`,
+        url: `${API_ENDPOINTS.REPORT}/provider-report`,
         method: 'POST',
         body: data,
       }),
       invalidatesTags: ['Report'],
     }),
     // REPORT SCHOLARSHIP
-    reportScholarship: build.mutation<boolean, FormReport & { scholarshipId: number }>({
+    reportScholarship: build.mutation<
+      boolean,
+      FormReport & { scholarshipId: number; isRead: boolean }
+    >({
       query: (data) => ({
-        url: `${API_ENDPOINTS.CREATE_REPORT}/scholarship-report`,
+        url: `${API_ENDPOINTS.REPORT}/scholarship-report`,
         method: 'POST',
         body: data,
       }),
       invalidatesTags: ['Report'],
     }),
     // REPORT PROFILE
-    reportProfile: build.mutation<boolean, FormReport & { profileId: number }>({
+    reportProfile: build.mutation<boolean, FormReport & { profileId: number; isRead: boolean }>({
       query: (data) => ({
-        url: `${API_ENDPOINTS.CREATE_REPORT}/profile-report`,
+        url: `${API_ENDPOINTS.REPORT}/profile-report`,
         method: 'POST',
         body: data,
+      }),
+      invalidatesTags: ['Report'],
+    }),
+
+    // GET MY REPORTS
+    getMyReport: build.query<MyReport[], void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.REPORT}/my-report`,
+        method: 'GET',
+      }),
+      providesTags: ['Report'],
+    }),
+
+    // DELETE REPORT
+    deleteReport: build.mutation<boolean, { reportId: number }>({
+      query: ({ reportId }) => ({
+        url: `${API_ENDPOINTS.REPORT}/${reportId}`,
+        method: 'DELETE',
       }),
       invalidatesTags: ['Report'],
     }),
@@ -207,4 +228,6 @@ export const {
   useReportProviderMutation,
   useReportScholarshipMutation,
   useReportProfileMutation,
+  useGetMyReportQuery,
+  useDeleteReportMutation,
 } = apiApplicant;
