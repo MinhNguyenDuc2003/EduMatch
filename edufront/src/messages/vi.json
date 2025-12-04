@@ -1337,7 +1337,19 @@
     "scholarshipAdded": "Đã thêm học bổng vào danh sách so sánh",
     "scholarshipAddedFailed": "Thêm học bổng vào danh sách so sánh thất bại",
     "scholarshipMaxSelected": "Bạn chỉ có thể so sánh tối đa 3 học bổng",
-    "scholarshipAlreadySelected": "Đã được chọn"
+    "scholarshipAlreadySelected": "Đã được chọn",
+    "trackScholarship": {
+      "track": "Đã theo dõi học bổng thành công",
+      "trackFailed": "Theo dõi học bổng thất bại",
+      "untrack": "Đã bỏ theo dõi học bổng thành công",
+      "untrackFailed": "Bỏ theo dõi học bổng thất bại"
+    },
+    "followProvider": {
+      "followProvider": "Đã theo dõi tổ chức thành công",
+      "followProviderFailed": "Theo dõi tổ chức thất bại",
+      "unfollowProvider": "Đã bỏ theo dõi tổ chức thành công",
+      "unfollowProviderFailed": "Bỏ theo dõi tổ chức thất bại"
+    }
   },
   "selectedScholarshipCompare": {
     "title": "Đã chọn ({number}/3)",

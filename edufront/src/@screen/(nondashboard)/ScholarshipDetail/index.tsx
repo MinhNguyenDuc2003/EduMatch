@@ -24,6 +24,7 @@ import { useTranslations } from 'next-intl';
 import { useAuth } from '@/hooks/useAuth';
 import { useGetApplicationsQuery } from '@/state/apiApplicant';
 import PremiumBanner from './components/PremiumBanner';
+import { toast } from 'sonner';
 
 export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
@@ -32,6 +33,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
   const [isAnalysisDialogOpen, setIsAnalysisDialogOpen] = useState(false);
   const [shouldAnalyze, setShouldAnalyze] = useState(false);
   const t = useTranslations('scholarshipDetail');
+  const tToast = useTranslations('toast');
 
   const { data: scholarship, isLoading, isError, refetch } = useGetScholarshipBySlugQuery(slug);
   const {
@@ -85,10 +87,12 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
         await unfollowScholarship({
           scholarshipId: scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.untrack'));
       } else {
         await followScholarship({
           scholarshipId: scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.track'));
       }
     } catch (error) {
       console.log('Failed to toggle tracking:', error);
@@ -102,12 +106,15 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
     try {
       if (isFollowingValue === 1) {
         await unfollowProvider(providerId).unwrap();
+        toast.success(tToast('followProvider.unfollow'));
       } else {
         await followProvider(providerId).unwrap();
+        toast.success(tToast('followProvider.follow'));
       }
       refetch();
     } catch (error) {
       console.log('Failed to toggle follow provider:', error);
+      toast.error(tToast('followProvider.followFailed'));
     }
   };
 

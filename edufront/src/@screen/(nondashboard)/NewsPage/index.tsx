@@ -20,9 +20,12 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import Loading from '@/pattern/share/Loading';
 import EmptyNews from './components/EmptyNews';
+import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 export default function NewsPage() {
   const router = useRouter();
+  const tToast = useTranslations('toast');
   const { isAuthenticated, subscriptions } = useAuth();
   const { data: newsData, isLoading, refetch } = useGetAllNewsQuery();
   const { data: scholarshipTopView, isLoading: isLoadingScholarshipTopView } =
@@ -40,7 +43,7 @@ export default function NewsPage() {
   };
 
   const handleViewProvider = (providerId: number) => {
-    router.push(`/applicant/providers/${providerId}`);
+    router.push(`/providers/${providerId}`);
   };
 
   const handleViewScholarship = (slug?: string) => {
@@ -63,12 +66,15 @@ export default function NewsPage() {
     try {
       if (isFollowing) {
         await unfollowProvider(providerId).unwrap();
+        toast.success(tToast('followProvider.unfollow'));
       } else {
         await followProvider(providerId).unwrap();
+        toast.success(tToast('followProvider.follow'));
       }
       refetch();
     } catch (error) {
       console.log('Failed to toggle follow provider:', error);
+      toast.error(tToast('followProvider.followFailed'));
     }
   };
 
@@ -77,7 +83,7 @@ export default function NewsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 px-4 md:px-10 lg:px-40">
+    <div className="h-full bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 px-4 md:px-10 lg:px-40">
       <NewsHeader />
 
       <section className="py-8">

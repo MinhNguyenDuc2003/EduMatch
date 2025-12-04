@@ -108,7 +108,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
               ...prev,
               { url: reader.result as string, type: 'new' },
             ]);
-          } else if (file.type === 'image/png') {
+          } else if (file.type.startsWith('image')) {
             setImagePreviews((prev) => [...prev, { url: reader.result as string, type: 'new' }]);
           }
         };
@@ -151,7 +151,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
     useEffect(() => {
       if (application?.applicationMedias && application.applicationMedias.length > 0) {
         const initialImages = application.applicationMedias
-          .filter((media) => media.contentType === 'image/png')
+          .filter((media) => media.contentType.startsWith('image'))
           .map((media) => ({
             url: media.url,
             id: media.id,

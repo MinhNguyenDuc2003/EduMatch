@@ -26,11 +26,13 @@ import { useAuth } from '@/hooks/useAuth';
 import { OctagonAlert } from 'lucide-react';
 import { useState } from 'react';
 import ReportDialog from '@/pattern/share/ReportDialog';
+import { toast } from 'sonner';
 
 export default function ViewProviderProfile({ providerId }: { providerId: number }) {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
   const t = useTranslations('viewProviderProfile');
+  const tToast = useTranslations('toast');
 
   const { data: providerProfile, isLoading: isLoadingProfile } =
     useGetProviderProfileByIdQuery(providerId);
@@ -51,11 +53,14 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
     try {
       if (isFollowing) {
         await unfollowProvider(id).unwrap();
+        toast.success(tToast('followProvider.unfollow'));
       } else {
         await followProvider(id).unwrap();
+        toast.success(tToast('followProvider.follow'));
       }
     } catch (error) {
       console.log('Failed to toggle follow:', error);
+      toast.error(tToast('followProvider.followFailed'));
     }
     refetch();
   };
@@ -78,13 +83,16 @@ export default function ViewProviderProfile({ providerId }: { providerId: number
         await unfollowScholarship({
           scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.untrack'));
       } else {
         await followScholarship({
           scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.track'));
       }
     } catch (error) {
       console.log('Failed to toggle tracking:', error);
+      toast.error(tToast('trackScholarship.trackFailed'));
     }
   };
 

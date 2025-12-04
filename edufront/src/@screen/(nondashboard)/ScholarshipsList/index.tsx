@@ -15,12 +15,14 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useDebounce } from '@/utils/useDebounce';
+import { toast } from 'sonner';
 
 export default function ScholarshipsList() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const t = useTranslations('scholarshipsList');
+  const tToast = useTranslations('toast');
 
   const [keywordInput, setKeywordInput] = useState('');
   const debouncedKeyword = useDebounce(keywordInput, 500);
@@ -82,10 +84,12 @@ export default function ScholarshipsList() {
         await unfollowScholarship({
           scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.untrack'));
       } else {
         await followScholarship({
           scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.track'));
       }
     } catch (error) {
       console.error('Failed to toggle tracking:', error);
@@ -102,11 +106,14 @@ export default function ScholarshipsList() {
     try {
       if (isFollowing) {
         await unfollowProvider(scholarship.providerProfileVo?.id).unwrap();
+        toast.success(tToast('followProvider.unfollow'));
       } else {
         await followProvider(scholarship.providerProfileVo?.id).unwrap();
+        toast.success(tToast('followProvider.follow'));
       }
     } catch (error) {
       console.log('Failed to toggle follow provider:', error);
+      toast.error(tToast('followProvider.followFailed'));
     }
     refetch();
   };

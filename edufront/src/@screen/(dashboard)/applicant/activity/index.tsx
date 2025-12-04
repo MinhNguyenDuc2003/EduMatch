@@ -90,7 +90,7 @@ export default function ActivityManagement() {
   };
 
   const handleViewProvider = (providerId?: number) => {
-    router.push(`/applicant/providers/${providerId}`);
+    router.push(`/providers/${providerId}`);
   };
 
   const handleUntrack = async (id: number) => {
@@ -100,7 +100,9 @@ export default function ActivityManagement() {
           await unfollowScholarship({
             scholarshipId: id,
           }).unwrap();
+          toast.success(t('toast.scholarshipUntracked'));
         } catch (error) {
+          toast.error(t('toast.scholarshipUntrackedFailed'));
           console.log('Failed to untrack scholarship:', error);
         }
         break;
@@ -110,7 +112,9 @@ export default function ActivityManagement() {
       case 'following': {
         try {
           await unfollowProvider(id).unwrap();
+          toast.success(t('toast.providerUnfollowed'));
         } catch (error) {
+          toast.error(t('toast.providerUnfollowedFailed'));
           console.log('Failed to unfollow provider:', error);
         }
         break;

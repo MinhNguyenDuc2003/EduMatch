@@ -11,6 +11,7 @@ import {
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 type ScholarshipsSectionProps = {
   scholarships: Scholarship[];
@@ -31,6 +32,7 @@ export default function ScholarshipsSection({
 }: ScholarshipsSectionProps) {
   const router = useRouter();
   const t = useTranslations('homepage.scholarships');
+  const tToast = useTranslations('toast');
 
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
@@ -44,10 +46,12 @@ export default function ScholarshipsSection({
         await unfollowScholarship({
           scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.untrack'));
       } else {
         await followScholarship({
           scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.track'));
       }
     } catch (error) {
       console.log('Failed to toggle tracking:', error);
