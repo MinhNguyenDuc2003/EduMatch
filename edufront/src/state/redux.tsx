@@ -5,15 +5,26 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import globalReducer from '@/state';
 import { apiApplicant } from './apiApplicant';
 import { apiProvider } from './apiProvider';
 import { apiAuth } from './apiAuth';
 import { apiScholarship } from './apiScholarship';
 
+/* PERSIST CONFIG */
+const persistConfig = {
+  key: 'scholarship-compare-storage',
+  storage,
+  whitelist: ['scholarshipCompare'],
+};
+
+const persistedGlobalReducer = persistReducer(persistConfig, globalReducer);
+
 /* REDUX STORE */
 const rootReducer = combineReducers({
-  global: globalReducer,
+  global: persistedGlobalReducer,
   [apiApplicant.reducerPath]: apiApplicant.reducer,
   [apiProvider.reducerPath]: apiProvider.reducer,
   [apiAuth.reducerPath]: apiAuth.reducer,
@@ -24,7 +35,11 @@ export const makeStore = () => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+        },
+      }).concat(
         apiApplicant.middleware,
         apiProvider.middleware,
         apiAuth.middleware,
