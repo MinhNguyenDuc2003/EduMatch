@@ -77,7 +77,7 @@ export default GenCtx({
               price: Number(plan.price),          // chuyển string -> number
               durationDays: Number(plan.durationDays), // chuyển string -> number
               targetType: plan.targetType,
-              features: featuresString,
+              features: Array.isArray(plan.features) ? plan.features : plan.features?.split(',') || [],
             }
           );
           console.log('Created plan:', data.data);
@@ -132,11 +132,7 @@ export default GenCtx({
             `/api/subscription/subscription/subscription/plans/${id}`
           );
           console.log('Delete plan:', data.data);
-          if (data !== null) {
-            alert('Delete subscriptions successfull')
-            window.location.reload()
-          }
-          return data.data;
+              return data?.data ?? true;   
         } catch (error) {
           alert('Delete subscriptions failed')
           console.error({ error });

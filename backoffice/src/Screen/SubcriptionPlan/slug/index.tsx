@@ -5,6 +5,7 @@ import { Check, X, Pencil, Trash } from 'lucide-react';
 import Context from '../seg/context';
 import { CustomFormField } from 'src/common/components/common/CustomFormField';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 
 export default function SubcriptionPlanDetail() {
   const { id } = useParams();
@@ -20,6 +21,7 @@ export default function SubcriptionPlanDetail() {
 
 function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
   const [data, setData] = useState<any>(null);
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -101,11 +103,18 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
           {!isEditing ? (
             <div className="flex gap-5">
               <button
-                onClick={() => meds.onDelete(id)}
+                onClick={async () => {
+                  const ok = confirm("Are you sure you want to delete this plan?");
+                  if (!ok) return;
+
+                  await meds.onDelete(id);
+                  router.push('/backoffice/subscriptionPlan'); 
+                }}
                 className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-400 text-white rounded-lg transition"
               >
                 <Trash size={18} /> Delete
               </button>
+
               <button
                 onClick={() => setIsEditing(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
@@ -124,11 +133,17 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
               </button>
               <button
                 type="button"
-                onClick={() => setIsEditing(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  reset();
+                  setIsEditing(false);
+                }}
                 className="flex items-center gap-2 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg transition"
               >
                 <X size={18} /> Cancel
               </button>
+
             </div>
           )}
         </div>

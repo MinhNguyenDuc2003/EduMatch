@@ -84,7 +84,7 @@ const ApplicantScholarship = () => {
               <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
               <CustomDataTable
-                title="My Scholarship Applications"
+                title="Scholarship Applications List"
                 data={filteredApplications as any}
                 detailPath="/backoffice/applicationScholarship"
                 customTitles={[

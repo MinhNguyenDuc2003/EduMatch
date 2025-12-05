@@ -22,10 +22,10 @@ const Subcription = () => {
           // Map dữ liệu từ API vào định dạng cho bảng
           const Subcriptions =
             list?.map((item: any) => {
-              const start = new Date(item.startDate * 1000);
-              const end = new Date(item.endDate * 1000);
+              const start = new Date(item.startDate);   // ❗ KHÔNG nhân *1000
+              const end = new Date(item.endDate);
 
-              // Xác định trạng thái thực tế dựa vào ngày
+              // Calculate actual status based on dates
               let computedStatus = '';
               if (Date.now() < start.getTime()) computedStatus = 'Not Started';
               else if (Date.now() > end.getTime()) computedStatus = 'Expired';
@@ -40,14 +40,14 @@ const Subcription = () => {
                 startDate: start.toLocaleDateString('en-US'),
                 endDate: end.toLocaleDateString('en-US'),
                 autoRenew: item.autoRenew ? 'Yes' : 'No',
-                status: item.status || computedStatus,
+                status: computedStatus, // ❗ không dùng item.status nữa
               };
             }) || [];
 
-          // Tính toán thống kê
+          // Stats
           const total = Subcriptions.length;
           const active = Subcriptions.filter((s: any) => s.status === 'Active').length;
-          const pending = Subcriptions.filter((s: any) => s.status === 'pending').length;
+          const notStarted = Subcriptions.filter((s: any) => s.status === 'Not Started').length;
           const expired = Subcriptions.filter((s: any) => s.status === 'Expired').length;
 
           const stats = [
@@ -65,13 +65,7 @@ const Subcription = () => {
               color: 'text-green-600',
               filterName: 'Active',
             },
-            {
-              title: 'Pending',
-              value: pending,
-              icon: <Clock />,
-              color: 'text-yellow-500',
-              filterName: 'pending',
-            },
+            
             {
               title: 'Expired',
               value: expired,
@@ -79,6 +73,7 @@ const Subcription = () => {
               color: 'text-red-600',
               filterName: 'Expired',
             },
+
           ];
 
           return (
