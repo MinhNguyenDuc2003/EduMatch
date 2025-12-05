@@ -6,7 +6,7 @@ import {
   RELIGIONS,
   STUDY_LEVELS,
 } from '@/constants/Common';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
 import Header from '@/pattern/share/Header';
 import { useTranslations } from 'next-intl';
 import React from 'react';

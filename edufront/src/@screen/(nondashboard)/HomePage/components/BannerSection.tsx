@@ -1,4 +1,4 @@
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import Image from 'next/image';
 import {
   GraduationCap,

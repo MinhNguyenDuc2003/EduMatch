@@ -4,17 +4,17 @@ import { ProfileHeader } from '@/@screen/(dashboard)/provider/ProviderProfile/co
 import { COUNTRIES, ORGANIZATION_TYPES } from '@/constants/Common';
 import { DEFAULT_PROVIDER_FORM_VALUES } from '@/constants/DefaultValues';
 import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/lib/cus/button';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
+import { Button } from '@/pattern/cus/button';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/lib/cus/dialog';
-import { Form } from '@/lib/cus/form';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/lib/cus/input-otp';
+} from '@/pattern/cus/dialog';
+import { Form } from '@/pattern/cus/form';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/pattern/cus/input-otp';
 import { IProviderProfile, providerProfileSchema } from '@/lib/schemas';
 import Loading from '@/pattern/share/Loading';
 import {

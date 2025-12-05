@@ -1,6 +1,6 @@
 'use client';
 
-import { SidebarProvider } from '@/lib/cus/sidebar';
+import { SidebarProvider } from '@/pattern/cus/sidebar';
 import ProviderNavbar from '@/pattern/core/ProviderNavbar';
 import ProviderSidebar from '@/pattern/core/ProviderSidebar';
 import ProtectedRoute from '@/pattern/core/ProtectedRoute';

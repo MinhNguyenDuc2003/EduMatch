@@ -1,6 +1,6 @@
 import { scholarshipProviderMenuItems, studentMenuItems } from '@/constants/Common';
-import { Button } from '@/lib/cus/button';
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/lib/cus/sheet';
+import { Button } from '@/pattern/cus/button';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/pattern/cus/sheet';
 import { Menu } from 'lucide-react';
 import React from 'react';
 

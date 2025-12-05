@@ -1,4 +1,4 @@
-import { Input } from '@/lib/cus/input';
+import { Input } from '@/pattern/cus/input';
 import { Search } from 'lucide-react';
 import React from 'react';
 import { ScholarshipCard } from '../../ProviderScholaship/components';

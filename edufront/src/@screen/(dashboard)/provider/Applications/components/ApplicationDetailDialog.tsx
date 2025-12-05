@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/lib/cus/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/pattern/cus/dialog';
 import {
   Drawer,
   DrawerContent,
@@ -10,17 +10,17 @@ import {
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
-} from '@/lib/cus/drawer';
-import { Skeleton } from '@/lib/cus/skeleton';
+} from '@/pattern/cus/drawer';
+import { Skeleton } from '@/pattern/cus/skeleton';
 import { getStatusColor } from '../utils/applicationUtils';
 import { cn } from '@/lib/utils';
-import { Avatar, AvatarFallback } from '@/lib/cus/avatar';
-import { Badge } from '@/lib/cus/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/lib/cus/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/cus/tabs';
+import { Avatar, AvatarFallback } from '@/pattern/cus/avatar';
+import { Badge } from '@/pattern/cus/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/pattern/cus/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/pattern/cus/tabs';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { Button } from '@/lib/cus/button';
-import { Textarea } from '@/lib/cus/textarea';
+import { Button } from '@/pattern/cus/button';
+import { Textarea } from '@/pattern/cus/textarea';
 import { CheckCircle, FileText, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';

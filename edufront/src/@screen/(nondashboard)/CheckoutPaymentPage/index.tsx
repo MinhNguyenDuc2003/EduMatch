@@ -6,7 +6,7 @@ import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { toast } from 'sonner';
 import { useCheckoutNavigation } from '@/hooks/useCheckoutNavigation';
 import StripeProvider from './components/StripeProvider';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { useConfirmPaymentMutation, useExtendSubscriptionMutation } from '@/state/apiAuth';
 import { useAuth } from '@/hooks/useAuth';
 

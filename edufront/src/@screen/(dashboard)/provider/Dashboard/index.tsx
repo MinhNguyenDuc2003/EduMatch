@@ -4,7 +4,7 @@ import { useGetAllApplicationsQuery, useGetStatisticsQuery } from '@/state/apiPr
 import React from 'react';
 import { FileText } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import {
   getStatusColor,
   formatStatus,

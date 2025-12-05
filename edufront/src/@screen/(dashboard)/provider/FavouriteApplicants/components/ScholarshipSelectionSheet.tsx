@@ -1,8 +1,8 @@
 'use client';
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/lib/cus/sheet';
-import { Button } from '@/lib/cus/button';
-import { Skeleton } from '@/lib/cus/skeleton';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/pattern/cus/sheet';
+import { Button } from '@/pattern/cus/button';
+import { Skeleton } from '@/pattern/cus/skeleton';
 import { Send, Loader2, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 

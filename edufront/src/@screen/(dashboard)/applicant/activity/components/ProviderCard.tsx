@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { Mail, Phone, BadgeCheck } from 'lucide-react';
 import { useGetProviderProfileByIdQuery } from '@/state/apiProvider';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { useTranslations } from 'next-intl';
 
 type ProviderCardProps = {

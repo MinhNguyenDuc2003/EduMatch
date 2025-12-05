@@ -1,11 +1,11 @@
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/lib/cus/dropdown-menu';
-import { Skeleton } from '@/lib/cus/skeleton';
+} from '@/pattern/cus/dropdown-menu';
+import { Skeleton } from '@/pattern/cus/skeleton';
 import { cn } from '@/lib/utils';
 import { formatDate } from '@/utils/formatDate';
 import {

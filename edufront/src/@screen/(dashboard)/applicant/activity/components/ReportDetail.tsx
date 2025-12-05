@@ -1,9 +1,9 @@
 'use client';
 
 import { X, CheckCircle2, Clock, XCircle, AlertCircle, FileText, Trash2 } from 'lucide-react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/lib/cus/sheet';
-import { Badge } from '@/lib/cus/badge';
-import { Button } from '@/lib/cus/button';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/pattern/cus/sheet';
+import { Badge } from '@/pattern/cus/badge';
+import { Button } from '@/pattern/cus/button';
 import { useTranslations } from 'next-intl';
 
 type ReportDetailProps = {

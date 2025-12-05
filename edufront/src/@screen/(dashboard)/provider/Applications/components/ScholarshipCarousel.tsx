@@ -7,7 +7,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/lib/cus/carousel';
+} from '@/pattern/cus/carousel';
 import { cn } from '@/lib/utils';
 import React, { useEffect, useState } from 'react';
 import {

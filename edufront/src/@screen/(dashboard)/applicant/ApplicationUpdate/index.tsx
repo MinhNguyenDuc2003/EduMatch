@@ -13,7 +13,7 @@ import {
 } from '@/state/apiApplicant';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { Copy, ExternalLink, ChevronDown, FileText } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -23,7 +23,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/lib/cus/dropdown-menu';
+} from '@/pattern/cus/dropdown-menu';
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
 

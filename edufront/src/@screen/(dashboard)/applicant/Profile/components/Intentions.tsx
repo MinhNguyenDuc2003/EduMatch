@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Pencil, Plus } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import IntentionCard from './IntentionCard';
 import { useTranslations } from 'next-intl';
 

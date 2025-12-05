@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/lib/cus/card';
+import { Card, CardContent } from '@/pattern/cus/card';
 import { useTranslations } from 'next-intl';
 
 interface ConversionFunnelCardProps {

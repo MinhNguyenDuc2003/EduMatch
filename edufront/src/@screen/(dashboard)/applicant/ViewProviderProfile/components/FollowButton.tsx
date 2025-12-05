@@ -1,6 +1,6 @@
 'use client';
 import { Plus, Minus } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { useTranslations } from 'next-intl';
 
 interface FollowButtonProps {

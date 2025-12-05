@@ -1,8 +1,8 @@
 import { MapPin, Eye, Trash, Send, OctagonAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { Checkbox } from '@/lib/cus/checkbox';
-import { Button } from '@/lib/cus/button';
+import { Checkbox } from '@/pattern/cus/checkbox';
+import { Button } from '@/pattern/cus/button';
 import ReportDialog from '@/pattern/share/ReportDialog';
 
 interface FavouriteApplicantsTableProps {
