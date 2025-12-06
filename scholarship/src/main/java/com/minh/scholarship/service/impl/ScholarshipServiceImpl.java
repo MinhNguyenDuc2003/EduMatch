@@ -600,7 +600,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     public String getCompareResponse(List<Long> scholarshipIds) {
         ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(UaaContextHolder.getUserId()));
         AiRequestDto requestDto = new AiRequestDto();
-        requestDto.setProfileId(applicantProfileVo.getId());
+        requestDto.setApplicantId(applicantProfileVo.getId());
         requestDto.setScholarshipIds(scholarshipIds);
         return aiMatchFeign.compareScholarships(requestDto);
     }
