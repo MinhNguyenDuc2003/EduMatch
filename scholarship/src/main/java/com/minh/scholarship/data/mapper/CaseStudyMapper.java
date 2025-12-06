@@ -3,8 +3,7 @@ package com.minh.scholarship.data.mapper;
 import com.minh.mapper.BaseMapper;
 import com.minh.model.dto.scholarship.CaseStudyDto;
 import com.minh.scholarship.data.entity.CaseStudyEntity;
-import com.minh.scholarship.data.entity.ScholarshipEntity;
-import com.minh.scholarship.data.vo.ScholarshipVo;
+import com.minh.scholarship.data.vo.CaseStudyVo;
 import org.mapstruct.*;
 
 @Mapper(
@@ -15,4 +14,8 @@ import org.mapstruct.*;
         componentModel = "spring"
 )
 public interface CaseStudyMapper extends BaseMapper<CaseStudyEntity, CaseStudyDto> {
+
+    @Named("entityToVo")
+    CaseStudyVo entityToVo(CaseStudyEntity entity);
+
 }

@@ -22,8 +22,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -66,6 +68,39 @@ public class CaseStudyServiceImpl extends BaseService implements CaseStudyServic
         CaseStudyEntity caseStudyEntity1 = caseStudyEntity.get();
         caseStudyEntity1.setVerified(verified);
         return caseStudyRepository.save(caseStudyEntity1);
+    }
+
+    @Override
+    public CaseStudyVo getById(Long id) {
+        Optional<CaseStudyEntity> caseStudyEntity = caseStudyRepository.findById(id);
+        if (caseStudyEntity.isEmpty()) {
+            throw new BusinessException(CoreMessageCode.CASE_STUDY_IS_NOT_FOUND);
+        }
+        CaseStudyVo caseStudyVo = caseStudyMapper.entityToVo(caseStudyEntity.get());
+        return addScholarshipMedia(caseStudyVo);
+    }
+
+    @Override
+    public List<CaseStudyVo> getByScholarshipId(Long scholarshipId) {
+        List<CaseStudyEntity> entities = caseStudyRepository.findAllByScholarshipId(scholarshipId);
+        if (ObjectUtils.isEmpty(entities)) {
+            return new ArrayList<>();
+        }
+        List<CaseStudyVo> result = new ArrayList<>();
+        entities.forEach(entity -> {
+            CaseStudyVo vo = this.getById(entity.getId());
+            result.add(vo);
+        });
+        return result;
+    }
+
+    private CaseStudyVo addScholarshipMedia(CaseStudyVo vo) {
+        List<CaseStudyMediaEntity> mediaEntity = caseStudyMediaRepository.findByCaseStudyId(vo.getId());
+        if (ObjectUtils.isNotEmpty(mediaEntity)) {
+            List<MediaDto> medias = this.parseResponse(mediaFeign.getByIds(mediaEntity.stream().map(CaseStudyMediaEntity::getMediaId).collect(Collectors.toList())));
+            vo.setMedias(medias);
+        }
+        return vo;
     }
 
     private void uploadImages(List<MultipartFile> images, Long id) {

@@ -57,7 +57,7 @@ public class ScholarshipController {
     }
 
     @Authorized
-    @GetMapping("/compare")
+    @PostMapping("/compare")
     public ApiResponse<String> getCompareResponse(@RequestBody List<Long> scholarshipIds) {
         return ApiResponse.ok(scholarshipService.getCompareResponse(scholarshipIds));
     }

@@ -29,6 +29,7 @@ import com.minh.scholarship.feign.*;
 import com.minh.scholarship.message.KafkaProducer;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import com.minh.scholarship.service.ApplicationService;
+import com.minh.scholarship.service.CaseStudyService;
 import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.base.BaseService;
 import com.minh.utils.DateTimeUtils;
@@ -70,6 +71,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     private final AiMatchFeign aiMatchFeign;
     private final ApplicantProfileFeign applicantProfileFeign;
     private final CustomerFeign customerFeign;
+    private final CaseStudyService caseStudyService;
 
     @Value("${fe.end-point}")
     private String feEndPoint;
@@ -325,6 +327,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         }
         ScholarshipViewProjection entities = scholarshipViewRepository.getViewsByScholarshipId(vo.getId());
         vo.setViews(entities.getView());
+        vo.setCaseStudyVos(caseStudyService.getByScholarshipId(vo.getId()));
         return addScholarshipMedia(vo);
     }
 

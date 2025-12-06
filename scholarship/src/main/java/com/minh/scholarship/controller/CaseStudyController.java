@@ -22,6 +22,16 @@ public class CaseStudyController {
 
     private final CaseStudyService caseStudyService;
 
+    @GetMapping("/{id}")
+    public ApiResponse<CaseStudyVo> getById(@PathVariable Long id) {
+        return ApiResponse.ok(caseStudyService.getById(id));
+    }
+
+    @GetMapping("/all/{scholarshipId}")
+    public ApiResponse<List<CaseStudyVo>> getByScholarshipId(@PathVariable Long scholarshipId) {
+        return ApiResponse.ok(caseStudyService.getByScholarshipId(scholarshipId));
+    }
+
     @Authorized
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<CaseStudyVo> create(

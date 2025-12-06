@@ -28,5 +28,6 @@ public class ScholarshipVo extends ScholarshipDto {
     private int isFollow;
     private int views;
     private Double score;
+    private List<CaseStudyVo> caseStudyVos;
 
 }

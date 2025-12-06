@@ -12,4 +12,9 @@ public interface CaseStudyService {
     CaseStudyVo update(CaseStudyVo caseStudy);
 
     CaseStudyEntity updateVerified(Long id, Boolean verified);
+
+    CaseStudyVo getById(Long id);
+
+    List<CaseStudyVo> getByScholarshipId(Long scholarshipId);
+
 }
