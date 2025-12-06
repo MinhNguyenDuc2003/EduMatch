@@ -693,6 +693,7 @@
       "stateProvince": "Tỉnh/Thành phố",
       "enterStateProvince": "Nhập tỉnh hoặc thành phố",
       "country": "Quốc gia",
+      "selectCountry": "Chọn quốc gia",
       "enterCountry": "Nhập quốc gia",
       "academicInformation": "Thông tin học vấn",
       "degreeType": "Loại bằng cấp",
@@ -1039,6 +1040,12 @@
     "applicationForm": {
       "title": "Đơn Ứng Tuyển",
       "importFromProfile": "Nhập từ hồ sơ cá nhân",
+      "makeCopy": "Tạo bản copy",
+      "loadingMakeCopy": "Đang tạo bản copy...",
+      "otherVersions": "Các phiên bản khác",
+      "version": "Phiên bản",
+      "fullName": "Họ và tên",
+      "gpa": "GPA",
       "guidelines": {
         "title": "Để đảm bảo đơn ứng tuyển học bổng của bạn mạnh nhất có thể, vui lòng lưu ý những điểm quan trọng sau trước khi hoàn tất và nộp:",
         "accuracy": "Tính chính xác và đầy đủ: Kiểm tra kỹ lại rằng tất cả thông tin bạn đã cung cấp là chính xác và đầy đủ. Chi tiết không đầy đủ hoặc không chính xác có thể dẫn đến trì hoãn hoặc bị loại.",
@@ -1180,7 +1187,14 @@
       "comment": "Bình luận",
       "response": "Phản hồi",
       "noResponse": "Chưa có phản hồi",
-      "delete": "Xóa báo cáo"
+      "delete": "Xóa báo cáo",
+      "noTitle": "Không có tiêu đề",
+      "deleteConfirmation": {
+        "title": "Xác nhận xóa",
+        "description": "Bạn có chắc chắn muốn xóa báo cáo \"{reportTitle}\"? Hành động này không thể hoàn tác.",
+        "cancel": "Hủy",
+        "confirm": "Xóa"
+      }
     }
   },
   "reportDialog": {

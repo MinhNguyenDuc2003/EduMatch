@@ -102,9 +102,9 @@ export default function ActivityManagement() {
           await unfollowScholarship({
             scholarshipId: id,
           }).unwrap();
-          toast.success(t('toast.scholarshipUntracked'));
+          toast.success(t('toast.trackScholarship.untrack'));
         } catch (error) {
-          toast.error(t('toast.scholarshipUntrackedFailed'));
+          toast.error(t('toast.trackScholarship.untrackFailed'));
           console.log('Failed to untrack scholarship:', error);
         }
         break;
@@ -114,9 +114,9 @@ export default function ActivityManagement() {
       case 'following': {
         try {
           await unfollowProvider(id).unwrap();
-          toast.success(t('toast.providerUnfollowed'));
+          toast.success(t('toast.followProvider.unfollow'));
         } catch (error) {
-          toast.error(t('toast.providerUnfollowedFailed'));
+          toast.error(t('toast.followProvider.unfollowFailed'));
           console.log('Failed to unfollow provider:', error);
         }
         break;

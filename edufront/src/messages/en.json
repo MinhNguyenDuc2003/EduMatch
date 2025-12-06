@@ -711,6 +711,7 @@
       "stateProvince": "State/Province",
       "enterStateProvince": "Enter state or province",
       "country": "Country",
+      "selectCountry": "Select country",
       "enterCountry": "Enter country",
       "academicInformation": "Academic Information",
       "degreeType": "Degree Type",
@@ -1057,6 +1058,12 @@
     "applicationForm": {
       "title": "Application Form",
       "importFromProfile": "Import from profile",
+      "makeCopy": "Make a copy",
+      "loadingMakeCopy": "Making a copy...",
+      "otherVersions": "Other Versions",
+      "version": "Version",
+      "fullName": "Full Name",
+      "gpa": "GPA",
       "guidelines": {
         "title": "To ensure your scholarship application is as strong as possible, please keep these important points in mind before you finalize and submit:",
         "accuracy": "Accuracy and Completeness: Double-check that all the information you've provided is accurate and complete. Incomplete or inaccurate details can lead to delays or disqualification.",
@@ -1198,7 +1205,14 @@
       "comment": "Comment",
       "response": "Response",
       "noResponse": "No response yet",
-      "delete": "Delete Report"
+      "delete": "Delete Report",
+      "noTitle": "No title",
+      "deleteConfirmation": {
+        "title": "Confirm Delete",
+        "description": "Are you sure you want to delete the report \"{reportTitle}\"? This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
     }
   },
   "reportDialog": {
