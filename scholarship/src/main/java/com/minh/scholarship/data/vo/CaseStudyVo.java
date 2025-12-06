@@ -19,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CaseStudyVo extends CaseStudyDto {
 
+    private ApplicantProfileVo profileVo;
     private List<MediaDto> medias;
 
 }

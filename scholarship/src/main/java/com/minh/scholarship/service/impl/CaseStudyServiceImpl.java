@@ -10,7 +10,9 @@ import com.minh.scholarship.data.mapper.CaseStudyMapper;
 import com.minh.scholarship.data.repository.CaseStudyMediaRepository;
 import com.minh.scholarship.data.repository.CaseStudyRepository;
 import com.minh.scholarship.data.repository.ScholarshipRepository;
+import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import com.minh.scholarship.data.vo.CaseStudyVo;
+import com.minh.scholarship.feign.ApplicantProfileFeign;
 import com.minh.scholarship.feign.MediaFeign;
 import com.minh.scholarship.service.CaseStudyService;
 import com.minh.service.base.BaseService;
@@ -37,6 +39,7 @@ public class CaseStudyServiceImpl extends BaseService implements CaseStudyServic
     private final CaseStudyMapper caseStudyMapper;
     private final MediaFeign mediaFeign;
     private final ScholarshipRepository scholarshipRepository;
+    private final ApplicantProfileFeign profileFeign;
 
     @Override
     public CaseStudyVo create(CaseStudyVo caseStudy, List<MultipartFile> images) {
@@ -45,6 +48,7 @@ public class CaseStudyServiceImpl extends BaseService implements CaseStudyServic
             throw new BusinessException(CoreMessageCode.USER_IS_NOT_SUCCESSFULLY_GAIN_SCHOLARSHIP);
         }
         CaseStudyEntity save = caseStudyRepository.save(caseStudyMapper.toEntity(caseStudy));
+        save.setUserId(UaaContextHolder.getUserId());
         uploadImages(images, save.getId());
         return caseStudy;
     }
@@ -77,12 +81,16 @@ public class CaseStudyServiceImpl extends BaseService implements CaseStudyServic
             throw new BusinessException(CoreMessageCode.CASE_STUDY_IS_NOT_FOUND);
         }
         CaseStudyVo caseStudyVo = caseStudyMapper.entityToVo(caseStudyEntity.get());
+        ApplicantProfileVo profileVo = this.parseResponse(profileFeign.getOneByUserId(caseStudyEntity.get().getUserId()));
+        if (ObjectUtils.isNotEmpty(profileVo)) {
+            caseStudyVo.setProfileVo(profileVo);
+        }
         return addScholarshipMedia(caseStudyVo);
     }
 
     @Override
     public List<CaseStudyVo> getByScholarshipId(Long scholarshipId) {
-        List<CaseStudyEntity> entities = caseStudyRepository.findAllByScholarshipId(scholarshipId);
+        List<CaseStudyEntity> entities = caseStudyRepository.findAllByScholarshipIdAndVerified(scholarshipId, true);
         if (ObjectUtils.isEmpty(entities)) {
             return new ArrayList<>();
         }

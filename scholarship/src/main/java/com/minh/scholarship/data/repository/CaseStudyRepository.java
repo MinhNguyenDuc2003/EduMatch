@@ -11,4 +11,6 @@ public interface CaseStudyRepository extends JpaRepository<CaseStudyEntity, Long
 
     List<CaseStudyEntity> findAllByScholarshipId(Long scholarshipId);
 
+    List<CaseStudyEntity> findAllByScholarshipIdAndVerified(Long scholarshipId, boolean b);
+    
 }
