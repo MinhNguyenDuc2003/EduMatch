@@ -420,6 +420,22 @@
       "description": "Khám phá những học bổng được quan tâm nhiều nhất trong tháng này",
       "viewCountDescription": "Số lượt xem thể hiện số người đã xem học bổng này"
     },
+    "recommendedScholarships": {
+      "title": "Học Bổng Được Đề Xuất Bởi AI",
+      "subtitle": "Đề xuất học bổng cá nhân hóa dựa trên hồ sơ của bạn",
+      "badge": "AI Scholarship",
+      "adTitle": "Mở Khóa Đề Xuất Học Bổng Bằng AI",
+      "adDescription": "Nhận đề xuất học bổng cá nhân hóa phù hợp với hồ sơ, thành tích học tập và mục tiêu của bạn. AI của chúng tôi phân tích hàng ngàn cơ hội để tìm ra sự phù hợp hoàn hảo cho bạn.",
+      "adFeatures": [
+        "Tìm kiếm thông minh dựa trên hồ sơ của bạn",
+        "Đề xuất cá nhân hóa được cập nhật thường xuyên",
+        "Truy cập các cơ hội học bổng độc quyền",
+        "Thông báo ưu tiên cho các đề xuất mới"
+      ],
+      "subscribeNow": "Đăng Ký Ngay",
+      "adFooter": "Bắt đầu hành trình tìm kiếm học bổng phù hợp nhất",
+      "viewAll": "Xem Tất Cả Đề Xuất"
+    },
     "cardSmalPic": {
       "trackScholarship": "Theo dõi học bổng",
       "organizationLogo": "Logo tổ chức"

@@ -6,7 +6,7 @@ import { getScholarshipFirstImage } from '@/utils/scholarshipHelpers';
 
 type TopViewScholarshipCardProps = {
   scholarship: Scholarship;
-  rank: number;
+  rank?: number;
   onViewDetails: () => void;
 };
 
