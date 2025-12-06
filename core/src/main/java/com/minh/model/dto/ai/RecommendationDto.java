@@ -19,13 +19,13 @@ public class RecommendationDto implements Serializable {
     @JsonProperty("scholarship")
     Long scholarship;
 
-    @JsonProperty("applicant")
+    @JsonProperty("profile")
     Long applicant;
 
     @JsonProperty("application")
     Long application;
 
-    @JsonProperty("similarity_score")
+    @JsonProperty("overall_score")
     Double similarityScore;
 
 }

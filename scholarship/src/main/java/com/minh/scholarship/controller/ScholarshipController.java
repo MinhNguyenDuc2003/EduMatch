@@ -56,6 +56,12 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getAnalyzeResponse(scholarshipId));
     }
 
+    @Authorized
+    @GetMapping("/compare")
+    public ApiResponse<String> getCompareResponse(@RequestBody List<Long> scholarshipIds) {
+        return ApiResponse.ok(scholarshipService.getCompareResponse(scholarshipIds));
+    }
+
     @PostMapping("/ids")
     public ApiResponse<List<ScholarshipVo>> getByIds(@RequestBody List<Long> ids) {
         return ApiResponse.ok(scholarshipService.getByIds(ids));

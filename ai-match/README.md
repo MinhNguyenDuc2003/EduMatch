@@ -1,193 +1,229 @@
-# AI Match API
+# Scholarship Matching System
 
-AI-powered scholarship matching system using embeddings and LLM analysis. This FastAPI application helps match applicants with suitable scholarships and provides intelligent analysis of scholarship-applicant compatibility.
+A FastAPI-based scholarship matching system that uses AI and semantic analysis to match students with scholarships based on their profiles, academic performance, and preferences.
 
 ## Features
 
-- **Scholarship Search**: Find scholarships matching an applicant's profile
-- **Applicant Search**: Find applicants suitable for a scholarship
-- **Application Ranking**: Rank applications for a specific scholarship
-- **LLM Analysis**: Get detailed AI-powered analysis of applicant-scholarship matches
-- **RESTful API**: Clean, well-documented API endpoints
-- **Docker Support**: Easy deployment with Docker and Docker Compose
+- **Intelligent Matching**: Uses semantic similarity and weighted scoring to match students with scholarships
+- **LLM Analysis**: Integrates Google Gemini for detailed scholarship recommendations
+- **Multi-criteria Evaluation**: Considers hard requirements, academic fit, and semantic matching
+- **RESTful API**: Clean FastAPI endpoints for easy integration
+- **Dockerized**: Ready for containerized deployment
 
-## Technology Stack
+## Project Structure
 
-- **FastAPI**: Modern, fast web framework for building APIs
-- **Sentence Transformers**: For generating embeddings
-- **Google GenAI**: For LLM-powered analysis
-- **PostgreSQL**: Database for scholarships and applicant profiles
-- **Docker**: Containerization for easy deployment
+```
+Scholarships/
+├── app/
+│   ├── __init__.py
+│   ├── main.py                 # FastAPI application and endpoints
+│   ├── scholarship_matcher.py  # Core matching logic
+│   └── scholarship_query.py    # Database query layer
+├── tests/                      # Test directory (to be implemented)
+├── .env                        # Environment variables (not in git)
+├── .env.example               # Environment variables template
+├── .gitignore                 # Git ignore rules
+├── .dockerignore              # Docker ignore rules
+├── Dockerfile                 # Docker container configuration
+├── docker-compose.yml         # Docker Compose configuration
+├── requirements.txt           # Python dependencies
+└── README.md                  # This file
+```
+
+## Prerequisites
+
+- Python 3.10+
+- PostgreSQL databases (scholarship and profile)
+- Google Gemini API key
+- Docker (optional, for containerized deployment)
 
 ## Installation
 
 ### Local Development
 
-1. **Clone the repository** (if applicable)
-
-2. **Create virtual environment**:
+1. **Clone the repository**
    ```bash
-   python -m venv venv
-   .\venv\Scripts\activate  # Windows
-   # source venv/bin/activate  # Linux/Mac
+   git clone <repository-url>
+   cd Scholarships
    ```
 
-3. **Install dependencies**:
+2. **Create virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Configure environment variables**:
-   - Copy `.env.example` to `.env`
-   - Update the values with your actual credentials:
-     ```bash
-     cp .env.example .env
-     ```
-   - Edit `.env` and fill in your database credentials and API keys
+4. **Configure environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your actual credentials
+   ```
 
-5. **Run the application**:
+5. **Run the application**
    ```bash
    uvicorn app.main:app --reload
    ```
 
-6. **Access the API documentation**:
-   - Swagger UI: http://localhost:8000/docs
-   - ReDoc: http://localhost:8000/redoc
+   The API will be available at `http://localhost:8000`
 
 ### Docker Deployment
 
-1. **Configure environment variables**:
+1. **Configure environment variables**
    ```bash
    cp .env.example .env
-   # Edit .env with your credentials
+   # Edit .env with your actual credentials
    ```
 
-2. **Build and run with Docker Compose**:
+2. **Build and run with Docker Compose**
+   ```bash
+   docker-compose up --build
+   ```
+
+   The API will be available at `http://localhost:8000`
+
+3. **Run in detached mode**
    ```bash
    docker-compose up -d
    ```
 
-3. **Or build and run manually**:
+4. **View logs**
    ```bash
-   docker build -t ai-match:latest .
-   docker run -p 8000:8000 --env-file .env ai-match:latest
+   docker-compose logs -f
    ```
 
-4. **Check container health**:
+5. **Stop the application**
    ```bash
-   docker ps
-   docker logs ai-match-api
+   docker-compose down
    ```
 
 ## API Endpoints
 
 ### Health Check
-- `GET /health` - Check API health status
-- `GET /` - API information
+- **GET** `/`
+  - Returns API status
 
 ### Scholarship Matching
-- `POST /api/v1/scholarships/search` - Search scholarships for an applicant
-  ```json
-  {
-    "applicant_id": 1,
-    "top_k": 5
-  }
-  ```
 
-### Applicant Matching
-- `POST /api/v1/applicants/search` - Search applicants for a scholarship
-  ```json
-  {
-    "scholarship_id": 65,
-    "top_k": 5
-  }
-  ```
+- **GET** `/match/profile/{profile_id}`
+  - Match scholarships for a specific profile
+  - Query params: `top_k` (default: 5)
 
-### Application Ranking
-- `POST /api/v1/applications/rank` - Rank applications for a scholarship
-  ```json
-  {
-    "scholarship_id": 65,
-    "top_k": 5
-  }
-  ```
+- **GET** `/match/scholarship/{scholarship_id}/applications`
+  - Match applications for a specific scholarship
+  - Query params: `top_k` (default: 5)
+
+- **GET** `/match/scholarship/{scholarship_id}/profiles`
+  - Match profiles for a specific scholarship
+  - Query params: `top_k` (default: 5)
 
 ### LLM Analysis
-- `POST /api/v1/analyze` - Get detailed match analysis
-  ```json
-  {
-    "applicant_id": 3,
-    "scholarship_id": 65
-  }
-  ```
 
-## Configuration
+- **POST** `/analyze/llm`
+  - Get detailed LLM-based analysis
+  - Request body:
+    ```json
+    {
+      "application_id": 123,
+      "scholarship_id": 456
+    }
+    ```
 
-All configuration is managed through environment variables. See `.env.example` for all available options.
+### API Documentation
 
-### Required Environment Variables
+Once the application is running, visit:
+- Swagger UI: `http://localhost:8000/docs`
+- ReDoc: `http://localhost:8000/redoc`
 
-- `SCHOLARSHIP_DB_HOST`, `SCHOLARSHIP_DB_NAME`, `SCHOLARSHIP_DB_USER`, `SCHOLARSHIP_DB_PASSWORD`
-- `PROFILE_DB_HOST`, `PROFILE_DB_NAME`, `PROFILE_DB_USER`, `PROFILE_DB_PASSWORD`
-- `GOOGLE_GENAI_API_KEY`
+## Environment Variables
 
-## Project Structure
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `DB_HOST` | Database host | `160.30.113.224` |
+| `DB_PORT` | Database port | `5432` |
+| `DB_NAME_SCHOLARSHIP` | Scholarship database name | `scholarship` |
+| `DB_USER_SCHOLARSHIP` | Scholarship database user | `admin` |
+| `DB_PASSWORD_SCHOLARSHIP` | Scholarship database password | `your_password` |
+| `DB_NAME_PROFILE` | Profile database name | `profile` |
+| `DB_USER_PROFILE` | Profile database user | `admin` |
+| `DB_PASSWORD_PROFILE` | Profile database password | `your_password` |
+| `GEMINI_API_KEY` | Google Gemini API key | `AIza...` |
 
-```
-ai-match/
-├── app/
-│   ├── __init__.py
-│   ├── main.py              # FastAPI application
-│   ├── config.py            # Configuration management
-│   ├── database.py          # Database connections
-│   ├── models.py            # Pydantic models
-│   └── services/
-│       ├── __init__.py
-│       ├── database_service.py    # Database queries
-│       ├── embedding_service.py   # Embedding & similarity
-│       └── llm_service.py         # LLM analysis
-├── requirements.txt         # Python dependencies
-├── Dockerfile              # Docker configuration
-├── docker-compose.yml      # Docker Compose setup
-├── .env.example           # Environment template
-└── README.md              # This file
-```
+## Matching Algorithm
+
+The system uses a three-tier matching approach:
+
+1. **Hard Requirements (30% weight)**
+   - Age range
+   - Nationality restrictions
+   - Study level
+   - Gender requirements
+   - Language proficiency (IELTS/TOEFL)
+
+2. **Academic Fit (20% weight)**
+   - GPA requirements
+   - Test scores (SAT/ACT/GRE/GMAT)
+   - Publications
+   - Work experience
+   - Class rank
+
+3. **Semantic Matching (50% weight)**
+   - Research interest alignment
+   - Major compatibility
+   - Skills relevance
+   - Using BAAI/bge-large-en-v1.5 embeddings
+
+## Technologies Used
+
+- **FastAPI**: Modern web framework for building APIs
+- **PostgreSQL**: Relational database for data storage
+- **Sentence Transformers**: Semantic similarity using BAAI/bge-large-en-v1.5
+- **Google Gemini**: LLM for detailed analysis and recommendations
+- **Docker**: Containerization for easy deployment
+- **Python-dotenv**: Environment variable management
 
 ## Development
 
+### Adding New Features
+
+1. Update the matching logic in `app/scholarship_matcher.py`
+2. Add new endpoints in `app/main.py`
+3. Update database queries in `app/scholarship_query.py`
+
 ### Running Tests
+
 ```bash
-# Add your test commands here
-pytest
+pytest tests/
 ```
 
-### Code Quality
-```bash
-# Format code
-black app/
+## Troubleshooting
 
-# Lint code
-flake8 app/
+### Database Connection Issues
+- Verify database credentials in `.env`
+- Ensure PostgreSQL is running and accessible
+- Check firewall rules for database port
 
-# Type checking
-mypy app/
-```
+### API Key Issues
+- Verify `GEMINI_API_KEY` is set correctly
+- Check API quota and rate limits
 
-## Production Deployment
-
-For production deployment:
-
-1. Set `DEBUG=false` in `.env`
-2. Use a proper ASGI server configuration
-3. Set up proper CORS origins in `app/main.py`
-4. Use environment-specific secrets management
-5. Set up monitoring and logging
-6. Configure proper database connection pooling
+### Import Errors
+- Ensure you're running from the project root
+- Verify virtual environment is activated
+- Check all dependencies are installed
 
 ## License
 
-[Add your license here]
+[Your License Here]
 
-## Contact
+## Contributors
 
-[Add contact information here]
+[Your Name/Team]
+
+## Support
+
+For issues and questions, please open an issue on the repository.

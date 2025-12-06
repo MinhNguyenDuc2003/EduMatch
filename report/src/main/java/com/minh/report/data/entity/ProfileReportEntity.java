@@ -16,7 +16,7 @@ public class ProfileReportEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String profileId;
+    private Long profileId;
 
     @ManyToOne
     @JoinColumn(name = "report_id")

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -16,13 +17,19 @@ import java.io.Serializable;
 @ToString(callSuper = true)
 public class AiRequestDto implements Serializable {
 
-    @JsonProperty("applicant_id")
+    @JsonProperty("profile_id")
     Long applicantId;
+
+    @JsonProperty("application_id")
+    Long profileId;
 
     @JsonProperty("scholarship_id")
     Long scholarshipId;
 
     @JsonProperty("top_k")
     Integer topK;
+
+    @JsonProperty("scholarship_id_list")
+    List<Long> scholarshipIds;
 
 }

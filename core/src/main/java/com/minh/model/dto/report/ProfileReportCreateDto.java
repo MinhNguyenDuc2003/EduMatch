@@ -8,6 +8,6 @@ import lombok.Setter;
 public class ProfileReportCreateDto {
     private String title;
     private String comment;
-    private String profileId; // id của profile
+    private Long profileId; // id của profile
     private Long categoryId;
 }

@@ -68,4 +68,6 @@ public interface ScholarshipService {
     List<ScholarshipVo> getTopViewsByMonthByProvider();
 
     ScholarshipStatisticsDto getStatisticsByProvider();
+
+    String getCompareResponse(List<Long> scholarshipIds);
 }

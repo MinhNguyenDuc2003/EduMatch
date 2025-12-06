@@ -92,4 +92,10 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
 
     List<ScholarshipEntity> findAllByProviderIdAndActive(Long id, boolean b);
 
+    @Query(value = "select * from scholarship.scholarship s " +
+            "inner join scholarship.application_scholarship aps on s.id = aps.scholarship_id and aps.status = :status " +
+            "inner join scholarship.application a on aps.application_id = a.id and a.user_id = :userId " +
+            "where s.id = :scholarshipId"
+            , nativeQuery = true)
+    List<ScholarshipEntity> findByApplicationSuccessAndScholarshipId(String userId, Long scholarshipId, String status);
 }

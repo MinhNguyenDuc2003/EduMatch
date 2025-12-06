@@ -1,282 +1,197 @@
-"""FastAPI application for AI Match."""
-import logging
-import sys
-import traceback
-from fastapi import FastAPI, HTTPException, Depends, Request
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from contextlib import asynccontextmanager
-from typing import Dict, Any
+from fastapi import FastAPI, HTTPException, Query
+from pydantic import BaseModel
+from typing import List, Optional, Dict, Any
+import uvicorn
+from dotenv import load_dotenv
 
-from app.config import get_settings, Settings
-from app.database import get_both_cursors
-from app.models import (
-    ScholarshipSearchRequest,
-    ApplicantSearchRequest,
-    ApplicationRankRequest,
-    AnalyzeRequest,
-    ScholarshipSearchResponse,
-    ApplicantSearchResponse,
-    ApplicationRankResponse,
-    AnalyzeResponse,
-    HealthResponse
-)
-from app.services.embedding_service import (
-    scholarships_search,
-    applicant_search,
-    application_search,
-    get_embedding_model
-)
-from app.services.llm_service import llm_analyze
+# Use relative import since we're in the app package
+from app.scholarship_matcher import ScholarshipMatcher
 
+load_dotenv()
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(sys.stdout)
-    ]
-)
-logger = logging.getLogger(__name__)
+app = FastAPI(title="Scholarship Matcher API")
 
+# Global instance
+matcher = None
 
-# Lifespan context manager for startup/shutdown
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Application lifespan manager."""
-    settings = get_settings()
-    logger.info(f"Starting {settings.app_name} v{settings.app_version}")
-    logger.info(f"Debug mode: {settings.debug}")
-    
-    # Startup: Pre-load embedding model
+import numpy as np
+
+def convert_to_json_serializable(obj):
+    """Convert numpy types to native Python types"""
+    if isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.bool_):
+        return bool(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        return {key: convert_to_json_serializable(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_to_json_serializable(item) for item in obj]
+    elif isinstance(obj, tuple):
+        return tuple(convert_to_json_serializable(item) for item in obj)
+    return obj
+
+@app.on_event("startup")
+async def startup_event():
+    global matcher
+    print("=" * 50)
+    print("🚀 Starting Scholarship Matcher API...")
+    print("=" * 50)
     try:
-        logger.info("Loading embedding model...")
-        get_embedding_model()
-        logger.info("✓ Embedding model loaded successfully!")
+        matcher = ScholarshipMatcher()
+        print("=" * 50)
+        print("✅ ScholarshipMatcher initialized successfully")
+        print("=" * 50)
     except Exception as e:
-        logger.error(f"✗ Failed to load embedding model: {e}")
-        logger.error(traceback.format_exc())
-        raise
-    
-    # Test database connections
-    try:
-        logger.info("Testing database connections...")
-        with get_both_cursors() as (sch_cursor, prof_cursor):
-            sch_cursor.execute("SELECT 1")
-            prof_cursor.execute("SELECT 1")
-        logger.info("✓ Database connections successful!")
-    except Exception as e:
-        logger.error(f"✗ Database connection failed: {e}")
-        logger.error(traceback.format_exc())
-        raise
-    
-    yield
-    
-    # Shutdown: cleanup if needed
-    logger.info("Shutting down...")
+        print("=" * 50)
+        print(f"❌ Error initializing ScholarshipMatcher: {e}")
+        print("=" * 50)
+        import traceback
+        traceback.print_exc()
+        # Don't raise - let API start even if matcher fails
+        # This allows health check endpoint to work
 
-
-# Create FastAPI app
-app = FastAPI(
-    title="AI Match API",
-    description="AI-powered scholarship matching system using embeddings and LLM analysis",
-    version="1.0.0",
-    lifespan=lifespan
-)
-
-# CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-# Global exception handler for debugging
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    """Catch all unhandled exceptions and log them."""
-    logger.error(f"Unhandled exception on {request.method} {request.url}")
-    logger.error(f"Exception type: {type(exc).__name__}")
-    logger.error(f"Exception message: {str(exc)}")
-    logger.error(f"Full traceback:\n{traceback.format_exc()}")
-    
-    return JSONResponse(
-        status_code=500,
-        content={
-            "detail": "Internal server error",
-            "error": str(exc),
-            "type": type(exc).__name__,
-            "path": str(request.url)
-        }
-    )
-
-
-@app.get("/", tags=["Info"])
-async def root():
-    """API information."""
+@app.get("/")
+def read_root():
     return {
-        "message": "Welcome to AI Match API",
-        "version": "1.0.0",
-        "docs": "/docs",
-        "health": "/health"
+        "message": "Scholarship Matcher API is running",
+        "status": "active" if matcher else "error",
+        "endpoints": {
+            "docs": "/docs",
+            "profile_match": "/match/profile/{profile_id}",
+            "scholarship_applications": "/match/scholarship/{scholarship_id}/applications",
+            "scholarship_profiles": "/match/scholarship/{scholarship_id}/profiles",
+            "llm_analysis": "/analyze/llm"
+        }
     }
 
-
-@app.get("/health", response_model=HealthResponse, tags=["Health"])
-async def health_check(settings: Settings = Depends(get_settings)):
-    """Health check endpoint with database connection test."""
-    try:
-        # Test database connections
-        with get_both_cursors() as (sch_cursor, prof_cursor):
-            sch_cursor.execute("SELECT 1")
-            prof_cursor.execute("SELECT 1")
-        
-        logger.info("Health check passed")
-        return HealthResponse(
-            status="healthy",
-            version="1.0.0",
-            embedding_model=settings.embedding_model_name
-        )
-    except Exception as e:
-        logger.error(f"Health check failed: {e}")
-        logger.error(traceback.format_exc())
-        raise HTTPException(
-            status_code=503,
-            detail=f"Service unhealthy: Database connection failed - {str(e)}"
-        )
-
-
-
-@app.post("/api/v1/scholarships/search", response_model=ScholarshipSearchResponse, tags=["Scholarships"])
-async def search_scholarships(request: ScholarshipSearchRequest):
-    """
-    Search for scholarships matching an applicant's profile.
+@app.get("/health")
+def health_check():
+    """Health check endpoint"""
+    if not matcher:
+        raise HTTPException(status_code=503, detail="Matcher service not initialized")
     
-    Returns top K scholarships ranked by similarity score.
-    """
-    logger.info(f"Scholarship search request: applicant_id={request.applicant_id}, top_k={request.top_k}")
     try:
-        with get_both_cursors() as (sch_cursor, prof_cursor):
-            results = scholarships_search(
-                applicant_id=request.applicant_id,
-                sch_cursor=sch_cursor,
-                prof_cursor=prof_cursor,
-                top_k=request.top_k
-            )
-        
-        logger.info(f"Scholarship search completed: {len(results)} results")
-        return ScholarshipSearchResponse(
-            results=results,
-            count=len(results)
-        )
-    except ValueError as e:
-        logger.warning(f"Scholarship search failed: {e}")
-        raise HTTPException(status_code=404, detail=str(e))
+        # Check if database connections are active
+        is_connected = matcher.query.is_connected()
+        return {
+            "status": "healthy" if is_connected else "unhealthy",
+            "database": "connected" if is_connected else "disconnected"
+        }
     except Exception as e:
-        logger.error(f"Scholarship search error: {e}")
-        logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        raise HTTPException(status_code=503, detail=f"Health check failed: {str(e)}")
 
-
-@app.post("/api/v1/applicants/search", response_model=ApplicantSearchResponse, tags=["Applicants"])
-async def search_applicants(request: ApplicantSearchRequest):
+@app.get("/match/profile/{profile_id}")
+def match_profile_to_scholarships(profile_id: int, top_k: int = 5):
     """
-    Search for applicants matching a scholarship.
+    Match a profile to all scholarships.
+    Returns top K scholarships ranked by match score.
+    """
+    if not matcher:
+        raise HTTPException(status_code=503, detail="Matcher service not initialized")
     
-    Returns top K applicants ranked by similarity score.
-    """
-    logger.info(f"Applicant search request: scholarship_id={request.scholarship_id}, top_k={request.top_k}")
     try:
-        with get_both_cursors() as (sch_cursor, prof_cursor):
-            results = applicant_search(
-                scholarship_id=request.scholarship_id,
-                sch_cursor=sch_cursor,
-                prof_cursor=prof_cursor,
-                top_k=request.top_k
-            )
-        
-        logger.info(f"Applicant search completed: {len(results)} results")
-        return ApplicantSearchResponse(
-            results=results,
-            count=len(results)
-        )
-    except ValueError as e:
-        logger.warning(f"Applicant search failed: {e}")
-        raise HTTPException(status_code=404, detail=str(e))
+        results = matcher.scholarship_profile_match(profile_id, top_k)
+        return {
+            "profile_id": profile_id,
+            "top_k": top_k,
+            "matches": convert_to_json_serializable(results)
+        }
     except Exception as e:
-        logger.error(f"Applicant search error: {e}")
-        logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
 
-
-@app.post("/api/v1/applications/rank", response_model=ApplicationRankResponse, tags=["Applications"])
-async def rank_applications(request: ApplicationRankRequest):
+@app.get("/match/scholarship/{scholarship_id}/applications")
+def match_scholarship_to_applications(scholarship_id: int, top_k: int = 5):
     """
-    Rank applications for a specific scholarship.
+    Match a scholarship to all its applications.
+    Returns top K applications ranked by match score.
+    """
+    if not matcher:
+        raise HTTPException(status_code=503, detail="Matcher service not initialized")
     
-    Returns top K applications ranked by similarity score.
-    """
-    logger.info(f"Application rank request: scholarship_id={request.scholarship_id}, top_k={request.top_k}")
     try:
-        with get_both_cursors() as (sch_cursor, _):
-            results = application_search(
-                scholarship_id=request.scholarship_id,
-                sch_cursor=sch_cursor,
-                top_k=request.top_k
-            )
-        
-        logger.info(f"Application rank completed: {len(results)} results")
-        return ApplicationRankResponse(
-            results=results,
-            count=len(results)
-        )
-    except ValueError as e:
-        logger.warning(f"Application rank failed: {e}")
-        raise HTTPException(status_code=404, detail=str(e))
+        results = matcher.application_scholarship_match(scholarship_id, top_k)
+        return {
+            "scholarship_id": scholarship_id,
+            "top_k": top_k,
+            "matches": convert_to_json_serializable(results)
+        }
     except Exception as e:
-        logger.error(f"Application rank error: {e}")
-        logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
 
-
-@app.post("/api/v1/analyze", response_model=AnalyzeResponse, tags=["Analysis"])
-async def analyze_match(request: AnalyzeRequest):
+@app.get("/match/scholarship/{scholarship_id}/profiles")
+def match_scholarship_to_profiles(scholarship_id: int, top_k: int = 5):
     """
-    Analyze the match between an applicant and a scholarship using LLM.
+    Match a scholarship to all profiles (potential candidates).
+    Returns top K profiles ranked by match score.
+    """
+    if not matcher:
+        raise HTTPException(status_code=503, detail="Matcher service not initialized")
     
-    Returns detailed analysis including:
-    - Match reasons
-    - Student strengths
-    - Areas for improvement
-    - Application tips
-    - Overall strategy
-    - Timeline
-    """
-    logger.info(f"LLM analysis request: applicant_id={request.applicant_id}, scholarship_id={request.scholarship_id}")
     try:
-        with get_both_cursors() as (sch_cursor, prof_cursor):
-            analysis = llm_analyze(
-                applicant_id=request.applicant_id,
-                scholarship_id=request.scholarship_id,
-                sch_cursor=sch_cursor,
-                prof_cursor=prof_cursor
-            )
-        
-        logger.info(f"LLM analysis completed successfully")
-        return AnalyzeResponse(analysis=analysis)
-    except ValueError as e:
-        logger.warning(f"LLM analysis failed: {e}")
-        raise HTTPException(status_code=404, detail=str(e))
+        results = matcher.profile_scholarship_match(scholarship_id, top_k)
+        return {
+            "scholarship_id": scholarship_id,
+            "top_k": top_k,
+            "matches": convert_to_json_serializable(results)
+        }
     except Exception as e:
-        logger.error(f"LLM analysis error: {e}")
-        logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
 
+class LLMAnalysisRequest(BaseModel):
+    application_id: int
+    scholarship_id: int
+
+class LLMCompareRequest(BaseModel):
+    profile_id: int
+    scholarship_id_list: list[int]
+    
+@app.post("/analyze/llm")
+def analyze_match_with_llm(request: LLMAnalysisRequest):
+    """
+    Analyze the match between an application and a scholarship using LLM.
+    Provides detailed recommendations and improvement suggestions.
+    """
+    if not matcher:
+        raise HTTPException(status_code=503, detail="Matcher service not initialized")
+    
+    try:
+        result = matcher.llm_analyze(request.application_id, request.scholarship_id)
+        if not result.get('success'):
+            raise HTTPException(status_code=500, detail=result.get('error', 'Unknown error'))
+        return result
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/compare/llm")
+def compare_scholarships_with_llm(request: LLMCompareRequest):
+    """
+    Compare multiple scholarships for a profile using LLM.
+    Provides detailed recommendations and improvement suggestions.
+    """
+    if not matcher:
+        raise HTTPException(status_code=503, detail="Matcher service not initialized")
+    
+    try:
+        result = matcher._llm_compare_scholarships(request.profile_id, request.scholarship_id_list)
+        if not result.get('success'):
+            raise HTTPException(status_code=500, detail=result.get('error', 'Unknown error'))
+        return result
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

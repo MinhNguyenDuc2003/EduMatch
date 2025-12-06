@@ -444,13 +444,10 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     public List<ScholarshipVo> getRecommendationScholarship(String userId, int topK) {
         ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(userId));
-        AiRequestDto requestDto = new AiRequestDto();
         if (ObjectUtils.isEmpty(applicantProfileVo)) {
             return null;
         }
-        requestDto.setApplicantId(applicantProfileVo.getId());
-        requestDto.setTopK(topK);
-        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationScholarship(requestDto);
+        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationScholarship(applicantProfileVo.getId(), topK);
         List<ScholarshipVo> result = new ArrayList<>();
         if (ObjectUtils.isEmpty(recommendationScholarship.getResults())) {
             return null;
@@ -465,11 +462,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public List<ApplicantProfileVo> getRecommendationApplicantForScholarship(Long scholarshipId, int topK) {
-        AiRequestDto requestDto = new AiRequestDto();
-        requestDto.setScholarshipId(scholarshipId);
-        requestDto.setTopK(topK);
-
-        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationApplicantForScholarship(requestDto);
+        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationApplicantForScholarship(scholarshipId, topK);
         List<ApplicantProfileVo> result = new ArrayList<>();
         if (ObjectUtils.isEmpty(recommendationScholarship.getResults())) {
             return null;
@@ -486,7 +479,10 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     public String getAnalyzeResponse(Long scholarshipId) {
         ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(UaaContextHolder.getUserId()));
         AiRequestDto requestDto = new AiRequestDto();
-        requestDto.setApplicantId(1L);
+        if (ObjectUtils.isEmpty(applicantProfileVo)) {
+            return null;
+        }
+        requestDto.setProfileId(applicantProfileVo.getId());
         requestDto.setScholarshipId(scholarshipId);
         return aiMatchFeign.getAnalyzeMatch(requestDto);
     }
@@ -596,4 +592,14 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 top5ByView, top5ByApply
         );
     }
+
+    @Override
+    public String getCompareResponse(List<Long> scholarshipIds) {
+        ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(UaaContextHolder.getUserId()));
+        AiRequestDto requestDto = new AiRequestDto();
+        requestDto.setProfileId(applicantProfileVo.getId());
+        requestDto.setScholarshipIds(scholarshipIds);
+        return aiMatchFeign.compareScholarships(requestDto);
+    }
+
 }

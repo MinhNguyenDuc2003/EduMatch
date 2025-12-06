@@ -4,8 +4,7 @@ import com.minh.model.dto.ai.AiRequestDto;
 import com.minh.model.dto.ai.ScholarshipRecommendationResponseDto;
 import com.minh.service.feign.FeignInterceptorConfig;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(
         name = "ai-service",
@@ -16,16 +15,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 )
 public interface AiMatchFeign {
 
-    @PostMapping("/api/v1/scholarships/search")
-    ScholarshipRecommendationResponseDto getRecommendationScholarship(@RequestBody AiRequestDto request);
+    @GetMapping("/match/profile/{profileId}")
+    ScholarshipRecommendationResponseDto getRecommendationScholarship(@PathVariable Long profileId, @RequestParam("top_k") int topK);
 
-    @PostMapping("/api/v1/applicants/search")
-    ScholarshipRecommendationResponseDto getRecommendationApplicantForScholarship(@RequestBody AiRequestDto request);
+    @PostMapping("/match/scholarship/{scholarshipId}/profiles")
+    ScholarshipRecommendationResponseDto getRecommendationApplicantForScholarship(@PathVariable Long scholarshipId, @RequestParam("top_k") int topK);
 
-    @PostMapping("/api/v1/applications/rank")
-    ScholarshipRecommendationResponseDto getRankApplicationForScholarship(@RequestBody AiRequestDto request);
+    @PostMapping("/match/scholarship/{scholarshipId}/applications")
+    ScholarshipRecommendationResponseDto getRankApplicationForScholarship(@PathVariable Long scholarshipId, @RequestParam("top_k") int topK);
 
-    @PostMapping("/api/v1/analyze")
+    @PostMapping("/analyze/llm")
     String getAnalyzeMatch(@RequestBody AiRequestDto request);
+
+    @PostMapping("/compare/llm")
+    String compareScholarships(@RequestBody AiRequestDto request);
 
 }

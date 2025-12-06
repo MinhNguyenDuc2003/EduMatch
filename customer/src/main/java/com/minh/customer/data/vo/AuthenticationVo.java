@@ -23,6 +23,7 @@ public class AuthenticationVo implements Serializable {
     private CustomerVm customer;
     private Boolean isAuthenticated;
     private Boolean isProvider;
+    private Boolean isApplicant;
     private List<SubscriptionDto> subscriptions;
 
     private SubscriptionInfoVo provider;
@@ -33,7 +34,7 @@ public class AuthenticationVo implements Serializable {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static  class SubscriptionInfoVo {
+    public static class SubscriptionInfoVo {
         private Integer duration;
     }
 }

@@ -172,6 +172,20 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
             mailDto.setSubject(templateDto.getSubject());
             mailDto.setTemplateId(templateDto.getId());
             kafkaProducer.convertToByteAndSend(mailTopic, mailDto);
+
+            if ("Successful".equals(dto.getStatus())) {
+                MailTemplateDto templateSuccess = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.SUCCESSFUL_APPLICATION.getCode()));
+                String bodySuccess = templateDto.getBody().replace("{{scholarshipName}}", scholarshipVo.getTitle())
+                        .replace("{{universityName}}", scholarshipVo.getUniversity())
+                        .replace("{{link}}", feEndPoint + "/case-study/" + scholarshipVo.getId());
+                MailDto mailSuccess = new MailDto();
+                mailSuccess.setBody(bodySuccess);
+                mailSuccess.setTo(application.getEmail());
+                mailSuccess.setSubject(templateSuccess.getSubject());
+                mailSuccess.setTemplateId(templateSuccess.getId());
+                kafkaProducer.convertToByteAndSend(mailTopic, mailSuccess);
+            }
+
         }
         mapper.updateEntityFromDto(dto, exist);
         ApplicationScholarshipEntity saved = repository.save(exist);
@@ -273,11 +287,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
 
     @Override
     public List<ApplicationScholarshipVo> getRankApplication(Long scholarshipId, Integer topK) {
-        AiRequestDto requestDto = new AiRequestDto();
-        requestDto.setScholarshipId(scholarshipId);
-        requestDto.setTopK(topK);
-
-        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRankApplicationForScholarship(requestDto);
+        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRankApplicationForScholarship(scholarshipId, topK);
         List<ApplicationScholarshipVo> result = new ArrayList<>();
         if (ObjectUtils.isEmpty(recommendationScholarship.getResults())) {
             return null;

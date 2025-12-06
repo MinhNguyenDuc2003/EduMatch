@@ -1,18 +1,10 @@
-fastapi==0.115.5
-uvicorn[standard]==0.32.1
-pydantic==2.10.3
-pydantic-settings==2.6.1
-python-dotenv==1.0.1
-
-# Database
-psycopg2-binary==2.9.10
-
-# ML & AI
-sentence-transformers==3.3.1
-scikit-learn==1.6.0
-transformers==4.47.1
-torch==2.5.1
-google-genai==0.2.2
-
-# Utilities
-python-multipart==0.0.18
+numpy
+psycopg2-binary
+scikit-learn
+sentence-transformers
+transformers
+google-generativeai
+fastapi
+uvicorn
+pydantic
+python-dotenv
