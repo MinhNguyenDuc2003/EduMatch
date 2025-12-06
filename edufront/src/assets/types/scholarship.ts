@@ -149,6 +149,45 @@ declare global {
     overall_strategy: string;
     timeline: string[];
   };
+
+  // AI Comparison Response Types
+  type ScholarshipComparisonBestMatch = {
+    scholarship_name: string;
+    reasons: string[];
+  };
+
+  type ScholarshipComparisonAdvantage = {
+    scholarship_name: string;
+    advantages: string[];
+  };
+
+  type ScholarshipComparisonTradeoff = {
+    factor: string;
+    comparison: string;
+  };
+
+  type ScholarshipComparisonRecommendation = {
+    priority_order: string[];
+    reasoning: string;
+  };
+
+  type ScholarshipComparisonStrategy = {
+    approach: string;
+    timeline_tips: string[];
+  };
+
+  type ScholarshipComparisonAnalysis = {
+    best_overall_match: ScholarshipComparisonBestMatch;
+    unique_advantages: ScholarshipComparisonAdvantage[];
+    key_tradeoffs: ScholarshipComparisonTradeoff[];
+    strategic_recommendation: ScholarshipComparisonRecommendation;
+    application_strategy: ScholarshipComparisonStrategy;
+  };
+
+  type ScholarshipComparisonResponse = {
+    success: boolean;
+    analysis: ScholarshipComparisonAnalysis;
+  };
 }
 
 export {};

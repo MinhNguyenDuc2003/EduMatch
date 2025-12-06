@@ -38,7 +38,6 @@ type ScholarshipCardProps = {
   onFollowProvider?: (providerId: number) => void;
   onViewScholarship?: (slug: string) => void;
   onViewProvider?: (providerId: number) => void;
-  isAuthenticated?: boolean;
 };
 
 export default function ScholarshipCard({
@@ -48,8 +47,8 @@ export default function ScholarshipCard({
   onToggleTracking,
   onViewScholarship,
   onViewProvider,
-  isAuthenticated,
 }: ScholarshipCardProps) {
+  const { isAuthenticated, subscriptions } = useAuth();
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
@@ -60,6 +59,7 @@ export default function ScholarshipCard({
   const images = getScholarshipImages(scholarship);
   const { logoUrl, organizationName, isFollow, id } = scholarship.providerProfileVo;
   const isSelected = isScholarshipSelected(scholarship.id);
+  const isUpgraded = subscriptions.some((subscription) => subscription.userType === 'APPLICANT');
 
   const handleCompareClick = () => {
     if (isSelected) {
@@ -121,18 +121,15 @@ export default function ScholarshipCard({
             </div>
             {isAuthenticated && (
               <div className="flex items-center gap-2">
-                <Button
-                  variant="custom"
-                  className={`group relative ${
-                    isSelected ? 'text-blue-600' : 'text-[#3D6CB9]'
-                  } !border-none !shadow-none !p-0 hover:translate-none`}
-                  onClick={handleCompareClick}
-                >
-                  <ArrowRightLeft className="w-5 h-5" />
-                  <span className="absolute -bottom-full mb-2 hidden group-hover:block px-2 py-1 text-xs text-white bg-slate-800 rounded shadow-lg whitespace-nowrap">
-                    {isSelected ? t('alreadySelected') : t('compare')}
-                  </span>
-                </Button>
+                {isUpgraded && (
+                  <Button
+                    variant="custom"
+                    className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
+                    onClick={handleCompareClick}
+                  >
+                    <ArrowRightLeft className="w-5 h-5" />
+                  </Button>
+                )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button

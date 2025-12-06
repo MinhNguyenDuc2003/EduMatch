@@ -132,6 +132,15 @@ export const apiScholarship = createApi({
       }),
       providesTags: ['Scholarships'],
     }),
+
+    // AI Comparison
+    aiComparison: build.query<string, number[]>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/compare`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -149,4 +158,5 @@ export const {
   useGetScholarshipTopViewByMonthQuery,
   useAnalyzeScholarshipQuery,
   useGetRecommendedScholarshipsQuery,
+  useAiComparisonQuery,
 } = apiScholarship;

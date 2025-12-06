@@ -24,7 +24,6 @@ import { useDebounce } from '@/utils/useDebounce';
 import { toast } from 'sonner';
 
 export default function ScholarshipsList() {
-  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const t = useTranslations('scholarshipsList');
@@ -259,7 +258,6 @@ export default function ScholarshipsList() {
                         onFollowProvider={handleFollowProvider}
                         onViewScholarship={handleViewScholarship}
                         onViewProvider={handleViewProvider}
-                        isAuthenticated={isAuthenticated}
                       />
                     ))}
                   </>

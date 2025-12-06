@@ -1447,7 +1447,19 @@
     "gpaRequirement": "Yêu cầu GPA",
     "languageRequirement": "Yêu cầu ngôn ngữ",
     "availableSlots": "Số lượng",
-    "description": "Mô tả"
+    "description": "Mô tả",
+    "aiAnalysis": "Phân tích AI",
+    "loadingAnalysis": "Đang phân tích học bổng...",
+    "bestMatch": "Học bổng phù hợp nhất",
+    "uniqueAdvantages": "Ưu điểm nổi bật",
+    "keyTradeoffs": "So sánh quan trọng",
+    "strategicRecommendation": "Khuyến nghị chiến lược",
+    "applicationStrategy": "Chiến lược ứng tuyển",
+    "priorityOrder": "Thứ tự ưu tiên",
+    "reasoning": "Lý do",
+    "approach": "Cách tiếp cận",
+    "timelineTips": "Mẹo về thời gian",
+    "noAnalysis": "Không thể tải phân tích. Vui lòng thử lại."
   },
   "howItWorksPage": {
     "hero": {

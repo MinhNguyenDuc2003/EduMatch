@@ -1523,7 +1523,19 @@
     "gpaRequirement": "GPA Requirement",
     "languageRequirement": "Language Requirement",
     "availableSlots": "Available Slots",
-    "description": "Description"
+    "description": "Description",
+    "aiAnalysis": "AI Analysis",
+    "loadingAnalysis": "Analyzing scholarships...",
+    "bestMatch": "Best Overall Match",
+    "uniqueAdvantages": "Unique Advantages",
+    "keyTradeoffs": "Key Tradeoffs",
+    "strategicRecommendation": "Strategic Recommendation",
+    "applicationStrategy": "Application Strategy",
+    "priorityOrder": "Priority Order",
+    "reasoning": "Reasoning",
+    "approach": "Approach",
+    "timelineTips": "Timeline Tips",
+    "noAnalysis": "Unable to load analysis. Please try again."
   },
   "policyPage": {
     "hero": {

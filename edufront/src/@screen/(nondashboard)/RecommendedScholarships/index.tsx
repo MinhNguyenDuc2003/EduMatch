@@ -91,7 +91,6 @@ export default function RecommendedScholarships() {
                   onFollowProvider={handleFollowProvider}
                   onViewScholarship={handleViewScholarship}
                   onViewProvider={handleViewProvider}
-                  isAuthenticated={isAuthenticated}
                 />
               ))}
             </div>
