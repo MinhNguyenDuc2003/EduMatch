@@ -7,10 +7,12 @@
       "en": "Tiếng Anh",
       "vi": "Tiếng Việt"
     },
-    "login": "Đăng nhập / Đăng ký",
-    "scholarships": "Học bổng",
-    "news": "Tin tức",
+    "login": "Đăng Nhập / Đăng Ký",
+    "scholarships": "Học Bổng",
+    "news": "Tin Tức",
     "howItWorks": "Hướng Dẫn",
+    "stories": "Chia Sẻ",
+    "policy": "Chính Sách",
     "day": "ngày",
     "days": "ngày",
     "dropdown": {
@@ -1471,6 +1473,106 @@
       "description": "Bạn đã hoàn thành các bước cần thiết. Hãy kiên nhẫn và theo dõi kết quả. Chúng tôi chúc bạn thành công trong hành trình tìm kiếm học bổng!",
       "exploreScholarships": "Khám phá học bổng",
       "backToHome": "Về trang chủ"
+    }
+  },
+  "policyPage": {
+    "hero": {
+      "title": "Chính Sách & Điều Khoản",
+      "subtitle": "Tìm hiểu về chính sách bảo mật và điều khoản sử dụng của nền tảng EduMatch"
+    },
+    "privacyPolicy": {
+      "title": "Chính Sách Bảo Mật",
+      "introduction": "Chính sách bảo mật này mô tả cách EduMatch thu thập, sử dụng và bảo vệ thông tin cá nhân của bạn khi sử dụng nền tảng.",
+      "sections": [
+        {
+          "title": "Thông tin chúng tôi thu thập",
+          "content": [
+            "Thông tin cá nhân: họ tên, email, số điện thoại, ngày sinh, quốc tịch",
+            "Thông tin học vấn: bằng cấp, điểm GPA, chứng chỉ, lịch sử giáo dục",
+            "Thông tin hồ sơ ứng tuyển: thông tin trong application dossier và tài liệu đính kèm",
+            "Thông tin thanh toán: được xử lý bởi Stripe, chúng tôi không lưu trữ thông tin thẻ tín dụng",
+            "Dữ liệu sử dụng: các hoạt động trên nền tảng, học bổng đã xem, đã theo dõi"
+          ]
+        },
+        {
+          "title": "Cách chúng tôi sử dụng thông tin",
+          "content": [
+            "Đề xuất học bổng phù hợp dựa trên profile của bạn",
+            "Kết nối ứng viên với nhà cung cấp học bổng",
+            "Xử lý thanh toán và quản lý subscription",
+            "Gửi thông báo về học bổng mới, cập nhật đơn ứng tuyển",
+            "Cải thiện chất lượng dịch vụ và trải nghiệm người dùng"
+          ]
+        },
+        {
+          "title": "Bảo vệ thông tin",
+          "content": [
+            "Mã hóa dữ liệu trong quá trình truyền tải",
+            "Bảo mật thông tin đăng nhập và xác thực",
+            "Chỉ nhân viên được ủy quyền mới có thể truy cập dữ liệu",
+            "Tuân thủ các quy định về bảo vệ dữ liệu cá nhân"
+          ]
+        },
+        {
+          "title": "Quyền của bạn",
+          "content": [
+            "Truy cập và xem thông tin cá nhân của bạn",
+            "Chỉnh sửa hoặc cập nhật thông tin bất cứ lúc nào",
+            "Xóa tài khoản và dữ liệu cá nhân",
+            "Từ chối nhận thông báo marketing"
+          ]
+        }
+      ],
+      "lastUpdated": "Cập nhật lần cuối: 06/12/2025"
+    },
+    "termsOfService": {
+      "title": "Điều Khoản Sử Dụng",
+      "introduction": "Bằng việc sử dụng nền tảng EduMatch, bạn đồng ý với các điều khoản và điều kiện sau đây.",
+      "sections": [
+        {
+          "title": "Đăng ký tài khoản",
+          "content": [
+            "Bạn phải cung cấp thông tin chính xác và đầy đủ khi đăng ký",
+            "Bạn chịu trách nhiệm bảo mật thông tin đăng nhập",
+            "Mỗi người chỉ được đăng ký một tài khoản"
+          ]
+        },
+        {
+          "title": "Sử dụng dịch vụ",
+          "content": [
+            "Bạn được phép sử dụng nền tảng để tìm kiếm và ứng tuyển học bổng",
+            "Không được sử dụng dịch vụ cho mục đích bất hợp pháp",
+            "Không được cung cấp thông tin sai lệch trong hồ sơ và đơn ứng tuyển",
+            "Không được sao chép, phân phối hoặc bán nội dung từ nền tảng"
+          ]
+        },
+        {
+          "title": "Subscription và thanh toán",
+          "content": [
+            "Subscription được tính theo gói và thời hạn đã chọn",
+            "Thanh toán được xử lý qua Stripe, an toàn và bảo mật",
+            "Subscription sẽ tự động gia hạn trừ khi bạn hủy",
+            "Không hoàn tiền cho subscription đã thanh toán"
+          ]
+        },
+        {
+          "title": "Quyền sở hữu trí tuệ",
+          "content": [
+            "Tất cả nội dung trên nền tảng thuộc quyền sở hữu của EduMatch",
+            "Bạn giữ quyền sở hữu đối với thông tin và tài liệu bạn upload",
+            "Bạn cấp quyền cho EduMatch sử dụng thông tin để cung cấp dịch vụ"
+          ]
+        },
+        {
+          "title": "Trách nhiệm",
+          "content": [
+            "EduMatch không đảm bảo bạn sẽ nhận được học bổng",
+            "Chúng tôi không chịu trách nhiệm về quyết định của nhà cung cấp học bổng",
+            "Bạn chịu trách nhiệm về tính chính xác của thông tin trong hồ sơ"
+          ]
+        }
+      ],
+      "lastUpdated": "Cập nhật lần cuối: 06/12/2025"
     }
   }
 }

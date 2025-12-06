@@ -11,6 +11,8 @@
     "scholarships": "Scholarships",
     "news": "News",
     "howItWorks": "How It Works",
+    "stories": "Stories",
+    "policy": "Policy",
     "day": "day",
     "days": "days",
     "dropdown": {
@@ -1490,5 +1492,105 @@
     "languageRequirement": "Language Requirement",
     "availableSlots": "Available Slots",
     "description": "Description"
+  },
+  "policyPage": {
+    "hero": {
+      "title": "Policy & Terms",
+      "subtitle": "Learn about EduMatch's privacy policy and terms of service"
+    },
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "introduction": "This privacy policy describes how EduMatch collects, uses, and protects your personal information when using our platform.",
+      "sections": [
+        {
+          "title": "Information We Collect",
+          "content": [
+            "Personal information: name, email, phone number, date of birth, nationality",
+            "Educational information: degrees, GPA, certificates, education history",
+            "Application information: information in application dossiers and attached documents",
+            "Payment information: processed by Stripe, we do not store credit card information",
+            "Usage data: activities on the platform, viewed scholarships, tracked items"
+          ]
+        },
+        {
+          "title": "How We Use Information",
+          "content": [
+            "Recommend suitable scholarships based on your profile",
+            "Connect applicants with scholarship providers",
+            "Process payments and manage subscriptions",
+            "Send notifications about new scholarships, application updates",
+            "Improve service quality and user experience"
+          ]
+        },
+        {
+          "title": "Information Protection",
+          "content": [
+            "Encrypt data during transmission",
+            "Secure login information and authentication",
+            "Only authorized staff can access data",
+            "Comply with personal data protection regulations"
+          ]
+        },
+        {
+          "title": "Your Rights",
+          "content": [
+            "Access and view your personal information",
+            "Edit or update information at any time",
+            "Delete account and personal data",
+            "Opt out of marketing notifications"
+          ]
+        }
+      ],
+      "lastUpdated": "Last updated: December 6, 2025"
+    },
+    "termsOfService": {
+      "title": "Terms of Service",
+      "introduction": "By using the EduMatch platform, you agree to the following terms and conditions.",
+      "sections": [
+        {
+          "title": "Account Registration",
+          "content": [
+            "You must provide accurate and complete information when registering",
+            "You are responsible for securing your login information",
+            "Each person may only register one account"
+          ]
+        },
+        {
+          "title": "Service Usage",
+          "content": [
+            "You are permitted to use the platform to search and apply for scholarships",
+            "You may not use the service for illegal purposes",
+            "You may not provide false information in profiles and applications",
+            "You may not copy, distribute, or sell content from the platform"
+          ]
+        },
+        {
+          "title": "Subscription and Payment",
+          "content": [
+            "Subscriptions are charged according to the selected plan and duration",
+            "Payments are processed through Stripe, secure and protected",
+            "Subscriptions will auto-renew unless you cancel",
+            "No refunds for paid subscriptions"
+          ]
+        },
+        {
+          "title": "Intellectual Property",
+          "content": [
+            "All content on the platform is owned by EduMatch",
+            "You retain ownership of information and documents you upload",
+            "You grant EduMatch permission to use information to provide services"
+          ]
+        },
+        {
+          "title": "Liability",
+          "content": [
+            "EduMatch does not guarantee you will receive scholarships",
+            "We are not responsible for scholarship providers' decisions",
+            "You are responsible for the accuracy of information in your profile"
+          ]
+        }
+      ],
+      "lastUpdated": "Last updated: December 6, 2025"
+    }
   }
 }
