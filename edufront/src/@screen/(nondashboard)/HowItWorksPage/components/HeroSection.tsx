@@ -1,26 +1,16 @@
+'use client';
+
 import { Button } from '@/lib/cus/button';
 import Image from 'next/image';
-import {
-  GraduationCap,
-  BookOpen,
-  Award,
-  TrendingUp,
-  Globe,
-  Sparkles,
-  Star,
-  Users,
-} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-export default function BannerSection() {
+export default function HeroSection() {
   const router = useRouter();
-  const t = useTranslations('homepage.banner');
+  const t = useTranslations('howItWorksPage.hero');
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-200">
-      {/* Background Pattern */}
-
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Section - Banner Content */}
@@ -58,8 +48,7 @@ export default function BannerSection() {
                       </linearGradient>
                     </defs>
                   </svg>
-                </span>{' '}
-                {t('titleEnd')}
+                </span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-xl">{t('description')}</p>
             </div>
@@ -69,14 +58,8 @@ export default function BannerSection() {
               <Button
                 variant="custom"
                 className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all [&_.value]:text-white"
-                value={t('exploreScholarships')}
+                value={t('getStarted')}
                 onClick={() => router.push('/scholarships')}
-              />
-              <Button
-                variant="custom"
-                className="bg-white/80 backdrop-blur-sm border-2 border-gray-200 hover:border-blue-300 text-gray-700 px-8 py-6 text-lg font-semibold rounded-xl shadow-sm hover:shadow-md transition-all [&_.value]:text-gray-700"
-                value={t('howItWorks')}
-                onClick={() => router.push('/how-it-works')}
               />
             </div>
           </div>
@@ -92,8 +75,8 @@ export default function BannerSection() {
             <div className="absolute bottom-0 -translate-y-1/3 left-1/2 -translate-x-1/2 z-20">
               <div className="relative w-96 h-96 rounded-2xl overflow-hidden">
                 <Image
-                  src="https://cl2h8yilb0.ufs.sh/f/9iOVh1BwOhmuTL4YymgyGNugpcXndArbzQ90R1wZqIk5B2Lt"
-                  alt="Student Success"
+                  src="https://cl2h8yilb0.ufs.sh/f/9iOVh1BwOhmufS7AQcGXm30oItWUTYr6jAKwOS4Dxbk9Cgis"
+                  alt="How It Works"
                   fill
                   className="object-cover"
                 />

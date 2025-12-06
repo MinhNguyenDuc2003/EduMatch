@@ -10,6 +10,7 @@
     "login": "Đăng nhập / Đăng ký",
     "scholarships": "Học bổng",
     "news": "Tin tức",
+    "howItWorks": "Hướng Dẫn",
     "day": "ngày",
     "days": "ngày",
     "dropdown": {
@@ -353,19 +354,23 @@
       }
     },
     "howItWorks": {
-      "title": "Cách Thức Hoạt Động",
-      "subtitle": "Tìm được học bổng phù hợp với bạn chỉ trong 3 bước đơn giản.",
+      "title": "Hướng Dẫn Sử Dụng",
+      "subtitle": "Tìm được học bổng phù hợp với bạn chỉ trong 4 bước đơn giản.",
       "step1": {
-        "title": "Tạo hồ sơ",
-        "description": "Chia sẻ thông tin học vấn, sở thích và mục tiêu của bạn. Chỉ mất chưa đến 5 phút."
+        "title": "Đăng ký tài khoản",
+        "description": "Tạo tài khoản miễn phí để bắt đầu hành trình tìm kiếm học bổng của bạn."
       },
       "step2": {
-        "title": "Nhận gợi ý",
-        "description": "Hệ thống AI sẽ phân tích hàng ngàn học bổng và đề xuất những lựa chọn tốt nhất cho bạn."
+        "title": "Tạo profile",
+        "description": "Hoàn thiện hồ sơ với thông tin học vấn và mục tiêu để nhận đề xuất phù hợp."
       },
       "step3": {
-        "title": "Ứng tuyển và thành công",
-        "description": "Gửi đơn ứng tuyển dễ dàng và theo dõi tiến trình cho đến khi bạn nhận được học bổng."
+        "title": "Tạo hồ sơ ứng tuyển",
+        "description": "Chuẩn bị hồ sơ ứng tuyển với đầy đủ tài liệu và thông tin cần thiết."
+      },
+      "step4": {
+        "title": "Nộp hồ sơ",
+        "description": "Gửi hồ sơ cho các học bổng phù hợp và theo dõi trạng thái đơn ứng tuyển."
       }
     },
     "scholarships": {
@@ -1401,5 +1406,71 @@
     "languageRequirement": "Yêu cầu ngôn ngữ",
     "availableSlots": "Số lượng",
     "description": "Mô tả"
+  },
+  "howItWorksPage": {
+    "hero": {
+      "badge": "Bắt đầu hành trình",
+      "title": "Hướng Dẫn",
+      "titleHighlight": "Sử Dụng",
+      "description": "Khám phá quy trình đơn giản và chi tiết để bắt đầu hành trình tìm kiếm học bổng của bạn. Từ đăng ký tài khoản đến nộp hồ sơ, chúng tôi sẽ hướng dẫn bạn từng bước một.",
+      "getStarted": "Bắt đầu ngay"
+    },
+    "steps": {
+      "step1": {
+        "badge": "Bước đầu tiên",
+        "title": "Đăng ký tài khoản",
+        "description": "Tạo tài khoản miễn phí trên nền tảng EduMatch là bước đầu tiên trong hành trình tìm kiếm học bổng của bạn. Quá trình đăng ký đơn giản và nhanh chóng, chỉ mất vài phút.",
+        "details": [
+          "Điền thông tin cơ bản: tên người dùng, email, mật khẩu",
+          "Xác thực email để kích hoạt tài khoản",
+          "Bắt đầu sử dụng nền tảng"
+        ],
+        "additionalInfo": "Tài khoản hoàn toàn miễn phí và không yêu cầu thẻ tín dụng. Sau khi đăng ký, bạn có thể ngay lập tức bắt đầu tạo profile hoặc tìm kiếm học bổng phù hợp."
+      },
+      "step2": {
+        "badge": "Xây dựng hồ sơ",
+        "title": "Tạo profile",
+        "description": "Hoàn thiện hồ sơ cá nhân của bạn với đầy đủ thông tin để hệ thống có thể đề xuất những học bổng phù hợp nhất. Hồ sơ bao gồm thông tin cá nhân, học vấn, kỹ năng, thành tích, chứng chỉ, và mục tiêu học tập. Bạn có thể sử dụng thông tin từ profile để tự động điền vào các hồ sơ ứng tuyển sau này, giúp tiết kiệm thời gian. Hồ sơ càng chi tiết, cơ hội tìm được học bổng phù hợp càng cao.",
+        "details": [
+          "Thông tin cá nhân: họ tên, số điện thoại, quốc tịch, quê quán",
+          "Học vấn: bậc học, điểm GPA, điểm thi chuẩn hóa, chứng chỉ ngoại ngữ",
+          "Kỹ năng và thành tích: kỹ năng, giải thưởng, hoạt động ngoại khóa",
+          "Mục tiêu học tập: quốc gia, trường đại học, loại học bổng mong muốn"
+        ],
+        "additionalInfo": "Hồ sơ của bạn được bảo mật và chỉ được sử dụng để đề xuất học bổng phù hợp. Bạn có thể cập nhật thông tin bất cứ lúc nào. Khi tạo hồ sơ ứng tuyển, bạn có thể import dữ liệu từ profile để tự động điền thông tin, giúp tiết kiệm thời gian và đảm bảo tính nhất quán."
+      },
+      "step3": {
+        "badge": "Chuẩn bị hồ sơ",
+        "title": "Tạo hồ sơ ứng tuyển",
+        "description": "Tạo hồ sơ ứng tuyển (Application Dossier) với đầy đủ thông tin và tài liệu cần thiết. Mỗi hồ sơ ứng tuyển sẽ được lưu trữ với một mã code duy nhất và có thể được sử dụng để nộp cho nhiều học bổng khác nhau. Bạn có thể import dữ liệu từ profile để tự động điền thông tin, sau đó chỉnh sửa và bổ sung thêm các tài liệu cụ thể cho từng học bổng. Mỗi học bổng có thể yêu cầu các tài liệu khác nhau, vì vậy hãy chuẩn bị kỹ lưỡng.",
+        "details": [
+          "Đặt tên cho hồ sơ ứng tuyển",
+          "Import dữ liệu từ profile để tự động điền thông tin",
+          "Bổ sung thông tin: động lực, mục tiêu, thành tích",
+          "Upload tài liệu: thư giới thiệu, bài luận, bảng điểm, chứng chỉ",
+          "Lưu hồ sơ để sử dụng cho nhiều học bổng"
+        ],
+        "additionalInfo": "Bạn có thể tạo nhiều hồ sơ ứng tuyển khác nhau với các thông tin và tài liệu khác nhau để phù hợp với yêu cầu của từng học bổng. Mỗi hồ sơ sẽ có mã code riêng và có thể được chỉnh sửa bất cứ lúc nào trước khi nộp. Lưu ý kiểm tra deadline và yêu cầu cụ thể của mỗi học bổng trước khi nộp."
+      },
+      "step4": {
+        "badge": "Hoàn tất đơn",
+        "title": "Nộp hồ sơ",
+        "description": "Sau khi đã tạo hồ sơ ứng tuyển, bạn có thể nộp hồ sơ cho các học bổng phù hợp. Từ trang chi tiết học bổng, bạn chọn hồ sơ ứng tuyển đã tạo và gửi đi. Một hồ sơ có thể được nộp cho nhiều học bổng khác nhau. Hệ thống sẽ tự động tạo Application-Scholarship relationship và giúp bạn theo dõi trạng thái đơn ứng tuyển cho từng học bổng. Bạn sẽ nhận được thông báo khi có cập nhật về trạng thái đơn ứng tuyển.",
+        "details": [
+          "Tìm kiếm và chọn học bổng phù hợp",
+          "Xem chi tiết học bổng và kiểm tra yêu cầu",
+          "Chọn hồ sơ ứng tuyển đã tạo hoặc tạo mới",
+          "Xác nhận và nộp hồ sơ",
+          "Theo dõi trạng thái đơn ứng tuyển trong My Activity"
+        ],
+        "additionalInfo": "Sau khi nộp, bạn sẽ nhận được email xác nhận và có thể theo dõi trạng thái đơn ứng tuyển trong phần 'Hoạt động của tôi' (My Activity). Một hồ sơ có thể được nộp cho nhiều học bổng, giúp bạn tiết kiệm thời gian. Hãy kiên nhẫn chờ đợi kết quả và tiếp tục tìm kiếm các cơ hội học bổng khác trong thời gian chờ đợi."
+      }
+    },
+    "goodLuck": {
+      "title": "Chúc bạn may mắn!",
+      "description": "Bạn đã hoàn thành các bước cần thiết. Hãy kiên nhẫn và theo dõi kết quả. Chúng tôi chúc bạn thành công trong hành trình tìm kiếm học bổng!",
+      "exploreScholarships": "Khám phá học bổng",
+      "backToHome": "Về trang chủ"
+    }
   }
 }

@@ -10,6 +10,7 @@
     "login": "Sign In / Sign Up",
     "scholarships": "Scholarships",
     "news": "News",
+    "howItWorks": "How It Works",
     "day": "day",
     "days": "days",
     "dropdown": {
@@ -372,18 +373,22 @@
     },
     "howItWorks": {
       "title": "How It Works",
-      "subtitle": "Get matched with your ideal scholarships in three simple steps.",
+      "subtitle": "Get matched with your ideal scholarships in four simple steps.",
       "step1": {
-        "title": "Create Your Profile",
-        "description": "Share your academic background, interests, and goals. Takes less than 5 minutes."
+        "title": "Register Account",
+        "description": "Create a free account to start your scholarship search journey."
       },
       "step2": {
-        "title": "Get Matched",
-        "description": "Our AI analyzes thousands of scholarships and presents the best matches for you."
+        "title": "Create Profile",
+        "description": "Complete your profile with academic info and goals for better matches."
       },
       "step3": {
-        "title": "Apply & Win",
-        "description": "Submit applications with one click and track your progress until you win."
+        "title": "Create Application",
+        "description": "Prepare your application dossier with documents and information."
+      },
+      "step4": {
+        "title": "Submit Application",
+        "description": "Submit your application to scholarships and track your status."
       }
     },
     "scholarships": {
@@ -1396,6 +1401,72 @@
     "deleteApplication": {
       "deleteSuccess": "Application deleted successfully",
       "deleteFailed": "Failed to delete application"
+    }
+  },
+  "howItWorksPage": {
+    "hero": {
+      "badge": "Start Your Journey",
+      "title": "How It",
+      "titleHighlight": "Works",
+      "description": "Discover the simple and detailed process to start your scholarship search journey. From account registration to application submission, we'll guide you through each step.",
+      "getStarted": "Get Started"
+    },
+    "steps": {
+      "step1": {
+        "badge": "First Step",
+        "title": "Register Account",
+        "description": "Creating a free account on the EduMatch platform is the first step in your scholarship search journey. The registration process is simple and quick, taking only a few minutes.",
+        "details": [
+          "Fill in basic information: username, email, password",
+          "Verify your email to activate your account",
+          "Start using the platform"
+        ],
+        "additionalInfo": "The account is completely free and does not require a credit card. After registration, you can immediately start creating your profile or searching for suitable scholarships."
+      },
+      "step2": {
+        "badge": "Build Profile",
+        "title": "Create Profile",
+        "description": "Complete your personal profile with comprehensive information so the system can recommend the most suitable scholarships. Your profile includes personal information, education, skills, achievements, certificates, and study goals. You can use profile data to automatically fill in application forms later, saving time. The more detailed your profile, the higher your chances of finding the right scholarship.",
+        "details": [
+          "Personal information: full name, phone number, citizenship, hometown",
+          "Education: education level, GPA, standardized test scores, language certificates",
+          "Skills and achievements: skills, awards, extracurricular activities",
+          "Study goals: preferred country, university, scholarship type"
+        ],
+        "additionalInfo": "Your profile is secure and only used to recommend suitable scholarships. You can update your information at any time. When creating an application, you can import data from your profile to automatically fill in information, saving time and ensuring consistency."
+      },
+      "step3": {
+        "badge": "Prepare Application",
+        "title": "Create Application Dossier",
+        "description": "Create an application dossier with all necessary information and documents. Each application dossier is stored with a unique code and can be used to apply to multiple different scholarships. You can import data from your profile to automatically fill in information, then edit and add specific documents for each scholarship. Each scholarship may require different documents, so prepare carefully.",
+        "details": [
+          "Name your application dossier",
+          "Import data from your profile to automatically fill in information",
+          "Add information: motivation, goals, achievements",
+          "Upload documents: recommendation letters, personal statements, transcripts, certificates",
+          "Save the dossier to use for multiple scholarships"
+        ],
+        "additionalInfo": "You can create multiple different application dossiers with different information and documents to match each scholarship's requirements. Each dossier has its own unique code and can be edited at any time before submission. Remember to check deadlines and specific requirements for each scholarship before applying."
+      },
+      "step4": {
+        "badge": "Complete Application",
+        "title": "Submit Application",
+        "description": "After creating your application dossier, you can submit it to suitable scholarships. From the scholarship detail page, you select your created application dossier and submit it. One dossier can be submitted to multiple different scholarships. The system will automatically create an Application-Scholarship relationship and help you track the application status for each scholarship. You will receive notifications when there are updates to your application status.",
+        "details": [
+          "Search and select suitable scholarships",
+          "View scholarship details and check requirements",
+          "Choose your created application dossier or create a new one",
+          "Confirm and submit your application",
+          "Track application status in My Activity"
+        ],
+        "additionalInfo": "After submission, you will receive a confirmation email and can track your application status in 'My Activity'. One dossier can be submitted to multiple scholarships, saving you time. Be patient while waiting for results and continue searching for other scholarship opportunities in the meantime."
+      }
+    },
+    "goodLuck": {
+      "title": "Good Luck!",
+      "description": "You've completed all the necessary steps. Be patient and track your results. We wish you success in your scholarship search journey!",
+      "exploreScholarships": "Explore Scholarships",
+      "backToHome": "Back to Home"
     }
   },
   "selectedScholarshipCompare": {
