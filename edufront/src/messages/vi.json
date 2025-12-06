@@ -1436,6 +1436,7 @@
   },
   "scholarshipCompare": {
     "title": "So sánh học bổng",
+    "comparisonTable": "Bảng so sánh",
     "scholarship": "Học bổng",
     "provider": "Tổ chức",
     "country": "Quốc gia",
@@ -1449,7 +1450,9 @@
     "availableSlots": "Số lượng",
     "description": "Mô tả",
     "aiAnalysis": "Phân tích AI",
+    "aiAnalysisDescription": "Phân tích AI dựa trên hồ sơ của bạn và học bổng đã chọn để đưa ra khuyến nghị tốt nhất.",
     "loadingAnalysis": "Đang phân tích học bổng...",
+    "analyzing": "Đang phân tích...",
     "bestMatch": "Học bổng phù hợp nhất",
     "uniqueAdvantages": "Ưu điểm nổi bật",
     "keyTradeoffs": "So sánh quan trọng",

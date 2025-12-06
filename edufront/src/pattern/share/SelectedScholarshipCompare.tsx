@@ -12,10 +12,6 @@ import {
   MapPin,
   GraduationCap,
   Sparkles,
-  TrendingUp,
-  AlertCircle,
-  CheckCircle2,
-  Clock,
 } from 'lucide-react';
 import { Button } from '@/lib/cus/button';
 import { usePathname } from 'next/navigation';
@@ -24,6 +20,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/lib/
 import { useAuth } from '@/hooks/useAuth';
 import { useAiComparisonQuery } from '@/state/apiScholarship';
 import { Skeleton } from '@/lib/cus/skeleton';
+import { Badge } from '@/lib/cus/badge';
 
 export default function SelectedScholarshipCompare() {
   const pathname = usePathname();
@@ -150,7 +147,7 @@ export default function SelectedScholarshipCompare() {
           side="right"
           className="w-full p-3 sm:p-4 sm:max-w-7xl max-h-[95vh] overflow-y-auto [&>button]:hidden rounded-none sm:rounded-xl !right-0 sm:!right-4 !top-0 sm:!top-1/2 !-translate-y-0 sm:!-translate-y-1/2 scrollbar-hide"
         >
-          <SheetHeader className="!p-0 mb-4">
+          <SheetHeader className="!p-0 mb-2">
             <div className="flex items-center justify-between">
               <SheetTitle>{tCompare('title')}</SheetTitle>
               <SheetClose className="rounded-full bg-white p-2 shadow-lg ring-1 ring-gray-200 transition-opacity hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2">
@@ -160,185 +157,357 @@ export default function SelectedScholarshipCompare() {
           </SheetHeader>
 
           <div className="space-y-6">
-            {/* AI Analysis Section */}
+            {/* AI Analysis Section - Premium */}
             {scholarships.length >= 2 && (
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-                <div className="flex items-center gap-2 mb-4">
-                  <h3 className="text-xl font-bold text-gray-900">{tCompare('aiAnalysis')}</h3>
+              <div className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 rounded-2xl p-6 border-2 border-[#3D6CB9]/20 shadow-lg overflow-hidden">
+                {/* Premium Badge */}
+                <Badge
+                  variant="default"
+                  className="absolute top-4 right-4 bg-gradient-to-r from-[#3D6CB9] to-[#2F5A9E] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md"
+                >
+                  <Sparkles className="w-3 h-3 inline mr-1" />
+                  PREMIUM
+                </Badge>
+
+                {/* Decorative Pattern */}
+                <div className="absolute inset-0 opacity-5">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#3D6CB9] rounded-full blur-3xl"></div>
+                  <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#2F5A9E] rounded-full blur-3xl"></div>
                 </div>
 
-                {isLoadingComparison ? (
-                  <div className="space-y-4">
-                    <Skeleton className="h-20 w-full" />
-                    <Skeleton className="h-20 w-full" />
-                    <Skeleton className="h-20 w-full" />
+                <div className="relative z-10">
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                      {tCompare('aiAnalysis')}
+                    </h3>
+                    <p className="text-sm text-gray-600">{tCompare('aiAnalysisDescription')}</p>
                   </div>
-                ) : isErrorComparison || !comparisonData ? (
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-                    <AlertCircle className="w-5 h-5 text-red-600 mx-auto mb-2" />
-                    <p className="text-red-600 text-sm">{tCompare('noAnalysis')}</p>
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    {/* Best Overall Match */}
-                    {comparisonData.best_overall_match && (
-                      <div className="bg-white rounded-lg p-4 border border-green-200 shadow-sm">
-                        <div className="flex items-center gap-2 mb-3">
-                          <CheckCircle2 className="w-5 h-5 text-green-600" />
-                          <h4 className="font-semibold text-gray-900">{tCompare('bestMatch')}</h4>
-                        </div>
-                        <p className="font-medium text-gray-900 mb-2">
-                          {comparisonData.best_overall_match.scholarship_name}
-                        </p>
-                        <ul className="space-y-1.5">
-                          {comparisonData.best_overall_match.reasons.map((reason, idx) => (
-                            <li key={idx} className="text-sm text-gray-700 flex items-start gap-2">
-                              <span className="text-green-600 mt-1">•</span>
-                              <span>{reason}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
 
-                    {/* Unique Advantages */}
-                    {comparisonData.unique_advantages &&
-                      comparisonData.unique_advantages.length > 0 && (
-                        <div className="bg-white rounded-lg p-4 border border-blue-200 shadow-sm">
-                          <div className="flex items-center gap-2 mb-3">
-                            <TrendingUp className="w-5 h-5 text-blue-600" />
-                            <h4 className="font-semibold text-gray-900">
-                              {tCompare('uniqueAdvantages')}
+                  {isLoadingComparison ? (
+                    <div className="space-y-4">
+                      <div className="flex flex-col items-center justify-center py-8">
+                        <div className="relative">
+                          <div className="w-12 h-12 border-4 border-[#3D6CB9]/20 border-t-[#3D6CB9] rounded-full animate-spin"></div>
+                        </div>
+                        <p className="mt-4 text-[#3D6CB9] font-medium text-base">
+                          {tCompare('analyzing')}
+                        </p>
+                      </div>
+                      <Skeleton className="h-24 w-full rounded-xl" />
+                      <Skeleton className="h-24 w-full rounded-xl" />
+                      <Skeleton className="h-24 w-full rounded-xl" />
+                    </div>
+                  ) : isErrorComparison || !comparisonData ? (
+                    <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+                      <p className="text-red-600 font-medium">{tCompare('noAnalysis')}</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      {/* Header Stats Row */}
+                      <div
+                        className={`grid gap-4 ${
+                          scholarships.length === 2
+                            ? 'grid-cols-1 md:grid-cols-2'
+                            : 'grid-cols-1 md:grid-cols-3'
+                        }`}
+                      >
+                        {/* Best Match Card */}
+                        {comparisonData.best_overall_match && (
+                          <div className="bg-white rounded-xl p-5 border-2 border-[#3D6CB9] shadow-lg">
+                            <div className="flex items-start justify-between mb-3">
+                              <span className="px-3 py-1 bg-[#3D6CB9] text-white text-xs font-bold rounded-full">
+                                #1 BEST MATCH
+                              </span>
+                            </div>
+                            <h4 className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">
+                              {tCompare('bestMatch')}
                             </h4>
+                            <p className="text-base font-bold text-gray-900 mb-3 leading-tight">
+                              {comparisonData.best_overall_match.scholarship_name}
+                            </p>
+                            <p className="text-xs text-[#3D6CB9] font-medium">
+                              {comparisonData.best_overall_match.reasons.length} key reasons
+                            </p>
                           </div>
-                          <div className="space-y-4">
-                            {comparisonData.unique_advantages.map((advantage, idx) => (
-                              <div key={idx} className="border-l-2 border-blue-400 pl-3">
-                                <p className="font-medium text-gray-900 mb-1.5">
-                                  {advantage.scholarship_name}
+                        )}
+
+                        {/* Total Scholarships */}
+                        <div className="bg-white rounded-xl p-5 border-2 border-gray-200 shadow-lg">
+                          <h4 className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">
+                            Total Compared
+                          </h4>
+                          <p className="text-3xl font-bold text-gray-900 mb-1">
+                            {scholarships.length}
+                          </p>
+                          <p className="text-xs text-gray-600 font-medium">Scholarships</p>
+                        </div>
+
+                        {/* Analysis Score - Only show if 3 scholarships */}
+                        {scholarships.length === 3 && (
+                          <div className="bg-white rounded-xl p-5 border-2 border-gray-200 shadow-lg">
+                            <h4 className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">
+                              Analysis Ready
+                            </h4>
+                            <p className="text-3xl font-bold text-gray-900 mb-1">100%</p>
+                            <p className="text-xs text-gray-600 font-medium">Complete</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Best Overall Match - Detailed */}
+                      {comparisonData.best_overall_match && (
+                        <div className="bg-white rounded-2xl p-6 border-2 border-[#3D6CB9] shadow-xl">
+                          <div className="mb-4">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#3D6CB9]/10 rounded-full mb-3">
+                              <span className="w-2 h-2 bg-[#3D6CB9] rounded-full"></span>
+                              <span className="text-sm font-bold text-[#3D6CB9] uppercase tracking-wide">
+                                {tCompare('bestMatch')}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-500">Perfect match for your profile</p>
+                          </div>
+
+                          <div className="mb-5 p-4 bg-[#3D6CB9]/5 rounded-xl border border-[#3D6CB9]/20">
+                            <p className="text-lg font-bold text-gray-900">
+                              {comparisonData.best_overall_match.scholarship_name}
+                            </p>
+                          </div>
+
+                          <div className="space-y-3">
+                            <h5 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+                              Why This Scholarship?
+                            </h5>
+                            <div className="grid gap-3">
+                              {comparisonData.best_overall_match.reasons.map((reason, idx) => (
+                                <div
+                                  key={idx}
+                                  className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-[#3D6CB9]/30 hover:bg-[#3D6CB9]/5 transition-all"
+                                >
+                                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#3D6CB9] text-white flex items-center justify-center text-xs font-bold mt-0.5">
+                                    {idx + 1}
+                                  </div>
+                                  <p className="text-sm text-gray-700 leading-relaxed flex-1">
+                                    {reason}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Unique Advantages - Grid Layout */}
+                      {comparisonData.unique_advantages &&
+                        comparisonData.unique_advantages.length > 0 && (
+                          <div className="bg-white rounded-2xl p-6 border-2 border-gray-200 shadow-xl">
+                            <div className="mb-6">
+                              <div className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full mb-3">
+                                <span className="w-2 h-2 bg-[#3D6CB9] rounded-full"></span>
+                                <span className="text-sm font-bold text-gray-700 uppercase tracking-wide">
+                                  {tCompare('uniqueAdvantages')}
+                                </span>
+                              </div>
+                              <p className="text-sm text-gray-500">
+                                Standout features by scholarship
+                              </p>
+                            </div>
+                            <div
+                              className={`grid gap-4 ${
+                                scholarships.length === 2
+                                  ? 'grid-cols-1 md:grid-cols-2'
+                                  : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                              }`}
+                            >
+                              {comparisonData.unique_advantages.map((advantage, idx) => (
+                                <div
+                                  key={idx}
+                                  className="relative bg-gray-50 rounded-xl p-5 border-2 border-gray-200 hover:border-[#3D6CB9]/30 transition-all shadow-md"
+                                >
+                                  <div className="absolute top-2 right-2">
+                                    <div className="w-8 h-8 rounded-full bg-[#3D6CB9] text-white flex items-center justify-center text-xs font-bold">
+                                      {idx + 1}
+                                    </div>
+                                  </div>
+                                  <div className="pr-10">
+                                    <h5 className="font-bold text-base text-gray-900 mb-3 leading-tight">
+                                      {advantage.scholarship_name}
+                                    </h5>
+                                    <div className="space-y-2.5">
+                                      {advantage.advantages.map((adv, advIdx) => (
+                                        <div
+                                          key={advIdx}
+                                          className="p-2 bg-white rounded-lg border border-gray-100"
+                                        >
+                                          <p className="text-sm text-gray-700 leading-relaxed flex-1 pl-4 relative before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:bg-[#3D6CB9] before:rounded-full">
+                                            {adv}
+                                          </p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                      {/* Key Tradeoffs - Responsive Grid */}
+                      {comparisonData.key_tradeoffs && comparisonData.key_tradeoffs.length > 0 && (
+                        <div className="bg-white rounded-2xl p-6 border-2 border-gray-200 shadow-xl">
+                          <div className="mb-6">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full mb-3">
+                              <span className="w-2 h-2 bg-[#3D6CB9] rounded-full"></span>
+                              <span className="text-sm font-bold text-gray-700 uppercase tracking-wide">
+                                {tCompare('keyTradeoffs')}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-500">Important considerations</p>
+                          </div>
+                          <div
+                            className={`grid gap-4 ${
+                              scholarships.length === 2
+                                ? 'grid-cols-1 md:grid-cols-2'
+                                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                            }`}
+                          >
+                            {comparisonData.key_tradeoffs.map((tradeoff, idx) => (
+                              <div
+                                key={idx}
+                                className="relative bg-gray-50 rounded-xl p-5 border-2 border-gray-200 hover:border-[#3D6CB9]/30 transition-all shadow-md"
+                              >
+                                <h5 className="font-bold text-base text-gray-900 mb-3 leading-tight pr-8">
+                                  {tradeoff.factor}
+                                </h5>
+                                <p className="text-sm text-gray-700 leading-relaxed">
+                                  {tradeoff.comparison}
                                 </p>
-                                <ul className="space-y-1">
-                                  {advantage.advantages.map((adv, advIdx) => (
-                                    <li
-                                      key={advIdx}
-                                      className="text-sm text-gray-700 flex items-start gap-2"
-                                    >
-                                      <span className="text-blue-600 mt-1">•</span>
-                                      <span>{adv}</span>
-                                    </li>
-                                  ))}
-                                </ul>
                               </div>
                             ))}
                           </div>
                         </div>
                       )}
 
-                    {/* Key Tradeoffs */}
-                    {comparisonData.key_tradeoffs && comparisonData.key_tradeoffs.length > 0 && (
-                      <div className="bg-white rounded-lg p-4 border border-amber-200 shadow-sm">
-                        <div className="flex items-center gap-2 mb-3">
-                          <AlertCircle className="w-5 h-5 text-amber-600" />
-                          <h4 className="font-semibold text-gray-900">
-                            {tCompare('keyTradeoffs')}
-                          </h4>
-                        </div>
-                        <div className="space-y-3">
-                          {comparisonData.key_tradeoffs.map((tradeoff, idx) => (
-                            <div key={idx} className="border-l-2 border-amber-400 pl-3">
-                              <p className="font-medium text-gray-900 mb-1">{tradeoff.factor}</p>
-                              <p className="text-sm text-gray-700">{tradeoff.comparison}</p>
+                      {/* Strategic Recommendation - Responsive Layout */}
+                      {comparisonData.strategic_recommendation && (
+                        <div className="bg-white rounded-2xl p-6 border-2 border-gray-200 shadow-xl">
+                          <div className="mb-6">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full mb-3">
+                              <span className="w-2 h-2 bg-[#3D6CB9] rounded-full"></span>
+                              <span className="text-sm font-bold text-gray-700 uppercase tracking-wide">
+                                {tCompare('strategicRecommendation')}
+                              </span>
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                            <p className="text-sm text-gray-500">Your action plan</p>
+                          </div>
 
-                    {/* Strategic Recommendation */}
-                    {comparisonData.strategic_recommendation && (
-                      <div className="bg-white rounded-lg p-4 border border-purple-200 shadow-sm">
-                        <div className="flex items-center gap-2 mb-3">
-                          <CheckCircle2 className="w-5 h-5 text-purple-600" />
-                          <h4 className="font-semibold text-gray-900">
-                            {tCompare('strategicRecommendation')}
-                          </h4>
-                        </div>
-                        <div className="mb-3">
-                          <p className="font-medium text-gray-900 mb-2">
-                            {tCompare('priorityOrder')}:
-                          </p>
-                          <ol className="space-y-1.5 ml-4">
-                            {comparisonData.strategic_recommendation.priority_order.map(
-                              (scholarship, idx) => (
-                                <li
-                                  key={idx}
-                                  className="text-sm text-gray-700 flex items-start gap-2"
-                                >
-                                  <span className="font-semibold text-purple-600">{idx + 1}.</span>
-                                  <span>{scholarship}</span>
-                                </li>
-                              )
-                            )}
-                          </ol>
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-900 mb-1.5">
-                            {tCompare('reasoning')}:
-                          </p>
-                          <p className="text-sm text-gray-700">
-                            {comparisonData.strategic_recommendation.reasoning}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Application Strategy */}
-                    {comparisonData.application_strategy && (
-                      <div className="bg-white rounded-lg p-4 border border-indigo-200 shadow-sm">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Clock className="w-5 h-5 text-indigo-600" />
-                          <h4 className="font-semibold text-gray-900">
-                            {tCompare('applicationStrategy')}
-                          </h4>
-                        </div>
-                        <div className="mb-3">
-                          <p className="font-medium text-gray-900 mb-1.5">
-                            {tCompare('approach')}:
-                          </p>
-                          <p className="text-sm text-gray-700">
-                            {comparisonData.application_strategy.approach}
-                          </p>
-                        </div>
-                        {comparisonData.application_strategy.timeline_tips &&
-                          comparisonData.application_strategy.timeline_tips.length > 0 && (
-                            <div>
-                              <p className="font-medium text-gray-900 mb-2">
-                                {tCompare('timelineTips')}:
-                              </p>
-                              <ul className="space-y-1.5">
-                                {comparisonData.application_strategy.timeline_tips.map(
-                                  (tip, idx) => (
-                                    <li
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {/* Priority Order */}
+                            <div className="bg-gray-50 rounded-xl p-5 border-2 border-gray-200">
+                              <h5 className="font-bold text-gray-900 text-sm uppercase tracking-wide mb-4">
+                                {tCompare('priorityOrder')}
+                              </h5>
+                              <div className="space-y-3">
+                                {comparisonData.strategic_recommendation.priority_order.map(
+                                  (scholarship, idx) => (
+                                    <div
                                       key={idx}
-                                      className="text-sm text-gray-700 flex items-start gap-2"
+                                      className="flex items-center gap-3 p-3 bg-white rounded-lg border-2 border-gray-100 hover:border-[#3D6CB9]/30 transition-all shadow-sm"
                                     >
-                                      <span className="text-indigo-600 mt-1">•</span>
-                                      <span>{tip}</span>
-                                    </li>
+                                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#3D6CB9] text-white flex items-center justify-center text-sm font-bold">
+                                        {idx + 1}
+                                      </div>
+                                      <div className="flex-1">
+                                        <p className="text-sm font-semibold text-gray-900 leading-tight">
+                                          {scholarship}
+                                        </p>
+                                      </div>
+                                    </div>
                                   )
                                 )}
-                              </ul>
+                              </div>
                             </div>
-                          )}
-                      </div>
-                    )}
-                  </div>
-                )}
+
+                            {/* Reasoning */}
+                            <div className="bg-gray-50 rounded-xl p-5 border-2 border-gray-200">
+                              <h5 className="font-bold text-gray-900 text-sm uppercase tracking-wide mb-4">
+                                {tCompare('reasoning')}
+                              </h5>
+                              <div className="p-4 bg-white rounded-lg border border-gray-100">
+                                <p className="text-sm text-gray-700 leading-relaxed">
+                                  {comparisonData.strategic_recommendation.reasoning}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Application Strategy */}
+                      {comparisonData.application_strategy && (
+                        <div className="bg-white rounded-2xl p-6 border-2 border-gray-200 shadow-xl">
+                          <div className="mb-6">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full mb-3">
+                              <span className="w-2 h-2 bg-[#3D6CB9] rounded-full"></span>
+                              <span className="text-sm font-bold text-gray-700 uppercase tracking-wide">
+                                {tCompare('applicationStrategy')}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-500">Step-by-step guidance</p>
+                          </div>
+
+                          {/* Approach Section */}
+                          <div className="mb-6 p-5 bg-gray-50 rounded-xl border-2 border-gray-200">
+                            <h5 className="font-bold text-gray-900 mb-3 text-sm uppercase tracking-wide">
+                              {tCompare('approach')}
+                            </h5>
+                            <p className="text-sm text-gray-700 leading-relaxed">
+                              {comparisonData.application_strategy.approach}
+                            </p>
+                          </div>
+
+                          {/* Timeline Tips */}
+                          {comparisonData.application_strategy.timeline_tips &&
+                            comparisonData.application_strategy.timeline_tips.length > 0 && (
+                              <div>
+                                <h5 className="font-bold text-gray-900 mb-4 text-sm uppercase tracking-wide">
+                                  {tCompare('timelineTips')}
+                                </h5>
+                                <div
+                                  className={`grid gap-3 ${
+                                    scholarships.length === 2
+                                      ? 'grid-cols-1 md:grid-cols-2'
+                                      : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                                  }`}
+                                >
+                                  {comparisonData.application_strategy.timeline_tips.map(
+                                    (tip, idx) => (
+                                      <div
+                                        key={idx}
+                                        className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-[#3D6CB9]/30 hover:bg-[#3D6CB9]/5 transition-all"
+                                      >
+                                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#3D6CB9] text-white flex items-center justify-center text-xs font-bold mt-0.5">
+                                          {idx + 1}
+                                        </div>
+                                        <p className="text-sm text-gray-700 leading-relaxed flex-1">
+                                          {tip}
+                                        </p>
+                                      </div>
+                                    )
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
             {/* Comparison Table */}
             <div className="overflow-x-auto">
+              <h2 className="text-lg font-bold text-gray-900">{tCompare('comparisonTable')}</h2>
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b-2 border-gray-200">
