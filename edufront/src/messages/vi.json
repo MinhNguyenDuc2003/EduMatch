@@ -599,6 +599,7 @@
       "clickHere": "Nhấp vào đây để xem các học bổng phù hợp với bạn",
       "updateNow": "Đăng Ký Ngay",
       "foundMatches": "Chúng tôi đã tìm thấy {count} học bổng phù hợp!",
+      "loadingMatches": "Chúng tôi đang tìm kiếm các học bổng phù hợp nhất cho bạn...",
       "matchedDescription": "AI đã ghép nối bạn với các học bổng phù hợp với hồ sơ của bạn",
       "profileStrengthDialog": {
         "title": "Hồ sơ chưa hoàn thiện",

@@ -1,8 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { FilterSidebar, ScholarshipCard, RightSidebar, PremiumBanner } from './components';
-import ScholarshipCardSkeleton from './components/ScholarshipCardSkeleton';
+import {
+  FilterSidebar,
+  ScholarshipCard,
+  RightSidebar,
+  PremiumBanner,
+  ScholarshipsListSkeleton,
+  ScholarshipCardSkeleton,
+} from './components';
 import { Filter } from 'lucide-react';
 import SearchBar from '@/pattern/share/SearchBar';
 import {
@@ -137,6 +143,11 @@ export default function ScholarshipsList() {
     if (filters.fields) count++;
     return count;
   })();
+
+  // Show full page skeleton on initial load
+  if (isLoading && filters.page === 0) {
+    return <ScholarshipsListSkeleton />;
+  }
 
   return (
     <>

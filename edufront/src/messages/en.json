@@ -609,6 +609,7 @@
       "clickHere": "Click here to view the scholarships that match your profile",
       "updateNow": "Update Now",
       "foundMatches": "We Found {count} Perfect Matches!",
+      "loadingMatches": "We are finding the best matches for you...",
       "matchedDescription": "AI has matched you with scholarships tailored to your profile",
       "profileStrengthDialog": {
         "title": "Profile is not complete",

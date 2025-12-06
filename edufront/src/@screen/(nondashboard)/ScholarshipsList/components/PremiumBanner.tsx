@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
 import ProfileStrengthDialog from './ProfileStrengthDialog';
+import Loading from '@/pattern/share/Loading';
 
 export default function PremiumBanner() {
   const router = useRouter();
@@ -13,7 +14,7 @@ export default function PremiumBanner() {
   const [showProfileDialog, setShowProfileDialog] = useState(false);
   const t = useTranslations('scholarshipsList.premiumBanner');
   const { isAuthenticated, subscriptions, isApplicant } = useAuth();
-  const { data: scholarships } = useGetRecommendedScholarshipsQuery(
+  const { data: scholarships, isLoading } = useGetRecommendedScholarshipsQuery(
     { topK: 12 },
     { skip: isUpgraded === false || !isApplicant }
   );
@@ -82,7 +83,35 @@ export default function PremiumBanner() {
 
       {/* Content */}
       <div className="relative z-10">
-        {!isUpgraded ? (
+        {isUpgraded ? (
+          <>
+            {/* After Upgrade - Mobile */}
+            <div className="md:hidden text-center space-y-3" onClick={handleUpdate}>
+              <h3 className="text-white font-bold text-xl">
+                {t('foundMatches', { count: scholarships?.length ?? 0 })}
+              </h3>
+              <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
+              <p className="text-white/90 italic text-sm leading-relaxed mb-1">
+                &#40;{t('clickHere')}&#41;
+              </p>
+            </div>
+
+            {/* After Upgrade - Desktop */}
+            <div className="hidden md:flex items-center gap-4" onClick={handleUpdate}>
+              <div>
+                <h3 className="text-white font-bold text-xl mb-1">
+                  {isLoading
+                    ? t('loadingMatches')
+                    : t('foundMatches', { count: scholarships?.length ?? 0 })}
+                </h3>
+                <p className="text-white/90 text-sm mb-1">{t('matchedDescription')}</p>
+                <p className="text-white/90 italic text-sm leading-relaxed">
+                  &#40;{t('clickHere')}&#41;
+                </p>
+              </div>
+            </div>
+          </>
+        ) : (
           <>
             {/* Mobile Layout: Stacked */}
             <div className="md:hidden space-y-3">
@@ -120,32 +149,6 @@ export default function PremiumBanner() {
               >
                 {t('updateNow')}
               </button>
-            </div>
-          </>
-        ) : (
-          <>
-            {/* After Upgrade - Mobile */}
-            <div className="md:hidden text-center space-y-3" onClick={handleUpdate}>
-              <h3 className="text-white font-bold text-xl">
-                {t('foundMatches', { count: scholarships?.length ?? 0 })}
-              </h3>
-              <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
-              <p className="text-white/90 italic text-sm leading-relaxed mb-1">
-                &#40;{t('clickHere')}&#41;
-              </p>
-            </div>
-
-            {/* After Upgrade - Desktop */}
-            <div className="hidden md:flex items-center gap-4" onClick={handleUpdate}>
-              <div>
-                <h3 className="text-white font-bold text-xl mb-1">
-                  {t('foundMatches', { count: scholarships?.length ?? 0 })}
-                </h3>
-                <p className="text-white/90 text-sm mb-1">{t('matchedDescription')}</p>
-                <p className="text-white/90 italic text-sm leading-relaxed">
-                  &#40;{t('clickHere')}&#41;
-                </p>
-              </div>
             </div>
           </>
         )}
