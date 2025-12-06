@@ -56,7 +56,6 @@ export default function RecommendedScholarshipsSection() {
         <div className="flex items-center justify-between mb-10">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-6 h-6 text-blue-600" />
               <h2 className="text-3xl font-bold text-slate-900">{t('title')}</h2>
             </div>
             <p className="text-lg text-slate-600 max-w-2xl">{t('subtitle')}</p>
@@ -64,7 +63,7 @@ export default function RecommendedScholarshipsSection() {
           <Button
             variant="outline"
             onClick={handleViewAll}
-            className="hidden md:flex items-center gap-2"
+            className="px-6 py-3 rounded-xl border-2 border-slate-300 text-primary hover:border-[#3D6CB9] hover:text-[#3D6CB9] transition-all"
           >
             <span>{t('viewAll')}</span>
             <ArrowRight className="w-4 h-4" />

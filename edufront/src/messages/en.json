@@ -438,6 +438,14 @@
       "description": "Discover the most popular scholarships this month",
       "viewCountDescription": "View count represents the number of people who have viewed this scholarship"
     },
+    "recommendedScholarships": {
+      "title": "Recommended Scholarships",
+      "subtitle": "Discover the most popular scholarships this month",
+      "viewAll": "View All",
+      "failedToLoad": "Failed to load scholarships",
+      "failedToLoadDescription": "Please try again later or refresh the page.",
+      "noScholarships": "No scholarships found."
+    },
     "cardSmalPic": {
       "trackScholarship": "Track scholarship",
       "organizationLogo": "Organization logo"
