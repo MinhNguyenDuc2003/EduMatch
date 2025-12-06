@@ -445,12 +445,12 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     public List<ScholarshipVo> getRecommendationScholarship(String userId, int topK) {
         ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(userId));
         if (ObjectUtils.isEmpty(applicantProfileVo)) {
-            return null;
+            return new ArrayList<>();
         }
         ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationScholarship(applicantProfileVo.getId(), topK);
         List<ScholarshipVo> result = new ArrayList<>();
         if (ObjectUtils.isEmpty(recommendationScholarship.getResults())) {
-            return null;
+            return new ArrayList<>();
         }
         recommendationScholarship.getResults().forEach(item -> {
             ScholarshipVo vo = this.getById(item.getScholarship());

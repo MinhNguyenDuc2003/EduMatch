@@ -2,6 +2,7 @@ package com.minh.model.dto.ai;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.io.Serializable;
@@ -16,7 +17,9 @@ import java.util.List;
 @ToString(callSuper = true)
 public class ScholarshipRecommendationResponseDto implements Serializable {
 
+    @JsonProperty("matches")
     private List<RecommendationDto> results;
+    @JsonProperty("top_k")
     private int count;
 
 }
