@@ -164,8 +164,6 @@ services:
       - m-network
   ai-match:
     image: registry.edumatch.space/edumatch/ai-match:1.0.0
-    volumes:
-      - ./ai-match/app:/app/app
     env_file:
       - ./ai-match/.env
     networks:
