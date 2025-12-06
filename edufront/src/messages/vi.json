@@ -25,6 +25,29 @@
       "logout": "Đăng xuất"
     }
   },
+  "footer": {
+    "quickLinks": "Liên Kết Nhanh",
+    "resources": "Tài Nguyên",
+    "myAccount": "Tài Khoản Của Tôi",
+    "company": "Công Ty",
+    "home": "Trang Chủ",
+    "scholarships": "Học Bổng",
+    "news": "Tin Tức",
+    "howItWorks": "Hướng Dẫn",
+    "policy": "Chính Sách",
+    "providerGuidelines": "Hướng Dẫn Nhà Cung Cấp",
+    "subscriptions": "Gói Đăng Ký",
+    "myProfile": "Hồ Sơ Của Tôi",
+    "myActivity": "Quản Lý Hoạt Động",
+    "tracking": "Học Bổng Đã Theo Dõi",
+    "following": "Nhà Cung Cấp Đã Theo Dõi",
+    "application": "Đơn Ứng Tuyển",
+    "applied": "Đã Nộp",
+    "report": "Báo Cáo",
+    "aboutUs": "Về Chúng Tôi",
+    "contactUs": "Liên Hệ",
+    "copyright": "Bản quyền © 2025, EduMatch"
+  },
   "notifications": {
     "title": "Thông báo",
     "new": "thông báo mới",

@@ -25,6 +25,29 @@
       "logout": "Logout"
     }
   },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "resources": "Resources",
+    "myAccount": "My Account",
+    "company": "Company",
+    "home": "Home",
+    "scholarships": "Scholarships",
+    "news": "News",
+    "howItWorks": "How It Works",
+    "policy": "Policy",
+    "providerGuidelines": "Provider Guidelines",
+    "subscriptions": "Subscriptions",
+    "myProfile": "My Profile",
+    "myActivity": "My Activity",
+    "tracking": "Tracking Scholarships",
+    "following": "Following Providers",
+    "application": "My Application",
+    "applied": "Applied Applications",
+    "report": "Report",
+    "aboutUs": "About Us",
+    "contactUs": "Contact Us",
+    "copyright": "Copyright © 2025, EduMatch"
+  },
   "notifications": {
     "title": "Notifications",
     "new": "new notifications",
