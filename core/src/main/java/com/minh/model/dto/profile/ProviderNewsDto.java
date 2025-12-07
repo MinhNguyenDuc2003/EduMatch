@@ -24,7 +24,7 @@ public class ProviderNewsDto extends BaseDto {
 
     private Long id;
 
-    private String providerId;
+    private Long providerId;
 
     private String scholarshipId;
 
