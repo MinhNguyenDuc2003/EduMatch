@@ -112,6 +112,9 @@ public class CaseStudyServiceImpl extends BaseService implements CaseStudyServic
     }
 
     private void uploadImages(List<MultipartFile> images, Long id) {
+        if (ObjectUtils.isEmpty(images)) {
+            return;
+        }
         images.forEach(image -> {
             MediaDto request = new MediaDto();
             request.setFileName(image.getOriginalFilename());
