@@ -38,4 +38,29 @@ public class ApplicantProfileDto extends BaseDto {
     private String careerGoals;
     private BigDecimal overallGpa;
 
+    // ==============================
+    // NEW FIELDS
+    // ==============================
+
+    private String educationLevel;
+
+    private Integer satScore;
+    private Integer actScore;
+    private Integer toeflScore;
+    private Double ieltsScore;
+    private Integer greScore;
+    private Integer gmatScore;
+
+    private String languages;
+
+    private String academicAwards;
+    private Integer publicationCount;
+    private String researchInterest;
+
+    private String extracurricularActivities;
+
+    private String preferredScholarshipType;
+    private String preferredCountry;
+    private String preferredUniversity;
+
 }

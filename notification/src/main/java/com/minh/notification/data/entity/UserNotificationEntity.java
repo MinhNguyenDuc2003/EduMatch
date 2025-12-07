@@ -33,4 +33,13 @@ public class UserNotificationEntity extends BaseEntity {
     @Column(name = "REFERENCE_ID")
     private Long referenceId;
 
+    @Column(name = "CONTENT")
+    private String content;
+
+    @Column(name = "SLUG")
+    private String slug;
+
+    @Column(name = "IS_ADMIN")
+    private Boolean isAdmin;
+
 }

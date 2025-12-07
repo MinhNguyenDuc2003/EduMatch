@@ -5,10 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.customer.data.vo.AuthenticationVo;
 import com.minh.customer.data.vo.CustomerVo;
 import com.minh.customer.service.CustomerService;
+import com.minh.customer.service.UserLogoutService;
 import com.minh.customer.viewmodel.customer.*;
 import com.minh.model.ApiResponse;
+import com.minh.service.aspect.Authorized;
 import com.minh.utils.SecurityUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -17,13 +22,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
+@RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerService customerService;
-
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
+    private final UserLogoutService userLogoutService;
 
     @GetMapping("/backoffice/customers")
     public ResponseEntity<CustomerListVm> getCustomers(
@@ -39,6 +42,11 @@ public class CustomerController {
     @GetMapping("/backoffice/customers/profile/{id}")
     public ApiResponse<CustomerVo> getCustomerById(@PathVariable String id) {
         return ApiResponse.ok(customerService.getCustomerProfile(id));
+    }
+
+    @GetMapping("/customers/profile")
+    public ApiResponse<CustomerVo> getSimpleCustomerById(@RequestParam String id) {
+        return ApiResponse.ok(customerService.getSimpleCustomerById(id));
     }
 
     @PutMapping("/backoffice/customers/profile/{id}")
@@ -73,12 +81,14 @@ public class CustomerController {
                 customerService.getCustomerProfile(SecurityUtil.getCurrentUserId()));
     }
 
+    @Authorized
     @PostMapping("/storefront/customer/profile")
     public ApiResponse<CustomerVo> createCustomerProfile(@RequestBody CustomerVo customerVo) {
         return ApiResponse.ok(
                 customerService.createCustomerProfile(customerVo));
     }
 
+    @Authorized
     @PutMapping("/storefront/customer/profile")
     public ApiResponse<CustomerVo> updateCustomerProfile(@RequestBody CustomerVo customerVo) {
         return ApiResponse.ok(
@@ -90,6 +100,7 @@ public class CustomerController {
         return customerService.createGuestUser();
     }
 
+    @Authorized
     @PostMapping(
             value = "/storefront/provider/profile",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
@@ -102,6 +113,7 @@ public class CustomerController {
                 customerService.createProviderProfile(customerVo, logo, banner));
     }
 
+    @Authorized
     @PutMapping(value = "/storefront/provider/profile",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ApiResponse<CustomerVo> updateProviderProfile(@RequestPart("profile") String profile,
@@ -112,6 +124,7 @@ public class CustomerController {
                 customerService.updateProviderProfile(customerVo, logo, banner));
     }
 
+    @Authorized
     @GetMapping("/storefront/provider/profile")
     public ApiResponse<CustomerVo> getProviderProfile() {
         return ApiResponse.ok(
@@ -127,8 +140,29 @@ public class CustomerController {
             AuthenticationVo vo = new AuthenticationVo();
             vo.setIsAuthenticated(true);
             vo.setCustomer(customerService.getCustomerById(userId));
+            try {
+                CustomerVo providerProfile = customerService.getProviderProfile();
+                if (providerProfile != null) {
+                    vo.setIsProvider(true);
+                }
+            } catch (Exception e) {
+                vo.setIsProvider(false);
+            }
+            vo.setIsApplicant(customerService.isExistProfile(userId));
+
+            vo.setSubscriptions(customerService.getCurrenSubscriptions());
             return ApiResponse.ok(vo);
         }
+    }
+
+    @Authorized
+    @PostMapping("/storefront/logout")
+    public ApiResponse<String> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return ApiResponse.ok(userLogoutService.buildLogoutUrl());
     }
 
 }

@@ -2,6 +2,7 @@ package com.minh.search.data.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,10 +24,13 @@ public class ScholarshipVo extends ScholarshipDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private List<ScholarshipVo> scholarship;
+    private List<MediaDto> scholarshipMedias;
+    private ProviderProfileVo providerProfileVo;
     private int pageNum;
     private int pageSize;
     private int totalPages;
     private long totalElements;
     Map<String, Map<String, Long>> aggregations;
     private int isFollow;
+    private int views;
 }

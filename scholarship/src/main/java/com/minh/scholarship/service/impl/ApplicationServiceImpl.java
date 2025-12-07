@@ -1,12 +1,9 @@
 package com.minh.scholarship.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.CoreMessageCode;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.media.MediaDto;
-import com.minh.model.dto.scholarship.ApplicationAttributeDto;
 import com.minh.scholarship.data.entity.ApplicationAttributeEntity;
 import com.minh.scholarship.data.entity.ApplicationEntity;
 import com.minh.scholarship.data.entity.ApplicationScholarshipEntity;
@@ -32,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +42,6 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
     private final ApplicationAttributeRepository applicationAttributeRepository;
     private final ApplicationScholarshipRepository applicationScholarshipRepository;
     private final MediaFeign mediaFeign;
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final ApplicationAttributeMapper applicationAttributeMapper;
 
     @Override
@@ -67,7 +64,7 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
         vo.setApplicationAttributes(
                 applicationAttributeRepository.findAllByApplicationId(vo.getId())
                         .stream()
-                        .map(a -> applicationMapper.toAttributeDto(a))
+                        .map(applicationMapper::toAttributeDto)
                         .collect(Collectors.toList())
         );
 
@@ -82,15 +79,18 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public ApplicationVo create(ApplicationVo applicationVo, List<MultipartFile> mediaFiles, String attributesJson) throws JsonProcessingException {
+    public ApplicationVo create(ApplicationVo applicationVo, List<MultipartFile> mediaFiles) throws JsonProcessingException {
         String userId = UaaContextHolder.getUserId();
         applicationVo.setUserId(userId);
+
+        Optional<ApplicationEntity> existByCodeAndVersion = applicationRepository.findByCodeAndVersionApplicationAndActive(applicationVo.getCode(), applicationVo.getVersionApplication(), true);
+        if (existByCodeAndVersion.isPresent()) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_CODE_AND_VERSION_ALREADY_EXIST);
+        }
         ApplicationEntity entity = applicationRepository.save(applicationMapper.toEntity(applicationVo));
 
-        if (ObjectUtils.isNotEmpty(attributesJson)) {
-            List<ApplicationAttributeDto> attrs = objectMapper.readValue(attributesJson, new TypeReference<List<ApplicationAttributeDto>>() {
-            });
-            List<ApplicationAttributeEntity> attributeEntities = applicationAttributeMapper.toEntity(attrs);
+        if (ObjectUtils.isNotEmpty(applicationVo.getApplicationAttributes())) {
+            List<ApplicationAttributeEntity> attributeEntities = applicationAttributeMapper.toEntity(applicationVo.getApplicationAttributes());
             attributeEntities.forEach(o -> o.setApplicationId(entity.getId()));
             applicationAttributeRepository.saveAll(attributeEntities);
         }
@@ -104,28 +104,26 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public ApplicationVo update(Long id, ApplicationVo applicationVo, List<MultipartFile> mediaFiles, String attributesJson) throws JsonProcessingException {
+    public ApplicationVo update(Long id, ApplicationVo applicationVo) {
         String userId = UaaContextHolder.getUserId();
         applicationVo.setUserId(userId);
         ApplicationEntity entity = applicationRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST));
 
+        List<ApplicationScholarshipEntity> byApplicationCodeAndApplicationVersion = applicationScholarshipRepository.findByApplicationIdAndActive(applicationVo.getId(), true);
+        if (ObjectUtils.isNotEmpty(byApplicationCodeAndApplicationVersion)) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_IS_ALREADY_SUBMITTED_PLEASE_UPDATE_VERSION);
+        }
+
         applicationMapper.updateEntityFromVo(applicationVo, entity);
         ApplicationEntity saved = applicationRepository.save(entity);
 
-        applicationMediaRepository.deleteAllByApplicationId(id);
         applicationAttributeRepository.deleteAllByApplicationId(id);
 
-        if (ObjectUtils.isNotEmpty(attributesJson)) {
-            List<ApplicationAttributeDto> attrs = objectMapper.readValue(attributesJson, new TypeReference<List<ApplicationAttributeDto>>() {
-            });
-            List<ApplicationAttributeEntity> attributeEntities = applicationAttributeMapper.toEntity(attrs);
+        if (ObjectUtils.isNotEmpty(applicationVo.getApplicationAttributes())) {
+            List<ApplicationAttributeEntity> attributeEntities = applicationAttributeMapper.toEntity(applicationVo.getApplicationAttributes());
             attributeEntities.forEach(o -> o.setApplicationId(saved.getId()));
             applicationAttributeRepository.saveAll(attributeEntities);
-        }
-
-        if (ObjectUtils.isNotEmpty(mediaFiles)) {
-            uploadImages(mediaFiles, id);
         }
         return getById(id);
     }
@@ -158,7 +156,12 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
         if (!applicationRepository.existsById(id)) {
             throw new BusinessException(CoreMessageCode.APPLICATION_IS_NOT_EXIST);
         }
+        if(applicationScholarshipRepository.existsByApplicationIdAndActive(id, true)) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_IS_ALREADY_SUBMIT);
+        }
         applicationRepository.updateActiveById(id, false);
+
+//        applicationScholarshipRepository.softDeleteByScholarshipId(id);
     }
 
     @Override
@@ -175,6 +178,39 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
         List<ApplicationVo> vos = applicationMapper.entitiesToVos(applicationRepository.findAllById(applicationScholarshipEntities.stream().map(ApplicationScholarshipEntity::getApplicationId).collect((Collectors.toList()))));
         vos.forEach(this::addAttributesAndMedia);
         return vos;
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public Boolean addImagesToApplication(Long id, List<MultipartFile> mediaFiles) {
+        if(applicationScholarshipRepository.existsByApplicationIdAndActive(id, true)) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_IS_ALREADY_SUBMIT);
+        }
+        this.uploadImages(mediaFiles, id);
+        return true;
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public Boolean deleteImagesToApplication(Long id, List<Long> mediaIds) {
+        if(applicationScholarshipRepository.existsByApplicationIdAndActive(id, true)) {
+            throw new BusinessException(CoreMessageCode.APPLICATION_IS_ALREADY_SUBMIT);
+        }
+        mediaIds.forEach(mediaId -> {
+            applicationMediaRepository.deleteByApplicationIdAndMediaId(id, mediaId);
+        });
+        return true;
+    }
+
+    @Override
+    public List<ApplicationVo> getByCode(String code) {
+        List<ApplicationEntity> entity = applicationRepository.findByCodeAndActive(code, true);
+        if (ObjectUtils.isEmpty(entity)) {
+            return null;
+        }
+        List<ApplicationVo> vo = applicationMapper.entitiesToVos(entity);
+        vo.forEach(this::addAttributesAndMedia);
+        return vo;
     }
 
     @Override

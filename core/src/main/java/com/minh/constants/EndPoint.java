@@ -14,6 +14,7 @@ public final class EndPoint {
 
     public static class MEDIA {
         public static final String MEDIA = "/medias";
+        public static final String MAIL = "/mail";
     }
 
     public static class PROFILES {
@@ -21,6 +22,8 @@ public final class EndPoint {
         public static final String APPLICANTS = "/applicants";
         public static final String PROVIDERS = "/providers";
         public static final String FOLLOWERS = "/followers";
+        public static final String PROVIDER_NEW = "/provider-new";
+        public static final String PROVIDER_FAVOURITE = "/provider-favourite";
     }
 
     public static class LOCATION {
@@ -35,11 +38,17 @@ public final class EndPoint {
         public static final String APPLICATIONS = "/applications";
         public static final String APPLICATION_REVIEW = "/applications/review";
         public static final String APPLICATION_SCHOLARSHIP = "/applications-scholarship";
+        public static final String CASE_STUDY = "/case-study";
     }
 
     public static class SUBSCRIPTION {
         public static final String SUBSCRIPTIONS = "/subscription";
         public static final String PLANS = "/subscription/subscription/plans";
-        public static final String PAYMENTS = "/subscription/payments";
+        public static final String ORDERS = "/subscription/orders";
+    }
+
+    public static class REPORT {
+        public static final String CATEGORY = "/report/category";
+        public static final String REPORTS = "/reports";
     }
 }

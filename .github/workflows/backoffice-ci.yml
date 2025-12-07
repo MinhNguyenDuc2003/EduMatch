@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - "backoffice/**"
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to remote server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd /home/minh/EduMatch/backoffice
+            pwsh docker-build.ps1

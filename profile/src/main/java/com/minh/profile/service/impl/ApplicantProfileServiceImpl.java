@@ -87,9 +87,9 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
                 .findByIdAndActive(profile.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.APPLICANT_IS_NOT_EXIST));
 
-        profile.setId(existProfile.getId());
-        deleteProfileData(profile.getId());
-        saveProfileData(profile, profile.getId());
+        applicantProfileMapper.updateEntityFromVo(profile, existProfile);
+        deleteProfileData(existProfile.getId());
+        saveProfileData(profile, existProfile.getId());
         return profile;
     }
 
@@ -107,6 +107,11 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
             return vo;
         }
         return null;
+    }
+
+    @Override
+    public List<ApplicantProfileDto> getAll() {
+        return applicantProfileMapper.toDto(applicantProfileRepository.getAllByActive(true));
     }
 
     private void deleteProfileData(Long id) {

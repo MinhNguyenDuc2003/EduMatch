@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
-import com.minh.model.dto.scholarship.ApplicationDto;
 import com.minh.scholarship.data.vo.ApplicationVo;
 import com.minh.scholarship.model.filter.ApplicationFilter;
 import com.minh.scholarship.service.ApplicationService;
@@ -46,31 +45,41 @@ public class ApplicationController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<ApplicationDto> getById(@PathVariable Long id) {
+    public ApiResponse<ApplicationVo> getById(@PathVariable Long id) {
         return ApiResponse.ok(applicationService.getById(id));
+    }
+
+    @GetMapping("/code/{code}")
+    public ApiResponse<List<ApplicationVo>> getByCode(@PathVariable String code) {
+        return ApiResponse.ok(applicationService.getByCode(code));
     }
 
     @Authorized
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<ApplicationVo> create(
             @RequestPart("application") String applicationJson,
-            @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles,
-            @RequestPart(value = "attributesJson", required = false) String attributesJson
+            @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles
     ) throws JsonProcessingException {
         ApplicationVo application = new ObjectMapper().readValue(applicationJson, ApplicationVo.class);
-        return ApiResponse.ok(applicationService.create(application, mediaFiles, attributesJson));
+        return ApiResponse.ok(applicationService.create(application, mediaFiles));
     }
 
     @Authorized
-    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<ApplicationVo> update(
-            @PathVariable Long id,
-            @RequestPart("application") String applicationJson,
-            @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles,
-            @RequestPart(value = "attributesJson", required = false) String attributesJson
-    ) throws JsonProcessingException {
-        ApplicationVo application = new ObjectMapper().readValue(applicationJson, ApplicationVo.class);
-        return ApiResponse.ok(applicationService.update(id, application, mediaFiles, attributesJson));
+    @PutMapping
+    public ApiResponse<ApplicationVo> update(@RequestBody ApplicationVo application) {
+        return ApiResponse.ok(applicationService.update(application.getId(), application));
+    }
+
+    @Authorized
+    @PutMapping(value = "/{id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Boolean> addImagesToApplication(@PathVariable Long id, @RequestPart(value = "mediaFiles", required = false) List<MultipartFile> mediaFiles) {
+        return ApiResponse.ok(applicationService.addImagesToApplication(id, mediaFiles));
+    }
+
+    @Authorized
+    @DeleteMapping(value = "/{id}/images")
+    public ApiResponse<Boolean> deleteImagesToApplication(@PathVariable Long id, @RequestBody List<Long> mediaIds) {
+        return ApiResponse.ok(applicationService.deleteImagesToApplication(id, mediaIds));
     }
 
     @DeleteMapping("/{id}")

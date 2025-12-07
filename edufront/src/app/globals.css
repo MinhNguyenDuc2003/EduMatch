@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
@@ -39,7 +39,11 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card); /* lấy từ Roboto Mono */ --radius-sm: calc(var(--radius) - 4px); --radius-md: calc(var(--radius) - 2px); --radius-lg: var(--radius); --radius-xl: calc(var(--radius) + 4px);
+  --color-card: var(--card); /* lấy từ Roboto Mono */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 body {
@@ -79,7 +83,7 @@ body {
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
-   --whites: #ffffff;
+  --whites: #ffffff;
   --bg-disable_button: #d9d9d9;
   --bg-disable: #bfbfbf;
 
@@ -88,7 +92,7 @@ body {
   --text-constrast: #ffffff;
   --normal: #64748b;
 
-  --primary-brand: #3D6CB9;
+  --primary-brand: #3d6cb9;
   --primary-light: #e5ecf9;
 
   --btn_submain: #6b7280;
@@ -141,5 +145,24 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Custom blue theme for form controls */
+  input[type='radio'] {
+    accent-color: #3d6cb9;
+  }
+
+  input[type='range'] {
+    accent-color: #3d6cb9;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
   }
 }

@@ -3,6 +3,7 @@ package com.minh.model.dto.scholarship;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.minh.model.dto.BaseDto;
@@ -65,6 +66,45 @@ public class ScholarshipDto extends BaseDto {
     private Double gpaRequirement;
 
     private Boolean isDeleted;
+
+    // ==============================
+    // NEW FIELDS
+    // ==============================
+
+    private String requiredMajor;
+
+    private String restrictedNationalities;
+
+    private Integer minAge;
+
+    private Integer maxAge;
+
+    private String genderRequirement;
+
+    private Integer requiredSatScore;
+
+    private Integer requiredActScore;
+
+    private Integer requiredGreScore;
+
+    private Integer requiredGmatScore;
+
+    private Integer requiredToeflScore;
+
+    private Double requiredIeltsScore;
+
+    private Integer requiredWorkExperienceYears;
+
+    private Integer requiredPublicationCount;
+
+    private String requiredAcademicAwards;
+
+    private Integer requiredClassRankPercentile;
+
+    @JsonProperty("createdDate")
+    @JsonSerialize(using = DateToTimestamp.class)
+    @JsonDeserialize(using = TimestampToDate.class)
+    private LocalDateTime createdDate;
 
     @JsonIgnore
     public void beautify() {

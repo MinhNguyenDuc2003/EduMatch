@@ -1,91 +1,65 @@
-import calendar from '@/assets/icon/calendar.svg';
-import dolars from '@/assets/icon/dolars.svg';
-import useCurrency from '@/hooks/useCurrency';
-import { Block, Card, Group, RText } from '@/lib/by/Div';
-import { Button } from '@/lib/cus/button';
+'use client';
+import { Block, Card, RText } from '@/lib/by/Div';
 import { cn } from '@/lib/utils';
-import { sStore } from '@/stores';
-import { isBoolean } from 'lodash';
-import Image from 'next/image';
+import { DollarSign, Calendar } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
-const enum ELocale {
-  VI = 'vi',
-  EN = 'en',
-}
-const Amount_Deadline = ({
-  amount,
-  deadline,
-  isRow,
-  className,
-}: {
-  amount: number;
-  deadline: string;
+type Amount_DeadlineProps = {
+  amount: string;
+  deadline: number; // Timestamp (number)
   isRow?: boolean;
   className?: string;
-}) => {
-  const ss = sStore();
-  const locale = ss.Auth?.Locale;
-  const { Currency, currencyd, loading, error } = useCurrency();
+};
+
+// Helper function to parse funding amount to number
+const parseFundingAmount = (fundingAmount: string): number => {
+  if (!fundingAmount) return 0;
+  return parseFloat(fundingAmount.replace(/[^0-9.]/g, '')) || 0;
+};
+
+// Helper function to format end date from timestamp
+const formatEndDate = (endDate: number): string => {
+  if (!endDate) return '';
+  try {
+    const date = new Date(endDate);
+    if (isNaN(date.getTime())) return '';
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  } catch {
+    return '';
+  }
+};
+
+const Amount_Deadline = ({ amount, deadline, isRow, className }: Amount_DeadlineProps) => {
+  const t = useTranslations('homepage.amountDeadline');
+  const formattedDate = formatEndDate(deadline);
 
   return (
     <Block
-      className={cn(
-        `flex ${isRow ? 'flex' : 'flex-col gap-[10px]'} justify-between p-[10px]`,
-        className
-      )}
+      className={cn(`flex ${isRow ? 'flex-row gap-6' : 'flex-col gap-3'} items-center`, className)}
     >
-      <Card className={`flex ${isRow ? 'flex-col' : 'items-center'} gap-[5px]`}>
-        <Group className="flex gap-[10px]">
-          <Image src={dolars} alt="dolars" width={20} height={20} />
-          {isRow && <RText className="text-sm">Amount:</RText>}
-        </Group>
-        <Button
-          onClick={() => Currency({ amount: amount ?? '', locale: switchCaseLocale( 'en').displayName, target: switchCaseLocale( 'vi').displayName })}
-          disabled={!isBoolean(currencyd || loading)}
-          className="px-4 py-2 bg-[#3D6CB9] text-white rounded-lg text-sm hover:bg-[#2c4e8a] disabled:opacity-50"
-        >
-          {loading
-            ? 'Đang dịch...'
-            : `Quy đổi sang ${switchCaseLocale(locale ?? 'vi').displayName}`}
-        </Button>
-
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        {currencyd && (
-          <Card className="bg-[#F9FAFB] border border-[#E5E7EB] p-3 rounded-lg">
-            <RText className="text-sm font-semibold text-[#3D6CB9] mb-1">Bản dịch:</RText>
-            <p className="text-sm text-[#333] leading-relaxed">{currencyd}</p>
-          </Card>
-        )}
-        <RText className="text-sm font-bold">${amount}</RText>
+      {/* Amount */}
+      <Card className="flex flex-col">
+        <Block className="flex items-center gap-2">
+          <DollarSign className="w-4 h-4 text-gray-600" />
+          {isRow && <RText className="text-xs text-gray-500">{t('amount')}</RText>}
+        </Block>
+        <RText className="text-sm font-semibold text-gray-900 mt-1">{amount}</RText>
       </Card>
-      <Card className={`flex ${isRow ? 'flex-col' : 'items-center'} gap-[5px]`}>
-        <Group className="flex gap-[10px]">
-          <Image src={calendar} alt="calendar" width={20} height={20} />
-          {isRow && <RText className="text-sm">Deadline:</RText>}
-        </Group>
-        <RText className="text-sm font-bold">{deadline}</RText>
+
+      {/* Deadline */}
+      <Card className="flex flex-col">
+        <Block className="flex items-center gap-2">
+          <Calendar className="w-4 h-4 text-gray-600" />
+          {isRow && <RText className="text-xs text-gray-500">{t('deadline')}</RText>}
+        </Block>
+        <RText className="text-sm font-semibold text-gray-900 mt-1">{formattedDate}</RText>
       </Card>
     </Block>
   );
 };
 
-const switchCaseLocale = (locale: string) => {
-  switch (locale) {
-    case ELocale.VI:
-      return {
-        locale: 'vi',
-        displayName: 'VND',
-      };
-    case ELocale.EN:
-      return {
-        locale: 'en',
-        displayName: 'USD',
-      };
-    default:
-      return {
-        locale: 'vi',
-        displayName: 'VND',
-      };
-  }
-};
 export default Amount_Deadline;

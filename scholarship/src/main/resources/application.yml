@@ -175,6 +175,22 @@ kafka:
     new-event:
       topic: ${app.environment:local}.scholarship.new-event
       group: ${app.environment:local}.scholarship.new-event.group
+  news:
+    new-event:
+      topic: ${app.environment:local}.news.new-event
+      group: ${app.environment:local}.news.new-event.group
+  application:
+    update-status:
+      topic: ${app.environment:local}.application.update-event
+      group: ${app.environment:local}.application.update-event.group
+  provider:
+    application:
+      topic: ${app.environment:local}.provider.application-new
+      group: ${app.environment:local}.provider.application-new.group
+  mail:
+    send-mail:
+      topic: ${app.environment:local}.system.mail
+      group: ${app.environment:local}.system.mail.group
 
 keycloak:
   auth-server-url: ${env.keycloak.url:http://localhost:8080}
@@ -182,3 +198,16 @@ keycloak:
   resource: ${env.keycloak.client-id:backoffice-bff}
   credentials:
     secret: ${env.keycloak.client-secret:TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF}
+
+quartz-job:
+  auto-start: false
+  scholarship-suggestion:
+    name: 'scholarship-suggestion'
+    group: 'scholarship'
+    expression: '0 0 12 * * ?'
+
+ai:
+  end-point: ${env.ai.url:http://localhost:8000}
+
+fe:
+  end-point: ${env.fe.url:http://159.89.200.244/edufront}

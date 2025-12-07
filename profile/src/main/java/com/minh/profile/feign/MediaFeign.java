@@ -1,6 +1,8 @@
 package com.minh.profile.feign;
 
 import com.minh.model.ApiResponse;
+import com.minh.model.dto.media.MailDto;
+import com.minh.model.dto.media.MailTemplateDto;
 import com.minh.model.dto.media.MediaDto;
 import com.minh.service.feign.FeignInterceptorConfig;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -28,5 +30,11 @@ public interface MediaFeign {
 
     @DeleteMapping("medias/{id}")
     ApiResponse<Void> delete(@PathVariable Long id);
+
+    @PostMapping("mail/send")
+    ApiResponse<?> sendMail(@RequestBody MailDto mailDto);
+
+    @GetMapping("mail/template")
+    ApiResponse<MailTemplateDto> getMailTemplate(@RequestParam String type);
 
 }

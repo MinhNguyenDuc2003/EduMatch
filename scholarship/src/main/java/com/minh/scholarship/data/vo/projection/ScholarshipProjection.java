@@ -51,4 +51,34 @@ public interface ScholarshipProjection {
 
     Integer getIsFollow();
 
+    String getRequiredMajor();
+
+    String getRestrictedNationalities();
+
+    Integer getMinAge();
+
+    Integer getMaxAge();
+
+    String getGenderRequirement();
+
+    Integer getRequiredSatScore();
+
+    Integer getRequiredActScore();
+
+    Integer getRequiredGreScore();
+
+    Integer getRequiredGmatScore();
+
+    Integer getRequiredToeflScore();
+
+    Double getRequiredIeltsScore();
+
+    Integer getRequiredWorkExperienceYears();
+
+    Integer getRequiredPublicationCount();
+
+    String getRequiredAcademicAwards();
+
+    Integer getRequiredClassRankPercentile();
+
 }

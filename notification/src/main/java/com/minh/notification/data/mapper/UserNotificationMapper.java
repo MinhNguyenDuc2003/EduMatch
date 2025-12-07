@@ -3,6 +3,7 @@ package com.minh.notification.data.mapper;
 import com.minh.mapper.BaseMapper;
 import com.minh.model.dto.notification.UserNotificationDto;
 import com.minh.notification.data.entity.UserNotificationEntity;
+import com.minh.notification.data.vo.NotificationVo;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -14,4 +15,8 @@ import org.mapstruct.*;
 
         })
 public interface UserNotificationMapper extends BaseMapper<UserNotificationEntity, UserNotificationDto> {
+
+    @Named("voToDto")
+    UserNotificationDto voToDto(NotificationVo notification);
+
 }

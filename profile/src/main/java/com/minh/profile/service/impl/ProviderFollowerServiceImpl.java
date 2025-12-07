@@ -35,6 +35,17 @@ public class ProviderFollowerServiceImpl implements ProviderFollowerService {
     @Override
     public ProviderFollowerDto create(Long id) {
         String userId = UaaContextHolder.getUserId();
+
+        boolean exists = providerProfileRepository.existsById(id);
+        if (!exists) {
+            throw new BusinessException(CoreMessageCode.PROVIDER_NOT_FOUND);
+        }
+
+        boolean alreadyFollowed = providerFollowerRepository.existsByProviderIdAndUserId(id, userId);
+        if (alreadyFollowed) {
+            throw new BusinessException(CoreMessageCode.PROVIDER_ALREADY_FOLLOWED);
+        }
+
         ProviderFollowerEntity providerFollowerEntity = new ProviderFollowerEntity();
         providerFollowerEntity.setProviderId(id);
         providerFollowerEntity.setUserId(userId);
@@ -57,9 +68,14 @@ public class ProviderFollowerServiceImpl implements ProviderFollowerService {
     }
 
     @Override
-    public List<ProviderFollowerDto> getAllProviders() {
+    public List<ProviderProfileVo> getAllProviders() {
         String userId = UaaContextHolder.getUserId();
-        return providerFollowerMapper.toDto(providerFollowerRepository.findByUserId(userId));
+        List<ProviderProfileVo> vos = new ArrayList<>();
+        List<ProviderFollowerEntity> providerFollowerEntities = providerFollowerRepository.findByUserId(userId);
+        providerFollowerEntities.forEach(providerFollower -> {
+            vos.add(profileService.getById(providerFollower.getProviderId()));
+        });
+        return vos;
     }
 
     @Override

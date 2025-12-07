@@ -1,13 +1,17 @@
 package com.minh.scholarship.service;
 
 import com.minh.model.dto.scholarship.ApplicationScholarshipDto;
+import com.minh.scholarship.data.vo.ApplicationScholarshipVo;
+import com.minh.scholarship.data.vo.ScholarshipApplyStatisticVo;
+import com.minh.scholarship.data.vo.ScholarshipDashboardVo;
+
 import java.util.List;
 
 public interface ApplicationScholarshipService {
 
-    List<ApplicationScholarshipDto> getAll();
+    List<ApplicationScholarshipVo> getAll();
 
-    ApplicationScholarshipDto getById(Long id);
+    ApplicationScholarshipVo getById(Long id);
 
     ApplicationScholarshipDto create(ApplicationScholarshipDto dto);
 
@@ -15,9 +19,21 @@ public interface ApplicationScholarshipService {
 
     void delete(Long id);
 
-    List<ApplicationScholarshipDto> getAllByApplicationId(Long applicationId);
+    List<ApplicationScholarshipVo> getAllByApplicationId(Long applicationId);
 
-    List<ApplicationScholarshipDto> getAllByScholarshipId(Long scholarshipId);
+    List<ApplicationScholarshipVo> getAllByScholarshipId(Long scholarshipId);
 
     List<ApplicationScholarshipDto> getAllByStatus(String status);
+
+    List<ApplicationScholarshipVo> getByMyScholarship();
+
+    List<ScholarshipApplyStatisticVo> getTopAppliedScholarships();
+
+    ScholarshipDashboardVo getDashboardStatistics();
+
+    List<ApplicationScholarshipVo> getRankApplication(Long scholarshipId, Integer topK);
+
+    ApplicationScholarshipVo getByScholarshipIdAndApplicationId(Long scholarshipId, Long applicationId);
+
+    List<ApplicationScholarshipVo> getByMyProvider();
 }

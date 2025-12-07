@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,10 +28,14 @@ public class ApplicantProfileController {
         return ApiResponse.ok(profileService.create(profile));
     }
 
-    @Authorized
     @GetMapping("/{id}")
     public ApiResponse<ApplicantProfileVo> getOne(@PathVariable Long id) {
         return ApiResponse.ok(profileService.getOne(id));
+    }
+
+    @GetMapping("/all")
+    public ApiResponse<List<ApplicantProfileDto>> getAll() {
+        return ApiResponse.ok(profileService.getAll());
     }
 
     @Authorized
@@ -39,7 +44,6 @@ public class ApplicantProfileController {
         return ApiResponse.ok(profileService.update(profile));
     }
 
-    @Authorized
     @GetMapping("/user")
     public ApiResponse<ApplicantProfileVo> getOneByUserId(@RequestParam String userId) {
         return ApiResponse.ok(profileService.getOneByUserId(userId));

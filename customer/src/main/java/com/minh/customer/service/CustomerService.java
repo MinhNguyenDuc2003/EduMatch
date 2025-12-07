@@ -9,13 +9,16 @@ import com.minh.customer.data.vo.CustomerVo;
 import com.minh.customer.data.vo.ProviderProfileVo;
 import com.minh.customer.feign.ApplicantProfileFeign;
 import com.minh.customer.feign.ProviderProfileFeign;
+import com.minh.customer.feign.SubscriptionFeign;
 import com.minh.customer.viewmodel.customer.*;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.profile.ProviderProfileDto;
+import com.minh.model.dto.subscription.SubscriptionDto;
 import com.minh.service.base.BaseService;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.core.Response;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
@@ -47,6 +50,8 @@ public class CustomerService extends BaseService {
     private ApplicantProfileFeign profileFeign;
     @Autowired
     private ProviderProfileFeign providerFeign;
+    @Autowired
+    private SubscriptionFeign subscriptionFeign;
 
     public CustomerService(Keycloak keycloak, KeycloakPropsConfig keycloakPropsConfig) {
         this.keycloak = keycloak;
@@ -261,5 +266,27 @@ public class CustomerService extends BaseService {
         ProviderProfileVo providerProfileVo = this.parseResponse(providerFeign.getMyProviderInfo());
         vo.setProviderProfile(providerProfileVo);
         return vo;
+    }
+
+    public List<SubscriptionDto> getCurrenSubscriptions() {
+        return this.parseResponse(subscriptionFeign.getCurrentSubscription());
+    }
+
+    public CustomerVo getSimpleCustomerById(String userId) {
+        try {
+            CustomerVo vo = new CustomerVo();
+            CustomerVm customerVm = CustomerVm.fromUserRepresentation(
+                    keycloak.realm(keycloakPropsConfig.getRealm()).users().get(userId).toRepresentation());
+            vo.setCustomer(customerVm);
+            return vo;
+        } catch (ForbiddenException exception) {
+            throw new AccessDeniedException(
+                    String.format(ERROR_FORMAT, exception.getMessage(), keycloakPropsConfig.getResource()));
+        }
+    }
+
+    public Boolean isExistProfile(String userId) {
+        ApplicantProfileVo profileVo = this.parseResponse(profileFeign.getOneByUserId(userId));
+        return ObjectUtils.isNotEmpty(profileVo);
     }
 }

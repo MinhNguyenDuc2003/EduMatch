@@ -14,6 +14,18 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'es5urvh1np.ufs.sh',
       },
+      {
+        protocol: 'https',
+        hostname: 'cl2h8yilb0.ufs.sh',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'edumatch.s3.ap-southeast-1.amazonaws.com',
+      },
     ],
   },
 };

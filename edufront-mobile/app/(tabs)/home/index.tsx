@@ -1,11 +1,11 @@
 import apiClientService from "@/apiController/ApiClientService";
+import { useRouter } from "expo-router";
 import { HeartIcon } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
-import { useRouter } from "expo-router";
 const Home = () => {
   const [data, setData] = useState<any[]>([]);
-  const router = useRouter(); // <-- dùng hook
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +42,7 @@ const Home = () => {
       <Pressable
         onPress={() => {
           console.log("Clicked", item.id);
-          router.push(`/scholarshipdetails/${item.id}`);
+          router.push(`/scholarshipdetails/${item.id}` as any);
         }}
         className="bg-green-50 rounded-2xl shadow-lg pt-4 pb-4 mb-4 cursor-pointer border border-green-500 border-3px"
       >

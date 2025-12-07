@@ -37,5 +37,5 @@ public class SubscriptionDto extends BaseDto {
 
     private String status;
 
-    private Boolean autoRenew;
+    private SubscriptionPlanDto plan;
 }

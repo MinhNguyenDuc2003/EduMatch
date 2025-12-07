@@ -1,12 +1,13 @@
 server {
-    listen 80;
-    server_name 160.30.113.224;
+    listen 443 ssl;
+    server_name api.edumatch.space;
+
+    ssl_certificate /etc/letsencrypt/live/api.edumatch.space/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.edumatch.space/privkey.pem;
 
     resolver 127.0.0.11 valid=30s;
-
     ignore_invalid_headers off;
     underscores_in_headers on;
-
     server_tokens off;
     proxy_http_version 1.1;
 
@@ -14,7 +15,7 @@ server {
         proxy_pass http://swagger-ui:8080;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https; 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
@@ -22,7 +23,7 @@ server {
         proxy_pass http://customer;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https; 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
@@ -30,7 +31,7 @@ server {
         proxy_pass http://profile;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https; 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
@@ -38,7 +39,7 @@ server {
         proxy_pass http://media;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https; 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
@@ -49,7 +50,7 @@ server {
         proxy_set_header Connection "Upgrade";
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https; 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
@@ -57,7 +58,7 @@ server {
         proxy_pass http://subscription;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https; 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
@@ -65,7 +66,7 @@ server {
         proxy_pass http://scholarship;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https; 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
@@ -73,7 +74,23 @@ server {
         proxy_pass http://search;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https; 
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /payment/ {
+        proxy_pass http://payment;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /report/ {
+        proxy_pass http://report;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto https;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
@@ -81,7 +98,7 @@ server {
         proxy_pass http://backoffice-nextjs:3000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https; 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
@@ -89,20 +106,28 @@ server {
         proxy_pass http://edufront-nextjs:3000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https; 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
-    location /identity {
+    location /identity/ {
         proxy_pass http://identity;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
-        # Workaround CORS cho login
         if ($uri ~ "^(.*)/(protocol/openid-connect/auth|login/oauth2/code)(.*)") {
             add_header Access-Control-Allow-Origin *;
         }
+    }
+}
+
+server {
+    listen 80;
+    server_name api.edumatch.space;
+
+    location / {
+        return 301 https://$host$request_uri;
     }
 }

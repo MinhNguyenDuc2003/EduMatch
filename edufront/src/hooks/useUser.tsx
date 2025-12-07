@@ -1,7 +1,6 @@
 'use client';
 
-import { includes, map } from 'lodash';
-import { sStore } from '../stores';
+import { map } from 'lodash';
 function useHasPermission(permission: string) {
   const listFunstion = [
     {
@@ -14,6 +13,10 @@ function useHasPermission(permission: string) {
     },
     {
       FunctionCode: 'formScholarship',
+      FunctionID: '2',
+    },
+    {
+      FunctionCode: 'scholarships',
       FunctionID: '2',
     },
   ];

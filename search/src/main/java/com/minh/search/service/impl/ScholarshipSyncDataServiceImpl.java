@@ -3,6 +3,7 @@ package com.minh.search.service.impl;
 import com.minh.constants.CoreMessageCode;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.scholarship.ScholarshipDto;
+import com.minh.search.data.entity.ScholarshipEntity;
 import com.minh.search.data.mapper.ScholarshipMapper;
 import com.minh.search.data.repository.ScholarshipRepository;
 import com.minh.search.feign.ScholarshipFeign;
@@ -29,7 +30,9 @@ public class ScholarshipSyncDataServiceImpl extends BaseService implements Schol
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void create(Long scholarshipId) {
-        scholarshipRepository.save(scholarshipMapper.toEntity(this.getScholarshipById(scholarshipId)));
+        ScholarshipEntity entity = scholarshipMapper.toEntity(this.getScholarshipById(scholarshipId));
+        entity.setUniversityKeyword(entity.getUniversity());
+        scholarshipRepository.save(entity);
     }
 
     @Override
@@ -42,7 +45,9 @@ public class ScholarshipSyncDataServiceImpl extends BaseService implements Schol
                 return;
             }
             scholarshipRepository.deleteById(scholarshipId);
-            scholarshipRepository.save(scholarshipMapper.toEntity(scholarshipById));
+            ScholarshipEntity entity = scholarshipMapper.toEntity(scholarshipById);
+            entity.setUniversityKeyword(entity.getUniversity());
+            scholarshipRepository.save(entity);
         }
     }
 

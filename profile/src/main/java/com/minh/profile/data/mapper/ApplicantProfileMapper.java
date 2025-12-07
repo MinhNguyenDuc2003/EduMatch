@@ -4,12 +4,7 @@ import com.minh.mapper.BaseMapper;
 import com.minh.model.dto.profile.ApplicantProfileDto;
 import com.minh.profile.data.entity.ApplicantProfileEntity;
 import com.minh.profile.data.vo.ApplicantProfileVo;
-import org.mapstruct.CollectionMappingStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.Named;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
@@ -23,5 +18,7 @@ public interface ApplicantProfileMapper extends BaseMapper<ApplicantProfileEntit
 
     @Named("toVo")
     ApplicantProfileVo toVo(ApplicantProfileEntity entity);
+
+    void updateEntityFromVo(ApplicantProfileVo vo, @MappingTarget ApplicantProfileEntity entity);
 
 }

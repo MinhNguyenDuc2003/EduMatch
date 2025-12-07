@@ -8,6 +8,9 @@ services:
     restart: unless-stopped
     networks:
       - m-network
+    depends_on:
+      - redis
+
   redis:
     image: redis:7.4.1-alpine
     restart: always
@@ -17,6 +20,17 @@ services:
       - redis:/data
     networks:
       - m-network
+    command: >
+      redis-server
+      --appendonly yes
+      --replica-read-only no
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+      --loglevel notice
+      --maxmemory-policy allkeys-lru
+      --bind 0.0.0.0
+      --protected-mode no
 
 networks:
   m-network:

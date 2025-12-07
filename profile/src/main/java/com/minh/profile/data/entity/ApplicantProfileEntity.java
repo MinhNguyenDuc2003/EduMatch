@@ -96,4 +96,57 @@ public class ApplicantProfileEntity extends BaseEntity {
     @Column(precision = 3, scale = 2, name = "OVERALL_GPA")
     private BigDecimal overallGpa;
 
+    // ==============================
+    // NEW FIELDS
+    // ==============================
+
+    @Column(length = 100, name = "EDUCATION_LEVEL")
+    private String educationLevel;
+
+    @Column(name = "SAT_SCORE")
+    private Integer satScore;
+
+    @Column(name = "ACT_SCORE")
+    private Integer actScore;
+
+    @Column(name = "TOEFL_SCORE")
+    private Integer toeflScore;
+
+    @Column(name = "IELTS_SCORE")
+    private Double ieltsScore;
+
+    @Column(name = "GRE_SCORE")
+    private Integer greScore;
+
+    @Column(name = "GMAT_SCORE")
+    private Integer gmatScore;
+
+    @Lob
+    @Column(name = "LANGUAGES")
+    private String languages;
+
+    @Lob
+    @Column(name = "ACADEMIC_AWARDS")
+    private String academicAwards;
+
+    @Column(name = "PUBLICATION_COUNT")
+    private Integer publicationCount;
+
+    @Lob
+    @Column(name = "RESEARCH_INTEREST")
+    private String researchInterest;
+
+    @Lob
+    @Column(name = "EXTRACURRICULAR_ACTIVITIES")
+    private String extracurricularActivities;
+
+    @Column(length = 100, name = "PREFERRED_SCHOLARSHIP_TYPE")
+    private String preferredScholarshipType;
+
+    @Column(length = 100, name = "PREFERRED_COUNTRY")
+    private String preferredCountry;
+
+    @Column(length = 255, name = "PREFERRED_UNIVERSITY")
+    private String preferredUniversity;
+
 }

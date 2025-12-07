@@ -1,8 +1,13 @@
 package com.minh.subscription.data.entity;
 
+import com.minh.enumeration.subscription.SubscriptionFeatureEnum;
+import com.minh.enumeration.subscription.SubscriptionTargetType;
+import com.minh.subscription.data.converter.SubscriptionFeatureConverter;
 import com.minh.subscription.data.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(schema = "subscription", name = "SUBSCRIPTION_PLAN")
@@ -33,10 +38,12 @@ public class SubscriptionPlanEntity extends BaseEntity {
     @Column(name = "DURATION_DAYS")
     private Integer durationDays;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "TARGET_TYPE")
-    private String targetType;
+    private SubscriptionTargetType targetType;
 
     @Column(name = "FEATURES")
-    private String features;
+    @Convert(converter = SubscriptionFeatureConverter.class)
+    private List<SubscriptionFeatureEnum> features;
 
 }

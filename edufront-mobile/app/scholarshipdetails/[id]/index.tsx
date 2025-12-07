@@ -1,25 +1,25 @@
 import apiClientService from "@/apiController/ApiClientService";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import {
-  HeartIcon,
-  Calendar,
-  GraduationCap,
-  Globe,
-  DollarSign,
-  BookOpen,
   ArrowLeft,
+  BookOpen,
+  Calendar,
+  DollarSign,
+  Globe,
+  GraduationCap,
+  HeartIcon,
 } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Image,
-  Text,
-  View,
-  ScrollView,
   Animated,
-  TouchableOpacity,
   Dimensions,
+  Image,
   Modal,
+  ScrollView,
+  Text,
   TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 const { width, height } = Dimensions.get("window");
@@ -69,11 +69,14 @@ const ScholarshipDetail = () => {
 
   const handleSubmitApplication = async (applicationId: string) => {
     try {
-      const res = await apiClientService.post("/api/scholarship/applications-scholarship", {
-        scholarshipId: id,
-        applicationId: applicationId,
-        status: "Pending"
-      });
+      const res = await apiClientService.post(
+        "/api/scholarship/applications-scholarship",
+        {
+          scholarshipId: id,
+          applicationId: applicationId,
+          status: "Pending",
+        }
+      );
 
       console.log("SUCCESS:", res);
       alert("Application created successfully!");
@@ -126,7 +129,7 @@ const ScholarshipDetail = () => {
         });
       }
 
-      for (let [key, value] of body.entries()) {
+      for (let [key, value] of Object.entries(body)) {
         console.log("FormData Entry:", key, value);
       }
 
@@ -391,7 +394,6 @@ const ScholarshipDetail = () => {
         </Text>
       </TouchableOpacity>
 
-      
       <Modal visible={showApplicationModal} animationType="slide" transparent>
         <View
           style={{
@@ -513,7 +515,6 @@ const ScholarshipDetail = () => {
         </View>
       </Modal>
 
-    
       <Modal visible={showCreateModal} animationType="slide">
         <ScrollView style={{ padding: 20 }}>
           <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 20 }}>

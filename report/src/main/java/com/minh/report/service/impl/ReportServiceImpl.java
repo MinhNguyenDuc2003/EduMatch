@@ -1,0 +1,229 @@
+package com.minh.report.service.impl;
+
+import com.minh.constants.CoreMessageCode;
+import com.minh.enumeration.report.ReportCategoryType;
+import com.minh.exception.BusinessException;
+import com.minh.model.dto.report.ProfileReportCreateDto;
+import com.minh.model.dto.report.ProviderReportCreateDto;
+import com.minh.model.dto.report.ReportDto;
+import com.minh.model.dto.report.ScholarshipReportCreateDto;
+import com.minh.report.data.entity.*;
+import com.minh.report.data.mapper.ReportMapper;
+import com.minh.report.data.repository.*;
+import com.minh.report.feign.ProviderProfileFeign;
+import com.minh.report.service.ReportService;
+import com.minh.service.base.BaseService;
+import com.minh.utils.UaaContextHolder;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class ReportServiceImpl extends BaseService implements ReportService {
+
+    private final ReportRepository reportRepository;
+    private final ReportCategoryRepository categoryRepository;
+    private final ProviderReportRepository providerReportRepository;
+    private final ProfileReportRepository profileReportRepository;
+    private final ScholarshipReportRepository scholarshipReportRepository;
+    private final ReportMapper mapper;
+
+    @Override
+    public List<ReportDto> getAll() {
+        return mapper.toDto(reportRepository.findByActiveTrue());
+    }
+
+    @Override
+    public ReportDto getById(Long id) {
+        ReportEntity entity = reportRepository.findByIdAndActive(id, true)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.REPORT_NOT_FOUND));
+        return mapper.toDto(entity);
+    }
+
+    @Override
+    @Transactional
+    public ReportDto create(ReportDto dto) {
+        String userId = UaaContextHolder.getUserId();
+        dto.setUserId(userId);
+
+        ReportEntity entity = mapper.toEntity(dto);
+
+        if (dto.getCategory() != null && dto.getCategory().getId() != null) {
+            ReportCategoryEntity category = categoryRepository
+                    .findByIdAndActive(dto.getCategory().getId(), true)
+                    .orElseThrow(() -> new BusinessException(CoreMessageCode.REPORT_CATEGORY_NOT_FOUND));
+            entity.setCategory(category);
+        }
+
+        return mapper.toDto(reportRepository.save(entity));
+    }
+
+    @Override
+    @Transactional
+    public ReportDto update(ReportDto dto) {
+        ReportEntity entity = reportRepository.findByIdAndActive(dto.getId(), true)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.REPORT_NOT_FOUND));
+
+        String currentUserId = UaaContextHolder.getUserId();
+        if (!entity.getUserId().equals(currentUserId)) {
+            throw new BusinessException(CoreMessageCode.ACCESS_DENIED);
+        }
+
+        mapper.updateEntityFromDto(dto, entity);
+
+        if (dto.getCategory() != null && dto.getCategory().getId() != null) {
+            ReportCategoryEntity category = categoryRepository.findByIdAndActive(dto.getCategory().getId(), true)
+                    .orElseThrow(() -> new BusinessException(CoreMessageCode.REPORT_CATEGORY_NOT_FOUND));
+            entity.setCategory(category);
+        }
+
+        return mapper.toDto(reportRepository.save(entity));
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        reportRepository.deactivateById(id);
+    }
+
+    @Override
+    public List<ReportDto> getByUserId(String userId) {
+        return mapper.toDto(reportRepository.findByUserIdAndActiveTrue(userId));
+    }
+
+    @Override
+    public List<ReportDto> getMyReports() {
+        String userId = UaaContextHolder.getUserId();
+        return mapper.toDto(reportRepository.findByUserIdAndActiveTrue(userId));
+    }
+
+    @Override
+    public List<ReportDto> getByCategory(Long categoryId) {
+        ReportCategoryEntity category = categoryRepository.findByIdAndActive(categoryId, true)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.REPORT_CATEGORY_NOT_FOUND));
+        return mapper.toDto(reportRepository.findByCategoryAndActiveTrue(category));
+    }
+
+    @Override
+    public List<ReportDto> getByIsRead(Boolean isRead) {
+        return mapper.toDto(reportRepository.findByIsReadAndActiveTrue(isRead));
+    }
+
+    @Override
+    @Transactional
+    public ReportDto replyToReport(Long id, String reply) {
+        ReportEntity entity = reportRepository.findByIdAndActive(id, true)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.REPORT_NOT_FOUND));
+        entity.setResponse(reply);
+        entity.setStatus(com.minh.enumeration.report.ReportStatus.RESOLVED);
+        entity.setIsRead(true);
+        return mapper.toDto(reportRepository.save(entity));
+    }
+
+    @Override
+    @Transactional
+    public ReportDto createProviderReport(ProviderReportCreateDto dto) {
+
+        String userId = UaaContextHolder.getUserId();
+
+        ReportCategoryEntity category = categoryRepository
+                .findByIdAndActive(dto.getCategoryId(), true)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.REPORT_CATEGORY_NOT_FOUND));
+
+        ReportEntity report = ReportEntity.builder()
+                .userId(userId)
+                .title(dto.getTitle())
+                .comment(dto.getComment())
+                .category(category)
+                .isRead(false)
+                .status(com.minh.enumeration.report.ReportStatus.PENDING)
+                .build();
+
+        reportRepository.save(report);
+
+        ProviderReportEntity providerReport = ProviderReportEntity.builder()
+                .report(report)
+                .providerId(dto.getProviderId())
+                .build();
+
+        providerReportRepository.save(providerReport);
+
+        ReportDto result = mapper.toDto(report);
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public ReportDto createProfileReport(ProfileReportCreateDto dto) {
+
+        String userId = UaaContextHolder.getUserId();
+
+        // Lấy category
+        ReportCategoryEntity category = categoryRepository
+                .findByIdAndActive(dto.getCategoryId(), true)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.REPORT_CATEGORY_NOT_FOUND));
+
+        // Tạo ReportEntity
+        ReportEntity report = ReportEntity.builder()
+                .userId(userId)
+                .title(dto.getTitle())
+                .comment(dto.getComment())
+                .category(category)
+                .isRead(false)
+                .status(com.minh.enumeration.report.ReportStatus.PENDING)
+                .build();
+
+        reportRepository.save(report);
+
+        // Lưu profile_reports
+        ProfileReportEntity profileReport = ProfileReportEntity.builder()
+                .report(report)
+                .profileId(dto.getProfileId())
+                .build();
+
+        profileReportRepository.save(profileReport);
+
+        // Map sang DTO
+        return mapper.toDto(report);
+    }
+
+    @Override
+    @Transactional
+    public ReportDto createScholarshipReport(ScholarshipReportCreateDto dto) {
+
+        String userId = UaaContextHolder.getUserId();
+
+        // Lấy category
+        ReportCategoryEntity category = categoryRepository
+                .findByIdAndActive(dto.getCategoryId(), true)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.REPORT_CATEGORY_NOT_FOUND));
+
+        // Tạo ReportEntity
+        ReportEntity report = ReportEntity.builder()
+                .userId(userId)
+                .title(dto.getTitle())
+                .comment(dto.getComment())
+                .category(category)
+                .isRead(false)
+                .status(com.minh.enumeration.report.ReportStatus.PENDING)
+                .build();
+
+        reportRepository.save(report);
+
+        // Lưu scholarship_reports
+        ScholarshipReportEntity scholarshipReport = ScholarshipReportEntity.builder()
+                .report(report)
+                .scholarshipId(dto.getScholarshipId())
+                .build();
+
+        scholarshipReportRepository.save(scholarshipReport);
+
+        // Map sang DTO
+        return mapper.toDto(report);
+    }
+
+}

@@ -16,4 +16,6 @@ public interface ScholarshipFollowerRepository extends JpaRepository<Scholarship
 
     List<ScholarshipFollowerEntity> getByUserId(String userId);
 
+    ScholarshipFollowerEntity findByUserIdAndScholarshipId(String userId, Long id);
+
 }

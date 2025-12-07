@@ -1,5 +1,6 @@
 package com.minh.profile.data.entity;
 
+import com.minh.profile.data.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
-public class ProviderNewsEntity {
+public class ProviderNewsEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +21,9 @@ public class ProviderNewsEntity {
 
     @Column(name = "PROVIDER_ID")
     private Long providerId;
+
+    @Column(name = "SCHOLARSHIP_ID")
+    private Long scholarshipId;
 
     @Column(name = "TITLE")
     private String title;

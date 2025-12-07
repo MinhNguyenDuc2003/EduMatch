@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +24,6 @@ public class ProviderProfileController {
     @Autowired
     private ProviderProfileService providerProfileService;
 
-    @Authorized
     @GetMapping("/{id}")
     public ApiResponse<ProviderProfileVo> getOne(@PathVariable Long id) {
         return ApiResponse.ok(providerProfileService.getById(id));
@@ -57,4 +57,34 @@ public class ProviderProfileController {
         return ApiResponse.ok(providerProfileService.update(profileVo, logo, banner));
     }
 
+    @GetMapping("/unverified")
+    public ApiResponse<List<ProviderProfileDto>> getUnverifiedProviders() {
+        return ApiResponse.ok(providerProfileService.getUnverifiedProviders());
+    }
+
+    @Authorized
+    @GetMapping("/verify/mail")
+    public ApiResponse<Boolean> sendVerifyMail(String email) {
+        return ApiResponse.ok(providerProfileService.sendVerifyMail(email));
+    }
+
+    @Authorized
+    @GetMapping("/verify/code")
+    public ApiResponse<Boolean> verifyCode(String code) {
+        return ApiResponse.ok(providerProfileService.verifyCode(code));
+    }
+
+    @PutMapping("/{id}/verified")
+    public ApiResponse<Void> changeVerifiedStatus(
+            @PathVariable("id") Long providerId,
+            @RequestParam("verified") Boolean verified
+    ) {
+        providerProfileService.changeVerifiedStatus(providerId, verified);
+        return ApiResponse.ok();
+    }
+
+    @GetMapping("/all")
+    public ApiResponse<List<ProviderProfileVo>> getAll() {
+        return ApiResponse.ok(providerProfileService.getAll());
+    }
 }

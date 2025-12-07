@@ -171,6 +171,21 @@ kafka:
     new-event:
       topic: ${app.environment:local}.scholarship.new-event
       group: ${app.environment:local}.scholarship.new-event.group
+    referral-event:
+      topic: ${app.environment:local}.scholarship.referral-event
+      group: ${app.environment:local}.scholarship.referral-event.group
+  news:
+    new-event:
+      topic: ${app.environment:local}.news.new-event
+      group: ${app.environment:local}.news.new-event.group
+  application:
+    update-status:
+      topic: ${app.environment:local}.application.update-event
+      group: ${app.environment:local}.application.update-event.group
+  provider:
+    application:
+      topic: ${app.environment:local}.provider.application-new
+      group: ${app.environment:local}.provider.application-new.group
 
 keycloak:
   auth-server-url: ${env.keycloak.url:http://localhost:8080}

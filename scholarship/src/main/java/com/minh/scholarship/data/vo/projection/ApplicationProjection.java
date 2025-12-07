@@ -37,6 +37,8 @@ public interface ApplicationProjection {
 
     String getSkills();
 
+    String getLanguages();
+
     String getAchievements();
 
     String getExtracurricular();
@@ -44,5 +46,9 @@ public interface ApplicationProjection {
     String getMotivation();
 
     String getPersonalStatement();
+
+    String getCode();
+
+    Long getVersionApplication();
 
 }

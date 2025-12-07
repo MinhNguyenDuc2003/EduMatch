@@ -1,11 +1,16 @@
 package com.minh.notification.controller;
 
 import com.minh.constants.EndPoint;
+import com.minh.enumeration.notification.NotificationReferenceEnum;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.notification.UserNotificationDto;
+import com.minh.notification.data.mapper.UserNotificationMapper;
+import com.minh.notification.data.vo.NotificationVo;
 import com.minh.notification.service.UserNotificationService;
+import com.minh.notification.service.helper.NotificationWebSocketHandler;
+import com.minh.service.aspect.Authorized;
+import com.minh.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,12 +20,20 @@ import java.util.List;
 @RequestMapping(EndPoint.NOTIFICATION.USER_NOTIFICATIONS)
 public class UserNotificationController {
 
-    @Autowired
-    private UserNotificationService userNotificationService;
+    private final UserNotificationService userNotificationService;
+    private final NotificationWebSocketHandler notificationWebSocketHandler;
+    private final UserNotificationMapper userNotificationMapper;
 
+    @Authorized
     @GetMapping("/user")
     public ApiResponse<List<UserNotificationDto>> getByUser() {
         return ApiResponse.ok(userNotificationService.getByUser());
+    }
+
+    @Authorized
+    @GetMapping("/token")
+    public ApiResponse<String> getToken() {
+        return ApiResponse.ok("Bearer " + SecurityUtil.getRawToken());
     }
 
     @PostMapping
@@ -28,9 +41,28 @@ public class UserNotificationController {
         return ApiResponse.ok(userNotificationService.createOne(userNotificationDto));
     }
 
+    @GetMapping("/read/{id}")
+    public ApiResponse<UserNotificationDto> updateReadStatus(@PathVariable Long id) {
+        return ApiResponse.ok(userNotificationService.updateReadStatus(id));
+    }
+
     @PostMapping("/all")
     public ApiResponse<List<UserNotificationDto>> createAll(@RequestBody List<UserNotificationDto> userNotificationDto) {
         return ApiResponse.ok(userNotificationService.createAll(userNotificationDto));
     }
 
+    @PostMapping("system/notify")
+    public ApiResponse<Boolean> notifyGlobal(@RequestBody NotificationVo notification) {
+        notificationWebSocketHandler.sendToGlobal(notification);
+        UserNotificationDto userNotificationDto = userNotificationMapper.voToDto(notification);
+        userNotificationDto.setIsAdmin(true);
+        userNotificationDto.setReferenceType(NotificationReferenceEnum.SYSTEM.getCode());
+        userNotificationService.createOne(userNotificationDto);
+        return ApiResponse.ok(true);
+    }
+
+    @GetMapping("system")
+    public ApiResponse<List<UserNotificationDto>> getAllSystemNotification() {
+        return ApiResponse.ok(userNotificationService.getAllSystem());
+    }
 }

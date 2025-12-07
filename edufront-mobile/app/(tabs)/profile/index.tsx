@@ -11,9 +11,9 @@ import { Text } from "@/components/ui/text";
 import { mockProfileData } from "@/constants/mockData";
 import { transformProfileData } from "@/lib/utils";
 import { ProfileData } from "@/types/profile";
-import React, { useEffect, useState } from "react";
-import { ScrollView, View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router"; // dùng để chuyển trang
+import React, { useEffect, useState } from "react";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 
 const Profile = () => {
   const router = useRouter(); // hook để điều hướng
@@ -94,11 +94,11 @@ const Profile = () => {
               onPress={() => {
                 setActiveTab(tab.id);
                 if (tab.id === "information") {
-                  router.push("/Profile"); // giữ ở màn hình hiện tại
+                  // Already on profile page, no navigation needed
                 } else if (tab.id === "application") {
-                  router.push("/ApplicationScreen");
+                  router.push("/ApplicationScreen" as any);
                 } else if (tab.id === "favourites") {
-                  router.push("/FavouritesScreen");
+                  router.push("/FavouritesScreen" as any);
                 }
               }}
             >

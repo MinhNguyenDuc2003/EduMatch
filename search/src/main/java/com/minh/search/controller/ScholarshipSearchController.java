@@ -33,4 +33,9 @@ public class ScholarshipSearchController {
         return scholarshipService.autoCompleteScholarshipName(keyword);
     }
 
+    @GetMapping("/autocomplete/university")
+    public ApiResponse<List<ScholarshipDto>> autocompleteUniversity(@RequestParam String keyword) {
+        return ApiResponse.ok(scholarshipService.autoCompleteUniversity(keyword));
+    }
+
 }

@@ -17,4 +17,6 @@ public interface ProviderFollowerRepository extends JpaRepository<ProviderFollow
 
     List<ProviderFollowerEntity> findByUserId(String userId);
 
+    boolean existsByProviderIdAndUserId(Long providerId, String userId);
+
 }

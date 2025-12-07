@@ -1,10 +1,14 @@
 package com.minh.profile.service.impl;
 
 import com.minh.constants.CoreMessageCode;
+import com.minh.enumeration.mail.MailTypeEnum;
 import com.minh.exception.BusinessException;
+import com.minh.model.dto.media.MailDto;
+import com.minh.model.dto.media.MailTemplateDto;
 import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.profile.ProviderContactDto;
 import com.minh.model.dto.profile.ProviderProfileDto;
+import com.minh.profile.data.entity.ProviderCodeVerifiedEntity;
 import com.minh.profile.data.entity.ProviderContactEntity;
 import com.minh.profile.data.entity.ProviderProfileEntity;
 import com.minh.profile.data.entity.junction.ProviderMediaEntity;
@@ -13,19 +17,24 @@ import com.minh.profile.data.mapper.ProviderNewsMapper;
 import com.minh.profile.data.mapper.ProviderProfileMapper;
 import com.minh.profile.data.repository.*;
 import com.minh.profile.data.vo.ProviderProfileVo;
+import com.minh.profile.data.vo.projection.ProviderProfileProjection;
 import com.minh.profile.feign.MediaFeign;
 import com.minh.profile.service.ProviderProfileService;
 import com.minh.service.base.BaseService;
+import com.minh.utils.SecurityUtil;
 import com.minh.utils.UaaContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -41,6 +50,8 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
     private ProviderNewsMediaRepository providerNewsMediaRepository;
     @Autowired
     private ProviderMediaRepository providerMediaRepository;
+    @Autowired
+    private ProviderCodeVerifiedRepository providerCodeVerifiedRepository;
 
     @Autowired
     private ProviderProfileMapper providerProfileMapper;
@@ -51,11 +62,20 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
 
     @Autowired
     private MediaFeign mediaFeign;
+    @Value("${fe.end-point}")
+    private String feEndPoint;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ProviderProfileDto create(ProviderProfileVo profile, MultipartFile logo, MultipartFile banner) throws IOException {
-        profile.setUserId(UaaContextHolder.getUserId());
+        String userId = UaaContextHolder.getUserId();
+        profile.setUserId(userId);
+
+        Optional<ProviderProfileEntity> existingProfile = providerProfileRepository.findByUserId(userId);
+        if (existingProfile.isPresent()) {
+            throw new BusinessException(CoreMessageCode.PROVIDER_PROFILE_ALREADY_EXISTS);
+        }
+
         ProviderProfileEntity savedProfile = providerProfileRepository.save(providerProfileMapper.voToEntity(profile));
         List<ProviderContactDto> providerContactDtos = profile.getProviderContactDtos();
         providerContactDtos.forEach(pc -> {
@@ -152,10 +172,10 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
 
     @Override
     public ProviderProfileVo getById(Long id) {
-        ProviderProfileEntity providerProfileEntity = providerProfileRepository
-                .findById(id)
+        ProviderProfileProjection providerProfile = providerProfileRepository
+                .getDetail(id, SecurityUtil.getCurrentUserId())
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
-        ProviderProfileVo vo = providerProfileMapper.toVo(providerProfileEntity);
+        ProviderProfileVo vo = providerProfileMapper.proToVo(providerProfile);
         List<ProviderContactEntity> contacts = providerContactRepository.findByProviderId(id);
         vo.setProviderContactDtos(providerContactMapper.toDto(contacts));
         List<ProviderMediaEntity> medias = providerMediaRepository.findByProviderId(id);
@@ -195,4 +215,105 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
         return vo;
     }
 
+    @Override
+    public List<ProviderProfileDto> getUnverifiedProviders() {
+        List<ProviderProfileEntity> entities = providerProfileRepository.findByVerifiedFalse();
+        return providerProfileMapper.toDto(entities);
+    }
+
+    @Override
+    @Transactional
+    public void changeVerifiedStatus(Long providerId, Boolean verified) {
+        ProviderProfileEntity entity = providerProfileRepository.findById(providerId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
+        entity.setVerified(verified);
+        if (verified) {
+            MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.PROVIDER_VERIFIED.getCode()));
+            String body = templateDto.getBody().replace("{{link}}", feEndPoint + "/applicant/providers/" + entity.getId());
+
+            MailDto mailDto = new MailDto();
+            mailDto.setBody(body);
+            mailDto.setTo(entity.getEmail());
+            mailDto.setSubject(templateDto.getSubject());
+            mailDto.setTemplateId(templateDto.getId());
+            mediaFeign.sendMail(mailDto);
+        }
+        providerProfileRepository.save(entity);
+    }
+
+    @Override
+    public Boolean sendVerifyMail(String email) {
+        ProviderCodeVerifiedEntity entity = new ProviderCodeVerifiedEntity();
+        String code = generateCode();
+        entity.setCode(code);
+        entity.setUserId(UaaContextHolder.getUserId());
+        entity.setExpiredTime(LocalDateTime.now().plusMinutes(10L));
+        providerCodeVerifiedRepository.save(entity);
+
+        MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.PROVIDER_VERIFIED.getCode()));
+        String body = templateDto.getBody().replace("{{code}}", code);
+
+        MailDto mailDto = new MailDto();
+        mailDto.setBody(body);
+        mailDto.setTo(email);
+        mailDto.setSubject(templateDto.getSubject());
+        mailDto.setTemplateId(templateDto.getId());
+        mediaFeign.sendMail(mailDto);
+
+        return true;
+    }
+
+    @Override
+    public Boolean verifyCode(String code) {
+        List<ProviderCodeVerifiedEntity> existCode = providerCodeVerifiedRepository.findByUserIdAndCodeValid(UaaContextHolder.getUserId(), code);
+        return !ObjectUtils.isEmpty(existCode);
+    }
+
+    private String generateCode() {
+        int code = new java.util.Random().nextInt(900000) + 100000;
+        return String.valueOf(code);
+    }
+
+    @Override
+    public List<ProviderProfileVo> getAll() {
+
+        List<ProviderProfileEntity> profiles = providerProfileRepository.findAll();
+
+        return profiles.stream().map(entity -> {
+            ProviderProfileVo vo = providerProfileMapper.toVo(entity);
+
+            // Contacts
+            List<ProviderContactEntity> contacts =
+                    providerContactRepository.findByProviderId(entity.getId());
+            vo.setProviderContactDtos(providerContactMapper.toDto(contacts));
+
+            // Logo + Banner
+            List<ProviderMediaEntity> medias =
+                    providerMediaRepository.findByProviderId(entity.getId());
+
+            Long logoId = medias.stream()
+                    .filter(m -> "LOGO".equalsIgnoreCase(m.getImageType()))
+                    .map(ProviderMediaEntity::getMediaId)
+                    .findFirst()
+                    .orElse(null);
+
+            if (logoId != null) {
+                MediaDto logo = this.parseResponse(mediaFeign.getById(logoId));
+                vo.setLogoUrl(logo.getUrl());
+            }
+
+            Long bannerId = medias.stream()
+                    .filter(m -> "BANNER".equalsIgnoreCase(m.getImageType()))
+                    .map(ProviderMediaEntity::getMediaId)
+                    .findFirst()
+                    .orElse(null);
+
+            if (bannerId != null) {
+                MediaDto banner = this.parseResponse(mediaFeign.getById(bannerId));
+                vo.setBannerUrl(banner.getUrl());
+            }
+
+            return vo;
+        }).toList();
+    }
 }

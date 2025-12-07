@@ -1,0 +1,10 @@
+numpy
+psycopg2-binary
+scikit-learn
+sentence-transformers
+transformers
+google-generativeai
+fastapi
+uvicorn
+pydantic
+python-dotenv

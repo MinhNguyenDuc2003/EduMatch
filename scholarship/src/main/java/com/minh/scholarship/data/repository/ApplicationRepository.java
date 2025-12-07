@@ -1,8 +1,6 @@
 package com.minh.scholarship.data.repository;
 
-import com.minh.model.dto.scholarship.ApplicationDto;
 import com.minh.scholarship.data.entity.ApplicationEntity;
-import com.minh.scholarship.data.vo.projection.ApplicationProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,4 +29,8 @@ public interface ApplicationRepository extends JpaRepository<ApplicationEntity, 
     List<ApplicationEntity> findAllByUserId(String userId);
 
     List<ApplicationEntity> findAllByUserIdAndActive(String userId, boolean b);
+
+    List<ApplicationEntity> findByCodeAndActive(String code, boolean b);
+
+    Optional<ApplicationEntity> findByCodeAndVersionApplicationAndActive(String code, Long versionApplication, boolean b);
 }

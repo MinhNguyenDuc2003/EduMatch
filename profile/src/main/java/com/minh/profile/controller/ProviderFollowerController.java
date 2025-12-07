@@ -33,7 +33,7 @@ public class ProviderFollowerController {
 
     @Authorized
     @GetMapping("/providers")
-    public ApiResponse<List<ProviderFollowerDto>> getAllProviders() {
+    public ApiResponse<List<ProviderProfileVo>> getAllProviders() {
         return ApiResponse.ok(service.getAllProviders());
     }
 

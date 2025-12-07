@@ -12,4 +12,7 @@ public interface ApplicationMediaRepository extends JpaRepository<ApplicationMed
     void deleteAllByApplicationId(Long applicationId);
 
     List<ApplicationMediaEntity> findAllByApplicationId(Long applicationId);
+
+    void deleteByApplicationIdAndMediaId(Long id, Long mediaId);
+
 }

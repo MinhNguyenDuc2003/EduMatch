@@ -1,6 +1,7 @@
 package com.minh.scholarship.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.minh.model.dto.scholarship.ApplicationDto;
 import com.minh.scholarship.data.vo.ApplicationVo;
 import com.minh.scholarship.model.filter.ApplicationFilter;
 import org.springframework.data.domain.Page;
@@ -17,13 +18,9 @@ public interface ApplicationService {
     Page<ApplicationVo> getPage(ApplicationFilter filter);
 
     ApplicationVo create(ApplicationVo applicationVo,
-                         List<MultipartFile> mediaFiles,
-                         String attributesJson) throws JsonProcessingException;
+                         List<MultipartFile> mediaFiles) throws JsonProcessingException;
 
-    ApplicationVo update(Long id,
-                         ApplicationVo applicationVo,
-                         List<MultipartFile> mediaFiles,
-                         String attributesJson) throws JsonProcessingException;
+    ApplicationVo update(Long id, ApplicationVo applicationVo);
 
     void delete(Long id);
 
@@ -31,4 +28,9 @@ public interface ApplicationService {
 
     List<ApplicationVo> getApplicationByScholarshipId(Long id);
 
+    Boolean addImagesToApplication(Long id, List<MultipartFile> mediaFiles);
+
+    Boolean deleteImagesToApplication(Long id, List<Long> mediaIds);
+
+    List<ApplicationVo> getByCode(String code);
 }

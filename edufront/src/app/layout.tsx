@@ -1,20 +1,11 @@
-import { Loading } from '@/pattern/share/Loading';
 import { ReactNode } from 'react';
-import '../app/globals.css';
 
-export default async function LocaleLayout({
-  children,
-  params,
-}: {
+type Props = {
   children: ReactNode;
-  params: Promise<{ locale?: string }>;
-}) {
-  return (
-    <html lang={'en'}>
-      <body className="">
-        {children}
-        <Loading />
-      </body>
-    </html>
-  );
+};
+
+// Since we have a `not-found.tsx` page on the root, a layout file
+// is required, even if it's just passing children through.
+export default function RootLayout({ children }: Props) {
+  return children;
 }

@@ -1,0 +1,23 @@
+CREATE TABLE IF NOT EXISTS notification.SYSTEM_NOTIFICATION (
+    id BIGSERIAL PRIMARY KEY,
+
+    user_notification_id BIGINT,
+    USER_ID VARCHAR(100),
+    title VARCHAR(512),
+    content TEXT,
+    slug VARCHAR(100),
+
+    IS_READ BOOLEAN NOT NULL DEFAULT FALSE,
+    topic VARCHAR(100),
+    reference_type VARCHAR(100),
+    reference_id BIGINT,
+
+    created_by VARCHAR(32) DEFAULT 'SYSTEM',
+    updated_by VARCHAR(32) DEFAULT 'SYSTEM',
+
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    version NUMERIC NOT NULL DEFAULT 0,
+
+    created_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
