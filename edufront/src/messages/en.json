@@ -599,6 +599,7 @@
     "closeFilters": "Close filters",
     "failedToLoad": "Failed to load scholarships. Please try again later.",
     "noScholarshipsFound": "No scholarships found matching your criteria.",
+    "endOfList": "You have reached the end of the list",
     "filters": {
       "title": "Filters",
       "applied": "applied",

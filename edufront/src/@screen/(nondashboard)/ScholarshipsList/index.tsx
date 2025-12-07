@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   FilterSidebar,
   ScholarshipCard,
@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useDebounce } from '@/utils/useDebounce';
 import { toast } from 'sonner';
+import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 
 export default function ScholarshipsList() {
   const router = useRouter();
@@ -42,12 +43,36 @@ export default function ScholarshipsList() {
     minGpa: 0,
     maxGpa: 4,
     page: 0,
-    size: 100,
+    size: 10,
   });
+
+  // Accumulated scholarships for infinite scroll
+  const [allScholarships, setAllScholarships] = useState<Scholarship[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     setFilters((prev) => ({ ...prev, keyword: debouncedKeyword || '', page: 0 }));
+    setCurrentPage(0);
+    setAllScholarships([]);
+    setHasMore(true);
   }, [debouncedKeyword]);
+
+  // Reset when filters change (except page and keyword which is handled separately)
+  useEffect(() => {
+    // Reset infinite scroll state when filters change
+    setCurrentPage(0);
+    setAllScholarships([]);
+    setHasMore(true);
+  }, [
+    filters.country,
+    filters.studyLevel,
+    filters.scholarshipType,
+    filters.university,
+    filters.fields,
+    filters.minGpa,
+    filters.maxGpa,
+  ]);
 
   // Prepare API request body
   const requestBody: ScholarshipSearchRequest = {
@@ -58,7 +83,7 @@ export default function ScholarshipsList() {
       university: filters.university || '',
       fields: filters.fields || '',
     },
-    page: filters.page,
+    page: currentPage,
     size: filters.size,
     keyword: filters.keyword || '',
     minGpa: filters.minGpa,
@@ -72,8 +97,45 @@ export default function ScholarshipsList() {
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
-  const scholarships = response?.scholarship || [];
   const aggregations = response?.aggregations;
+
+  // Update accumulated scholarships when new data arrives
+  useEffect(() => {
+    const newScholarships = response?.scholarship || [];
+
+    if (newScholarships.length > 0) {
+      // Deduplicate new scholarships first (in case API returns duplicates)
+      const seenIds = new Set<number>();
+      const deduplicatedNewScholarships = newScholarships.filter((s) => {
+        if (seenIds.has(s.id)) {
+          return false;
+        }
+        seenIds.add(s.id);
+        return true;
+      });
+
+      if (currentPage === 0) {
+        // First page - replace all
+        setAllScholarships(deduplicatedNewScholarships);
+      } else {
+        // Subsequent pages - append, but filter out duplicates
+        setAllScholarships((prev) => {
+          const existingIds = new Set(prev.map((s) => s.id));
+          const uniqueNewScholarships = deduplicatedNewScholarships.filter(
+            (s) => !existingIds.has(s.id)
+          );
+          return [...prev, ...uniqueNewScholarships];
+        });
+      }
+      // Check if there's more data
+      setHasMore(deduplicatedNewScholarships.length === filters.size);
+    } else if (currentPage > 0) {
+      // No more data
+      setHasMore(false);
+    }
+  }, [response, currentPage, filters.size]);
+
+  const scholarships = allScholarships;
 
   const handleApply = (scholarship: Scholarship) => {
     console.log('Apply to:', scholarship.title);
@@ -131,6 +193,26 @@ export default function ScholarshipsList() {
     router.push(`/providers/${providerId}`);
   };
 
+  // Load more function for infinite scroll
+  const loadMore = useCallback(() => {
+    if (!isLoading && hasMore) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  }, [isLoading, hasMore]);
+
+  // Intersection observer for infinite scroll
+  const { targetRef, isIntersecting } = useIntersectionObserver({
+    threshold: 0.1,
+    rootMargin: '200px',
+  });
+
+  // Trigger load more when intersection observer detects bottom
+  useEffect(() => {
+    if (isIntersecting && hasMore && !isLoading) {
+      loadMore();
+    }
+  }, [isIntersecting, hasMore, isLoading, loadMore]);
+
   const activeFiltersCount = (() => {
     let count = 0;
     if (filters.keyword) count++;
@@ -144,7 +226,7 @@ export default function ScholarshipsList() {
   })();
 
   // Show full page skeleton on initial load
-  if (isLoading && filters.page === 0) {
+  if (isLoading && currentPage === 0 && allScholarships.length === 0) {
     return <ScholarshipsListSkeleton />;
   }
 
@@ -233,17 +315,11 @@ export default function ScholarshipsList() {
               </div>
 
               <div className="space-y-4">
-                {isLoading ? (
-                  <>
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <ScholarshipCardSkeleton key={index} />
-                    ))}
-                  </>
-                ) : isError ? (
+                {isError && allScholarships.length === 0 ? (
                   <div className="bg-white rounded-xl shadow-sm border border-red-200 p-12 text-center">
                     <p className="text-red-600 text-lg">{t('failedToLoad')}</p>
                   </div>
-                ) : scholarships?.length === 0 ? (
+                ) : scholarships?.length === 0 && !isLoading ? (
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
                     <p className="text-gray-500 text-lg">{t('noScholarshipsFound')}</p>
                   </div>
@@ -260,6 +336,26 @@ export default function ScholarshipsList() {
                         onViewProvider={handleViewProvider}
                       />
                     ))}
+
+                    {/* Infinite scroll trigger */}
+                    {hasMore && (
+                      <div ref={targetRef} className="h-10 flex items-center justify-center">
+                        {isLoading && (
+                          <>
+                            {Array.from({ length: 3 }).map((_, index) => (
+                              <ScholarshipCardSkeleton key={`loading-${index}`} />
+                            ))}
+                          </>
+                        )}
+                      </div>
+                    )}
+
+                    {/* End of list message */}
+                    {!hasMore && scholarships.length > 0 && (
+                      <div className="text-center py-8 text-gray-500 text-sm">
+                        {t('endOfList') || 'You have reached the end of the list'}
+                      </div>
+                    )}
                   </>
                 )}
               </div>

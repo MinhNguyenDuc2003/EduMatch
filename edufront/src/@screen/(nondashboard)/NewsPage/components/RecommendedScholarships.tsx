@@ -59,7 +59,6 @@ export default function RecommendedScholarships({
           </div>
         ) : (
           <div className="border border-gray-200 p-4 text-center">
-            <Sparkles className="w-8 h-8 text-gray-300 mx-auto mb-2" />
             <p className="text-xs text-gray-500">
               {t('noRecommendedScholarships') || 'Chưa có học bổng đề xuất'}
             </p>
