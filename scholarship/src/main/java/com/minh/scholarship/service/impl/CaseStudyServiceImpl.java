@@ -47,8 +47,8 @@ public class CaseStudyServiceImpl extends BaseService implements CaseStudyServic
         if (ObjectUtils.isNotEmpty(scholarshipEntity)) {
             throw new BusinessException(CoreMessageCode.USER_IS_NOT_SUCCESSFULLY_GAIN_SCHOLARSHIP);
         }
+        caseStudy.setUserId(UaaContextHolder.getUserId());
         CaseStudyEntity save = caseStudyRepository.save(caseStudyMapper.toEntity(caseStudy));
-        save.setUserId(UaaContextHolder.getUserId());
         uploadImages(images, save.getId());
         return caseStudy;
     }
