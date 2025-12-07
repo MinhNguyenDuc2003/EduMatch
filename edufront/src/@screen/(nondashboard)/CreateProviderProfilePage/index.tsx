@@ -452,7 +452,11 @@ const CreateProviderProfilePage = () => {
             <div className="pt-4">
               <Button
                 type="submit"
-                disabled={isLoadingCreateProfile}
+                disabled={
+                  isLoadingCreateProfile ||
+                  isLoadingSendVerificationEmail ||
+                  isLoadingVerifyProvidersEmailCode
+                }
                 className="w-full bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold disabled:opacity-50"
               >
                 {isLoadingCreateProfile
