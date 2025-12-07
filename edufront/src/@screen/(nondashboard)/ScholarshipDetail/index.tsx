@@ -224,14 +224,16 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
                 onToggleFollow={handleToggleFollow}
               />
               {/* Action Button */}
-              <Button
-                value={t('applyNow')}
-                variant="ok"
-                size="lg"
-                full
-                onClick={handleApplyNow}
-                className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
-              />
+              {new Date(scholarship.endDate).getTime() > Date.now() && (
+                <Button
+                  value={t('applyNow')}
+                  variant="ok"
+                  size="lg"
+                  full
+                  onClick={handleApplyNow}
+                  className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
+                />
+              )}
               {subscriptions.some((subscription) => subscription.userType === 'APPLICANT') ? (
                 <Button
                   value={t('analyzeScholarship')}
