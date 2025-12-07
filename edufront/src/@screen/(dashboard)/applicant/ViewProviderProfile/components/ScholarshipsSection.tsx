@@ -61,7 +61,6 @@ export default function ScholarshipsSection({
               onViewProvider={handleViewProvider}
               onToggleTracking={() => onToggleTracking(scholarship.id)}
               onFollowProvider={() => onFollowProvider(scholarship.providerId)}
-              isAuthenticated={isAuthenticated}
             />
           ))}
         </div>

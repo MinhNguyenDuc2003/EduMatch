@@ -99,6 +99,7 @@ export default function ProtectedRoute({
     requireApplicant,
     router,
     redirectTo,
+    subscriptions,
   ]);
 
   // Hiển thị loading state
