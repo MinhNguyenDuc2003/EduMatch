@@ -80,11 +80,7 @@ export default function NewsDetailPage({ newsId }: NewsDetailPageProps) {
   };
 
   const handleViewScholarship = (slug: string) => {
-    if (isAuthenticated) {
-      router.push(`/scholarships/${slug}`);
-    } else {
-      route.push(`http://159.89.200.244/oauth2/authorization/keycloak`);
-    }
+    route.push(`http://159.89.200.244/oauth2/authorization/keycloak`);
   };
 
   if (isLoading) {

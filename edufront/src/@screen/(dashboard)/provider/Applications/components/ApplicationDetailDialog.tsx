@@ -660,16 +660,18 @@ const ApplicationDetailDialog = React.memo(
                       <CheckCircle className="mr-2 h-4 w-4" />
                       {t('approve')}
                     </Button>
-                    <Button
-                      onClick={() => {
-                        onAction?.(applicationScholarship, 'Successful', note || '');
-                        onOpenChange(false);
-                      }}
-                      className="flex-1 bg-[#41b93d] hover:bg-[#349930] text-white py-3 text-base font-semibold"
-                    >
-                      <CheckLine className="mr-2 h-4 w-4" />
-                      {t('approve')}
-                    </Button>
+                    {applicationScholarship.status === 'Approved' && (
+                      <Button
+                        onClick={() => {
+                          onAction?.(applicationScholarship, 'Successful', note || '');
+                          onOpenChange(false);
+                        }}
+                        className="flex-1 bg-[#41b93d] hover:bg-[#349930] text-white py-3 text-base font-semibold"
+                      >
+                        <CheckLine className="mr-2 h-4 w-4" />
+                        {t('Successful')}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -719,6 +721,18 @@ const ApplicationDetailDialog = React.memo(
                 <CheckCircle className="mr-2 h-4 w-4" />
                 {t('approve')}
               </Button>
+              {applicationScholarship.status === 'Approved' && (
+                <Button
+                  onClick={() => {
+                    onAction?.(applicationScholarship, 'Successful', note || '');
+                    onOpenChange(false);
+                  }}
+                  className="flex-1 sm:flex-initial bg-[#41b93d] hover:bg-[#349930] text-white py-3 text-base font-semibold"
+                >
+                  <CheckLine className="mr-2 h-4 w-4" />
+                  {t('Successful')}
+                </Button>
+              )}
             </div>
           </DialogFooter>
         </DialogContent>

@@ -108,6 +108,7 @@
     "Pending": "Pending",
     "Approved": "Approved",
     "Rejected": "Rejected",
+    "Successful": "Successful",
     "student": "Student",
     "major": "Major",
     "gpa": "GPA",
