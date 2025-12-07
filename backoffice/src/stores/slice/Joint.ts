@@ -1,4 +1,5 @@
 import { IApplicationItem } from 'src/assets/types/ApplicationScholarship';
+import { ICaseStudy } from 'src/assets/types/CaseStudy';
 import { INews } from 'src/assets/types/News';
 import { IOrderList } from 'src/assets/types/Orders';
 import { IProviders } from 'src/assets/types/Providers';
@@ -28,6 +29,7 @@ type State = {
     Students?: IStudents[];
     TopApply?: ITopApply[];
     TopView?: ITopView[];
+    CaseStudy?: ICaseStudy[];
     formFocusID?: string;
     Users? : IUser[];
     SystemNotification? : ISystemNotification[];

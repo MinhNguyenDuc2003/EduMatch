@@ -13,6 +13,7 @@ import {
   Activity,
   AlertCircle,
   Bell,
+  BookDashed,
   BookOpen,
   CreditCard,
   FileText,
@@ -45,6 +46,7 @@ const AppSidebar = () => {
       { icon: MessageCircle, label: 'News', href: '/backoffice/news' },
       { icon: Bell, label: 'Report & Feedback', href: '/backoffice/reportFeedback' },
       { icon: AlertCircle, label: 'System Notification', href: '/backoffice/systemNotification' },
+      { icon: BookDashed, label: 'Case Study', href: '/backoffice/caseStudy' },
     ]
 
   };
