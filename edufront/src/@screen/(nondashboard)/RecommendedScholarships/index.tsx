@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useFollowProviderMutation, useUnfollowProviderMutation } from '@/state/apiProvider';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
 
 export default function RecommendedScholarships() {
   const { isAuthenticated } = useAuth();
@@ -78,21 +79,32 @@ export default function RecommendedScholarships() {
               <div>
                 <h2 className="text-lg font-bold">{t('title')}</h2>
               </div>
-              <div>{t('description', { count: scholarships?.length || 0 })}</div>
+              <div>
+                {isLoading
+                  ? t('matchingLoading')
+                  : t('description', { count: scholarships?.length || 0 })}
+              </div>
             </div>
 
             {/* Content */}
             <div className="flex flex-col p-4 gap-4">
-              {scholarships?.map((scholarship) => (
-                <ScholarshipCard
-                  key={scholarship.id}
-                  scholarship={scholarship}
-                  onApply={handleApply}
-                  onFollowProvider={handleFollowProvider}
-                  onViewScholarship={handleViewScholarship}
-                  onViewProvider={handleViewProvider}
-                />
-              ))}
+              {isLoading ? (
+                <div className="flex h-full items-center justify-center">
+                  <Loader2 className="w-10 h-10 animate-spin" />
+                </div>
+              ) : (
+                scholarships?.map((scholarship) => (
+                  <ScholarshipCard
+                    key={scholarship.id}
+                    scholarship={scholarship}
+                    onApply={handleApply}
+                    onFollowProvider={handleFollowProvider}
+                    onViewScholarship={handleViewScholarship}
+                    onViewProvider={handleViewProvider}
+                    score={scholarship.score}
+                  />
+                ))
+              )}
             </div>
           </div>
         </div>

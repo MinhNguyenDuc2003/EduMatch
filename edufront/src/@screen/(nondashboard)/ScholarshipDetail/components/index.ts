@@ -4,3 +4,4 @@ export { default as ScholarshipSidebar } from './ScholarshipSidebar';
 export { default as ScholarshipDetailSkeleton } from './ScholarshipDetailSkeleton';
 export { default as ScholarshipImages } from './ScholarshipImages';
 export { default as ScholarshipAnalysisDialog } from './ScholarshipAnalysisDialog';
+export { default as CaseStudiesSection } from './CaseStudiesSection';

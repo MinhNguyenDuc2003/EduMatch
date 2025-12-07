@@ -543,7 +543,8 @@
       "academicRequirements": "Academic Requirements",
       "testScoreRequirements": "Test Score Requirements",
       "demographicRequirements": "Demographic Requirements",
-      "otherRequirements": "Other Requirements"
+      "otherRequirements": "Other Requirements",
+      "caseStudies": "Case Studies"
     },
     "sidebar": {
       "following": "Following",
@@ -633,7 +634,8 @@
       "type": "Type",
       "noDeadline": "No deadline",
       "compare": "Compare",
-      "alreadySelected": "Already selected"
+      "alreadySelected": "Already selected",
+      "matchScore": "Match Score"
     },
     "premiumBanner": {
       "badge": "AI Scholarship",
@@ -1441,7 +1443,8 @@
       "description": "Discover scholarships perfectly matched to your profile. Our AI-powered system analyzes your academic background, interests, and goals to recommend the best opportunities for your educational journey."
     },
     "title": "Recommended Scholarships",
-    "description": "We found {count} scholarships that match your profile"
+    "description": "We found {count} scholarships that match your profile",
+    "matchingLoading": "We are finding the best matches for you..."
   },
   "inputSelect": {
     "placeholder": "Select an option"

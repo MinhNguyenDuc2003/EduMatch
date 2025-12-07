@@ -38,6 +38,7 @@ type ScholarshipCardProps = {
   onFollowProvider?: (providerId: number) => void;
   onViewScholarship?: (slug: string) => void;
   onViewProvider?: (providerId: number) => void;
+  score?: number;
 };
 
 export default function ScholarshipCard({
@@ -47,6 +48,7 @@ export default function ScholarshipCard({
   onToggleTracking,
   onViewScholarship,
   onViewProvider,
+  score,
 }: ScholarshipCardProps) {
   const { isAuthenticated, subscriptions } = useAuth();
   const [isImageZoomed, setIsImageZoomed] = useState(false);
@@ -207,6 +209,31 @@ export default function ScholarshipCard({
             <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
               {scholarship.title}
             </h2>
+
+            {/* Score Bar - Only show if score exists and user is upgraded */}
+            {score !== undefined && score !== null && isUpgraded && (
+              <div className="mb-3">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs font-medium text-gray-600">{t('matchScore')}</span>
+                  <span className="text-xs font-bold text-gray-900">
+                    {(score * 100).toFixed(0)}%
+                  </span>
+                </div>
+                <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: `${(score * 100).toFixed(1)}%`,
+                      background: `linear-gradient(to right, 
+                        rgb(29, 78, 216) 0%, 
+                        rgb(37, 99, 235) 33%, 
+                        rgb(59, 130, 246) 66%, 
+                        rgb(96, 165, 250) 100%`,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Description */}
             <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-3">

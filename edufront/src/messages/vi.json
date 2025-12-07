@@ -533,7 +533,8 @@
       "academicRequirements": "Yêu cầu học thuật",
       "testScoreRequirements": "Yêu cầu điểm thi",
       "demographicRequirements": "Yêu cầu nhân khẩu học",
-      "otherRequirements": "Yêu cầu khác"
+      "otherRequirements": "Yêu cầu khác",
+      "caseStudies": "Bài viết về học bổng"
     },
     "sidebar": {
       "following": "Đang theo dõi",
@@ -1382,7 +1383,8 @@
       "description": "Khám phá các học bổng phù hợp nhất với hồ sơ của bạn. Hệ thống AI của chúng tôi phân tích nền tảng học vấn, sở thích và mục tiêu của bạn để đề xuất những cơ hội tốt nhất cho hành trình giáo dục của bạn."
     },
     "title": "Học bổng đề xuất",
-    "description": "Chúng tôi đã tìm thấy {count} học bổng phù hợp với hồ sơ của bạn"
+    "description": "Chúng tôi đã tìm thấy {count} học bổng phù hợp với hồ sơ của bạn",
+    "matchingLoading": "Chúng tôi đang tìm kiếm những học bổng phù hợp nhất cho bạn..."
   },
   "providerProfile": {
     "organizationInformation": "Thông tin tổ chức",

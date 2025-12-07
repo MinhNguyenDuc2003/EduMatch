@@ -2,7 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/pattern/cus/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/pattern/cus/dialog';
 import {
   Drawer,
   DrawerContent,
@@ -21,7 +27,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/pattern/cus/tabs';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { Button } from '@/pattern/cus/button';
 import { Textarea } from '@/pattern/cus/textarea';
-import { CheckCircle, FileText, XCircle } from 'lucide-react';
+import { CheckCircle, CheckLine, FileText, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
@@ -652,6 +658,16 @@ const ApplicationDetailDialog = React.memo(
                       className="flex-1 bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
                     >
                       <CheckCircle className="mr-2 h-4 w-4" />
+                      {t('approve')}
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        onAction?.(applicationScholarship, 'Successful', note || '');
+                        onOpenChange(false);
+                      }}
+                      className="flex-1 bg-[#41b93d] hover:bg-[#349930] text-white py-3 text-base font-semibold"
+                    >
+                      <CheckLine className="mr-2 h-4 w-4" />
                       {t('approve')}
                     </Button>
                   </div>

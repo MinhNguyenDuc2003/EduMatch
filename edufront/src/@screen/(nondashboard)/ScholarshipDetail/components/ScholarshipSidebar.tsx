@@ -40,16 +40,14 @@ export default function ScholarshipSidebar({
                   className="rounded-lg object-cover bg-white p-1"
                 />
               ) : (
-                <Card className="border border-gray-200 w-full h-full rounded-lg flex items-center justify-center relative">
-                  <Image
-                    src={
-                      'https://es5urvh1np.ufs.sh/f/DHR6tEJ9PQoz85HjSO62tcmI7ElP8Ygn01Oa3ze6iFwADrsH'
-                    }
-                    alt={'logo'}
-                    fill
-                    className="rounded-lg object-contain bg-white p-2"
-                  />
-                </Card>
+                <Image
+                  src={
+                    'https://es5urvh1np.ufs.sh/f/DHR6tEJ9PQoz85HjSO62tcmI7ElP8Ygn01Oa3ze6iFwADrsH'
+                  }
+                  alt={'logo'}
+                  fill
+                  className="rounded-lg object-contain bg-white p-2"
+                />
               )}
               {/* Verified Badge - absolute positioned, 3/4 outside */}
               {provider.verified && (

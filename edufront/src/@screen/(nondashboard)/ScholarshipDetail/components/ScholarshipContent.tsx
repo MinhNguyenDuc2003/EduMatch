@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/pattern/cus/button';
 import { useTranslations } from 'next-intl';
+import CaseStudiesSection from './CaseStudiesSection';
 
 type ScholarshipContentProps = {
   scholarship: Scholarship;
@@ -320,6 +321,10 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
           </div>
         </section>
       )}
+
+      {/* Case Studies Section */}
+
+      <CaseStudiesSection caseStudies={scholarship.caseStudyVos} />
     </>
   );
 }

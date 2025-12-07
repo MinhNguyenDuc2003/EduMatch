@@ -93,23 +93,18 @@ export default function CaseStudy({ scholarshipId }: { scholarshipId: string }) 
       // Build content with pre-formatted questions and answers
       const contentWithQnA = `
         <h2>Initial Thoughts</h2>
-        <p><strong>Question:</strong> What were your initial thoughts when you first saw this opportunity on EduMatch?</p>
         <div>${data.initialThoughts}</div>
         
         <h2>Preparation Process</h2>
-        <p><strong>Question:</strong> Can you walk us through your preparation process for this scholarship application?</p>
         <div>${data.preparationProcess}</div>
         
         <h2>Challenges</h2>
-        <p><strong>Question:</strong> What were the biggest challenges or obstacles you faced during the application process?</p>
         <div>${data.challenges}</div>
         
         <h2>Victory Moment</h2>
-        <p><strong>Question:</strong> What was the moment you knew you wanted to share your success story with others?</p>
         <div>${data.victoryMoment}</div>
         
         <h2>Advice</h2>
-        <p><strong>Question:</strong> What advice would you give to other students who are considering applying for this scholarship?</p>
         <div>${data.advice}</div>
       `;
 
