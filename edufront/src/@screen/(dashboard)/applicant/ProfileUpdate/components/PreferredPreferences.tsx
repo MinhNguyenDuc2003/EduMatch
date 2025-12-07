@@ -42,6 +42,7 @@ const PreferredPreferences = () => {
           label={t('preferredUniversity')}
           type="multi-select"
           placeholder={t('preferredUniversityPlaceholder')}
+          options={universityOptions}
           inlineLabel
           isBorder
           className="md:col-span-2"
