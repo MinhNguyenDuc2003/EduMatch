@@ -23,6 +23,12 @@ export default function HowItWorksSection() {
       title: t('step3.title'),
       description: t('step3.description'),
     },
+    {
+      step: '04',
+      icon: howItWorksSteps[3].icon,
+      title: t('step4.title'),
+      description: t('step4.description'),
+    },
   ];
 
   return (
@@ -32,9 +38,9 @@ export default function HowItWorksSection() {
           <h2 className="text-3xl font-bold text-slate-900 mb-2">{t('title')}</h2>
           <p className="text-lg text-slate-600">{t('subtitle')}</p>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative">
           {/* Connection lines */}
-          <div className="hidden lg:block absolute top-12 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-blue-200 via-indigo-200 to-purple-200" />
+          <div className="hidden lg:block absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-200 via-indigo-200 to-purple-200" />
 
           {steps.map((step, idx) => (
             <div key={idx} className="relative">

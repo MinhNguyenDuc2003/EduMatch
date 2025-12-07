@@ -397,3 +397,16 @@ export const newsSchema = z.object({
 });
 
 export type INews = z.infer<typeof newsSchema>;
+
+export const caseStudySchema = z.object({
+  scholarshipId: z.number().min(1, 'Scholarship ID is required'),
+  title: z.string().min(1, 'Title is required'),
+  verified: z.boolean().optional(),
+  initialThoughts: z.string().min(1, 'This field is required'),
+  preparationProcess: z.string().min(1, 'This field is required'),
+  challenges: z.string().min(1, 'This field is required'),
+  victoryMoment: z.string().min(1, 'This field is required'),
+  advice: z.string().min(1, 'This field is required'),
+});
+
+export type ICaseStudy = z.infer<typeof caseStudySchema>;

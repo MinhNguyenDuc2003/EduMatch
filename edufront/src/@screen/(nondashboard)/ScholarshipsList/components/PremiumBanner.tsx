@@ -5,19 +5,18 @@ import { Zap } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
-import { useGetProfileQuery } from '@/state/apiApplicant';
 import ProfileStrengthDialog from './ProfileStrengthDialog';
+import Loading from '@/pattern/share/Loading';
 
 export default function PremiumBanner() {
   const router = useRouter();
   const [isUpgraded, setIsUpgraded] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
   const t = useTranslations('scholarshipsList.premiumBanner');
-  const { isAuthenticated, subscriptions } = useAuth();
-  const { data: applicantProfile } = useGetProfileQuery(undefined, { skip: !isAuthenticated });
-  const { data: scholarships } = useGetRecommendedScholarshipsQuery(
+  const { isAuthenticated, subscriptions, isApplicant } = useAuth();
+  const { data: scholarships, isLoading } = useGetRecommendedScholarshipsQuery(
     { topK: 12 },
-    { skip: isUpgraded === false || !applicantProfile }
+    { skip: isUpgraded === false || !isApplicant }
   );
 
   useEffect(() => {
@@ -27,12 +26,16 @@ export default function PremiumBanner() {
   }, [subscriptions]);
 
   const handleUpdate = () => {
-    if (!applicantProfile) {
-      setShowProfileDialog(true);
-    } else if (isUpgraded) {
-      router.push('/recommended-scholarships');
+    if (!isAuthenticated) {
+      window.location.href = 'http://159.89.200.244/oauth2/authorization/keycloak';
     } else {
-      router.push('/subscriptions?type=APPLICANT');
+      if (!isApplicant) {
+        setShowProfileDialog(true);
+      } else if (isUpgraded) {
+        router.push('/recommended-scholarships');
+      } else {
+        router.push('/subscriptions?type=APPLICANT');
+      }
     }
   };
 
@@ -80,7 +83,35 @@ export default function PremiumBanner() {
 
       {/* Content */}
       <div className="relative z-10">
-        {!isUpgraded ? (
+        {isUpgraded ? (
+          <>
+            {/* After Upgrade - Mobile */}
+            <div className="md:hidden text-center space-y-3" onClick={handleUpdate}>
+              <h3 className="text-white font-bold text-xl">
+                {t('foundMatches', { count: scholarships?.length ?? 0 })}
+              </h3>
+              <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
+              <p className="text-white/90 italic text-sm leading-relaxed mb-1">
+                &#40;{t('clickHere')}&#41;
+              </p>
+            </div>
+
+            {/* After Upgrade - Desktop */}
+            <div className="hidden md:flex items-center gap-4" onClick={handleUpdate}>
+              <div>
+                <h3 className="text-white font-bold text-xl mb-1">
+                  {isLoading
+                    ? t('loadingMatches')
+                    : t('foundMatches', { count: scholarships?.length ?? 0 })}
+                </h3>
+                <p className="text-white/90 text-sm mb-1">{t('matchedDescription')}</p>
+                <p className="text-white/90 italic text-sm leading-relaxed">
+                  &#40;{t('clickHere')}&#41;
+                </p>
+              </div>
+            </div>
+          </>
+        ) : (
           <>
             {/* Mobile Layout: Stacked */}
             <div className="md:hidden space-y-3">
@@ -120,41 +151,11 @@ export default function PremiumBanner() {
               </button>
             </div>
           </>
-        ) : (
-          <>
-            {/* After Upgrade - Mobile */}
-            <div className="md:hidden text-center space-y-3" onClick={handleUpdate}>
-              <h3 className="text-white font-bold text-xl">
-                {t('foundMatches', { count: scholarships?.length ?? 0 })}
-              </h3>
-              <p className="text-white/90 text-sm">{t('matchedDescription')}</p>
-              <p className="text-white/90 italic text-sm leading-relaxed mb-1">
-                &#40;{t('clickHere')}&#41;
-              </p>
-            </div>
-
-            {/* After Upgrade - Desktop */}
-            <div className="hidden md:flex items-center gap-4" onClick={handleUpdate}>
-              <div>
-                <h3 className="text-white font-bold text-xl mb-1">
-                  {t('foundMatches', { count: scholarships?.length ?? 0 })}
-                </h3>
-                <p className="text-white/90 text-sm mb-1">{t('matchedDescription')}</p>
-                <p className="text-white/90 italic text-sm leading-relaxed">
-                  &#40;{t('clickHere')}&#41;
-                </p>
-              </div>
-            </div>
-          </>
         )}
       </div>
 
       {/* Profile Strength Dialog */}
-      <ProfileStrengthDialog
-        open={showProfileDialog}
-        onOpenChange={setShowProfileDialog}
-        profileId={applicantProfile?.applicantProfile?.id}
-      />
+      <ProfileStrengthDialog open={showProfileDialog} onOpenChange={setShowProfileDialog} />
     </div>
   );
 }

@@ -62,6 +62,7 @@ declare global {
     views: number;
     score?: number;
     createdDate?: number;
+    caseStudyVos?: CaseStudy[];
   };
 
   type SearchScholarshipsByUniversityResponse = {
@@ -148,6 +149,75 @@ declare global {
     recommendations: ScholarshipAnalysisRecommendation[];
     overall_strategy: string;
     timeline: string[];
+  };
+
+  // AI Comparison Response Types
+  type ScholarshipComparisonBestMatch = {
+    scholarship_name: string;
+    reasons: string[];
+  };
+
+  type ScholarshipComparisonAdvantage = {
+    scholarship_name: string;
+    advantages: string[];
+  };
+
+  type ScholarshipComparisonTradeoff = {
+    factor: string;
+    comparison: string;
+  };
+
+  type ScholarshipComparisonRecommendation = {
+    priority_order: string[];
+    reasoning: string;
+  };
+
+  type ScholarshipComparisonStrategy = {
+    approach: string;
+    timeline_tips: string[];
+  };
+
+  type ScholarshipComparisonAnalysis = {
+    best_overall_match: ScholarshipComparisonBestMatch;
+    unique_advantages: ScholarshipComparisonAdvantage[];
+    key_tradeoffs: ScholarshipComparisonTradeoff[];
+    strategic_recommendation: ScholarshipComparisonRecommendation;
+    application_strategy: ScholarshipComparisonStrategy;
+  };
+
+  type ScholarshipComparisonResponse = {
+    success: boolean;
+    analysis: ScholarshipComparisonAnalysis;
+  };
+
+  type CaseStudy = {
+    id?: number;
+    scholarshipId?: number;
+    userId?: string;
+    title?: string;
+    content?: string;
+    verified?: boolean;
+    profileVo?: ApplicantProfile;
+    medias?: CaseStudyMedia[];
+  };
+
+  type CaseStudyMedia = {
+    id?: number;
+    s3Key?: string;
+    contentType?: string;
+    size?: number;
+    folderName?: string;
+    fileName?: string;
+    isPublic?: boolean;
+    thumbnail?: string;
+    url?: string;
+  };
+
+  type CaseStudyApiRequest = {
+    scholarshipId: number;
+    title: string;
+    content: FormData;
+    images?: File[];
   };
 }
 

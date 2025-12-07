@@ -6,7 +6,7 @@ import { getScholarshipFirstImage } from '@/utils/scholarshipHelpers';
 
 type TopViewScholarshipCardProps = {
   scholarship: Scholarship;
-  rank: number;
+  rank?: number;
   onViewDetails: () => void;
 };
 
@@ -24,9 +24,11 @@ export default function TopViewScholarshipCard({
       onClick={onViewDetails}
     >
       {/* Rank Badge */}
-      <div className="absolute top-3 left-3 z-10 w-8 h-8 rounded-full bg-[#3D6CB9] text-white flex items-center justify-center font-bold text-sm shadow-lg">
-        {rank}
-      </div>
+      {rank && (
+        <div className="absolute top-3 left-3 z-10 w-8 h-8 rounded-full bg-[#3D6CB9] text-white flex items-center justify-center font-bold text-sm shadow-lg">
+          {rank}
+        </div>
+      )}
 
       {/* Image */}
       <div className="relative w-full h-40 bg-gray-200 overflow-hidden">

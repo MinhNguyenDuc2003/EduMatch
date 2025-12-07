@@ -7,9 +7,12 @@
       "en": "Tiếng Anh",
       "vi": "Tiếng Việt"
     },
-    "login": "Đăng nhập / Đăng ký",
-    "scholarships": "Học bổng",
-    "news": "Tin tức",
+    "login": "Đăng Nhập / Đăng Ký",
+    "scholarships": "Học Bổng",
+    "news": "Tin Tức",
+    "howItWorks": "Hướng Dẫn",
+    "stories": "Chia Sẻ",
+    "policy": "Chính Sách",
     "day": "ngày",
     "days": "ngày",
     "dropdown": {
@@ -21,6 +24,29 @@
       "report": "Báo cáo hệ thống",
       "logout": "Đăng xuất"
     }
+  },
+  "footer": {
+    "quickLinks": "Liên Kết Nhanh",
+    "resources": "Tài Nguyên",
+    "myAccount": "Tài Khoản Của Tôi",
+    "company": "Công Ty",
+    "home": "Trang Chủ",
+    "scholarships": "Học Bổng",
+    "news": "Tin Tức",
+    "howItWorks": "Hướng Dẫn",
+    "policy": "Chính Sách",
+    "providerGuidelines": "Hướng Dẫn Nhà Cung Cấp",
+    "subscriptions": "Gói Đăng Ký",
+    "myProfile": "Hồ Sơ Của Tôi",
+    "myActivity": "Quản Lý Hoạt Động",
+    "tracking": "Học Bổng Đã Theo Dõi",
+    "following": "Nhà Cung Cấp Đã Theo Dõi",
+    "application": "Đơn Ứng Tuyển",
+    "applied": "Đã Nộp",
+    "report": "Báo Cáo",
+    "aboutUs": "Về Chúng Tôi",
+    "contactUs": "Liên Hệ",
+    "copyright": "Bản quyền © 2025, EduMatch"
   },
   "notifications": {
     "title": "Thông báo",
@@ -208,6 +234,37 @@
     "errorUpdatingNews": "Lỗi khi cập nhật tin tức",
     "errorCreatingNews": "Lỗi khi tạo tin tức"
   },
+  "caseStudy": {
+    "title": "Chia Sẻ Case Study Của Bạn",
+    "subtitle": "Hãy chia sẻ hành trình học bổng của bạn và truyền cảm hứng cho người khác!",
+    "basicInformation": "Thông Tin Cơ Bản",
+    "caseStudyTitle": "Tiêu Đề Case Study",
+    "caseStudyTitlePlaceholder": "Nhập tiêu đề hấp dẫn cho case study của bạn",
+    "shareYourJourney": "Chia Sẻ Hành Trình Của Bạn",
+    "shareYourJourneyDescription": "Vui lòng trả lời các câu hỏi sau để giúp người khác học hỏi từ kinh nghiệm của bạn.",
+    "initialThoughtsQuestion": "Suy nghĩ ban đầu của bạn là gì khi lần đầu tiên nhìn thấy cơ hội này trên EduMatch?",
+    "initialThoughtsPlaceholder": "Chia sẻ ấn tượng ban đầu của bạn...",
+    "preparationProcessQuestion": "Bạn có thể chia sẻ quá trình chuẩn bị của mình cho đơn ứng tuyển học bổng này không?",
+    "preparationProcessPlaceholder": "Mô tả các bước bạn đã thực hiện để chuẩn bị...",
+    "challengesQuestion": "Những thách thức hoặc khó khăn lớn nhất mà bạn gặp phải trong quá trình ứng tuyển là gì?",
+    "challengesPlaceholder": "Chia sẻ những khó khăn bạn gặp phải và cách bạn vượt qua chúng...",
+    "victoryMomentQuestion": "Khoảnh khắc nào khiến bạn muốn chia sẻ câu chuyện thành công của mình với người khác?",
+    "victoryMomentPlaceholder": "Mô tả khoảnh khắc đặc biệt đó...",
+    "adviceQuestion": "Lời khuyên bạn muốn dành cho các sinh viên khác đang cân nhắc ứng tuyển học bổng này là gì?",
+    "advicePlaceholder": "Chia sẻ những mẹo và gợi ý của bạn...",
+    "images": "Hình Ảnh",
+    "imagesSubtitle": "Tải lên hình ảnh thể hiện hành trình, thành tựu hoặc trải nghiệm của bạn",
+    "addImages": "Thêm Hình Ảnh",
+    "noImages": "Chưa có hình ảnh được tải lên",
+    "cancel": "Hủy",
+    "submitCaseStudy": "Gửi Case Study",
+    "submitting": "Đang gửi...",
+    "submitSuccess": "Gửi case study thành công!",
+    "submitError": "Gửi case study thất bại. Vui lòng thử lại.",
+    "errorSubmitting": "Lỗi khi gửi case study",
+    "thankYouTitle": "Cảm Ơn!",
+    "thankYouMessage": "Case study của bạn đã được gửi thành công. Chúng tôi rất cảm kích khi bạn chia sẻ trải nghiệm của mình và truyền cảm hứng cho những người khác trên hành trình học bổng của họ."
+  },
   "provider": {
     "favourite": {
       "title": "Ứng viên yêu thích",
@@ -355,19 +412,23 @@
       }
     },
     "howItWorks": {
-      "title": "Cách Thức Hoạt Động",
-      "subtitle": "Tìm được học bổng phù hợp với bạn chỉ trong 3 bước đơn giản.",
+      "title": "Hướng Dẫn Sử Dụng",
+      "subtitle": "Tìm được học bổng phù hợp với bạn chỉ trong 4 bước đơn giản.",
       "step1": {
-        "title": "Tạo hồ sơ",
-        "description": "Chia sẻ thông tin học vấn, sở thích và mục tiêu của bạn. Chỉ mất chưa đến 5 phút."
+        "title": "Đăng ký tài khoản",
+        "description": "Tạo tài khoản miễn phí để bắt đầu hành trình tìm kiếm học bổng của bạn."
       },
       "step2": {
-        "title": "Nhận gợi ý",
-        "description": "Hệ thống AI sẽ phân tích hàng ngàn học bổng và đề xuất những lựa chọn tốt nhất cho bạn."
+        "title": "Tạo profile",
+        "description": "Hoàn thiện hồ sơ với thông tin học vấn và mục tiêu để nhận đề xuất phù hợp."
       },
       "step3": {
-        "title": "Ứng tuyển và thành công",
-        "description": "Gửi đơn ứng tuyển dễ dàng và theo dõi tiến trình cho đến khi bạn nhận được học bổng."
+        "title": "Tạo hồ sơ ứng tuyển",
+        "description": "Chuẩn bị hồ sơ ứng tuyển với đầy đủ tài liệu và thông tin cần thiết."
+      },
+      "step4": {
+        "title": "Nộp hồ sơ",
+        "description": "Gửi hồ sơ cho các học bổng phù hợp và theo dõi trạng thái đơn ứng tuyển."
       }
     },
     "scholarships": {
@@ -391,6 +452,22 @@
       "title": "5 Học Bổng Được Xem Nhiều Nhất",
       "description": "Khám phá những học bổng được quan tâm nhiều nhất trong tháng này",
       "viewCountDescription": "Số lượt xem thể hiện số người đã xem học bổng này"
+    },
+    "recommendedScholarships": {
+      "title": "Học Bổng Được Đề Xuất Bởi AI",
+      "subtitle": "Đề xuất học bổng cá nhân hóa dựa trên hồ sơ của bạn",
+      "badge": "AI Scholarship",
+      "adTitle": "Mở Khóa Đề Xuất Học Bổng Bằng AI",
+      "adDescription": "Nhận đề xuất học bổng cá nhân hóa phù hợp với hồ sơ, thành tích học tập và mục tiêu của bạn. AI của chúng tôi phân tích hàng ngàn cơ hội để tìm ra sự phù hợp hoàn hảo cho bạn.",
+      "adFeatures": [
+        "Tìm kiếm thông minh dựa trên hồ sơ của bạn",
+        "Đề xuất cá nhân hóa được cập nhật thường xuyên",
+        "Truy cập các cơ hội học bổng độc quyền",
+        "Thông báo ưu tiên cho các đề xuất mới"
+      ],
+      "subscribeNow": "Đăng Ký Ngay",
+      "adFooter": "Bắt đầu hành trình tìm kiếm học bổng phù hợp nhất",
+      "viewAll": "Xem Tất Cả Đề Xuất"
     },
     "cardSmalPic": {
       "trackScholarship": "Theo dõi học bổng",
@@ -456,7 +533,8 @@
       "academicRequirements": "Yêu cầu học thuật",
       "testScoreRequirements": "Yêu cầu điểm thi",
       "demographicRequirements": "Yêu cầu nhân khẩu học",
-      "otherRequirements": "Yêu cầu khác"
+      "otherRequirements": "Yêu cầu khác",
+      "caseStudies": "Bài viết về học bổng"
     },
     "sidebar": {
       "following": "Đang theo dõi",
@@ -478,6 +556,7 @@
     }
   },
   "viewProviderProfile": {
+    "itemReport": "Báo cáo",
     "notFound": "Không tìm thấy nhà cung cấp",
     "notFoundDescription": "Nhà cung cấp bạn đang tìm kiếm không tồn tại.",
     "goBack": "Quay lại",
@@ -552,8 +631,9 @@
       "title": "Tự Động Ghép Nối Học Bổng",
       "description": "Nâng cấp lên AI Scholarship để AI tự động tìm các học bổng phù hợp với hồ sơ của bạn",
       "clickHere": "Nhấp vào đây để xem các học bổng phù hợp với bạn",
-      "updateNow": "Nâng Cấp Ngay",
+      "updateNow": "Đăng Ký Ngay",
       "foundMatches": "Chúng tôi đã tìm thấy {count} học bổng phù hợp!",
+      "loadingMatches": "Chúng tôi đang tìm kiếm các học bổng phù hợp nhất cho bạn...",
       "matchedDescription": "AI đã ghép nối bạn với các học bổng phù hợp với hồ sơ của bạn",
       "profileStrengthDialog": {
         "title": "Hồ sơ chưa hoàn thiện",
@@ -574,7 +654,9 @@
       "matchedScholarships": "Học bổng phù hợp",
       "matchedResearchOpportunities": "Cơ hội nghiên cứu phù hợp",
       "matchedScholarshipsAmount": "Tổng giá trị học bổng phù hợp",
-      "editProfile": "Chỉnh sửa hồ sơ"
+      "editProfile": "Chỉnh sửa hồ sơ",
+      "expandPackage": "Mở rộng gói AI Scholarship",
+      "upgradePackage": "Nâng cấp gói"
     },
     "profileStrength": {
       "title": "Độ hoàn thiện hồ sơ",
@@ -692,6 +774,7 @@
       "stateProvince": "Tỉnh/Thành phố",
       "enterStateProvince": "Nhập tỉnh hoặc thành phố",
       "country": "Quốc gia",
+      "selectCountry": "Chọn quốc gia",
       "enterCountry": "Nhập quốc gia",
       "academicInformation": "Thông tin học vấn",
       "degreeType": "Loại bằng cấp",
@@ -908,7 +991,13 @@
       "major": "Chuyên ngành",
       "skills": "Kỹ năng",
       "edit": "Chỉnh sửa",
-      "delete": "Xóa"
+      "delete": "Xóa",
+      "deleteConfirmation": {
+        "title": "Xác nhận xóa",
+        "description": "Bạn có chắc chắn muốn xóa đơn ứng tuyển cho học bổng \"{scholarshipName}\"? Hành động này không thể hoàn tác.",
+        "cancel": "Hủy",
+        "confirm": "Xóa"
+      }
     },
     "appliedScholarshipCard": {
       "pending": "Đang chờ",
@@ -929,6 +1018,7 @@
       "title": "Thông Tin Đơn Ứng Tuyển",
       "close": "Đóng",
       "notReviewedYet": "Chưa được xem xét",
+      "notApplicantProfileCreatedYet": "Bạn chưa hoàn thành hồ sơ cá nhân của bạn. Vui lòng hoàn thành hồ sơ cá nhân của bạn để ứng tuyển học bổng.",
       "status": {
         "approved": "Đã chấp nhận",
         "rejected": "Đã từ chối",
@@ -1031,6 +1121,12 @@
     "applicationForm": {
       "title": "Đơn Ứng Tuyển",
       "importFromProfile": "Nhập từ hồ sơ cá nhân",
+      "makeCopy": "Tạo bản copy",
+      "loadingMakeCopy": "Đang tạo bản copy...",
+      "otherVersions": "Các phiên bản khác",
+      "version": "Phiên bản",
+      "fullName": "Họ và tên",
+      "gpa": "GPA",
       "guidelines": {
         "title": "Để đảm bảo đơn ứng tuyển học bổng của bạn mạnh nhất có thể, vui lòng lưu ý những điểm quan trọng sau trước khi hoàn tất và nộp:",
         "accuracy": "Tính chính xác và đầy đủ: Kiểm tra kỹ lại rằng tất cả thông tin bạn đã cung cấp là chính xác và đầy đủ. Chi tiết không đầy đủ hoặc không chính xác có thể dẫn đến trì hoãn hoặc bị loại.",
@@ -1172,7 +1268,14 @@
       "comment": "Bình luận",
       "response": "Phản hồi",
       "noResponse": "Chưa có phản hồi",
-      "delete": "Xóa báo cáo"
+      "delete": "Xóa báo cáo",
+      "noTitle": "Không có tiêu đề",
+      "deleteConfirmation": {
+        "title": "Xác nhận xóa",
+        "description": "Bạn có chắc chắn muốn xóa báo cáo \"{reportTitle}\"? Hành động này không thể hoàn tác.",
+        "cancel": "Hủy",
+        "confirm": "Xóa"
+      }
     }
   },
   "reportDialog": {
@@ -1278,7 +1381,10 @@
       "title": "AI Scholarship",
       "titleHighlight": "Gợi ý học bổng cho bạn",
       "description": "Khám phá các học bổng phù hợp nhất với hồ sơ của bạn. Hệ thống AI của chúng tôi phân tích nền tảng học vấn, sở thích và mục tiêu của bạn để đề xuất những cơ hội tốt nhất cho hành trình giáo dục của bạn."
-    }
+    },
+    "title": "Học bổng đề xuất",
+    "description": "Chúng tôi đã tìm thấy {count} học bổng phù hợp với hồ sơ của bạn",
+    "matchingLoading": "Chúng tôi đang tìm kiếm những học bổng phù hợp nhất cho bạn..."
   },
   "providerProfile": {
     "organizationInformation": "Thông tin tổ chức",
@@ -1338,7 +1444,23 @@
     "scholarshipAdded": "Đã thêm học bổng vào danh sách so sánh",
     "scholarshipAddedFailed": "Thêm học bổng vào danh sách so sánh thất bại",
     "scholarshipMaxSelected": "Bạn chỉ có thể so sánh tối đa 3 học bổng",
-    "scholarshipAlreadySelected": "Đã được chọn"
+    "scholarshipAlreadySelected": "Đã được chọn",
+    "trackScholarship": {
+      "track": "Đã theo dõi học bổng thành công",
+      "trackFailed": "Theo dõi học bổng thất bại",
+      "untrack": "Đã bỏ theo dõi học bổng thành công",
+      "untrackFailed": "Bỏ theo dõi học bổng thất bại"
+    },
+    "followProvider": {
+      "follow": "Đã theo dõi tổ chức thành công",
+      "followFailed": "Theo dõi tổ chức thất bại",
+      "unfollow": "Đã bỏ theo dõi tổ chức thành công",
+      "unfollowFailed": "Bỏ theo dõi tổ chức thất bại"
+    },
+    "deleteApplication": {
+      "deleteSuccess": "Xóa hồ sơ ứng tuyển thành công",
+      "deleteFailed": "Xóa hồ sơ ứng tuyển thất bại"
+    }
   },
   "selectedScholarshipCompare": {
     "title": "Đã chọn ({number}/3)",
@@ -1349,6 +1471,7 @@
   },
   "scholarshipCompare": {
     "title": "So sánh học bổng",
+    "comparisonTable": "Bảng so sánh",
     "scholarship": "Học bổng",
     "provider": "Tổ chức",
     "country": "Quốc gia",
@@ -1360,6 +1483,186 @@
     "gpaRequirement": "Yêu cầu GPA",
     "languageRequirement": "Yêu cầu ngôn ngữ",
     "availableSlots": "Số lượng",
-    "description": "Mô tả"
+    "description": "Mô tả",
+    "aiAnalysis": "Phân tích AI",
+    "aiAnalysisDescription": "Phân tích AI dựa trên hồ sơ của bạn và học bổng đã chọn để đưa ra khuyến nghị tốt nhất.",
+    "loadingAnalysis": "Đang phân tích học bổng...",
+    "analyzing": "Đang phân tích...",
+    "bestMatch": "Học bổng phù hợp nhất",
+    "uniqueAdvantages": "Ưu điểm nổi bật",
+    "keyTradeoffs": "So sánh quan trọng",
+    "strategicRecommendation": "Khuyến nghị chiến lược",
+    "applicationStrategy": "Chiến lược ứng tuyển",
+    "priorityOrder": "Thứ tự ưu tiên",
+    "reasoning": "Lý do",
+    "approach": "Cách tiếp cận",
+    "timelineTips": "Mẹo về thời gian",
+    "noAnalysis": "Không thể tải phân tích. Vui lòng thử lại."
+  },
+  "howItWorksPage": {
+    "hero": {
+      "badge": "Bắt đầu hành trình",
+      "title": "Hướng Dẫn",
+      "titleHighlight": "Sử Dụng",
+      "description": "Khám phá quy trình đơn giản và chi tiết để bắt đầu hành trình tìm kiếm học bổng của bạn. Từ đăng ký tài khoản đến nộp hồ sơ, chúng tôi sẽ hướng dẫn bạn từng bước một.",
+      "getStarted": "Bắt đầu ngay"
+    },
+    "steps": {
+      "step1": {
+        "badge": "Bước đầu tiên",
+        "title": "Đăng ký tài khoản",
+        "description": "Tạo tài khoản miễn phí trên nền tảng EduMatch là bước đầu tiên trong hành trình tìm kiếm học bổng của bạn. Quá trình đăng ký đơn giản và nhanh chóng, chỉ mất vài phút.",
+        "details": [
+          "Điền thông tin cơ bản: tên người dùng, email, mật khẩu",
+          "Xác thực email để kích hoạt tài khoản",
+          "Bắt đầu sử dụng nền tảng"
+        ],
+        "additionalInfo": "Tài khoản hoàn toàn miễn phí và không yêu cầu thẻ tín dụng. Sau khi đăng ký, bạn có thể ngay lập tức bắt đầu tạo profile hoặc tìm kiếm học bổng phù hợp."
+      },
+      "step2": {
+        "badge": "Xây dựng hồ sơ",
+        "title": "Tạo profile",
+        "description": "Hoàn thiện hồ sơ cá nhân của bạn với đầy đủ thông tin để hệ thống có thể đề xuất những học bổng phù hợp nhất. Hồ sơ bao gồm thông tin cá nhân, học vấn, kỹ năng, thành tích, chứng chỉ, và mục tiêu học tập. Bạn có thể sử dụng thông tin từ profile để tự động điền vào các hồ sơ ứng tuyển sau này, giúp tiết kiệm thời gian. Hồ sơ càng chi tiết, cơ hội tìm được học bổng phù hợp càng cao.",
+        "details": [
+          "Thông tin cá nhân: họ tên, số điện thoại, quốc tịch, quê quán",
+          "Học vấn: bậc học, điểm GPA, điểm thi chuẩn hóa, chứng chỉ ngoại ngữ",
+          "Kỹ năng và thành tích: kỹ năng, giải thưởng, hoạt động ngoại khóa",
+          "Mục tiêu học tập: quốc gia, trường đại học, loại học bổng mong muốn"
+        ],
+        "additionalInfo": "Hồ sơ của bạn được bảo mật và chỉ được sử dụng để đề xuất học bổng phù hợp. Bạn có thể cập nhật thông tin bất cứ lúc nào. Khi tạo hồ sơ ứng tuyển, bạn có thể import dữ liệu từ profile để tự động điền thông tin, giúp tiết kiệm thời gian và đảm bảo tính nhất quán."
+      },
+      "step3": {
+        "badge": "Chuẩn bị hồ sơ",
+        "title": "Tạo hồ sơ ứng tuyển",
+        "description": "Tạo hồ sơ ứng tuyển (Application Dossier) với đầy đủ thông tin và tài liệu cần thiết. Mỗi hồ sơ ứng tuyển sẽ được lưu trữ với một mã code duy nhất và có thể được sử dụng để nộp cho nhiều học bổng khác nhau. Bạn có thể import dữ liệu từ profile để tự động điền thông tin, sau đó chỉnh sửa và bổ sung thêm các tài liệu cụ thể cho từng học bổng. Mỗi học bổng có thể yêu cầu các tài liệu khác nhau, vì vậy hãy chuẩn bị kỹ lưỡng.",
+        "details": [
+          "Đặt tên cho hồ sơ ứng tuyển",
+          "Import dữ liệu từ profile để tự động điền thông tin",
+          "Bổ sung thông tin: động lực, mục tiêu, thành tích",
+          "Upload tài liệu: thư giới thiệu, bài luận, bảng điểm, chứng chỉ",
+          "Lưu hồ sơ để sử dụng cho nhiều học bổng"
+        ],
+        "additionalInfo": "Bạn có thể tạo nhiều hồ sơ ứng tuyển khác nhau với các thông tin và tài liệu khác nhau để phù hợp với yêu cầu của từng học bổng. Mỗi hồ sơ sẽ có mã code riêng và có thể được chỉnh sửa bất cứ lúc nào trước khi nộp. Lưu ý kiểm tra deadline và yêu cầu cụ thể của mỗi học bổng trước khi nộp."
+      },
+      "step4": {
+        "badge": "Hoàn tất đơn",
+        "title": "Nộp hồ sơ",
+        "description": "Sau khi đã tạo hồ sơ ứng tuyển, bạn có thể nộp hồ sơ cho các học bổng phù hợp. Từ trang chi tiết học bổng, bạn chọn hồ sơ ứng tuyển đã tạo và gửi đi. Một hồ sơ có thể được nộp cho nhiều học bổng khác nhau. Hệ thống sẽ tự động tạo Application-Scholarship relationship và giúp bạn theo dõi trạng thái đơn ứng tuyển cho từng học bổng. Bạn sẽ nhận được thông báo khi có cập nhật về trạng thái đơn ứng tuyển.",
+        "details": [
+          "Tìm kiếm và chọn học bổng phù hợp",
+          "Xem chi tiết học bổng và kiểm tra yêu cầu",
+          "Chọn hồ sơ ứng tuyển đã tạo hoặc tạo mới",
+          "Xác nhận và nộp hồ sơ",
+          "Theo dõi trạng thái đơn ứng tuyển trong My Activity"
+        ],
+        "additionalInfo": "Sau khi nộp, bạn sẽ nhận được email xác nhận và có thể theo dõi trạng thái đơn ứng tuyển trong phần 'Hoạt động của tôi' (My Activity). Một hồ sơ có thể được nộp cho nhiều học bổng, giúp bạn tiết kiệm thời gian. Hãy kiên nhẫn chờ đợi kết quả và tiếp tục tìm kiếm các cơ hội học bổng khác trong thời gian chờ đợi."
+      }
+    },
+    "goodLuck": {
+      "title": "Chúc bạn may mắn!",
+      "description": "Bạn đã hoàn thành các bước cần thiết. Hãy kiên nhẫn và theo dõi kết quả. Chúng tôi chúc bạn thành công trong hành trình tìm kiếm học bổng!",
+      "exploreScholarships": "Khám phá học bổng",
+      "backToHome": "Về trang chủ"
+    }
+  },
+  "policyPage": {
+    "hero": {
+      "title": "Chính Sách & Điều Khoản",
+      "subtitle": "Tìm hiểu về chính sách bảo mật và điều khoản sử dụng của nền tảng EduMatch"
+    },
+    "privacyPolicy": {
+      "title": "Chính Sách Bảo Mật",
+      "introduction": "Chính sách bảo mật này mô tả cách EduMatch thu thập, sử dụng và bảo vệ thông tin cá nhân của bạn khi sử dụng nền tảng.",
+      "sections": [
+        {
+          "title": "Thông tin chúng tôi thu thập",
+          "content": [
+            "Thông tin cá nhân: họ tên, email, số điện thoại, ngày sinh, quốc tịch",
+            "Thông tin học vấn: bằng cấp, điểm GPA, chứng chỉ, lịch sử giáo dục",
+            "Thông tin hồ sơ ứng tuyển: thông tin trong application dossier và tài liệu đính kèm",
+            "Thông tin thanh toán: được xử lý bởi Stripe, chúng tôi không lưu trữ thông tin thẻ tín dụng",
+            "Dữ liệu sử dụng: các hoạt động trên nền tảng, học bổng đã xem, đã theo dõi"
+          ]
+        },
+        {
+          "title": "Cách chúng tôi sử dụng thông tin",
+          "content": [
+            "Đề xuất học bổng phù hợp dựa trên profile của bạn",
+            "Kết nối ứng viên với nhà cung cấp học bổng",
+            "Xử lý thanh toán và quản lý subscription",
+            "Gửi thông báo về học bổng mới, cập nhật đơn ứng tuyển",
+            "Cải thiện chất lượng dịch vụ và trải nghiệm người dùng"
+          ]
+        },
+        {
+          "title": "Bảo vệ thông tin",
+          "content": [
+            "Mã hóa dữ liệu trong quá trình truyền tải",
+            "Bảo mật thông tin đăng nhập và xác thực",
+            "Chỉ nhân viên được ủy quyền mới có thể truy cập dữ liệu",
+            "Tuân thủ các quy định về bảo vệ dữ liệu cá nhân"
+          ]
+        },
+        {
+          "title": "Quyền của bạn",
+          "content": [
+            "Truy cập và xem thông tin cá nhân của bạn",
+            "Chỉnh sửa hoặc cập nhật thông tin bất cứ lúc nào",
+            "Xóa tài khoản và dữ liệu cá nhân",
+            "Từ chối nhận thông báo marketing"
+          ]
+        }
+      ],
+      "lastUpdated": "Cập nhật lần cuối: 06/12/2025"
+    },
+    "termsOfService": {
+      "title": "Điều Khoản Sử Dụng",
+      "introduction": "Bằng việc sử dụng nền tảng EduMatch, bạn đồng ý với các điều khoản và điều kiện sau đây.",
+      "sections": [
+        {
+          "title": "Đăng ký tài khoản",
+          "content": [
+            "Bạn phải cung cấp thông tin chính xác và đầy đủ khi đăng ký",
+            "Bạn chịu trách nhiệm bảo mật thông tin đăng nhập",
+            "Mỗi người chỉ được đăng ký một tài khoản"
+          ]
+        },
+        {
+          "title": "Sử dụng dịch vụ",
+          "content": [
+            "Bạn được phép sử dụng nền tảng để tìm kiếm và ứng tuyển học bổng",
+            "Không được sử dụng dịch vụ cho mục đích bất hợp pháp",
+            "Không được cung cấp thông tin sai lệch trong hồ sơ và đơn ứng tuyển",
+            "Không được sao chép, phân phối hoặc bán nội dung từ nền tảng"
+          ]
+        },
+        {
+          "title": "Subscription và thanh toán",
+          "content": [
+            "Subscription được tính theo gói và thời hạn đã chọn",
+            "Thanh toán được xử lý qua Stripe, an toàn và bảo mật",
+            "Subscription sẽ tự động gia hạn trừ khi bạn hủy",
+            "Không hoàn tiền cho subscription đã thanh toán"
+          ]
+        },
+        {
+          "title": "Quyền sở hữu trí tuệ",
+          "content": [
+            "Tất cả nội dung trên nền tảng thuộc quyền sở hữu của EduMatch",
+            "Bạn giữ quyền sở hữu đối với thông tin và tài liệu bạn upload",
+            "Bạn cấp quyền cho EduMatch sử dụng thông tin để cung cấp dịch vụ"
+          ]
+        },
+        {
+          "title": "Trách nhiệm",
+          "content": [
+            "EduMatch không đảm bảo bạn sẽ nhận được học bổng",
+            "Chúng tôi không chịu trách nhiệm về quyết định của nhà cung cấp học bổng",
+            "Bạn chịu trách nhiệm về tính chính xác của thông tin trong hồ sơ"
+          ]
+        }
+      ],
+      "lastUpdated": "Cập nhật lần cuối: 06/12/2025"
+    }
   }
 }

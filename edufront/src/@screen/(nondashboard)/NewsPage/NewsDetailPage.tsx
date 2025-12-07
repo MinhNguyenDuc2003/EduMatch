@@ -15,6 +15,8 @@ import { NewsMetadata, NewsContent, NewsSidebar, NewsImages } from './components
 import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 import Loading from '@/pattern/share/Loading';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 type NewsDetailPageProps = {
   newsId: string;
@@ -23,6 +25,7 @@ type NewsDetailPageProps = {
 export default function NewsDetailPage({ newsId }: NewsDetailPageProps) {
   const route = useRouter();
   const { isAuthenticated } = useAuth();
+  const tToast = useTranslations('toast');
 
   const router = useRouter();
   const { data: news, isLoading, isError, refetch } = useGetNewsByIdQuery(newsId);
@@ -39,14 +42,16 @@ export default function NewsDetailPage({ newsId }: NewsDetailPageProps) {
         await unfollowScholarship({
           scholarshipId: news.scholarship.id,
         }).unwrap();
+        toast.success(tToast('trackScholarship.untrack'));
       } else {
         await followScholarship({
           scholarshipId: news.scholarship.id,
         }).unwrap();
+        toast.success(tToast('trackScholarship.track'));
       }
-      refetch();
     } catch (error) {
       console.log('Failed to toggle tracking:', error);
+      toast.error(tToast('trackScholarship.trackFailed'));
     }
   };
 
@@ -58,17 +63,20 @@ export default function NewsDetailPage({ newsId }: NewsDetailPageProps) {
     try {
       if (isFollowing) {
         await unfollowProvider(providerProfileVo.id).unwrap();
+        toast.success(tToast('followProvider.unfollow'));
       } else {
         await followProvider(providerProfileVo.id).unwrap();
+        toast.success(tToast('followProvider.follow'));
       }
       refetch();
     } catch (error) {
       console.log('Failed to toggle follow provider:', error);
+      toast.error(tToast('followProvider.followFailed'));
     }
   };
 
   const handleViewProvider = (providerId: number) => {
-    router.push(`/applicant/providers/${providerId}`);
+    router.push(`/providers/${providerId}`);
   };
 
   const handleViewScholarship = (slug: string) => {
@@ -122,7 +130,7 @@ export default function NewsDetailPage({ newsId }: NewsDetailPageProps) {
     : 'N/A';
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="h-full bg-white">
       {/* Breadcrumbs Header */}
       <BreadcrumbHeader items={[{ label: 'News', href: '/news' }, { label: news.title }]} />
 

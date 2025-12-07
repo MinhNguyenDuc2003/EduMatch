@@ -10,42 +10,26 @@ import {
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { useFollowProviderMutation, useUnfollowProviderMutation } from '@/state/apiProvider';
+import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
 
 export default function RecommendedScholarships() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const t = useTranslations('recommendedScholarships');
+  const tToast = useTranslations('toast');
   const {
     data: scholarships,
     isLoading,
     refetch,
-  } = useGetRecommendedScholarshipsQuery({ topK: 10 });
-  const [followScholarship] = useFollowScholarshipMutation();
-  const [unfollowScholarship] = useUnfollowScholarshipMutation();
+  } = useGetRecommendedScholarshipsQuery({ topK: 12 });
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
   const handleApply = (scholarship: Scholarship) => {
     console.log('Apply to:', scholarship.title);
     // TODO: Implement apply logic
-  };
-
-  const handleToggleTracking = async (scholarshipId: number) => {
-    const scholarship = scholarships?.find((s) => s.id === scholarshipId);
-    const isTracked = scholarship?.isFollow === 1;
-
-    try {
-      if (isTracked) {
-        await unfollowScholarship({
-          scholarshipId,
-        }).unwrap();
-      } else {
-        await followScholarship({
-          scholarshipId,
-        }).unwrap();
-      }
-    } catch (error) {
-      console.error('Failed to toggle tracking:', error);
-    }
   };
 
   // Handle follow/unfollow provider
@@ -58,11 +42,14 @@ export default function RecommendedScholarships() {
     try {
       if (isFollowing) {
         await unfollowProvider(scholarship.providerProfileVo?.id).unwrap();
+        toast.success(tToast('followProvider.unfollow'));
       } else {
         await followProvider(scholarship.providerProfileVo?.id).unwrap();
+        toast.success(tToast('followProvider.follow'));
       }
     } catch (error) {
       console.log('Failed to toggle follow provider:', error);
+      toast.error(tToast('followProvider.followFailed'));
     }
     refetch();
   };
@@ -76,7 +63,7 @@ export default function RecommendedScholarships() {
   };
 
   const handleViewProvider = (providerId: number) => {
-    router.push(`/applicant/providers/${providerId}`);
+    router.push(`/providers/${providerId}`);
   };
 
   return (
@@ -90,25 +77,34 @@ export default function RecommendedScholarships() {
             {/* Header */}
             <div className="flex items-center p-4 gap-4">
               <div>
-                <h2 className="text-lg font-bold">Recommended Scholarships</h2>
+                <h2 className="text-lg font-bold">{t('title')}</h2>
               </div>
-              <div>We found {scholarships?.length} scholarships that match your profile</div>
+              <div>
+                {isLoading
+                  ? t('matchingLoading')
+                  : t('description', { count: scholarships?.length || 0 })}
+              </div>
             </div>
 
             {/* Content */}
             <div className="flex flex-col p-4 gap-4">
-              {scholarships?.map((scholarship) => (
-                <ScholarshipCard
-                  key={scholarship.id}
-                  scholarship={scholarship}
-                  onApply={handleApply}
-                  onToggleTracking={handleToggleTracking}
-                  onFollowProvider={handleFollowProvider}
-                  onViewScholarship={handleViewScholarship}
-                  onViewProvider={handleViewProvider}
-                  isAuthenticated={isAuthenticated}
-                />
-              ))}
+              {isLoading ? (
+                <div className="flex h-full items-center justify-center">
+                  <Loader2 className="w-10 h-10 animate-spin" />
+                </div>
+              ) : (
+                scholarships?.map((scholarship) => (
+                  <ScholarshipCard
+                    key={scholarship.id}
+                    scholarship={scholarship}
+                    onApply={handleApply}
+                    onFollowProvider={handleFollowProvider}
+                    onViewScholarship={handleViewScholarship}
+                    onViewProvider={handleViewProvider}
+                    score={scholarship.score}
+                  />
+                ))
+              )}
             </div>
           </div>
         </div>

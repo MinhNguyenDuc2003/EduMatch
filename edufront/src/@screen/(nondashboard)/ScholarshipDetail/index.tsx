@@ -24,14 +24,16 @@ import { useTranslations } from 'next-intl';
 import { useAuth } from '@/hooks/useAuth';
 import { useGetApplicationsQuery } from '@/state/apiApplicant';
 import PremiumBanner from './components/PremiumBanner';
+import { toast } from 'sonner';
 
 export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
-  const { subscriptions } = useAuth();
+  const { isAuthenticated, subscriptions } = useAuth();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAnalysisDialogOpen, setIsAnalysisDialogOpen] = useState(false);
   const [shouldAnalyze, setShouldAnalyze] = useState(false);
   const t = useTranslations('scholarshipDetail');
+  const tToast = useTranslations('toast');
 
   const { data: scholarship, isLoading, isError, refetch } = useGetScholarshipBySlugQuery(slug);
   const {
@@ -41,7 +43,10 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
   } = useAnalyzeScholarshipQuery(scholarship?.id || 0, {
     skip: !shouldAnalyze || !scholarship?.id,
   });
-  const { data: applications, isLoading: isLoadingApplications } = useGetApplicationsQuery();
+  const { data: applications, isLoading: isLoadingApplications } = useGetApplicationsQuery(
+    undefined,
+    { skip: !isAuthenticated }
+  );
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
   const [followScholarship] = useFollowScholarshipMutation();
@@ -53,13 +58,14 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
 
   if (isError || !scholarship) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="h-full bg-white flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('notFound')}</h1>
           <Button
             value={t('backToScholarships')}
             onClick={() => router.push('/scholarships')}
-            variant="outline"
+            variant="custom"
+            className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
           />
         </div>
       </div>
@@ -84,10 +90,12 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
         await unfollowScholarship({
           scholarshipId: scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.untrack'));
       } else {
         await followScholarship({
           scholarshipId: scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.track'));
       }
     } catch (error) {
       console.log('Failed to toggle tracking:', error);
@@ -101,17 +109,20 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
     try {
       if (isFollowingValue === 1) {
         await unfollowProvider(providerId).unwrap();
+        toast.success(tToast('followProvider.unfollow'));
       } else {
         await followProvider(providerId).unwrap();
+        toast.success(tToast('followProvider.follow'));
       }
       refetch();
     } catch (error) {
       console.log('Failed to toggle follow provider:', error);
+      toast.error(tToast('followProvider.followFailed'));
     }
   };
 
   const handleViewProvider = (providerId: number) => {
-    router.push(`/applicant/providers/${providerId}`);
+    router.push(`/providers/${providerId}`);
   };
 
   const handleApplyNow = () => {

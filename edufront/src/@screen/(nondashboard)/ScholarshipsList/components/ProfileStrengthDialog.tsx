@@ -19,11 +19,7 @@ interface ProfileStrengthDialogProps {
   profileId?: number;
 }
 
-export default function ProfileStrengthDialog({
-  open,
-  onOpenChange,
-  profileId,
-}: ProfileStrengthDialogProps) {
+export default function ProfileStrengthDialog({ open, onOpenChange }: ProfileStrengthDialogProps) {
   const router = useRouter();
   const t = useTranslations('scholarshipsList.premiumBanner.profileStrengthDialog');
 

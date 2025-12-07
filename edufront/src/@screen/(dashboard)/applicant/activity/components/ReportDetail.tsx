@@ -1,9 +1,18 @@
 'use client';
 
+import { useState } from 'react';
 import { X, CheckCircle2, Clock, XCircle, AlertCircle, FileText, Trash2 } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/pattern/cus/sheet';
 import { Badge } from '@/pattern/cus/badge';
 import { Button } from '@/pattern/cus/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/pattern/cus/dialog';
 import { useTranslations } from 'next-intl';
 
 type ReportDetailProps = {
@@ -30,6 +39,7 @@ const getTypeColor = (type?: ReportType) => {
 
 export default function ReportDetail({ open, onOpenChange, report, onDelete }: ReportDetailProps) {
   const t = useTranslations('activity.reportDetail');
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   if (!report) return null;
 
@@ -114,10 +124,7 @@ export default function ReportDetail({ open, onOpenChange, report, onDelete }: R
               variant="outline"
               size="md"
               className="w-full text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
-              onClick={() => {
-                onDelete(report.id);
-                onOpenChange(false);
-              }}
+              onClick={() => setIsDeleteDialogOpen(true)}
             >
               <Trash2 className="w-4 h-4 mr-2" />
               {t('delete')}
@@ -125,6 +132,42 @@ export default function ReportDetail({ open, onOpenChange, report, onDelete }: R
           </div>
         )}
       </SheetContent>
+
+      {/* Delete Confirmation Dialog */}
+      {onDelete && (
+        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>{t('deleteConfirmation.title')}</DialogTitle>
+              <DialogDescription>
+                {t('deleteConfirmation.description', {
+                  reportTitle: report.title || t('noTitle'),
+                })}
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsDeleteDialogOpen(false)}
+                className="text-blue-600 border-blue-300 hover:bg-blue-50 hover:border-blue-400"
+              >
+                {t('deleteConfirmation.cancel')}
+              </Button>
+              <Button
+                variant="outline"
+                className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
+                onClick={() => {
+                  onDelete(report.id);
+                  setIsDeleteDialogOpen(false);
+                  onOpenChange(false);
+                }}
+              >
+                {t('deleteConfirmation.confirm')}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </Sheet>
   );
 }

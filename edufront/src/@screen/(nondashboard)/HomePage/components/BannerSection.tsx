@@ -76,6 +76,7 @@ export default function BannerSection() {
                 variant="custom"
                 className="bg-white/80 backdrop-blur-sm border-2 border-gray-200 hover:border-blue-300 text-gray-700 px-8 py-6 text-lg font-semibold rounded-xl shadow-sm hover:shadow-md transition-all [&_.value]:text-gray-700"
                 value={t('howItWorks')}
+                onClick={() => router.push('/how-it-works')}
               />
             </div>
           </div>

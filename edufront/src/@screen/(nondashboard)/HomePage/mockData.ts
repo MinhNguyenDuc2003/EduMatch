@@ -1,4 +1,4 @@
-import { Target, Shield, Zap, BookOpen, Heart, Globe, Users, Search, Award } from 'lucide-react';
+import { Target, Shield, Zap, BookOpen, Heart, Globe, Users, Search, Award, UserPlus, FileText, Send } from 'lucide-react';
 
 // Features data
 export const featuresData = [
@@ -45,20 +45,26 @@ export const featuresData = [
 export const howItWorksSteps = [
   {
     step: '01',
-    title: 'Create Your Profile',
-    description: 'Share your academic background, interests, and goals. Takes less than 5 minutes.',
-    icon: Users,
+    title: 'Register Account',
+    description: 'Create a free account to start your scholarship search journey.',
+    icon: UserPlus,
   },
   {
     step: '02',
-    title: 'Get Matched',
-    description: 'Our AI analyzes thousands of scholarships and presents the best matches for you.',
-    icon: Search,
+    title: 'Create Profile',
+    description: 'Complete your profile with academic info and goals for better matches.',
+    icon: Users,
   },
   {
     step: '03',
-    title: 'Apply & Win',
-    description: 'Submit applications with one click and track your progress until you win.',
-    icon: Award,
+    title: 'Create Application',
+    description: 'Prepare your application dossier with documents and information.',
+    icon: FileText,
+  },
+  {
+    step: '04',
+    title: 'Submit Application',
+    description: 'Submit your application to scholarships and track your status.',
+    icon: Send,
   },
 ];

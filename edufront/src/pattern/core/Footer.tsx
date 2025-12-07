@@ -3,33 +3,8 @@ import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-
-const footerSections = [
-  {
-    title: 'Scholarships',
-    links: [
-      { name: 'Find Scholarships', href: '/scholarships' },
-      { name: 'Merit-Based', href: '/scholarships/merit' },
-      { name: 'Need-Based', href: '/scholarships/need' },
-    ],
-  },
-  {
-    title: 'Colleges',
-    links: [
-      { name: 'College Search', href: '/colleges' },
-      { name: 'Rankings', href: '/colleges/rankings' },
-      { name: 'Admissions', href: '/colleges/admissions' },
-    ],
-  },
-  {
-    title: 'Resources',
-    links: [
-      { name: 'Student Loans', href: '/loans' },
-      { name: 'Calculators', href: '/calculators' },
-      { name: 'Guides', href: '/guides' },
-    ],
-  },
-];
+import { useTranslations } from 'next-intl';
+import { useAuth } from '@/hooks/useAuth';
 
 const socialLinks = [
   { icon: Facebook, href: '#', label: 'Facebook' },
@@ -40,6 +15,8 @@ const socialLinks = [
 
 const Footer = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const t = useTranslations('footer');
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   useEffect(() => {
     setIsMounted(true);
@@ -48,13 +25,56 @@ const Footer = () => {
   if (!isMounted) {
     return null;
   }
+
+  const footerSections = [
+    {
+      title: t('quickLinks'),
+      links: [
+        { name: t('home'), href: '/home' },
+        { name: t('scholarships'), href: '/scholarships' },
+        { name: t('news'), href: '/news' },
+        { name: t('howItWorks'), href: '/how-it-works' },
+      ],
+    },
+    {
+      title: t('resources'),
+      links: [
+        { name: t('policy'), href: '/policy' },
+        { name: t('providerGuidelines'), href: '/scholarship-provider-guidelines' },
+        { name: t('subscriptions'), href: '/subscriptions' },
+      ],
+    },
+  ];
+
+  // Add My Account section for authenticated users
+  if (isAuthenticated && !isAuthLoading) {
+    footerSections.push({
+      title: t('myAccount'),
+      links: [
+        { name: t('myProfile'), href: '/applicant/profile' },
+        { name: `${t('myActivity')}`, href: '/applicant/activity?tab=tracking' },
+        { name: `${t('tracking')}`, href: '/applicant/activity?tab=tracking' },
+        {
+          name: `${t('following')}`,
+          href: '/applicant/activity?tab=following',
+        },
+        {
+          name: `${t('application')}`,
+          href: '/applicant/activity?tab=application',
+        },
+        { name: `${t('applied')}`, href: '/applicant/activity?tab=applied' },
+        { name: `${t('report')}`, href: '/applicant/activity?tab=report' },
+      ],
+    });
+  }
+
   return (
     <footer className="bg-background border-t border-border">
       <div className="px-4 lg:px-40 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-8">
           {/* Logo and Social Media */}
           <div className="space-y-6">
-            <Link className="flex items-center" href={'/'}>
+            <Link className="flex items-center" href={'/home'}>
               <Image
                 src={'https://es5urvh1np.ufs.sh/f/DHR6tEJ9PQozF4xgrm8xYeQBLvSq5K1DUnpHR8VwMIEazuhg'}
                 alt="logo"
@@ -87,12 +107,12 @@ const Footer = () => {
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link.name}>
-                    <a
+                    <Link
                       href={link.href}
                       className="text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {link.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -104,7 +124,7 @@ const Footer = () => {
       {/* Copyright Bar */}
       <div className="bg-primary-brand">
         <div className="container mx-auto px-4 py-4">
-          <p className="text-center text-primary-foreground/80">Copyright © 2025, EduMatch</p>
+          <p className="text-center text-primary-foreground/80">{t('copyright')}</p>
         </div>
       </div>
     </footer>

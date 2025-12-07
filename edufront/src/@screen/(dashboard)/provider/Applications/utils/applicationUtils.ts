@@ -5,6 +5,8 @@
  */
 export const getStatusColor = (status: string): string => {
   switch (status.toLowerCase()) {
+    case 'successful':
+      return 'bg-green-100 text-green-700 border-green-200';
     case 'approved':
       return 'bg-green-100 text-green-700 border-green-200';
     case 'pending':

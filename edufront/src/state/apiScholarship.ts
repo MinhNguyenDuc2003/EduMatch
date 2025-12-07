@@ -5,6 +5,7 @@ import customBaseQuery from './custombaseQuery';
 const API_ENDPOINTS = {
   SCHOLARSHIP: '/api/scholarship/scholarships',
   SCHOLARSHIPS_SEARCH: '/api/search/scholarships',
+  CASE_STUDY: '/api/scholarship/case-study',
 } as const;
 
 export const apiScholarship = createApi({
@@ -132,6 +133,24 @@ export const apiScholarship = createApi({
       }),
       providesTags: ['Scholarships'],
     }),
+
+    // AI Comparison
+    aiComparison: build.query<string, number[]>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.SCHOLARSHIP}/compare`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
+    // Post Case Study
+    postCaseStudy: build.mutation<CaseStudy, FormData>({
+      query: (data) => ({
+        url: `${API_ENDPOINTS.CASE_STUDY}`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -149,4 +168,6 @@ export const {
   useGetScholarshipTopViewByMonthQuery,
   useAnalyzeScholarshipQuery,
   useGetRecommendedScholarshipsQuery,
+  useAiComparisonQuery,
+  usePostCaseStudyMutation,
 } = apiScholarship;

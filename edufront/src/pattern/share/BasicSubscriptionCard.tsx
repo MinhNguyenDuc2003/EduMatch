@@ -86,15 +86,6 @@ const BasicSubscriptionCard = () => {
             Get started with our basic features and explore the platform
           </p>
         </div>
-
-        {/* Button */}
-        <Button
-          className="w-full py-4 rounded-lg font-semibold transition-all bg-gray-500 text-white hover:bg-gray-600"
-          variant="custom"
-          value="Current Plan"
-          onClick={() => {}}
-          disabled
-        />
       </div>
 
       <div className="border-t border-gray-200 mx-6" />
