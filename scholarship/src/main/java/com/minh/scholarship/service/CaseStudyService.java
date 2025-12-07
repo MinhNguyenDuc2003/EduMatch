@@ -17,4 +17,6 @@ public interface CaseStudyService {
 
     List<CaseStudyVo> getByScholarshipId(Long scholarshipId);
 
+    List<CaseStudyVo> getAll();
+
 }

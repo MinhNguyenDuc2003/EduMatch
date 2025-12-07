@@ -22,6 +22,11 @@ public class CaseStudyController {
 
     private final CaseStudyService caseStudyService;
 
+    @GetMapping("/all")
+    public ApiResponse<List<CaseStudyVo>> getAll() {
+        return ApiResponse.ok(caseStudyService.getAll());
+    }
+
     @GetMapping("/{id}")
     public ApiResponse<CaseStudyVo> getById(@PathVariable Long id) {
         return ApiResponse.ok(caseStudyService.getById(id));

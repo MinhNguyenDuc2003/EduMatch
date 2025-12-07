@@ -102,6 +102,20 @@ public class CaseStudyServiceImpl extends BaseService implements CaseStudyServic
         return result;
     }
 
+    @Override
+    public List<CaseStudyVo> getAll() {
+        List<CaseStudyVo> vos = new ArrayList<>();
+        List<CaseStudyEntity> entities = caseStudyRepository.findAll();
+        if (ObjectUtils.isNotEmpty(entities)) {
+            entities.forEach(entity -> {
+                CaseStudyVo vo = this.getById(entity.getId());
+                vos.add(vo);
+            });
+            return vos;
+        }
+        return List.of();
+    }
+
     private CaseStudyVo addScholarshipMedia(CaseStudyVo vo) {
         List<CaseStudyMediaEntity> mediaEntity = caseStudyMediaRepository.findByCaseStudyId(vo.getId());
         if (ObjectUtils.isNotEmpty(mediaEntity)) {
