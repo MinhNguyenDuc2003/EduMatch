@@ -12,7 +12,7 @@ import { ActivityIndicator, FlatList, Pressable, Text } from "react-native";
 const NOTIFICATION_TYPES = {
   SCHOLARSHIP: "A new scholarship has been added",
   SCHOLARSHIP_UPDATED: "Your tracked scholarship has been updated",
-  SCHOLARSHIP_NEWS:
+  PROVIDER_NEWS:
     "A new news about your tracked scholarship has been published",
   APPLICATION: "The status of your application has been updated",
   SYSTEM: "SYSTEM MESSAGE !!!!!!",

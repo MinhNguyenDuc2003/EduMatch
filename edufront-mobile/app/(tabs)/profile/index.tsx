@@ -1,12 +1,42 @@
+import { StatCard } from "@/components/profile/StatCard";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useAuth } from "@/hooks/useAuth";
-import { ArrowBigUp } from "lucide-react-native";
+import {
+  useGetAppliedApplicationQuery,
+  useGetFollowedProvidersQuery,
+  useGetRecommendedScholarshipsQuery,
+  useGetTrackedScholarshipsQuery,
+} from "@/state/api";
+import { router } from "expo-router";
+import {
+  ArrowBigUp,
+  BookMarked,
+  BriefcaseBusiness,
+  Building2,
+  Check,
+} from "lucide-react-native";
 import React from "react";
 import { ScrollView, View } from "react-native";
 
 const index = () => {
   const { user } = useAuth();
+
+  const {
+    data: recommendedScholarships,
+    isLoading: recommendedScholarshipsLoading,
+  } = useGetRecommendedScholarshipsQuery({
+    topK: 10,
+  });
+
+  const { data: appliedScholarships, isLoading: appliedScholarshipsLoading } =
+    useGetAppliedApplicationQuery();
+
+  const { data: followedProviders, isLoading: followedProvidersLoading } =
+    useGetFollowedProvidersQuery();
+
+  const { data: trackedScholarships, isLoading: trackedScholarshipsLoading } =
+    useGetTrackedScholarshipsQuery();
 
   return (
     <ScrollView className="flex-1 bg-white">
@@ -39,8 +69,53 @@ const index = () => {
         </View>
       </View>
 
-      <View className="flex flex-col gap-4 p-4 mt-12">
+      <View className="flex flex-col gap-3 p-4 mt-12">
         <Text className="text-lg font-bold">Scholarship Management</Text>
+
+        <View className="flex gap-3 w-full">
+          <StatCard
+            icon={Check}
+            label="Recommended Scholarship"
+            value={
+              recommendedScholarshipsLoading
+                ? "..."
+                : recommendedScholarships?.length || 0
+            }
+            iconColor="#059669"
+            onPress={() => router.push("/(routes)/recommededScholarships")}
+          />
+          <StatCard
+            icon={BriefcaseBusiness}
+            label="Applied Scholarship"
+            value={
+              appliedScholarshipsLoading
+                ? "..."
+                : appliedScholarships?.length || 0
+            }
+            iconColor="#2563eb"
+            onPress={() => router.push("/(routes)/appliedScholarship")}
+          />
+          <StatCard
+            icon={BookMarked}
+            label="Saved Scholarship"
+            value={
+              trackedScholarshipsLoading
+                ? "..."
+                : trackedScholarships?.length || 0
+            }
+            iconColor="#db2777"
+            onPress={() => router.push("/(routes)/savedScholarships")}
+          />
+          <StatCard
+            icon={Building2}
+            label="Saved Provider"
+            value={
+              followedProvidersLoading ? "..." : followedProviders?.length || 0
+            }
+            iconColor="#d97706"
+            onPress={() => router.push("/(routes)/savedProviders")}
+          />
+        </View>
       </View>
     </ScrollView>
   );

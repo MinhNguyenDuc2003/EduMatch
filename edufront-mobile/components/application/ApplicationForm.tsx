@@ -26,6 +26,7 @@ import { Text } from "../ui/text";
 export interface ImageFile {
   uri: string;
   name?: string;
+  id?: number;
   type?: string;
 }
 
@@ -33,6 +34,7 @@ interface ApplicationFormProps {
   application?: Application;
   onSubmit?: (data: IApplication) => void | Promise<void>;
   onImagesChange?: (images: ImageFile[]) => void;
+  onDeleteImage?: (imageId: number) => void;
 }
 
 export interface ApplicationFormRef {
@@ -40,7 +42,7 @@ export interface ApplicationFormRef {
 }
 
 const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
-  ({ application, onSubmit, onImagesChange }, ref) => {
+  ({ application, onSubmit, onImagesChange, onDeleteImage }, ref) => {
     const [selectedImages, setSelectedImages] = useState<ImageFile[]>([]);
 
     const methods = useForm<IApplication>({
@@ -78,6 +80,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
           const images = application.applicationMedias.map((media) => ({
             uri: media.url,
             name: media.fileName,
+            id: media.id,
             type: media.contentType,
           }));
           setSelectedImages(images);
@@ -154,7 +157,12 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
 
     // Remove an image from selection
     const removeImage = (index: number) => {
+      const idToRemove = selectedImages[index].id;
       setSelectedImages((prev) => prev.filter((_, i) => i !== index));
+
+      if (idToRemove) {
+        onDeleteImage?.(idToRemove);
+      }
     };
 
     const handleAddPreference = () => {

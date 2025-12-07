@@ -161,7 +161,7 @@ const ScholarshipDetail = () => {
         }}
         onCreateNew={() => {
           setShowApplicationModal(false);
-          router.push(`/(routes)/application/[id]`);
+          router.push(`/(routes)/application/create`);
         }}
       />
     </SafeAreaView>
