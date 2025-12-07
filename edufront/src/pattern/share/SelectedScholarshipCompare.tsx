@@ -19,8 +19,8 @@ import { useTranslations } from 'next-intl';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/pattern/cus/sheet';
 import { useAuth } from '@/hooks/useAuth';
 import { useAiComparisonQuery } from '@/state/apiScholarship';
-import { Skeleton } from '@/lib/cus/skeleton';
-import { Badge } from '@/lib/cus/badge';
+import { Skeleton } from '@/pattern/cus/skeleton';
+import { Badge } from '@/pattern/cus/badge';
 
 export default function SelectedScholarshipCompare() {
   const pathname = usePathname();

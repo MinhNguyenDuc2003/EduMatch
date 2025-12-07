@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Sparkles, ArrowRight } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { useRouter } from 'next/navigation';
 
 export default function GoodLuckSection() {

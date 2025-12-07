@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
 import { Sparkles, ArrowRight } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import TopViewScholarshipCard from './TopViewScholarshipCard';
 import TopViewCardSkeleton from './TopViewCardSkeleton';
 

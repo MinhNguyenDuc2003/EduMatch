@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';

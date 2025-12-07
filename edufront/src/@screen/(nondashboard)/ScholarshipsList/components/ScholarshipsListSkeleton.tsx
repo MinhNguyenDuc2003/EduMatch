@@ -1,4 +1,4 @@
-import { Skeleton } from '@/lib/cus/skeleton';
+import { Skeleton } from '@/pattern/cus/skeleton';
 import { Filter } from 'lucide-react';
 import ScholarshipCardSkeleton from './ScholarshipCardSkeleton';
 
@@ -126,4 +126,3 @@ export default function ScholarshipsListSkeleton() {
     </>
   );
 }
-

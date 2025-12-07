@@ -2,9 +2,9 @@
 
 import { usePostCaseStudyMutation } from '@/state/apiScholarship';
 import { DEFAULT_CASE_STUDY_FORM_VALUES } from '@/constants/DefaultValues';
-import { Button } from '@/lib/cus/button';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
-import { Form } from '@/lib/cus/form';
+import { Button } from '@/pattern/cus/button';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
+import { Form } from '@/pattern/cus/form';
 import { ICaseStudy, caseStudySchema } from '@/lib/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Image as ImageIcon, X } from 'lucide-react';
@@ -20,7 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/lib/cus/dialog';
+} from '@/pattern/cus/dialog';
 import { CheckCircle2 } from 'lucide-react';
 import { useEffect } from 'react';
 
