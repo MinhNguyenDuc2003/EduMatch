@@ -63,7 +63,7 @@ const router = useRouter()
               <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
               <CustomDataTable
-                title="System Notifications"
+                title="System Notifications List"
                 data={notifications}
                 isCreate
                 onCreate={() => router.push('/systemNotification/create')}

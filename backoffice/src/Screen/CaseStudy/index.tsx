@@ -60,7 +60,7 @@ const CaseStudyPage = () => {
               <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
               <CustomDataTable
-                title="Case Studies"
+                title="Case Studies List"
                 data={mappedCaseStudies}
                 detailPath="/caseStudy"
                 customTitles={[

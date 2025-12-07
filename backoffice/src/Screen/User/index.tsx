@@ -49,7 +49,7 @@ const Users = () => {
               <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
               <CustomDataTable
-                title="Users"
+                title="Users List"
                 data={mappedUsers}
                 detailPath="/user"
                 customTitles={[
