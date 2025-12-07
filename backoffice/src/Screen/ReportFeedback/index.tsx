@@ -77,7 +77,7 @@ const ReportFeedbackPage = () => {
               <CustomDataTable
                 title="Report & Feedback List"
                 data={ReportFeedbacks as any}
-                detailPath="/backoffice/reportFeedback"
+                detailPath="/reportFeedback"
                 customTitles={[
                   "ID",
                   "Title",

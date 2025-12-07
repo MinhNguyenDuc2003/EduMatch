@@ -49,7 +49,7 @@ function OrderDetailInner({ meds, id }: { meds: any; id: string }) {
                   <span
                     className="text-blue-600 hover:underline cursor-pointer"
                     onClick={() =>
-                      router.push(`/backoffice/subscriptions/${data.subscriptionId}`)
+                      router.push(`/subscriptions/${data.subscriptionId}`)
                     }
                   >
                     {data.subscriptionId}

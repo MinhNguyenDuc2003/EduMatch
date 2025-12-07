@@ -66,7 +66,7 @@ const router = useRouter()
                 title="System Notifications"
                 data={notifications}
                 isCreate
-                onCreate={() => router.push('/backoffice/systemNotification/create')}
+                onCreate={() => router.push('/systemNotification/create')}
                 customTitles={['ID', 'Content', 'Reference Type', 'Read Status', 'Created By', 'Created Date']}
                 externalFilterText={filterText}
               />

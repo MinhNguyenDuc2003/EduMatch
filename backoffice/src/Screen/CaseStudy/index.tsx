@@ -62,7 +62,7 @@ const CaseStudyPage = () => {
               <CustomDataTable
                 title="Case Studies"
                 data={mappedCaseStudies}
-                detailPath="/backoffice/caseStudy"
+                detailPath="/caseStudy"
                 customTitles={[
                   'ID',
                   'Title',

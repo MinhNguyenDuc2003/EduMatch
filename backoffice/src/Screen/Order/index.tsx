@@ -63,7 +63,7 @@ const OrderPage = () => {
               <CustomDataTable
                 title="Order Payments"
                 data={mappedSubs}
-                detailPath="/backoffice/order"
+                detailPath="/order"
                 customTitles={[
                   'ID',
                   'Subscription ID',

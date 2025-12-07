@@ -110,6 +110,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
       case 'select':
         return (
           <Select
+          disabled={disabled}
             value={String(field.value || initialValue || '')}
             defaultValue={String(field.value || initialValue || '')}
             onValueChange={(value: any) => {

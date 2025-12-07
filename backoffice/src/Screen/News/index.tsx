@@ -82,7 +82,7 @@ const News = () => {
               <CustomDataTable
                 title="Provider News"
                 data={mappedNews}
-                detailPath="/backoffice/news"
+                detailPath="/news"
                 customTitles={[
                   'ID',
                   'Title',

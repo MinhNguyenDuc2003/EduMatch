@@ -74,8 +74,8 @@ const SubscriptionPlanPage = () => {
               <CustomDataTable
                 title="Subscription Plan List"
                 data={plans as any}
-                onCreate={() => router.push('/backoffice/subscriptionPlan/create')}
-                detailPath="/backoffice/subscriptionPlan"
+                onCreate={() => router.push('/subscriptionPlan/create')}
+                detailPath="/subscriptionPlan"
                 customTitles={[
                   'ID',
                   'Plan Name',

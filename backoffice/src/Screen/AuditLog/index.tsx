@@ -77,7 +77,7 @@ const AuditLogPage = () => {
               <CustomDataTable
                 title="AuditLog List"
                 data={AuditLogs as any}
-                detailPath="/backoffice/AuditLog"
+                detailPath="/AuditLog"
                 customTitles={[
                   'ID',
                   'AuditLog Name',

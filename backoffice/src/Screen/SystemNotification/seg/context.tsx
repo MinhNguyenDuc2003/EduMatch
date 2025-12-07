@@ -56,7 +56,7 @@ export default GenCtx({
                     });
                     if (data !== null) {
                         alert('Create Notification successfull');
-                        router.push('/backoffice/systemNotification')
+                        router.push('/systemNotification')
                     }
                     return;
                 } catch (error) {
