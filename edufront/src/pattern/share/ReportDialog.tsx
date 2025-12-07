@@ -65,7 +65,12 @@ export default function ReportDialog({
     try {
       switch (initialType) {
         case 'SYSTEM':
-          await reportSystem({ ...data, isRead: false }).unwrap();
+          await reportSystem({
+            title: data.title,
+            comment: data.comment,
+            category: { id: data.categoryId },
+            isRead: false,
+          }).unwrap();
           break;
         case 'PROVIDER':
           if (providerData?.id) {

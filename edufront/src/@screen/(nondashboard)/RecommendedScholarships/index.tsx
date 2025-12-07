@@ -23,7 +23,7 @@ export default function RecommendedScholarships() {
     data: scholarships,
     isLoading,
     refetch,
-  } = useGetRecommendedScholarshipsQuery({ topK: 12 });
+  } = useGetRecommendedScholarshipsQuery({ topK: 10 });
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 

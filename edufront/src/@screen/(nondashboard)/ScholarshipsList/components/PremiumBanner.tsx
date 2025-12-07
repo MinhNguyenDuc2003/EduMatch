@@ -15,7 +15,7 @@ export default function PremiumBanner() {
   const t = useTranslations('scholarshipsList.premiumBanner');
   const { isAuthenticated, subscriptions, isApplicant } = useAuth();
   const { data: scholarships, isLoading } = useGetRecommendedScholarshipsQuery(
-    { topK: 12 },
+    { topK: 10 },
     { skip: isUpgraded === false || !isApplicant }
   );
 

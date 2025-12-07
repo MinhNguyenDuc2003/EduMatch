@@ -149,7 +149,10 @@ export const apiApplicant = createApi({
     }),
 
     // REPORT SYSTEM
-    reportSystem: build.mutation<boolean, FormReport & { isRead: boolean }>({
+    reportSystem: build.mutation<
+      boolean,
+      { title: string; comment: string; category: { id: number }; isRead: boolean }
+    >({
       query: (data) => ({
         url: API_ENDPOINTS.REPORT,
         method: 'POST',
