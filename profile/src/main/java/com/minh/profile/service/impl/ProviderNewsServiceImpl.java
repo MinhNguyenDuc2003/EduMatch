@@ -17,12 +17,14 @@ import com.minh.profile.data.repository.ProviderNewsRepository;
 import com.minh.profile.data.repository.ProviderProfileRepository;
 import com.minh.profile.data.vo.NotificationVo;
 import com.minh.profile.data.vo.ProviderNewsVo;
+import com.minh.profile.data.vo.ProviderProfileVo;
 import com.minh.profile.data.vo.ScholarshipVo;
 import com.minh.profile.feign.MediaFeign;
 import com.minh.profile.feign.NotificationTemplateFeign;
 import com.minh.profile.feign.ScholarshipFeign;
 import com.minh.profile.message.KafkaProducer;
 import com.minh.profile.service.ProviderNewsService;
+import com.minh.profile.service.ProviderProfileService;
 import com.minh.service.base.BaseService;
 import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
@@ -50,6 +52,7 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
     private final KafkaProducer kafkaProducer;
     private final NotificationTemplateFeign notificationTemplateFeign;
     private final ScholarshipFeign scholarshipFeign;
+    private final ProviderProfileService providerProfileService;
 
     @Value("${kafka.news.new-event.topic}")
     private String newEventNewsTopic;
@@ -77,7 +80,7 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
         ProviderProfileEntity provider = providerProfileRepository.findByUserId(userId)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_NOT_FOUND));
 
-        dto.setProviderId(String.valueOf(provider.getId()));
+        dto.setProviderId(provider.getId());
 
         if (dto.getScholarshipId() != null) {
             try {
@@ -215,7 +218,8 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
         ProviderNewsVo vo = providerNewsMapper.entityToVo(entity);
 
 //        // --- Thêm provider profile ---
-        providerProfileRepository.findById(entity.getProviderId()).ifPresent(provider -> vo.setProviderProfileVo(providerNewsMapper.providerEntityToVo(provider)));
+        ProviderProfileVo providerVo = providerProfileService.getById(vo.getProviderId());
+        vo.setProviderProfileVo(providerVo);
 
         // --- Thêm media ---
         List<ProviderNewsMediaEntity> mediaEntities = providerNewsMediaRepository.findByProviderNewsId(entity.getId());
