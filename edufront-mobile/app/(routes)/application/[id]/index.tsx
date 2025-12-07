@@ -19,8 +19,8 @@ import {
   useUploadImagesMutation,
 } from "@/state/api";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useRef, useState } from "react";
-import { Alert, ScrollView, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, Alert, ScrollView, View } from "react-native";
 import "react-native-get-random-values";
 
 interface ImageFile {
@@ -99,6 +99,19 @@ const index = () => {
     }
   };
 
+  useEffect(() => {
+    if (application) {
+      setApplicationName(application.applicationName);
+    }
+  }, [application]);
+
+  if (isLoadingApplication)
+    return (
+      <View className="flex-1 items-center justify-center">
+        <ActivityIndicator size="large" className="text-primary-brand mt-5" />
+      </View>
+    );
+
   return (
     <View className="flex-1">
       <ScrollView
@@ -108,6 +121,7 @@ const index = () => {
       >
         <ApplicationForm
           ref={formRef}
+          application={application}
           onSubmit={onSubmit}
           onImagesChange={handleImagesChange}
           onDeleteImage={handleDeleteImage}

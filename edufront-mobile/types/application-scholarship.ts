@@ -10,7 +10,7 @@ declare global {
     reviewedAt?: number;
     note?: string;
     score?: number;
-    createdDate?: string;
+    createdDate?: number;
   };
 }
 

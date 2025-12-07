@@ -1,31 +1,71 @@
 import * as z from "zod";
 
-export const profileSchema = z.object({
+// Applicant Profile Schema
+export const applicantProfileSchema = z.object({
   applicantProfile: z.object({
     id: z.number().optional(),
     userId: z.string().optional(),
     contactName: z.string().min(1, "Contact name is required"),
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
+    phoneNumber: z.string().optional(),
+    citizenshipStatus: z.string().min(1, "Citizenship status is required"),
+    hometown: z.string().min(1, "Hometown is required"),
     religion: z.string().optional(),
-    hometown: z.string().optional(),
-    citizenshipStatus: z.string().optional(),
     ethnicity: z.string().optional(),
     race: z.string().optional(),
     militaryFamilyHistory: z.boolean().optional(),
     disabilities: z.string().optional(),
     medicalConditions: z.string().optional(),
+    careerGoals: z.string().min(1, "Career goals is required"),
+    researchInterest: z.string().min(1, "Research interest is required"),
     favoriteActivities: z.string().optional(),
     sportsParticipated: z.string().optional(),
     studentActivities: z.string().optional(),
     organizationsJoined: z.string().optional(),
     researchExperience: z.string().optional(),
-    careerGoals: z.string().optional(),
-    overallGpa: z.coerce.number().min(0).max(4),
+    overallGpa: z.coerce
+      .number<number>()
+      .min(0, "GPA must be at least 0")
+      .max(4, "GPA must be at most 4"),
+    educationLevel: z.string().min(1, "Education level is required"),
+    satScore: z.coerce
+      .number<number>()
+      .min(400, "SAT score must be at least 400")
+      .max(1600, "SAT score must be at most 1600")
+      .optional(),
+    actScore: z.coerce
+      .number<number>()
+      .min(1, "ACT score must be at least 1")
+      .max(36, "ACT score must be at most 36")
+      .optional(),
+    toeflScore: z.coerce
+      .number<number>()
+      .min(0, "TOEFL score must be at least 0")
+      .max(120, "TOEFL score must be at most 120")
+      .optional(),
+    ieltsScore: z.coerce
+      .number<number>()
+      .min(0, "IELTS score must be at least 0")
+      .max(9, "IELTS score must be at most 9")
+      .optional(),
+    greScore: z.coerce
+      .number<number>()
+      .min(260, "GRE score must be greater than 260")
+      .max(340, "GRE score must be less than 340")
+      .optional(),
+    languages: z.string().min(1, "Languages is required"),
+    academicAwards: z.string().optional(),
+    publicationCount: z.coerce.number<number>().min(0).optional(),
+    extracurricularActivities: z.string().optional(),
+    preferredScholarshipType: z
+      .string()
+      .min(1, "Preferred scholarship type is required"),
+    preferredCountry: z.string().min(1, "Preferred country is required"),
+    preferredUniversity: z.string().min(1, "Preferred university is required"),
     certificates: z
       .array(
         z.object({
-          id: z.number().optional(),
           certificateName: z.string().min(1, "Certificate name is required"),
           issuedBy: z.string().min(1, "Issuing organization is required"),
           issueDate: z.union([z.string(), z.number()]),
@@ -38,7 +78,7 @@ export const profileSchema = z.object({
       .array(
         z
           .object({
-            id: z.number().optional(),
+            applicantId: z.number().optional(),
             institutionName: z.string().min(1, "Institution name is required"),
             institutionType: z.string().min(1, "Institution type is required"),
             state: z.string().min(1, "State/Province is required"),
@@ -47,13 +87,12 @@ export const profileSchema = z.object({
             majorCategory: z.string().optional(),
             majorName: z.string().min(1, "Major name is required"),
             gpa: z.coerce
-              .number()
+              .number<number>()
               .min(0, "GPA must be greater than 0")
-              .max(4, "GPA must be less than 4")
-              .optional(),
+              .max(4, "GPA must be less than 4"),
             classRank: z.string().optional(),
             classSize: z.coerce
-              .number()
+              .number<number>()
               .min(1, "Class size must be greater than 0")
               .max(10000, "Class size must be less than 10000")
               .optional(),
@@ -63,7 +102,8 @@ export const profileSchema = z.object({
                 message: "Start date must be in the past",
               }),
             enrollmentEndDate: z.union([z.string(), z.number()]),
-            graduationYear: z.coerce.number().optional(),
+            // Required: Graduation year
+            graduationYear: z.coerce.number<number>().min(1900).max(2100),
             isDualEnrolled: z.boolean().optional(),
             isTransfer: z.boolean().optional(),
             isReturningStudent: z.boolean().optional(),
@@ -77,41 +117,38 @@ export const profileSchema = z.object({
             }
           )
       )
-      .optional(),
-    phoneNumbers: z
+      .min(1, "At least one education history is required"),
+    applicantPreferences: z
       .array(
         z.object({
-          id: z.number().optional(),
           applicantId: z.number().optional(),
-          phoneType: z.string().min(1, "Phone type is required"),
-          countryCode: z.string().min(1, "Country code is required"),
-          phoneNumber: z
-            .string()
-            .min(10, "Phone number must have at least 10 digits")
-            .max(15, "Phone number cannot exceed 15 digits")
-            .regex(/^[0-9]+$/, "Phone number can only contain numbers"),
-          isInternational: z.boolean().optional(),
+          type: z.string().min(1, "Preference type is required"),
+          value: z.string().min(1, "Preference value is required"),
+          weight: z.coerce
+            .number<number>()
+            .min(0, "Weight must be at least 0")
+            .max(10, "Weight cannot exceed 10"),
+          note: z.string().optional(),
         })
       )
       .optional(),
     skills: z
       .array(
         z.object({
-          id: z.number().optional(),
           applicantId: z.number().optional(),
           skillName: z.string().min(1, "Skill name is required"),
           proficiencyLevel: z.string().min(1, "Proficiency level is required"),
           yearsExperience: z.coerce
-            .number()
+            .number<number>()
             .min(0, "Years of experience cannot be negative")
             .max(50, "Years of experience cannot exceed 50 years"),
         })
       )
-      .optional(),
+      .min(1, "At least one skill is required"),
     intentions: z
       .array(
         z.object({
-          id: z.number().optional(),
+          applicantId: z.number().optional(),
           intendedInstitution: z
             .string()
             .min(1, "Intended institution is required"),
@@ -126,7 +163,11 @@ export const profileSchema = z.object({
             .min(1, "Intended major name is required"),
           academicClassification: z.string().optional(),
           expectedStartDate: z.union([z.string(), z.number()]),
-          expectedGraduationYear: z.number().min(1900).max(2100).optional(),
+          expectedGraduationYear: z.coerce
+            .number<number>()
+            .min(1900)
+            .max(2100)
+            .optional(),
           isTransferStudent: z.boolean().optional(),
           isReturningStudent: z.boolean().optional(),
           notes: z.string().optional(),
@@ -134,25 +175,9 @@ export const profileSchema = z.object({
       )
       .optional(),
   }),
-  addressPostVm: z.object({
-    id: z.number().optional(),
-    contactName: z.string().min(1, "Address contact name is required"),
-    phone: z
-      .string()
-      .min(10, "Phone number must have at least 10 digits")
-      .max(15, "Phone number cannot exceed 15 digits")
-      .regex(/^[0-9]+$/, "Phone number can only contain numbers"),
-    addressLine1: z.string().min(1, "Address line 1 is required"),
-    addressLine2: z.string().optional(),
-    city: z.string().min(1, "City is required"),
-    zipCode: z.string().min(1, "Zip code is required"),
-    districtId: z.number().min(1, "Please select a district"),
-    stateOrProvinceId: z.number().min(1, "Please select a state or province"),
-    countryId: z.number().min(1, "Please select a country"),
-  }),
 });
 
-export type IProfileForm = z.infer<typeof profileSchema>;
+export type IApplicantProfile = z.infer<typeof applicantProfileSchema>;
 
 export const applicationSchema = z.object({
   id: z.number().optional(),
