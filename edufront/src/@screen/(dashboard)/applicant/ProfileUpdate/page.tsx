@@ -13,7 +13,7 @@ import { useTranslations } from 'next-intl';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { DEFAULT_PROFILE_FORM_VALUES } from '../Profile/constants';
-import { Form } from '@/lib/cus/form';
+import { Form } from '@/pattern/cus/form';
 import {
   Activities,
   Certificates,
@@ -24,8 +24,8 @@ import {
   Skills,
   StudentInformation,
 } from './components';
-import { Separator } from '@/lib/cus/separator';
-import { Button } from '@/lib/cus/button';
+import { Separator } from '@/pattern/cus/separator';
+import { Button } from '@/pattern/cus/button';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 
@@ -45,13 +45,14 @@ const ProfileUpdatePage = () => {
   });
 
   useEffect(() => {
-    if (profileData) {
+    if (profileData && profileData.applicantProfile) {
       const formData = {
         applicantProfile: {
           ...DEFAULT_PROFILE_FORM_VALUES.applicantProfile,
           ...profileData.applicantProfile,
         },
       };
+
       methods.reset(formData);
     }
   }, [profileData, methods]);
@@ -59,7 +60,7 @@ const ProfileUpdatePage = () => {
   const onSubmit = async (data: IApplicantProfile) => {
     try {
       // Call API to update or create student info
-      if (profileData?.applicantProfile) {
+      if (profileData && profileData.applicantProfile) {
         await updateProfile(data)
           .unwrap()
           .then(() => {
@@ -100,7 +101,7 @@ const ProfileUpdatePage = () => {
         <Form {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className="space-y-6">
-              <StudentInformation />
+              <StudentInformation profile={profileData?.applicantProfile} />
               <Separator />
               <PreferredPreferences />
               <Separator />

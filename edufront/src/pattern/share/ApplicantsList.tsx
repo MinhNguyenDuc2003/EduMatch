@@ -1,5 +1,5 @@
-import { Button } from '@/lib/cus/button';
-import { Checkbox } from '@/lib/cus/checkbox';
+import { Button } from '@/pattern/cus/button';
+import { Checkbox } from '@/pattern/cus/checkbox';
 import {
   useAddFavouriteApplicantMutation,
   useGetProfileQuery,

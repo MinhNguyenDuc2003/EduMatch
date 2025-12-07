@@ -1,9 +1,9 @@
 import { MapPin, Mail, Phone, Globe, CheckCircle2 } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
-import { Card } from '@/lib/by/Div';
+import { Button } from '@/pattern/cus/button';
 import Image from 'next/image';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import { useAuth } from '@/hooks/useAuth';
+import { Card } from '@/pattern/cus/card';
 
 type NewsSidebarProps = {
   news: News;

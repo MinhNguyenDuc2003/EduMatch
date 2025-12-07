@@ -1,8 +1,8 @@
 import { DEFAULT_APPLICATION_FORM_VALUES } from '@/constants/DefaultValues';
 import { COUNTRIES, GENDER_OPTIONS, MAJOR_NAMES, STUDY_LEVELS, YEARS } from '@/constants/Common';
-import { Button } from '@/lib/cus/button';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
-import { Form } from '@/lib/cus/form';
+import { Button } from '@/pattern/cus/button';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
+import { Form } from '@/pattern/cus/form';
 import { applicationSchema, IApplication } from '@/lib/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FileIcon, ImageIcon, Plus, Trash2, X } from 'lucide-react';
@@ -16,7 +16,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/lib/cus/dialog';
+} from '@/pattern/cus/dialog';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
@@ -108,7 +108,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
               ...prev,
               { url: reader.result as string, type: 'new' },
             ]);
-          } else if (file.type === 'image/png') {
+          } else if (file.type.startsWith('image')) {
             setImagePreviews((prev) => [...prev, { url: reader.result as string, type: 'new' }]);
           }
         };
@@ -151,7 +151,7 @@ const ApplicationsForm = React.forwardRef<ApplicationsFormRef, ApplicationsFormP
     useEffect(() => {
       if (application?.applicationMedias && application.applicationMedias.length > 0) {
         const initialImages = application.applicationMedias
-          .filter((media) => media.contentType === 'image/png')
+          .filter((media) => media.contentType.startsWith('image'))
           .map((media) => ({
             url: media.url,
             id: media.id,

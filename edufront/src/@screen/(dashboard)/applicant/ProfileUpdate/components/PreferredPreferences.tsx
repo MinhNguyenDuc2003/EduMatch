@@ -1,4 +1,4 @@
-import { CustomFormField } from '@/lib/cus/CustomFormField';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
 import Header from '@/pattern/share/Header';
 import { useTranslations } from 'next-intl';
 import React from 'react';
@@ -41,8 +41,8 @@ const PreferredPreferences = () => {
           name="applicantProfile.preferredUniversity"
           label={t('preferredUniversity')}
           type="multi-select"
-          options={universityOptions}
           placeholder={t('preferredUniversityPlaceholder')}
+          options={universityOptions}
           inlineLabel
           isBorder
           className="md:col-span-2"

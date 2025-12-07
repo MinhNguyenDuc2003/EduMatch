@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@/lib/cus/sidebar';
+} from '@/pattern/cus/sidebar';
 import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
@@ -28,7 +28,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/lib/cus/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/pattern/cus/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,7 +36,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/lib/cus/dropdown-menu';
+} from '@/pattern/cus/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
 

@@ -1,11 +1,12 @@
 import { Edit } from "lucide-react-native";
-import React from "react";
+import React, { useState } from "react";
 import {
   ControllerRenderProps,
   FieldValues,
   useFormContext,
 } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {
   FormControl,
   FormField,
@@ -34,6 +35,7 @@ interface FormFieldProps {
     | "textarea"
     | "number"
     | "date"
+    | "date-of-birth"
     | "select"
     | "switch"
     | "password"
@@ -54,34 +56,7 @@ interface FormFieldProps {
   inlineLabel?: boolean;
   isBorder?: boolean;
   stringFormat?: "comma" | "json" | "pipe";
-}
-
-function toDateInputValue(value: unknown): string {
-  if (value === undefined || value === null || value === "") return "";
-  const isNumericString = typeof value === "string" && /^\d+$/.test(value);
-  if (typeof value === "number" || isNumericString) {
-    const numeric = typeof value === "number" ? value : Number(value);
-    const ms = numeric < 1e12 ? numeric * 1000 : numeric; // seconds vs ms
-    try {
-      return new Date(ms).toISOString().slice(0, 10);
-    } catch {
-      return "";
-    }
-  }
-  if (typeof value === "string") {
-    // If already yyyy-mm-dd, pass through; else try to parse
-    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
-    const parsed = Date.parse(value);
-    if (!Number.isNaN(parsed))
-      return new Date(parsed).toISOString().slice(0, 10);
-  }
-  return "";
-}
-
-function fromDateInputValueToTimestamp(value: string): number | "" {
-  if (!value) return "";
-  const parsed = Date.parse(value);
-  return Number.isNaN(parsed) ? "" : parsed;
+  editable?: boolean;
 }
 
 function isSecondsTimestamp(value: unknown): boolean {
@@ -90,6 +65,182 @@ function isSecondsTimestamp(value: unknown): boolean {
     typeof value === "number" || isNumericString ? Number(value) : NaN;
   return Number.isFinite(numeric) && numeric > 0 && numeric < 1e12;
 }
+
+function formatDateForDisplay(value: unknown): string {
+  if (value === undefined || value === null || value === "") return "";
+  const isNumericString = typeof value === "string" && /^\d+$/.test(value);
+  if (typeof value === "number" || isNumericString) {
+    const numeric = typeof value === "number" ? value : Number(value);
+    const ms = numeric < 1e12 ? numeric * 1000 : numeric; // seconds vs ms
+    try {
+      const date = new Date(ms);
+      if (isNaN(date.getTime())) return "";
+      return date.toLocaleDateString("vi-VN", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+    } catch {
+      return "";
+    }
+  }
+  if (typeof value === "string") {
+    try {
+      // Normalize date string: replace "/" with "-" for better compatibility
+      const normalizedValue = value.replace(/\//g, "-");
+      const date = new Date(normalizedValue);
+      if (isNaN(date.getTime())) return "";
+      return date.toLocaleDateString("vi-VN", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+    } catch {
+      return value;
+    }
+  }
+  return "";
+}
+
+function convertToDate(value: unknown): Date {
+  if (value === undefined || value === null || value === "") return new Date();
+  const isNumericString = typeof value === "string" && /^\d+$/.test(value);
+  if (typeof value === "number" || isNumericString) {
+    const numeric = typeof value === "number" ? value : Number(value);
+    const ms = numeric < 1e12 ? numeric * 1000 : numeric; // seconds vs ms
+    return new Date(ms);
+  }
+  if (typeof value === "string") {
+    // Normalize date string: replace "/" with "-" for better compatibility
+    const normalizedValue = value.replace(/\//g, "-");
+    return new Date(normalizedValue);
+  }
+  return new Date();
+}
+
+const DatePickerInput = ({
+  field,
+  placeholder,
+  inputClassName,
+  isBorder,
+  initialValue,
+  disabled,
+}: {
+  field: ControllerRenderProps<FieldValues, string>;
+  placeholder?: string;
+  inputClassName?: string;
+  isBorder?: boolean;
+  initialValue?: string | number | boolean | string[];
+  disabled?: boolean;
+}) => {
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    if (!disabled) setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: Date) => {
+    const tsMs = date.getTime();
+    // Check if the original value was in seconds or milliseconds
+    const shouldUseSeconds = isSecondsTimestamp(field.value);
+    field.onChange(shouldUseSeconds ? Math.floor(tsMs / 1000) : tsMs);
+    hideDatePicker();
+  };
+
+  // field.value has already been merged with initialValue by the parent component
+  // on line 428: value: field.value ?? initialValue ?? ""
+  const displayValue = formatDateForDisplay(field.value);
+  const selectedDate = convertToDate(field.value);
+
+  return (
+    <>
+      <Pressable onPress={showDatePicker}>
+        <Input
+          textContentType="none"
+          placeholder={placeholder || "Select date"}
+          value={displayValue}
+          editable={false}
+          pointerEvents="none"
+          className={`${isBorder ? "border border-black" : "border-none"} bg-customgreys-darkGrey p-4 ${inputClassName}`}
+        />
+      </Pressable>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        date={selectedDate}
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        confirmTextIOS="Confirm"
+        cancelTextIOS="Cancel"
+      />
+    </>
+  );
+};
+
+const DateOfBirthPickerInput = ({
+  field,
+  placeholder,
+  inputClassName,
+  isBorder,
+  initialValue,
+  disabled,
+}: {
+  field: ControllerRenderProps<FieldValues, string>;
+  placeholder?: string;
+  inputClassName?: string;
+  isBorder?: boolean;
+  initialValue?: string | number | boolean | string[];
+  disabled?: boolean;
+}) => {
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    if (!disabled) setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: Date) => {
+    // Save as yyyy-mm-dd string format instead of timestamp
+    const dateString = date.toISOString().slice(0, 10);
+    field.onChange(dateString);
+    hideDatePicker();
+  };
+
+  // field.value has already been merged with initialValue by the parent component
+  const displayValue = formatDateForDisplay(field.value);
+  const selectedDate = convertToDate(field.value);
+
+  return (
+    <>
+      <Pressable onPress={showDatePicker}>
+        <Input
+          placeholder={placeholder || "Select date of birth"}
+          value={displayValue}
+          editable={false}
+          pointerEvents="none"
+          textContentType="none"
+          className={`${isBorder ? "border border-black" : "border-none"} bg-customgreys-darkGrey text-xs  p-2 ${inputClassName}`}
+        />
+      </Pressable>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        date={selectedDate}
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        confirmTextIOS="Confirm"
+        cancelTextIOS="Cancel"
+      />
+    </>
+  );
+};
 
 const CustomFormField = ({
   name,
@@ -101,6 +252,7 @@ const CustomFormField = ({
   inputClassName,
   labelClassName,
   disabled = false,
+  editable = true,
   isIcon = false,
   initialValue,
   inlineLabel,
@@ -183,35 +335,45 @@ const CustomFormField = ({
       case "number":
         return (
           <Input
-            keyboardType="numeric"
             placeholder={placeholder}
             {...field}
-            value={String(field.value ?? initialValue ?? "")}
-            onChangeText={(value) => field.onChange(Number(value))}
+            value={
+              field.value !== undefined && field.value !== null
+                ? String(field.value)
+                : initialValue !== undefined && initialValue !== null
+                  ? String(initialValue)
+                  : ""
+            }
+            editable={editable}
+            onChangeText={(value) =>
+              field.onChange(value === "" ? undefined : Number(value))
+            }
+            keyboardType="numeric"
             className={`${isBorder ? "border border-black" : "border-none"} bg-customgreys-darkGre h-8 ${inputClassName}`}
           />
         );
 
       case "date":
         return (
-          <Input
-            textContentType="dateTime"
+          <DatePickerInput
+            field={field}
             placeholder={placeholder}
-            value={toDateInputValue(field.value ?? initialValue)}
-            onChangeText={(inputValue) => {
-              const tsMs = fromDateInputValueToTimestamp(inputValue);
-              // Preserve the original unit: seconds if original looked like seconds, else ms
-              if (tsMs === "") {
-                field.onChange("");
-                return;
-              }
-              const original = field.value ?? initialValue;
-              const shouldUseSeconds = isSecondsTimestamp(original);
-              field.onChange(
-                shouldUseSeconds ? Math.floor((tsMs as number) / 1000) : tsMs
-              );
-            }}
-            className={`${isBorder ? "border border-black" : "border-none"} bg-customgreys-darkGrey p-4 ${inputClassName}`}
+            inputClassName={inputClassName}
+            isBorder={isBorder}
+            initialValue={initialValue}
+            disabled={disabled}
+          />
+        );
+
+      case "date-of-birth":
+        return (
+          <DateOfBirthPickerInput
+            field={field}
+            placeholder={placeholder}
+            inputClassName={inputClassName}
+            isBorder={isBorder}
+            initialValue={initialValue}
+            disabled={disabled}
           />
         );
       default:
@@ -220,6 +382,7 @@ const CustomFormField = ({
             // type={type}
             placeholder={placeholder}
             {...field}
+            editable={editable}
             onChangeText={(value) => field.onChange(value)}
             className={`${isBorder ? "border border-black" : "border-none"} bg-customgreys-primarybg text-xs h-8 ${inputClassName}`}
           />

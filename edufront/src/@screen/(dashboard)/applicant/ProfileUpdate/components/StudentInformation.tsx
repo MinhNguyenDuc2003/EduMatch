@@ -6,12 +6,12 @@ import {
   RELIGIONS,
   STUDY_LEVELS,
 } from '@/constants/Common';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
 import Header from '@/pattern/share/Header';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 
-const StudentInformation = () => {
+const StudentInformation = ({ profile }: { profile?: ApplicantProfile }) => {
   const t = useTranslations('applicantProfile.studentInformationDialog');
   const tFields = useTranslations('applicantProfile.fields');
   const tCommon = useTranslations('applicantProfile.common');
@@ -60,6 +60,7 @@ const StudentInformation = () => {
           type="select"
           placeholder={t('selectReligion')}
           options={RELIGIONS}
+          initialValue={profile?.religion}
           inlineLabel
           isBorder
         />
@@ -79,6 +80,7 @@ const StudentInformation = () => {
           type="select"
           placeholder={t('selectEducationLevel')}
           options={STUDY_LEVELS}
+          initialValue={profile?.educationLevel}
           inlineLabel
           isBorder
         />
@@ -159,6 +161,7 @@ const StudentInformation = () => {
           label={tFields('ethnicity')}
           type="select"
           placeholder={t('selectEthnicity')}
+          initialValue={profile?.ethnicity}
           options={ETHNICITIES}
           inlineLabel
           isBorder
@@ -169,6 +172,7 @@ const StudentInformation = () => {
           label={tFields('race')}
           type="select"
           placeholder={t('selectRace')}
+          initialValue={profile?.race}
           options={RACES}
           inlineLabel
           isBorder
@@ -178,6 +182,7 @@ const StudentInformation = () => {
           name="applicantProfile.hometown"
           label={tFields('hometown')}
           placeholder={tCommon('addInfo')}
+          initialValue={profile?.hometown}
           type="input-select"
           options={COUNTRIES}
           inlineLabel
@@ -189,6 +194,7 @@ const StudentInformation = () => {
           label={tFields('citizenshipStatus')}
           type="select"
           placeholder={t('selectCitizenshipStatus')}
+          initialValue={profile?.citizenshipStatus}
           options={CITIZENSHIP_STATUS}
           inlineLabel
           isBorder

@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/lib/cus/dialog';
-import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from '@/lib/cus/drawer';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/pattern/cus/dialog';
+import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from '@/pattern/cus/drawer';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import IntentionDetail from './IntentionDetail';
 

@@ -1,4 +1,4 @@
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,37 +6,40 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/lib/cus/dropdown-menu';
+} from '@/pattern/cus/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { Bell } from 'lucide-react';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Client, IMessage } from '@stomp/stompjs';
 import { toast } from 'sonner';
-import { useGetNotificationsQuery, useLazyReadNotificationsQuery } from '@/state/apiAuth';
+import {
+  useGetNotificationsQuery,
+  useGetTokenQuery,
+  useLazyReadNotificationsQuery,
+} from '@/state/apiAuth';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { NOTIFICATION_TYPES } from '@/constants/Common';
 
 const Notifications = () => {
   const clientRef = useRef<Client | null>(null);
-  const token = useMemo(() => process.env.NEXT_PUBLIC_API_TOKEN || '', []);
 
   const t = useTranslations('notifications');
   const tError = useTranslations('error');
 
   const { data: notifications, isLoading, isError, refetch } = useGetNotificationsQuery();
+  const { data: token, isLoading: isLoadingToken } = useGetTokenQuery();
   const [readNotifications] = useLazyReadNotificationsQuery();
   const router = useRouter();
 
   useEffect(() => {
     if (!token) {
-      console.warn('No API token found for WebSocket connection');
       return;
     }
 
     // Initialize STOMP client
     const client = new Client({
-      brokerURL: `wss://fpt.edumatch.space/api/notification/ws?token=${encodeURIComponent(`Bearer ${token}`)}`,
+      brokerURL: `wss://fpt.edumatch.space/api/notification/ws?token=${encodeURIComponent(token)}`,
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
@@ -48,6 +51,24 @@ const Notifications = () => {
           try {
             const notification = JSON.parse(message.body);
             console.log(notification);
+
+            toast.custom((t) => (
+              <div className="flex flex-col items-start rounded-lg gap-1 p-4 border border-primary-brand cursor-pointer bg-primary-light">
+                <p className="font-semibold text-sm text-gray-900">{notification.title}</p>
+                <p className="text-xs text-gray-600 line-clamp-2">{notification.content}</p>
+              </div>
+            ));
+
+            refetch();
+          } catch (error) {
+            console.log('Error parsing private notification:', error);
+          }
+        });
+
+        client.subscribe('/topic/global', (message: IMessage) => {
+          try {
+            const notification = JSON.parse(message.body);
+            console.log('Global notification:', notification);
 
             toast.custom((t) => (
               <div className="flex flex-col items-start rounded-lg gap-1 p-4 border border-primary-brand cursor-pointer bg-primary-light">
@@ -83,7 +104,7 @@ const Notifications = () => {
       }
       clientRef.current = null;
     };
-  }, [token, refetch]);
+  }, [token, refetch, isLoadingToken]);
 
   const unreadCount = useMemo(
     () => (notifications ? notifications.filter((n) => !n.isRead).length : 0),

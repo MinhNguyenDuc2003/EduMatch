@@ -24,6 +24,7 @@ export const mapProfileToApplication = (profile: ProfileApiResponse): Partial<IA
       ?.map((cert) => `${cert.certificateName} - ${cert.issuedBy}`)
       .join('; '),
     applicantProfile?.researchExperience,
+    applicantProfile?.academicAwards,
   ]
     .filter(Boolean)
     .join(', ');
@@ -33,6 +34,7 @@ export const mapProfileToApplication = (profile: ProfileApiResponse): Partial<IA
     applicantProfile?.sportsParticipated,
     applicantProfile?.studentActivities,
     applicantProfile?.organizationsJoined,
+    applicantProfile?.extracurricularActivities,
   ]
     .filter(Boolean)
     .join(', ');
@@ -41,6 +43,12 @@ export const mapProfileToApplication = (profile: ProfileApiResponse): Partial<IA
   const graduationYear = currentEducation?.graduationYear
     ? String(currentEducation.graduationYear)
     : '';
+
+  // Calculate class rank percentile if available
+  const classRankPercentile =
+    currentEducation?.classRank && currentEducation?.classSize
+      ? (parseInt(currentEducation.classRank) / currentEducation.classSize) * 100
+      : undefined;
 
   return {
     fullName:
@@ -53,7 +61,8 @@ export const mapProfileToApplication = (profile: ProfileApiResponse): Partial<IA
     phone: applicantProfile?.phoneNumber || '',
     address: applicantProfile?.hometown || '',
     nationality: applicantProfile?.hometown || '',
-    educationLevel: currentEducation?.degreeType || '',
+    citizenship: applicantProfile?.citizenshipStatus,
+    educationLevel: currentEducation?.degreeType || applicantProfile?.educationLevel || '',
     schoolName: currentEducation?.institutionName || '',
     major: currentEducation?.majorName || '',
     gpa: currentEducation?.gpa || applicantProfile?.overallGpa || 0,
@@ -61,5 +70,18 @@ export const mapProfileToApplication = (profile: ProfileApiResponse): Partial<IA
     skills: skillsString,
     achievements: achievements || '',
     extracurricular: extracurricular || '',
+    languages: applicantProfile?.languages,
+    careerGoal: applicantProfile?.careerGoals,
+    researchInterest: applicantProfile?.researchInterest,
+    academicAwards: applicantProfile?.academicAwards,
+    publicationCount: applicantProfile?.publicationCount,
+    satScore: applicantProfile?.satScore,
+    actScore: applicantProfile?.actScore,
+    greScore: applicantProfile?.greScore,
+    toeflScore: applicantProfile?.toeflScore,
+    ieltsScore: applicantProfile?.ieltsScore,
+    classRank: currentEducation?.classRank ? parseInt(currentEducation.classRank) : undefined,
+    classSize: currentEducation?.classSize,
+    classRankPercentile,
   };
 };

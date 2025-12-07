@@ -10,6 +10,9 @@
     "login": "Sign In / Sign Up",
     "scholarships": "Scholarships",
     "news": "News",
+    "howItWorks": "How It Works",
+    "stories": "Stories",
+    "policy": "Policy",
     "day": "day",
     "days": "days",
     "dropdown": {
@@ -21,6 +24,29 @@
       "report": "Report System",
       "logout": "Logout"
     }
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "resources": "Resources",
+    "myAccount": "My Account",
+    "company": "Company",
+    "home": "Home",
+    "scholarships": "Scholarships",
+    "news": "News",
+    "howItWorks": "How It Works",
+    "policy": "Policy",
+    "providerGuidelines": "Provider Guidelines",
+    "subscriptions": "Subscriptions",
+    "myProfile": "My Profile",
+    "myActivity": "My Activity",
+    "tracking": "Tracking Scholarships",
+    "following": "Following Providers",
+    "application": "My Application",
+    "applied": "Applied Applications",
+    "report": "Report",
+    "aboutUs": "About Us",
+    "contactUs": "Contact Us",
+    "copyright": "Copyright © 2025, EduMatch"
   },
   "notifications": {
     "title": "Notifications",
@@ -72,6 +98,8 @@
     "failedToUpdateApplication": "Failed to update application",
     "filterByType": "Filter by Type",
     "allTypes": "All Types",
+    "images": "Images",
+    "documents": "Documents",
     "Scholarship": "Scholarship",
     "ResearchLab": "Research Lab",
     "scholarships": "Scholarships",
@@ -224,6 +252,37 @@
     "errorUpdatingNews": "Error updating news",
     "errorCreatingNews": "Error creating news"
   },
+  "caseStudy": {
+    "title": "Share Your Case Study",
+    "subtitle": "Tell us about your scholarship journey and inspire others!",
+    "basicInformation": "Basic Information",
+    "caseStudyTitle": "Case Study Title",
+    "caseStudyTitlePlaceholder": "Enter a compelling title for your case study",
+    "shareYourJourney": "Share Your Journey",
+    "shareYourJourneyDescription": "Please answer the following questions to help others learn from your experience.",
+    "initialThoughtsQuestion": "What were your initial thoughts when you first saw this opportunity on EduMatch?",
+    "initialThoughtsPlaceholder": "Share your first impressions...",
+    "preparationProcessQuestion": "Can you walk us through your preparation process for this scholarship application?",
+    "preparationProcessPlaceholder": "Describe the steps you took to prepare...",
+    "challengesQuestion": "What were the biggest challenges or obstacles you faced during the application process?",
+    "challengesPlaceholder": "Share the difficulties you encountered and how you overcame them...",
+    "victoryMomentQuestion": "What was the moment you knew you wanted to share your success story with others?",
+    "victoryMomentPlaceholder": "Describe that special moment...",
+    "adviceQuestion": "What advice would you give to other students who are considering applying for this scholarship?",
+    "advicePlaceholder": "Share your tips and recommendations...",
+    "images": "Images",
+    "imagesSubtitle": "Upload images that showcase your journey, achievements, or experiences",
+    "addImages": "Add Images",
+    "noImages": "No images uploaded yet",
+    "cancel": "Cancel",
+    "submitCaseStudy": "Submit Case Study",
+    "submitting": "Submitting...",
+    "submitSuccess": "Case study submitted successfully!",
+    "submitError": "Failed to submit case study. Please try again.",
+    "errorSubmitting": "Error submitting case study",
+    "thankYouTitle": "Thank You!",
+    "thankYouMessage": "Your case study has been submitted successfully. We appreciate you sharing your experience and inspiring others on their scholarship journey."
+  },
   "provider": {
     "favourite": {
       "title": "Favourite Applicants",
@@ -372,18 +431,22 @@
     },
     "howItWorks": {
       "title": "How It Works",
-      "subtitle": "Get matched with your ideal scholarships in three simple steps.",
+      "subtitle": "Get matched with your ideal scholarships in four simple steps.",
       "step1": {
-        "title": "Create Your Profile",
-        "description": "Share your academic background, interests, and goals. Takes less than 5 minutes."
+        "title": "Register Account",
+        "description": "Create a free account to start your scholarship search journey."
       },
       "step2": {
-        "title": "Get Matched",
-        "description": "Our AI analyzes thousands of scholarships and presents the best matches for you."
+        "title": "Create Profile",
+        "description": "Complete your profile with academic info and goals for better matches."
       },
       "step3": {
-        "title": "Apply & Win",
-        "description": "Submit applications with one click and track your progress until you win."
+        "title": "Create Application",
+        "description": "Prepare your application dossier with documents and information."
+      },
+      "step4": {
+        "title": "Submit Application",
+        "description": "Submit your application to scholarships and track your status."
       }
     },
     "scholarships": {
@@ -407,6 +470,14 @@
       "title": "Top 5 Most Viewed Scholarships",
       "description": "Discover the most popular scholarships this month",
       "viewCountDescription": "View count represents the number of people who have viewed this scholarship"
+    },
+    "recommendedScholarships": {
+      "title": "Recommended Scholarships",
+      "subtitle": "Discover the most popular scholarships this month",
+      "viewAll": "View All",
+      "failedToLoad": "Failed to load scholarships",
+      "failedToLoadDescription": "Please try again later or refresh the page.",
+      "noScholarships": "No scholarships found."
     },
     "cardSmalPic": {
       "trackScholarship": "Track scholarship",
@@ -472,7 +543,8 @@
       "academicRequirements": "Academic Requirements",
       "testScoreRequirements": "Test Score Requirements",
       "demographicRequirements": "Demographic Requirements",
-      "otherRequirements": "Other Requirements"
+      "otherRequirements": "Other Requirements",
+      "caseStudies": "Case Studies"
     },
     "sidebar": {
       "following": "Following",
@@ -494,6 +566,7 @@
     }
   },
   "viewProviderProfile": {
+    "itemReport": "Report",
     "notFound": "Provider not found",
     "notFoundDescription": "The provider you're looking for doesn't exist or has been removed.",
     "goBack": "Go Back",
@@ -526,6 +599,7 @@
     "closeFilters": "Close filters",
     "failedToLoad": "Failed to load scholarships. Please try again later.",
     "noScholarshipsFound": "No scholarships found matching your criteria.",
+    "endOfList": "You have reached the end of the list",
     "filters": {
       "title": "Filters",
       "applied": "applied",
@@ -561,7 +635,8 @@
       "type": "Type",
       "noDeadline": "No deadline",
       "compare": "Compare",
-      "alreadySelected": "Already selected"
+      "alreadySelected": "Already selected",
+      "matchScore": "Match Score"
     },
     "premiumBanner": {
       "badge": "AI Scholarship",
@@ -570,6 +645,7 @@
       "clickHere": "Click here to view the scholarships that match your profile",
       "updateNow": "Update Now",
       "foundMatches": "We Found {count} Perfect Matches!",
+      "loadingMatches": "We are finding the best matches for you...",
       "matchedDescription": "AI has matched you with scholarships tailored to your profile",
       "profileStrengthDialog": {
         "title": "Profile is not complete",
@@ -590,7 +666,9 @@
       "matchedScholarships": "Matched Scholarships",
       "matchedResearchOpportunities": "Matched Research Opportunities",
       "matchedScholarshipsAmount": "Matched Scholarships Amount",
-      "editProfile": "Edit Profile"
+      "editProfile": "Edit Profile",
+      "expandPackage": "Expand AI Scholarship package",
+      "upgradePackage": "Upgrade Package"
     },
     "profileStrength": {
       "title": "Profile Strength",
@@ -708,6 +786,7 @@
       "stateProvince": "State/Province",
       "enterStateProvince": "Enter state or province",
       "country": "Country",
+      "selectCountry": "Select country",
       "enterCountry": "Enter country",
       "academicInformation": "Academic Information",
       "degreeType": "Degree Type",
@@ -924,7 +1003,13 @@
       "major": "Major",
       "skills": "Skills",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "deleteConfirmation": {
+        "title": "Confirm Delete",
+        "description": "Are you sure you want to delete the application for scholarship \"{scholarshipName}\"? This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
     },
     "appliedScholarshipCard": {
       "pending": "Pending",
@@ -945,6 +1030,7 @@
       "title": "Application Information",
       "close": "Close",
       "notReviewedYet": "Not reviewed yet",
+      "notApplicantProfileCreatedYet": "You have not completed your profile yet. Please complete your profile to apply for scholarships.",
       "status": {
         "approved": "Approved",
         "rejected": "Rejected",
@@ -1042,11 +1128,18 @@
       "noApplicationsYet": "You don't have any applications yet.",
       "createNewApplication": "Create New Application",
       "cancel": "Cancel",
-      "submitApplication": "Submit Application"
+      "submitApplication": "Submit Application",
+      "submitting": "Submitting..."
     },
     "applicationForm": {
       "title": "Application Form",
       "importFromProfile": "Import from profile",
+      "makeCopy": "Make a copy",
+      "loadingMakeCopy": "Making a copy...",
+      "otherVersions": "Other Versions",
+      "version": "Version",
+      "fullName": "Full Name",
+      "gpa": "GPA",
       "guidelines": {
         "title": "To ensure your scholarship application is as strong as possible, please keep these important points in mind before you finalize and submit:",
         "accuracy": "Accuracy and Completeness: Double-check that all the information you've provided is accurate and complete. Incomplete or inaccurate details can lead to delays or disqualification.",
@@ -1188,7 +1281,14 @@
       "comment": "Comment",
       "response": "Response",
       "noResponse": "No response yet",
-      "delete": "Delete Report"
+      "delete": "Delete Report",
+      "noTitle": "No title",
+      "deleteConfirmation": {
+        "title": "Confirm Delete",
+        "description": "Are you sure you want to delete the report \"{reportTitle}\"? This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
     }
   },
   "reportDialog": {
@@ -1343,7 +1443,10 @@
       "title": "AI Scholarship",
       "titleHighlight": "Scholarship Recommendations",
       "description": "Discover scholarships perfectly matched to your profile. Our AI-powered system analyzes your academic background, interests, and goals to recommend the best opportunities for your educational journey."
-    }
+    },
+    "title": "Recommended Scholarships",
+    "description": "We found {count} scholarships that match your profile",
+    "matchingLoading": "We are finding the best matches for you..."
   },
   "inputSelect": {
     "placeholder": "Select an option"
@@ -1354,7 +1457,93 @@
     "scholarshipAdded": "Scholarship added to compare list successfully",
     "scholarshipAddedFailed": "Failed to add scholarship to compare list",
     "scholarshipMaxSelected": "You can only compare up to 3 scholarships",
-    "scholarshipAlreadySelected": "Already selected"
+    "scholarshipAlreadySelected": "Already selected",
+    "trackScholarship": {
+      "track": "Scholarship tracked successfully",
+      "trackFailed": "Failed to track scholarship",
+      "untrack": "Scholarship untracked successfully",
+      "untrackFailed": "Failed to untrack scholarship"
+    },
+    "followProvider": {
+      "follow": "Provider followed successfully",
+      "followFailed": "Failed to follow provider",
+      "unfollow": "Provider unfollowed successfully",
+      "unfollowFailed": "Failed to unfollow provider"
+    },
+    "deleteApplication": {
+      "deleteSuccess": "Application deleted successfully",
+      "deleteFailed": "Failed to delete application"
+    },
+    "submitApplication": {
+      "submitSuccess": "Application submitted successfully",
+      "submitFailed": "Failed to submit application"
+    }
+  },
+  "howItWorksPage": {
+    "hero": {
+      "badge": "Start Your Journey",
+      "title": "How It",
+      "titleHighlight": "Works",
+      "description": "Discover the simple and detailed process to start your scholarship search journey. From account registration to application submission, we'll guide you through each step.",
+      "getStarted": "Get Started"
+    },
+    "steps": {
+      "step1": {
+        "badge": "First Step",
+        "title": "Register Account",
+        "description": "Creating a free account on the EduMatch platform is the first step in your scholarship search journey. The registration process is simple and quick, taking only a few minutes.",
+        "details": [
+          "Fill in basic information: username, email, password",
+          "Verify your email to activate your account",
+          "Start using the platform"
+        ],
+        "additionalInfo": "The account is completely free and does not require a credit card. After registration, you can immediately start creating your profile or searching for suitable scholarships."
+      },
+      "step2": {
+        "badge": "Build Profile",
+        "title": "Create Profile",
+        "description": "Complete your personal profile with comprehensive information so the system can recommend the most suitable scholarships. Your profile includes personal information, education, skills, achievements, certificates, and study goals. You can use profile data to automatically fill in application forms later, saving time. The more detailed your profile, the higher your chances of finding the right scholarship.",
+        "details": [
+          "Personal information: full name, phone number, citizenship, hometown",
+          "Education: education level, GPA, standardized test scores, language certificates",
+          "Skills and achievements: skills, awards, extracurricular activities",
+          "Study goals: preferred country, university, scholarship type"
+        ],
+        "additionalInfo": "Your profile is secure and only used to recommend suitable scholarships. You can update your information at any time. When creating an application, you can import data from your profile to automatically fill in information, saving time and ensuring consistency."
+      },
+      "step3": {
+        "badge": "Prepare Application",
+        "title": "Create Application Dossier",
+        "description": "Create an application dossier with all necessary information and documents. Each application dossier is stored with a unique code and can be used to apply to multiple different scholarships. You can import data from your profile to automatically fill in information, then edit and add specific documents for each scholarship. Each scholarship may require different documents, so prepare carefully.",
+        "details": [
+          "Name your application dossier",
+          "Import data from your profile to automatically fill in information",
+          "Add information: motivation, goals, achievements",
+          "Upload documents: recommendation letters, personal statements, transcripts, certificates",
+          "Save the dossier to use for multiple scholarships"
+        ],
+        "additionalInfo": "You can create multiple different application dossiers with different information and documents to match each scholarship's requirements. Each dossier has its own unique code and can be edited at any time before submission. Remember to check deadlines and specific requirements for each scholarship before applying."
+      },
+      "step4": {
+        "badge": "Complete Application",
+        "title": "Submit Application",
+        "description": "After creating your application dossier, you can submit it to suitable scholarships. From the scholarship detail page, you select your created application dossier and submit it. One dossier can be submitted to multiple different scholarships. The system will automatically create an Application-Scholarship relationship and help you track the application status for each scholarship. You will receive notifications when there are updates to your application status.",
+        "details": [
+          "Search and select suitable scholarships",
+          "View scholarship details and check requirements",
+          "Choose your created application dossier or create a new one",
+          "Confirm and submit your application",
+          "Track application status in My Activity"
+        ],
+        "additionalInfo": "After submission, you will receive a confirmation email and can track your application status in 'My Activity'. One dossier can be submitted to multiple scholarships, saving you time. Be patient while waiting for results and continue searching for other scholarship opportunities in the meantime."
+      }
+    },
+    "goodLuck": {
+      "title": "Good Luck!",
+      "description": "You've completed all the necessary steps. Be patient and track your results. We wish you success in your scholarship search journey!",
+      "exploreScholarships": "Explore Scholarships",
+      "backToHome": "Back to Home"
+    }
   },
   "selectedScholarshipCompare": {
     "title": "Selected ({number}/3)",
@@ -1365,6 +1554,7 @@
   },
   "scholarshipCompare": {
     "title": "Compare Scholarships",
+    "comparisonTable": "Comparison Table",
     "scholarship": "Scholarship",
     "provider": "Provider",
     "country": "Country",
@@ -1376,6 +1566,120 @@
     "gpaRequirement": "GPA Requirement",
     "languageRequirement": "Language Requirement",
     "availableSlots": "Available Slots",
-    "description": "Description"
+    "description": "Description",
+    "aiAnalysis": "AI Analysis",
+    "aiAnalysisDescription": "AI analysis based on your profile and selected scholarship to provide the best recommendation.",
+    "loadingAnalysis": "Analyzing scholarships...",
+    "analyzing": "Analyzing...",
+    "bestMatch": "Best Overall Match",
+    "uniqueAdvantages": "Unique Advantages",
+    "keyTradeoffs": "Key Tradeoffs",
+    "strategicRecommendation": "Strategic Recommendation",
+    "applicationStrategy": "Application Strategy",
+    "priorityOrder": "Priority Order",
+    "reasoning": "Reasoning",
+    "approach": "Approach",
+    "timelineTips": "Timeline Tips",
+    "noAnalysis": "Unable to load analysis. Please try again."
+  },
+  "policyPage": {
+    "hero": {
+      "title": "Policy & Terms",
+      "subtitle": "Learn about EduMatch's privacy policy and terms of service"
+    },
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "introduction": "This privacy policy describes how EduMatch collects, uses, and protects your personal information when using our platform.",
+      "sections": [
+        {
+          "title": "Information We Collect",
+          "content": [
+            "Personal information: name, email, phone number, date of birth, nationality",
+            "Educational information: degrees, GPA, certificates, education history",
+            "Application information: information in application dossiers and attached documents",
+            "Payment information: processed by Stripe, we do not store credit card information",
+            "Usage data: activities on the platform, viewed scholarships, tracked items"
+          ]
+        },
+        {
+          "title": "How We Use Information",
+          "content": [
+            "Recommend suitable scholarships based on your profile",
+            "Connect applicants with scholarship providers",
+            "Process payments and manage subscriptions",
+            "Send notifications about new scholarships, application updates",
+            "Improve service quality and user experience"
+          ]
+        },
+        {
+          "title": "Information Protection",
+          "content": [
+            "Encrypt data during transmission",
+            "Secure login information and authentication",
+            "Only authorized staff can access data",
+            "Comply with personal data protection regulations"
+          ]
+        },
+        {
+          "title": "Your Rights",
+          "content": [
+            "Access and view your personal information",
+            "Edit or update information at any time",
+            "Delete account and personal data",
+            "Opt out of marketing notifications"
+          ]
+        }
+      ],
+      "lastUpdated": "Last updated: December 6, 2025"
+    },
+    "termsOfService": {
+      "title": "Terms of Service",
+      "introduction": "By using the EduMatch platform, you agree to the following terms and conditions.",
+      "sections": [
+        {
+          "title": "Account Registration",
+          "content": [
+            "You must provide accurate and complete information when registering",
+            "You are responsible for securing your login information",
+            "Each person may only register one account"
+          ]
+        },
+        {
+          "title": "Service Usage",
+          "content": [
+            "You are permitted to use the platform to search and apply for scholarships",
+            "You may not use the service for illegal purposes",
+            "You may not provide false information in profiles and applications",
+            "You may not copy, distribute, or sell content from the platform"
+          ]
+        },
+        {
+          "title": "Subscription and Payment",
+          "content": [
+            "Subscriptions are charged according to the selected plan and duration",
+            "Payments are processed through Stripe, secure and protected",
+            "Subscriptions will auto-renew unless you cancel",
+            "No refunds for paid subscriptions"
+          ]
+        },
+        {
+          "title": "Intellectual Property",
+          "content": [
+            "All content on the platform is owned by EduMatch",
+            "You retain ownership of information and documents you upload",
+            "You grant EduMatch permission to use information to provide services"
+          ]
+        },
+        {
+          "title": "Liability",
+          "content": [
+            "EduMatch does not guarantee you will receive scholarships",
+            "We are not responsible for scholarship providers' decisions",
+            "You are responsible for the accuracy of information in your profile"
+          ]
+        }
+      ],
+      "lastUpdated": "Last updated: December 6, 2025"
+    }
   }
 }

@@ -1,8 +1,8 @@
 import ScholarshipCarousel from '@/@screen/(dashboard)/provider/Applications/components/ScholarshipCarousel';
 import { DEFAULT_NEWS_FORM_VALUES } from '@/constants/DefaultValues';
-import { Button } from '@/lib/cus/button';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
-import { Form } from '@/lib/cus/form';
+import { Button } from '@/pattern/cus/button';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
+import { Form } from '@/pattern/cus/form';
 import { INews, newsSchema } from '@/lib/schemas';
 import { useGetScholarshipsQuery } from '@/state/apiProvider';
 import { zodResolver } from '@hookform/resolvers/zod';

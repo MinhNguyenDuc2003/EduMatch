@@ -1,0 +1,141 @@
+declare global {
+  type ScholarshipMedia = {
+    id: number;
+    s3Key: string;
+    contentType: string;
+    size: number;
+    folderName: string;
+    fileName: string;
+    isPublic: boolean;
+    thumbnail?: string;
+    url: string;
+  };
+
+  type ScholarshipPreference = {
+    id: number;
+    scholarshipId: number;
+    type: string;
+    value: string;
+    weight: number;
+    note: string;
+  };
+
+  type Scholarship = {
+    id: number;
+    providerId: number;
+    title: string;
+    slug: string;
+    shortDescription: string;
+    description: string;
+    requirements: string;
+    benefits: string;
+    fields: string;
+    country: string;
+    university: string;
+    studyLevel: string;
+    scholarshipType: string;
+    fundingAmount: string;
+    startDate: number; // Timestamp (number)
+    endDate: number; // Timestamp (number)
+    availableSlots: number;
+    languageRequirement: string;
+    gpaRequirement: number;
+    requiredMajor: string;
+    restrictedNationalities: string;
+    minAge: number;
+    maxAge: number;
+    genderRequirement: string;
+    requiredSatScore: number;
+    requiredActScore: number;
+    requiredGreScore: number;
+    requiredToeflScore: number;
+    requiredIeltsScore: number;
+    requiredWorkExperienceYears: number;
+    requiredPublicationCount: number;
+    requiredAcademicAwards: string;
+    requiredClassRankPercentile: number;
+    isDeleted?: boolean;
+    providerProfileVo: ProviderProfile;
+    scholarshipPreferences?: ScholarshipPreference[];
+    scholarshipMedias?: ScholarshipMedia[];
+    isFollow: number;
+    views: number;
+  };
+
+  type SearchScholarshipsByUniversityResponse = {
+    id: number;
+    university: string;
+    availableSlots: number;
+  };
+
+  type ScholarshipSearchCriteria = {
+    country?: string;
+    university?: string;
+    studyLevel?: string;
+    scholarshipType?: string;
+    fields?: string;
+  };
+
+  type ScholarshipPageRequest = {
+    criteria: ScholarshipSearchCriteria;
+    sortBy?: string;
+    sortDirection?: "ASC" | "DESC";
+    page: number;
+    size: number;
+  };
+
+  type ScholarshipSearchRequest = {
+    criteria: ScholarshipSearchCriteria;
+    page: number;
+    size: number;
+    keyword?: string;
+    minGpa?: number;
+    maxGpa?: number;
+  };
+
+  type ScholarshipSearchAggregations = {
+    country?: Record<string, number>;
+    studyLevel?: Record<string, number>;
+    [key: string]: Record<string, number> | undefined;
+  };
+
+  type ScholarshipSearchResponse = {
+    scholarship: Scholarship[];
+    aggregations?: ScholarshipSearchAggregations;
+    totalElements: number;
+    totalPages: number;
+    pageSize: number;
+    pageNum: number;
+  };
+
+  // Search Filters (for UI state management)
+  type FilterState = {
+    keyword: string;
+    country: string;
+    studyLevel: string;
+    scholarshipType: string;
+    university: string;
+    minGpa: number;
+    maxGpa: number;
+    page: number;
+    size: number;
+  };
+
+  type ApiGetScholarshipResponse = {
+    content: Scholarship[];
+    pageable: {
+      pageNumber: number;
+      pageSize: number;
+      offset: number;
+    };
+    totalPages: number;
+    totalElements: number;
+    size: number;
+    number: number;
+    first: boolean;
+    last: boolean;
+    empty: boolean;
+  };
+}
+
+export {};

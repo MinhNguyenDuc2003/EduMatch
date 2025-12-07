@@ -32,13 +32,15 @@ import {
   useGetAppliedApplicationQuery,
   useGetMyReportQuery,
 } from '@/state/apiApplicant';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function ActivityManagement() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const t = useTranslations();
+  const { isApplicant } = useAuth();
   const [activeTab, setActiveTab] = useState<ShortlistTab>('tracking');
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
   const [selectedAppliedScholarship, setSelectedAppliedScholarship] =
@@ -90,7 +92,7 @@ export default function ActivityManagement() {
   };
 
   const handleViewProvider = (providerId?: number) => {
-    router.push(`/applicant/providers/${providerId}`);
+    router.push(`/providers/${providerId}`);
   };
 
   const handleUntrack = async (id: number) => {
@@ -100,7 +102,9 @@ export default function ActivityManagement() {
           await unfollowScholarship({
             scholarshipId: id,
           }).unwrap();
+          toast.success(t('toast.trackScholarship.untrack'));
         } catch (error) {
+          toast.error(t('toast.trackScholarship.untrackFailed'));
           console.log('Failed to untrack scholarship:', error);
         }
         break;
@@ -110,7 +114,9 @@ export default function ActivityManagement() {
       case 'following': {
         try {
           await unfollowProvider(id).unwrap();
+          toast.success(t('toast.followProvider.unfollow'));
         } catch (error) {
+          toast.error(t('toast.followProvider.unfollowFailed'));
           console.log('Failed to unfollow provider:', error);
         }
         break;
@@ -121,8 +127,10 @@ export default function ActivityManagement() {
   const handleDeleteApplication = async (applicationId: number) => {
     try {
       await deleteApplication({ applicationId }).unwrap();
+      toast.success(t('toast.deleteApplication.deleteSuccess'));
     } catch (error) {
       console.log('Failed to delete application:', error);
+      toast.error(t('toast.deleteApplication.deleteFailed'));
     }
     refetchApplications();
   };
@@ -205,15 +213,23 @@ export default function ActivityManagement() {
                 <EmptyState tab={activeTab} />
               ) : isApplicationTab && applicationsData?.length === 0 ? (
                 <div className="flex flex-col gap-4 ">
-                  <Button
-                    variant="custom"
-                    color="gray"
-                    onClick={handleCreateNew}
-                    value={t('activity.applicationDetail.createNewApplication')}
-                  />
+                  {isApplicant ? (
+                    <Button
+                      variant="custom"
+                      color="gray"
+                      onClick={handleCreateNew}
+                      value={t('activity.applicationDetail.createNewApplication')}
+                    />
+                  ) : (
+                    <div className="text-center text-gray-500 text-sm">
+                      {t('activity.applicationDetail.notApplicantProfileCreatedYet')}
+                    </div>
+                  )}
                   <EmptyState tab={activeTab} />
                 </div>
-              ) : isAppliedTab && appliedScholarshipsData?.length === 0 ? (
+              ) : isAppliedTab &&
+                appliedScholarshipsData?.length === 0 &&
+                !isLoadingAppliedScholarships ? (
                 <EmptyState tab={activeTab} />
               ) : isReportTab && reportData?.length === 0 ? (
                 <EmptyState tab={activeTab} />

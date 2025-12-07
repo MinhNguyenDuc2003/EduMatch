@@ -129,13 +129,15 @@ export default function NewsCard({
               dangerouslySetInnerHTML={{ __html: truncatedContent }}
             />
           </div>
-          <div
-            className="flex items-center w-fit gap-2 px-2 py-1 bg-blue-100 hover:bg-blue-200 hover:text-blue-700 transition-colors cursor-pointer rounded-lg"
-            onClick={() => onViewScholarship?.(news.scholarship?.slug)}
-          >
-            <Link2 className="w-4 h-4" />
-            <span className="text-sm">{news.scholarship?.title}</span>
-          </div>
+          {news.scholarship && (
+            <div
+              className="flex items-center w-fit gap-2 px-2 py-1 bg-blue-100 hover:bg-blue-200 hover:text-blue-700 transition-colors cursor-pointer rounded-lg"
+              onClick={() => onViewScholarship?.(news.scholarship?.slug)}
+            >
+              <Link2 className="w-4 h-4" />
+              <span className="text-sm">{news.scholarship?.title}</span>
+            </div>
+          )}
         </div>
         {/* Image */}
         {images.length > 0 && (

@@ -174,3 +174,9 @@ export interface District {
   id: number;
   name: string;
 }
+
+export interface ProfileApiResponse {
+  customer: Customer;
+  applicantProfile?: ApplicantProfile;
+  providerProfile: null;
+}

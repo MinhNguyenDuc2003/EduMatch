@@ -14,12 +14,12 @@ import {
   OctagonAlert,
   ArrowRightLeft,
 } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
 import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
-import { useScholarshipCompareStore } from '@/store/scholarshipCompareStore';
+import { useScholarshipCompareStore } from '@/hooks/useScholarshipCompare';
 import { toast } from 'sonner';
 import {
   DropdownMenu,
@@ -28,7 +28,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/lib/cus/dropdown-menu';
+} from '@/pattern/cus/dropdown-menu';
 import ReportDialog from '@/pattern/share/ReportDialog';
 
 type ScholarshipCardProps = {
@@ -38,7 +38,7 @@ type ScholarshipCardProps = {
   onFollowProvider?: (providerId: number) => void;
   onViewScholarship?: (slug: string) => void;
   onViewProvider?: (providerId: number) => void;
-  isAuthenticated?: boolean;
+  score?: number;
 };
 
 export default function ScholarshipCard({
@@ -48,8 +48,9 @@ export default function ScholarshipCard({
   onToggleTracking,
   onViewScholarship,
   onViewProvider,
-  isAuthenticated,
+  score,
 }: ScholarshipCardProps) {
+  const { isAuthenticated, subscriptions } = useAuth();
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
@@ -60,6 +61,7 @@ export default function ScholarshipCard({
   const images = getScholarshipImages(scholarship);
   const { logoUrl, organizationName, isFollow, id } = scholarship.providerProfileVo;
   const isSelected = isScholarshipSelected(scholarship.id);
+  const isUpgraded = subscriptions.some((subscription) => subscription.userType === 'APPLICANT');
 
   const handleCompareClick = () => {
     if (isSelected) {
@@ -121,18 +123,15 @@ export default function ScholarshipCard({
             </div>
             {isAuthenticated && (
               <div className="flex items-center gap-2">
-                <Button
-                  variant="custom"
-                  className={`group relative ${
-                    isSelected ? 'text-blue-600' : 'text-[#3D6CB9]'
-                  } !border-none !shadow-none !p-0 hover:translate-none`}
-                  onClick={handleCompareClick}
-                >
-                  <ArrowRightLeft className="w-5 h-5" />
-                  <span className="absolute -bottom-full mb-2 hidden group-hover:block px-2 py-1 text-xs text-white bg-slate-800 rounded shadow-lg whitespace-nowrap">
-                    {isSelected ? t('alreadySelected') : t('compare')}
-                  </span>
-                </Button>
+                {isUpgraded && (
+                  <Button
+                    variant="custom"
+                    className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
+                    onClick={handleCompareClick}
+                  >
+                    <ArrowRightLeft className="w-5 h-5" />
+                  </Button>
+                )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -143,21 +142,24 @@ export default function ScholarshipCard({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem
-                      onClick={() => onToggleTracking?.(scholarship.id)}
-                      className="cursor-pointer"
-                    >
-                      <Flag
-                        className={`w-4 h-4 mr-2 transition-colors ${
-                          scholarship.isFollow === 1
-                            ? 'fill-blue-600 text-blue-600'
-                            : 'text-gray-400'
-                        }`}
-                      />
-                      <span>
-                        {scholarship.isFollow === 1 ? 'Untrack Scholarship' : 'Track Scholarship'}
-                      </span>
-                    </DropdownMenuItem>
+                    {onToggleTracking && (
+                      <DropdownMenuItem
+                        onClick={() => onToggleTracking?.(scholarship.id)}
+                        className="cursor-pointer"
+                      >
+                        <Flag
+                          className={`w-4 h-4 mr-2 transition-colors ${
+                            scholarship.isFollow === 1
+                              ? 'fill-blue-600 text-blue-600'
+                              : 'text-gray-400'
+                          }`}
+                        />
+                        <span>
+                          {scholarship.isFollow === 1 ? 'Untrack Scholarship' : 'Track Scholarship'}
+                        </span>
+                      </DropdownMenuItem>
+                    )}
+
                     <DropdownMenuItem
                       onClick={() => setIsReportDialogOpen(true)}
                       className="cursor-pointer"
@@ -207,6 +209,31 @@ export default function ScholarshipCard({
             <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
               {scholarship.title}
             </h2>
+
+            {/* Score Bar - Only show if score exists and user is upgraded */}
+            {score !== undefined && score !== null && isUpgraded && (
+              <div className="mb-3">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs font-medium text-gray-600">{t('matchScore')}</span>
+                  <span className="text-xs font-bold text-gray-900">
+                    {(score * 100).toFixed(0)}%
+                  </span>
+                </div>
+                <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: `${(score * 100).toFixed(1)}%`,
+                      background: `linear-gradient(to right, 
+                        rgb(29, 78, 216) 0%, 
+                        rgb(37, 99, 235) 33%, 
+                        rgb(59, 130, 246) 66%, 
+                        rgb(96, 165, 250) 100%`,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Description */}
             <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-3">
@@ -264,10 +291,12 @@ export default function ScholarshipCard({
             </div>
 
             {/* View */}
-            <div className="flex items-center gap-1.5 text-gray-600">
-              <Eye className="w-4 h-4" />
-              <span className="font-semibold">{scholarship.views || 0}</span>
-            </div>
+            {scholarship.views > 0 && (
+              <div className="flex items-center gap-1.5 text-gray-600">
+                <Eye className="w-4 h-4" />
+                <span className="font-semibold">{scholarship.views || 0}</span>
+              </div>
+            )}
 
             {/* Action Buttons
             <div className="flex items-center gap-2">

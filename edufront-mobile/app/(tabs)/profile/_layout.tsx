@@ -6,9 +6,7 @@ export default function ProfileLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Profile",
-          headerLargeTitle: true,
-          headerLargeTitleShadowVisible: false,
+          headerShown: false,
         }}
       />
     </Stack>

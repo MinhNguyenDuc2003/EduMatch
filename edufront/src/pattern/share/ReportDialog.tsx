@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import Image from 'next/image';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
-import { Button } from '@/lib/cus/button';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
+import { Button } from '@/pattern/cus/button';
 import {
   Dialog,
   DialogContent,
@@ -12,8 +12,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/lib/cus/dialog';
-import { Form } from '@/lib/cus/form';
+} from '@/pattern/cus/dialog';
+import { Form } from '@/pattern/cus/form';
 import {
   useGetReportsQuery,
   useReportSystemMutation,
@@ -65,7 +65,12 @@ export default function ReportDialog({
     try {
       switch (initialType) {
         case 'SYSTEM':
-          await reportSystem({ ...data, isRead: false }).unwrap();
+          await reportSystem({
+            title: data.title,
+            comment: data.comment,
+            category: { id: data.categoryId },
+            isRead: false,
+          }).unwrap();
           break;
         case 'PROVIDER':
           if (providerData?.id) {

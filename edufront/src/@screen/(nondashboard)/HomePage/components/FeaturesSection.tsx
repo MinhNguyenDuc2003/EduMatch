@@ -1,4 +1,4 @@
-import { Card } from '@/lib/by/Div';
+import { Card } from '@/pattern/cus/card';  
 import { featuresData } from '../mockData';
 import { useTranslations } from 'next-intl';
 

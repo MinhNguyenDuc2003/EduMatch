@@ -1,6 +1,6 @@
 import { Camera, Globe, Mail, OctagonAlert, Phone } from 'lucide-react';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import { Skeleton } from '@/lib/cus/skeleton';
+import { Skeleton } from '@/pattern/cus/skeleton';
 
 interface ProfileHeaderProps {
   currentData?: ProviderProfile;

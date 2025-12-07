@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/lib/cus/card';
+import { Card, CardContent } from '@/pattern/cus/card';
 import { useTranslations } from 'next-intl';
 
 interface ConversionFunnelCardProps {
@@ -52,7 +52,7 @@ function ConversionFunnelCard({
           <div>
             <div className="flex items-center justify-between mb-2">
               <p className="text-sm font-medium text-foreground">
-                {t('appliedApplications')} ({applyRate}%)
+                {t('appliedApplications')} ({applyRate.toFixed(2)}%)
               </p>
               <p className="text-2xl font-bold text-green-600">{appliesCount.toLocaleString()}</p>
             </div>
@@ -68,7 +68,7 @@ function ConversionFunnelCard({
           <div>
             <div className="flex items-center justify-between mb-2">
               <p className="text-sm font-medium text-foreground">
-                {t('viewedButNoApply')} ({viewButNoApplyRate}%)
+                {t('viewedButNoApply')} ({viewButNoApplyRate.toFixed(2)}%)
               </p>
               <p className="text-2xl font-bold text-amber-600">{noApplyCount.toLocaleString()}</p>
             </div>

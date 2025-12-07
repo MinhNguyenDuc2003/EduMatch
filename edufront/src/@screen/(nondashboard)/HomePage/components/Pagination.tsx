@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';

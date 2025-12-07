@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/cus/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/pattern/cus/select';
 import { SCHOLARSHIP_TYPES } from '@/constants/Common';
 import { useTranslations } from 'next-intl';
 

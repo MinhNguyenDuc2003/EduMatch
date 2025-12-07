@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton } from '@/lib/cus/skeleton';
+import { Skeleton } from '@/pattern/cus/skeleton';
 import ApplicationsTableHeader from './ApplicationsTableHeader';
 import ApplicationsFilters from './ApplicationsFilters';
 

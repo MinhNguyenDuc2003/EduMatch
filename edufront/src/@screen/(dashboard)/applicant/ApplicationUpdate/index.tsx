@@ -13,7 +13,7 @@ import {
 } from '@/state/apiApplicant';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { Copy, ExternalLink, ChevronDown, FileText } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -23,12 +23,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/lib/cus/dropdown-menu';
+} from '@/pattern/cus/dropdown-menu';
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
 
 const ApplicationUpdate = ({ applicationId }: { applicationId: string }) => {
   const t = useTranslations('activity.applicationForm.toast');
+  const tApplicationForm = useTranslations('activity.applicationForm');
   const router = useRouter();
   const { data: application, isLoading: isLoadingApplication } =
     useGetApplicationByIdQuery(applicationId);
@@ -124,7 +125,7 @@ const ApplicationUpdate = ({ applicationId }: { applicationId: string }) => {
                 className="border-[#3D6CB9] text-[#3D6CB9] hover:bg-[#3D6CB9]/10"
               >
                 <FileText className="w-4 h-4 mr-2" />
-                Các version khác ({relatedApplications.length})
+                {tApplicationForm('otherVersions')} ({relatedApplications.length})
                 <ChevronDown className="w-4 h-4 ml-2" />
               </Button>
             </DropdownMenuTrigger>
@@ -144,15 +145,17 @@ const ApplicationUpdate = ({ applicationId }: { applicationId: string }) => {
                     </div>
                     <div className="space-y-0.5 text-xs text-slate-600 w-full">
                       <div>
-                        <span className="font-medium">Version:</span>{' '}
+                        <span className="font-medium">{tApplicationForm('version')}:</span>{' '}
                         {relatedApp.versionApplication}
                       </div>
                       <div>
-                        <span className="font-medium">Full Name:</span> {relatedApp.fullName}
+                        <span className="font-medium">{tApplicationForm('fullName')}:</span>{' '}
+                        {relatedApp.fullName}
                       </div>
                       {relatedApp.gpa !== undefined && relatedApp.gpa !== null && (
                         <div>
-                          <span className="font-medium">GPA:</span> {relatedApp.gpa.toFixed(2)}
+                          <span className="font-medium">{tApplicationForm('gpa')}:</span>{' '}
+                          {relatedApp.gpa.toFixed(2)}
                         </div>
                       )}
                     </div>
@@ -172,7 +175,9 @@ const ApplicationUpdate = ({ applicationId }: { applicationId: string }) => {
           disabled={isCopying || isLoadingCopy || !application}
         >
           <Copy className="w-4 h-4 mr-2" />
-          {isCopying || isLoadingCopy ? 'Đang tạo bản copy...' : 'Tạo bản copy'}
+          {isCopying || isLoadingCopy
+            ? tApplicationForm('loadingMakeCopy')
+            : tApplicationForm('makeCopy')}
         </Button>
       </div>
 

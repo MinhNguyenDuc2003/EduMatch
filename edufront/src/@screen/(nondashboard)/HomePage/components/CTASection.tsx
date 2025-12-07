@@ -1,6 +1,7 @@
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import router from 'next/router';
 
 export default function CTASection() {
   const t = useTranslations('homepage.cta');
@@ -19,13 +20,14 @@ export default function CTASection() {
             variant="custom"
             className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-6 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all [&_.value]:text-blue-600"
             value={t('getStartedFree')}
+            onClick={() => router.push('/scholarships')}
             iconRight={<ArrowRight className="w-5 h-5" />}
           />
-          <Button
+          {/* <Button
             variant="outline"
             className="border-2 border-white text-white hover:bg-white/10 px-8 py-6 text-lg font-semibold rounded-xl backdrop-blur-sm transition-all"
             value={t('contactUs')}
-          />
+          /> */}
         </div>
         <p className="text-blue-100 mt-6 text-sm">{t('footer')}</p>
       </div>

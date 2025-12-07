@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/lib/cus/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/pattern/cus/card';
 import React from 'react';
 import { useTranslations } from 'next-intl';
 

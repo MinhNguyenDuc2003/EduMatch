@@ -665,7 +665,7 @@ export const MAJOR_NAMES = [
 export const NOTIFICATION_TYPES = {
   SCHOLARSHIP: 'scholarship',
   SCHOLARSHIP_UPDATED: 'scholarshipUpdated',
-  SCHOLARSHIP_NEWS: 'scholarshipNews',
+  PROVIDER_NEWS: 'scholarshipNews',
   APPLICATION: 'application',
   SYSTEM: 'system',
   SCHOLARSHIP_APPLICATION: 'scholarshipApplication',
@@ -739,7 +739,7 @@ export const RELIGIONS = [
   },
   {
     value: 'None',
-    label: 'No religion',
+    label: 'None',
   },
 ];
 

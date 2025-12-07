@@ -17,13 +17,6 @@ export const getTabConfigs = (t: (key: string) => string): TabConfig[] => [
     bgGradient: 'from-blue-600 via-purple-600 to-pink-500',
   },
   {
-    key: 'applied',
-    label: t('activity.tabs.applied.label'),
-    title: t('activity.tabs.applied.title'),
-    description: t('activity.tabs.applied.description'),
-    bgGradient: 'from-emerald-600 via-teal-600 to-cyan-500',
-  },
-  {
     key: 'following',
     label: t('activity.tabs.following.label'),
     title: t('activity.tabs.following.title'),
@@ -36,6 +29,13 @@ export const getTabConfigs = (t: (key: string) => string): TabConfig[] => [
     title: t('activity.tabs.application.title'),
     description: t('activity.tabs.application.description'),
     bgGradient: 'from-green-600 via-lime-600 to-emerald-500',
+  },
+  {
+    key: 'applied',
+    label: t('activity.tabs.applied.label'),
+    title: t('activity.tabs.applied.title'),
+    description: t('activity.tabs.applied.description'),
+    bgGradient: 'from-emerald-600 via-teal-600 to-cyan-500',
   },
   {
     key: 'report',

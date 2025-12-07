@@ -5,7 +5,6 @@ import { toast } from 'sonner';
 
 export const useAuth = () => {
   const { data, isLoading, isError, error, refetch } = useAuthenticatedQuery();
-  const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
 
   const handleLogout = () => {
     window.location.href = 'http://159.89.200.244/logout';
@@ -18,6 +17,7 @@ export const useAuth = () => {
     // Authentication state
     isAuthenticated: data?.isAuthenticated ?? false,
     isProvider: data?.isProvider ?? false,
+    isApplicant: data?.isApplicant ?? false,
     subscriptions: data?.subscriptions ?? [],
     // Loading and error states
     isLoading,

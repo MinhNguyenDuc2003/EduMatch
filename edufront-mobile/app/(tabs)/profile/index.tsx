@@ -1,323 +1,156 @@
-import ArrayInfoCard from "@/components/profile/ArrayInfoCard";
-import Certificates from "@/components/profile/Certificates";
-import EditFormDialog from "@/components/profile/EditFormDialog";
-import HistoryCard from "@/components/profile/HistoryCard";
-import InfoCard from "@/components/profile/InfoCard";
-import Intentions from "@/components/profile/Intentions";
-import ProfileHeader from "@/components/profile/ProfileHeader";
-import ProfileStrength from "@/components/profile/ProfileStrength";
-import SkillCard from "@/components/profile/SkillCard";
+import { StatCard } from "@/components/profile/StatCard";
+import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { mockProfileData } from "@/constants/mockData";
-import { transformProfileData } from "@/lib/utils";
-import { ProfileData } from "@/types/profile";
-import { useRouter } from "expo-router"; // dùng để chuyển trang
-import React, { useEffect, useState } from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  useGetAppliedApplicationQuery,
+  useGetFollowedProvidersQuery,
+  useGetRecommendedScholarshipsQuery,
+  useGetTrackedScholarshipsQuery,
+} from "@/state/api";
+import { router } from "expo-router";
+import {
+  ArrowBigUp,
+  BookMarked,
+  BriefcaseBusiness,
+  Building2,
+  Check,
+  Gem,
+} from "lucide-react-native";
+import React, { useMemo } from "react";
+import { Pressable, ScrollView, TouchableOpacity, View } from "react-native";
 
-const Profile = () => {
-  const router = useRouter(); // hook để điều hướng
-  const [uiData, setUiData] = useState<ProfileData>({
-    name: "",
-    role: "",
-    avatarUrl: undefined,
-    stats: {
-      matchedScholarships: 0,
-      matchedResearchOpportunities: 0,
-      scholarshipAmount: "$0",
-    },
-    profileStrength: 0,
+const index = () => {
+  const { user, subscriptions } = useAuth();
+
+  const {
+    data: recommendedScholarships,
+    isLoading: recommendedScholarshipsLoading,
+  } = useGetRecommendedScholarshipsQuery({
+    topK: 10,
   });
-  const [isLoading, setIsLoading] = useState(true);
-  const [isDialogOpen, setDialogOpen] = useState(false);
-  const [value, setValue] = useState("personal");
 
-  const { applicantProfile, addresses, customer } = mockProfileData;
+  const { data: appliedScholarships, isLoading: appliedScholarshipsLoading } =
+    useGetAppliedApplicationQuery();
 
-  useEffect(() => {
-    // Simulate async data loading
-    const loadProfileData = async () => {
-      try {
-        // Transform data in useEffect to avoid render-time side effects
-        const transformedData = transformProfileData(mockProfileData);
-        setUiData(transformedData);
-      } catch (error) {
-        console.error("Error loading profile data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const { data: followedProviders, isLoading: followedProvidersLoading } =
+    useGetFollowedProvidersQuery();
 
-    loadProfileData();
-  }, []);
+  const { data: trackedScholarships, isLoading: trackedScholarshipsLoading } =
+    useGetTrackedScholarshipsQuery();
 
-  const [activeTab, setActiveTab] = useState("information");
-
-  const handleEdit = (section: string) => {
-    setDialogOpen(true);
-    setValue(section);
-  };
-
-  if (isLoading) {
-    return (
-      <ScrollView className="bg-gray-50 py-8 px-4 flex-1">
-        <View className="max-w-7xl mx-auto space-y-6">
-          <View className="bg-[#FAFAF6] rounded-[0.25rem] border border-[#828282] p-6 h-full">
-            <View className="flex flex-col lg:gap-4 items-center justify-center">
-              <View className="w-48 h-24 bg-gray-300 rounded-md flex items-center justify-center flex-shrink-0 animate-pulse"></View>
-              <View className="flex flex-col items-center justify-center">
-                <View className="h-6 w-32 bg-gray-300 rounded animate-pulse mb-2"></View>
-                <View className="h-4 w-24 bg-gray-300 rounded animate-pulse"></View>
-              </View>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
+  const userSubscription = useMemo(() => {
+    return subscriptions.find(
+      (userSubscription) => userSubscription.userType === "APPLICANT"
     );
-  }
+  }, [subscriptions]);
 
-  // danh sách tab
-  const tabs = [
-    { id: "information", label: "Information" },
-    { id: "application", label: "Application" },
-    { id: "favourites", label: "Favourites" },
-  ];
+  const totalDays = userSubscription
+    ? Math.ceil(
+        (userSubscription.endDate - new Date().getTime()) /
+          (1000 * 60 * 60 * 24)
+      )
+    : null;
 
   return (
-    <ScrollView className="bg-gray-50 py-8 px-4 flex-1 flex flex-col mb-40">
-      <View className="max-w-7xl mx-auto flex flex-col gap-6">
-        {/* Tab Bar */}
-        <View className="flex-row justify-around bg-white py-2 border-b border-gray-300">
-          {tabs.map((tab) => (
-            <TouchableOpacity
-              key={tab.id}
-              onPress={() => {
-                setActiveTab(tab.id);
-                if (tab.id === "information") {
-                  // Already on profile page, no navigation needed
-                } else if (tab.id === "application") {
-                  router.push("/ApplicationScreen" as any);
-                } else if (tab.id === "favourites") {
-                  router.push("/FavouritesScreen" as any);
-                }
-              }}
-            >
-              <Text
-                className={`text-lg font-bold ${
-                  activeTab === tab.id ? "text-blue-600" : "text-gray-500"
-                }`}
-              >
-                {tab.label}
+    <ScrollView className="flex-1 bg-white">
+      <View>
+        <View className="bg-primary-brand h-32 relative" />
+
+        <Pressable
+          className="absolute -bottom-14 left-4 right-4 bg-white rounded-lg p-4 shadow-sm"
+          onPress={() => router.push("/(routes)/applicantProfile")}
+        >
+          <View className="flex flex-row gap-4 items-center justify-center">
+            <View className="bg-primary-brand w-16 h-16 rounded-full flex items-center justify-center">
+              <Text className="text-white font-bold text-2xl">
+                {user?.firstName[0].toUpperCase()}
               </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <View className="flex flex-col gap-6">
-          <ProfileHeader
-            name={uiData.name}
-            role={uiData.role}
-            avatarUrl={uiData.avatarUrl}
-            stats={uiData.stats}
-          />
-          <ProfileStrength percentage={uiData.profileStrength} />
-        </View>
-
-        <View className="flex flex-col gap-6">
-          <InfoCard
-            title="Student Information"
-            fields={[
-              {
-                label: "Contact Name",
-                value: applicantProfile?.contactName,
-              },
-              {
-                label: "First Name",
-                value: applicantProfile?.firstName,
-              },
-              {
-                label: "Last Name",
-                value: applicantProfile?.lastName,
-              },
-              {
-                label: "Address",
-                value:
-                  addresses && addresses.length > 0
-                    ? `${addresses[0].addressLine1 || ""}, ${addresses[0].districtName || ""}, ${addresses[0].city || ""}, ${addresses[0].countryName || ""}`
-                        .replace(/,\s*,/g, ",")
-                        .replace(/^,\s*|,\s*$/g, "")
-                    : undefined,
-              },
-              {
-                label: "Overall GPA",
-                value: applicantProfile?.overallGpa
-                  ? applicantProfile.overallGpa.toFixed(2)
-                  : undefined,
-              },
-              {
-                label: "Hometown",
-                value: applicantProfile?.hometown,
-              },
-              {
-                label: "Citizenship Status",
-                value: applicantProfile?.citizenshipStatus,
-              },
-              {
-                label: "Race",
-                value: applicantProfile?.race,
-              },
-              {
-                label: "Ethnicity",
-                value: applicantProfile?.ethnicity,
-              },
-              {
-                label: "Religion",
-                value: applicantProfile?.religion,
-              },
-              {
-                label: "Military Family History",
-                value:
-                  applicantProfile?.militaryFamilyHistory !== undefined
-                    ? applicantProfile.militaryFamilyHistory
-                      ? "Yes"
-                      : "No"
-                    : undefined,
-              },
-              {
-                label: "Disabilities",
-                value: applicantProfile?.disabilities,
-              },
-              {
-                label: "Medical Conditions",
-                value: applicantProfile?.medicalConditions,
-              },
-            ]}
-            onEdit={() => {
-              handleEdit("personal");
-            }}
-          />
-
-          <InfoCard
-            title="Interests & Activities"
-            fields={[
-              {
-                label: "Art/Music/Theater",
-                value: applicantProfile?.favoriteActivities,
-              },
-              {
-                label: "Sports Participated",
-                value: applicantProfile?.sportsParticipated,
-              },
-              {
-                label: "Student Activities",
-                value: applicantProfile?.studentActivities,
-              },
-              {
-                label: "Organizations Joined",
-                value: applicantProfile?.organizationsJoined,
-              },
-              {
-                label: "Career Goals",
-                value: applicantProfile?.careerGoals,
-              },
-              {
-                label: "Research Experience",
-                value: applicantProfile?.researchExperience,
-              },
-            ]}
-            onEdit={() => {
-              handleEdit("activities");
-            }}
-          />
-
-          <ArrayInfoCard
-            title="Phone Numbers"
-            items={applicantProfile?.phoneNumbers}
-            onEdit={() => {
-              handleEdit("phone");
-            }}
-            renderItem={(phone) => (
-              <View className="space-y-1 flex flex-row items-center justify-between">
-                <View className="flex flex-row items-center  text-gray-600 font-bold">
-                  <Text className="text-xs font-bold">{phone.phoneType} </Text>
-                  {phone.isInternational && (
-                    <View className="px-2 py-0.5 bg-blue-100 rounded-full">
-                      <Text className="text-xs text-blue-700 bg-blue-100">
-                        International
+            </View>
+            <View className="flex flex-col gap-1">
+              <Text className="text-lg font-bold">
+                {user?.firstName} {user?.lastName}
+              </Text>
+              <Text className="text-sm text-gray-500">{user?.email}</Text>
+              <Button
+                variant="ghost"
+                className="p-0 h-fit flex items-center justify-start"
+              >
+                <TouchableOpacity
+                  onPress={() => router.push("/(routes)/subscriptionPlan")}
+                >
+                  {userSubscription ? (
+                    <View className="flex flex-row items-center gap-1 bg-primary-brand px-2 rounded-md">
+                      <Gem size={12} color="white" />
+                      <Text className="text-xs text-white">
+                        Premium ({totalDays} days left)
+                      </Text>
+                    </View>
+                  ) : (
+                    <View className="flex flex-row items-center gap-1 bg-gray-400 px-2 rounded-md">
+                      <ArrowBigUp size={12} color="white" />
+                      <Text className="text-xs text-white">
+                        Upgrade account
                       </Text>
                     </View>
                   )}
-                </View>
-                <Text className="text-xs text-gray-600">
-                  {phone.countryCode} {phone.phoneNumber}
-                </Text>
-              </View>
-            )}
-            emptyMessage="No phone numbers added"
-          />
+                </TouchableOpacity>
+              </Button>
+            </View>
+          </View>
+        </Pressable>
+      </View>
 
-          <InfoCard
-            title="Account Settings"
-            fields={[
-              {
-                label: "Email Address",
-                value: customer?.email,
-              },
-              {
-                label: "Password",
-                value: "•••••••••",
-              },
-            ]}
-            onEdit={() => {}}
-          />
+      <View className="flex flex-col gap-3 p-4 mt-12">
+        <Text className="text-lg font-bold">Scholarship Management</Text>
 
-          <ArrayInfoCard
-            title="Education History"
-            items={applicantProfile?.educationHistories}
-            onEdit={() => {
-              handleEdit("education");
-            }}
-            renderItem={(edu) => <HistoryCard edu={edu} />}
-            emptyMessage="No education history added"
+        <View className="flex gap-3 w-full">
+          <StatCard
+            icon={Check}
+            label="Recommended Scholarship"
+            value={
+              recommendedScholarshipsLoading
+                ? "..."
+                : recommendedScholarships?.length || 0
+            }
+            iconColor="#059669"
+            onPress={() => router.push("/(routes)/recommededScholarships")}
           />
-
-          <ArrayInfoCard
-            title="Skills"
-            items={applicantProfile?.skills}
-            onEdit={() => {
-              handleEdit("skills");
-            }}
-            renderItem={(skill) => <SkillCard skill={skill} />}
-            emptyMessage="No skills added"
+          <StatCard
+            icon={BriefcaseBusiness}
+            label="Applied Scholarship"
+            value={
+              appliedScholarshipsLoading
+                ? "..."
+                : appliedScholarships?.length || 0
+            }
+            iconColor="#2563eb"
+            onPress={() => router.push("/(routes)/appliedScholarship")}
+          />
+          <StatCard
+            icon={BookMarked}
+            label="Saved Scholarship"
+            value={
+              trackedScholarshipsLoading
+                ? "..."
+                : trackedScholarships?.length || 0
+            }
+            iconColor="#db2777"
+            onPress={() => router.push("/(routes)/savedScholarships")}
+          />
+          <StatCard
+            icon={Building2}
+            label="Saved Provider"
+            value={
+              followedProvidersLoading ? "..." : followedProviders?.length || 0
+            }
+            iconColor="#d97706"
+            onPress={() => router.push("/(routes)/savedProviders")}
           />
         </View>
-
-        <Certificates
-          certificates={applicantProfile?.certificates || []}
-          onEdit={() => {
-            handleEdit("certificates");
-          }}
-        />
-
-        <Intentions
-          intentions={applicantProfile?.intentions || []}
-          onEdit={() => {
-            handleEdit("intentions");
-          }}
-        />
-
-        <EditFormDialog
-          profile={mockProfileData}
-          open={isDialogOpen}
-          onOpenChange={setDialogOpen}
-          onSubmit={() => {}}
-          onCancel={() => {}}
-          value={value}
-          setValue={setValue}
-        />
       </View>
     </ScrollView>
   );
 };
 
-export default Profile;
+export default index;

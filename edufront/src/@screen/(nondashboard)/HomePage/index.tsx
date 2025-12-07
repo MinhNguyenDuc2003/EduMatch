@@ -9,6 +9,7 @@ import {
   HowItWorksSection,
   ScholarshipsSection,
   TopViewScholarshipSection,
+  RecommendedScholarshipsSection,
   CTASection,
 } from './components';
 import { usePageScholarshipsQuery } from '@/state/apiScholarship';
@@ -43,6 +44,9 @@ export default function HomePage() {
     <>
       <BannerSection />
 
+      <RecommendedScholarshipsSection />
+      <TopViewScholarshipSection />
+
       <ScholarshipsSection
         scholarships={scholarships}
         isLoading={isLoading}
@@ -51,7 +55,6 @@ export default function HomePage() {
         totalPages={totalPages}
         onPageChange={handlePageChange}
       />
-      <TopViewScholarshipSection />
       <FeaturesSection />
 
       <HowItWorksSection />

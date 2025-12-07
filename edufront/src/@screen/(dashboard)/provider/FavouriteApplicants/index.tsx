@@ -16,7 +16,7 @@ import {
 } from './components';
 import ApplicantDetailDialog from './components/ApplicantDetailDialog';
 import { toast } from 'sonner';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { Send } from 'lucide-react';
 
 export default function FavouriteApplicants() {

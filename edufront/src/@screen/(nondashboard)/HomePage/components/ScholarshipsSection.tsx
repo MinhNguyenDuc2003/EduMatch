@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import CardSmalPicSkeleton from './CardSmalPicSkeleton';
 import { ArrowRight, AlertCircle } from 'lucide-react';
@@ -10,8 +10,8 @@ import {
   useFollowScholarshipMutation,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
-import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 type ScholarshipsSectionProps = {
   scholarships: Scholarship[];
@@ -30,9 +30,9 @@ export default function ScholarshipsSection({
   totalPages,
   onPageChange,
 }: ScholarshipsSectionProps) {
-  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const t = useTranslations('homepage.scholarships');
+  const tToast = useTranslations('toast');
 
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
@@ -46,10 +46,12 @@ export default function ScholarshipsSection({
         await unfollowScholarship({
           scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.untrack'));
       } else {
         await followScholarship({
           scholarshipId,
         }).unwrap();
+        toast.success(tToast('trackScholarship.track'));
       }
     } catch (error) {
       console.log('Failed to toggle tracking:', error);
@@ -57,11 +59,7 @@ export default function ScholarshipsSection({
   };
 
   const handleViewDetails = (slug: string) => {
-    if (!isAuthenticated) {
-      router.push('http://159.89.200.244/oauth2/authorization/keycloak');
-    } else {
-      router.push(`/scholarships/${slug}`);
-    }
+    router.push(`/scholarships/${slug}`);
   };
 
   return (

@@ -1,5 +1,5 @@
-import { Button } from '@/lib/cus/button';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
+import { Button } from '@/pattern/cus/button';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
 import { IApplicantProfile } from '@/lib/schemas';
 import Header from '@/pattern/share/Header';
 import { Calendar, GraduationCap, Plus, Trash2 } from 'lucide-react';
@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { INSTITUTION_TYPES } from '../../Profile/constants';
-import { MAJOR_CATEGORIES, MAJOR_NAMES, STUDY_LEVELS } from '@/constants/Common';
+import { COUNTRIES, MAJOR_CATEGORIES, MAJOR_NAMES, STUDY_LEVELS } from '@/constants/Common';
 
 const EducationHistory = () => {
   const { control } = useFormContext<IApplicantProfile>();
@@ -126,7 +126,9 @@ const EducationHistory = () => {
                 <CustomFormField
                   name={`applicantProfile.educationHistories.${index}.country`}
                   label={t('country')}
-                  placeholder={t('enterCountry')}
+                  type="select"
+                  placeholder={t('selectCountry')}
+                  options={COUNTRIES}
                   inlineLabel
                   isBorder
                 />

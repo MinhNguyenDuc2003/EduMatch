@@ -21,7 +21,7 @@ const customBaseQuery = async (args: string | FetchArgs, api: BaseQueryApi, extr
       const errorData = result.error.data;
       const errorMessage =
         errorData?.message || result.error.status.toString() || 'An error occurred';
-      toast.error(`Error: ${errorMessage}`);
+      // toast.error(`Error: ${errorMessage}`);
     }
 
     const isMutationRequest = (args as FetchArgs).method && (args as FetchArgs).method !== 'GET';

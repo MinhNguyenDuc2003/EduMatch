@@ -1,5 +1,5 @@
 'use client';
-import { Skeleton } from '@/lib/cus/skeleton';
+import { Skeleton } from '@/pattern/cus/skeleton';
 import { ScholarshipCard } from '@/@screen/(nondashboard)/ScholarshipsList/components';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
@@ -61,7 +61,6 @@ export default function ScholarshipsSection({
               onViewProvider={handleViewProvider}
               onToggleTracking={() => onToggleTracking(scholarship.id)}
               onFollowProvider={() => onFollowProvider(scholarship.providerId)}
-              isAuthenticated={isAuthenticated}
             />
           ))}
         </div>

@@ -1,4 +1,4 @@
-import { Skeleton } from '@/lib/cus/skeleton';
+import { Skeleton } from '@/pattern/cus/skeleton';
 
 export default function ProviderCardSkeleton() {
   return (

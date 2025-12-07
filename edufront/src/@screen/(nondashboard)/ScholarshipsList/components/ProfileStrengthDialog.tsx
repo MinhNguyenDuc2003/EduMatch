@@ -10,8 +10,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/lib/cus/dialog';
-import { Button } from '@/lib/cus/button';
+} from '@/pattern/cus/dialog';
+import { Button } from '@/pattern/cus/button';
 
 interface ProfileStrengthDialogProps {
   open: boolean;
@@ -19,11 +19,7 @@ interface ProfileStrengthDialogProps {
   profileId?: number;
 }
 
-export default function ProfileStrengthDialog({
-  open,
-  onOpenChange,
-  profileId,
-}: ProfileStrengthDialogProps) {
+export default function ProfileStrengthDialog({ open, onOpenChange }: ProfileStrengthDialogProps) {
   const router = useRouter();
   const t = useTranslations('scholarshipsList.premiumBanner.profileStrengthDialog');
 

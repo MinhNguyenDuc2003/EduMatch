@@ -1,8 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { Begin, RText } from '@/lib/by/Div';
 import Link from 'next/link';
-import { Button } from '../../lib/cus/button';
+import { Button } from '../cus/button';
 import Image from 'next/image';
 import { scholarshipProviderMenuItems, studentMenuItems } from '@/constants/Common';
 import {
@@ -10,14 +9,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/lib/cus/dropdown-menu';
+} from '@/pattern/cus/dropdown-menu';
 import { CircleUserRound, GemIcon, Sparkles } from 'lucide-react';
 import MobileNavigation from '../share/MobileNavigation';
 import {
   NavigationMenu,
   NavigationMenuItem as NavMenuItem,
   NavigationMenuList,
-} from '@/lib/cus/navigation-menu';
+} from '@/pattern/cus/navigation-menu';
 import Notifications from '../share/Notifications';
 import { useAuth } from '@/hooks/useAuth';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -37,7 +36,7 @@ const Header = () => {
     : null;
 
   return (
-    <Begin className="px-4 lg:px-40 py-3 flex items-center border-b bg-[#fafaf6] sticky top-0 z-50">
+    <div className="px-4 lg:px-40 py-3 flex items-center border-b bg-[#fafaf6] sticky top-0 z-50">
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center gap-5">
           <div className="flex items-center space-x-4">
@@ -100,6 +99,22 @@ const Header = () => {
                   {t('news')}
                 </Link>
               </NavMenuItem>
+              <NavMenuItem className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium hover:bg-zinc-200 hover:text-accent-foreground focus:bg-zinc-200 focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-zinc-200 data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-accent data-[state=open]:bg-accent/50 focus-visible:ring-ring/50 outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1">
+                <Link
+                  href="/how-it-works"
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                >
+                  {t('howItWorks')}
+                </Link>
+              </NavMenuItem>
+              <NavMenuItem className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium hover:bg-zinc-200 hover:text-accent-foreground focus:bg-zinc-200 focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-zinc-200 data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-accent data-[state=open]:bg-accent/50 focus-visible:ring-ring/50 outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1">
+                <Link
+                  href="/policy"
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                >
+                  {t('policy')}
+                </Link>
+              </NavMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
@@ -129,9 +144,7 @@ const Header = () => {
             <div className="flex items-center space-x-2">
               <Link href="http://159.89.200.244/oauth2/authorization/keycloak">
                 <Button variant="outline" className="text-primary-brand text-lg p-4 shadow-none">
-                  <RText>
-                    <span className="text-sm font-bold">{t('login')}</span>
-                  </RText>
+                  <span className="text-sm font-bold">{t('login')}</span>
                 </Button>
               </Link>
             </div>
@@ -194,7 +207,7 @@ const Header = () => {
         onOpenChange={setIsReportDialogOpen}
         initialType="SYSTEM"
       />
-    </Begin>
+    </div>
   );
 };
 

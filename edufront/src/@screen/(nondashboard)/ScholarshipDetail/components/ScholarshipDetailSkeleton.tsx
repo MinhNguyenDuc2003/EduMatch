@@ -1,5 +1,5 @@
 'use client';
-import { Skeleton } from '@/lib/cus/skeleton';
+import { Skeleton } from '@/pattern/cus/skeleton';
 import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 import { useTranslations } from 'next-intl';
 

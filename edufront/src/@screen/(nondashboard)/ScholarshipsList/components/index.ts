@@ -4,3 +4,5 @@ export { default as RightSidebar } from './RightSidebar';
 export { default as PremiumBanner } from './PremiumBanner';
 export { default as ScholarshipCardImages } from './ScholarshipCardImages';
 export { default as AggregationFilters } from './AggregationFilters';
+export { default as ScholarshipsListSkeleton } from './ScholarshipsListSkeleton';
+export { default as ScholarshipCardSkeleton } from './ScholarshipCardSkeleton';

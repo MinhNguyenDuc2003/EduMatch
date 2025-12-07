@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { Form } from '@/lib/cus/form';
+import { Form } from '@/pattern/cus/form';
 import { providerProfileSchema, IProviderProfile } from '@/lib/schemas';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Mail, Plus, Trash2 } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
+import { Button } from '@/pattern/cus/button';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
 import ProfileHeader from './components/ProfileHeader';
 import { ProviderProfileSkeleton } from './components';
 import { useGetProfileQuery, useUpdateProfileMutation } from '@/state/apiProvider';

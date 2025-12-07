@@ -1,7 +1,7 @@
 import React from 'react';
 import { Search, Filter } from 'lucide-react';
-import { Input } from '@/lib/cus/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/cus/select';
+import { Input } from '@/pattern/cus/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/pattern/cus/select';
 import { useTranslations } from 'next-intl';
 
 interface ApplicationsFiltersProps {

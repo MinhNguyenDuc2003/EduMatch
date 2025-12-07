@@ -1,7 +1,7 @@
 'use client';
 
 import { Check } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -19,7 +19,7 @@ const subscriptionFeatures = {
 
 export default function Subscription({ subscription }: SubscriptionProps) {
   const router = useRouter();
-  const { subscriptions: userSubscriptions, isLoading } = useAuth();
+  const { subscriptions: userSubscriptions, isLoading, isAuthenticated } = useAuth();
 
   const isSubscribed = userSubscriptions.some(
     (userSubscription) => userSubscription.userType === subscription?.targetType
@@ -117,7 +117,13 @@ export default function Subscription({ subscription }: SubscriptionProps) {
           className="w-full py-4 rounded-lg font-semibold transition-all bg-primary-brand text-white"
           variant="custom"
           disabled={isLoading}
-          onClick={() => router.push(`/checkout?step=1&id=${id}`)}
+          onClick={() => {
+            if (!isAuthenticated) {
+              window.location.href = 'http://159.89.200.244/oauth2/authorization/keycloak';
+            } else {
+              router.push(`/checkout?step=1&id=${id}`);
+            }
+          }}
         >
           {!isSubscribed ? 'Subscribe Now' : 'Extend Subscription'}
         </Button>
