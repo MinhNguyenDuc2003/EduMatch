@@ -1,4 +1,5 @@
 import { useGetTopViewedScholarshipsQuery } from "@/state/api";
+import { router } from "expo-router";
 import React from "react";
 import { View } from "react-native";
 import ScholarshipCard from "../ScholarshipCard";
@@ -12,7 +13,12 @@ const TopScholarshipView = () => {
     <View className="gap-4 ">
       <View className="flex-row justify-between items-center ">
         <Text className="text-xl font-bold">Top viewed scholarships</Text>
-        <Text className="text-md font-normal text-primary-brand">View all</Text>
+        <Text
+          className="text-md font-normal text-primary-brand"
+          onPress={() => router.push("/(routes)/scholarships")}
+        >
+          View all
+        </Text>
       </View>
       {isLoading ? (
         // TODO: Add loading skeleton

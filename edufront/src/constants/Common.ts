@@ -739,7 +739,7 @@ export const RELIGIONS = [
   },
   {
     value: 'None',
-    label: 'No religion',
+    label: 'None',
   },
 ];
 

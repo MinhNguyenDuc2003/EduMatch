@@ -140,15 +140,18 @@ export const DEGREE_TYPES = [
 ];
 
 export const MAJOR_CATEGORIES = [
-  { value: "Business", label: "Business" },
-  { value: "Engineering", label: "Engineering" },
-  { value: "Computer Science", label: "Computer Science" },
-  { value: "Medicine", label: "Medicine" },
-  { value: "Law", label: "Law" },
-  { value: "Arts", label: "Arts" },
-  { value: "Sciences", label: "Sciences" },
+  {
+    value: "Agriculture, Outdoor, and Construction",
+    label: "Agriculture, Outdoor, and Construction",
+  },
+  { value: "Art", label: "Art" },
+  { value: " Business", label: "Business" },
   { value: "Education", label: "Education" },
-  { value: "Social Sciences", label: "Social Sciences" },
+  { value: "Health", label: "Health" },
+  { value: "Humanities", label: "Humanities" },
+  { value: "Law and Politics", label: "Law and Politics" },
+  { value: "Social Science", label: "Social Science" },
+  { value: "STEM", label: "STEM" },
   { value: "Other", label: "Other" },
 ];
 

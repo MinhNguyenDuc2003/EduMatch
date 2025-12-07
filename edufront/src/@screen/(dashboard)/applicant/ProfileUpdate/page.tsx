@@ -45,13 +45,14 @@ const ProfileUpdatePage = () => {
   });
 
   useEffect(() => {
-    if (profileData) {
+    if (profileData && profileData.applicantProfile) {
       const formData = {
         applicantProfile: {
           ...DEFAULT_PROFILE_FORM_VALUES.applicantProfile,
           ...profileData.applicantProfile,
         },
       };
+
       methods.reset(formData);
     }
   }, [profileData, methods]);
@@ -59,7 +60,7 @@ const ProfileUpdatePage = () => {
   const onSubmit = async (data: IApplicantProfile) => {
     try {
       // Call API to update or create student info
-      if (profileData?.applicantProfile) {
+      if (profileData && profileData.applicantProfile) {
         await updateProfile(data)
           .unwrap()
           .then(() => {
@@ -100,7 +101,7 @@ const ProfileUpdatePage = () => {
         <Form {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className="space-y-6">
-              <StudentInformation />
+              <StudentInformation profile={profileData?.applicantProfile} />
               <Separator />
               <PreferredPreferences />
               <Separator />

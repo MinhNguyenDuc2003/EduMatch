@@ -3,6 +3,7 @@ import SearchBar from "@/components/home/SearchBar";
 import TopScholarshipView from "@/components/home/TopScholarshipView";
 import ScholarshipCard from "@/components/ScholarshipCard";
 import { usePageScholarshipsQuery } from "@/state/api";
+import { router } from "expo-router";
 import React from "react";
 import { FlatList, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -32,8 +33,11 @@ const Home = () => {
             <TopScholarshipView />
             <View className="flex-row justify-between items-center ">
               <Text className="text-xl font-bold">Scholarships</Text>
-              <Text className="text-md font-normal text-primary-brand">
-                All scholarships
+              <Text
+                className="text-md font-normal text-primary-brand"
+                onPress={() => router.push("/(routes)/scholarships")}
+              >
+                View all
               </Text>
             </View>
           </View>

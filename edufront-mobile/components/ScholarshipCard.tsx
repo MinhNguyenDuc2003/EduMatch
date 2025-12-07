@@ -31,14 +31,17 @@ const ScholarshipCard = ({ item }: { item: Scholarship }) => {
 
       {/* Details */}
       <View className="flex-row justify-between items-center ">
-        <View className="flex-row gap-2 items-center">
-          <Text className="text-xs text-gray-800 font-medium bg-gray-200 p-1 rounded-2xl line-clamp-1">
-            {item.fundingAmount}
-          </Text>
-          <Text className="text-xs text-gray-800 font-medium bg-gray-200 p-1 rounded-2xl line-clamp-1">
-            {item.country}
-          </Text>
-          {/* <Text className="text-sm text-gray-800 font-medium bg-gray-200 p-2 rounded-2xl">{item.availableSlots}</Text> */}
+        <View className="flex-row gap-2 border-t border-gray-100">
+          <View className="bg-blue-50 px-3 py-1 rounded-full">
+            <Text className="text-xs font-medium text-blue-700">
+              {item.fundingAmount}
+            </Text>
+          </View>
+          <View className="bg-purple-50 px-3 py-1 rounded-full">
+            <Text className="text-xs font-medium text-purple-700">
+              {item.country}
+            </Text>
+          </View>
         </View>
       </View>
     </Pressable>

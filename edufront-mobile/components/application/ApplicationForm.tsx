@@ -26,6 +26,7 @@ import { Text } from "../ui/text";
 export interface ImageFile {
   uri: string;
   name?: string;
+  id?: number;
   type?: string;
 }
 
@@ -33,6 +34,7 @@ interface ApplicationFormProps {
   application?: Application;
   onSubmit?: (data: IApplication) => void | Promise<void>;
   onImagesChange?: (images: ImageFile[]) => void;
+  onDeleteImage?: (imageId: number) => void;
 }
 
 export interface ApplicationFormRef {
@@ -40,7 +42,7 @@ export interface ApplicationFormRef {
 }
 
 const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
-  ({ application, onSubmit, onImagesChange }, ref) => {
+  ({ application, onSubmit, onImagesChange, onDeleteImage }, ref) => {
     const [selectedImages, setSelectedImages] = useState<ImageFile[]>([]);
 
     const methods = useForm<IApplication>({
@@ -75,11 +77,14 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
           application.applicationMedias &&
           application.applicationMedias.length > 0
         ) {
-          const images = application.applicationMedias.map((media) => ({
-            uri: media.url,
-            name: media.fileName,
-            type: media.contentType,
-          }));
+          const images = application.applicationMedias
+            .filter((media) => media.contentType.startsWith("image"))
+            .map((media) => ({
+              uri: media.url,
+              name: media.fileName,
+              id: media.id,
+              type: media.contentType,
+            }));
           setSelectedImages(images);
         }
       }
@@ -105,13 +110,6 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
 
       setValue("age", age, { shouldValidate: false });
     }, [dateOfBirth, setValue]);
-
-    // Notify parent when images change
-    useEffect(() => {
-      if (onImagesChange) {
-        onImagesChange(selectedImages);
-      }
-    }, [selectedImages, onImagesChange]);
 
     // Request permissions and pick images
     const pickImages = async () => {
@@ -145,6 +143,11 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
           }));
 
           setSelectedImages((prev) => [...prev, ...newImages]);
+
+          // Only upload the NEW images, not existing ones
+          if (onImagesChange) {
+            onImagesChange(newImages);
+          }
         }
       } catch (error) {
         console.error("Error picking images:", error);
@@ -154,7 +157,12 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
 
     // Remove an image from selection
     const removeImage = (index: number) => {
+      const idToRemove = selectedImages[index].id;
       setSelectedImages((prev) => prev.filter((_, i) => i !== index));
+
+      if (idToRemove) {
+        onDeleteImage?.(idToRemove);
+      }
     };
 
     const handleAddPreference = () => {
@@ -209,6 +217,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               type="date-of-birth"
               placeholder="Select your date of birth"
               inlineLabel
+              initialValue={application?.dateOfBirth}
               isBorder={true}
             />
 
@@ -303,6 +312,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               label="GPA*"
               type="number"
               placeholder="Enter your GPA"
+              initialValue={application?.gpa}
               isBorder={true}
               inlineLabel
             />
@@ -321,6 +331,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               label="Class Rank*"
               type="number"
               placeholder="Enter your class rank"
+              initialValue={application?.classRank}
               inlineLabel
               isBorder={true}
             />
@@ -330,6 +341,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               label="Class Size*"
               type="number"
               placeholder="Enter your class size"
+              initialValue={application?.classSize}
               isBorder={true}
               inlineLabel
             />
@@ -339,6 +351,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               label="Class Rank Percentile*"
               type="number"
               placeholder="Enter your class rank percentile"
+              initialValue={application?.classRankPercentile}
               isBorder={true}
               inlineLabel
             />
@@ -352,6 +365,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               label="SAT Score*"
               type="number"
               placeholder="Enter your SAT score"
+              initialValue={application?.satScore}
               inlineLabel
               isBorder={true}
             />
@@ -360,6 +374,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               label="ACT Score*"
               type="number"
               placeholder="Enter your ACT score"
+              initialValue={application?.actScore}
               inlineLabel
               isBorder={true}
             />
@@ -368,6 +383,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               label="GRE Score*"
               type="number"
               placeholder="Enter your GRE score"
+              initialValue={application?.greScore}
               inlineLabel
               isBorder={true}
             />
@@ -376,6 +392,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               label="GMAT Score*"
               type="number"
               placeholder="Enter your GMAT score"
+              initialValue={application?.gmatScore}
               inlineLabel
               isBorder={true}
             />
@@ -384,13 +401,16 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               label="TOEFL Score*"
               type="number"
               placeholder="Enter your TOEFL score"
+              initialValue={application?.toeflScore}
               inlineLabel
               isBorder={true}
             />
             <CustomFormField
               name="ieltsScore"
               label="IELTS Score*"
+              type="number"
               placeholder="Enter your IELTS score"
+              initialValue={application?.ieltsScore}
               inlineLabel
               isBorder={true}
             />
@@ -468,6 +488,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               label="Publication Count*"
               type="number"
               placeholder="Enter number of publications"
+              initialValue={application?.publicationCount}
               inlineLabel
               isBorder={true}
             />
@@ -478,6 +499,7 @@ const ApplicationForm = forwardRef<ApplicationFormRef, ApplicationFormProps>(
               label="Work Experience Years*"
               type="number"
               placeholder="Enter years of work experience"
+              initialValue={application?.workExperienceYears}
               inlineLabel
               isBorder={true}
             />

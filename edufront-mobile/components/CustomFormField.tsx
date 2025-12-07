@@ -74,6 +74,7 @@ function formatDateForDisplay(value: unknown): string {
     const ms = numeric < 1e12 ? numeric * 1000 : numeric; // seconds vs ms
     try {
       const date = new Date(ms);
+      if (isNaN(date.getTime())) return "";
       return date.toLocaleDateString("vi-VN", {
         year: "numeric",
         month: "2-digit",
@@ -85,7 +86,10 @@ function formatDateForDisplay(value: unknown): string {
   }
   if (typeof value === "string") {
     try {
-      const date = new Date(value);
+      // Normalize date string: replace "/" with "-" for better compatibility
+      const normalizedValue = value.replace(/\//g, "-");
+      const date = new Date(normalizedValue);
+      if (isNaN(date.getTime())) return "";
       return date.toLocaleDateString("vi-VN", {
         year: "numeric",
         month: "2-digit",
@@ -107,7 +111,9 @@ function convertToDate(value: unknown): Date {
     return new Date(ms);
   }
   if (typeof value === "string") {
-    return new Date(value);
+    // Normalize date string: replace "/" with "-" for better compatibility
+    const normalizedValue = value.replace(/\//g, "-");
+    return new Date(normalizedValue);
   }
   return new Date();
 }
@@ -139,14 +145,16 @@ const DatePickerInput = ({
 
   const handleConfirm = (date: Date) => {
     const tsMs = date.getTime();
-    const original = field.value ?? initialValue;
-    const shouldUseSeconds = isSecondsTimestamp(original);
+    // Check if the original value was in seconds or milliseconds
+    const shouldUseSeconds = isSecondsTimestamp(field.value);
     field.onChange(shouldUseSeconds ? Math.floor(tsMs / 1000) : tsMs);
     hideDatePicker();
   };
 
-  const displayValue = formatDateForDisplay(field.value ?? initialValue);
-  const selectedDate = convertToDate(field.value ?? initialValue);
+  // field.value has already been merged with initialValue by the parent component
+  // on line 428: value: field.value ?? initialValue ?? ""
+  const displayValue = formatDateForDisplay(field.value);
+  const selectedDate = convertToDate(field.value);
 
   return (
     <>
@@ -205,8 +213,9 @@ const DateOfBirthPickerInput = ({
     hideDatePicker();
   };
 
-  const displayValue = formatDateForDisplay(field.value ?? initialValue);
-  const selectedDate = convertToDate(field.value ?? initialValue);
+  // field.value has already been merged with initialValue by the parent component
+  const displayValue = formatDateForDisplay(field.value);
+  const selectedDate = convertToDate(field.value);
 
   return (
     <>
@@ -328,8 +337,18 @@ const CustomFormField = ({
           <Input
             placeholder={placeholder}
             {...field}
+            value={
+              field.value !== undefined && field.value !== null
+                ? String(field.value)
+                : initialValue !== undefined && initialValue !== null
+                  ? String(initialValue)
+                  : ""
+            }
             editable={editable}
-            onChangeText={(value) => field.onChange(Number(value))}
+            onChangeText={(value) =>
+              field.onChange(value === "" ? undefined : Number(value))
+            }
+            keyboardType="numeric"
             className={`${isBorder ? "border border-black" : "border-none"} bg-customgreys-darkGre h-8 ${inputClassName}`}
           />
         );

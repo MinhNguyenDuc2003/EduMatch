@@ -12,16 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { IApplication } from "@/lib/schemas";
-import {
-  useDeleteImagesMutation,
-  useGetApplicationByIdQuery,
-  useUpdateApplicationMutation,
-  useUploadImagesMutation,
-} from "@/state/api";
-import { router, useLocalSearchParams } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Alert, ScrollView, View } from "react-native";
+import { useCreateApplicationMutation } from "@/state/api";
+import { router } from "expo-router";
+import React, { useRef, useState } from "react";
+import { Alert, ScrollView, View } from "react-native";
 import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 interface ImageFile {
   uri: string;
@@ -31,28 +27,39 @@ interface ImageFile {
 }
 
 const index = () => {
-  const { id } = useLocalSearchParams();
-
+  const [uploadImages, setUploadImages] = useState<ImageFile[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showNameModal, setShowNameModal] = useState(false);
   const [applicationName, setApplicationName] = useState("");
 
-  const { data: application, isLoading: isLoadingApplication } =
-    useGetApplicationByIdQuery(id as string, {
-      skip: !id,
-    });
-  const [updateApplication, { isLoading: isLoadingUpdateApplication }] =
-    useUpdateApplicationMutation();
-  const [uploadImages] = useUploadImagesMutation();
-  const [deleteImage] = useDeleteImagesMutation();
-
   const formRef = useRef<{ handleSubmit: () => void }>(null);
+
+  const [createApplication, { isLoading: isCreating }] =
+    useCreateApplicationMutation();
 
   const onSubmit = async (data: IApplication) => {
     try {
       setIsSubmitting(true);
+      const formData = new FormData();
 
-      await updateApplication(data)
+      // Append images to FormData with application name
+      formData.append(
+        "application",
+        JSON.stringify({ ...data, code: uuidv4(), applicationName })
+      );
+
+      console.log(uploadImages);
+
+      // In React Native, you need to cast the image object as 'any' for FormData
+      uploadImages.forEach((image, index) => {
+        formData.append("mediaFiles", {
+          uri: image.uri,
+          name: image.name || `image_${index}.jpg`,
+          type: image.type || "image/jpeg",
+        } as any);
+      });
+
+      await createApplication(formData)
         .unwrap()
         .then(() => {
           router.back();
@@ -66,23 +73,8 @@ const index = () => {
     }
   };
 
-  const handleImagesChange = async (images: ImageFile[]) => {
-    const formData = new FormData();
-    images.forEach((image) => {
-      formData.append("mediaFiles", {
-        uri: image.uri,
-        name: image.name || `image_${Date.now()}`,
-        type: image.type || "image/jpeg",
-      } as any);
-    });
-    await uploadImages({ applicationId: id as string, formData }).unwrap();
-  };
-
-  const handleDeleteImage = async (imageId: number) => {
-    await deleteImage({
-      applicationId: id as string,
-      imagesId: [imageId],
-    }).unwrap();
+  const handleImagesChange = (images: ImageFile[]) => {
+    setUploadImages(images);
   };
 
   const handleFormSubmit = () => {
@@ -99,19 +91,6 @@ const index = () => {
     }
   };
 
-  useEffect(() => {
-    if (application) {
-      setApplicationName(application.applicationName);
-    }
-  }, [application]);
-
-  if (isLoadingApplication)
-    return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" className="text-primary-brand mt-5" />
-      </View>
-    );
-
   return (
     <View className="flex-1">
       <ScrollView
@@ -121,10 +100,8 @@ const index = () => {
       >
         <ApplicationForm
           ref={formRef}
-          application={application}
           onSubmit={onSubmit}
           onImagesChange={handleImagesChange}
-          onDeleteImage={handleDeleteImage}
         />
       </ScrollView>
 
