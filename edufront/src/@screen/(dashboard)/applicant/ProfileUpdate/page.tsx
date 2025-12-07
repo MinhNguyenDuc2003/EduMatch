@@ -101,7 +101,7 @@ const ProfileUpdatePage = () => {
         <Form {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className="space-y-6">
-              <StudentInformation />
+              <StudentInformation profile={profileData?.applicantProfile} />
               <Separator />
               <PreferredPreferences />
               <Separator />
