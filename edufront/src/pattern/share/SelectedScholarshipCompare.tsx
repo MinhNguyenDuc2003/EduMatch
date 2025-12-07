@@ -24,7 +24,7 @@ import { Badge } from '@/pattern/cus/badge';
 
 export default function SelectedScholarshipCompare() {
   const pathname = usePathname();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, subscriptions } = useAuth();
   const { scholarships, removeScholarship, clearAll } = useScholarshipCompareStore();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isCompareSheetOpen, setIsCompareSheetOpen] = useState(false);
@@ -56,7 +56,11 @@ export default function SelectedScholarshipCompare() {
 
   const comparisonData = parseComparisonData();
 
-  if (pathname?.includes('/provider') || !isAuthenticated) {
+  if (
+    pathname?.includes('/provider') ||
+    !isAuthenticated ||
+    !subscriptions.some((subscription) => subscription.userType === 'APPLICANT')
+  ) {
     return null;
   }
 

@@ -642,7 +642,8 @@
       "type": "Loại",
       "noDeadline": "Không có hạn chót",
       "compare": "So sánh",
-      "alreadySelected": "Đã được chọn"
+      "alreadySelected": "Đã được chọn",
+      "matchScore": "Điểm phù hợp"
     },
     "premiumBanner": {
       "badge": "AI Scholarship",
