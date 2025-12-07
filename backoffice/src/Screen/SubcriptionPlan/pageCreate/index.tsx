@@ -90,6 +90,11 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
           <CustomFormField
             name="fields.SubcriptionPlan.currency"
             label="Currency"
+            type='select'
+              options={[
+              { value: 'VND', label: 'VND' },
+              { value: 'USD', label: 'USD' },
+            ]}
             placeholder="Enter currency"
             isBorder
             rules={{ required: 'Currency is required' }}

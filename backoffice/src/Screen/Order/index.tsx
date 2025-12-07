@@ -61,9 +61,9 @@ const OrderPage = () => {
               <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
               <CustomDataTable
-                title="Order Payments"
+                title="Order Payments List"
                 data={mappedSubs}
-                detailPath="/backoffice/order"
+                detailPath="/order"
                 customTitles={[
                   'ID',
                   'Subscription ID',

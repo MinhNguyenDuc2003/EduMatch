@@ -80,9 +80,9 @@ const News = () => {
               <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
               <CustomDataTable
-                title="Provider News"
+                title="Provider News List"
                 data={mappedNews}
-                detailPath="/backoffice/news"
+                detailPath="/news"
                 customTitles={[
                   'ID',
                   'Title',

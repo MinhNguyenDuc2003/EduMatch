@@ -35,18 +35,18 @@ const AppSidebar = () => {
 
   const navLinks = {
     Admin: [
-      { icon: Activity, label: 'Dashboard', href: '/backoffice/dashboard' },
-      { icon: Users, label: 'Users', href: '/backoffice/user' },
-      { icon: UserCircle, label: 'Profile', href: '/backoffice/profile' },
-      { icon: BookOpen, label: 'Scholarship', href: '/backoffice/scholarship' },
-      { icon: FileText, label: 'Application Scholarship', href: '/backoffice/applicationScholarship' },
-      { icon: ShoppingCart, label: 'Orders', href: '/backoffice/order' },
-      { icon: Package, label: 'Subscriptions', href: '/backoffice/subscriptions' },
-      { icon: CreditCard, label: 'Subscription Plan', href: '/backoffice/subscriptionPlan' },
-      { icon: MessageCircle, label: 'News', href: '/backoffice/news' },
-      { icon: Bell, label: 'Report & Feedback', href: '/backoffice/reportFeedback' },
-      { icon: AlertCircle, label: 'System Notification', href: '/backoffice/systemNotification' },
-      { icon: BookDashed, label: 'Case Study', href: '/backoffice/caseStudy' },
+      { icon: Activity, label: 'Dashboard', href: '/dashboard' },
+      { icon: Users, label: 'Users', href: '/user' },
+      { icon: UserCircle, label: 'Profile', href: '/profile' },
+      { icon: BookOpen, label: 'Scholarship', href: '/scholarship' },
+      { icon: FileText, label: 'Application Scholarship', href: '/applicationScholarship' },
+      { icon: ShoppingCart, label: 'Orders', href: '/order' },
+      { icon: Package, label: 'Subscriptions', href: '/subscriptions' },
+      { icon: CreditCard, label: 'Subscription Plan', href: '/subscriptionPlan' },
+      { icon: MessageCircle, label: 'News', href: '/news' },
+      { icon: Bell, label: 'Report & Feedback', href: '/reportFeedback' },
+      { icon: AlertCircle, label: 'System Notification', href: '/systemNotification' },
+      { icon: BookDashed, label: 'Case Study', href: '/caseStudy' },
     ]
 
   };

@@ -60,12 +60,12 @@ function NewsDetailInner({ meds, id }: { meds: any; id: string }) {
         <CardLink
           title="Scholarship"
           value={data.scholarship?.title}
-          link={`/backoffice/scholarship/${data.scholarship?.id}`}
+          link={`/scholarship/${data.scholarship?.id}`}
         />
         <CardLink
           title="Provider"
           value={data.scholarship?.providerProfileVo?.organizationName}
-          link={`/backoffice/profile/${data.scholarship?.providerProfileVo?.id}`}
+          link={`/profile/${data.scholarship?.providerProfileVo?.id}`}
         />
       </div>
 

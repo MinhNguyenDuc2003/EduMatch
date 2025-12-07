@@ -49,9 +49,9 @@ const Users = () => {
               <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
               <CustomDataTable
-                title="Users"
+                title="Users List"
                 data={mappedUsers}
-                detailPath="/backoffice/user"
+                detailPath="/user"
                 customTitles={[
                   'ID',
                   'Username',
@@ -61,7 +61,7 @@ const Users = () => {
                 ]}
                 isCreate
                 isUser
-                 onCreate={() => router.push('/backoffice/user/create')}
+                 onCreate={() => router.push('/user/create')}
                 externalFilterText={filterText}
               />
             </div>

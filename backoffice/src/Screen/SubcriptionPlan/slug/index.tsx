@@ -108,7 +108,7 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
                   if (!ok) return;
 
                   await meds.onDelete(id);
-                  router.push('/backoffice/subscriptionPlan'); 
+                  router.push('/subscriptionPlan'); 
                 }}
                 className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-400 text-white rounded-lg transition"
               >
@@ -168,6 +168,11 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
             label="Currency"
             disabled={!isEditing}
             isBorder
+             type='select'
+              options={[
+              { value: 'VND', label: 'VND' },
+              { value: 'USD', label: 'USD' },
+            ]}
           />
           <CustomFormField
             name="fields.SubcriptionPlan.durationDays"
@@ -180,6 +185,11 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
             name="fields.SubcriptionPlan.targetType"
             label="Target Type"
             disabled={!isEditing}
+             type="select"
+            options={[
+              { value: 'PROVIDER', label: 'Provider' },
+              { value: 'APPLICANT', label: 'Applicant' },
+            ]}
             isBorder
           />
         </div>

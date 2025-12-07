@@ -79,7 +79,7 @@ const Profiles = () => {
               <CustomDataTable
                 title="Profiles"
                 data={filteredProfiles}
-                detailPath="/backoffice/profile"
+                detailPath="/profile"
                 customTitles={[
                   'ID',
                   'Name',
