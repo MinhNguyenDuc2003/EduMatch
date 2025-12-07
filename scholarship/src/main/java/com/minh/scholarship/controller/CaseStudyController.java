@@ -54,5 +54,4 @@ public class CaseStudyController {
         return ApiResponse.ok(caseStudyService.updateVerified(id, verified));
     }
 
-
 }
