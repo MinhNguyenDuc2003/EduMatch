@@ -215,11 +215,7 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
         ProviderNewsVo vo = providerNewsMapper.entityToVo(entity);
 
 //        // --- Thêm provider profile ---
-//        ProviderProfileEntity provider = providerProfileRepository.findById(entity.getProviderId())
-//                .orElse(null);
-//        if (provider != null) {
-//            vo.setProviderProfileVo(providerNewsMapper.providerEntityToVo(provider));
-//        }
+        providerProfileRepository.findById(entity.getProviderId()).ifPresent(provider -> vo.setProviderProfileVo(providerNewsMapper.providerEntityToVo(provider)));
 
         // --- Thêm media ---
         List<ProviderNewsMediaEntity> mediaEntities = providerNewsMediaRepository.findByProviderNewsId(entity.getId());
