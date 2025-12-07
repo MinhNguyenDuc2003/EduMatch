@@ -18,10 +18,10 @@ public interface AiMatchFeign {
     @GetMapping("/match/profile/{profileId}")
     ScholarshipRecommendationResponseDto getRecommendationScholarship(@PathVariable Long profileId, @RequestParam("top_k") int topK);
 
-    @PostMapping("/match/scholarship/{scholarshipId}/profiles")
+    @GetMapping("/match/scholarship/{scholarshipId}/profiles")
     ScholarshipRecommendationResponseDto getRecommendationApplicantForScholarship(@PathVariable Long scholarshipId, @RequestParam("top_k") int topK);
 
-    @PostMapping("/match/scholarship/{scholarshipId}/applications")
+    @GetMapping("/match/scholarship/{scholarshipId}/applications")
     ScholarshipRecommendationResponseDto getRankApplicationForScholarship(@PathVariable Long scholarshipId, @RequestParam("top_k") int topK);
 
     @PostMapping("/analyze/llm")
