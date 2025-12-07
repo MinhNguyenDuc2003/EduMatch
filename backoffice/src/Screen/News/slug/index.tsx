@@ -37,8 +37,7 @@ function NewsDetailInner({ meds, id }: { meds: any; id: string }) {
     );
 
   return (
-    <div className="max-w-6xl mx-auto space-y-10 py-10">
-      {/* HEADER */}
+    <div className="w-[95%] mx-auto space-y-10 py-10">
       <div className="bg-white shadow-md rounded-xl p-6">
         <h1 className="text-3xl font-bold text-gray-800">{data.title}</h1>
         <div className="text-gray-500 mt-2 text-sm">
@@ -48,7 +47,6 @@ function NewsDetailInner({ meds, id }: { meds: any; id: string }) {
 
    
 
-      {/* CONTENT */}
       <div className="bg-white shadow-md rounded-xl p-6">
         <h2 className="text-xl font-semibold text-gray-700 mb-4">Content</h2>
         <div
@@ -58,7 +56,6 @@ function NewsDetailInner({ meds, id }: { meds: any; id: string }) {
         
       </div>
 
-      {/* SCHOLARSHIP & PROVIDER */}
       <div className="grid md:grid-cols-2 gap-6">
         <CardLink
           title="Scholarship"
@@ -68,11 +65,10 @@ function NewsDetailInner({ meds, id }: { meds: any; id: string }) {
         <CardLink
           title="Provider"
           value={data.scholarship?.providerProfileVo?.organizationName}
-          link={`/backoffice/user/${data.scholarship?.providerProfileVo?.id}`}
+          link={`/backoffice/profile/${data.scholarship?.providerProfileVo?.id}`}
         />
       </div>
 
-      {/* IMAGES */}
       <div className="bg-white shadow-md rounded-xl p-6">
         <h2 className="text-xl font-semibold text-gray-700 mb-4">Images</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -90,17 +86,15 @@ function NewsDetailInner({ meds, id }: { meds: any; id: string }) {
   );
 }
 
-/* INFO CARD */
-function InfoCard({ label, value }: { label: string; value: any }) {
-  return (
-    <div className="bg-white shadow-sm rounded-lg p-4 flex flex-col">
-      <div className="text-gray-500 text-sm">{label}</div>
-      <div className="text-gray-800 font-medium mt-1">{value ?? '—'}</div>
-    </div>
-  );
-}
+// function InfoCard({ label, value }: { label: string; value: any }) {
+//   return (
+//     <div className="bg-white shadow-sm rounded-lg p-4 flex flex-col">
+//       <div className="text-gray-500 text-sm">{label}</div>
+//       <div className="text-gray-800 font-medium mt-1">{value ?? '—'}</div>
+//     </div>
+//   );
+// }
 
-/* CARD LINK */
 function CardLink({ title, value, link }: { title: string; value: string; link: string }) {
   return (
     <div className="bg-white shadow-sm rounded-lg p-6 hover:shadow-md transition-shadow">

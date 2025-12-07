@@ -1,5 +1,6 @@
 'use client';
 import { User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
@@ -7,7 +8,7 @@ import Context from './seg/context';
 
 const Users = () => {
   const [filterText, setFilterText] = useState('');
-
+  const router = useRouter()
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
@@ -16,9 +17,8 @@ const Users = () => {
     <Context.Provider>
       <Context.Consumer>
         {({ ss }) => {
-          const list = (ss?.Joint?.Users as any)?.customers || [];
+          const list = (ss?.Joint?.Users as any) || [];
 
-          // Map dữ liệu vào bảng
           const mappedUsers =
             list?.map((item: any) => {
               return {
@@ -32,7 +32,6 @@ const Users = () => {
               };
             }) || [];
 
-          // --- Statistic ---
           const total = mappedUsers.length;
 
           const stats = [
@@ -60,6 +59,9 @@ const Users = () => {
                   'Full Name',
                   'Created Date',
                 ]}
+                isCreate
+                isUser
+                 onCreate={() => router.push('/backoffice/user/create')}
                 externalFilterText={filterText}
               />
             </div>

@@ -28,8 +28,7 @@ const SubscriptionPlanPage = () => {
               price: `${item.price} ${item.currency}`,
               duration: `${item.durationDays} days`,
               target: item.targetType,
-              features:
-                typeof item?.features === 'string' ? item.features.split(',').join(', ') : '—',
+           
             })) || [];
 
           const total = plans.length;
@@ -75,7 +74,7 @@ const SubscriptionPlanPage = () => {
               <CustomDataTable
                 title="Subscription Plan List"
                 data={plans as any}
-                onCreate={() => router.push('/subscriptionPlan/create')}
+                onCreate={() => router.push('/backoffice/subscriptionPlan/create')}
                 detailPath="/backoffice/subscriptionPlan"
                 customTitles={[
                   'ID',
@@ -84,7 +83,6 @@ const SubscriptionPlanPage = () => {
                   'Price',
                   'Duration',
                   'Target Type',
-                  'Features',
                 ]}
                 externalFilterText={filterText}
                 isCreate

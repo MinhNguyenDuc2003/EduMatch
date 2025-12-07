@@ -1,59 +1,35 @@
 'use client';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { CustomFormField } from 'src/common/components/common/CustomFormField';
 import Context from '../seg/context';
 
-export default function SubcriptionPlanDetail() {
+export default function SubscriptionPlanDetail() {
   const { id } = useParams();
 
   return (
     <Context.Provider>
       <Context.Consumer>
-        {({ meds }) => <SubcriptionPlanDetailInner meds={meds} id={id as string} />}
+        {({ meds }) => <SubscriptionPlanDetailInner meds={meds} id={id as string} />}
       </Context.Consumer>
     </Context.Provider>
   );
 }
 
-function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
+function SubscriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
   const [data, setData] = useState<any>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  // const [loading, setLoading] = useState(false);
-
-  const methods = useForm<any>({ defaultValues: {} });
-  const { reset, handleSubmit } = methods;
 
   useEffect(() => {
-    if (id && meds?.onGetByID) {
-      (async () => {
+    if (!id || !meds?.onGetByID) return;
+    const fetchData = async () => {
+      try {
         const res = await meds.onGetByID(id);
         setData(res);
-        reset({
-          fields: {
-            Subscription: res,
-          },
-          filters: {},
-        });
-      })();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  const handleSave = handleSubmit(async (formData) => {
-    try {
-      // setLoading(true);
-      await meds.onUpdate(id, formData);
-      setData(formData);
-      setIsEditing(false);
-    } catch (error) {
-      console.error(error);
-      alert('Failed to update subscription.');
-    } finally {
-      // setLoading(false);
-    }
-  });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [id, meds]);
 
   if (!data)
     return (
@@ -62,139 +38,75 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
       </div>
     );
 
-  // const featureList =
-  //   typeof data?.plan?.features === 'string'
-  //     ? data.plan.features.split(',').map((f: string) => f.trim())
-  //     : [];
-
-  // const formatDate = (timestamp: number) => {
-  //   try {
-  //     const date = new Date(timestamp * 1000);
-  //     return date.toLocaleDateString('en-US');
-  //   } catch {
-  //     return 'Invalid date';
-  //   }
-  // };
+  const subscription = data;
 
   return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={handleSave}
-        className="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-md border border-gray-100 space-y-10"
-      >
-        {/* Header */}
-        <div className="flex justify-between items-center pb-4 border-b border-gray-200">
-          <h2 className="text-2xl font-semibold text-gray-800">
-            {isEditing ? 'Edit Subscription Detail' : 'Subscription Detail'}
-          </h2>
-        </div>
+    <div className="w-[95%] mx-auto bg-white p-8 mt-10 rounded-2xl shadow-md border border-gray-100 space-y-6">
+      <h1 className="text-2xl font-bold text-gray-800 border-b pb-3">
+        Subscription  Details
+      </h1>
 
-        {/* Fields */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <CustomFormField
-            name="fields.Subscription.id"
-            label="Subscription ID"
-            type="text"
-            disabled
-            isBorder
-          />
-          <CustomFormField
-            name="fields.Subscription.userType"
-            label="User Type"
-            type="text"
-            disabled={!isEditing}
-            isBorder
-          />
-          <CustomFormField
-            name="fields.Subscription.status"
-            label="Status"
-            type="text"
-            disabled={!isEditing}
-            isBorder
-          />
-          <CustomFormField
-            name="fields.Subscription.autoRenew"
-            label="Auto Renew"
-            type="switch"
-            disabled={!isEditing}
-            isBorder
-          />
-          <CustomFormField
-            name="fields.Subscription.startDate"
-            label="Start Date"
-            type="text"
-            disabled
-            isBorder
-          />
-          <CustomFormField
-            name="fields.Subscription.endDate"
-            label="End Date"
-            type="text"
-            disabled
-            isBorder
-          />
-        </div>
+      {/* Basic Info */}
+      <Section title="Subscription Information">
+        <InfoRow label="Subscription ID" value={subscription.id} />
+        <InfoRow label="User Type" value={subscription.userType} />
+        <InfoRow label="Status" value={subscription.status === 'true' ? 'Active' : 'Inactive'} />
+        <InfoRow label="Auto Renew" value={subscription.autoRenew ? 'Yes' : 'No'} />
+        <InfoRow
+          label="Start Date"
+          value={subscription.startDate ? new Date(Number(subscription.startDate)).toLocaleDateString() : '—'}
+        />
+        <InfoRow
+          label="End Date"
+          value={subscription.endDate ? new Date(Number(subscription.endDate)).toLocaleDateString() : '—'}
+        />
+      </Section>
 
-        {/* Plan Info */}
-        <div className="border-t pt-6">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Plan Information</h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            <CustomFormField
-              name="fields.Subscription.plan.name"
-              label="Subcription Name"
-              type="text"
-              disabled={!isEditing}
-              isBorder
-            />
-            <CustomFormField
-              name="fields.Subscription.plan.price"
-              label="Price"
-              type="number"
-              disabled={!isEditing}
-              isBorder
-            />
-            <CustomFormField
-              name="fields.Subscription.plan.currency"
-              label="Currency"
-              type="text"
-              disabled={!isEditing}
-              isBorder
-            />
-            <CustomFormField
-              name="fields.Subscription.plan.durationDays"
-              label="Duration (Days)"
-              type="number"
-              disabled={!isEditing}
-              isBorder
-            />
-            <CustomFormField
-              name="fields.Subscription.plan.targetType"
-              label="Target Type"
-              type="text"
-              disabled={!isEditing}
-              isBorder
-            />
-          </div>
-
-          <CustomFormField
-            name="fields.Subscription.plan.description"
-            label="Description"
-            type="textarea"
-            disabled={!isEditing}
-            isBorder
+      {/* Plan Info */}
+      {subscription.plan && (
+        <Section title="Plan Information">
+          <InfoRow label="Subscription Name" value={subscription.plan.name} />
+          <InfoRow label="Price" value={`${subscription.plan.price} ${subscription.plan.currency}`} />
+          <InfoRow label="Duration (Days)" value={subscription.plan.durationDays} />
+          <InfoRow label="Target Type" value={subscription.plan.targetType} />
+          <TextAreaSection label="Description" value={subscription.plan.description} />
+          <TextAreaSection
+            label="Features"
+            value={subscription.plan.features?.length > 0 ? subscription.plan.features.join(', ') : 'No features provided'}
           />
+        </Section>
+      )}
+    </div>
+  );
+}
 
-          <div>
-            <CustomFormField
-              name="fields.Subscription.plan.features"
-              label="Features"
-              type="text"
-              disabled={!isEditing}
-              isBorder
-            />
-          </div>
-        </div>
-      </form>
-    </FormProvider>
+/* -------------------------- Helper Components --------------------------- */
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-gray-50 rounded-xl p-5 border border-gray-200 space-y-4">
+      <h2 className="text-lg font-semibold mb-2">{title}</h2>
+      <div className="grid grid-cols-2 gap-4">{children}</div>
+    </div>
+  );
+}
+
+function InfoRow({ label, value }: { label: string; value: any }) {
+  return (
+    <div className="flex flex-col">
+      <span className="text-gray-500 text-sm">{label}</span>
+      <span className="text-gray-800 font-medium mt-1">{value ?? '—'}</span>
+    </div>
+  );
+}
+
+function TextAreaSection({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="col-span-2">
+      <label className="block text-gray-700 font-medium mb-2">{label}</label>
+      <div className="bg-gray-50 border rounded-lg p-4 text-gray-700 leading-relaxed">
+        {value || `No ${label.toLowerCase()} provided.`}
+      </div>
+    </div>
   );
 }

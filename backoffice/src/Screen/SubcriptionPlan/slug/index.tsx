@@ -5,6 +5,7 @@ import { Check, X, Pencil, Trash } from 'lucide-react';
 import Context from '../seg/context';
 import { CustomFormField } from 'src/common/components/common/CustomFormField';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 
 export default function SubcriptionPlanDetail() {
   const { id } = useParams();
@@ -20,6 +21,7 @@ export default function SubcriptionPlanDetail() {
 
 function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
   const [data, setData] = useState<any>(null);
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -30,10 +32,22 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
     if (id && meds?.onGetByID) {
       (async () => {
         const res = await meds.onGetByID(id);
+
+        // Chuyển features từ string -> array
+        const featuresArray = res.features
+          ? typeof res.features === 'string'
+            ? res.features.split(',').map((f: string) => f.trim())
+            : res.features
+          : [];
+
         setData(res);
+
         reset({
           fields: {
-            SubcriptionPlan: res,
+            SubcriptionPlan: {
+              ...res,
+              features: featuresArray,
+            },
           },
           filters: {},
         });
@@ -45,9 +59,19 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
   const handleSave = handleSubmit(async (formData) => {
     try {
       setLoading(true);
-      const data = formData.fields.SubcriptionPlan;
-      await meds.onUpdate(id, data);
-      setData(formData);
+      const planData = formData.fields.SubcriptionPlan;
+
+      // Đảm bảo features là array
+      const featuresArray = Array.isArray(planData.features)
+        ? planData.features
+        : planData.features?.split(',').map((f: string) => f.trim()) || [];
+
+      await meds.onUpdate(id, {
+        ...planData,
+        features: featuresArray,
+      });
+
+      setData({ ...planData, features: featuresArray });
       setIsEditing(false);
     } catch (error) {
       console.error(error);
@@ -64,14 +88,11 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
       </div>
     );
 
-  // const featureList =
-  //   typeof data?.features === 'string' ? data.features.split(',').map((f: string) => f.trim()) : [];
-
   return (
     <FormProvider {...methods}>
       <form
         onSubmit={handleSave}
-        className="max-w-5xl mx-auto bg-white p-10 mt-10 rounded-2xl shadow-lg border border-gray-100 space-y-10"
+        className="w-[95%] mx-auto bg-white p-10 mt-10 rounded-2xl shadow-lg border border-gray-100 space-y-10"
       >
         {/* Header */}
         <div className="flex justify-between items-center border-b pb-4">
@@ -82,11 +103,18 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
           {!isEditing ? (
             <div className="flex gap-5">
               <button
-                onClick={() => meds.onDelete(id)}
+                onClick={async () => {
+                  const ok = confirm("Are you sure you want to delete this plan?");
+                  if (!ok) return;
+
+                  await meds.onDelete(id);
+                  router.push('/backoffice/subscriptionPlan'); 
+                }}
                 className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-400 text-white rounded-lg transition"
               >
                 <Trash size={18} /> Delete
               </button>
+
               <button
                 onClick={() => setIsEditing(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
@@ -105,11 +133,17 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
               </button>
               <button
                 type="button"
-                onClick={() => setIsEditing(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  reset();
+                  setIsEditing(false);
+                }}
                 className="flex items-center gap-2 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg transition"
               >
                 <X size={18} /> Cancel
               </button>
+
             </div>
           )}
         </div>
@@ -164,11 +198,18 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
         {/* Features */}
         <div>
           <CustomFormField
-            type="multi-input"
+            type="multi-select"
             label="Features"
             name="fields.SubcriptionPlan.features"
-            placeholder="Comma-separated, e.g. AI_MATCHING,PROFILE_SCORING"
+            options={[
+              { value: "AI_SCHOLARSHIP_NOTIFICATION", label: "AI Scholarship Notification" },
+              { value: "AI_SCHOLARSHIP_RECOMMENDATION", label: "AI Scholarship Recommendation" },
+              { value: "POST_SCHOLARSHIP", label: "Post Scholarship" },
+              { value: "APPLICATION_FILTERING", label: "Application Filtering" },
+              { value: "AI_PROFILE_RECOMMENDATION", label: "AI Profile Recommendation" },
+            ]}
             disabled={!isEditing}
+            placeholder="Select features"
             isBorder
           />
         </div>

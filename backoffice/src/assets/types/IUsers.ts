@@ -1,8 +1,8 @@
-export interface IUsers {
+export type IUser = {
   id: string;
   username: string;
   email: string;
   firstName: string;
   lastName: string;
-  createdTimestamp: string; // or Date if you parse it
-}
+  createdTimestamp: string; 
+};

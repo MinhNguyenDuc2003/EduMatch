@@ -33,62 +33,15 @@ export default GenCtx({
     const meds = {
       async onGetData() {
         onSetLoading(true);
-
         try {
-          const results: any[] = [];
-          let page = 0;
-
-          while (true) {
-            const res = await apiClientService.get(
-              `/api/customer/backoffice/customers?pageNo=${page}`
-            );
-
-            const totalUser = res?.totalUser ?? 0;
-            const customers = res?.customers ?? [];
-
-            console.log(`Page ${page} → totalUser: ${totalUser}`);
-
-            if (customers.length > 0) {
-              results.push(...customers);
-            }
-
-            if (totalUser === 0) {
-              console.log("Stop fetching — totalUser = 0");
-              break;
-            }
-
-            page++;
+          const data = await apiClientService.get('/api/scholarship/case-study/all');
+          if (data) {
+            ss.setJointData({
+              CaseStudy: data || [],
+            });
+            console.log('first', data);
           }
-
-          ss.Joint.Users = results;
-          console.log("Total users loaded:", results.length);
-
-          return results;
-
-        } catch (err) {
-          console.error(err);
-        } finally {
-          onSetLoading(false);
-        }
-      },
-
-      async onCreate(user: any) {
-        onSetLoading(true);
-        try {
-          const data = await apiClientService.post(`/api/customer/backoffice/customers`, {
-            "username": user.username,
-            "email": user.email,
-            "firstName": user.firstName,
-            "lastName": user.lastName,
-            "password": user.password,
-            "role": user.role[0]
-          });
-          if (data !== null) {
-            alert("User created successfully");
-          }
-          window.location.reload()
-          return data.data;
-
+          return;
         } catch (error) {
           console.error({ error });
         } finally {
@@ -98,8 +51,19 @@ export default GenCtx({
        async onGetByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/api/customer/backoffice/customers/profile/${id}`);
-          return data.data.data;
+          const data = await apiClientService.get(`/api/scholarship/case-study/${id}`);
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+       async onVerify(id: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get(`/api/scholarship/case-study/verified/${id}?verified=true`);
+          return data.data;
         } catch (error) {
           console.error({ error });
         } finally {
@@ -107,7 +71,6 @@ export default GenCtx({
         }
       },
     };
-
 
     useEffect(() => {
       meds.onGetData();

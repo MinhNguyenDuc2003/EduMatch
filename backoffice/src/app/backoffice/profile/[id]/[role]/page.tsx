@@ -1,9 +1,9 @@
-import UserDetail from 'src/Screen/User/slug'
+import ProfileDetail from "src/Screen/Profile/slug"
 
 const Detail = () => {
     return (
         <div>
-            <UserDetail />
+            <ProfileDetail />
         </div>
     )
 }

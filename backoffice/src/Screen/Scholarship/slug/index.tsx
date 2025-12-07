@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { CustomFormField } from 'src/common/components/common/CustomFormField';
 import Context from '../seg/context';
+import { onSetLoading } from 'src/utils/eventBus';
 
 export default function ScholarshipDetail() {
   const { id } = useParams();
@@ -18,39 +18,24 @@ export default function ScholarshipDetail() {
 }
 
 function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
+  const router = useRouter();
   const [data, setData] = useState<any>(null);
-  const [form, setForm] = useState<any>({});
-  // const [isEditing, setIsEditing] = useState(false);
-  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (id && meds?.onGetByID) {
-      (async () => {
+    if (!id || !meds?.onGetByID) return;
+    const fetchData = async () => {
+      onSetLoading(true);
+      try {
         const res = await meds.onGetByID(id);
         setData(res);
-        setForm(res);
-      })();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  const handleChange = (key: string, value: any) => {
-    setForm((prev: any) => ({ ...prev, [key]: value }));
-  };
-
-  // const handleSave = async () => {
-  //   try {
-  //     setLoading(true);
-  //     await meds.onUpdate(id, form);
-  //     setData(form);
-  //     setIsEditing(false);
-  //   } catch (error) {
-  //     console.error('Update failed:', error);
-  //     alert('Failed to update scholarship.');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+      } catch (error) {
+        console.error(error);
+      } finally {
+        onSetLoading(false);
+      }
+    };
+    fetchData();
+  }, [id, meds]);
 
   if (!data)
     return (
@@ -63,162 +48,63 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
   const provider = data.providerProfileVo;
 
   return (
-    <div className="max-w-6xl mx-auto bg-white p-10 mt-10 rounded-2xl shadow-lg border border-gray-100 space-y-10">
-      {/* Header */}
-      <div className="flex justify-between items-center border-b pb-4">
-        <h1 className="text-2xl font-semibold text-gray-800">
-          Scholarship Details
-        </h1>
+    <div className="w-[95%] mx-auto bg-white p-8 mt-10 rounded-2xl shadow-md border border-gray-100 space-y-6">
+      <h1 className="text-2xl font-bold text-gray-800 border-b pb-3">
+        Scholarship Details
+      </h1>
 
-        {/* {!isEditing ? (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
-          >
-            <Pencil size={18} /> Edit
-          </button>
-        ) : ( */}
-        {/* <div className="flex gap-3">
-            <button
-              onClick={handleSave}
-              disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition"
-            >
-              <Check size={18} /> {loading ? 'Saving...' : 'Save'}
-            </button>
-            <button
-              onClick={() => {
-                setIsEditing(false);
-                setForm(data);
-              }}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg transition"
-            >
-              <X size={18} /> Cancel
-            </button>
-          </div> */}
-        {/* )} */}
-      </div>
-
-      {/* Banner */}
       {banner && (
-        <div className="relative w-full h-80 rounded-2xl overflow-hidden shadow-md">
+        <div className="relative w-full h-80 rounded-2xl overflow-hidden shadow-md mb-6">
           <Image
             width={1200}
             height={400}
             src={banner}
-            alt={form.title}
+            alt={data.title}
             className="object-cover w-full h-full"
           />
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-white">{form.title}</h1>
-            <p className="text-gray-200 text-sm mt-2">{form.shortDescription}</p>
+            <h2 className="text-3xl font-bold text-white">{data.title}</h2>
+            {data.shortDescription && (
+              <p className="text-gray-200 text-sm mt-2">{data.shortDescription}</p>
+            )}
           </div>
         </div>
       )}
 
-      {/* Basic Info */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <CustomFormField label="Title" initialValue={form.title} 
-        // disabled={!isEditing} 
-        isBorder />
-        <CustomFormField
-          label="University"
-          initialValue={form.university}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="Country"
-          initialValue={form.country}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="Study Level"
-          initialValue={form.studyLevel}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="Scholarship Type"
-          initialValue={form.scholarshipType}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="Funding Amount"
-          initialValue={form.fundingAmount}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="Available Slots"
-          initialValue={form.availableSlots}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField label="Fields" initialValue={form.fields} 
-        // disabled={!isEditing} 
-        isBorder />
-      </div>
+      <Section title="Basic Information">
+        <InfoRow label="Title" value={data.title} />
+        <InfoRow label="University" value={data.university} />
+        <InfoRow label="Country" value={data.country} />
+        <InfoRow label="Study Level" value={data.studyLevel} />
+        <InfoRow label="Scholarship Type" value={data.scholarshipType} />
+        <InfoRow label="Funding Amount" value={data.fundingAmount} />
+        <InfoRow label="Available Slots" value={data.availableSlots} />
+        <InfoRow label="Fields" value={data.fields} />
+      </Section>
 
-      {/* Description */}
-      <TextAreaSection
-        label="Description"
-        value={form.description}
-        editable={false}
-        onChange={(v) => handleChange('description', v)}
-      />
+      <Section title="Description & Requirements">
+        <InfoRow label="Description" value={data.description} />
+        <InfoRow label="Requirements" value={data.requirements} />
+        <InfoRow label="Benefits" value={data.benefits} />
+      </Section>
 
-      {/* Requirements & Benefits */}
-      <div className="grid md:grid-cols-2 gap-8">
-        <TextAreaSection
-          label="Requirements"
-          value={form.requirements}
-          editable={false}
-          onChange={(v) => handleChange('requirements', v)}
-        />
-        <TextAreaSection
-          label="Benefits"
-          value={form.benefits}
-          editable={false}
-          onChange={(v) => handleChange('benefits', v)}
-        />
-      </div>
-
-      {/* Other Info */}
-      <div className="grid md:grid-cols-2 gap-8">
-        <CustomFormField
-          label="Language Requirement"
-          initialValue={form.languageRequirement}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
-          label="GPA Requirement"
-          initialValue={form.gpaRequirement}
-          // disabled={!isEditing}
-          isBorder
-        />
-        <CustomFormField
+      <Section title="Other Details">
+        <InfoRow
           label="Start Date"
-          initialValue={new Date(form.startDate).toLocaleDateString()}
-          disabled
-          isBorder
+          value={data.startDate ? new Date(data.startDate).toLocaleDateString() : '—'}
         />
-        <CustomFormField
+        <InfoRow
           label="End Date"
-          initialValue={new Date(form.endDate).toLocaleDateString()}
-          disabled
-          isBorder
+          value={data.endDate ? new Date(data.endDate).toLocaleDateString() : '—'}
         />
-      </div>
+        <InfoRow label="Language Requirement" value={data.languageRequirement} />
+        <InfoRow label="GPA Requirement" value={data.gpaRequirement} />
+      </Section>
 
-      {/* Provider Info */}
+      {/* Provider Information */}
       {provider && (
-        <div className="mt-10 border-t pt-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Provider Information</h2>
-          <div className="flex gap-6">
+        <Section title="Provider Information">
+          <div className="flex gap-6 items-center">
             {provider.logoUrl && (
               <Image
                 src={provider.logoUrl}
@@ -228,25 +114,42 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
                 className="rounded-xl border object-contain bg-gray-50 p-2"
               />
             )}
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-gray-800">{provider.organizationName}</h3>
-              <p className="text-gray-600 text-sm">{provider.organizationType}</p>
-              <p className="text-gray-600 text-sm">{provider.addressSummary}</p>
-              <a
-                href={provider.website}
-                target="_blank"
-                className="text-blue-600 hover:underline text-sm"
-              >
-                {provider.website}
-              </a>
+            <div className="space-y-1">
+              {/* Click vào tên để chuyển trang ProviderDetail */}
+              <InfoRow
+                label="Organization Name"
+                value={
+                  <span
+                    className="text-blue-600 hover:underline cursor-pointer"
+                    onClick={() =>
+                      router.push(`/backoffice/profile/${provider.id}/Provider`)
+                    }
+                  >
+                    {provider.organizationName}
+                  </span>
+                }
+              />
+              <InfoRow label="Type" value={provider.organizationType} />
+              <InfoRow label="Address" value={provider.addressSummary} />
+              <InfoRow
+                label="Website"
+                value={
+                  <a
+                    href={provider.website}
+                    target="_blank"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {provider.website}
+                  </a>
+                }
+              />
             </div>
           </div>
 
           {/* Provider Contacts */}
-          <div className="mt-6">
-            <h4 className="font-semibold text-gray-700 mb-2">Contacts</h4>
-            <div className="grid md:grid-cols-2 gap-4">
-              {provider.providerContactDtos?.map((c: any) => (
+          {provider.providerContactDtos?.length > 0 && (
+            <div className="mt-4 grid md:grid-cols-2 gap-4">
+              {provider.providerContactDtos.map((c: any) => (
                 <div
                   key={c.id}
                   className="p-4 border rounded-xl bg-gray-50 hover:bg-gray-100 transition"
@@ -267,40 +170,29 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+          )}
+        </Section>
       )}
     </div>
   );
 }
 
-// Small helper subcomponent
-function TextAreaSection({
-  label,
-  value,
-  editable,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  editable: boolean;
-  onChange: (v: string) => void;
-}) {
+/* -------------------------- Helper Components --------------------------- */
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div>
-      <label className="block text-gray-700 font-medium mb-2">{label}</label>
-      {editable ? (
-        <textarea
-          value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg p-3 focus:ring focus:ring-blue-200 focus:border-blue-400"
-          rows={4}
-        />
-      ) : (
-        <div className="bg-gray-50 border rounded-lg p-4 text-gray-700 leading-relaxed">
-          {value || `No ${label.toLowerCase()} provided.`}
-        </div>
-      )}
+    <div className="bg-gray-50 rounded-xl p-5 border border-gray-200 space-y-4">
+      <h2 className="text-lg font-semibold mb-2">{title}</h2>
+      <div className="grid grid-cols-2 gap-4">{children}</div>
+    </div>
+  );
+}
+
+function InfoRow({ label, value }: { label: string; value: any }) {
+  return (
+    <div className="flex flex-col">
+      <span className="text-gray-500 text-sm">{label}</span>
+      <span className="text-gray-800 font-medium mt-1">{value ?? '—'}</span>
     </div>
   );
 }
