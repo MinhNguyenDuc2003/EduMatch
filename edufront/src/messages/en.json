@@ -1128,7 +1128,8 @@
       "noApplicationsYet": "You don't have any applications yet.",
       "createNewApplication": "Create New Application",
       "cancel": "Cancel",
-      "submitApplication": "Submit Application"
+      "submitApplication": "Submit Application",
+      "submitting": "Submitting..."
     },
     "applicationForm": {
       "title": "Application Form",
@@ -1472,6 +1473,10 @@
     "deleteApplication": {
       "deleteSuccess": "Application deleted successfully",
       "deleteFailed": "Failed to delete application"
+    },
+    "submitApplication": {
+      "submitSuccess": "Application submitted successfully",
+      "submitFailed": "Failed to submit application"
     }
   },
   "howItWorksPage": {

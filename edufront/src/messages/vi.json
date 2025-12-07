@@ -1116,7 +1116,8 @@
       "noApplicationsYet": "Bạn chưa có đơn ứng tuyển nào.",
       "createNewApplication": "Tạo Đơn Ứng Tuyển Mới",
       "cancel": "Hủy",
-      "submitApplication": "Nộp Đơn Ứng Tuyển"
+      "submitApplication": "Nộp Đơn Ứng Tuyển",
+      "submitting": "Đang gửi..."
     },
     "applicationForm": {
       "title": "Đơn Ứng Tuyển",
@@ -1460,6 +1461,10 @@
     "deleteApplication": {
       "deleteSuccess": "Xóa hồ sơ ứng tuyển thành công",
       "deleteFailed": "Xóa hồ sơ ứng tuyển thất bại"
+    },
+    "submitApplication": {
+      "submitSuccess": "Đã nộp hồ sơ ứng tuyển thành công",
+      "submitFailed": "Nộp hồ sơ ứng tuyển thất bại"
     }
   },
   "selectedScholarshipCompare": {

@@ -256,7 +256,6 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
           onOpenChange={setIsDialogOpen}
           scholarshipId={scholarshipId}
           scholarshipTitle={scholarshipTitle}
-          onSubmit={handleSubmitApplication}
         />
       )}
 
