@@ -4,6 +4,7 @@ import { Button } from '@/pattern/cus/button';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Card } from '@/pattern/cus/card';
+import { useAuth } from '@/hooks/useAuth';
 
 type ScholarshipSidebarProps = {
   scholarship: Scholarship;
@@ -18,6 +19,7 @@ export default function ScholarshipSidebar({
   isFollowing,
   onToggleFollow,
 }: ScholarshipSidebarProps) {
+  const { isAuthenticated } = useAuth();
   const provider = scholarship.providerProfileVo;
   const t = useTranslations('scholarshipDetail.sidebar');
 
@@ -63,13 +65,15 @@ export default function ScholarshipSidebar({
               </h3>
             </div>
             {/* Follow Button */}
-            <Button
-              value={isFollowing ? t('following') : t('follow')}
-              variant="outline_active"
-              size="sm"
-              onClick={onToggleFollow}
-              className="[&_.value]:text-sm"
-            />
+            {isAuthenticated && (
+              <Button
+                value={isFollowing ? t('following') : t('follow')}
+                variant="outline_active"
+                size="sm"
+                onClick={onToggleFollow}
+                className="[&_.value]:text-sm"
+              />
+            )}
           </div>
         </div>
       )}

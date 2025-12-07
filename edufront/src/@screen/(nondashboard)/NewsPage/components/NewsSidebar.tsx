@@ -24,6 +24,7 @@ export default function NewsSidebar({
 }: NewsSidebarProps) {
   const providerProfileVo = news.providerProfileVo || news.scholarship?.providerProfileVo;
   const provider = providerProfileVo;
+  const { isAuthenticated } = useAuth();
 
   if (!provider) {
     return null;
@@ -72,7 +73,7 @@ export default function NewsSidebar({
             </h3>
           </div>
           {/* Follow Button */}
-          {onToggleFollow !== undefined && (
+          {onToggleFollow !== undefined && isAuthenticated && (
             <Button
               value={isFollowing ? 'Following' : 'Follow'}
               variant="outline_active"
