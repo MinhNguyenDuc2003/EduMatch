@@ -179,7 +179,7 @@ public class ScholarshipController {
     @Authorized
     @GetMapping("/suggestion/mail")
     public ApiResponse<Boolean> sendMailSuggestion() {
-        return ApiResponse.ok(scholarshipService.sendMailSuggestion(UaaContextHolder.getUserId()));
+        return ApiResponse.ok(scholarshipService.sendMailSuggestion("0bcc96b7-270c-4ac3-861c-1a526a1532f6"));
     }
 
     @Authorized

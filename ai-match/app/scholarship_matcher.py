@@ -159,8 +159,9 @@ class ScholarshipMatcher:
 
     def score_academic_requirements(self, application, scholarship):
         """Tier 2: Scored academic requirements"""
-
         application_gpa = application.get('gpa', None)
+        if application_gpa is None:
+            application_gpa = application.get('overall_gpa', None)
         application_research_experience = application.get('research_experience', None)
         application_pubs = application.get('publication_count', None)
         application_exp = application.get('work_experience_years', None)

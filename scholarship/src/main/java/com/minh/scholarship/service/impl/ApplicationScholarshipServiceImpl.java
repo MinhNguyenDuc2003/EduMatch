@@ -6,7 +6,6 @@ import com.minh.enumeration.notification.NotificationReferenceEnum;
 import com.minh.enumeration.notification.NotificationTemplateEnum;
 import com.minh.enumeration.notification.NotificationTopicEnum;
 import com.minh.exception.BusinessException;
-import com.minh.model.dto.ai.AiRequestDto;
 import com.minh.model.dto.ai.ScholarshipRecommendationResponseDto;
 import com.minh.model.dto.media.MailDto;
 import com.minh.model.dto.media.MailTemplateDto;
@@ -125,9 +124,10 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
                 .userNotificationId(notificationTemplateDto.getId())
                 .build();
         kafkaProducer.convertToByteAndSend(newEventProviderTopic, notificationVo);
-
-        scholarshipService.sendMailSubmittedApplication(dto);
-
+        Thread thread = new Thread(() -> {
+            scholarshipService.sendMailSubmittedApplication(dto);
+        });
+        thread.start();
         return mapper.toDto(saved);
     }
 

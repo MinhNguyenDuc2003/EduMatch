@@ -265,93 +265,95 @@ class ScholarshipQuery:
         return result
 
     def get_profile(self, all=True, profile_id=None, limit=None):
-        """Trả dữ liệu profile + preference dạng JSON"""
         query = f"""
             SELECT
-              ap.id,
-              ap.citizenship_status,
-              ap.research_experience,
-              ap.career_goals,
-              ap.overall_gpa,
-              ap.education_level,
-              ap.sat_score,
-              ap.act_score,
-              ap.toefl_score,
-              ap.ielts_score,
-              ap.gre_score,
-              ap.gmat_score,
-              ap.publication_count,
-              ap.research_interest,
-              ap.preferred_scholarship_type,
-              ap.preferred_university,
-              ap.preferred_country,
-              ap.extracurricular_activities,
-              ap.academic_awards,
+                ap.id,
+                ap.citizenship_status,
+                ap.research_experience,
+                ap.career_goals,
+                ap.overall_gpa,
+                ap.education_level,
+                ap.sat_score,
+                ap.act_score,
+                ap.toefl_score,
+                ap.ielts_score,
+                ap.gre_score,
+                ap.gmat_score,
+                ap.publication_count,
+                ap.research_interest,
+                ap.preferred_scholarship_type,
+                ap.preferred_university,
+                ap.preferred_country,
+                ap.extracurricular_activities,
+                ap.academic_awards,
 
-              COALESCE(
-                      json_agg(
-                          json_build_object(
-                              'type', apf.type,
-                              'value', apf.value,
-                              'note', apf.note
-                          )
-                      ) FILTER (WHERE apf.type IS NOT NULL),
-                      '[]'
-                  ) AS applicant_preferences,
-                  COALESCE(
-                      json_agg(
-                          json_build_object(
-                              'name', ac.certificate_name,
-                              'score', ac.score
-                          )
-                      ) FILTER (WHERE apf.type IS NOT NULL),
-                      '[]'
-                  ) AS applicant_certificates,
-                  COALESCE(
-                      json_agg(
-                          json_build_object(
-                              'name', ask.skill_name,
-                              'level', ask.proficiency_level,
-                              'years_experience', ask.years_experience
-                          )
-                      ) FILTER (WHERE apf.type IS NOT NULL),
-                      '[]'
-                  ) AS applicant_skills,
-                  COALESCE(
-                      json_agg(
-                          json_build_object(
-                              'institution_type', aeh.institution_type,
-                              'major_name', aeh.major_name,
-                              'gpa', aeh.gpa
-                          )
-                      ) FILTER (WHERE apf.type IS NOT NULL),
-                      '[]'
-                  ) AS applicant_education_history
+                -- Preferences
+                COALESCE((
+                    SELECT json_agg(
+                        json_build_object(
+                            'type', apf.type,
+                            'value', apf.value,
+                            'note', apf.note
+                        )
+                    )
+                    FROM profile.applicant_preference apf
+                    WHERE apf.applicant_id = ap.id
+                ), '[]') AS applicant_preferences,
+
+                -- Certificates
+                COALESCE((
+                    SELECT json_agg(
+                        json_build_object(
+                            'name', ac.certificate_name,
+                            'score', ac.score
+                        )
+                    )
+                    FROM profile.applicant_certificate ac
+                    WHERE ac.applicant_id = ap.id
+                ), '[]') AS applicant_certificates,
+
+                -- Skills
+                COALESCE((
+                    SELECT json_agg(
+                        json_build_object(
+                            'name', ask.skill_name,
+                            'level', ask.proficiency_level,
+                            'years_experience', ask.years_experience
+                        )
+                    )
+                    FROM profile.applicant_skill ask
+                    WHERE ask.applicant_id = ap.id
+                ), '[]') AS applicant_skills,
+
+                -- Education history
+                COALESCE((
+                    SELECT json_agg(
+                        json_build_object(
+                            'institution_type', aeh.institution_type,
+                            'major_name', aeh.major_name,
+                            'gpa', aeh.gpa
+                        )
+                    )
+                    FROM profile.applicant_education_history aeh
+                    WHERE aeh.applicant_id = ap.id
+                ), '[]') AS applicant_education_history
+
             FROM profile.applicant_profile ap
-            LEFT JOIN profile.applicant_preference apf
-                ON ap.id = apf.applicant_id
-            LEFT JOIN profile.applicant_certificate ac
-                ON ap.id = ac.applicant_id
-            LEFT JOIN profile.applicant_skill ask
-                ON ap.id = ask.applicant_id
-            LEFT JOIN profile.applicant_education_history aeh
-                ON ap.id = aeh.applicant_id
         """
 
-        if all == True:
-            query += f" GROUP BY ap.id"
-
+        where_clauses = []
         if profile_id:
-            query += f" WHERE ap.id = {profile_id} GROUP BY ap.id"
+            where_clauses.append(f"ap.id = {profile_id}")
+
+        if where_clauses:
+            query += " WHERE " + " AND ".join(where_clauses)
 
         if limit:
-            query += f" GROUP BY ap.id LIMIT {limit}"
+            query += f" LIMIT {limit}"
 
         self.prof_cur.execute(query)
         rows = self.prof_cur.fetchall()
-
         result = self._rows_to_dict_list(self.prof_cur, rows)
-
         return result
 
     def get_application(self, application_id):
