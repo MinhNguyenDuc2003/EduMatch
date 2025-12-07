@@ -6,10 +6,12 @@ import {
   RELIGIONS,
   STUDY_LEVELS,
 } from '@/constants/Common';
+import { IApplicantProfile } from '@/lib/schemas';
 import { CustomFormField } from '@/pattern/cus/CustomFormField';
 import Header from '@/pattern/share/Header';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 const StudentInformation = () => {
   const t = useTranslations('applicantProfile.studentInformationDialog');

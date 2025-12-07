@@ -4,7 +4,13 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/patt
 import { Input } from '@/pattern/cus/input';
 import { Button } from '@/pattern/cus/button';
 import { Textarea } from '@/pattern/cus/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/pattern/cus/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/pattern/cus/select';
 import { Switch } from '@/pattern/cus/switch';
 import { Edit, X, Plus } from 'lucide-react';
 import MultipleSelector from './multi-select';
