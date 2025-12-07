@@ -2,7 +2,7 @@
 import React from 'react';
 import CertificateCard from './CertificateCard';
 import { Pencil, Plus } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { useTranslations } from 'next-intl';
 
 interface CertificatesProps {

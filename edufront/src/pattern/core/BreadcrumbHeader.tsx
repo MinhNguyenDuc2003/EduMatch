@@ -7,7 +7,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/lib/cus/breadcrumb';
+} from '@/pattern/cus/breadcrumb';
 import { cn } from '@/lib/utils';
 
 export type BreadcrumbItemType = {

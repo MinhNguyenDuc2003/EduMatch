@@ -1,4 +1,4 @@
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';

@@ -32,7 +32,7 @@ import {
   useGetAppliedApplicationQuery,
   useGetMyReportQuery,
 } from '@/state/apiApplicant';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 

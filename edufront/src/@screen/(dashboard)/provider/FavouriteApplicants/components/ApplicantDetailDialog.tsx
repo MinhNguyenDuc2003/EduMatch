@@ -6,7 +6,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/lib/cus/dialog';
+} from '@/pattern/cus/dialog';
 import ApplicantDetail from '@/pattern/share/ApplicantDetail';
 
 interface ApplicantDetailDialogProps {

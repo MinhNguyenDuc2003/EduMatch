@@ -1,12 +1,12 @@
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/lib/cus/dropdown-menu';
-import { Dialog, DialogContent, DialogTitle } from '@/lib/cus/dialog';
-import { Skeleton } from '@/lib/cus/skeleton';
+} from '@/pattern/cus/dropdown-menu';
+import { Dialog, DialogContent, DialogTitle } from '@/pattern/cus/dialog';
+import { Skeleton } from '@/pattern/cus/skeleton';
 import { cn } from '@/lib/utils';
 import {
   MoreVertical,

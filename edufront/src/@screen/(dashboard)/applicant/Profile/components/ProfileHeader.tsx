@@ -4,8 +4,8 @@ import React from 'react';
 import { User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Avatar, AvatarFallback } from '@/lib/cus/avatar';
-import { Button } from '@/lib/cus/button';
+import { Avatar, AvatarFallback } from '@/pattern/cus/avatar';
+import { Button } from '@/pattern/cus/button';
 import { useAuth } from '@/hooks/useAuth';
 
 interface ProfileHeaderProps {

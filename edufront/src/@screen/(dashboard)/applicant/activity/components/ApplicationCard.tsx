@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { useTranslations } from 'next-intl';
 import {
   Dialog,
@@ -10,7 +10,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/lib/cus/dialog';
+} from '@/pattern/cus/dialog';
 
 type ApplicationCardProps = {
   application: Application;

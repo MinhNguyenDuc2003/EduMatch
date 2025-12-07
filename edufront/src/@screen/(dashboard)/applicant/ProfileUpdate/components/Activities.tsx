@@ -1,4 +1,4 @@
-import { CustomFormField } from '@/lib/cus/CustomFormField';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import {

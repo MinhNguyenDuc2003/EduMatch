@@ -6,8 +6,8 @@ import AggregationFilters from './AggregationFilters';
 import { useGetUniversityQuery } from '@/state/apiScholarship';
 import SearchBar from '@/pattern/share/SearchBar';
 import { useState, useEffect } from 'react';
-import { useDebounce } from '@/lib/cus/multi-select';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/cus/select';
+import { useDebounce } from '@/pattern/cus/multi-select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/pattern/cus/select';
 
 type FilterSidebarProps = {
   filters: FilterState;

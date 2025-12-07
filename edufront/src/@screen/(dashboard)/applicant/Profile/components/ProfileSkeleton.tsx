@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Skeleton } from '@/lib/cus/skeleton';
+import { Skeleton } from '@/pattern/cus/skeleton';
 
 // Skeleton for ProfileHeader
 const ProfileHeaderSkeleton = () => {

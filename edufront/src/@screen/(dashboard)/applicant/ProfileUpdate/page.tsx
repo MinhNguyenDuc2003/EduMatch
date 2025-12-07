@@ -13,7 +13,7 @@ import { useTranslations } from 'next-intl';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { DEFAULT_PROFILE_FORM_VALUES } from '../Profile/constants';
-import { Form } from '@/lib/cus/form';
+import { Form } from '@/pattern/cus/form';
 import {
   Activities,
   Certificates,
@@ -24,8 +24,8 @@ import {
   Skills,
   StudentInformation,
 } from './components';
-import { Separator } from '@/lib/cus/separator';
-import { Button } from '@/lib/cus/button';
+import { Separator } from '@/pattern/cus/separator';
+import { Button } from '@/pattern/cus/button';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 

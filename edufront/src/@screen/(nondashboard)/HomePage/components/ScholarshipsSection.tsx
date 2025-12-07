@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import CardSmalPic from '@/pattern/share/CardSmalPic';
 import CardSmalPicSkeleton from './CardSmalPicSkeleton';
 import { ArrowRight, AlertCircle } from 'lucide-react';

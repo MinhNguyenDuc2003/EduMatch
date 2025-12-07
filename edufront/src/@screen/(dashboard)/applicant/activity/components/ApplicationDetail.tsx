@@ -1,9 +1,9 @@
 'use client';
 
 import { X, Phone, Mail, FileText, Download, Image as ImageIcon } from 'lucide-react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/lib/cus/sheet';
-import { Avatar, AvatarFallback } from '@/lib/cus/avatar';
-import { Badge } from '@/lib/cus/badge';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/pattern/cus/sheet';
+import { Avatar, AvatarFallback } from '@/pattern/cus/avatar';
+import { Badge } from '@/pattern/cus/badge';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';

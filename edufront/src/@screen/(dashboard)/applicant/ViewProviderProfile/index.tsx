@@ -12,8 +12,8 @@ import {
   useUnfollowScholarshipMutation,
   useGetScholarshipsByProviderIdQuery,
 } from '@/state/apiScholarship';
-import { Button } from '@/lib/cus/button';
-import { Skeleton } from '@/lib/cus/skeleton';
+import { Button } from '@/pattern/cus/button';
+import { Skeleton } from '@/pattern/cus/skeleton';
 import { ProfileHeaderSkeleton } from '@/@screen/(dashboard)/provider/ProviderProfile/components/ProfileHeader';
 import {
   FollowButton,

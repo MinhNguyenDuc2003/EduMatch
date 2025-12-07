@@ -9,8 +9,8 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@/lib/cus/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/lib/cus/popover';
+} from '@/pattern/cus/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/pattern/cus/popover';
 import { Separator } from './separator';
 import { Button } from './button';
 import { useTranslations } from 'next-intl';

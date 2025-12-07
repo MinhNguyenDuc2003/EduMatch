@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { formatDate } from '../utils';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/lib/cus/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/pattern/cus/tooltip';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/lib/cus/dialog';
-import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from '@/lib/cus/drawer';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/pattern/cus/dialog';
+import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from '@/pattern/cus/drawer';
 
 interface HistoryCardProps {
   edu: {

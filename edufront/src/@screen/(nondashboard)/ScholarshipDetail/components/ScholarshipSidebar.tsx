@@ -1,9 +1,9 @@
 'use client';
 import { MapPin, Mail, Phone, Globe, CheckCircle2 } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
-import { Card } from '@/lib/by/Div';
+import { Button } from '@/pattern/cus/button';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { Card } from '@/pattern/cus/card';
 
 type ScholarshipSidebarProps = {
   scholarship: Scholarship;

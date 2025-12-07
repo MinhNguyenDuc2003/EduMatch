@@ -1,6 +1,6 @@
 'use client';
 
-import { SidebarTrigger } from '@/lib/cus/sidebar';
+import { SidebarTrigger } from '@/pattern/cus/sidebar';
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -8,7 +8,7 @@ import {
   BreadcrumbLink,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/lib/cus/breadcrumb';
+} from '@/pattern/cus/breadcrumb';
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

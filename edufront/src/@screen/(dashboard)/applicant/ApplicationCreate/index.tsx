@@ -5,7 +5,7 @@ import ApplicationsForm, { ApplicationsFormRef } from '@/pattern/share/Applicati
 import { useCreateApplicationMutation, useGetProfileQuery } from '@/state/apiApplicant';
 import React, { useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { Download } from 'lucide-react';
 import { mapProfileToApplication } from '@/lib/utils';
 import Loading from '@/pattern/share/Loading';

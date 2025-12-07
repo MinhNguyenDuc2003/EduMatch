@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { X, CheckCircle2, Clock, XCircle, AlertCircle, FileText, Trash2 } from 'lucide-react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/lib/cus/sheet';
-import { Badge } from '@/lib/cus/badge';
-import { Button } from '@/lib/cus/button';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/pattern/cus/sheet';
+import { Badge } from '@/pattern/cus/badge';
+import { Button } from '@/pattern/cus/button';
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/lib/cus/dialog';
+} from '@/pattern/cus/dialog';
 import { useTranslations } from 'next-intl';
 
 type ReportDetailProps = {

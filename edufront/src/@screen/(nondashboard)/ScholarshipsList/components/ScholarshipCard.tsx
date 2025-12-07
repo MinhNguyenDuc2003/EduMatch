@@ -14,7 +14,7 @@ import {
   OctagonAlert,
   ArrowRightLeft,
 } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
 import { getScholarshipImages } from '@/utils/scholarshipHelpers';
 import { useAuth } from '@/hooks/useAuth';
@@ -28,7 +28,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/lib/cus/dropdown-menu';
+} from '@/pattern/cus/dropdown-menu';
 import ReportDialog from '@/pattern/share/ReportDialog';
 
 type ScholarshipCardProps = {

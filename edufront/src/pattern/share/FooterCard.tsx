@@ -1,6 +1,5 @@
-import { Anchor } from '@/lib/by/Div';
 import React from 'react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { Eye } from 'lucide-react';
 
 const FooterCard = ({
@@ -13,7 +12,7 @@ const FooterCard = ({
   onViewDetails?: () => void;
 }) => {
   return (
-    <Anchor className="p-3 w-full mt-auto border-t border-gray-200 flex gap-2">
+    <div className="p-3 w-full mt-auto border-t border-gray-200 flex gap-2">
       {onViewDetails && (
         <Button
           variant="outline"
@@ -28,7 +27,7 @@ const FooterCard = ({
         value={titleButton}
         onClick={onClick}
       />
-    </Anchor>
+    </div>
   );
 };
 

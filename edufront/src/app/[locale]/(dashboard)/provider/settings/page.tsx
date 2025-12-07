@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Settings, User, Bell, Lock, CreditCard, HelpCircle } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 
 const SettingsPage = () => {
   const settingsSections = [

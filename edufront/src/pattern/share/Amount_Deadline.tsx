@@ -1,5 +1,4 @@
 'use client';
-import { Block, Card, RText } from '@/lib/by/Div';
 import { cn } from '@/lib/utils';
 import { DollarSign, Calendar } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -38,27 +37,27 @@ const Amount_Deadline = ({ amount, deadline, isRow, className }: Amount_Deadline
   const formattedDate = formatEndDate(deadline);
 
   return (
-    <Block
+    <div
       className={cn(`flex ${isRow ? 'flex-row gap-6' : 'flex-col gap-3'} items-center`, className)}
     >
       {/* Amount */}
-      <Card className="flex flex-col">
-        <Block className="flex items-center gap-2">
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2">
           <DollarSign className="w-4 h-4 text-gray-600" />
-          {isRow && <RText className="text-xs text-gray-500">{t('amount')}</RText>}
-        </Block>
-        <RText className="text-sm font-semibold text-gray-900 mt-1">{amount}</RText>
-      </Card>
+          {isRow && <span className="text-xs text-gray-500">{t('amount')}</span>}
+        </div>
+        <span className="text-sm font-semibold text-gray-900 mt-1">{amount}</span>
+      </div>
 
       {/* Deadline */}
-      <Card className="flex flex-col">
-        <Block className="flex items-center gap-2">
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-gray-600" />
-          {isRow && <RText className="text-xs text-gray-500">{t('deadline')}</RText>}
-        </Block>
-        <RText className="text-sm font-semibold text-gray-900 mt-1">{formattedDate}</RText>
-      </Card>
-    </Block>
+          {isRow && <span className="text-xs text-gray-500">{t('deadline')}</span>}
+        </div>
+        <span className="text-sm font-semibold text-gray-900 mt-1">{formattedDate}</span>
+      </div>
+    </div>
   );
 };
 

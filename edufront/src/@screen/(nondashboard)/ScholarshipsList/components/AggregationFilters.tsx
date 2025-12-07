@@ -1,6 +1,6 @@
 'use client';
 
-import { Badge } from '@/lib/cus/badge';
+import { Badge } from '@/pattern/cus/badge';
 import { useTranslations } from 'next-intl';
 
 type AggregationFiltersProps = {

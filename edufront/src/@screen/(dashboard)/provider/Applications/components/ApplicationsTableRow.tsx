@@ -1,6 +1,6 @@
 import React from 'react';
 import { Eye } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { cn } from '@/lib/utils';
 import { getStatusColor, formatStatus, formatAppliedDate } from '../utils/applicationUtils';
 import { useTranslations } from 'next-intl';

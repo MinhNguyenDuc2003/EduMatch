@@ -1,5 +1,5 @@
-import { Button } from '@/lib/cus/button';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
+import { Button } from '@/pattern/cus/button';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
 import { IApplicantProfile } from '@/lib/schemas';
 import Header from '@/pattern/share/Header';
 import { Calendar, GraduationCap, Plus, Trash2 } from 'lucide-react';

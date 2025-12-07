@@ -2,9 +2,9 @@ import { SCHOLARSHIP_TYPES, STUDY_LEVELS, GENDER_OPTIONS, MAJOR_NAMES } from '@/
 import { COUNTRIES } from '@/constants/Common';
 import { DEFAULT_SCHOLARSHIP_FORM_VALUES } from '@/constants/DefaultValues';
 import { University } from '@/constants/University';
-import { Button } from '@/lib/cus/button';
-import { CustomFormField } from '@/lib/cus/CustomFormField';
-import { Form } from '@/lib/cus/form';
+import { Button } from '@/pattern/cus/button';
+import { CustomFormField } from '@/pattern/cus/CustomFormField';
+import { Form } from '@/pattern/cus/form';
 import { IScholarship, scholarshipSchema } from '@/lib/schemas';
 import { generateSlug } from '@/utils/generateSlug';
 import { zodResolver } from '@hookform/resolvers/zod';

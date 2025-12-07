@@ -13,10 +13,10 @@ import {
   GraduationCap,
   Sparkles,
 } from 'lucide-react';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/lib/cus/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/pattern/cus/sheet';
 import { useAuth } from '@/hooks/useAuth';
 import { useAiComparisonQuery } from '@/state/apiScholarship';
 import { Skeleton } from '@/lib/cus/skeleton';

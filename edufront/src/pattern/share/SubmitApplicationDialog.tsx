@@ -10,10 +10,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/lib/cus/dialog';
-import { Button } from '@/lib/cus/button';
+} from '@/pattern/cus/dialog';
+import { Button } from '@/pattern/cus/button';
 import { useGetApplicationsQuery, useSubmitApplicationMutation } from '@/state/apiApplicant';
-import { Skeleton } from '@/lib/cus/skeleton';
+import { Skeleton } from '@/pattern/cus/skeleton';
 
 interface SubmitApplicationDialogProps {
   open: boolean;

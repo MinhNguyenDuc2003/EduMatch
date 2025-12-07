@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/cus/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/pattern/cus/select';
 import Image from 'next/image';
 
 export default function LanguageSwitcher() {

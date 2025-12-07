@@ -1,4 +1,4 @@
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import router from 'next/router';

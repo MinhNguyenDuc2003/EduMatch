@@ -4,14 +4,14 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/lib/cus/dialog';
+} from '@/pattern/cus/dialog';
 import { useGetRecommendedApplicantsQuery } from '@/state/apiProvider';
 import { Sparkles } from 'lucide-react';
 import React, { useState } from 'react';
 import Loading from './Loading';
 import ApplicantsList from './ApplicantsList';
 import ApplicantDetail from './ApplicantDetail';
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import { useTranslations } from 'next-intl';
 
 interface AISuggestionsDialogProps {

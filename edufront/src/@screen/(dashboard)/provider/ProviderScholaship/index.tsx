@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/lib/cus/button';
+import { Button } from '@/pattern/cus/button';
 import Header from '@/pattern/share/Header';
 import { Plus } from 'lucide-react';
 import React, { useState } from 'react';

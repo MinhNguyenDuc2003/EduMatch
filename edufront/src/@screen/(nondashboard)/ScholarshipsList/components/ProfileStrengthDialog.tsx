@@ -10,8 +10,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/lib/cus/dialog';
-import { Button } from '@/lib/cus/button';
+} from '@/pattern/cus/dialog';
+import { Button } from '@/pattern/cus/button';
 
 interface ProfileStrengthDialogProps {
   open: boolean;
