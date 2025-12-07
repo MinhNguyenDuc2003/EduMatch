@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import apiClientService from 'src/apiController/ApiClientService';
@@ -7,7 +8,6 @@ import { GenCtx } from 'src/apiController/GeneralContext';
 import { ISubcriptionList } from 'src/assets/types/SubcriptionList';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
-
 export default GenCtx({
     useLogic() {
         type IForm = {
@@ -17,6 +17,8 @@ export default GenCtx({
             filters: object;
         };
         const ss = sStore();
+                const router = useRouter()
+
         const methods = useForm<IForm>({
             mode: 'onSubmit',
             defaultValues: {
@@ -54,6 +56,7 @@ export default GenCtx({
                     });
                     if (data !== null) {
                         alert('Create Notification successfull');
+                        router.push('/backoffice/systemNotification')
                     }
                     return;
                 } catch (error) {

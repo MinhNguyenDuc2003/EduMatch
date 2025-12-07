@@ -108,10 +108,16 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
           <CustomFormField
             name="fields.SubcriptionPlan.targetType"
             label="Target Type"
+            type="select"
+            options={[
+              { value: 'PROVIDER', label: 'Provider' },
+              { value: 'APPLICANT', label: 'Applicant' },
+            ]}
             placeholder="Enter target type"
             isBorder
             rules={{ required: 'Target type is required' }}
           />
+
         </div>
 
         <div>

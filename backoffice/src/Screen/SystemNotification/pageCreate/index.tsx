@@ -36,7 +36,6 @@ function SystemNotificationCreateInner({ meds }: { meds: any }) {
       setLoading(true);
       const notification = data.fields.SystemNotification; // Lấy đúng object
       await meds.onCreate(notification); // Truyền object cho API
-      alert('Notification created successfully!');
     } catch (err) {
       console.error(err);
       alert('Failed to create notification.');
