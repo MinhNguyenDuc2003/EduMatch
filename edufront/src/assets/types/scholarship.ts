@@ -62,6 +62,7 @@ declare global {
     views: number;
     score?: number;
     createdDate?: number;
+    caseStudyVos?: CaseStudy[];
   };
 
   type SearchScholarshipsByUniversityResponse = {
@@ -187,6 +188,36 @@ declare global {
   type ScholarshipComparisonResponse = {
     success: boolean;
     analysis: ScholarshipComparisonAnalysis;
+  };
+
+  type CaseStudy = {
+    id?: number;
+    scholarshipId?: number;
+    userId?: string;
+    title?: string;
+    content?: string;
+    verified?: boolean;
+    profileVo?: ApplicantProfile;
+    medias?: CaseStudyMedia[];
+  };
+
+  type CaseStudyMedia = {
+    id?: number;
+    s3Key?: string;
+    contentType?: string;
+    size?: number;
+    folderName?: string;
+    fileName?: string;
+    isPublic?: boolean;
+    thumbnail?: string;
+    url?: string;
+  };
+
+  type CaseStudyApiRequest = {
+    scholarshipId: number;
+    title: string;
+    content: FormData;
+    images?: File[];
   };
 }
 

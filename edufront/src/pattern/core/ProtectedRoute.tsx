@@ -16,6 +16,10 @@ interface ProtectedRouteProps {
    */
   requireProvider?: boolean;
   /**
+   * Yêu cầu user phải là applicant. Default: false
+   */
+  requireApplicant?: boolean;
+  /**
    * Custom loading component
    */
   loadingComponent?: React.ReactNode;
@@ -35,14 +39,21 @@ interface ProtectedRouteProps {
  * <ProtectedRoute requireProvider={true}>
  *   <ProviderComponent />
  * </ProtectedRoute>
+ *
+ * @example
+ * // Bảo vệ route cho applicant
+ * <ProtectedRoute requireApplicant={true}>
+ *   <ApplicantComponent />
+ * </ProtectedRoute>
  */
 export default function ProtectedRoute({
   children,
   redirectTo = '/home',
   requireProvider = false,
+  requireApplicant = false,
   loadingComponent,
 }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading, isProvider, subscriptions } = useAuth();
+  const { isAuthenticated, isLoading, isProvider, isApplicant, subscriptions } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -73,7 +84,22 @@ export default function ProtectedRoute({
       router.push('/subscriptions?type=PROVIDER');
       return;
     }
-  }, [isAuthenticated, isLoading, isProvider, requireProvider, router, redirectTo]);
+
+    // Redirect nếu cần applicant nhưng user không phải applicant
+    if (requireApplicant && !isApplicant) {
+      router.push(redirectTo);
+      return;
+    }
+  }, [
+    isAuthenticated,
+    isLoading,
+    isProvider,
+    isApplicant,
+    requireProvider,
+    requireApplicant,
+    router,
+    redirectTo,
+  ]);
 
   // Hiển thị loading state
   if (isLoading) {
@@ -85,7 +111,8 @@ export default function ProtectedRoute({
     !isAuthenticated ||
     (requireProvider &&
       !isProvider &&
-      !subscriptions.some((subscription) => subscription.userType === 'PROVIDER'))
+      !subscriptions.some((subscription) => subscription.userType === 'PROVIDER')) ||
+    (requireApplicant && !isApplicant)
   ) {
     return null;
   }
