@@ -51,4 +51,6 @@ public interface ApplicationProjection {
 
     Long getVersionApplication();
 
+    String getApplicationName();
+
 }

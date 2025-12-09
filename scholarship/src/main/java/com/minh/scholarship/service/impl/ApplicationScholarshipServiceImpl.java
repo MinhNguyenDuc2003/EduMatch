@@ -161,21 +161,9 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
                     .build();
             kafkaProducer.convertToByteAndSend(newEventApplicationTopic, notificationVo);
 
-            MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.APPLICATION_UPDATED.getCode()));
-            String body = templateDto.getBody().replace("{{scholarshipName}}", scholarshipVo.getTitle())
-                    .replace("{{UniversityName}}", scholarshipVo.getUniversity())
-                    .replace("{{status}}", dto.getStatus())
-                    .replace("{{link}}", feEndPoint + "/applicant/activity?tab=applied");
-            MailDto mailDto = new MailDto();
-            mailDto.setBody(body);
-            mailDto.setTo(application.getEmail());
-            mailDto.setSubject(templateDto.getSubject());
-            mailDto.setTemplateId(templateDto.getId());
-            kafkaProducer.convertToByteAndSend(mailTopic, mailDto);
-
             if ("Successful".equals(dto.getStatus())) {
                 MailTemplateDto templateSuccess = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.SUCCESSFUL_APPLICATION.getCode()));
-                String bodySuccess = templateDto.getBody().replace("{{scholarshipName}}", scholarshipVo.getTitle())
+                String bodySuccess = templateSuccess.getBody().replace("{{scholarshipName}}", scholarshipVo.getTitle())
                         .replace("{{universityName}}", scholarshipVo.getUniversity())
                         .replace("{{link}}", feEndPoint + "/case-study/" + scholarshipVo.getId());
                 MailDto mailSuccess = new MailDto();
@@ -184,8 +172,19 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
                 mailSuccess.setSubject(templateSuccess.getSubject());
                 mailSuccess.setTemplateId(templateSuccess.getId());
                 kafkaProducer.convertToByteAndSend(mailTopic, mailSuccess);
+            } else {
+                MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.APPLICATION_UPDATED.getCode()));
+                String body = templateDto.getBody().replace("{{scholarshipName}}", scholarshipVo.getTitle())
+                        .replace("{{UniversityName}}", scholarshipVo.getUniversity())
+                        .replace("{{status}}", dto.getStatus())
+                        .replace("{{link}}", feEndPoint + "/applicant/activity?tab=applied");
+                MailDto mailDto = new MailDto();
+                mailDto.setBody(body);
+                mailDto.setTo(application.getEmail());
+                mailDto.setSubject(templateDto.getSubject());
+                mailDto.setTemplateId(templateDto.getId());
+                kafkaProducer.convertToByteAndSend(mailTopic, mailDto);
             }
-
         }
         mapper.updateEntityFromDto(dto, exist);
         ApplicationScholarshipEntity saved = repository.save(exist);

@@ -8,6 +8,7 @@ import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
 import com.minh.model.dto.scholarship.ScholarshipStatisticsDto;
 import com.minh.model.dto.scholarship.ScholarshipViewDto;
 import com.minh.scholarship.data.vo.ApplicantProfileVo;
+import com.minh.scholarship.data.vo.ApplicationRecommendationVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import com.minh.scholarship.service.ScholarshipService;
@@ -48,6 +49,11 @@ public class ScholarshipController {
     @GetMapping("/recommendation/applicant")
     public ApiResponse<List<ApplicantProfileVo>> getRecommendationApplicantForScholarship(@RequestParam Long scholarshipId, @RequestParam Integer topK) {
         return ApiResponse.ok(scholarshipService.getRecommendationApplicantForScholarship(scholarshipId, topK));
+    }
+
+    @GetMapping("/recommendation/filter")
+    public ApiResponse<ApplicationRecommendationVo> getApplicationRecommendation(@RequestParam Long scholarshipId) {
+        return ApiResponse.ok(scholarshipService.getApplicationRecommendation(scholarshipId));
     }
 
     @Authorized

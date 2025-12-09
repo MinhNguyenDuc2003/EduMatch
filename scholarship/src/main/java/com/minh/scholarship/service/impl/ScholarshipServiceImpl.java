@@ -13,14 +13,13 @@ import com.minh.model.dto.media.MailTemplateDto;
 import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.notification.NotificationTemplateDto;
 import com.minh.model.dto.scholarship.*;
+import com.minh.scholarship.data.entity.ApplicationEntity;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
+import com.minh.scholarship.data.entity.ScholarshipPreferenceEntity;
 import com.minh.scholarship.data.entity.ScholarshipViewEntity;
 import com.minh.scholarship.data.entity.junction.ScholarshipFollowerEntity;
 import com.minh.scholarship.data.entity.junction.ScholarshipMediaEntity;
-import com.minh.scholarship.data.mapper.ScholarshipFollowerMapper;
-import com.minh.scholarship.data.mapper.ScholarshipMapper;
-import com.minh.scholarship.data.mapper.ScholarshipPreferenceMapper;
-import com.minh.scholarship.data.mapper.ScholarshipViewMapper;
+import com.minh.scholarship.data.mapper.*;
 import com.minh.scholarship.data.repository.*;
 import com.minh.scholarship.data.vo.*;
 import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
@@ -45,8 +44,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,6 +70,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     private final ApplicantProfileFeign applicantProfileFeign;
     private final CustomerFeign customerFeign;
     private final CaseStudyService caseStudyService;
+    private final ApplicationRepository applicationRepository;
+    private final ApplicationMapper applicationMapper;
 
     @Value("${fe.end-point}")
     private String feEndPoint;
@@ -603,6 +603,36 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         requestDto.setApplicantId(applicantProfileVo.getId());
         requestDto.setScholarshipIds(scholarshipIds);
         return aiMatchFeign.compareScholarships(requestDto);
+    }
+
+    @Override
+    public ApplicationRecommendationVo getApplicationRecommendation(Long scholarshipId) {
+        Optional<ScholarshipEntity> scholarship = scholarshipRepository.findById(scholarshipId);
+        if (scholarship.isEmpty()) {
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
+        }
+        ScholarshipEntity scholarshipEntity = scholarship.get();
+        List<ScholarshipPreferenceEntity> preferences = scholarshipPreferenceRepository.findByScholarshipId(scholarshipId);
+        Map<String, Double> preferenceMap = preferences.stream()
+                .collect(Collectors.toMap(ScholarshipPreferenceEntity::getField, ScholarshipPreferenceEntity::getWeight));
+        List<String> nationalities = new ArrayList<>();
+        if (ObjectUtils.isNotEmpty(scholarshipEntity.getRestrictedNationalities())) {
+            nationalities = Arrays.stream(scholarshipEntity.getRestrictedNationalities().split(",")).toList();
+        }
+        List<ApplicationEntity> applicationFilter = applicationRepository.findAllByFilter(scholarshipId,
+                scholarshipEntity.getStudyLevel(),
+                scholarshipEntity.getMinAge(), scholarshipEntity.getMaxAge(),
+                scholarshipEntity.getGenderRequirement(), scholarshipEntity.getGpaRequirement(),
+                scholarshipEntity.getRequiredSatScore(), scholarshipEntity.getRequiredGreScore(),
+                scholarshipEntity.getRequiredGmatScore(), scholarshipEntity.getRequiredActScore(),
+                scholarshipEntity.getRequiredToeflScore(), scholarshipEntity.getRequiredIeltsScore(),
+                scholarshipEntity.getRequiredWorkExperienceYears(), scholarshipEntity.getRequiredPublicationCount()
+        );
+        ApplicationRecommendationVo response = new ApplicationRecommendationVo();
+        response.setScholarshipPreference(preferenceMap);
+        response.setApplications(applicationFilter);
+        response.setScholarship(scholarshipEntity);
+        return response;
     }
 
 }
