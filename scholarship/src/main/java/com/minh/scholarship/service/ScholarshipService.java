@@ -2,6 +2,7 @@ package com.minh.scholarship.service;
 
 import com.minh.model.dto.scholarship.*;
 import com.minh.scholarship.data.vo.ApplicantProfileVo;
+import com.minh.scholarship.data.vo.ApplicationRecommendationVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import org.springframework.data.domain.Page;
@@ -70,4 +71,6 @@ public interface ScholarshipService {
     ScholarshipStatisticsDto getStatisticsByProvider();
 
     String getCompareResponse(List<Long> scholarshipIds);
+
+    ApplicationRecommendationVo getApplicationRecommendation(Long scholarshipId);
 }
