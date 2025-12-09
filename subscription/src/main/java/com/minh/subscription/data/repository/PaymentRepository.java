@@ -2,7 +2,7 @@ package com.minh.subscription.data.repository;
 
 import com.minh.model.dto.subscription.MonthlyRevenueDto;
 import com.minh.model.dto.subscription.RevenueByUserTypeDto;
-import com.minh.subscription.data.entity.OrderEntity;
+import com.minh.subscription.data.entity.PaymentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,20 +13,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
+public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
-    Optional<OrderEntity> findByIdAndActive(Long id, Boolean active);
+    List<PaymentEntity> findAllByUserIdOrderByPaidAtDesc(String userId);
+
+
+    Optional<PaymentEntity> findByIdAndActive(Long id, Boolean active);
 
     @Modifying
-    @Query("UPDATE OrderEntity p SET p.active = false WHERE p.id = :id")
+    @Query("UPDATE PaymentEntity p SET p.active = false WHERE p.id = :id")
     void updateActiveById(@Param("id") Long id);
 
-    Optional<OrderEntity> findByTransactionIdAndActive(String transactionId, Boolean active);
+    Optional<PaymentEntity> findByTransactionIdAndActive(String transactionId, Boolean active);
 
     // Doanh thu theo tháng
     @Query("SELECT new com.minh.model.dto.subscription.MonthlyRevenueDto(" +
             "YEAR(o.paidAt), MONTH(o.paidAt), SUM(o.amount)) " +
-            "FROM OrderEntity o " +
+            "FROM PaymentEntity o " +
             "WHERE o.status = 'PAID' AND o.paidAt IS NOT NULL " +
             "GROUP BY YEAR(o.paidAt), MONTH(o.paidAt) " +
             "ORDER BY YEAR(o.paidAt), MONTH(o.paidAt)")
@@ -38,7 +41,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
         CAST(EXTRACT(MONTH FROM o.paidAt) AS integer),
         SUM(o.amount)
     )
-    FROM OrderEntity o
+    FROM PaymentEntity o
     WHERE o.status = 'PAID' AND o.paidAt IS NOT NULL
     GROUP BY CAST(EXTRACT(YEAR FROM o.paidAt) AS integer), CAST(EXTRACT(MONTH FROM o.paidAt) AS integer)
     ORDER BY CAST(EXTRACT(YEAR FROM o.paidAt) AS integer), CAST(EXTRACT(MONTH FROM o.paidAt) AS integer)
@@ -47,7 +50,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 
     // Tổng tiền theo userType
     @Query("SELECT new com.minh.model.dto.subscription.RevenueByUserTypeDto(o.subscription.userType, SUM(o.amount)) " +
-            "FROM OrderEntity o " +
+            "FROM PaymentEntity o " +
             "WHERE o.status = 'PAID' " +
             "GROUP BY o.subscription.userType")
     List<RevenueByUserTypeDto> getRevenueByUserType();

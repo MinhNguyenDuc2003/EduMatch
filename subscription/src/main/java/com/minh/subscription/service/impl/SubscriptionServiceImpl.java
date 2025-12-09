@@ -12,7 +12,9 @@ import com.minh.subscription.data.entity.SubscriptionPlanEntity;
 import com.minh.subscription.data.mapper.SubscriptionMapper;
 import com.minh.subscription.data.repository.SubscriptionPlanRepository;
 import com.minh.subscription.data.repository.SubscriptionRepository;
+import com.minh.subscription.data.vo.CustomerVm;
 import com.minh.subscription.data.vo.CustomerVo;
+import com.minh.subscription.data.vo.SubscriptionVo;
 import com.minh.subscription.feign.CustomerFeign;
 import com.minh.subscription.feign.MediaFeign;
 import com.minh.subscription.service.SubscriptionService;
@@ -22,6 +24,7 @@ import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -42,15 +45,37 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
     private String feEndPoint;
 
     @Override
-    public List<SubscriptionDto> getAll() {
-        return subscriptionMapper.toDto(subscriptionRepository.findAll());
+    public List<SubscriptionVo> getAll() {
+
+        List<SubscriptionDto> dtos = subscriptionMapper.toDto(subscriptionRepository.findAll());
+
+        List<SubscriptionVo> vos = subscriptionMapper.toVo(dtos);
+
+        vos.forEach(vo -> {
+            CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(vo.getUserId()));
+            if (customerVo != null) {
+                vo.setCustomer(customerVo.getCustomer());
+            }
+        });
+
+        return vos;
     }
 
     @Override
-    public SubscriptionDto getById(Long id) {
+    public SubscriptionVo getById(Long id) {
         SubscriptionEntity entity = subscriptionRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND));
-        return subscriptionMapper.toDto(entity);
+
+        SubscriptionDto dto = subscriptionMapper.toDto(entity);
+
+        SubscriptionVo vo = subscriptionMapper.toVo(dto);
+
+        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(dto.getUserId()));
+        if (customerVo != null) {
+            vo.setCustomer(customerVo.getCustomer());
+        }
+
+        return vo;
     }
 
     @Override
@@ -100,14 +125,18 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
         subscriptionRepository.updateActiveById(id, false);
     }
 
-    public List<SubscriptionDto> getAllSubscriptionsByUserId(String userId) {
+    @Override
+    public List<SubscriptionVo> getAllSubscriptionsByUserId(String userId) {
         List<SubscriptionEntity> list = subscriptionRepository.findAllByUserId(userId);
+
         if (list.isEmpty()) {
             throw new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND);
         }
-        return list.stream()
-                .map(subscriptionMapper::toDto)
-                .collect(Collectors.toList());
+
+        List<SubscriptionDto> dtos = subscriptionMapper.toDto(list);
+        List<SubscriptionVo> vos = subscriptionMapper.toVo(dtos);
+
+        return vos;
     }
 
     @Override
@@ -130,13 +159,28 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
     }
 
     @Override
-    public List<SubscriptionDto> getCurrentSubscriptionByUser() {
+    public SubscriptionVo getCurrentSubscriptionByUser() {
         String userId = SecurityUtil.getCurrentUserId();
         if (ObjectUtils.isEmpty(userId)) {
             return null;
         }
 
-        List<SubscriptionEntity> entity = subscriptionRepository.findCurrentSubscription(userId);
-        return subscriptionMapper.toDto(entity);
+        SubscriptionEntity entity = subscriptionRepository
+                .findFirstByUserIdAndActiveTrueOrderByEndDateDesc(userId)
+                .orElse(null);
+
+        if (entity == null) {
+            return null;
+        }
+
+        SubscriptionDto dto = subscriptionMapper.toDto(entity);
+        SubscriptionVo vo = subscriptionMapper.toVo(dto);
+
+        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(vo.getUserId()));
+        if (customerVo != null) {
+            vo.setCustomer(customerVo.getCustomer());
+        }
+
+        return vo;
     }
 }

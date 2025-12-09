@@ -38,6 +38,8 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
             """)
     List<SubscriptionEntity> findCurrentSubscription(@Param("userId") String userId);
 
+    Optional<SubscriptionEntity> findFirstByUserIdAndActiveTrueOrderByEndDateDesc(String userId);
+
     List<SubscriptionPlanEntity> findByActiveTrue();
 
     Optional<SubscriptionEntity> findByUserIdAndUserTypeAndStatus(String userId,

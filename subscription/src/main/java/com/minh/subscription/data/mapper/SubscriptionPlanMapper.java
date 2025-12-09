@@ -1,8 +1,10 @@
 package com.minh.subscription.data.mapper;
 
 import com.minh.enumeration.subscription.SubscriptionFeatureEnum;
+import com.minh.mapper.BaseMapper;
 import com.minh.model.dto.subscription.SubscriptionPlanDto;
 import com.minh.subscription.data.entity.SubscriptionPlanEntity;
+import org.docx4j.openpackaging.Base;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -16,18 +18,11 @@ import java.util.stream.Collectors;
         uses = {
 
         })
-public interface SubscriptionPlanMapper {
-
-    SubscriptionPlanDto toDto(SubscriptionPlanEntity entity);
-
-    SubscriptionPlanEntity toEntity(SubscriptionPlanDto dto);
-
-    List<SubscriptionPlanDto> toDto(List<SubscriptionPlanEntity> entities);
+public interface SubscriptionPlanMapper extends BaseMapper<SubscriptionPlanEntity, SubscriptionPlanDto> {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(SubscriptionPlanDto dto, @MappingTarget SubscriptionPlanEntity entity);
 
-    // === Thêm 2 method hỗ trợ chuyển đổi ===
     default List<String> mapEnumListToStringList(List<SubscriptionFeatureEnum> enums) {
         if (enums == null) return null;
         return enums.stream().map(Enum::name).collect(Collectors.toList());

@@ -3,17 +3,20 @@ package com.minh.subscription.service.impl;
 import com.minh.constants.CoreMessageCode;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.subscription.MonthlyRevenueDto;
-import com.minh.model.dto.subscription.OrderDto;
+import com.minh.model.dto.subscription.PaymentDto;
 import com.minh.model.dto.subscription.RevenueByUserTypeDto;
 import com.minh.service.base.BaseService;
-import com.minh.subscription.data.entity.OrderEntity;
+import com.minh.subscription.data.entity.PaymentEntity;
 import com.minh.subscription.data.entity.SubscriptionEntity;
 import com.minh.subscription.data.entity.SubscriptionPlanEntity;
-import com.minh.subscription.data.mapper.OrderMapper;
-import com.minh.subscription.data.repository.OrderRepository;
+import com.minh.subscription.data.mapper.PaymentMapper;
+import com.minh.subscription.data.repository.PaymentRepository;
 import com.minh.subscription.data.repository.SubscriptionPlanRepository;
 import com.minh.subscription.data.repository.SubscriptionRepository;
-import com.minh.subscription.service.OrderService;
+import com.minh.subscription.data.vo.CustomerVo;
+import com.minh.subscription.data.vo.PaymentVo;
+import com.minh.subscription.feign.CustomerFeign;
+import com.minh.subscription.service.PaymentService;
 import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,29 +28,52 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl extends BaseService implements OrderService {
+public class PaymentServiceImpl extends BaseService implements PaymentService {
 
-    private final OrderRepository orderRepository;
+    private final PaymentRepository paymentRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final SubscriptionPlanRepository subscriptionplanRepository;
-    private final OrderMapper orderMapper;
+    private final PaymentMapper paymentMapper;
+    private final CustomerFeign customerFeign;
 
     @Override
-    public List<OrderDto> getAll() {
-        return orderMapper.toDto(orderRepository.findAll());
+    public List<PaymentVo> getAll() {
+
+        List<PaymentEntity> entities = paymentRepository.findAll();
+
+        List<PaymentVo> vos = paymentMapper.toVo(entities);
+
+        vos.forEach(vo -> {
+            CustomerVo customerVo = this.parseResponse(
+                    customerFeign.getSimpleCustomerById(vo.getUserId())
+            );
+            if (customerVo != null && customerVo.getCustomer() != null) {
+                vo.setCustomer(customerVo.getCustomer());
+            }
+        });
+
+        return vos;
     }
 
     @Override
-    public OrderDto getById(Long id) {
-        OrderEntity entity = orderRepository.findByIdAndActive(id, true)
+    public PaymentVo getById(Long id) {
+        PaymentEntity entity = paymentRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
-        return orderMapper.toDto(entity);
+
+        PaymentVo vo = paymentMapper.toVo(entity);
+
+        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(vo.getUserId()));
+        if (customerVo != null && customerVo.getCustomer() != null) {
+            vo.setCustomer(customerVo.getCustomer());
+        }
+
+        return vo;
     }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public OrderDto create(OrderDto payment) {
-        OrderEntity entity = orderMapper.toEntity(payment);
+    public PaymentDto create(PaymentDto payment) {
+        PaymentEntity entity = paymentMapper.toEntity(payment);
 
         String userId = UaaContextHolder.getUserId();
         entity.setUserId(userId);
@@ -58,20 +84,20 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             entity.setSubscription(subscription);
         }
 
-        OrderEntity savedEntity = orderRepository.save(entity);
-        return orderMapper.toDto(savedEntity);
+        PaymentEntity savedEntity = paymentRepository.save(entity);
+        return paymentMapper.toDto(savedEntity);
     }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public OrderDto update(OrderDto payment) {
-        OrderEntity existingEntity = orderRepository.findByIdAndActive(payment.getId(), true)
+    public PaymentDto update(PaymentDto payment) {
+        PaymentEntity existingEntity = paymentRepository.findByIdAndActive(payment.getId(), true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.ORDER_NOT_FOUND));
 
         String userId = UaaContextHolder.getUserId();
         existingEntity.setUserId(userId);
 
-        orderMapper.updateEntityFromDto(payment, existingEntity);
+        paymentMapper.updateEntityFromDto(payment, existingEntity);
 
         if (payment.getSubscriptionId() != null) {
             SubscriptionEntity subscription = subscriptionRepository.findById(payment.getSubscriptionId())
@@ -79,22 +105,22 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             existingEntity.setSubscription(subscription);
         }
 
-        OrderEntity savedEntity = orderRepository.save(existingEntity);
-        return orderMapper.toDto(savedEntity);
+        PaymentEntity savedEntity = paymentRepository.save(existingEntity);
+        return paymentMapper.toDto(savedEntity);
     }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
     public void delete(Long id) {
-        if (!orderRepository.existsById(id)) {
+        if (!paymentRepository.existsById(id)) {
             throw new BusinessException(CoreMessageCode.ORDER_NOT_FOUND);
         }
-        orderRepository.updateActiveById(id);
+        paymentRepository.updateActiveById(id);
     }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public OrderDto markAsPaid(String transactionId, Long subscriptionPlanId) {
+    public PaymentDto markAsPaid(String transactionId, Long subscriptionPlanId) {
 
         String userId = UaaContextHolder.getUserId();
 
@@ -126,7 +152,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
         subscriptionRepository.save(subscription);
         // Tạo Order và gán subscription mới vừa tạo
-        OrderEntity order = new OrderEntity();
+        PaymentEntity order = new PaymentEntity();
         order.setUserId(userId);
         order.setTransactionId(transactionId);
         order.setStatus("PAID");
@@ -137,69 +163,91 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         order.setCurrency("USD");
         order.setPaymentMethod("CARD");
 
-        order = orderRepository.save(order);
+        order = paymentRepository.save(order);
 
-        // Trả về OrderDto
-        return orderMapper.toDto(order);
+        // Trả về PaymentDto
+        return paymentMapper.toDto(order);
     }
 
-    @Override
-    @Transactional(rollbackOn = Exception.class)
-    public OrderDto extendSubscription(Long subscriptionId, Long subscriptionPlanId, String transactionId) {
+    public PaymentDto extendSubscription(Long subscriptionPlanId, String transactionId) {
 
         String userId = UaaContextHolder.getUserId();
         LocalDateTime now = LocalDateTime.now();
 
-        // Lấy Subscription Plan mới
+        // Lấy plan
         SubscriptionPlanEntity plan = subscriptionplanRepository.findById(subscriptionPlanId)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_PLAN_NOT_FOUND));
 
-        // Lấy Subscription hiện tại của user
-        SubscriptionEntity subscription = subscriptionRepository.findById(subscriptionId)
+        // Lấy subscription hiện tại của user
+        SubscriptionEntity current = subscriptionRepository.findFirstByUserIdAndActiveTrueOrderByEndDateDesc(userId)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND));
 
-        if (!subscription.getUserId().equals(userId)) {
-            throw new BusinessException(CoreMessageCode.ACCESS_DENIED);
-        }
+        // Tính ngày bắt đầu subscription mới
+        LocalDateTime baseDate = current.getEndDate().isBefore(now) ? now : current.getEndDate();
 
-        // Tính ngày mới
-        LocalDateTime baseDate = subscription.getEndDate().isBefore(now) ? now : subscription.getEndDate();
-        subscription.setEndDate(baseDate.plusDays(plan.getDurationDays()));
+        current.setActive(false);
+        subscriptionRepository.save(current);
 
-        // Cập nhật plan nếu cần
-        subscription.setPlan(plan);
+        // Tạo mới subscription
+        SubscriptionEntity newSubscription = new SubscriptionEntity();
+        newSubscription.setUserId(userId);
+        newSubscription.setPlan(plan);
+        newSubscription.setStartDate(baseDate);
+        newSubscription.setEndDate(baseDate.plusDays(plan.getDurationDays()));
+        newSubscription.setStatus("true");
+        newSubscription.setUserType(plan.getTargetType());
+        newSubscription.setActive(true);
 
-        subscriptionRepository.save(subscription);
+        subscriptionRepository.save(newSubscription);
 
-        // Tạo order mới cho giao dịch gia hạn
-        OrderEntity order = new OrderEntity();
+        // Tạo order mới
+        PaymentEntity order = new PaymentEntity();
         order.setUserId(userId);
         order.setTransactionId(transactionId);
         order.setStatus("PAID");
         order.setPaidAt(now);
         order.setActive(true);
-        order.setSubscription(subscription);
+        order.setSubscription(newSubscription);
         order.setAmount(plan.getPrice());
         order.setCurrency("USD");
         order.setPaymentMethod("CARD");
 
-        order = orderRepository.save(order);
+        order = paymentRepository.save(order);
 
-        return orderMapper.toDto(order);
+        return paymentMapper.toDto(order);
     }
 
     @Override
     public List<MonthlyRevenueDto> getMonthlyRevenue() {
-        return orderRepository.getMonthlyRevenue();
+        return paymentRepository.getMonthlyRevenue();
     }
 
     @Override
     public List<RevenueByUserTypeDto> getRevenueByUserType() {
-        return orderRepository.getRevenueByUserType();
+        return paymentRepository.getRevenueByUserType();
     }
 
     @Override
     public List<MonthlyRevenueDto> getRevenueByMonth() {
-        return orderRepository.getRevenueByMonth();
+        return paymentRepository.getRevenueByMonth();
+    }
+
+    @Override
+    public List<PaymentVo> getOrderHistoryForUser() {
+        String userId = UaaContextHolder.getUserId();
+
+        List<PaymentEntity> entities =
+                paymentRepository.findAllByUserIdOrderByPaidAtDesc(userId);
+
+        List<PaymentVo> vos = paymentMapper.toVo(entities);
+
+        vos.forEach(vo -> {
+            CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(vo.getUserId()));
+            if (customerVo != null && customerVo.getCustomer() != null) {
+                vo.setCustomer(customerVo.getCustomer());
+            }
+        });
+
+        return vos;
     }
 }

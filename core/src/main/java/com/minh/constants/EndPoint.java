@@ -44,7 +44,7 @@ public final class EndPoint {
     public static class SUBSCRIPTION {
         public static final String SUBSCRIPTIONS = "/subscription";
         public static final String PLANS = "/subscription/subscription/plans";
-        public static final String ORDERS = "/subscription/orders";
+        public static final String PAYMENTS = "/subscription/payments";
     }
 
     public static class REPORT {

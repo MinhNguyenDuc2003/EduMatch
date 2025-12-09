@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class OrderDto extends BaseDto {
+public class PaymentDto extends BaseDto {
 
     private Long id;
 
