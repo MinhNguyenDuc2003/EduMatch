@@ -1,7 +1,7 @@
 'use client';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
@@ -21,16 +21,21 @@ const Users = () => {
 
           const mappedUsers =
             list?.map((item: any) => {
+              const created = new Date(item.createdTimestamp); // chuyển ISO string thành Date
               return {
                 id: item.id,
                 username: item.username,
                 email: item.email,
                 name: `${item.firstName} ${item.lastName}`,
-                createdDate: new Date(item.createdTimestamp).toLocaleDateString(
-                  'en-US'
-                ),
+                createdDate: created.toLocaleDateString('en-US', {
+                  weekday: 'short',  // "Tue"
+                  month: 'short',    // "Dec"
+                  day: 'numeric',    // "3"
+                  year: 'numeric'    // "2025"
+                }),
               };
             }) || [];
+
 
           const total = mappedUsers.length;
 
@@ -43,27 +48,33 @@ const Users = () => {
               filterName: '',
             },
           ];
+          const columns = useMemo(
+            () => [
+              { accessorKey: "id", header: "ID" },
+              { accessorKey: "username", header: "Username" },
+              { accessorKey: "email", header: "Email" },
+              { accessorKey: "name", header: "Full Name" }, // phải trùng với mappedUsers
+              { accessorKey: "createdDate", header: "Created Date" },
+            ],
+            []
+          );
 
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
-              <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
+              {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
+
 
               <CustomDataTable
-                title="Users List"
+                columns={columns}
                 data={mappedUsers}
-                detailPath="/user"
-                customTitles={[
-                  'ID',
-                  'Username',
-                  'Email',
-                  'Full Name',
-                  'Created Date',
-                ]}
-                isCreate
-                isUser
-                 onCreate={() => router.push('/user/create')}
-                externalFilterText={filterText}
+                onView={(row: any) => router.push(`/user/${row.id}`)}
+                onEdit={(row: any) => console.log("edit", row)}
+                onDelete={(row: any) => console.log("delete", row)}
+                isDelete={false}
+                isEdit={false}
+                isView={false}
               />
+
             </div>
           );
         }}

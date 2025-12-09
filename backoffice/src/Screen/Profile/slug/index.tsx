@@ -44,7 +44,6 @@ function ProfileDetailInner({
         } else if (role === 'Provider') {
           res = await meds.onGetProviderByID(idFormat);
         } else {
-          // fallback
           res =
             (await meds.onGetProviderByID(idFormat).catch(() => undefined)) ||
             (await meds.onGetApplicantByID(idFormat).catch(() => undefined));
@@ -68,7 +67,15 @@ function ProfileDetailInner({
     );
 
   return (
-    <div className="w-[95%] mx-auto bg-white p-8 mt-10 rounded-2xl shadow-md border border-gray-100 space-y-6">
+    <div className="w-[90%] mx-auto py-10 space-y-8">
+      <Header
+        title={
+          role === 'Applicant'
+            ? 'Applicant Profidle'
+            : 'Provider Profile'
+        }
+      />
+
       {role === 'Applicant' ? (
         <ApplicantView applicant={data} />
       ) : (
@@ -78,20 +85,26 @@ function ProfileDetailInner({
   );
 }
 
-// Applicant UI
+/* ----------------------------- HEADER ----------------------------- */
+function Header({ title }: { title: string }) {
+  return (
+    <div className="flex justify-between items-center mb-6">
+      <h1 className="text-3xl font-bold text-gray-800">{title}</h1>
+    </div>
+  );
+}
+
+/* --------------------------- APPLICANT VIEW --------------------------- */
 function ApplicantView({ applicant }: { applicant: any }) {
   return (
-    <>
-      <h1 className="text-2xl font-bold text-gray-800 border-b pb-3">
-        Applicant Profile
-      </h1>
+    <div className="space-y-8">
 
-      <Section title="Personal Info">
+      <Section title="Personal Information">
         <InfoRow label="Full Name" value={`${applicant.firstName} ${applicant.lastName}`} />
         <InfoRow label="Contact Name" value={applicant.contactName} />
-        <InfoRow label="Phone" value={applicant.phoneNumber} />
+        <InfoRow label="Phone Number" value={applicant.phoneNumber} />
         <InfoRow label="Hometown" value={applicant.hometown} />
-        <InfoRow label="Citizenship" value={applicant.citizenshipStatus} />
+        <InfoRow label="Citizenship Status" value={applicant.citizenshipStatus} />
         <InfoRow label="Ethnicity" value={applicant.ethnicity} />
         <InfoRow label="Race" value={applicant.race} />
         <InfoRow label="Overall GPA" value={applicant.overallGpa} />
@@ -126,36 +139,38 @@ function ApplicantView({ applicant }: { applicant: any }) {
           />
         ))}
       </Section>
-    </>
+    </div>
   );
 }
 
-function ProviderView({ provider, meds }: { provider: any , meds : any}) {
+/* --------------------------- PROVIDER VIEW --------------------------- */
+function ProviderView({ provider, meds }: { provider: any; meds: any }) {
   const [verified, setVerified] = useState(provider.verified);
   const [loading, setLoading] = useState(false);
 
   const handleVerify = async () => {
-    if (verified) return; 
+    if (verified) return;
     setLoading(true);
     try {
-        const res = await meds.onUpdateProviderVerifyByID(provider.id);
+      const res = await meds.onUpdateProviderVerifyByID(provider.id);
       if (res?.data) {
-        setVerified(true); 
+        setVerified(true);
       }
     } catch (error) {
-      console.error('Verify provider failed', error);
+      console.error('Verify error:', error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <>
-      <div className="mt-4 flex justify-end">
+    <div className="space-y-8">
+      {/* Verify Button */}
+      <div className="flex justify-end">
         <button
           onClick={handleVerify}
           disabled={verified || loading}
-          className={`px-4 py-2 rounded-lg font-semibold text-white ${
+          className={`px-5 py-2.5 rounded-lg font-semibold text-white transition ${
             verified || loading
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-green-600 hover:bg-green-700'
@@ -164,11 +179,8 @@ function ProviderView({ provider, meds }: { provider: any , meds : any}) {
           {loading ? 'Verifying...' : verified ? 'Verified' : 'Verify Email'}
         </button>
       </div>
-      <h1 className="text-2xl font-bold text-gray-800 border-b pb-3">
-        Provider Profile
-      </h1>
 
-      <Section title="Organization Info">
+      <Section title="Organization Information">
         <InfoRow label="Organization Name" value={provider.organizationName} />
         <InfoRow label="Type" value={provider.organizationType} />
         <InfoRow label="Email" value={provider.email} />
@@ -193,21 +205,21 @@ function ProviderView({ provider, meds }: { provider: any , meds : any}) {
           ))}
         </Section>
       )}
-
-    
-    </>
-  );
-}
-
-function Section({ title, children }: { title: string; children: any }) {
-  return (
-    <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
-      <h2 className="text-lg font-semibold mb-4">{title}</h2>
-      <div className="grid grid-cols-2 gap-4">{children}</div>
     </div>
   );
 }
 
+/* --------------------------- SECTION CARD --------------------------- */
+function Section({ title, children }: { title: string; children: any }) {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+      <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">{children}</div>
+    </div>
+  );
+}
+
+/* --------------------------- INFO ROW --------------------------- */
 function InfoRow({
   label,
   value,
@@ -219,22 +231,23 @@ function InfoRow({
 }) {
   const statusColor =
     status && value === 'Yes'
-      ? 'text-green-600 bg-green-100'
+      ? 'text-green-700 bg-green-100'
       : status && value === 'No'
-      ? 'text-red-600 bg-red-100'
+      ? 'text-red-700 bg-red-100'
       : 'text-gray-900';
 
   return (
     <div className="flex flex-col">
       <span className="text-gray-500 text-sm">{label}</span>
+
       {status ? (
         <span
-          className={`inline-block mt-1 px-3 py-1 rounded-full text-sm font-semibold ${statusColor} w-max`}
+          className={`mt-1 px-3 py-1 w-max rounded-lg text-sm font-medium ${statusColor}`}
         >
           {value}
         </span>
       ) : (
-        <span className="text-gray-800 font-medium mt-1">{value || '—'}</span>
+        <span className="font-medium text-gray-800 mt-1">{value || '—'}</span>
       )}
     </div>
   );

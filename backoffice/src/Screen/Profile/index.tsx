@@ -1,14 +1,16 @@
 'use client';
+
 import { Building, GraduationCap, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
 
 const Profiles = () => {
   const [filterText, setFilterText] = useState('');
-  const router = useRouter()
+  const router = useRouter();
+
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
@@ -16,7 +18,7 @@ const Profiles = () => {
   return (
     <Context.Provider>
       <Context.Consumer>
-        {({ ss, meds }) => {
+        {({ ss }) => {
           const listApplicants = (ss?.Joint?.Students as any)?.data || [];
           const listProvider = (ss?.Joint?.Provider as any)?.data || [];
 
@@ -38,57 +40,61 @@ const Profiles = () => {
 
           const mappedProfiles = [...mappedApplicants, ...mappedProviders];
 
-          const total = mappedProfiles.length;
-          const totalApplicants = mappedApplicants.length;
-          const totalProviders = mappedProviders.length;
-
           const filteredProfiles =
             filterText === 'Applicant'
               ? mappedApplicants
               : filterText === 'Provider'
-                ? mappedProviders
-                : mappedProfiles;
+              ? mappedProviders
+              : mappedProfiles;
 
           const stats = [
             {
               title: 'Total Profiles',
-              value: total,
+              value: mappedProfiles.length,
               icon: <User />,
               color: 'text-blue-600',
               filterName: '',
             },
             {
               title: 'Applicants',
-              value: totalApplicants,
+              value: mappedApplicants.length,
               icon: <GraduationCap />,
               color: 'text-green-600',
               filterName: 'Applicant',
             },
             {
               title: 'Providers',
-              value: totalProviders,
+              value: mappedProviders.length,
               icon: <Building />,
               color: 'text-purple-600',
               filterName: 'Provider',
             },
           ];
 
+          const columns = useMemo(
+            () => [
+              { accessorKey: "id", header: "ID" },
+              { accessorKey: "name", header: "Name" },
+              { accessorKey: "email", header: "Email" },
+              { accessorKey: "phone", header: "Phone" },
+              { accessorKey: "role", header: "Role" },
+            ],
+            []
+          );
+
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
-              <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
+              
+              {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
+
               <CustomDataTable
-                title="Profiles"
+                columns={columns}
                 data={filteredProfiles}
-                detailPath="/profile"
-                customTitles={[
-                  'ID',
-                  'Name',
-                  'Email',
-                  'Phone',
-                  'Role',
-                ]}
-                externalFilterText={filterText}
+                onView={(row  : any ) => router.push(`/profile/${row.id}/${row.role}`)}
+                onEdit={(row  : any) => console.log("edit", row)}
+                onDelete={(row  : any) => console.log("delete", row)}
               />
+
             </div>
           );
         }}
