@@ -1,13 +1,14 @@
 "use client";
 import { CheckCircle, Clock, GraduationCap, Mail } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CustomDataTable from "src/common/components/common/CustomDataTable";
 import StatisticGrid from "src/common/components/common/StatisticGrid";
 import Context from "./seg/context";
+import { useRouter } from "next/navigation";
 
 const ReportFeedbackPage = () => {
   const [filterText, setFilterText] = useState("");
-
+  const router = useRouter();
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
@@ -22,11 +23,11 @@ const ReportFeedbackPage = () => {
           const ReportFeedbacks =
             list?.map((item: any) => ({
               id: item.id,
-              title: item.title,
-              comment: item.comment,
+              title: item.title ?? "—",
+              comment: item.comment ?? "—",
               categoryName: item.category?.name || "—",
               categoryType: item.category?.type || "—",
-              status: item.status,
+              status: item.status ?? "—",
               isRead: item.isRead ? "Read" : "Unread",
             })) || [];
 
@@ -67,27 +68,34 @@ const ReportFeedbackPage = () => {
               filterName: "RESOLVED",
             },
           ];
-
+          const columns = useMemo(
+            () => [
+              { accessorKey: "id", header: "ID" },
+              { accessorKey: "title", header: "Title" },
+              { accessorKey: "comment", header: "Comment" },
+              { accessorKey: "categoryName", header: "Category Name" },
+              { accessorKey: "categoryType", header: "Category Type" },
+              { accessorKey: "status", header: "Status" },
+              { accessorKey: "isRead", header: "Read" },
+            ],
+            []
+          );
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               {/* STATISTIC GRID */}
-              <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
+              {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
 
               {/* DATA TABLE */}
+
               <CustomDataTable
-                title="Report & Feedback List"
-                data={ReportFeedbacks as any}
-                detailPath="/reportFeedback"
-                customTitles={[
-                  "ID",
-                  "Title",
-                  "Comment",
-                  "Category Name",
-                  "Category Type",
-                  "Status",
-                  "Read",
-                ]}
-                externalFilterText={filterText}
+                columns={columns}
+                data={ReportFeedbacks}
+                onView={(row: any) => router.push(`/reportFeedback/${row.id}`)}
+                onEdit={(row: any) => console.log("edit", row)}
+                onDelete={(row: any) => console.log("delete", row)}
+                isCreate={false}
+                isEdit={false}
+                isDelete={false}
               />
             </div>
           );

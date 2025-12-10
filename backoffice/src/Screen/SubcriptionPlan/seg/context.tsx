@@ -131,6 +131,10 @@ export default GenCtx({
           const data = await apiClientService.delete(
             `/api/subscription/subscription/subscription/plans/${id}`
           );
+          if(data !== null){
+            alert('Delete subscriptions failed')
+            window.location.reload()
+          }
           console.log('Delete plan:', data.data);
               return data?.data ?? true;   
         } catch (error) {

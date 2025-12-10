@@ -92,7 +92,6 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
             label="Currency"
             type='select'
               options={[
-              { value: 'VND', label: 'VND' },
               { value: 'USD', label: 'USD' },
             ]}
             placeholder="Enter currency"

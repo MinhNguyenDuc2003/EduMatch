@@ -1,6 +1,6 @@
 'use client';
 import { CheckCircle, Clock, GraduationCap, XCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
@@ -16,7 +16,7 @@ const SubscriptionPlanPage = () => {
   return (
     <Context.Provider>
       <Context.Consumer>
-        {({ ss }) => {
+        {({ ss, meds }) => {
           const list = (ss?.Joint?.SubscriptionPlanList as any)?.data || [];
           console.log('list', list);
 
@@ -28,7 +28,7 @@ const SubscriptionPlanPage = () => {
               price: `${item.price} ${item.currency}`,
               duration: `${item.durationDays} days`,
               target: item.targetType,
-           
+
             })) || [];
 
           const total = plans.length;
@@ -66,26 +66,29 @@ const SubscriptionPlanPage = () => {
               filterName: 'USER',
             },
           ];
+          const columns = useMemo(
+            () => [
+              { accessorKey: "id", header: "ID" },
+              { accessorKey: "name", header: "Plan Name" },
+              { accessorKey: "description", header: "Description" },
+              { accessorKey: "price", header: "Price" },
+              { accessorKey: "duration", header: "Duration" },
+              { accessorKey: "target", header: "Target Type" },
 
+            ],
+            []
+          );
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
-              <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
+              {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
 
               <CustomDataTable
-                title="Subscription Plan List"
-                data={plans as any}
-                onCreate={() => router.push('/subscriptionPlan/create')}
-                detailPath="/subscriptionPlan"
-                customTitles={[
-                  'ID',
-                  'Plan Name',
-                  'Description',
-                  'Price',
-                  'Duration',
-                  'Target Type',
-                ]}
-                externalFilterText={filterText}
-                isCreate
+                columns={columns}
+                data={plans}
+                onView={(row: any) => router.push(`/subscriptionPlan/${row.id}`)}
+                onEdit={(row: any) => router.push(`/subscriptionPlan/${row.id}`)}
+                onCreate={(row: any) => router.push('/subscriptionPlan/create')}
+                onDelete={(row: any) => meds.onDelete(row.id)}
               />
             </div>
           );

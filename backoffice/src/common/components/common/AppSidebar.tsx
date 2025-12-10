@@ -40,7 +40,7 @@ const AppSidebar = () => {
       { icon: UserCircle, label: 'Profile', href: '/profile' },
       { icon: BookOpen, label: 'Scholarship', href: '/scholarship' },
       { icon: FileText, label: 'Application Scholarship', href: '/applicationScholarship' },
-      { icon: ShoppingCart, label: 'Orders', href: '/order' },
+      { icon: ShoppingCart, label: 'Payments', href: '/payment' },
       { icon: Package, label: 'Subscriptions', href: '/subscriptions' },
       { icon: CreditCard, label: 'Subscription Plan', href: '/subscriptionPlan' },
       { icon: MessageCircle, label: 'News', href: '/news' },

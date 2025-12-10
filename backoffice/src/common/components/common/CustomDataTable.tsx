@@ -33,7 +33,7 @@ interface ModernDataTableProps {
   onView?: (row: any) => void;
   onEdit?: (row: any) => void;
   onDelete?: (row: any) => void;
-  onCreate?: () => void;
+  onCreate?: (row:  any) => void;
   isCreate?: boolean;
   isView?: boolean;
   isEdit?: boolean;

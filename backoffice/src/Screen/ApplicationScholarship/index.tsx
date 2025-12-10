@@ -1,13 +1,14 @@
 'use client';
 import { CheckCircle, Clock, GraduationCap, XCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
+import { useRouter } from 'next/navigation';
 
 const ApplicantScholarship = () => {
   const [filterText, setFilterText] = useState('');
-
+  const router = useRouter();
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
@@ -78,27 +79,34 @@ const ApplicantScholarship = () => {
             filterText && filterText !== ''
               ? applications.filter((a: any) => a.status === filterText)
               : applications;
-
+          const columns = useMemo(
+            () => [
+              { accessorKey: "id", header: "ID" },
+              { accessorKey: "scholarshipTitle", header: "Scholarship Title" },
+              { accessorKey: "organization", header: "Organization" },
+              { accessorKey: "applicantName", header: "Applicant" },
+              { accessorKey: "university", header: "University" },
+              { accessorKey: "country", header: "Country" },
+              { accessorKey: "funding", header: "Funding" },
+              { accessorKey: "studyLevel", header: "Study Level" },
+              { accessorKey: "status", header: "Status" },
+            ],
+            []
+          );
           return (
             <div className="flex flex-col min-h-screen bg-gray-50 p-6">
-              <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
-
+              {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
               <CustomDataTable
-                title="Scholarship Applications List"
-                data={filteredApplications as any}
-                detailPath="/applicationScholarship"
-                customTitles={[
-                  'ID',
-                  'Scholarship Title',
-                  'Organization',
-                  'Applicant',
-                  'University',
-                  'Country',
-                  'Funding',
-                  'Study Level',
-                  'Status',
-                ]}
+                columns={columns}
+                data={filteredApplications}
+                onView={(row: any) => router.push(`/applicationScholarship/${row.id}`)}
+                onEdit={(row: any) => console.log("edit", row)}
+                onDelete={(row: any) => console.log("delete", row)}
+                isCreate={false}
+                isEdit={false}
+                isDelete={false}
               />
+              
             </div>
           );
         }}

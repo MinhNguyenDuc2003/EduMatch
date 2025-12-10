@@ -1,13 +1,14 @@
 'use client';
 import { CheckCircle, Clock, GraduationCap, XCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
+import { useRouter } from 'next/navigation';
 
 const Subcription = () => {
   const [filterText, setFilterText] = useState('');
-
+  const router = useRouter();
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
@@ -37,10 +38,23 @@ const Subcription = () => {
                 userType: item.userType || '—',
                 price: `${item.plan?.price || 0} ${item.plan?.currency || ''}`,
                 duration: `${item.plan?.durationDays || 0} days`,
-                startDate: start.toLocaleDateString('en-US'),
-                endDate: end.toLocaleDateString('en-US'),
+                startDate: start.toLocaleDateString('en-US', {
+                  weekday: 'short',  // "Tue"
+                  month: 'short',    // "Dec"
+                  day: 'numeric',    // "3"
+                  year: 'numeric'    // "2025"
+                }),
+                endDate: end.toLocaleDateString('en-US', {
+                  weekday: 'short',  // "Tue"
+                  month: 'short',    // "Dec"
+                  day: 'numeric',    // "3"
+                  year: 'numeric'    // "2025"
+                }),
                 autoRenew: item.autoRenew ? 'Yes' : 'No',
-                status: computedStatus, // ❗ không dùng item.status nữa
+                status: computedStatus,
+                fullName: `${item.customer.firstName} ${item.customer.lastName}`,
+                email: `${item.customer.email}`,
+
               };
             }) || [];
 
@@ -65,7 +79,7 @@ const Subcription = () => {
               color: 'text-green-600',
               filterName: 'Active',
             },
-            
+
             {
               title: 'Expired',
               value: expired,
@@ -75,27 +89,38 @@ const Subcription = () => {
             },
 
           ];
-
+          const columns = useMemo(
+            () => [
+              { accessorKey: "id", header: "ID" },
+              { accessorKey: "fullName", header: "Customer Name" },
+              { accessorKey: "email", header: "Email" },
+              { accessorKey: "planName", header: "Plan Name" },
+              { accessorKey: "userType", header: "User Type" },
+              // { accessorKey: "scholarshipTitle", header: "Subscription ID" },
+              // { accessorKey: "organization", header: "User ID" },
+              { accessorKey: "price", header: "Price" },
+              { accessorKey: "duration", header: "Duration" },
+              { accessorKey: "startDate", header: "Start Date" },
+              // { accessorKey: "funding", header: "Transaction ID" },
+              { accessorKey: "endDate", header: "End Date" },
+              // { accessorKey: "autoRenew", header: "Auto Renew" },
+              { accessorKey: "status", header: "Status" },
+            ],
+            []
+          );
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
-              <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
+              {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
 
               <CustomDataTable
-                title="Subscription List"
-                data={Subcriptions as any}
-                detailPath="/subscriptions"
-                customTitles={[
-                  'ID',
-                  'Plan Name',
-                  'User Type',
-                  'Price',
-                  'Duration',
-                  'Start Date',
-                  'End Date',
-                  'Auto Renew',
-                  'Status',
-                ]}
-                externalFilterText={filterText}
+                columns={columns}
+                data={Subcriptions}
+                onView={(row: any) => router.push(`/subscriptions/${row.id}`)}
+                onEdit={(row: any) => console.log("edit", row)}
+                onDelete={(row: any) => console.log("delete", row)}
+                isCreate={false}
+                isEdit={false}
+                isDelete={false}
               />
             </div>
           );

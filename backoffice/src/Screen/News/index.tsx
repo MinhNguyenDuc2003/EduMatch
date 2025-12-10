@@ -1,14 +1,15 @@
 'use client';
 
 import { ImageIcon, ImageOff, Newspaper } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
+import { useRouter } from 'next/navigation';
 
 const News = () => {
   const [filterText, setFilterText] = useState('');
-
+  const router = useRouter();
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
@@ -26,8 +27,8 @@ const News = () => {
               const published = new Date(item.publishedAt);
 
               const scholarshipStatus = item.scholarship?.title
-                ? 'WithScholarship'
-                : 'NoScholarship';
+                ? 'Yes'
+                : 'No';
 
               return {
                 id: item.id,
@@ -35,8 +36,15 @@ const News = () => {
                 scholarship: item.scholarship?.title ?? '—',
                 providerName: item.providerProfileVo?.organizationName ?? '—',
                 images: item.newsMedias?.length ?? 0,
+                fileName: item.newsMedias[0]?.fileName ?? "—",
+                contentType: item.newsMedias[0]?.contentType ?? "—",
                 scholarshipStatus,
-                publishedAt: published.toLocaleDateString('en-US'),
+                publishedAt: published.toLocaleDateString('en-US', {
+                weekday: 'short',  // "Tue"
+                month: 'short',    // "Dec"
+                day: 'numeric',    // "3"
+                year: 'numeric'    // "2025"
+              }),
               };
             }) || [];
 
@@ -74,25 +82,34 @@ const News = () => {
             },
           ];
 
-
+          const columns = useMemo(
+            () => [
+              { accessorKey: "id", header: "ID" },
+              { accessorKey: "title", header: "Title" },
+              { accessorKey: "scholarship", header: "Scholarship" },
+              { accessorKey: "providerName", header: "Provider Name" },
+              { accessorKey: "fileName", header: "fileName" },
+              { accessorKey: "contentType", header: "contentType" },
+              { accessorKey: "scholarshipStatus", header: "Is Has Scholarship" },
+              { accessorKey: "publishedAt", header: "Published At" },
+            ],
+            []
+          );
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
-              <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
+              {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
+
+
 
               <CustomDataTable
-                title="Provider News List"
+                columns={columns}
                 data={mappedNews}
-                detailPath="/news"
-                customTitles={[
-                  'ID',
-                  'Title',
-                  'Scholarship',
-                  'Provider Name',
-                  'Images',
-                  'Scholarship Status',
-                  'Published At',
-                ]}
-                externalFilterText={filterText}
+                onView={(row: any) => router.push(`/news/${row.id}`)}
+                onEdit={(row: any) => console.log("edit", row)}
+                onDelete={(row: any) => console.log("delete", row)}
+                isCreate={false}
+                isEdit={false}
+                isDelete={false}
               />
             </div>
           );
