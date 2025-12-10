@@ -22,21 +22,20 @@ export default function ScholarshipMetadata({
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="flex flex-wrap items-center gap-6">
+    <div className="flex flex-col gap-2">
       {/* Date */}
-      <div className="flex items-center gap-2 text-gray-600">
-        <Calendar className="size-5" />
+      <div className="flex items-center gap-1 text-gray-600">
+        <span className="font-medium text-gray-400">{t('deadline')}:</span>
         <span className="font-medium">{formattedDate}</span>
       </div>
 
       {/* Amount */}
-      <div className="flex items-center gap-2 text-gray-600">
-        <DollarSign className="size-5" />
+      <div className="flex items-center gap-1 text-gray-600">
+        <span className="font-medium text-gray-400">{t('amount')}:</span>
         <span className="font-medium">{amount}</span>
       </div>
 
       {/* Track */}
-
       {isAuthenticated && (
         <button
           onClick={onToggleTracking}
@@ -52,9 +51,9 @@ export default function ScholarshipMetadata({
         </button>
       )}
 
-      {/* View */}
-      <div className="flex items-center gap-2 text-gray-600">
-        <Eye className="size-5" />
+      {/* Reached Count */}
+      <div className="flex items-center gap-1 text-gray-600">
+        <span className="font-medium text-gray-400">{t('reachedCount')}:</span>
         <span className="font-medium">{view}</span>
       </div>
     </div>

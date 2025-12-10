@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   FilterSidebar,
-  ScholarshipCard,
   RightSidebar,
   PremiumBanner,
   ScholarshipsListSkeleton,
@@ -23,6 +22,7 @@ import { useTranslations } from 'next-intl';
 import { useDebounce } from '@/utils/useDebounce';
 import { toast } from 'sonner';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
+import ScholarshipCard from '@/pattern/share/ScholarshipCard';
 
 export default function ScholarshipsList() {
   const router = useRouter();

@@ -1,6 +1,6 @@
 'use client';
 import { Skeleton } from '@/pattern/cus/skeleton';
-import { ScholarshipCard } from '@/@screen/(nondashboard)/ScholarshipsList/components';
+import ScholarshipCard from '@/pattern/share/ScholarshipCard';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 

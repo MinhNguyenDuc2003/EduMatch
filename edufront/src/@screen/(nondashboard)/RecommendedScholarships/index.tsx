@@ -1,7 +1,7 @@
 'use client';
 
 import { HeroSection } from './components';
-import { ScholarshipCard } from '../ScholarshipsList/components';
+import ScholarshipCard from '@/pattern/share/ScholarshipCard';
 import {
   useFollowScholarshipMutation,
   useGetRecommendedScholarshipsQuery,
