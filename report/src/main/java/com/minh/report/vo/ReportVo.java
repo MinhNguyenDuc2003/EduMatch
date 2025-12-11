@@ -1,15 +1,12 @@
-package com.minh.scholarship.data.vo;
+package com.minh.report.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.minh.model.dto.media.MediaDto;
-import com.minh.model.dto.scholarship.CaseStudyDto;
+import com.minh.model.dto.report.ReportDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -17,10 +14,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CaseStudyVo extends CaseStudyDto {
-
-    private ApplicantProfileVo profileVo;
-    private List<MediaDto> medias;
-    private ScholarshipVo scholarshipVo;
-
+public class ReportVo extends ReportDto {
+    private CustomerVm customer;
 }

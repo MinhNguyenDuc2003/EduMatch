@@ -2,6 +2,7 @@ package com.minh.report.data.mapper;
 import com.minh.mapper.BaseMapper;
 import com.minh.model.dto.report.ReportDto;
 import com.minh.report.data.entity.ReportEntity;
+import com.minh.report.vo.ReportVo;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -20,5 +21,8 @@ public interface ReportMapper extends BaseMapper<ReportEntity, ReportDto> {
 
     @Mapping(target = "response", source = "response")
     ReportDto toDto(ReportEntity entity);
+
+    ReportVo toVo(ReportEntity entity);
+    List<ReportVo> toVo(List<ReportEntity> entities);
 
 }

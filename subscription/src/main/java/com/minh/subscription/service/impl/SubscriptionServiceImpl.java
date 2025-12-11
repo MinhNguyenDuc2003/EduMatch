@@ -159,32 +159,6 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
         return true;
     }
 
-//    @Override
-//    public SubscriptionVo getCurrentSubscriptionByUser() {
-//        String userId = SecurityUtil.getCurrentUserId();
-//        if (ObjectUtils.isEmpty(userId)) {
-//            return null;
-//        }
-//
-//        SubscriptionEntity entity = subscriptionRepository
-//                .findFirstByUserIdAndActiveTrueOrderByEndDateDesc(userId)
-//                .orElse(null);
-//
-//        if (entity == null) {
-//            return null;
-//        }
-//
-//        SubscriptionDto dto = subscriptionMapper.toDto(entity);
-//        SubscriptionVo vo = subscriptionMapper.toVo(dto);
-//
-//        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(vo.getUserId()));
-//        if (customerVo != null) {
-//            vo.setCustomer(customerVo.getCustomer());
-//        }
-//
-//        return vo;
-//    }
-
     @Override
     public SubscriptionVo getCurrentSubscriptionByUser() {
         String userId = SecurityUtil.getCurrentUserId();

@@ -2,14 +2,15 @@ package com.minh.report.service;
 
 import com.minh.enumeration.report.ReportCategoryType;
 import com.minh.model.dto.report.*;
+import com.minh.report.vo.ReportVo;
 
 import java.util.List;
 
 public interface ReportService {
 
-    List<ReportDto> getAll();
+    List<ReportVo> getAll();
 
-    ReportDto getById(Long id);
+    ReportVo getById(Long id);
 
     ReportDto create(ReportDto dto);
 
@@ -17,13 +18,13 @@ public interface ReportService {
 
     void delete(Long id);
 
-    List<ReportDto> getByUserId(String userId);
+    List<ReportVo> getByUserId(String userId);
 
-    List<ReportDto> getMyReports();
+    List<ReportVo> getMyReports();
 
-    List<ReportDto> getByCategory(Long categoryId);
+    List<ReportVo> getByCategory(Long categoryId);
 
-    List<ReportDto> getByIsRead(Boolean isRead);
+    List<ReportVo> getByIsRead(Boolean isRead);
 
     ReportDto replyToReport(Long id, String reply);
 

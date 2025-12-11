@@ -14,6 +14,7 @@ import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import com.minh.scholarship.data.vo.CaseStudyVo;
 import com.minh.scholarship.feign.ApplicantProfileFeign;
 import com.minh.scholarship.feign.MediaFeign;
+import com.minh.scholarship.feign.ScholarshipFeign;
 import com.minh.scholarship.service.CaseStudyService;
 import com.minh.service.base.BaseService;
 import com.minh.utils.UaaContextHolder;
@@ -40,10 +41,11 @@ public class CaseStudyServiceImpl extends BaseService implements CaseStudyServic
     private final MediaFeign mediaFeign;
     private final ScholarshipRepository scholarshipRepository;
     private final ApplicantProfileFeign profileFeign;
+    private final ScholarshipFeign scholarshipFeign;
 
     @Override
     public CaseStudyVo create(CaseStudyVo caseStudy, List<MultipartFile> images) {
-        List<ScholarshipEntity> scholarshipEntity = scholarshipRepository.findByApplicationSuccessAndScholarshipId(UaaContextHolder.getUserId(), caseStudy.getScholarshipId(), "Successful");
+        List<ScholarshipEntity> scholarshipEntity = scholarshipRepository.findByApplicationSuccessAndScholarshipId(UaaContextHolder.getUserId(), caseStudy.getScholarshipId(), "Approved");
         if (ObjectUtils.isEmpty(scholarshipEntity)) {
             throw new BusinessException(CoreMessageCode.USER_IS_NOT_SUCCESSFULLY_GAIN_SCHOLARSHIP);
         }
@@ -80,11 +82,26 @@ public class CaseStudyServiceImpl extends BaseService implements CaseStudyServic
         if (caseStudyEntity.isEmpty()) {
             throw new BusinessException(CoreMessageCode.CASE_STUDY_IS_NOT_FOUND);
         }
+
         CaseStudyVo caseStudyVo = caseStudyMapper.entityToVo(caseStudyEntity.get());
-        ApplicantProfileVo profileVo = this.parseResponse(profileFeign.getOneByUserId(caseStudyEntity.get().getUserId()));
+
+        ApplicantProfileVo profileVo = this.parseResponse(
+                profileFeign.getOneByUserId(caseStudyEntity.get().getUserId())
+        );
         if (ObjectUtils.isNotEmpty(profileVo)) {
             caseStudyVo.setProfileVo(profileVo);
         }
+
+        if (caseStudyVo.getScholarshipId() != null) {
+            var scholarshipVo = this.parseResponse(
+                    scholarshipFeign.getById(caseStudyVo.getScholarshipId())
+            );
+
+            if (scholarshipVo != null) {
+                caseStudyVo.setScholarshipVo(scholarshipVo);
+            }
+        }
+
         return addScholarshipMedia(caseStudyVo);
     }
 
@@ -106,13 +123,28 @@ public class CaseStudyServiceImpl extends BaseService implements CaseStudyServic
     public List<CaseStudyVo> getAll() {
         List<CaseStudyVo> vos = new ArrayList<>();
         List<CaseStudyEntity> entities = caseStudyRepository.findAll();
+
         if (ObjectUtils.isNotEmpty(entities)) {
             entities.forEach(entity -> {
+
                 CaseStudyVo vo = this.getById(entity.getId());
+
+                if (vo.getScholarshipId() != null) {
+                    var scholarshipVo = this.parseResponse(
+                            scholarshipFeign.getById(vo.getScholarshipId())
+                    );
+
+                    if (scholarshipVo != null) {
+                        vo.setScholarshipVo(scholarshipVo);
+                    }
+                }
+
                 vos.add(vo);
             });
+
             return vos;
         }
+
         return List.of();
     }
 

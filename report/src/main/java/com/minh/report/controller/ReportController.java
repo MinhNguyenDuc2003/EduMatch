@@ -5,6 +5,7 @@ import com.minh.enumeration.report.ReportCategoryType;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.report.*;
 import com.minh.report.service.ReportService;
+import com.minh.report.vo.ReportVo;
 import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -20,12 +21,12 @@ public class ReportController {
     private final ReportService service;
 
     @GetMapping("/all")
-    public ApiResponse<List<ReportDto>> getAll() {
+    public ApiResponse<List<ReportVo>> getAll() {
         return ApiResponse.ok(service.getAll());
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<ReportDto> getById(@PathVariable Long id) {
+    public ApiResponse<ReportVo> getById(@PathVariable Long id) {
         return ApiResponse.ok(service.getById(id));
     }
 
@@ -48,23 +49,23 @@ public class ReportController {
     }
 
     @GetMapping("/user/{userId}")
-    public ApiResponse<List<ReportDto>> getByUserId(@PathVariable String userId) {
+    public ApiResponse<List<ReportVo>> getByUserId(@PathVariable String userId) {
         return ApiResponse.ok(service.getByUserId(userId));
     }
 
     @Authorized
     @GetMapping("/my-report")
-    public ApiResponse<List<ReportDto>> getMyReports() {
+    public ApiResponse<List<ReportVo>> getMyReports() {
         return ApiResponse.ok(service.getMyReports());
     }
 
     @GetMapping("/category/{categoryId}")
-    public ApiResponse<List<ReportDto>> getByCategory(@PathVariable Long categoryId) {
+    public ApiResponse<List<ReportVo>> getByCategory(@PathVariable Long categoryId) {
         return ApiResponse.ok(service.getByCategory(categoryId));
     }
 
     @GetMapping("/is-read/{isRead}")
-    public ApiResponse<List<ReportDto>> getByIsRead(@PathVariable Boolean isRead) {
+    public ApiResponse<List<ReportVo>> getByIsRead(@PathVariable Boolean isRead) {
         return ApiResponse.ok(service.getByIsRead(isRead));
     }
 
