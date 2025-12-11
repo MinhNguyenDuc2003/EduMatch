@@ -1,5 +1,6 @@
 package com.minh.profile.data.repository;
 
+import com.minh.enumeration.applicantprofile.ProfileType;
 import com.minh.profile.data.entity.ApplicantProfileEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,5 +16,9 @@ public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfi
     Optional<ApplicantProfileEntity> findByUserIdAndActive(String userId, Boolean active);
 
     List<ApplicantProfileEntity> getAllByActive(boolean b);
+
+    List<ApplicantProfileEntity> findAllByTypeAndActive(ProfileType type, Boolean active);
+
+    List<ApplicantProfileEntity> findAllByUserIdAndTypeAndActive(String userId, ProfileType type, Boolean active);
 
 }

@@ -2,6 +2,7 @@ package com.minh.model.dto.profile;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.minh.enumeration.applicantprofile.ProfileType;
 import com.minh.model.dto.BaseDto;
 import lombok.*;
 
@@ -63,4 +64,8 @@ public class ApplicantProfileDto extends BaseDto {
     private String preferredCountry;
     private String preferredUniversity;
 
+    // ==============================
+    // Type Applicant Profile
+    // ==============================
+    private ProfileType type;
 }

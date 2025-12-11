@@ -1,13 +1,8 @@
 package com.minh.profile.data.entity;
 
+import com.minh.enumeration.applicantprofile.ProfileType;
 import com.minh.profile.data.entity.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -149,4 +144,7 @@ public class ApplicantProfileEntity extends BaseEntity {
     @Column(length = 255, name = "PREFERRED_UNIVERSITY")
     private String preferredUniversity;
 
+    @Column(name = "TYPE", length = 100)
+    @Enumerated(EnumType.STRING)
+    private ProfileType type;
 }

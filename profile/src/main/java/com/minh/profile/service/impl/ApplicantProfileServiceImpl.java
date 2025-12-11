@@ -1,6 +1,7 @@
 package com.minh.profile.service.impl;
 
 import com.minh.constants.CoreMessageCode;
+import com.minh.enumeration.applicantprofile.ProfileType;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.profile.*;
 import com.minh.profile.data.entity.ApplicantProfileEntity;
@@ -164,4 +165,26 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
         }
     }
 
+    @Override
+    public List<ApplicantProfileVo> getAllByType(ProfileType type) {
+
+        List<ApplicantProfileEntity> list =
+                applicantProfileRepository.findAllByTypeAndActive(type, true);
+
+        return list.stream()
+                .map(entity -> applicantProfileMapper.toVo(entity))
+                .toList();
+    }
+
+    @Override
+    public List<ApplicantProfileVo> getAllByUserIdAndType(ProfileType type) {
+
+        String userId = UaaContextHolder.getUserId();
+        List<ApplicantProfileEntity> list =
+                applicantProfileRepository.findAllByUserIdAndTypeAndActive(userId, type, true);
+
+        return list.stream()
+                .map(entity -> applicantProfileMapper.toVo(entity))
+                .toList();
+    }
 }

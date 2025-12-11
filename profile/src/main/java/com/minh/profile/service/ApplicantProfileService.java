@@ -1,5 +1,6 @@
 package com.minh.profile.service;
 
+import com.minh.enumeration.applicantprofile.ProfileType;
 import com.minh.model.dto.profile.ApplicantProfileDto;
 import com.minh.profile.data.vo.ApplicantProfileVo;
 
@@ -16,5 +17,9 @@ public interface ApplicantProfileService {
     ApplicantProfileVo getOneByUserId(String userId);
 
     List<ApplicantProfileDto> getAll();
+
+    List<ApplicantProfileVo> getAllByType(ProfileType type);
+
+    List<ApplicantProfileVo> getAllByUserIdAndType(ProfileType type);
 
 }

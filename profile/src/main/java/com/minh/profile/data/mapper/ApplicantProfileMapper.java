@@ -17,8 +17,14 @@ import org.mapstruct.*;
 public interface ApplicantProfileMapper extends BaseMapper<ApplicantProfileEntity, ApplicantProfileDto> {
 
     @Named("toVo")
+    @Mappings({
+            @Mapping(target = "type", source = "type")
+    })
     ApplicantProfileVo toVo(ApplicantProfileEntity entity);
 
+    @Mappings({
+            @Mapping(target = "type", source = "type")
+    })
     void updateEntityFromVo(ApplicantProfileVo vo, @MappingTarget ApplicantProfileEntity entity);
 
 }
