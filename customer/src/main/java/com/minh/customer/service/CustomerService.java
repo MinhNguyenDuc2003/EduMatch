@@ -7,6 +7,7 @@ import com.minh.customer.configuration.KeycloakPropsConfig;
 import com.minh.customer.data.vo.ApplicantProfileVo;
 import com.minh.customer.data.vo.CustomerVo;
 import com.minh.customer.data.vo.ProviderProfileVo;
+import com.minh.customer.data.vo.SubscriptionVo;
 import com.minh.customer.feign.ApplicantProfileFeign;
 import com.minh.customer.feign.ProviderProfileFeign;
 import com.minh.customer.feign.SubscriptionFeign;
@@ -268,7 +269,7 @@ public class CustomerService extends BaseService {
         return vo;
     }
 
-    public List<SubscriptionDto> getCurrenSubscriptions() {
+    public SubscriptionVo getCurrenSubscriptions() {
         return this.parseResponse(subscriptionFeign.getCurrentSubscription());
     }
 

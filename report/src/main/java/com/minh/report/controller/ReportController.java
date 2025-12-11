@@ -3,10 +3,7 @@ package com.minh.report.controller;
 import com.minh.constants.EndPoint;
 import com.minh.enumeration.report.ReportCategoryType;
 import com.minh.model.ApiResponse;
-import com.minh.model.dto.report.ProfileReportCreateDto;
-import com.minh.model.dto.report.ProviderReportCreateDto;
-import com.minh.model.dto.report.ReportDto;
-import com.minh.model.dto.report.ScholarshipReportCreateDto;
+import com.minh.model.dto.report.*;
 import com.minh.report.service.ReportService;
 import com.minh.service.aspect.Authorized;
 import lombok.RequiredArgsConstructor;
@@ -93,4 +90,10 @@ public class ReportController {
     public ApiResponse<ReportDto> createScholarshipReport(@RequestBody ScholarshipReportCreateDto dto) {
         return ApiResponse.ok(service.createScholarshipReport(dto));
     }
+
+    @GetMapping("/statistics")
+    public ApiResponse<List<ReportStatisticsDto>> getReportStatistics() {
+        return ApiResponse.ok(service.getReportStatistics());
+    }
+
 }

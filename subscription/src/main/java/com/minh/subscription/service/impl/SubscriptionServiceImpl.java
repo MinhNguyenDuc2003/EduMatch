@@ -28,6 +28,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -158,6 +159,32 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
         return true;
     }
 
+//    @Override
+//    public SubscriptionVo getCurrentSubscriptionByUser() {
+//        String userId = SecurityUtil.getCurrentUserId();
+//        if (ObjectUtils.isEmpty(userId)) {
+//            return null;
+//        }
+//
+//        SubscriptionEntity entity = subscriptionRepository
+//                .findFirstByUserIdAndActiveTrueOrderByEndDateDesc(userId)
+//                .orElse(null);
+//
+//        if (entity == null) {
+//            return null;
+//        }
+//
+//        SubscriptionDto dto = subscriptionMapper.toDto(entity);
+//        SubscriptionVo vo = subscriptionMapper.toVo(dto);
+//
+//        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(vo.getUserId()));
+//        if (customerVo != null) {
+//            vo.setCustomer(customerVo.getCustomer());
+//        }
+//
+//        return vo;
+//    }
+
     @Override
     public SubscriptionVo getCurrentSubscriptionByUser() {
         String userId = SecurityUtil.getCurrentUserId();
@@ -165,22 +192,39 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
             return null;
         }
 
-        SubscriptionEntity entity = subscriptionRepository
-                .findFirstByUserIdAndActiveTrueOrderByEndDateDesc(userId)
-                .orElse(null);
-
-        if (entity == null) {
+        // Lấy tất cả subscription hiện tại
+        List<SubscriptionEntity> entities = subscriptionRepository.findCurrentSubscription(userId);
+        if (entities.isEmpty()) {
             return null;
         }
 
-        SubscriptionDto dto = subscriptionMapper.toDto(entity);
-        SubscriptionVo vo = subscriptionMapper.toVo(dto);
+        // Lấy startDate nhỏ nhất và endDate lớn nhất
+        LocalDateTime startDate = entities.stream()
+                .map(SubscriptionEntity::getStartDate)
+                .min(LocalDateTime::compareTo)
+                .orElse(null);
 
-        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(vo.getUserId()));
+        LocalDateTime endDate = entities.stream()
+                .map(SubscriptionEntity::getEndDate)
+                .max(LocalDateTime::compareTo)
+                .orElse(null);
+
+        // Map từ 1 entity bất kỳ (ví dụ entity đầu tiên)
+        SubscriptionVo vo = subscriptionMapper.toVo(
+                subscriptionMapper.toDto(entities.get(0))
+        );
+
+        // Gán lại startDate/endDate đã merge
+        vo.setStartDate(startDate);
+        vo.setEndDate(endDate);
+
+        // Gọi customer service
+        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(userId));
         if (customerVo != null) {
             vo.setCustomer(customerVo.getCustomer());
         }
 
         return vo;
     }
+
 }

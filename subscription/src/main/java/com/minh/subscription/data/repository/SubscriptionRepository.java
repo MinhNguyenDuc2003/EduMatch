@@ -32,7 +32,6 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
             SELECT s FROM SubscriptionEntity s
             JOIN FETCH s.plan p
             WHERE s.userId = :userId
-              AND s.active = TRUE
               AND s.status = 'true'
               AND CURRENT_TIMESTAMP BETWEEN s.startDate AND s.endDate
             """)

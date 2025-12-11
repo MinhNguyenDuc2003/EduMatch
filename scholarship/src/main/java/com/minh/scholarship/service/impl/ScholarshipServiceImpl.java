@@ -614,6 +614,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         ScholarshipEntity scholarshipEntity = scholarship.get();
         List<ScholarshipPreferenceEntity> preferences = scholarshipPreferenceRepository.findByScholarshipId(scholarshipId);
         Map<String, Double> preferenceMap = preferences.stream()
+                .filter(p -> p.getField() != null) // new
                 .collect(Collectors.toMap(ScholarshipPreferenceEntity::getField, ScholarshipPreferenceEntity::getWeight));
         List<String> nationalities = new ArrayList<>();
         if (ObjectUtils.isNotEmpty(scholarshipEntity.getRestrictedNationalities())) {

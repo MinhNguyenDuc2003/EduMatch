@@ -51,7 +51,8 @@ public final class CoreMessageCode {
     public static final String REPORT_CATEGORY_NOT_FOUND = "Report category is not exist";
     public static final String REPORT_NOT_FOUND = "Report is not exist";
     public static final String APPLICATION_IS_ALREADY_SUBMIT = "Application is already submit";
-    public static final String NOTIFICATION_IS_NOT_EXIST = "notification is not exist";
-    public static final String USER_IS_NOT_SUCCESSFULLY_GAIN_SCHOLARSHIP = "user is not successfully gain scholarship";
-    public static final String CASE_STUDY_IS_NOT_FOUND = "case study is not found";
+    public static final String NOTIFICATION_IS_NOT_EXIST = "Notification is not exist";
+    public static final String USER_IS_NOT_SUCCESSFULLY_GAIN_SCHOLARSHIP = "User is not successfully gain scholarship";
+    public static final String CASE_STUDY_IS_NOT_FOUND = "Case study is not found";
+    public static final String INVALID_REPORT_CATEGORY_TYPE = "Invalid report category";
 }

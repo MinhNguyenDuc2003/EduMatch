@@ -1,5 +1,6 @@
 package com.minh.customer.feign;
 
+import com.minh.customer.data.vo.SubscriptionVo;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.subscription.SubscriptionDto;
 import com.minh.service.feign.FeignInterceptorConfig;
@@ -12,6 +13,6 @@ import java.util.List;
 public interface SubscriptionFeign {
 
     @GetMapping("/subscription/current")
-    ApiResponse<List<SubscriptionDto>> getCurrentSubscription();
+    ApiResponse<SubscriptionVo> getCurrentSubscription();
 
 }
