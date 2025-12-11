@@ -636,4 +636,15 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         return response;
     }
 
+    @Override
+    public List<ScholarshipYearMonthCountDto> getScholarshipYearMonthStatistics() {
+        return scholarshipRepository.countScholarshipByYearAndMonth()
+                .stream()
+                .map(p -> new ScholarshipYearMonthCountDto(
+                        p.getYear(),
+                        p.getMonth(),
+                        p.getCount()
+                ))
+                .toList();
+    }
 }

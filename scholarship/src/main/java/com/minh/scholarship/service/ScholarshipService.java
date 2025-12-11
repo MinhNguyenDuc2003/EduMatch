@@ -73,4 +73,6 @@ public interface ScholarshipService {
     String getCompareResponse(List<Long> scholarshipIds);
 
     ApplicationRecommendationVo getApplicationRecommendation(Long scholarshipId);
+
+    List<ScholarshipYearMonthCountDto> getScholarshipYearMonthStatistics();
 }

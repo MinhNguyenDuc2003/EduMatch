@@ -2,6 +2,7 @@ package com.minh.scholarship.data.repository;
 
 import com.minh.scholarship.data.entity.ScholarshipEntity;
 import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
+import com.minh.scholarship.data.vo.projection.ScholarshipYearMonthCountProjection;
 import feign.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -98,4 +99,16 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
             "where s.id = :scholarshipId"
             , nativeQuery = true)
     List<ScholarshipEntity> findByApplicationSuccessAndScholarshipId(String userId, Long scholarshipId, String status);
+
+    @Query("""
+       SELECT 
+           YEAR(s.createdDate) AS year,
+           MONTH(s.createdDate) AS month,
+           COUNT(s) AS count
+       FROM ScholarshipEntity s
+       GROUP BY YEAR(s.createdDate), MONTH(s.createdDate)
+       ORDER BY YEAR(s.createdDate), MONTH(s.createdDate)
+    """)
+    List<ScholarshipYearMonthCountProjection> countScholarshipByYearAndMonth();
+
 }

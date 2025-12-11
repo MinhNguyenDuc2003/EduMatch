@@ -7,6 +7,7 @@ import com.minh.model.ApiResponse;
 import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
 import com.minh.model.dto.scholarship.ScholarshipStatisticsDto;
 import com.minh.model.dto.scholarship.ScholarshipViewDto;
+import com.minh.model.dto.scholarship.ScholarshipYearMonthCountDto;
 import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import com.minh.scholarship.data.vo.ApplicationRecommendationVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
@@ -193,4 +194,10 @@ public class ScholarshipController {
     public ApiResponse<ScholarshipStatisticsDto> getProviderStatistics() {
         return ApiResponse.ok(scholarshipService.getStatisticsByProvider());
     }
+
+    @GetMapping("/statistics/created/year-month")
+    public ApiResponse<List<ScholarshipYearMonthCountDto>> getScholarshipYearMonthStatistics() {
+        return ApiResponse.ok(scholarshipService.getScholarshipYearMonthStatistics());
+    }
+
 }
