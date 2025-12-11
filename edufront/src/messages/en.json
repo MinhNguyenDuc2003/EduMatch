@@ -507,6 +507,9 @@
     "noDeadline": "No deadline",
     "metadata": {
       "deadline": "Deadline",
+      "remainingTimeDays": "remain {time} days",
+      "remainingTimeDay": "remain {time} day",
+      "expired": "Expired",
       "amount": "Amount",
       "reachedCount": "Reached",
       "track": "Track",
@@ -551,7 +554,7 @@
       "basicInformation": "Basic Information",
       "academicRequirements": "Academic Requirements",
       "testScoreRequirements": "Test Score Requirements",
-      "demographicRequirements": "Demographic Requirements",
+      "demographicRequirements": "Personal Requirements",
       "otherRequirements": "Other Requirements",
       "caseStudies": "Case Studies"
     },

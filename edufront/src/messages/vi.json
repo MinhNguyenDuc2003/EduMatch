@@ -515,6 +515,9 @@
     "noDeadline": "Không có hạn chót",
     "metadata": {
       "deadline": "Hạn nộp",
+      "remainingTimeDays": "còn {time} ngày",
+      "remainingTimeDay": "còn {time} ngày",
+      "expired": "Đã hết hạn",
       "amount": "Số tiền",
       "reachedCount": "Tiếp cận",
       "track": "Theo dõi",
@@ -558,8 +561,8 @@
       "requiredClassRankPercentile": "Yêu cầu xếp hạng lớp",
       "basicInformation": "Thông tin cơ bản",
       "academicRequirements": "Yêu cầu học thuật",
-      "testScoreRequirements": "Yêu cầu điểm thi",
-      "demographicRequirements": "Yêu cầu nhân khẩu học",
+      "testScoreRequirements": "Yêu cầu điểm",
+      "demographicRequirements": "Yêu cầu cá nhân",
       "otherRequirements": "Yêu cầu khác",
       "caseStudies": "Bài viết về học bổng"
     },

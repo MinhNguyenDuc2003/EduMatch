@@ -502,6 +502,15 @@ const ScholarshipForm = ({
                 isBorder={true}
               />
 
+              {/* GMAT Score */}
+              <CustomFormField
+                name="requiredGmatScore"
+                label={t('requiredGmatScore')}
+                type="number"
+                placeholder="Enter minimum GMAT score (200-800)"
+                isBorder={true}
+              />
+
               {/* TOEFL Score */}
               <CustomFormField
                 name="requiredToeflScore"

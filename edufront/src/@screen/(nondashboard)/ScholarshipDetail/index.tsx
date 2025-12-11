@@ -211,7 +211,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             {/* Title */}
-            <h1 className="text-4xl font-bold text-gray-900">{scholarshipTitle}</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{scholarshipTitle}</h1>
 
             {/* Metadata Row */}
             <ScholarshipMetadata

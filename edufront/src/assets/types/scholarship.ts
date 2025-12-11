@@ -50,6 +50,7 @@ declare global {
     requiredGreScore: number;
     requiredToeflScore: number;
     requiredIeltsScore: number;
+    requiredGmatScore: number;
     requiredWorkExperienceYears: number;
     requiredPublicationCount: number;
     requiredAcademicAwards: string;

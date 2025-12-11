@@ -267,6 +267,11 @@ export const scholarshipSchema = z
       .min(0, 'IELTS score must be greater than 0')
       .max(9, 'IELTS score must be less than 9')
       .optional(),
+    requiredGmatScore: z.coerce
+      .number<number>()
+      .min(200, 'GMAT score must be greater than 200')
+      .max(800, 'GMAT score must be less than 800')
+      .optional(),
     requiredWorkExperienceYears: z.coerce
       .number<number>()
       .min(0, 'Work experience years must be greater than 0')
