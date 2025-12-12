@@ -33,7 +33,6 @@ export default function SelectedScholarshipCompare() {
 
   // Fetch AI comparison when sheet is open and we have at least 2 scholarships
   const scholarshipIds = scholarships.map((s) => s.id);
-  console.log('scholarshipIds', scholarshipIds);
   const {
     data: comparisonResponse,
     isLoading: isLoadingComparison,
