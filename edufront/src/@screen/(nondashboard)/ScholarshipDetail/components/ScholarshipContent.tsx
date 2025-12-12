@@ -86,11 +86,11 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
             </p>
           </div>
         )}
-        {scholarship.requiredPublicationCount && scholarship.requiredPublicationCount > 0 && (
+        {(scholarship.requiredPublicationCount || 0) > 0 && (
           <div className="text-sm flex items-center gap-2">
             <p className=" text-gray-500">{t('requiredPublicationCount')}:</p>
             <p className="font-medium text-gray-900">
-              {scholarship.requiredPublicationCount} {t('publications')}
+              {scholarship.requiredPublicationCount || 0} {t('publications')}
             </p>
           </div>
         )}

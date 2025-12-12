@@ -25,11 +25,7 @@ export default function ScholarshipsSection({
   const router = useRouter();
 
   const handleViewScholarship = (slug: string) => {
-    if (!isAuthenticated) {
-      router.push('http://159.89.200.244/oauth2/authorization/keycloak');
-    } else {
-      router.push(`/scholarships/${slug}`);
-    }
+    router.push(`/scholarships/${slug}`);
   };
 
   const handleViewProvider = (providerId: number) => {
