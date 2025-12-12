@@ -1,5 +1,4 @@
 import { Skeleton } from '@/pattern/cus/skeleton';
-import { Filter } from 'lucide-react';
 import ScholarshipCardSkeleton from './ScholarshipCardSkeleton';
 
 export default function ScholarshipsListSkeleton() {
@@ -21,9 +20,9 @@ export default function ScholarshipsListSkeleton() {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 pt-20 pb-4 px-4 md:py-8 md:px-10 lg:px-40 lg:pt-8">
         {/* Main Content */}
         <div className="">
-          <div className="grid grid-cols-1 lg:grid-cols-9 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Left Sidebar - Filters Skeleton (Desktop only, 3 columns) */}
-            <div className="hidden lg:block lg:col-span-3">
+            <div className="hidden lg:block lg:col-span-1">
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sticky top-20">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
@@ -82,7 +81,7 @@ export default function ScholarshipsListSkeleton() {
             </div>
 
             {/* Middle Content - Scholarship Cards (6 columns desktop, full width mobile) */}
-            <div className="lg:col-span-6 lg:col-start-4">
+            <div className="lg:col-span-2">
               {/* Premium Banner Skeleton */}
               <div className="mb-4 relative overflow-hidden rounded-xl p-4 md:p-6 border-2 border-white/20 bg-gradient-to-r from-slate-800 via-blue-700 to-slate-800">
                 <div className="relative z-10">
@@ -118,6 +117,34 @@ export default function ScholarshipsListSkeleton() {
                 {Array.from({ length: 5 }).map((_, index) => (
                   <ScholarshipCardSkeleton key={index} />
                 ))}
+              </div>
+            </div>
+
+            {/* Right Sidebar - Top Viewed Skeleton */}
+            <div className="lg:col-span-1 hidden lg:block">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 sticky top-20">
+                <div className="flex items-center gap-2 mb-4">
+                  <Skeleton className="h-5 w-5 rounded-full" />
+                  <Skeleton className="h-6 w-32" />
+                </div>
+                <div className="space-y-4">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <div
+                      key={index}
+                      className="flex gap-3 pb-3 border-b border-gray-100 last:border-0 last:pb-0"
+                    >
+                      <Skeleton className="h-16 w-16 rounded-lg flex-shrink-0" />
+                      <div className="flex-1 space-y-2">
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-3 w-2/3" />
+                        <div className="flex gap-2">
+                          <Skeleton className="h-3 w-12" />
+                          <Skeleton className="h-3 w-12" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
