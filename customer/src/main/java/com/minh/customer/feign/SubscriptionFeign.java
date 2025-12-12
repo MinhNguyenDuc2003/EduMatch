@@ -13,6 +13,6 @@ import java.util.List;
 public interface SubscriptionFeign {
 
     @GetMapping("/subscription/current")
-    ApiResponse<SubscriptionVo> getCurrentSubscription();
+    ApiResponse<List<SubscriptionVo>> getCurrentSubscription();
 
 }

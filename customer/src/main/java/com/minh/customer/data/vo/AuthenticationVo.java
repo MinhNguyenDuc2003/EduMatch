@@ -24,7 +24,7 @@ public class AuthenticationVo implements Serializable {
     private Boolean isAuthenticated;
     private Boolean isProvider;
     private Boolean isApplicant;
-    private SubscriptionVo subscriptions;
+    private List<SubscriptionVo> subscriptions;
 
     private SubscriptionInfoVo provider;
     private SubscriptionInfoVo applicant;

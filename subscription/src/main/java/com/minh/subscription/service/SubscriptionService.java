@@ -12,7 +12,7 @@ public interface SubscriptionService {
     SubscriptionDto create(SubscriptionDto subscription);
     SubscriptionDto update(SubscriptionDto subscription);
     void delete(Long id);
-    SubscriptionVo getCurrentSubscriptionByUser();
+    List<SubscriptionVo> getCurrentSubscriptionByUser();
     List<SubscriptionVo> getAllSubscriptionsByUserId(String userId);
     Boolean sendMailExpiredDate5DaysLeft();
 }

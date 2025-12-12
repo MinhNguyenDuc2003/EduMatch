@@ -124,23 +124,11 @@ public class PaymentServiceImpl extends BaseService implements PaymentService {
 
         String userId = UaaContextHolder.getUserId();
 
-        // Lấy Subscription Plan mà user đã mua
+        // Lấy Subscription Plan người dùng mua
         SubscriptionPlanEntity plan = subscriptionplanRepository.findById(subscriptionPlanId)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_PLAN_NOT_FOUND));
 
-        Optional<SubscriptionEntity> existingActiveSub =
-                subscriptionRepository.findByUserIdAndActiveTrue(userId);
-
-        if (existingActiveSub.isPresent()) {
-            Optional<SubscriptionPlanEntity> existPlan = subscriptionplanRepository.findById(existingActiveSub.get().getPlan().getId());
-            if (existPlan.isPresent()) {
-                if (existPlan.get().getTargetType().equals(plan.getTargetType())) {
-                    throw new BusinessException(CoreMessageCode.SUBSCRIPTION_ALREADY_ACTIVE);
-                }
-            }
-        }
-
-        // Tạo Subscription mới (ACTIVE)
+        // TẠO SUBSCRIPTION MỚI — KHÔNG CHECK SUBSCRIPTION CŨ
         SubscriptionEntity subscription = new SubscriptionEntity();
         subscription.setUserId(userId);
         subscription.setPlan(plan);
@@ -151,7 +139,8 @@ public class PaymentServiceImpl extends BaseService implements PaymentService {
         subscription.setActive(true);
 
         subscriptionRepository.save(subscription);
-        // Tạo Order và gán subscription mới vừa tạo
+
+        // Tạo order và gán subscription mới
         PaymentEntity order = new PaymentEntity();
         order.setUserId(userId);
         order.setTransactionId(transactionId);
@@ -165,7 +154,6 @@ public class PaymentServiceImpl extends BaseService implements PaymentService {
 
         order = paymentRepository.save(order);
 
-        // Trả về PaymentDto
         return paymentMapper.toDto(order);
     }
 
@@ -185,7 +173,6 @@ public class PaymentServiceImpl extends BaseService implements PaymentService {
         // Tính ngày bắt đầu subscription mới
         LocalDateTime baseDate = current.getEndDate().isBefore(now) ? now : current.getEndDate();
 
-        current.setActive(false);
         subscriptionRepository.save(current);
 
         // Tạo mới subscription

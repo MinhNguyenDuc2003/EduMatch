@@ -48,7 +48,7 @@ public class SubscriptionController {
     }
 
     @GetMapping("/current")
-    public ApiResponse<SubscriptionVo> getCurrentSubscription() {
+    public ApiResponse<List<SubscriptionVo>> getCurrentSubscription() {
         return ApiResponse.ok(subscriptionService.getCurrentSubscriptionByUser());
     }
 

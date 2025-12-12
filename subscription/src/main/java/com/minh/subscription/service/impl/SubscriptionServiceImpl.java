@@ -2,6 +2,7 @@ package com.minh.subscription.service.impl;
 
 import com.minh.constants.CoreMessageCode;
 import com.minh.enumeration.mail.MailTypeEnum;
+import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.media.MailDto;
 import com.minh.model.dto.media.MailTemplateDto;
@@ -28,8 +29,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -160,45 +165,44 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
     }
 
     @Override
-    public SubscriptionVo getCurrentSubscriptionByUser() {
+    public List<SubscriptionVo> getCurrentSubscriptionByUser() {
         String userId = SecurityUtil.getCurrentUserId();
         if (ObjectUtils.isEmpty(userId)) {
             return null;
         }
 
-        // Lấy tất cả subscription hiện tại
+        // Lấy list còn hạn
         List<SubscriptionEntity> entities = subscriptionRepository.findCurrentSubscription(userId);
         if (entities.isEmpty()) {
             return null;
         }
 
-        // Lấy startDate nhỏ nhất và endDate lớn nhất
-        LocalDateTime startDate = entities.stream()
-                .map(SubscriptionEntity::getStartDate)
-                .min(LocalDateTime::compareTo)
-                .orElse(null);
-
-        LocalDateTime endDate = entities.stream()
-                .map(SubscriptionEntity::getEndDate)
-                .max(LocalDateTime::compareTo)
-                .orElse(null);
-
-        // Map từ 1 entity bất kỳ (ví dụ entity đầu tiên)
-        SubscriptionVo vo = subscriptionMapper.toVo(
-                subscriptionMapper.toDto(entities.get(0))
-        );
-
-        // Gán lại startDate/endDate đã merge
-        vo.setStartDate(startDate);
-        vo.setEndDate(endDate);
-
-        // Gọi customer service
+        // Lấy customer
         CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(userId));
-        if (customerVo != null) {
-            vo.setCustomer(customerVo.getCustomer());
-        }
 
-        return vo;
+        // Group theo userType
+        Map<SubscriptionTargetType, List<SubscriptionEntity>> grouped =
+                entities.stream().collect(Collectors.groupingBy(SubscriptionEntity::getUserType));
+
+        // Với mỗi type → chọn subscription có endDate lớn nhất
+        List<SubscriptionVo> finalList =
+                grouped.values().stream()
+                        .map(list -> {
+                            // lấy subscription mới nhất theo endDate
+                            SubscriptionEntity newest = list.stream()
+                                    .max(Comparator.comparing(SubscriptionEntity::getEndDate))
+                                    .orElse(null);
+
+                            SubscriptionVo vo = subscriptionMapper.toVo(subscriptionMapper.toDto(newest));
+
+                            // attach customer
+                            if (customerVo != null) {
+                                vo.setCustomer(customerVo.getCustomer());
+                            }
+                            return vo;
+                        })
+                        .toList();
+
+        return finalList;
     }
-
 }

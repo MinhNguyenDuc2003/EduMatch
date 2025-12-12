@@ -269,7 +269,7 @@ public class CustomerService extends BaseService {
         return vo;
     }
 
-    public SubscriptionVo getCurrenSubscriptions() {
+    public List<SubscriptionVo> getCurrenSubscriptions() {
         return this.parseResponse(subscriptionFeign.getCurrentSubscription());
     }
 
