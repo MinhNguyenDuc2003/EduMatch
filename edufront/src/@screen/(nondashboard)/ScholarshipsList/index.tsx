@@ -290,9 +290,9 @@ export default function ScholarshipsList() {
         </div>
       )}
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 pt-20 pb-4 px-4 md:py-8 md:px-10 lg:px-40 lg:pt-8">
+      <div className="min-h-screen bg-gradient-to-br  from-slate-50 via-gray-50 to-blue-50/30 pt-20 pb-4 px-4 md:py-8 md:px-10 lg:px-40 lg:pt-8">
         {/* Main Content - Desktop & Mobile */}
-        <div className="max-w-[1400px] mx-auto">
+        <div className="">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Left Sidebar - Filters (Desktop only, 3 columns) */}
             <div className="hidden lg:block lg:col-span-1">
@@ -310,7 +310,7 @@ export default function ScholarshipsList() {
               <PremiumBanner />
 
               {/* Search Bar - Desktop only */}
-              <div className="mb-4">
+              <div className="mb-4 md:block hidden">
                 <SearchBar
                   placeholder={t('searchPlaceholder')}
                   value={keywordInput}

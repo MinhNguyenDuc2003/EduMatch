@@ -20,7 +20,7 @@ export default function ScholarshipsListSkeleton() {
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 pt-20 pb-4 px-4 md:py-8 md:px-10 lg:px-40 lg:pt-8">
         {/* Main Content */}
-        <div className="max-w-[1400px] mx-auto">
+        <div className="">
           <div className="grid grid-cols-1 lg:grid-cols-9 gap-6">
             {/* Left Sidebar - Filters Skeleton (Desktop only, 3 columns) */}
             <div className="hidden lg:block lg:col-span-3">
