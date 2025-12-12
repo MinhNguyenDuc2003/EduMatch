@@ -469,7 +469,7 @@
     },
     "topViewScholarships": {
       "badge": "Xu hướng",
-      "title": "5 Học Bổng Được Xem Nhiều Nhất",
+      "title": "5 Học Bổng Được Quan Tâm Nhiều Nhất",
       "description": "Khám phá những học bổng được quan tâm nhiều nhất trong tháng này",
       "viewCountDescription": "Số lượt xem thể hiện số người đã xem học bổng này"
     },
@@ -1393,7 +1393,7 @@
   },
   "newsPage": {
     "title": "Tin Tức EduMatch",
-    "topViewed": "Học bổng được xem nhiều nhất",
+    "topViewed": "Học bổng ấn tượng nhất",
     "noTopScholarships": "Chưa có học bổng được xem nhiều",
     "recommended": "Học bổng đề xuất",
     "noRecommendedScholarships": "Chưa có học bổng đề xuất",

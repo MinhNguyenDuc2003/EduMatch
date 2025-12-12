@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 interface TopViewedScholarshipsProps {
   scholarships: Scholarship[];
   isLoading: boolean;
-  onViewScholarship: (slug?: string) => void;
+  onViewScholarship: (slug: string) => void;
 }
 
 export default function TopViewedScholarships({

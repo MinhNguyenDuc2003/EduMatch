@@ -87,7 +87,7 @@ export default function NewsPage() {
       <NewsHeader />
 
       <section className="py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Sidebar - Recommended Scholarships or Premium Banner */}
           <div className="lg:col-span-1 order-2 lg:order-1">
             {hasApplicantSubscription ? (

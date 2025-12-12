@@ -469,7 +469,7 @@
     },
     "topViewScholarships": {
       "badge": "Trending",
-      "title": "Top 5 Most Viewed Scholarships",
+      "title": "Top 5 Most Interested Scholarships",
       "description": "Discover the most popular scholarships this month",
       "viewCountDescription": "View count represents the number of people who have viewed this scholarship"
     },
@@ -507,8 +507,8 @@
     "noDeadline": "No deadline",
     "metadata": {
       "deadline": "Deadline",
-      "remainingTimeDays": "remain {time} days",
-      "remainingTimeDay": "remain {time} day",
+      "remainingTimeDays": "{time} days remaining",
+      "remainingTimeDay": "{time} day remaining",
       "expired": "Expired",
       "amount": "Amount",
       "reachedCount": "Reached",
@@ -1435,7 +1435,7 @@
   },
   "newsPage": {
     "title": "EduMatch News",
-    "topViewed": "Top Viewed Scholarships",
+    "topViewed": "Top Interested Scholarships",
     "noTopScholarships": "No top viewed scholarships available",
     "recommended": "Recommended scholarships",
     "noRecommendedScholarships": "No recommended scholarships available",
