@@ -122,25 +122,23 @@ export default function ScholarshipsListSkeleton() {
 
             {/* Right Sidebar - Top Viewed Skeleton */}
             <div className="lg:col-span-1 hidden lg:block">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 sticky top-20">
-                <div className="flex items-center gap-2 mb-4">
-                  <Skeleton className="h-5 w-5 rounded-full" />
-                  <Skeleton className="h-6 w-32" />
-                </div>
-                <div className="space-y-4">
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <div
-                      key={index}
-                      className="flex gap-3 pb-3 border-b border-gray-100 last:border-0 last:pb-0"
-                    >
-                      <Skeleton className="h-16 w-16 rounded-lg flex-shrink-0" />
-                      <div className="flex-1 space-y-2">
-                        <Skeleton className="h-4 w-full" />
-                        <Skeleton className="h-3 w-2/3" />
-                        <div className="flex gap-2">
-                          <Skeleton className="h-3 w-12" />
-                          <Skeleton className="h-3 w-12" />
-                        </div>
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-20">
+                {/* Header mimicking the gradient header */}
+                <div className="h-[40px] bg-slate-200 w-full" />
+
+                <div className="bg-white">
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <div key={index} className="px-3 py-3 border-b border-gray-100 last:border-0">
+                      {/* Logo and Org Name */}
+                      <div className="flex items-center gap-2 mb-2">
+                        <Skeleton className="h-6 w-6 rounded-full flex-shrink-0" />
+                        <Skeleton className="h-3 w-24" />
+                      </div>
+
+                      {/* Title and Desc */}
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-11/12" />
+                        <Skeleton className="h-3 w-full" />
                       </div>
                     </div>
                   ))}
