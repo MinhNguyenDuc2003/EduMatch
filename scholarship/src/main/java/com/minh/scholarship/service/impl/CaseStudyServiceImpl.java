@@ -45,7 +45,7 @@ public class CaseStudyServiceImpl extends BaseService implements CaseStudyServic
 
     @Override
     public CaseStudyVo create(CaseStudyVo caseStudy, List<MultipartFile> images) {
-        List<ScholarshipEntity> scholarshipEntity = scholarshipRepository.findByApplicationSuccessAndScholarshipId(UaaContextHolder.getUserId(), caseStudy.getScholarshipId(), "Approved");
+        List<ScholarshipEntity> scholarshipEntity = scholarshipRepository.findByApplicationSuccessAndScholarshipId(UaaContextHolder.getUserId(), caseStudy.getScholarshipId(), "Successful");
         if (ObjectUtils.isEmpty(scholarshipEntity)) {
             throw new BusinessException(CoreMessageCode.USER_IS_NOT_SUCCESSFULLY_GAIN_SCHOLARSHIP);
         }
