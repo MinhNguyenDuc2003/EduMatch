@@ -18,5 +18,6 @@ public class ScholarshipPreferenceDto extends BaseDto {
     private Long scholarshipId;
     private Double weight;
     private String field;
+    private String type;
 
 }

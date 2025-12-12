@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,6 +100,23 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
             "where s.id = :scholarshipId"
             , nativeQuery = true)
     List<ScholarshipEntity> findByApplicationSuccessAndScholarshipId(String userId, Long scholarshipId, String status);
+
+    @Query("SELECT s " +
+            "FROM ScholarshipEntity s " +
+            "WHERE s.active = true " +
+            "AND (:educationLevel IS NULL OR s.studyLevel = :educationLevel) " +
+            "AND (:country IS NULL OR s.country = :country) " +
+            "AND (:overallGpa IS NULL OR s.gpaRequirement <= :overallGpa) " +
+            "AND (:satScore IS NULL OR s.requiredSatScore <= :satScore) " +
+            "AND (:actScore IS NULL OR s.requiredActScore <= :actScore) " +
+            "AND (:greScore IS NULL OR s.requiredGreScore <= :greScore) " +
+            "AND (:gmatScore IS NULL OR s.requiredGmatScore <= :gmatScore) " +
+            "AND (:toeflScore IS NULL OR s.requiredToeflScore <= :toeflScore) " +
+            "AND (:ieltsScore IS NULL OR s.requiredIeltsScore <= :ieltsScore) ")
+    List<ScholarshipEntity> findByApplicantFilter(String educationLevel, BigDecimal overallGpa, String country,
+                                                  Integer satScore, Integer actScore,
+                                                  Integer greScore, Integer gmatScore,
+                                                  Integer toeflScore, Double ieltsScore);
 
     @Query("""
        SELECT 

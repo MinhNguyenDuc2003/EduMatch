@@ -41,11 +41,11 @@ public interface ApplicationRepository extends JpaRepository<ApplicationEntity, 
                     "    on a.id = asch.application_id " +
                     "where asch.scholarship_id = :scholarshipId " +
                     "  and a.active = true " +
-//                    "  AND ( " +
-//                    "      :restrictedNationalities IS NULL " +
-//                    "   OR cardinality(CAST(:restrictedNationalities AS text[])) = 0 " +
-//                    "   OR a.nationality = ANY(CAST(:restrictedNationalities AS text[])) " +
-//                    ")" +
+                    "  AND ( " +
+                    "      :restrictedNationalities IS NULL " +
+                    "   OR cardinality(CAST(:restrictedNationalities AS text[])) = 0 " +
+                    "   OR a.nationality = ANY(CAST(:restrictedNationalities AS text[])) " +
+                    ")" +
                     "  and (:studyLevel is null or a.education_level = :studyLevel) " +
                     "  and (:minAge is null or a.age >= :minAge) " +
                     "  and (:maxAge is null or a.age <= :maxAge) " +
@@ -63,16 +63,15 @@ public interface ApplicationRepository extends JpaRepository<ApplicationEntity, 
                     "        (:requiredToeflScore IS NULL OR a.toefl_score >= :requiredToeflScore) " +
                     "     OR (:requiredIeltsScore IS NULL OR a.ielts_score >= :requiredIeltsScore) " +
                     "      ) " +
-
                     "  and (:requiredWorkExperienceYears is null " +
                     "       or a.work_experience_years >= :requiredWorkExperienceYears) " +
-
                     "  and (:requiredPublicationCount is null " +
                     "       or a.publication_count >= :requiredPublicationCount) "
             , nativeQuery = true)
     List<ApplicationEntity> findAllByFilter(
             Long scholarshipId,
             String studyLevel,
+            List<String> restrictedNationalities,
             Integer minAge,
             Integer maxAge,
             String genderRequirement,

@@ -23,13 +23,10 @@ public class ApplicantPreferenceEntity extends BaseEntity {
     @Column(name = "TYPE")
     private String type;
 
-    @Column(name = "VALUE")
-    private String value;
-
     @Column(name = "WEIGHT")
     private Double weight;
 
-    @Column(name = "NOTE")
-    private String note;
+    @Column(name = "FIELD")
+    private String field;
 
 }

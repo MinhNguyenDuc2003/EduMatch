@@ -11,4 +11,6 @@ public interface ScholarshipPreferenceRepository extends JpaRepository<Scholarsh
     List<ScholarshipPreferenceEntity> findByScholarshipId(Long scholarshipId);
 
     void deleteAllByScholarshipId(Long id);
+
+    List<ScholarshipPreferenceEntity> findByScholarshipIdAndType(Long scholarshipId, String type);
 }

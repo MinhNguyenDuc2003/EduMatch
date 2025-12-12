@@ -3,7 +3,9 @@ package com.minh.profile.controller;
 import com.minh.constants.EndPoint;
 import com.minh.enumeration.applicantprofile.ProfileType;
 import com.minh.model.ApiResponse;
+import com.minh.model.dto.profile.ApplicantPreferenceDto;
 import com.minh.model.dto.profile.ApplicantProfileDto;
+import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.profile.data.vo.ApplicantProfileVo;
 import com.minh.profile.service.ApplicantProfileService;
 import com.minh.service.aspect.Authorized;
@@ -61,4 +63,14 @@ public class ApplicantProfileController {
     ) {
         return ApiResponse.ok(profileService.getAllByUserIdAndType(type));
     }
+    @PostMapping("/filter")
+    public ApiResponse<List<ApplicantProfileVo>> filter(@RequestBody ScholarshipDto scholarshipDto) {
+        return ApiResponse.ok(profileService.getByScholarshipFilter(scholarshipDto));
+    }
+
+    @GetMapping("/preference/{id}")
+    public ApiResponse<List<ApplicantPreferenceDto>> getPreferencesById(@PathVariable Long id) {
+        return ApiResponse.ok(profileService.getPreferencesById(id));
+    }
+
 }

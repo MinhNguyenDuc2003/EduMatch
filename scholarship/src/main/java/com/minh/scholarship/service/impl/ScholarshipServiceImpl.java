@@ -12,6 +12,7 @@ import com.minh.model.dto.media.MailDto;
 import com.minh.model.dto.media.MailTemplateDto;
 import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.notification.NotificationTemplateDto;
+import com.minh.model.dto.profile.ApplicantPreferenceDto;
 import com.minh.model.dto.scholarship.*;
 import com.minh.scholarship.data.entity.ApplicationEntity;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
@@ -614,14 +615,13 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         ScholarshipEntity scholarshipEntity = scholarship.get();
         List<ScholarshipPreferenceEntity> preferences = scholarshipPreferenceRepository.findByScholarshipId(scholarshipId);
         Map<String, Double> preferenceMap = preferences.stream()
-                .filter(p -> p.getField() != null) // new
                 .collect(Collectors.toMap(ScholarshipPreferenceEntity::getField, ScholarshipPreferenceEntity::getWeight));
         List<String> nationalities = new ArrayList<>();
         if (ObjectUtils.isNotEmpty(scholarshipEntity.getRestrictedNationalities())) {
             nationalities = Arrays.stream(scholarshipEntity.getRestrictedNationalities().split(",")).toList();
         }
         List<ApplicationEntity> applicationFilter = applicationRepository.findAllByFilter(scholarshipId,
-                scholarshipEntity.getStudyLevel(),
+                scholarshipEntity.getStudyLevel(), nationalities,
                 scholarshipEntity.getMinAge(), scholarshipEntity.getMaxAge(),
                 scholarshipEntity.getGenderRequirement(), scholarshipEntity.getGpaRequirement(),
                 scholarshipEntity.getRequiredSatScore(), scholarshipEntity.getRequiredGreScore(),
@@ -647,4 +647,41 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 ))
                 .toList();
     }
+    @Override
+    public ProfileRecommendationVo getProfileRecommendation(Long scholarshipId) {
+        Optional<ScholarshipEntity> scholarship = scholarshipRepository.findById(scholarshipId);
+        if (scholarship.isEmpty()) {
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
+        }
+        ScholarshipEntity scholarshipEntity = scholarship.get();
+        List<ScholarshipPreferenceEntity> preferences = scholarshipPreferenceRepository.findByScholarshipIdAndType(scholarshipId, "PROFILE");
+        Map<String, Double> preferenceMap = preferences.stream().filter(o -> ObjectUtils.isNotEmpty(o.getField()))
+                .collect(Collectors.toMap(ScholarshipPreferenceEntity::getField, ScholarshipPreferenceEntity::getWeight));
+        List<ApplicantProfileVo> profiles = this.parseResponse(applicantProfileFeign.getByFilter(scholarshipMapper.toDto(scholarshipEntity)));
+
+        ProfileRecommendationVo response = new ProfileRecommendationVo();
+        response.setScholarshipPreference(preferenceMap);
+        response.setProfiles(profiles);
+        response.setScholarship(scholarshipEntity);
+        return response;
+    }
+
+    @Override
+    public ScholarshipRecommendationVo getScholarshipRecommendation(Long applicantProfileId) {
+        ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOne(applicantProfileId));
+        List<ApplicantPreferenceDto> preferences = this.parseResponse(applicantProfileFeign.getPreferencesById(applicantProfileId));
+        Map<String, Double> preferenceMap = preferences.stream().filter(o -> ObjectUtils.isNotEmpty(o.getField()))
+                .collect(Collectors.toMap(ApplicantPreferenceDto::getField, ApplicantPreferenceDto::getWeight));
+        ScholarshipRecommendationVo scholarshipRecommendationVo = new ScholarshipRecommendationVo();
+        scholarshipRecommendationVo.setApplicantPreference(preferenceMap);
+        List<ScholarshipEntity> scholarshipEntities = scholarshipRepository.findByApplicantFilter(
+                applicantProfileVo.getPreferredScholarshipType(), applicantProfileVo.getOverallGpa(), applicantProfileVo.getPreferredCountry(),
+                applicantProfileVo.getSatScore(), applicantProfileVo.getActScore(),
+                applicantProfileVo.getGreScore(), applicantProfileVo.getGmatScore(),
+                applicantProfileVo.getToeflScore(), applicantProfileVo.getIeltsScore()
+        );
+        scholarshipRecommendationVo.setScholarships(scholarshipMapper.toDto(scholarshipEntities));
+        return scholarshipRecommendationVo;
+    }
+
 }

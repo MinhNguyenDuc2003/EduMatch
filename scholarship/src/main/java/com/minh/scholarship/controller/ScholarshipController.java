@@ -11,6 +11,7 @@ import com.minh.model.dto.scholarship.ScholarshipYearMonthCountDto;
 import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import com.minh.scholarship.data.vo.ApplicationRecommendationVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
+import com.minh.scholarship.data.vo.*;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.aspect.Authorized;
@@ -52,9 +53,19 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getRecommendationApplicantForScholarship(scholarshipId, topK));
     }
 
-    @GetMapping("/recommendation/filter")
+    @GetMapping("/recommendation-application/filter")
     public ApiResponse<ApplicationRecommendationVo> getApplicationRecommendation(@RequestParam Long scholarshipId) {
         return ApiResponse.ok(scholarshipService.getApplicationRecommendation(scholarshipId));
+    }
+
+    @GetMapping("/recommendation-profile/filter")
+    public ApiResponse<ProfileRecommendationVo> getProfileRecommendation(@RequestParam Long scholarshipId) {
+        return ApiResponse.ok(scholarshipService.getProfileRecommendation(scholarshipId));
+    }
+
+    @GetMapping("/recommendation-scholarship/filter")
+    public ApiResponse<ScholarshipRecommendationVo> getScholarshipRecommendation(@RequestParam Long applicantProfileId) {
+        return ApiResponse.ok(scholarshipService.getScholarshipRecommendation(applicantProfileId));
     }
 
     @Authorized

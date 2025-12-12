@@ -1,9 +1,7 @@
 package com.minh.scholarship.service;
 
 import com.minh.model.dto.scholarship.*;
-import com.minh.scholarship.data.vo.ApplicantProfileVo;
-import com.minh.scholarship.data.vo.ApplicationRecommendationVo;
-import com.minh.scholarship.data.vo.ScholarshipVo;
+import com.minh.scholarship.data.vo.*;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,6 +71,11 @@ public interface ScholarshipService {
     String getCompareResponse(List<Long> scholarshipIds);
 
     ApplicationRecommendationVo getApplicationRecommendation(Long scholarshipId);
+
+    ProfileRecommendationVo getProfileRecommendation(Long scholarshipId);
+
+    ScholarshipRecommendationVo getScholarshipRecommendation(Long applicantProfileId);
+
 
     List<ScholarshipYearMonthCountDto> getScholarshipYearMonthStatistics();
 }

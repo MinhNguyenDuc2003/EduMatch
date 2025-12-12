@@ -17,8 +17,7 @@ public class ApplicantPreferenceDto extends BaseDto {
     private Long id;
     private Long applicantId;
     private String type;
-    private String value;
     private Double weight;
-    private String note;
+    private String field;
 
 }

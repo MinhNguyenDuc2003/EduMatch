@@ -4,6 +4,7 @@ import com.minh.constants.CoreMessageCode;
 import com.minh.enumeration.applicantprofile.ProfileType;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.profile.*;
+import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.profile.data.entity.ApplicantProfileEntity;
 import com.minh.profile.data.mapper.*;
 import com.minh.profile.data.repository.*;
@@ -15,6 +16,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -113,6 +116,31 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     @Override
     public List<ApplicantProfileDto> getAll() {
         return applicantProfileMapper.toDto(applicantProfileRepository.getAllByActive(true));
+    }
+
+    @Override
+    public List<ApplicantProfileVo> getByScholarshipFilter(ScholarshipDto scholarshipDto) {
+        List<String> nationalities = new ArrayList<>();
+        if (ObjectUtils.isNotEmpty(scholarshipDto.getRestrictedNationalities())) {
+            nationalities = Arrays.stream(scholarshipDto.getRestrictedNationalities().split(",")).toList();
+        }
+        List<ApplicantProfileEntity> profileEntities = applicantProfileRepository.getByScholarshipFilter(
+                scholarshipDto.getStudyLevel(), nationalities,
+                scholarshipDto.getGpaRequirement(), scholarshipDto.getRequiredSatScore(),
+                scholarshipDto.getRequiredGreScore(), scholarshipDto.getRequiredActScore(),
+                scholarshipDto.getRequiredGmatScore(), scholarshipDto.getRequiredToeflScore(),
+                scholarshipDto.getRequiredIeltsScore()
+        );
+        List<ApplicantProfileVo> vos = new ArrayList<>();
+        for (ApplicantProfileEntity profileEntity : profileEntities) {
+            vos.add(this.getOne(profileEntity.getId()));
+        }
+        return vos;
+    }
+
+    @Override
+    public List<ApplicantPreferenceDto> getPreferencesById(Long id) {
+        return applicantPreferenceMapper.toDto(applicantPreferenceRepository.findAllByApplicantIdAndActive(id, true));
     }
 
     private void deleteProfileData(Long id) {

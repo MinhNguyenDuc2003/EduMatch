@@ -20,6 +20,9 @@ public class ScholarshipPreferenceEntity extends BaseEntity {
     @Column(name = "SCHOLARSHIP_ID")
     private Long scholarshipId;
 
+    @Column(name = "TYPE")
+    private String type;
+
     @Column(name = "FIELD")
     private String field;
 
