@@ -16,7 +16,14 @@ public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfi
 
     Optional<ApplicantProfileEntity> findByUserIdAndActive(String userId, Boolean active);
 
-    List<ApplicantProfileEntity> getAllByActive(boolean b);
+    @Query("""
+    SELECT a
+    FROM ApplicantProfileEntity a
+    WHERE a.active = true
+      AND UPPER(a.type) = 'CURRENT'
+    """)
+    List<ApplicantProfileEntity> findAllCurrentProfiles();
+
 
     @Query(value = "       select a.*  " +
             "                    from profile.applicant_profile a  " +

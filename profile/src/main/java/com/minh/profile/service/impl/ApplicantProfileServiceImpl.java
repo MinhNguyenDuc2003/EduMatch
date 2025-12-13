@@ -115,7 +115,9 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
 
     @Override
     public List<ApplicantProfileDto> getAll() {
-        return applicantProfileMapper.toDto(applicantProfileRepository.getAllByActive(true));
+        return applicantProfileMapper.toDto(
+                applicantProfileRepository.findAllCurrentProfiles()
+        );
     }
 
     @Override
