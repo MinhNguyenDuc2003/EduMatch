@@ -102,7 +102,7 @@ export default GenCtx({
       async onGetDataRevenueMonthly() {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get('/api/subscription/subscription/orders/monthly-revenue');
+          const data = await apiClientService.get('/api/subscription/subscription/payments/monthly-revenue');
           if (data) {
             ss.setJointData({
               RevenueMonthly: data || [],
@@ -116,14 +116,49 @@ export default GenCtx({
           onSetLoading(false);
         }
       },
+      async onGetDataScholarshipCreatedInMonth() {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get('/api/scholarship/scholarships/statistics/created/year-month');
+          if (data) {
+            ss.setJointData({
+              ScholarshipCreatedInMonth: data || [],
+            });
+            console.log('ScholarshipCreatedInMonth', data);
+          }
+          return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+      async onGetDataReportsStatistics() {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get('/api/report/reports/statistics');
+          if (data) {
+            ss.setJointData({
+              ReportsStatistics: data || [],
+            });
+            console.log('ReportsStatistics', data);
+          }
+          return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
     };
 
     useEffect(() => {
-      meds.onGetDataRevenueByMonth();
-      meds.onGetDataRevenueByUsertype();
+      // meds.onGetDataRevenueByMonth();
       meds.onGetDataRevenueMonthly();
-      meds.onGetDataTopApply();
-      meds.onGetDataTopView();
+      // meds.onGetDataTopApply();
+      // meds.onGetDataTopView();
+      meds.onGetDataReportsStatistics();
+      meds.onGetDataScholarshipCreatedInMonth();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {

@@ -1,5 +1,5 @@
 import React from 'react'
-import Profiles from 'src/Screen/Profile'
+import Profiles from 'src/Screen/ProfileApplicant'
 
 const ProfilePage = () => {
   return (

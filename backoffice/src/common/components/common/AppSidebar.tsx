@@ -37,12 +37,14 @@ const AppSidebar = () => {
     Admin: [
       { icon: Activity, label: 'Dashboard', href: '/dashboard' },
       { icon: Users, label: 'Users', href: '/user' },
-      { icon: UserCircle, label: 'Profile', href: '/profile' },
+      { icon: UserCircle, label: 'Profile Provider', href: '/profileProvider' },
+      { icon: UserCircle, label: 'Profile Applicant', href: '/profileApplicant' },
       { icon: BookOpen, label: 'Scholarship', href: '/scholarship' },
       { icon: FileText, label: 'Application Scholarship', href: '/applicationScholarship' },
       { icon: ShoppingCart, label: 'Payments', href: '/payment' },
       { icon: Package, label: 'Subscriptions', href: '/subscriptions' },
-      { icon: CreditCard, label: 'Subscription Plan', href: '/subscriptionPlan' },
+      { icon: CreditCard, label: 'Subscription Plan Provider', href: '/subscriptionPlanProvider' },
+      { icon: CreditCard, label: 'Subscription Plan Applicant', href: '/subscriptionPlanApplicant' },
       { icon: MessageCircle, label: 'News', href: '/news' },
       { icon: Bell, label: 'Report & Feedback', href: '/reportFeedback' },
       { icon: AlertCircle, label: 'System Notification', href: '/systemNotification' },
@@ -64,7 +66,7 @@ const AppSidebar = () => {
               size="lg"
               className="group hover:bg-gray-100 transition-all duration-300"
             >
-              <div className="flex justify-between items-center gap-5 w-full pl-3 pr-1">
+              <div className="flex justify-between items-center gap-5 w-1 pl-3 pr-1">
                 <div className="flex items-center gap-4">
                   <LayoutDashboard
                     width={24}

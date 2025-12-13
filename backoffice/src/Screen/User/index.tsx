@@ -70,6 +70,7 @@ const Users = () => {
                 onView={(row: any) => router.push(`/user/${row.id}`)}
                 onEdit={(row: any) => console.log("edit", row)}
                 onDelete={(row: any) => console.log("delete", row)}
+                onCreate={(row: any) => router.push(`//create`)}
                 isDelete={false}
                 isEdit={false}
                 isView={false}

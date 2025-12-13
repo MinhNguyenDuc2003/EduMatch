@@ -1,4 +1,4 @@
-import ProfileDetail from "src/Screen/Profile/slug"
+import ProfileDetail from "src/Screen/ProfileApplicant/slug"
 
 const Detail = () => {
     return (

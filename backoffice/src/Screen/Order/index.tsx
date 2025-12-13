@@ -86,7 +86,7 @@ const OrderPage = () => {
               <CustomDataTable
                 columns={columns}
                 data={mappedSubs}
-                onView={(row: any) => router.push(`/order/${row.id}`)}
+                onView={(row: any) => router.push(`/payment/${row.id}`)}
                 onEdit={(row: any) => console.log("edit", row)}
                 onDelete={(row: any) => console.log("delete", row)}
                 isCreate={false}

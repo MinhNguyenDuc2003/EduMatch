@@ -1,5 +1,5 @@
 import React from 'react';
-import SubcriptionPlanCreate from 'src/Screen/SubcriptionPlan/pageCreate';
+import SubcriptionPlanCreate from 'src/Screen/SubcriptionPlanApplicant/pageCreate';
 
 const Create = () => {
   return (

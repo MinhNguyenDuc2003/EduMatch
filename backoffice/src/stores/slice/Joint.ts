@@ -33,6 +33,8 @@ type State = {
     formFocusID?: string;
     Users? : IUser[];
     SystemNotification? : ISystemNotification[];
+    ScholarshipCreatedInMonth? : any
+    ReportsStatistics? : any
   };
   setJointData(Obj: State['Joint']): void;
   resetJoint(): void;

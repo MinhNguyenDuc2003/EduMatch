@@ -1,5 +1,5 @@
 import React from 'react';
-import SubscriptionPlanPage from 'src/Screen/SubcriptionPlan';
+import SubscriptionPlanPage from 'src/Screen/SubcriptionPlanProvider';
 
 const SubcriptionPage = () => {
   return (

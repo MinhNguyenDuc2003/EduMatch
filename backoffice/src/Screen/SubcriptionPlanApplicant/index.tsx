@@ -21,15 +21,19 @@ const SubscriptionPlanPage = () => {
           console.log('list', list);
 
           const plans =
-            list?.map((item: any) => ({
-              id: item.id,
-              name: item.name,
-              description: item.description,
-              price: `${item.price} ${item.currency}`,
-              duration: `${item.durationDays} days`,
-              target: item.targetType,
+            list
+              ?.filter((p: any) => p.targetType === 'APPLICANT')
+              .map((item: any) => ({
+                id: item.id,
+                name: item.name,
+                description: item.description,
+                price: `${item.price} ${item.currency}`,
+                duration: `${item.durationDays} days`,
+                target: item.targetType,
+              })) || [];
 
-            })) || [];
+
+
 
           const total = plans.length;
           const applicant = plans.filter((p: any) => p.target === 'APPLICANT').length;
@@ -85,9 +89,9 @@ const SubscriptionPlanPage = () => {
               <CustomDataTable
                 columns={columns}
                 data={plans}
-                onView={(row: any) => router.push(`/subscriptionPlan/${row.id}`)}
-                onEdit={(row: any) => router.push(`/subscriptionPlan/${row.id}`)}
-                onCreate={(row: any) => router.push('/subscriptionPlan/create')}
+                onView={(row: any) => router.push(`/subscriptionPlanApplicant/${row.id}`)}
+                onEdit={(row: any) => router.push(`/subscriptionPlanApplicant/${row.id}`)}
+                onCreate={(row: any) => router.push('/subscriptionPlanApplicant/create')}
                 onDelete={(row: any) => meds.onDelete(row.id)}
               />
             </div>

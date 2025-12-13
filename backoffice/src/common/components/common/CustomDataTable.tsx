@@ -15,6 +15,11 @@ import {
   Search as SearchIcon,
   FileSpreadsheet,
   Plus,
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  ArrowUpDown,
+  Download
 } from "lucide-react";
 import { motion } from "framer-motion";
 import {
@@ -33,7 +38,7 @@ interface ModernDataTableProps {
   onView?: (row: any) => void;
   onEdit?: (row: any) => void;
   onDelete?: (row: any) => void;
-  onCreate?: (row:  any) => void;
+  onCreate?: (row: any) => void;
   isCreate?: boolean;
   isView?: boolean;
   isEdit?: boolean;
@@ -52,17 +57,17 @@ export default function ModernDataTable({
   isEdit = true,
   isDelete = true,
 }: ModernDataTableProps) {
-  const [sorting, setSorting] = useState([]);
+  const [sorting, setSorting] = useState<any>([]);
   const [filterText, setFilterText] = useState("");
   const [pageSize, setPageSize] = useState(10);
 
-  // ẨN CỘT ID
+  // 1. LOGIC: HIDE ID COLUMN
   const visibleColumns = useMemo(
     () => columns.filter((col) => col.accessorKey !== "id"),
     [columns]
   );
 
-  // FILTER SEARCH (không search ID)
+  // 2. LOGIC: FILTER SEARCH
   const filteredData = useMemo(() => {
     if (!filterText) return data;
     const text = filterText.trim().toLowerCase();
@@ -73,7 +78,7 @@ export default function ModernDataTable({
     );
   }, [data, filterText]);
 
-  // TABLE INSTANCE
+  // 3. LOGIC: TABLE INSTANCE
   const table = useReactTable({
     data: filteredData,
     columns: visibleColumns,
@@ -85,7 +90,7 @@ export default function ModernDataTable({
     pageCount: Math.ceil(filteredData.length / pageSize),
   });
 
-  // EXPORT Excel
+  // 4. LOGIC: EXPORT EXCEL (Kept exactly as provided)
   const handleExportExcel = () => {
     if (!filteredData || filteredData.length === 0) return;
 
@@ -138,159 +143,196 @@ export default function ModernDataTable({
   };
 
   return (
-    <div className="rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      {/* TOOLBAR */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-4">
-        <h3 className="text-lg font-semibold text-gray-700" />
-
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <div className="relative w-full md:w-72">
-            <SearchIcon
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              size={16}
-            />
+    <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden font-sans">
+      
+      {/* --- TOOLBAR SECTION --- */}
+      <div className="p-5 border-b border-gray-100 bg-white/50 backdrop-blur-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          
+          {/* Search Input */}
+          <div className="relative w-full md:w-96 group">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <SearchIcon className="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+            </div>
             <input
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
-              placeholder="Search..."
-              className="w-full md:w-72 pl-9 pr-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Search records..."
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl leading-5 bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-all duration-200 sm:text-sm"
             />
           </div>
 
-          {isCreate && (
-            <motion.button
-              onClick={onCreate}
-              whileHover={{ scale: 1.02 }}
-              className="flex items-center gap-2 bg-blue-600 text-white px-3 py-2 rounded-xl shadow-sm"
-            >
-              <Plus size={16} />
-              <span className="text-sm font-medium">Create New</span>
-            </motion.button>
-          )}
+          {/* Actions Buttons */}
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            {isCreate && (
+              <motion.button
+                onClick={onCreate}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-200 transition-all"
+              >
+                <Plus size={18} />
+                <span>Create New</span>
+              </motion.button>
+            )}
 
-          <motion.button
-            onClick={handleExportExcel}
-            whileHover={{ scale: 1.02 }}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-green-500 text-white px-3 py-2 rounded-xl shadow-sm"
-          >
-            <FileSpreadsheet size={16} />
-            <span className="text-sm font-medium">Export Excel</span>
-          </motion.button>
+            <motion.button
+              onClick={handleExportExcel}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-gray-200 text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 hover:text-green-600 hover:border-green-200 shadow-sm transition-all"
+            >
+              <Download size={18} />
+              <span>Export</span>
+            </motion.button>
+          </div>
         </div>
       </div>
 
-      {/* TABLE */}
-      <Table className="table-fixed w-full">
+      {/* --- TABLE SECTION --- */}
+      <div className="overflow-x-auto">
+        <Table className="w-full">
         <TableHeader className="bg-slate-900">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  className="text-white font-semibold cursor-pointer select-none truncate"
-                  style={{ width: header.column.getSize() || 150 }}
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  <div className="flex items-center justify-start">
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    <span className="ml-1">
-                      {header.column.getIsSorted() === "asc"
-                        ? "▲"
-                        : header.column.getIsSorted() === "desc"
-                        ? "▼"
-                        : ""}
-                    </span>
-                  </div>
-                </TableHead>
-              ))}
-              {(isView || isEdit || isDelete) && (
-                <TableHead className="text-white w-[120px]">Actions</TableHead>
-              )}
-            </TableRow>
-          ))}
-        </TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow 
+                key={headerGroup.id} 
+                className="border-b border-slate-800 hover:bg-slate-900" // Tắt hiệu ứng hover sáng ở header
+              >
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    // Sửa text-gray-500 -> text-white
+                    // Sửa hover:bg-gray-100 -> hover:bg-slate-800
+                    className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider cursor-pointer select-none hover:bg-slate-800 transition-colors"
+                    style={{ width: header.column.getSize() }}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    <div className="flex items-center gap-2">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {/* Sửa màu icon sort thành sáng hơn để nổi trên nền tối */}
+                      <span className="text-gray-400">
+                        {header.column.getIsSorted() === "asc" ? (
+                          <ArrowUpDown className="h-3 w-3 rotate-180 text-white" />
+                        ) : header.column.getIsSorted() === "desc" ? (
+                          <ArrowUpDown className="h-3 w-3 text-white" />
+                        ) : (
+                          <ArrowUpDown className="h-3 w-3 opacity-0 group-hover:opacity-50 text-gray-400" />
+                        )}
+                      </span>
+                    </div>
+                  </TableHead>
+                ))}
+                {(isView || isEdit || isDelete) && (
+                  <TableHead className="px-6 py-4 text-right text-xs font-bold text-white uppercase tracking-wider w-[140px]">
+                    Actions
+                  </TableHead>
+                )}
+              </TableRow>
+            ))}
+          </TableHeader>
 
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id} className="hover:bg-blue-50 transition">
-              {row.getVisibleCells().map((cell) => (
+          <TableBody>
+            {table.getRowModel().rows.length > 0 ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  className="border-b border-gray-50 last:border-none hover:bg-blue-50/30 transition-colors duration-150 group"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className="px-6 py-4 text-sm text-gray-600 whitespace-nowrap"
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+
+                  {(isView || isEdit || isDelete) && (
+                    <TableCell className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        {isView && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onView?.(row.original);
+                            }}
+                            className="p-2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-all"
+                            title="View Details"
+                          >
+                            <Eye size={18} />
+                          </button>
+                        )}
+                        {isEdit && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onEdit?.(row.original);
+                            }}
+                            className="p-2 rounded-lg text-gray-400 hover:text-amber-600 hover:bg-amber-50 transition-all"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+                        )}
+                        {isDelete && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onDelete?.(row.original);
+                            }}
+                            className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all"
+                            title="Delete"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        )}
+                      </div>
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
                 <TableCell
-                  key={cell.id}
-                  className="truncate"
-                  style={{ width: cell.column.getSize() || 150 }}
+                  colSpan={visibleColumns.length + (isView || isEdit || isDelete ? 1 : 0)}
+                  className="h-32 text-center text-gray-500"
                 >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  No results found.
                 </TableCell>
-              ))}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
 
-              {(isView || isEdit || isDelete) && (
-                <TableCell className="w-[120px] text-center">
-                  <div className="flex gap-3 justify-start">
-                    {isView && (
-                      <SearchIcon
-                        size={18}
-                        className="text-blue-600 cursor-pointer hover:scale-110"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onView?.(row.original);
-                        }}
-                      />
-                    )}
-                    {isEdit && (
-                      <Edit
-                        size={18}
-                        className="text-green-600 cursor-pointer hover:scale-110"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onEdit?.(row.original);
-                        }}
-                      />
-                    )}
-                    {isDelete && (
-                      <Trash2
-                        size={18}
-                        className="text-red-600 cursor-pointer hover:scale-110"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDelete?.(row.original);
-                        }}
-                      />
-                    )}
-                  </div>
-                </TableCell>
-              )}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-
-      {/* PAGINATION */}
-      <div className="p-4 flex items-center justify-between">
-        <div className="text-sm text-gray-600">
-          Showing {filteredData.length} result
-          {filteredData.length !== 1 ? "s" : ""}
+      {/* --- PAGINATION SECTION --- */}
+      <div className="border-t border-gray-100 bg-gray-50/50 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="text-sm text-gray-500">
+          Showing <span className="font-semibold text-gray-900">{filteredData.length}</span> results
         </div>
+        
         <div className="flex items-center gap-2">
           <button
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+            className="p-2 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            Previous
+            <ChevronLeft size={18} />
           </button>
-          <div className="text-sm">
-            Page {table.getState().pagination.pageIndex + 1} /{" "}
-            {Math.max(1, table.getPageCount())}
-          </div>
+          
+          <span className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg">
+            Page {table.getState().pagination.pageIndex + 1} of {Math.max(1, table.getPageCount())}
+          </span>
+
           <button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+            className="p-2 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            Next
+            <ChevronRight size={18} />
           </button>
         </div>
       </div>
