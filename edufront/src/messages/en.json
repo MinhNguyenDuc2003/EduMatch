@@ -376,6 +376,7 @@
       "satScore": "SAT Score",
       "actScore": "ACT Score",
       "greScore": "GRE Score",
+      "gmatScore": "GMAT Score",
       "toeflScore": "TOEFL Score",
       "ieltsScore": "IELTS Score",
       "languages": "Languages",
@@ -386,7 +387,7 @@
       "preferredScholarship": "Preferred Scholarship",
       "preferredType": "Preferred Type",
       "preferredCountry": "Preferred Country",
-      "preferredUniversity": "Preferred University"
+      "preferredMajor": "Preferred Major"
     }
   },
   "error": {
@@ -694,6 +695,7 @@
       "accountSettings": "Account Settings",
       "educationHistory": "Education History",
       "skills": "Skills",
+      "scores": "Scores",
       "certificates": "Certificates",
       "educationalIntentions": "Educational Intentions"
     },
@@ -723,6 +725,7 @@
       "no": "No",
       "addInfo": "Add Info",
       "educationLevel": "Education Level",
+      "scores": "Scores",
       "satScore": "SAT Score",
       "satScorePlaceholder": "Enter SAT score (400-1600)",
       "actScore": "ACT Score",
@@ -733,6 +736,8 @@
       "ieltsScorePlaceholder": "Enter IELTS score (0.0-9.0)",
       "greScore": "GRE Score",
       "greScorePlaceholder": "Enter GRE score (260-340)",
+      "gmatScore": "GMAT Score",
+      "gmatScorePlaceholder": "Enter GMAT score (200-800)",
       "languages": "Languages",
       "academicAwards": "Academic Awards",
       "publicationCount": "Publication Count",
@@ -740,7 +745,7 @@
       "extracurricularActivities": "Extracurricular Activities",
       "preferredScholarshipType": "Preferred Scholarship Type",
       "preferredCountry": "Preferred Country",
-      "preferredUniversity": "Preferred University"
+      "preferredMajor": "Preferred Major"
     },
     "common": {
       "edit": "Edit",
@@ -926,8 +931,8 @@
       "selectPreferredScholarshipType": "Select preferred scholarship type",
       "preferredCountry": "Preferred Country",
       "selectPreferredCountry": "Select preferred country",
-      "preferredUniversity": "Preferred University",
-      "preferredUniversityPlaceholder": "e.g., Harvard University, MIT"
+      "preferredMajor": "Preferred Major",
+      "selectPreferredMajor": "Select preferred major"
     },
     "cards": {
       "historyDetails": "History Details",

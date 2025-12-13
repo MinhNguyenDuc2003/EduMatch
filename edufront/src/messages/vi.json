@@ -376,6 +376,7 @@
       "satScore": "Điểm SAT",
       "actScore": "Điểm ACT",
       "greScore": "Điểm GRE",
+      "gmatScore": "Điểm GMAT",
       "toeflScore": "Điểm TOEFL",
       "ieltsScore": "Điểm IELTS",
       "languages": "Ngôn ngữ",
@@ -386,7 +387,7 @@
       "preferredScholarship": "Học bổng ưa thích",
       "preferredType": "Loại học bổng",
       "preferredCountry": "Quốc gia",
-      "preferredUniversity": "Trường đại học"
+      "preferredMajor": "Chuyên ngành"
     }
   },
   "error": {
@@ -700,6 +701,7 @@
       "applicantPreferences": "Sở thích ứng viên",
       "accountSettings": "Cài đặt tài khoản",
       "educationHistory": "Lịch sử học tập",
+      "scores": "Điểm số",
       "skills": "Kỹ năng",
       "certificates": "Chứng chỉ",
       "educationalIntentions": "Dự định học tập"
@@ -730,6 +732,7 @@
       "no": "Không",
       "addInfo": "Thêm thông tin",
       "educationLevel": "Trình độ học vấn",
+      "scores": "Điểm số",
       "satScore": "Điểm SAT",
       "satScorePlaceholder": "Nhập điểm SAT (400-1600)",
       "actScore": "Điểm ACT",
@@ -740,6 +743,8 @@
       "ieltsScorePlaceholder": "Nhập điểm IELTS (0.0-9.0)",
       "greScore": "Điểm GRE",
       "greScorePlaceholder": "Nhập điểm GRE (260-340)",
+      "gmatScore": "Điểm GMAT",
+      "gmatScorePlaceholder": "Nhập điểm GMAT (200-800)",
       "languages": "Ngôn ngữ",
       "academicAwards": "Giải thưởng học thuật",
       "publicationCount": "Số lượng xuất bản phẩm",
@@ -747,7 +752,7 @@
       "extracurricularActivities": "Hoạt động ngoại khóa",
       "preferredScholarshipType": "Loại học bổng ưa thích",
       "preferredCountry": "Quốc gia ưa thích",
-      "preferredUniversity": "Trường đại học ưa thích"
+      "preferredMajor": "Chuyên ngành ưa thích"
     },
     "common": {
       "edit": "Chỉnh sửa",
@@ -933,8 +938,8 @@
       "selectPreferredScholarshipType": "Chọn loại học bổng ưa thích",
       "preferredCountry": "Quốc gia ưa thích",
       "selectPreferredCountry": "Chọn quốc gia ưa thích",
-      "preferredUniversity": "Trường đại học ưa thích",
-      "preferredUniversityPlaceholder": "ví dụ: Đại học Harvard, MIT"
+      "preferredMajor": "Chuyên ngành ưa thích",
+      "selectPreferredMajor": "Chọn chuyên ngành ưa thích"
     },
     "cards": {
       "historyDetails": "Chi tiết lịch sử",

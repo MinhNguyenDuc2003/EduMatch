@@ -2,7 +2,7 @@ import { CustomFormField } from '@/pattern/cus/CustomFormField';
 import Header from '@/pattern/share/Header';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { SCHOLARSHIP_TYPES, COUNTRIES } from '@/constants/Common';
+import { SCHOLARSHIP_TYPES, COUNTRIES, MAJOR_NAMES } from '@/constants/Common';
 import { University } from '@/constants/University';
 
 const PreferredPreferences = () => {
@@ -38,11 +38,11 @@ const PreferredPreferences = () => {
         />
 
         <CustomFormField
-          name="applicantProfile.preferredUniversity"
-          label={t('preferredUniversity')}
+          name="applicantProfile.preferredMajor"
+          label={t('preferredMajor')}
           type="multi-select"
-          placeholder={t('preferredUniversityPlaceholder')}
-          options={universityOptions}
+          placeholder={t('selectPreferredMajor')}
+          options={MAJOR_NAMES}
           inlineLabel
           isBorder
           className="md:col-span-2"
