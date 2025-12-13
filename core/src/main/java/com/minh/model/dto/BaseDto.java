@@ -36,7 +36,7 @@ public class BaseDto implements Serializable {
     @JsonIgnore
     public String updatedBy;
 
-    @JsonIgnore
+//    @JsonIgnore
     @JsonSerialize(using = DateToTimestamp.class)
     @JsonDeserialize(using = TimestampToDate.class)
     public LocalDateTime createdDate;

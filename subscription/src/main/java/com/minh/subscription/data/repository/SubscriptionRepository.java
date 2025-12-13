@@ -17,6 +17,8 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
 
     Optional<SubscriptionEntity> findByIdAndActive(Long id, boolean active);
 
+    List<SubscriptionEntity> findAllByOrderByCreatedDateDesc();
+
     @Modifying
     @Query("UPDATE SubscriptionEntity s SET s.active = :active WHERE s.id = :id")
     void updateActiveById(@Param("id") Long id, @Param("active") boolean active);

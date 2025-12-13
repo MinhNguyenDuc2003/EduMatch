@@ -17,6 +17,7 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
     List<PaymentEntity> findAllByUserIdOrderByPaidAtDesc(String userId);
 
+    List<PaymentEntity> findAllByOrderByCreatedDateDesc();
 
     Optional<PaymentEntity> findByIdAndActive(Long id, Boolean active);
 

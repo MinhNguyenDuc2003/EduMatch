@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.minh.model.dto.BaseDto;
 import com.minh.utils.serializer.DateToTimestamp;
 import com.minh.utils.serializer.TimestampToDate;
+import jakarta.persistence.Column;
 import lombok.*;
 import java.time.LocalDateTime;
 
@@ -38,4 +39,5 @@ public class SubscriptionDto extends BaseDto {
     private String status;
 
     private SubscriptionPlanDto plan;
+
 }

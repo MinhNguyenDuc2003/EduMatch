@@ -53,7 +53,7 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
     @Override
     public List<SubscriptionVo> getAll() {
 
-        List<SubscriptionDto> dtos = subscriptionMapper.toDto(subscriptionRepository.findAll());
+        List<SubscriptionDto> dtos = subscriptionMapper.toDto(subscriptionRepository.findAllByOrderByCreatedDateDesc());
 
         List<SubscriptionVo> vos = subscriptionMapper.toVo(dtos);
 

@@ -39,7 +39,7 @@ public class PaymentServiceImpl extends BaseService implements PaymentService {
     @Override
     public List<PaymentVo> getAll() {
 
-        List<PaymentEntity> entities = paymentRepository.findAll();
+        List<PaymentEntity> entities = paymentRepository.findAllByOrderByCreatedDateDesc();
 
         List<PaymentVo> vos = paymentMapper.toVo(entities);
 
