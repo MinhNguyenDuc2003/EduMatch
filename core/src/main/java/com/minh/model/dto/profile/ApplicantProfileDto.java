@@ -62,7 +62,7 @@ public class ApplicantProfileDto extends BaseDto {
 
     private String preferredScholarshipType;
     private String preferredCountry;
-    private String preferredUniversity;
+    private String preferredMajor;
 
     // ==============================
     // Type Applicant Profile

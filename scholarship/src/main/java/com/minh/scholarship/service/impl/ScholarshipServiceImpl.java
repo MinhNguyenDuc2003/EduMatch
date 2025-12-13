@@ -401,10 +401,11 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public Boolean sendMailSuggestion(String userId) {
-        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(userId, 5);
+//        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(userId, 5);
 
         MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.SCHOLARSHIP_RECOMMENDATION.getCode()));
-        String body = generateBodyEmailScholarshipSuggestion(scholarshipEntities, templateDto.getBody());
+//        String body = generateBodyEmailScholarshipSuggestion(scholarshipEntities, templateDto.getBody());
+        String body = "TEST SEND MAIL";
         body = body.replace("{{link}}", feEndPoint + "/scholarships");
         MailDto mailDto = new MailDto();
         mailDto.setBody(body);
@@ -512,7 +513,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                     .replace(getKey("university", number), scholarships.get(i).getUniversity())
                     .replace(getKey("amount", number), scholarships.get(i).getFundingAmount())
                     .replace(getKey("deadline", number), DateTimeUtils.format(scholarships.get(i).getEndDate(), "dd/MM/yyyy"))
-                    .replace(getKey("link", number), feEndPoint + "scholarships/" + scholarships.get(i).getSlug());
+                    .replace(getKey("link", number), feEndPoint + "/scholarships/" + scholarships.get(i).getSlug());
         }
         return template;
     }
@@ -675,7 +676,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         ScholarshipRecommendationVo scholarshipRecommendationVo = new ScholarshipRecommendationVo();
         scholarshipRecommendationVo.setApplicantPreference(preferenceMap);
         List<ScholarshipEntity> scholarshipEntities = scholarshipRepository.findByApplicantFilter(
-                applicantProfileVo.getPreferredScholarshipType(), applicantProfileVo.getOverallGpa(), applicantProfileVo.getPreferredCountry(),
+                applicantProfileVo.getEducationLevel(), applicantProfileVo.getOverallGpa(), applicantProfileVo.getPreferredCountry(),
                 applicantProfileVo.getSatScore(), applicantProfileVo.getActScore(),
                 applicantProfileVo.getGreScore(), applicantProfileVo.getGmatScore(),
                 applicantProfileVo.getToeflScore(), applicantProfileVo.getIeltsScore()

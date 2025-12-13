@@ -141,8 +141,8 @@ public class ApplicantProfileEntity extends BaseEntity {
     @Column(length = 100, name = "PREFERRED_COUNTRY")
     private String preferredCountry;
 
-    @Column(length = 255, name = "PREFERRED_UNIVERSITY")
-    private String preferredUniversity;
+    @Column(length = 255, name = "PREFERRED_MAJOR")
+    private String preferredMajor;
 
     @Column(name = "TYPE", length = 100)
     @Enumerated(EnumType.STRING)

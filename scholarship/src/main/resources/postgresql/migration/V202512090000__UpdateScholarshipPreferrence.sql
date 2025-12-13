@@ -1,6 +1,0 @@
-ALTER TABLE scholarship.scholarship_preference
-    DROP
-COLUMN IF EXISTS value,
-    DROP
-COLUMN IF EXISTS note,
-    ADD COLUMN IF NOT EXISTS field VARCHAR(255);

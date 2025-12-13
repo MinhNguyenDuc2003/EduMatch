@@ -197,7 +197,7 @@ public class ScholarshipController {
     @Authorized
     @GetMapping("/suggestion/mail")
     public ApiResponse<Boolean> sendMailSuggestion() {
-        return ApiResponse.ok(scholarshipService.sendMailSuggestion("0bcc96b7-270c-4ac3-861c-1a526a1532f6"));
+        return ApiResponse.ok(scholarshipService.sendMailSuggestion("ea237733-0f6b-4b39-8e81-a35fe70e7fb2"));
     }
 
     @Authorized

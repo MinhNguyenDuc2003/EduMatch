@@ -181,6 +181,9 @@ keycloak:
 aws:
   email: edumatch.space.scholarship@gmail.com
 
+mail:
+  resend-key: ${env.mail.key}
+
 kafka:
   enable: true
   bootstrap-server: ${env.kafka.ip:localhost}:${env.kafka.port:29092}

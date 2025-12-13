@@ -1,2 +1,0 @@
-ALTER TABLE profile.PROVIDER_NEWS
-    ADD COLUMN scholarship_id BIGINT NULL;

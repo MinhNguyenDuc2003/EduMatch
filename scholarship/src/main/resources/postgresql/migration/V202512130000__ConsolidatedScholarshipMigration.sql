@@ -1,0 +1,208 @@
+CREATE SCHEMA IF NOT EXISTS scholarship;
+
+CREATE TABLE IF NOT EXISTS scholarship.application (
+    id BIGSERIAL PRIMARY KEY,
+    application_name VARCHAR(255) DEFAULT '',
+    user_id VARCHAR(255),
+    full_name VARCHAR(255),
+    gender VARCHAR(50),
+    date_of_birth VARCHAR(50),
+    email VARCHAR(255),
+    phone VARCHAR(50),
+    address VARCHAR(255),
+    nationality VARCHAR(100),
+    education_level VARCHAR(100),
+    school_name VARCHAR(255),
+    major VARCHAR(255),
+    gpa DOUBLE PRECISION,
+    graduation_year VARCHAR(50),
+    skills TEXT,
+    languages TEXT,
+    achievements TEXT,
+    extracurricular TEXT,
+    motivation TEXT,
+    personal_statement TEXT,
+    VERSION_APPLICATION BIGINT NULL,
+    CODE VARCHAR(512) NULL,
+    career_goal TEXT,
+    research_interest TEXT,
+    academic_awards TEXT,
+    publication_count INT,
+    sat_score INT,
+    act_score INT,
+    gre_score INT,
+    gmat_score INT,
+    toefl_score INT,
+    ielts_score DOUBLE PRECISION,
+    work_experience_years INT,
+    class_rank INT,
+    class_size INT,
+    class_rank_percentile DECIMAL (5,2),
+    age INT,
+    citizenship VARCHAR (100),
+    is_athlete BOOLEAN DEFAULT FALSE,
+    athletic_achievements TEXT,
+    CREATED_BY VARCHAR(32) DEFAULT '',
+    UPDATED_BY VARCHAR(32) DEFAULT '',
+    ACTIVE BOOLEAN NOT NULL DEFAULT TRUE,
+    VERSION NUMERIC NOT NULL DEFAULT 0,
+    CREATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS scholarship.scholarship (
+    id BIGSERIAL PRIMARY KEY,
+    provider_id  BIGINT,
+    title VARCHAR(255),
+    slug VARCHAR(255),
+    short_description TEXT,
+    description TEXT,
+    requirements TEXT,
+    benefits TEXT,
+    fields TEXT,
+    country VARCHAR(100),
+    university VARCHAR(255),
+    study_level VARCHAR(100),
+    scholarship_type VARCHAR(100),
+    funding_amount VARCHAR(100),
+    start_date TIMESTAMP,
+    end_date TIMESTAMP,
+    available_slots INT,
+    language_requirement VARCHAR(100),
+    gpa_requirement DOUBLE PRECISION,
+    required_major TEXT,
+    restricted_nationalities TEXT,
+    min_age INT,
+    max_age INT,
+    gender_requirement VARCHAR(50),
+    required_sat_score INT,
+    required_act_score INT,
+    required_gre_score INT,
+    required_gmat_score INT,
+    required_toefl_score INT,
+    required_ielts_score DOUBLE PRECISION,
+    required_work_experience_years INT,
+    required_publication_count INT,
+    required_academic_awards TEXT,
+    required_class_rank_percentile INT,
+    status VARCHAR(50) DEFAULT 'Public',
+    CREATED_BY VARCHAR(32) DEFAULT '',
+    UPDATED_BY VARCHAR(32) DEFAULT '',
+    ACTIVE BOOLEAN NOT NULL DEFAULT TRUE,
+    VERSION NUMERIC NOT NULL DEFAULT 0,
+    CREATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS scholarship.scholarship_preference (
+    id BIGSERIAL PRIMARY KEY,
+    scholarship_id BIGINT,
+    type VARCHAR(100),
+    weight DOUBLE PRECISION,
+    field VARCHAR(255),
+    CREATED_BY VARCHAR(32) DEFAULT '',
+    UPDATED_BY VARCHAR(32) DEFAULT '',
+    ACTIVE BOOLEAN NOT NULL DEFAULT TRUE,
+    VERSION NUMERIC NOT NULL DEFAULT 0,
+    CREATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS scholarship.application_review (
+    id BIGSERIAL PRIMARY KEY,
+    application_id BIGINT,
+    review_id VARCHAR(255),
+    score VARCHAR(50),
+    comment TEXT,
+    reviewed_at VARCHAR(50),
+    CREATED_BY VARCHAR(32) DEFAULT '',
+    UPDATED_BY VARCHAR(32) DEFAULT '',
+    ACTIVE BOOLEAN NOT NULL DEFAULT TRUE,
+    VERSION NUMERIC NOT NULL DEFAULT 0,
+    CREATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS scholarship.SCHOLARSHIP_MEDIA (
+    SCHOLARSHIP_ID BIGINT,
+    MEDIA_ID BIGINT
+);
+
+CREATE TABLE IF NOT EXISTS scholarship.APPLICATION_MEDIA (
+    APPLICATION_ID BIGINT,
+    MEDIA_ID BIGINT
+);
+
+CREATE TABLE IF NOT EXISTS scholarship.APPLICATION_SCHOLARSHIP (
+    id BIGSERIAL PRIMARY KEY,
+    scholarship_id BIGINT,
+    application_id BIGINT,
+    status VARCHAR(100),
+    reviewed_at TIMESTAMP NULL,
+    note TEXT NULL,
+    CREATED_BY VARCHAR(32) DEFAULT '',
+    UPDATED_BY VARCHAR(32) DEFAULT '',
+    ACTIVE BOOLEAN NOT NULL DEFAULT TRUE,
+    VERSION NUMERIC NOT NULL DEFAULT 0,
+    CREATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS scholarship.SCHOLARSHIP_FOLLOWER (
+    scholarship_id BIGINT,
+    user_id VARCHAR(100),
+    CREATED_BY VARCHAR(32) DEFAULT '',
+    UPDATED_BY VARCHAR(32) DEFAULT '',
+    ACTIVE BOOLEAN NOT NULL DEFAULT TRUE,
+    VERSION NUMERIC NOT NULL DEFAULT 0,
+    CREATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS scholarship.APPLICATION_ATTRIBUTE (
+    id BIGSERIAL PRIMARY KEY,
+    application_id BIGINT,
+    key VARCHAR(255),
+    value TEXT,
+    note TEXT NULL,
+    CREATED_BY VARCHAR(32) DEFAULT '',
+    UPDATED_BY VARCHAR(32) DEFAULT '',
+    ACTIVE BOOLEAN NOT NULL DEFAULT TRUE,
+    VERSION NUMERIC NOT NULL DEFAULT 0,
+    CREATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS scholarship.SCHOLARSHIP_VIEW (
+    id BIGSERIAL PRIMARY KEY,
+    scholarship_id BIGINT,
+    user_id VARCHAR(100),
+    full_name VARCHAR(255),
+    CREATED_BY VARCHAR(32) DEFAULT '',
+    UPDATED_BY VARCHAR(32) DEFAULT '',
+    ACTIVE BOOLEAN NOT NULL DEFAULT TRUE,
+    VERSION NUMERIC NOT NULL DEFAULT 0,
+    CREATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS scholarship.CASE_STUDY (
+    id BIGSERIAL PRIMARY KEY,
+    scholarship_id BIGINT,
+    user_id VARCHAR(100),
+    title VARCHAR(512),
+    content TEXT,
+    verified BOOLEAN NOT NULL DEFAULT FALSE,
+    CREATED_BY VARCHAR(32) DEFAULT '',
+    UPDATED_BY VARCHAR(32) DEFAULT '',
+    ACTIVE BOOLEAN NOT NULL DEFAULT TRUE,
+    VERSION NUMERIC NOT NULL DEFAULT 0,
+    CREATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_DATETIME TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS scholarship.CASE_STUDY_MEDIA (
+    id BIGSERIAL PRIMARY KEY,
+    case_study_id BIGINT,
+    media_id BIGINT
+);
