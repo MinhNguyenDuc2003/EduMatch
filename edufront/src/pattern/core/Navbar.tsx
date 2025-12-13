@@ -36,7 +36,7 @@ const Header = () => {
     : null;
 
   return (
-    <div className="px-4 lg:px-40 py-3 flex items-center border-b bg-[#fafaf6] fixed top-0 w-full z-50">
+    <div className="px-4 lg:px-40 py-3 flex items-center border-b bg-[#fafaf6] sticky top-0 w-full z-50">
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center gap-5">
           <div className="flex items-center space-x-4">

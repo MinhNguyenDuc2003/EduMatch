@@ -61,7 +61,7 @@ export const apiAuth = createApi({
     }),
     confirmPayment: build.mutation<void, { transactionId: string; subscriptionPlanId: number }>({
       query: ({ transactionId, subscriptionPlanId }) => ({
-        url: `${API_ENDPOINTS.SUBSCRIPTION}/orders/confirm-order`,
+        url: `${API_ENDPOINTS.SUBSCRIPTION}/payments/confirm-payment`,
         method: 'POST',
         params: { transactionId, subscriptionPlanId },
       }),
@@ -72,7 +72,7 @@ export const apiAuth = createApi({
       { subscriptionId: number; subscriptionPlanId: number; transactionId: string }
     >({
       query: ({ subscriptionId, subscriptionPlanId, transactionId }) => ({
-        url: `${API_ENDPOINTS.SUBSCRIPTION}/orders/extend`,
+        url: `${API_ENDPOINTS.SUBSCRIPTION}/payments/extend`,
         method: 'POST',
         params: { subscriptionId, subscriptionPlanId, transactionId },
       }),
