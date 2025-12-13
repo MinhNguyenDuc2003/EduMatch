@@ -76,6 +76,21 @@ services:
       - m-network
   customer:
     image: registry.edumatch.space/edumatch/customer:1.1.0
+    environment:
+      - LOGGING_CONFIG
+      - JAVA_TOOL_OPTIONS
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_EXPORTER_OTLP_PROTOCOL
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES
+      - OTEL_SERVICE_NAME=customer-service
+      - OTEL_LOGS_EXPORTER
+      - OTEL_TRACES_EXPORTER
+      - OTEL_METRICS_EXPORTER
+      - OTEL_INSTRUMENTATION_LOGBACK-MDC_ADD-BAGGAGE
+      - OTEL_JAVAAGENT_LOGGING
+      - OTEL_JAVAAGENT_ENABLED
+      - OTEL_JAVAAGENT_DEBUG
     volumes:
       - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
       - ./deployment/app-config:/app-config
@@ -83,6 +98,21 @@ services:
       - m-network
   profile:
     image: registry.edumatch.space/edumatch/profile:1.1.0
+    environment:
+      - LOGGING_CONFIG
+      - JAVA_TOOL_OPTIONS
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_EXPORTER_OTLP_PROTOCOL
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES
+      - OTEL_SERVICE_NAME=profile-service
+      - OTEL_LOGS_EXPORTER
+      - OTEL_TRACES_EXPORTER
+      - OTEL_METRICS_EXPORTER
+      - OTEL_INSTRUMENTATION_LOGBACK-MDC_ADD-BAGGAGE
+      - OTEL_JAVAAGENT_LOGGING
+      - OTEL_JAVAAGENT_ENABLED
+      - OTEL_JAVAAGENT_DEBUG
     volumes:
       - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
       - ./deployment/app-config:/app-config
@@ -95,6 +125,20 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_BUCKET_NAME
+      - LOGGING_CONFIG
+      - JAVA_TOOL_OPTIONS
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_EXPORTER_OTLP_PROTOCOL
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES
+      - OTEL_SERVICE_NAME=media-service
+      - OTEL_LOGS_EXPORTER
+      - OTEL_TRACES_EXPORTER
+      - OTEL_METRICS_EXPORTER
+      - OTEL_INSTRUMENTATION_LOGBACK-MDC_ADD-BAGGAGE
+      - OTEL_JAVAAGENT_LOGGING
+      - OTEL_JAVAAGENT_ENABLED
+      - OTEL_JAVAAGENT_DEBUG
     volumes:
       - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
       - ./deployment/app-config:/app-config
@@ -107,6 +151,20 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_BUCKET_NAME
+      - LOGGING_CONFIG
+      - JAVA_TOOL_OPTIONS
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_EXPORTER_OTLP_PROTOCOL
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES
+      - OTEL_SERVICE_NAME=notification-service
+      - OTEL_LOGS_EXPORTER
+      - OTEL_TRACES_EXPORTER
+      - OTEL_METRICS_EXPORTER
+      - OTEL_INSTRUMENTATION_LOGBACK-MDC_ADD-BAGGAGE
+      - OTEL_JAVAAGENT_LOGGING
+      - OTEL_JAVAAGENT_ENABLED
+      - OTEL_JAVAAGENT_DEBUG
     volumes:
       - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
       - ./deployment/app-config:/app-config
@@ -119,6 +177,20 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_BUCKET_NAME
+      - LOGGING_CONFIG
+      - JAVA_TOOL_OPTIONS
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_EXPORTER_OTLP_PROTOCOL
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES
+      - OTEL_SERVICE_NAME=subscription-service
+      - OTEL_LOGS_EXPORTER
+      - OTEL_TRACES_EXPORTER
+      - OTEL_METRICS_EXPORTER
+      - OTEL_INSTRUMENTATION_LOGBACK-MDC_ADD-BAGGAGE
+      - OTEL_JAVAAGENT_LOGGING
+      - OTEL_JAVAAGENT_ENABLED
+      - OTEL_JAVAAGENT_DEBUG
     volumes:
       - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
       - ./deployment/app-config:/app-config
@@ -131,6 +203,20 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_BUCKET_NAME
+      - LOGGING_CONFIG
+      - JAVA_TOOL_OPTIONS
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_EXPORTER_OTLP_PROTOCOL
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES
+      - OTEL_SERVICE_NAME=scholarship-service
+      - OTEL_LOGS_EXPORTER
+      - OTEL_TRACES_EXPORTER
+      - OTEL_METRICS_EXPORTER
+      - OTEL_INSTRUMENTATION_LOGBACK-MDC_ADD-BAGGAGE
+      - OTEL_JAVAAGENT_LOGGING
+      - OTEL_JAVAAGENT_ENABLED
+      - OTEL_JAVAAGENT_DEBUG
     volumes:
       - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
       - ./deployment/app-config:/app-config
@@ -143,6 +229,20 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_BUCKET_NAME
+      - LOGGING_CONFIG
+      - JAVA_TOOL_OPTIONS
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_EXPORTER_OTLP_PROTOCOL
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES
+      - OTEL_SERVICE_NAME=search-service
+      - OTEL_LOGS_EXPORTER
+      - OTEL_TRACES_EXPORTER
+      - OTEL_METRICS_EXPORTER
+      - OTEL_INSTRUMENTATION_LOGBACK-MDC_ADD-BAGGAGE
+      - OTEL_JAVAAGENT_LOGGING
+      - OTEL_JAVAAGENT_ENABLED
+      - OTEL_JAVAAGENT_DEBUG
     volumes:
       - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
       - ./deployment/app-config:/app-config
@@ -157,6 +257,20 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_BUCKET_NAME
+      - LOGGING_CONFIG
+      - JAVA_TOOL_OPTIONS
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_EXPORTER_OTLP_PROTOCOL
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES
+      - OTEL_SERVICE_NAME=report-service
+      - OTEL_LOGS_EXPORTER
+      - OTEL_TRACES_EXPORTER
+      - OTEL_METRICS_EXPORTER
+      - OTEL_INSTRUMENTATION_LOGBACK-MDC_ADD-BAGGAGE
+      - OTEL_JAVAAGENT_LOGGING
+      - OTEL_JAVAAGENT_ENABLED
+      - OTEL_JAVAAGENT_DEBUG
     volumes:
       - ./docker/libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
       - ./deployment/app-config:/app-config
@@ -245,6 +359,100 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+    networks:
+      - m-network
+
+  collector:
+    image: otel/opentelemetry-collector-contrib:0.105.0
+    container_name: collector
+    hostname: ${OTEL_COLLECTOR_HOST}
+    depends_on:
+      tempo:
+        condition: service_healthy
+      prometheus:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 125M
+    restart: unless-stopped
+    command: ["--config=/etc/otelcol-config.yml","--feature-gates=pkg.translator.prometheus.NormalizeName"]
+    volumes:
+      - ./docker/otel-collector/otelcol-config.yml:/etc/otelcol-config.yml
+    ports:
+      - "5555:5555"     # OTLP over gRPC receiver
+      - "6666:6666"     # OTLP over HTTP receiver
+    networks:
+      - m-network
+
+  prometheus:
+    image: prom/prometheus:v2.42.0
+    hostname: ${PROMETHEUS_SERVICE_HOST}
+    container_name: prometheus
+    command:
+      - --web.console.templates=/etc/prometheus/consoles
+      - --web.console.libraries=/etc/prometheus/console_libraries
+      - --web.enable-remote-write-receiver
+      - --storage.tsdb.retention.time=1h
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+      - --web.route-prefix=/
+      - --enable-feature=exemplar-storage
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "${PROMETHEUS_SERVICE_PORT}:${PROMETHEUS_SERVICE_PORT}"
+    healthcheck:
+      interval: 5s
+      retries: 10
+      test: wget --no-verbose --tries=1 --spider http://localhost:9090/status || exit 1
+    networks:
+      - m-network
+
+  grafana:
+    image: grafana/grafana:10.0.0
+    container_name: grafana
+    extra_hosts: ['host.docker.internal:host-gateway']
+    volumes:
+      - ./docker/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./docker/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_SERVER_ROOT_URL=https://api.edumatch.space/grafana
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+    healthcheck:
+      interval: 5s
+      retries: 10
+      test: wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+    networks:
+      - m-network
+
+  loki:
+    image: grafana/loki:3.1.0
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - m-network
+
+  tempo:
+    image: grafana/tempo:1.5.0
+    container_name: tempo
+    command: ["-config.file=/etc/tempo.yaml", "-search.enabled=true"]
+    volumes:
+      - ./docker/tempo/tempo-local.yaml:/etc/tempo.yaml:ro
+      - ./tempo-data:/tmp/tempo
+    ports:
+      - "3200:3200"
+      - "4317:4317" # otlp grpc ingest
+    healthcheck:
+      interval: 5s
+      retries: 10
+      test: wget --no-verbose --tries=1 --spider http://localhost:3200/status || exit 1
     networks:
       - m-network
 
