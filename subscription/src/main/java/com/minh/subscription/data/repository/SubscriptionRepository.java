@@ -30,14 +30,26 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
             """)
     List<SubscriptionEntity> findAllByUserId(@Param("userId") String userId);
 
-    @Query(value = """
-            SELECT s FROM SubscriptionEntity s
-            JOIN FETCH s.plan p
-            WHERE s.userId = :userId
-              AND s.status = 'true'
-              AND CURRENT_TIMESTAMP BETWEEN s.startDate AND s.endDate
-            """)
-    List<SubscriptionEntity> findCurrentSubscription(@Param("userId") String userId);
+//    @Query(value = """
+//            SELECT s FROM SubscriptionEntity s
+//            JOIN FETCH s.plan p
+//            WHERE s.userId = :userId
+//              AND s.status = 'true'
+//              AND CURRENT_TIMESTAMP BETWEEN s.startDate AND s.endDate
+//            """)
+//    List<SubscriptionEntity> findCurrentSubscription(@Param("userId") String userId);
+
+    @Query("""
+    SELECT s
+    FROM SubscriptionEntity s
+    WHERE s.userId = :userId
+      AND s.endDate >= CURRENT_TIMESTAMP
+    ORDER BY s.endDate DESC
+    """)
+    List<SubscriptionEntity> findCurrentSubscriptionOrderByEndDateDesc(
+            @Param("userId") String userId
+    );
+
 
     Optional<SubscriptionEntity> findFirstByUserIdAndActiveTrueOrderByEndDateDesc(String userId);
 
