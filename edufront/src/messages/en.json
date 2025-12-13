@@ -87,7 +87,7 @@
   "providerApplications": {
     "title": "Applications",
     "subtitle": "Manage and review scholarship applications",
-    "score": "Matching Score",
+    "appliedAt": "Applied At",
     "exportData": "Export Data",
     "selectScholarship": "Select a Scholarship",
     "selectScholarshipDescription": "Choose a scholarship from the left to view its applications",
@@ -321,12 +321,11 @@
   },
   "action": {
     "edit": "Edit",
-    "delete": "Delete",
-    "generateSuggestions": "Generate Suggestions"
+    "delete": "Delete"
   },
   "aiApplicantSuggestions": {
     "title": "Recommended Applicants",
-    "description": "Matching applicants for scholarship {scholarshipId}",
+    "description": "Matching applicants for scholarship {scholarshipTitle}",
     "back": "Back",
     "clearSelection": "Clear Selection",
     "save": "Send Referral for {count} Applicant{count, plural, one {s} other {s}}",
@@ -505,6 +504,7 @@
     "upgradeToPremium": "Upgrade to AI Scholarship",
     "analyzeScholarship": "Analyze Scholarship",
     "noDeadline": "No deadline",
+    "generateSuggestions": "Finding the best applicants",
     "metadata": {
       "deadline": "Deadline",
       "remainingTimeDays": "{time} days remaining",
@@ -1357,9 +1357,9 @@
     "subtitle": "Welcome back! Here's what's happening today.",
     "conversionFunnel": {
       "scholarships": "Scholarships",
-      "totalViews": "Total Views",
+      "totalViews": "Total Reached",
       "appliedApplications": "Applied Applications",
-      "viewedButNoApply": "Viewed but No Apply"
+      "viewedButNoApply": "Reached but No Apply"
     },
     "decisionStatus": {
       "applicationDecisions": "Application Decisions",
@@ -1368,7 +1368,7 @@
       "pending": "Pending"
     },
     "top5Scholarship": {
-      "top5ByViews": "Top 5 by Views",
+      "top5ByViews": "Top 5 by Reached",
       "top5ByApplications": "Top 5 by Applications"
     },
     "recentApplications": {

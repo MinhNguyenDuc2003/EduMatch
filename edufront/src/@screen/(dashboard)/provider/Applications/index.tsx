@@ -44,7 +44,7 @@ const Applications = () => {
   // Fetch applications for selected scholarship
   const { data: applicationsScholarships, isLoading: isLoadingApplications } =
     useGetApplicationsByScholarshipIdQuery(
-      { scholarshipId: selectedScholarship?.id ?? 0, topK: 10 },
+      { scholarshipId: selectedScholarship?.id ?? 0 },
       {
         skip: !selectedScholarship?.id,
       }

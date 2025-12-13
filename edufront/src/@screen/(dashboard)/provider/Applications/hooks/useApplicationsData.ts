@@ -15,7 +15,7 @@ export const useApplicationsData = (
     return applicationsScholarships;
   }, [applicationsScholarships]);
 
-  // Filter applications by search query and status
+  // Filter applications by search query and status sort by appliedAt
   const filteredApplications = useMemo(() => {
     return filterApplications(applications, searchQuery, statusFilter);
   }, [applications, searchQuery, statusFilter]);

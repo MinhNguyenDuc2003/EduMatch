@@ -70,7 +70,7 @@ function DecisionStatusCard({
           <div>
             <div className="flex items-center justify-between mb-2">
               <p className="text-sm font-medium text-foreground">
-                {t('pending')} ({pendingRate}%)
+                {t('pending')} ({pendingRate.toFixed(2)}%)
               </p>
               <p className="text-lg font-semibold text-amber-600">
                 {pendingCount.toLocaleString()}

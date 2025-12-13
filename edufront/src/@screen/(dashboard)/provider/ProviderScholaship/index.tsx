@@ -10,14 +10,10 @@ import { useDeleteScholarshipMutation, useGetScholarshipsQuery } from '@/state/a
 import { ScholarshipCardSkeleton } from './components/ScholarshipCard';
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
-import AIApplicantSuggestionsDialog from '@/pattern/share/AIApplicantSuggestionsDialog';
 
 const ProviderScholaship = () => {
   const router = useRouter();
   const t = useTranslations('providerScholaship');
-
-  const [selectedScholarshipId, setSelectedScholarshipId] = useState<number | null>(null);
-  const [showAISuggestions, setShowAISuggestions] = useState(false);
 
   const { data: scholarships, isLoading } = useGetScholarshipsQuery();
   const [deleteScholarship, { isLoading: isDeleting }] = useDeleteScholarshipMutation();
@@ -65,24 +61,11 @@ const ProviderScholaship = () => {
               key={scholarship.id}
               scholarship={scholarship}
               onDelete={handleDeleteScholarship}
-              setSelectedScholarshipId={setSelectedScholarshipId}
-              setShowAISuggestions={setShowAISuggestions}
             />
           ))}
       </div>
 
       {!isLoading && (!scholarships || scholarships.length === 0) && <EmptyState />}
-
-      {selectedScholarshipId && (
-        <AIApplicantSuggestionsDialog
-          isOpen={showAISuggestions}
-          onClose={() => {
-            setShowAISuggestions(false);
-            setSelectedScholarshipId(null);
-          }}
-          scholarshipId={selectedScholarshipId}
-        />
-      )}
     </div>
   );
 };

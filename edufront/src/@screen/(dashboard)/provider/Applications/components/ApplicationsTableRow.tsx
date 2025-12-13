@@ -4,6 +4,7 @@ import { Button } from '@/pattern/cus/button';
 import { cn } from '@/lib/utils';
 import { getStatusColor, formatStatus, formatAppliedDate } from '../utils/applicationUtils';
 import { useTranslations } from 'next-intl';
+import { formatDate } from '@/utils/formatDate';
 
 interface ApplicationsTableRowProps {
   application: ApplicationScholarship;
@@ -41,7 +42,7 @@ const ApplicationsTableRow = React.memo(({ application, onView }: ApplicationsTa
       </td>
       <td className="px-6 py-4">
         <p className="text-sm font-bold text-primary-brand">
-          {application.score ? (application.score * 100).toFixed(2) + '%' : 'N/A'}
+          {formatDate(application.createdDate)}
         </p>
       </td>
       <td className="px-6 py-4">

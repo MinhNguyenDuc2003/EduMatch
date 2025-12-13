@@ -87,7 +87,7 @@
   "providerApplications": {
     "title": "Hồ sơ",
     "subtitle": "Quản lý và xem xét các hồ sơ học bổng",
-    "score": "Điểm phù hợp",
+    "appliedAt": "Ngày nộp",
     "exportData": "Xuất dữ liệu",
     "selectScholarship": "Chọn một học bổng",
     "selectScholarshipDescription": "Chọn một học bổng từ bên trái để xem các hồ sơ của nó",
@@ -321,12 +321,11 @@
   },
   "action": {
     "edit": "Sửa",
-    "delete": "Xóa",
-    "generateSuggestions": "Tạo gợi ý"
+    "delete": "Xóa"
   },
   "aiApplicantSuggestions": {
     "title": "Ứng viên được đề xuất",
-    "description": "Ứng viên phù hợp cho học bổng {scholarshipId}",
+    "description": "Ứng viên phù hợp cho học bổng {scholarshipTitle}",
     "back": "Quay lại",
     "clearSelection": "Xóa lựa chọn",
     "save": "Gửi đề xuất cho {count} Ứng viên",
@@ -513,6 +512,7 @@
     "upgradeToPremium": "Nâng cấp AI Scholarship",
     "analyzeScholarship": "Phân tích học bổng",
     "noDeadline": "Không có hạn chót",
+    "generateSuggestions": "Tìm kiếm người ứng tuyển",
     "metadata": {
       "deadline": "Hạn nộp",
       "remainingTimeDays": "còn {time} ngày",
@@ -1364,9 +1364,9 @@
     "subtitle": "Chào mừng trở lại! Đây là những gì đang xảy ra hôm nay.",
     "conversionFunnel": {
       "scholarships": "Học bổng",
-      "totalViews": "Tổng lượt xem",
+      "totalViews": "Tổng số người dùng tiếp cận",
       "appliedApplications": "Hồ sơ ứng tuyển",
-      "viewedButNoApply": "Xem nhưng không ứng tuyển"
+      "viewedButNoApply": "Tiếp cận nhưng không ứng tuyển"
     },
     "decisionStatus": {
       "applicationDecisions": "Quyết định ứng tuyển",
@@ -1375,8 +1375,8 @@
       "pending": "Chờ xét duyệt"
     },
     "top5Scholarship": {
-      "top5ByViews": "Top 5 theo lượt xem",
-      "top5ByApplications": "Top 5 theo hồ sơ ứng tuyển"
+      "top5ByViews": "Top 5 theo số người dùng tiếp cận",
+      "top5ByApplications": "Top 5 theo số hồ sơ ứng tuyển"
     },
     "recentApplications": {
       "title": "Hồ sơ ứng tuyển gần đây",
