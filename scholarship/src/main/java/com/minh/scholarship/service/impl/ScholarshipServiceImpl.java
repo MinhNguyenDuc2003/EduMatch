@@ -6,8 +6,6 @@ import com.minh.enumeration.notification.NotificationReferenceEnum;
 import com.minh.enumeration.notification.NotificationTemplateEnum;
 import com.minh.enumeration.notification.NotificationTopicEnum;
 import com.minh.exception.BusinessException;
-import com.minh.model.dto.ai.AiRequestDto;
-import com.minh.model.dto.ai.ScholarshipRecommendationResponseDto;
 import com.minh.model.dto.media.MailDto;
 import com.minh.model.dto.media.MailTemplateDto;
 import com.minh.model.dto.media.MediaDto;
@@ -23,6 +21,8 @@ import com.minh.scholarship.data.entity.junction.ScholarshipMediaEntity;
 import com.minh.scholarship.data.mapper.*;
 import com.minh.scholarship.data.repository.*;
 import com.minh.scholarship.data.vo.*;
+import com.minh.scholarship.data.vo.ai.AiRequestDto;
+import com.minh.scholarship.data.vo.ai.ScholarshipRecommendationResponseDto;
 import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
 import com.minh.scholarship.data.vo.projection.ScholarshipViewProjection;
 import com.minh.scholarship.feign.*;
@@ -420,7 +420,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     public Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto) {
         String userId = UaaContextHolder.getUserId();
-        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(userId, 5);
+        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(userId);
         CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(userId));
 
         ScholarshipDto scholarshipDto = this.getById(dto.getScholarshipId());
@@ -447,12 +447,12 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     }
 
     @Override
-    public List<ScholarshipVo> getRecommendationScholarship(String userId, int topK) {
+    public List<ScholarshipVo> getRecommendationScholarship(String userId) {
         ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(userId));
         if (ObjectUtils.isEmpty(applicantProfileVo)) {
             return new ArrayList<>();
         }
-        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationScholarship(applicantProfileVo.getId(), topK);
+        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationScholarship(this.getScholarshipRecommendation(applicantProfileVo.getId()));
         List<ScholarshipVo> result = new ArrayList<>();
         if (ObjectUtils.isEmpty(recommendationScholarship.getResults())) {
             return new ArrayList<>();
@@ -460,14 +460,16 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         recommendationScholarship.getResults().forEach(item -> {
             ScholarshipVo vo = this.getById(item.getScholarship());
             vo.setScore(item.getSimilarityScore());
+            vo.setLlmScore(item.getLlm());
+            vo.setCosineScore(item.getCosine());
             result.add(vo);
         });
         return result;
     }
 
     @Override
-    public List<ApplicantProfileVo> getRecommendationApplicantForScholarship(Long scholarshipId, int topK) {
-        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationApplicantForScholarship(scholarshipId, topK);
+    public List<ApplicantProfileVo> getRecommendationApplicantForScholarship(Long scholarshipId) {
+        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRecommendationApplicantForScholarship(this.getProfileRecommendation(scholarshipId));
         List<ApplicantProfileVo> result = new ArrayList<>();
         if (ObjectUtils.isEmpty(recommendationScholarship.getResults())) {
             return null;
@@ -475,6 +477,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         recommendationScholarship.getResults().forEach(item -> {
             ApplicantProfileVo vo = this.parseResponse(applicantProfileFeign.getOne(item.getApplicant()));
             vo.setScore(item.getSimilarityScore());
+            vo.setLlmScore(item.getLlm());
+            vo.setCosineScore(item.getCosine());
             result.add(vo);
         });
         return result;
@@ -487,8 +491,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         if (ObjectUtils.isEmpty(applicantProfileVo)) {
             return null;
         }
-        requestDto.setProfileId(applicantProfileVo.getId());
-        requestDto.setScholarshipId(scholarshipId);
+        requestDto.setProfile(applicantProfileVo);
+        requestDto.setScholarship(this.getById(scholarshipId));
         return aiMatchFeign.getAnalyzeMatch(requestDto);
     }
 
@@ -602,8 +606,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     public String getCompareResponse(List<Long> scholarshipIds) {
         ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(UaaContextHolder.getUserId()));
         AiRequestDto requestDto = new AiRequestDto();
-        requestDto.setApplicantId(applicantProfileVo.getId());
-        requestDto.setScholarshipIds(scholarshipIds);
+        requestDto.setProfile(applicantProfileVo);
+        requestDto.setScholarships(scholarshipMapper.toDto(scholarshipRepository.getByIdIn(scholarshipIds)));
         return aiMatchFeign.compareScholarships(requestDto);
     }
 
@@ -648,6 +652,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 ))
                 .toList();
     }
+
     @Override
     public ProfileRecommendationVo getProfileRecommendation(Long scholarshipId) {
         Optional<ScholarshipEntity> scholarship = scholarshipRepository.findById(scholarshipId);
@@ -682,6 +687,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 applicantProfileVo.getToeflScore(), applicantProfileVo.getIeltsScore()
         );
         scholarshipRecommendationVo.setScholarships(scholarshipMapper.toDto(scholarshipEntities));
+        scholarshipRecommendationVo.setProfile(applicantProfileVo);
         return scholarshipRecommendationVo;
     }
 

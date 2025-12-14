@@ -6,6 +6,8 @@ import com.minh.model.dto.media.MediaDto;
 import com.minh.model.dto.scholarship.ApplicationAttributeDto;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.model.dto.scholarship.ScholarshipPreferenceDto;
+import com.minh.scholarship.data.vo.ai.CosineResultDto;
+import com.minh.scholarship.data.vo.ai.LlmResultDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +30,8 @@ public class ScholarshipVo extends ScholarshipDto {
     private int isFollow;
     private int views;
     private Double score;
+    private LlmResultDto llmScore;
+    private CosineResultDto cosineScore;
     private List<CaseStudyVo> caseStudyVos;
 
 }

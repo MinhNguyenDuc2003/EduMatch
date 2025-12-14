@@ -1,4 +1,4 @@
-package com.minh.model.dto.ai;
+package com.minh.scholarship.data.vo.ai;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,8 +17,9 @@ import java.util.List;
 @ToString(callSuper = true)
 public class ScholarshipRecommendationResponseDto implements Serializable {
 
-    @JsonProperty("matches")
+    @JsonProperty("results")
     private List<RecommendationDto> results;
+
     @JsonProperty("top_k")
     private int count;
 

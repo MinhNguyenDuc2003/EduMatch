@@ -1,5 +1,6 @@
 package com.minh.scholarship.data.repository;
 
+import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
 import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
 import com.minh.scholarship.data.vo.projection.ScholarshipYearMonthCountProjection;
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +52,7 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     @Query(value = "SELECT s.*, case when f.user_id is not null then 1 end as isFollow " +
             "            FROM scholarship.scholarship s " +
             "            LEFT join scholarship.scholarship_follower f on s.id = f.scholarship_id and f.user_id = :userId " +
-            "            WHERE s.active = true " +
+            "            WHERE s.active = true AND s.status = 'Public' " +
             "            AND UPPER(COALESCE(s.university, '')) LIKE UPPER(CONCAT('%', :university, '%')) " +
             "            AND UPPER(COALESCE(s.country, '')) LIKE UPPER(CONCAT('%', :country, '%')) " +
             "            AND UPPER(COALESCE(s.scholarship_type, '')) LIKE UPPER(CONCAT('%', :scholarshipType, '%')) " +
@@ -66,7 +68,7 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     @Query(value = "SELECT s.*, case when f.user_id is not null then 1 end as isFollow " +
             "            FROM scholarship.scholarship s " +
             "            LEFT join scholarship.scholarship_follower f on s.id = f.scholarship_id and f.user_id = :userId " +
-            "            WHERE s.active = true and s.id IN :ids " +
+            "            WHERE s.active = true AND s.status = 'Public' and s.id IN :ids " +
             "            ORDER BY s.created_datetime DESC ", nativeQuery = true)
     List<ScholarshipProjection> getAllVoByIds(List<Long> ids, String userId);
 
@@ -80,7 +82,7 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
             "FROM scholarship.scholarship s " +
             "LEFT JOIN scholarship.scholarship_follower f " +
             "ON s.id = f.scholarship_id AND f.user_id = :userId " +
-            "WHERE s.active = true AND UPPER(s.slug) LIKE UPPER(CONCAT('%', :slug, '%')) " +
+            "WHERE s.active = true AND s.status = 'Public' AND UPPER(s.slug) LIKE UPPER(CONCAT('%', :slug, '%')) " +
             "LIMIT 1", nativeQuery = true)
     ScholarshipProjection getVoWithFollowBySlug(@Param("slug") String slug, @Param("userId") String userId);
 
@@ -129,4 +131,5 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     """)
     List<ScholarshipYearMonthCountProjection> countScholarshipByYearAndMonth();
 
+    List<ScholarshipEntity> getByIdIn(Collection<Long> ids);
 }

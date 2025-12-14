@@ -1,0 +1,23 @@
+{
+    "name": "elasticsearch-scholarship-sink",
+    "config": {
+        "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+        "tasks.max": "1",
+        "topics": "scholarship.scholarship.scholarship",
+        "connection.url": "http://elasticsearch:9200",
+        "type.name": "_doc",
+        "key.ignore": "false",
+        "schema.ignore": "true",
+        "behavior.on.null.values": "delete",
+        "behavior.on.malformed.documents": "warn",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": "false",
+        "value.converter.schemas.enable": "false",
+        "transforms": "unwrap,key",
+        "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+        "transforms.unwrap.drop.tombstones": "false",
+        "transforms.key.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+        "transforms.key.field": "id"
+    }
+}

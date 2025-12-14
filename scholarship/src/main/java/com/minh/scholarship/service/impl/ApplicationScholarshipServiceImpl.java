@@ -6,7 +6,6 @@ import com.minh.enumeration.notification.NotificationReferenceEnum;
 import com.minh.enumeration.notification.NotificationTemplateEnum;
 import com.minh.enumeration.notification.NotificationTopicEnum;
 import com.minh.exception.BusinessException;
-import com.minh.model.dto.ai.ScholarshipRecommendationResponseDto;
 import com.minh.model.dto.media.MailDto;
 import com.minh.model.dto.media.MailTemplateDto;
 import com.minh.model.dto.notification.NotificationTemplateDto;
@@ -18,6 +17,7 @@ import com.minh.scholarship.data.repository.ApplicationScholarshipRepository;
 import com.minh.scholarship.data.repository.ScholarshipRepository;
 import com.minh.scholarship.data.repository.ScholarshipViewRepository;
 import com.minh.scholarship.data.vo.*;
+import com.minh.scholarship.data.vo.ai.ScholarshipRecommendationResponseDto;
 import com.minh.scholarship.feign.AiMatchFeign;
 import com.minh.scholarship.feign.MediaFeign;
 import com.minh.scholarship.feign.NotificationTemplateFeign;
@@ -285,8 +285,8 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     }
 
     @Override
-    public List<ApplicationScholarshipVo> getRankApplication(Long scholarshipId, Integer topK) {
-        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRankApplicationForScholarship(scholarshipId, topK);
+    public List<ApplicationScholarshipVo> getRankApplication(Long scholarshipId) {
+        ScholarshipRecommendationResponseDto recommendationScholarship = aiMatchFeign.getRankApplicationForScholarship(scholarshipService.getApplicationRecommendation(scholarshipId));
         List<ApplicationScholarshipVo> result = new ArrayList<>();
         if (ObjectUtils.isEmpty(recommendationScholarship.getResults())) {
             return null;
@@ -294,6 +294,8 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
         recommendationScholarship.getResults().forEach(item -> {
             ApplicationScholarshipVo vo = this.getByScholarshipIdAndApplicationId(scholarshipId, item.getApplication());
             vo.setScore(item.getSimilarityScore());
+            vo.setLlmScore(item.getLlm());
+            vo.setCosineScore(item.getCosine());
             result.add(vo);
         });
         return result;

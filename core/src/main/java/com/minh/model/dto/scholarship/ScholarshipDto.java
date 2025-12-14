@@ -101,6 +101,8 @@ public class ScholarshipDto extends BaseDto {
 
     private Integer requiredClassRankPercentile;
 
+    private String status;
+
     @JsonProperty("createdDate")
     @JsonSerialize(using = DateToTimestamp.class)
     @JsonDeserialize(using = TimestampToDate.class)

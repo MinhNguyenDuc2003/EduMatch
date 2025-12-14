@@ -1,10 +1,15 @@
 package com.minh.scholarship.feign;
 
-import com.minh.model.dto.ai.AiRequestDto;
-import com.minh.model.dto.ai.ScholarshipRecommendationResponseDto;
+import com.minh.scholarship.data.vo.ai.AiRequestDto;
+import com.minh.scholarship.data.vo.ai.ScholarshipRecommendationResponseDto;
+import com.minh.scholarship.data.vo.ApplicationRecommendationVo;
+import com.minh.scholarship.data.vo.ProfileRecommendationVo;
+import com.minh.scholarship.data.vo.ScholarshipRecommendationVo;
 import com.minh.service.feign.FeignInterceptorConfig;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
         name = "ai-service",
@@ -15,19 +20,19 @@ import org.springframework.web.bind.annotation.*;
 )
 public interface AiMatchFeign {
 
-    @GetMapping("/match/profile/{profileId}")
-    ScholarshipRecommendationResponseDto getRecommendationScholarship(@PathVariable Long profileId, @RequestParam("top_k") int topK);
+    @GetMapping("/score/scholarships")
+    ScholarshipRecommendationResponseDto getRecommendationScholarship(@RequestBody ScholarshipRecommendationVo vo);
 
-    @GetMapping("/match/scholarship/{scholarshipId}/profiles")
-    ScholarshipRecommendationResponseDto getRecommendationApplicantForScholarship(@PathVariable Long scholarshipId, @RequestParam("top_k") int topK);
+    @GetMapping("/score/profiles")
+    ScholarshipRecommendationResponseDto getRecommendationApplicantForScholarship(@RequestBody ProfileRecommendationVo vo);
 
-    @GetMapping("/match/scholarship/{scholarshipId}/applications")
-    ScholarshipRecommendationResponseDto getRankApplicationForScholarship(@PathVariable Long scholarshipId, @RequestParam("top_k") int topK);
+    @GetMapping("/score/applications")
+    ScholarshipRecommendationResponseDto getRankApplicationForScholarship(@RequestBody ApplicationRecommendationVo vo);
 
-    @PostMapping("/analyze/llm")
+    @PostMapping("/analyze/scholarship")
     String getAnalyzeMatch(@RequestBody AiRequestDto request);
 
-    @PostMapping("/compare/llm")
+    @PostMapping("/analyze/compare")
     String compareScholarships(@RequestBody AiRequestDto request);
 
 }

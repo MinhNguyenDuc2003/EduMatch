@@ -36,8 +36,8 @@ public class ApplicationScholarshipController {
     }
 
     @GetMapping("/rank/application")
-    public ApiResponse<List<ApplicationScholarshipVo>> getRankApplication(@RequestParam Long scholarshipId, @RequestParam Integer topK) {
-        return ApiResponse.ok(service.getRankApplication(scholarshipId, topK));
+    public ApiResponse<List<ApplicationScholarshipVo>> getRankApplication(@RequestParam Long scholarshipId) {
+        return ApiResponse.ok(service.getRankApplication(scholarshipId));
     }
 
     @GetMapping("/by-scholarship")

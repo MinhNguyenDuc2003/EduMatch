@@ -58,9 +58,9 @@ public interface ScholarshipService {
 
     Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto);
 
-    List<ScholarshipVo> getRecommendationScholarship(String userId, int topK);
+    List<ScholarshipVo> getRecommendationScholarship(String userId);
 
-    List<ApplicantProfileVo> getRecommendationApplicantForScholarship(Long scholarshipId, int topK);
+    List<ApplicantProfileVo> getRecommendationApplicantForScholarship(Long scholarshipId);
 
     String getAnalyzeResponse(Long scholarshipId);
 

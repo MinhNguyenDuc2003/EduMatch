@@ -1,8 +1,11 @@
-package com.minh.model.dto.ai;
+package com.minh.scholarship.data.vo.ai;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.minh.model.dto.scholarship.ApplicationDto;
+import com.minh.model.dto.scholarship.ScholarshipDto;
+import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import lombok.*;
 
 import java.io.Serializable;
@@ -17,19 +20,15 @@ import java.util.List;
 @ToString(callSuper = true)
 public class AiRequestDto implements Serializable {
 
-    @JsonProperty("profile_id")
-    Long applicantId;
+    private ApplicationDto application;
 
-    @JsonProperty("application_id")
-    Long profileId;
+    private ApplicantProfileVo profile;
 
-    @JsonProperty("scholarship_id")
-    Long scholarshipId;
+    private ScholarshipDto scholarship;
 
     @JsonProperty("top_k")
     Integer topK;
 
-    @JsonProperty("scholarship_id_list")
-    List<Long> scholarshipIds;
+    private List<ScholarshipDto> scholarships;
 
 }

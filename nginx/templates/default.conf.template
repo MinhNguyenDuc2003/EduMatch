@@ -124,7 +124,7 @@ server {
     }
 
     location /prometheus/ {
-        proxy_pass http://prometheus:9090/;
+        proxy_pass http://prometheus:9090;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto https;
@@ -132,7 +132,7 @@ server {
     }
 
     location /loki/ {
-        proxy_pass http://loki:3100/;
+        proxy_pass http://loki:3100;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto https;
@@ -140,7 +140,7 @@ server {
     }
 
     location /tempo/ {
-        proxy_pass http://tempo:3200/;
+        proxy_pass http://tempo:3200;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto https;

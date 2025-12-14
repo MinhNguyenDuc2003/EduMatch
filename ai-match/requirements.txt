@@ -1,10 +1,9 @@
-numpy
-psycopg2-binary
-scikit-learn
-sentence-transformers
 transformers
-google-generativeai
+sentence-transformers
+scikit-learn
+torch
+accelerate
 fastapi
 uvicorn
-pydantic
-python-dotenv
+python-multipart
+google-generativeai

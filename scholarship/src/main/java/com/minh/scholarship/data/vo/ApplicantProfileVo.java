@@ -3,6 +3,8 @@ package com.minh.scholarship.data.vo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.minh.model.dto.profile.*;
+import com.minh.scholarship.data.vo.ai.CosineResultDto;
+import com.minh.scholarship.data.vo.ai.LlmResultDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +27,7 @@ public class ApplicantProfileVo extends ApplicantProfileDto {
     private List<ApplicantSkillDto> skills = new ArrayList<>();
     private List<ApplicantEducationIntentionDto> intentions = new ArrayList<>();
     private Double score;
+    private LlmResultDto llmScore;
+    private CosineResultDto cosineScore;
 
 }
