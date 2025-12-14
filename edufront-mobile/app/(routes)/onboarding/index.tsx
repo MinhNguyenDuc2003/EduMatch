@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { onboarding } from "@/constants";
-import { router } from "expo-router";
-import { useRef, useState } from "react";
+import { AuthContext } from "@/providers/authProviders";
+import { useContext, useRef, useState } from "react";
 import { Image, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Swiper from "react-native-swiper";
@@ -12,11 +12,13 @@ const index = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const isLastSlide = activeIndex === onboarding.length - 1;
 
+  const { signIn } = useContext(AuthContext);
+
   return (
     <SafeAreaView className="flex h-full items-center justify-between bg-white">
       <View className="w-full flex justify-end items-end p-5">
         <Button
-          onPress={() => router.push("/(tabs)/home")}
+          onPress={() => signIn()}
           className="flex justify-center items-center p-3 bg-primary-brand hover:bg-primary-brand/90"
         >
           <Text className="text-white text-md font-PoppinsBold">Skip</Text>
@@ -61,8 +63,9 @@ const index = () => {
       <Button
         onPress={() => {
           isLastSlide
-            ? router.push("/(tabs)/home")
-            : swiperRef.current?.scrollBy(1);
+            ? signIn()
+            : // router.push("/(tabs)/home")
+              swiperRef.current?.scrollBy(1);
         }}
         className="w-11/12 mt-5 bg-primary-brand hover:bg-primary-brand/90"
       >

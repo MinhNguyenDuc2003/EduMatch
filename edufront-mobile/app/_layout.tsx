@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/providers/authProviders";
 import { I18nProvider } from "@/shared/providers/i18n-provider";
 import { PortalHost } from "@rn-primitives/portal";
 import { useFonts } from "expo-font";
@@ -29,17 +30,19 @@ export default function RootLayout() {
 
   return (
     <I18nProvider>
-      <Providers>
-        <GestureHandlerRootView>
-          <StatusBar barStyle={"dark-content"} />
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="(routes)/onboarding/index" />
-          </Stack>
-          <ToastManager position="bottom" />
-          <PortalHost />
-        </GestureHandlerRootView>
-      </Providers>
+      <AuthProvider>
+        <Providers>
+          <GestureHandlerRootView>
+            <StatusBar barStyle={"dark-content"} />
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="(routes)/onboarding/index" />
+            </Stack>
+            <ToastManager position="bottom" />
+            <PortalHost />
+          </GestureHandlerRootView>
+        </Providers>
+      </AuthProvider>
     </I18nProvider>
   );
 }

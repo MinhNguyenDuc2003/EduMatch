@@ -1,11 +1,13 @@
 import { useAuth } from "@/hooks/useAuth";
+import { AuthContext } from "@/providers/authProviders";
 import { router } from "expo-router";
-import { Bell } from "lucide-react-native";
-import React from "react";
+import { LogOut } from "lucide-react-native";
+import React, { useContext } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 
 const HomeHeader = () => {
   const { user } = useAuth();
+  const { signOut } = useContext(AuthContext);
 
   return (
     <View className="flex-row justify-between items-center mb-4 pt-2">
@@ -29,11 +31,10 @@ const HomeHeader = () => {
       </View>
 
       <Pressable
-        onPress={() => router.push("/(tabs)/notifications")}
+        onPress={() => signOut()}
         className="w-10 h-10 bg-white rounded-full items-center justify-center border border-gray-100 shadow-sm"
       >
-        <Bell size={20} color="#374151" />
-        <View className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border border-white" />
+        <LogOut size={20} color="#374151" />
       </Pressable>
     </View>
   );
