@@ -218,6 +218,15 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
                 .toList();
     }
 
+    private String normalize(String country) {
+        if (country == null) return null;
+
+        return country
+                .trim()
+                .toLowerCase()
+                .replaceAll("\\s+", "");
+    }
+
     @Override
     public List<CountryRegisterStatisticDto> getTop5CountryRegister() {
 
@@ -225,7 +234,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
                 applicantProfileRepository.countByCountry()
                         .stream()
                         .map(o -> new CountryRegisterStatisticDto(
-                                o.getCountry(),
+                                normalize(o.getCountry()),
                                 o.getTotal()
                         ))
                         .toList();
@@ -234,12 +243,13 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
                 providerProfileRepository.countByCountry()
                         .stream()
                         .map(o -> new CountryRegisterStatisticDto(
-                                o.getCountry(),
+                                normalize(o.getCountry()),
                                 o.getTotal()
                         ))
                         .toList();
 
         return Stream.concat(applicantStats.stream(), providerStats.stream())
+                .filter(o -> o.getCountry() != null)
                 .collect(Collectors.groupingBy(
                         CountryRegisterStatisticDto::getCountry,
                         Collectors.summingLong(CountryRegisterStatisticDto::getTotal)
@@ -251,5 +261,4 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
                 .map(e -> new CountryRegisterStatisticDto(e.getKey(), e.getValue()))
                 .toList();
     }
-
 }
