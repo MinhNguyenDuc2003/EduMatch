@@ -169,11 +169,12 @@ export const apiProvider = createApi({
     // Get all applications by scholarship ID
     getApplicationsByScholarshipId: build.query<
       ApplicationScholarship[],
-      { scholarshipId: number; topK: number }
+      { scholarshipId: number }
     >({
-      query: ({ scholarshipId, topK }) => ({
-        url: `${API_ENDPOINTS.APPLICATION}/rank/application?scholarshipId=${scholarshipId}&topK=${topK}`,
+      query: ({ scholarshipId }) => ({
+        url: `${API_ENDPOINTS.APPLICATION}/by-scholarship`,
         method: 'GET',
+        params: { scholarshipId },
       }),
       providesTags: (result, error, { scholarshipId }) => [
         { type: 'Applications', id: scholarshipId },

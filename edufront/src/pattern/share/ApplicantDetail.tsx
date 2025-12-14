@@ -102,6 +102,7 @@ const ApplicantDetail = ({ applicant }: { applicant: ApplicantProfile }) => {
         {(applicant.satScore ||
           applicant.actScore ||
           applicant.greScore ||
+          applicant.gmatScore ||
           applicant.toeflScore ||
           applicant.ieltsScore) && (
           <div className="bg-muted/30 p-3 sm:p-4 rounded">
@@ -129,6 +130,14 @@ const ApplicantDetail = ({ applicant }: { applicant: ApplicantProfile }) => {
                     {t('detail.greScore')}
                   </p>
                   <p className="font-medium text-sm sm:text-base">{applicant.greScore}/340</p>
+                </div>
+              )}
+              {applicant.gmatScore && (
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                    {t('detail.gmatScore')}
+                  </p>
+                  <p className="font-medium text-sm sm:text-base">{applicant.gmatScore}/800</p>
                 </div>
               )}
               {applicant.toeflScore && (
@@ -337,7 +346,7 @@ const ApplicantDetail = ({ applicant }: { applicant: ApplicantProfile }) => {
         {/* Preferred Scholarship Information */}
         {(applicant.preferredScholarshipType ||
           applicant.preferredCountry ||
-          applicant.preferredUniversity) && (
+          applicant.preferredMajor) && (
           <div className="bg-muted/30 p-3 sm:p-4 rounded">
             <h4 className="font-semibold mb-3 text-base sm:text-lg">
               {t('detail.preferredScholarship')}
@@ -361,14 +370,12 @@ const ApplicantDetail = ({ applicant }: { applicant: ApplicantProfile }) => {
                   <p className="font-medium text-sm sm:text-base">{applicant.preferredCountry}</p>
                 </div>
               )}
-              {applicant.preferredUniversity && (
+              {applicant.preferredMajor && (
                 <div className="sm:col-span-2">
                   <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
-                    {t('detail.preferredUniversity')}
+                    {t('detail.preferredMajor')}
                   </p>
-                  <p className="font-medium text-sm sm:text-base">
-                    {applicant.preferredUniversity}
-                  </p>
+                  <p className="font-medium text-sm sm:text-base">{applicant.preferredMajor}</p>
                 </div>
               )}
             </div>

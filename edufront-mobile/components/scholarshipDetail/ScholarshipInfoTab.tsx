@@ -96,6 +96,18 @@ export const ScholarshipInfoTab: React.FC<ScholarshipInfoTabProps> = ({
       : []),
   ];
 
+  const englishScores = [
+    { label: "TOEFL", value: scholarship.requiredToeflScore },
+    { label: "IELTS", value: scholarship.requiredIeltsScore },
+  ].filter((s) => s.value);
+
+  const standardizedScores = [
+    { label: "SAT", value: scholarship.requiredSatScore },
+    { label: "ACT", value: scholarship.requiredActScore },
+    { label: "GRE", value: scholarship.requiredGreScore },
+    { label: "GMAT", value: scholarship.requiredGmatScore },
+  ].filter((s) => s.value);
+
   return (
     <ScrollView className="px-4">
       <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 4 }}>
@@ -135,11 +147,7 @@ export const ScholarshipInfoTab: React.FC<ScholarshipInfoTabProps> = ({
       {scholarship.fields && section("Fields", scholarship.fields)}
 
       {/* Test Score Requirements */}
-      {(scholarship.requiredSatScore ||
-        scholarship.requiredActScore ||
-        scholarship.requiredGreScore ||
-        scholarship.requiredToeflScore ||
-        scholarship.requiredIeltsScore) && (
+      {(englishScores.length > 0 || standardizedScores.length > 0) && (
         <View
           style={{
             backgroundColor: "#f9fafb",
@@ -151,30 +159,81 @@ export const ScholarshipInfoTab: React.FC<ScholarshipInfoTabProps> = ({
           <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 12 }}>
             Test Score Requirements
           </Text>
-          {scholarship.requiredSatScore && (
-            <Text style={{ color: "#374151", marginBottom: 6 }}>
-              SAT: {scholarship.requiredSatScore}
-            </Text>
+
+          {englishScores.length > 0 && (
+            <View
+              style={{ marginBottom: standardizedScores.length > 0 ? 12 : 0 }}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "600",
+                  color: "#374151",
+                  marginBottom: 8,
+                }}
+              >
+                English Proficiency
+              </Text>
+              {englishScores.map((score, index) => (
+                <View key={score.label}>
+                  <Text
+                    style={{ color: "#374151", marginBottom: 6, marginLeft: 8 }}
+                  >
+                    • {score.label}: {score.value}
+                  </Text>
+                  {index < englishScores.length - 1 && (
+                    <Text
+                      style={{
+                        color: "#6b7280",
+                        fontSize: 12,
+                        fontWeight: "bold",
+                        marginLeft: 24,
+                        marginBottom: 6,
+                      }}
+                    >
+                      OR
+                    </Text>
+                  )}
+                </View>
+              ))}
+            </View>
           )}
-          {scholarship.requiredActScore && (
-            <Text style={{ color: "#374151", marginBottom: 6 }}>
-              ACT: {scholarship.requiredActScore}
-            </Text>
-          )}
-          {scholarship.requiredGreScore && (
-            <Text style={{ color: "#374151", marginBottom: 6 }}>
-              GRE: {scholarship.requiredGreScore}
-            </Text>
-          )}
-          {scholarship.requiredToeflScore && (
-            <Text style={{ color: "#374151", marginBottom: 6 }}>
-              TOEFL: {scholarship.requiredToeflScore}
-            </Text>
-          )}
-          {scholarship.requiredIeltsScore && (
-            <Text style={{ color: "#374151", marginBottom: 6 }}>
-              IELTS: {scholarship.requiredIeltsScore}
-            </Text>
+
+          {standardizedScores.length > 0 && (
+            <View>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "600",
+                  color: "#374151",
+                  marginBottom: 8,
+                }}
+              >
+                Standardized Tests
+              </Text>
+              {standardizedScores.map((score, index) => (
+                <View key={score.label}>
+                  <Text
+                    style={{ color: "#374151", marginBottom: 6, marginLeft: 8 }}
+                  >
+                    • {score.label}: {score.value}
+                  </Text>
+                  {index < standardizedScores.length - 1 && (
+                    <Text
+                      style={{
+                        color: "#6b7280",
+                        fontSize: 12,
+                        fontWeight: "bold",
+                        marginLeft: 24,
+                        marginBottom: 6,
+                      }}
+                    >
+                      OR
+                    </Text>
+                  )}
+                </View>
+              ))}
+            </View>
           )}
         </View>
       )}

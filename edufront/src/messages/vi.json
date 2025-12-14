@@ -88,7 +88,7 @@
   "providerApplications": {
     "title": "Hồ sơ",
     "subtitle": "Quản lý và xem xét các hồ sơ học bổng",
-    "score": "Điểm phù hợp",
+    "appliedAt": "Ngày nộp",
     "exportData": "Xuất dữ liệu",
     "selectScholarship": "Chọn một học bổng",
     "selectScholarshipDescription": "Chọn một học bổng từ bên trái để xem các hồ sơ của nó",
@@ -322,12 +322,11 @@
   },
   "action": {
     "edit": "Sửa",
-    "delete": "Xóa",
-    "generateSuggestions": "Tạo gợi ý"
+    "delete": "Xóa"
   },
   "aiApplicantSuggestions": {
     "title": "Ứng viên được đề xuất",
-    "description": "Ứng viên phù hợp cho học bổng {scholarshipId}",
+    "description": "Ứng viên phù hợp cho học bổng {scholarshipTitle}",
     "back": "Quay lại",
     "clearSelection": "Xóa lựa chọn",
     "save": "Gửi đề xuất cho {count} Ứng viên",
@@ -378,6 +377,7 @@
       "satScore": "Điểm SAT",
       "actScore": "Điểm ACT",
       "greScore": "Điểm GRE",
+      "gmatScore": "Điểm GMAT",
       "toeflScore": "Điểm TOEFL",
       "ieltsScore": "Điểm IELTS",
       "languages": "Ngôn ngữ",
@@ -388,7 +388,7 @@
       "preferredScholarship": "Học bổng ưa thích",
       "preferredType": "Loại học bổng",
       "preferredCountry": "Quốc gia",
-      "preferredUniversity": "Trường đại học"
+      "preferredMajor": "Chuyên ngành"
     }
   },
   "error": {
@@ -514,6 +514,7 @@
     "upgradeToPremium": "Nâng cấp AI Scholarship",
     "analyzeScholarship": "Phân tích học bổng",
     "noDeadline": "Không có hạn chót",
+    "generateSuggestions": "Tìm kiếm người ứng tuyển",
     "metadata": {
       "deadline": "Hạn nộp",
       "remainingTimeDays": "còn {time} ngày",
@@ -702,6 +703,7 @@
       "applicantPreferences": "Sở thích ứng viên",
       "accountSettings": "Cài đặt tài khoản",
       "educationHistory": "Lịch sử học tập",
+      "scores": "Điểm số",
       "skills": "Kỹ năng",
       "certificates": "Chứng chỉ",
       "educationalIntentions": "Dự định học tập"
@@ -732,6 +734,7 @@
       "no": "Không",
       "addInfo": "Thêm thông tin",
       "educationLevel": "Trình độ học vấn",
+      "scores": "Điểm số",
       "satScore": "Điểm SAT",
       "satScorePlaceholder": "Nhập điểm SAT (400-1600)",
       "actScore": "Điểm ACT",
@@ -742,6 +745,8 @@
       "ieltsScorePlaceholder": "Nhập điểm IELTS (0.0-9.0)",
       "greScore": "Điểm GRE",
       "greScorePlaceholder": "Nhập điểm GRE (260-340)",
+      "gmatScore": "Điểm GMAT",
+      "gmatScorePlaceholder": "Nhập điểm GMAT (200-800)",
       "languages": "Ngôn ngữ",
       "academicAwards": "Giải thưởng học thuật",
       "publicationCount": "Số lượng xuất bản phẩm",
@@ -749,7 +754,7 @@
       "extracurricularActivities": "Hoạt động ngoại khóa",
       "preferredScholarshipType": "Loại học bổng ưa thích",
       "preferredCountry": "Quốc gia ưa thích",
-      "preferredUniversity": "Trường đại học ưa thích"
+      "preferredMajor": "Chuyên ngành ưa thích"
     },
     "common": {
       "edit": "Chỉnh sửa",
@@ -935,8 +940,8 @@
       "selectPreferredScholarshipType": "Chọn loại học bổng ưa thích",
       "preferredCountry": "Quốc gia ưa thích",
       "selectPreferredCountry": "Chọn quốc gia ưa thích",
-      "preferredUniversity": "Trường đại học ưa thích",
-      "preferredUniversityPlaceholder": "ví dụ: Đại học Harvard, MIT"
+      "preferredMajor": "Chuyên ngành ưa thích",
+      "selectPreferredMajor": "Chọn chuyên ngành ưa thích"
     },
     "cards": {
       "historyDetails": "Chi tiết lịch sử",
@@ -1366,9 +1371,9 @@
     "subtitle": "Chào mừng trở lại! Đây là những gì đang xảy ra hôm nay.",
     "conversionFunnel": {
       "scholarships": "Học bổng",
-      "totalViews": "Tổng lượt xem",
+      "totalViews": "Tổng số người dùng tiếp cận",
       "appliedApplications": "Hồ sơ ứng tuyển",
-      "viewedButNoApply": "Xem nhưng không ứng tuyển"
+      "viewedButNoApply": "Tiếp cận nhưng không ứng tuyển"
     },
     "decisionStatus": {
       "applicationDecisions": "Quyết định ứng tuyển",
@@ -1377,8 +1382,8 @@
       "pending": "Chờ xét duyệt"
     },
     "top5Scholarship": {
-      "top5ByViews": "Top 5 theo lượt xem",
-      "top5ByApplications": "Top 5 theo hồ sơ ứng tuyển"
+      "top5ByViews": "Top 5 theo số người dùng tiếp cận",
+      "top5ByApplications": "Top 5 theo số hồ sơ ứng tuyển"
     },
     "recentApplications": {
       "title": "Hồ sơ ứng tuyển gần đây",

@@ -92,9 +92,11 @@ declare global {
     educationLevel: string;
     satScore: number;
     actScore: number;
+    greScore: number;
+    gmatScore: number;
     toeflScore: number;
     ieltsScore: number;
-    greScore: number;
+    type: string;
     languages: string;
     academicAwards: string;
     publicationCount: number;
@@ -102,7 +104,7 @@ declare global {
     extracurricularActivities: string;
     preferredScholarshipType: string;
     preferredCountry: string;
-    preferredUniversity: string;
+    preferredMajor: string;
     certificates: Certificate[];
     educationHistories: EducationHistory[];
     applicantPreferences: ApplicantPreference[];

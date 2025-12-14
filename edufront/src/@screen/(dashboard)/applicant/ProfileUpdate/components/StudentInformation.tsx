@@ -66,21 +66,20 @@ const StudentInformation = ({ profile }: { profile?: ApplicantProfile }) => {
         />
 
         <CustomFormField
-          name="applicantProfile.overallGpa"
-          label={tFields('overallGpa')}
-          type="number"
-          placeholder="3.8"
-          inlineLabel
-          isBorder
-        />
-
-        <CustomFormField
           name="applicantProfile.educationLevel"
           label={tFields('educationLevel')}
           type="select"
           placeholder={t('selectEducationLevel')}
           options={STUDY_LEVELS}
           initialValue={profile?.educationLevel}
+          inlineLabel
+          isBorder
+        />
+        <CustomFormField
+          name="applicantProfile.overallGpa"
+          label={tFields('overallGpa')}
+          type="number"
+          placeholder="3.8"
           inlineLabel
           isBorder
         />
@@ -104,6 +103,24 @@ const StudentInformation = ({ profile }: { profile?: ApplicantProfile }) => {
         />
 
         <CustomFormField
+          name="applicantProfile.greScore"
+          label={tFields('greScore')}
+          type="number"
+          placeholder={tFields('greScorePlaceholder')}
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
+          name="applicantProfile.gmatScore"
+          label={tFields('gmatScore')}
+          type="number"
+          placeholder={tFields('gmatScorePlaceholder')}
+          inlineLabel
+          isBorder
+        />
+
+        <CustomFormField
           name="applicantProfile.toeflScore"
           label={tFields('toeflScore')}
           type="number"
@@ -117,15 +134,6 @@ const StudentInformation = ({ profile }: { profile?: ApplicantProfile }) => {
           label={tFields('ieltsScore')}
           type="number"
           placeholder={tFields('ieltsScorePlaceholder')}
-          inlineLabel
-          isBorder
-        />
-
-        <CustomFormField
-          name="applicantProfile.greScore"
-          label={tFields('greScore')}
-          type="number"
-          placeholder={tFields('greScorePlaceholder')}
           inlineLabel
           isBorder
         />

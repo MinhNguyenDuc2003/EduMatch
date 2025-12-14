@@ -24,9 +24,9 @@ const PreferredPreferences = () => {
       />
 
       <CustomFormField
-        name="applicantProfile.preferredUniversity"
-        label="Preferred University"
-        placeholder="Select Preferred University"
+        name="applicantProfile.preferredMajor"
+        label="Preferred Major"
+        placeholder="Select Preferred Major"
         inlineLabel
         isBorder
       />

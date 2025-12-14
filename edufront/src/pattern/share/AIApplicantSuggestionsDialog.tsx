@@ -18,12 +18,14 @@ interface AISuggestionsDialogProps {
   isOpen: boolean;
   onClose: () => void;
   scholarshipId: number;
+  scholarshipTitle: string;
 }
 
 const AIApplicantSuggestionsDialog = ({
   isOpen,
   onClose,
   scholarshipId,
+  scholarshipTitle,
 }: AISuggestionsDialogProps) => {
   const t = useTranslations('aiApplicantSuggestions');
   const [selectedApplicant, setSelectedApplicant] = useState<ApplicantProfile | null>(null);
@@ -50,7 +52,7 @@ const AIApplicantSuggestionsDialog = ({
             <Sparkles className="w-5 h-5" style={{ color: '#3d6cb9' }} />
             {t('title')}
           </DialogTitle>
-          <DialogDescription>{t('description', { scholarshipId })}</DialogDescription>
+          <DialogDescription>{t('description', { scholarshipTitle })}</DialogDescription>
         </DialogHeader>
 
         {selectedApplicant ? (
