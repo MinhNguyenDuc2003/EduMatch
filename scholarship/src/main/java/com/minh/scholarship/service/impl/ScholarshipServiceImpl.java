@@ -687,13 +687,32 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public List<ScholarshipCountryCountDto> getTop5CountryStatistics() {
+
         return scholarshipRepository.countTopCountry()
                 .stream()
-                .limit(5)
                 .map(o -> new ScholarshipCountryCountDto(
-                        o.getCountry(),
+                        normalize(o.getCountry()),
                         o.getTotal()
                 ))
+                .collect(Collectors.groupingBy(
+                        ScholarshipCountryCountDto::getCountry,
+                        Collectors.summingLong(ScholarshipCountryCountDto::getTotal)
+                ))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(5)
+                .map(e -> new ScholarshipCountryCountDto(e.getKey(), e.getValue()))
                 .toList();
     }
+
+    private String normalize(String country) {
+        if (country == null) return null;
+
+        return country
+                .trim()
+                .toLowerCase()
+                .replaceAll("\\s+", "");
+    }
+
 }
