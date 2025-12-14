@@ -68,6 +68,7 @@
     "news": "News",
     "students": "Students",
     "favourite": "Favourite",
+    "paymentHistory": "Payment History",
     "settings": "Settings",
     "profile": "Profile",
     "extendSubscription": "Extend Subscription",
@@ -680,8 +681,9 @@
       "matchedResearchOpportunities": "Matched Research Opportunities",
       "matchedScholarshipsAmount": "Matched Scholarships Amount",
       "editProfile": "Edit Profile",
-      "expandPackage": "Expand AI Scholarship package",
-      "upgradePackage": "Upgrade Package"
+      "expandPackage": "Extend AI Scholarship package",
+      "upgradePackage": "Upgrade Package",
+      "paymentHistory": "Payment History"
     },
     "profileStrength": {
       "title": "Profile Strength",
@@ -1697,6 +1699,46 @@
         }
       ],
       "lastUpdated": "Last updated: December 6, 2025"
+    }
+  },
+  "paymentHistory": {
+    "breadcrumb": {
+      "applicant": "Applicant",
+      "provider": "Provider",
+      "paymentHistory": "Payment History"
+    },
+    "title": "Payment History",
+    "subtitle": "View your subscription payment history and transaction details",
+    "table": {
+      "transactionId": "Transaction ID",
+      "planName": "Plan Name",
+      "amount": "Amount",
+      "paymentMethod": "Payment Method",
+      "status": "Status",
+      "paymentDate": "Payment Date",
+      "subscriptionPeriod": "Subscription Period"
+    },
+    "empty": {
+      "title": "No payment history",
+      "description": "You haven't made any payments yet. Subscribe to a plan to get started."
+    },
+    "error": {
+      "title": "Failed to load payment history",
+      "description": "There was an error loading your payment history. Please try again later."
+    },
+    "footer": {
+      "total": "Total {count} payment(s)"
+    },
+    "detail": {
+      "title": "Transaction Details",
+      "transactionId": "Transaction ID",
+      "close": "Close",
+      "transactionInfo": "Transaction Information",
+      "subscriptionInfo": "Subscription Information",
+      "customerInfo": "Customer Information",
+      "createdDate": "Created Date",
+      "planDetails": "Plan Details",
+      "userType": "User Type"
     }
   }
 }

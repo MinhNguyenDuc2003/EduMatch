@@ -310,7 +310,7 @@ export default function ScholarshipsList() {
               <PremiumBanner />
 
               {/* Search Bar - Desktop only */}
-              <div className="mb-4 md:block hidden">
+              <div className="mb-4 lg:block hidden">
                 <SearchBar
                   placeholder={t('searchPlaceholder')}
                   value={keywordInput}
