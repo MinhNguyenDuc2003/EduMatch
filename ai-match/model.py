@@ -13,6 +13,11 @@ embedding_model = SentenceTransformer("BAAI/bge-m3")
             max_new_tokens=1024
         )"""
 
-genai.configure(api_key="AIzaSyAoCQKdgMY48hNoDgT8jiQRWY0Q0EnYhhE")  # Replace with your key
-                
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
 gemini_model = genai.GenerativeModel('gemini-2.5-flash')
