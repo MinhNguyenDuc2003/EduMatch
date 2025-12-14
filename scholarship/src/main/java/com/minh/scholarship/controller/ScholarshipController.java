@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minh.constants.EndPoint;
 import com.minh.model.ApiResponse;
-import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
-import com.minh.model.dto.scholarship.ScholarshipStatisticsDto;
-import com.minh.model.dto.scholarship.ScholarshipViewDto;
-import com.minh.model.dto.scholarship.ScholarshipYearMonthCountDto;
+import com.minh.model.dto.scholarship.*;
 import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import com.minh.scholarship.data.vo.ApplicationRecommendationVo;
 import com.minh.scholarship.data.vo.ScholarshipVo;
@@ -211,4 +208,8 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getScholarshipYearMonthStatistics());
     }
 
+    @GetMapping("/statistics/top-country")
+    public ApiResponse<List<ScholarshipCountryCountDto>> getTopCountryStatistics() {
+        return ApiResponse.ok(scholarshipService.getTop5CountryStatistics());
+    }
 }

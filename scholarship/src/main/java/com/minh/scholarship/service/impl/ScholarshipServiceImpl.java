@@ -685,4 +685,15 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         return scholarshipRecommendationVo;
     }
 
+    @Override
+    public List<ScholarshipCountryCountDto> getTop5CountryStatistics() {
+        return scholarshipRepository.countTopCountry()
+                .stream()
+                .limit(5)
+                .map(o -> new ScholarshipCountryCountDto(
+                        o.getCountry(),
+                        o.getTotal()
+                ))
+                .toList();
+    }
 }

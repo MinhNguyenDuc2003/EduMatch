@@ -1,6 +1,7 @@
 package com.minh.scholarship.data.repository;
 
 import com.minh.scholarship.data.entity.ScholarshipEntity;
+import com.minh.scholarship.data.vo.projection.ScholarshipCountryCountProjection;
 import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
 import com.minh.scholarship.data.vo.projection.ScholarshipYearMonthCountProjection;
 import feign.Param;
@@ -128,5 +129,17 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
        ORDER BY YEAR(s.createdDate), MONTH(s.createdDate)
     """)
     List<ScholarshipYearMonthCountProjection> countScholarshipByYearAndMonth();
+
+    @Query("""
+        SELECT 
+            s.country AS country,
+            COUNT(s) AS total
+        FROM ScholarshipEntity s
+        WHERE s.active = true
+          AND s.country IS NOT NULL
+        GROUP BY s.country
+        ORDER BY COUNT(s) DESC
+    """)
+    List<ScholarshipCountryCountProjection> countTopCountry();
 
 }
