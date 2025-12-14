@@ -1737,7 +1737,7 @@
       "total": "Tổng cộng {count} giao dịch"
     },
     "detail": {
-      "title": "Chi tiết hóa đơn",
+      "title": "Chi tiết giao dịch",
       "transactionId": "Mã giao dịch",
       "close": "Đóng",
       "transactionInfo": "Thông tin giao dịch",

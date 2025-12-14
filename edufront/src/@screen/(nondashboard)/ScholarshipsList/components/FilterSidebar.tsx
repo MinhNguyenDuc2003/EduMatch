@@ -7,7 +7,13 @@ import { useGetUniversityQuery } from '@/state/apiScholarship';
 import SearchBar from '@/pattern/share/SearchBar';
 import { useState, useEffect } from 'react';
 import { useDebounce } from '@/pattern/cus/multi-select';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/pattern/cus/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/pattern/cus/select';
 
 type FilterSidebarProps = {
   filters: FilterState;
@@ -133,7 +139,7 @@ export default function FilterSidebar({
         />
 
         {/* University Filter */}
-        <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+        <div className="border border-gray-200 rounded-lg p-2 space-y-2">
           <h3 className="text-sm font-semibold text-gray-900">
             {t('university')} {filters.university && '(1)'}
           </h3>
@@ -154,14 +160,14 @@ export default function FilterSidebar({
 
           {/* University Search Results */}
           {showResults && universities && universities.length > 0 && (
-            <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
+            <div className="flex flex-wrap gap-2 max-h-64 overflow-y-auto scrollbar-hide">
               {universities.map((university) => {
                 const isSelected = filters.university === university.university;
                 return (
                   <button
                     key={university.id}
                     onClick={() => handleFilterChange('university', university.university)}
-                    className={`rounded-full px-3 py-1 text-sm font-medium transition-colors border ${
+                    className={`rounded-full px-2 py-1 text-xs font-medium transition-colors border ${
                       isSelected
                         ? 'bg-[#3d6cb9] text-white hover:bg-blue-800'
                         : 'bg-gray-100 hover:bg-blue-100 border-transparent'

@@ -1730,7 +1730,7 @@
       "total": "Total {count} payment(s)"
     },
     "detail": {
-      "title": "Invoice Details",
+      "title": "Transaction Details",
       "transactionId": "Transaction ID",
       "close": "Close",
       "transactionInfo": "Transaction Information",

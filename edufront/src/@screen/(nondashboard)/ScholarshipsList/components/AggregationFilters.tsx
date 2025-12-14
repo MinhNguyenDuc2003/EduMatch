@@ -51,7 +51,7 @@ export default function AggregationFilters({
   };
 
   return (
-    <div className=" rounded-lg border p-4 space-y-4">
+    <div className=" rounded-lg border p-4 space-y-2">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
           {t('availableFilters')}
@@ -69,14 +69,16 @@ export default function AggregationFilters({
               <button
                 key={country}
                 onClick={() => handleFilterClick('country', country)}
-                className={`group flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all hover:shadow-md ${
+                className={`group flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all hover:shadow-md ${
                   filters.country === country
                     ? 'bg-[#3d6cb9] text-white hover:bg-blue-800'
                     : 'bg-gray-100 hover:bg-blue-100 border-transparent'
                 }`}
               >
                 <span>{country}</span>
-                <span className="text-xs p-1 rounded-full bg-white text-gray-700">{count}</span>
+                <div className="flex items-center justify-center size-4 gap-2 p-1 rounded-full bg-white">
+                  <span className="text-xs text-gray-700">{count}</span>
+                </div>
               </button>
             ))}
           </div>
@@ -94,14 +96,16 @@ export default function AggregationFilters({
               <button
                 key={level}
                 onClick={() => handleFilterClick('studyLevel', level)}
-                className={`group flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all hover:shadow-md ${
+                className={`group flex items-center gap-2 px-2 py-1 rounded-full text-xs font-medium transition-all hover:shadow-md ${
                   filters.studyLevel === level
                     ? 'bg-[#3d6cb9] hover:bg-blue-800'
                     : 'bg-gray-100 hover:bg-blue-100 border-transparent'
                 }`}
               >
                 <span>{level}</span>
-                <span className="text-xs p-1 rounded-full bg-white text-gray-700">{count}</span>
+                <div className="flex items-center justify-center size-4 gap-2 p-1 rounded-full bg-white">
+                  <span className="text-xs text-gray-700">{count}</span>
+                </div>
               </button>
             ))}
           </div>
