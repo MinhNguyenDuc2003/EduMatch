@@ -62,7 +62,7 @@ export default function ScholarshipMetadata({
       </div>
 
       {/* Track */}
-      {!isAuthenticated && (
+      {isAuthenticated && (
         <Button
           variant="custom"
           onClick={onToggleTracking}
