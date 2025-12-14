@@ -6,6 +6,7 @@ import {
   DropdownMenuTrigger,
 } from '@/pattern/cus/dropdown-menu';
 import { Skeleton } from '@/pattern/cus/skeleton';
+import { Badge } from '@/pattern/cus/badge';
 import { cn } from '@/lib/utils';
 import { formatDate } from '@/utils/formatDate';
 import {
@@ -124,17 +125,40 @@ export const ScholarshipCard = ({
   onDelete,
   className,
   variant = 'medium',
-  setSelectedScholarshipId,
-  setShowAISuggestions,
 }: ScholarshipCardProps) => {
   const t = useTranslations('action');
   const router = useRouter();
+
+  const isExpired = scholarship.endDate < new Date().getTime();
 
   const cardContent = () => {
     switch (variant) {
       case 'small':
         return (
           <div className="p-3">
+            <div className="mb-2">
+              <Badge
+                variant={isExpired ? 'destructive' : 'secondary'}
+                className={
+                  isExpired ? '' : 'bg-green-100 text-green-700 hover:bg-green-200 border-green-200'
+                }
+              >
+                {isExpired ? 'Expired' : 'Active'}
+              </Badge>
+              <Badge
+                variant={scholarship.status === 'Banned' ? 'destructive' : 'outline'}
+                className={cn(
+                  'ml-2',
+                  scholarship.status === 'Public'
+                    ? 'bg-blue-100 text-blue-700 border-blue-200'
+                    : scholarship.status === 'Private'
+                      ? 'bg-gray-100 text-gray-700 border-gray-200'
+                      : ''
+                )}
+              >
+                {scholarship.status}
+              </Badge>
+            </div>
             <h3 className="font-semibold text-sm mb-2 line-clamp-2 text-gray-900">
               {scholarship.title}
             </h3>
@@ -162,6 +186,31 @@ export const ScholarshipCard = ({
           <div className="p-6">
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1">
+                <div className="mb-2">
+                  <Badge
+                    variant={isExpired ? 'destructive' : 'secondary'}
+                    className={
+                      isExpired
+                        ? ''
+                        : 'bg-green-100 text-green-700 hover:bg-green-200 border-green-200'
+                    }
+                  >
+                    {isExpired ? 'Expired' : 'Active'}
+                  </Badge>
+                  <Badge
+                    variant={scholarship.status === 'Banned' ? 'destructive' : 'outline'}
+                    className={cn(
+                      'ml-2',
+                      scholarship.status === 'Public'
+                        ? 'bg-blue-100 text-blue-700 border-blue-200'
+                        : scholarship.status === 'Private'
+                          ? 'bg-gray-100 text-gray-700 border-gray-200'
+                          : ''
+                    )}
+                  >
+                    {scholarship.status}
+                  </Badge>
+                </div>
                 <h3
                   className="text-xl line-clamp-1 font-bold text-gray-900 mb-1 group-hover:text-primary-brand transition-colors cursor-pointer"
                   onClick={() => router.push(`/provider/scholarships/${scholarship.slug}`)}
@@ -177,10 +226,21 @@ export const ScholarshipCard = ({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem asChild className="cursor-pointer">
+                  <DropdownMenuItem
+                    asChild
+                    className={cn(
+                      'cursor-pointer',
+                      scholarship.status === 'Banned' && 'opacity-50 pointer-events-none'
+                    )}
+                  >
                     <Link
-                      href={`/provider/scholarships/update/${scholarship.id}`}
+                      href={
+                        scholarship.status === 'Banned'
+                          ? '#'
+                          : `/provider/scholarships/update/${scholarship.id}`
+                      }
                       className="flex items-center gap-2"
+                      aria-disabled={scholarship.status === 'Banned'}
                     >
                       <Edit className="w-4 h-4" />
                       <span>{t('edit')}</span>
@@ -248,6 +308,31 @@ export const ScholarshipCard = ({
           <div className="p-6">
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1">
+                <div className="mb-2">
+                  <Badge
+                    variant={isExpired ? 'destructive' : 'secondary'}
+                    className={
+                      isExpired
+                        ? ''
+                        : 'bg-green-100 text-green-700 hover:bg-green-200 border-green-200'
+                    }
+                  >
+                    {isExpired ? 'Expired' : 'Active'}
+                  </Badge>
+                  <Badge
+                    variant={scholarship.status === 'Banned' ? 'destructive' : 'outline'}
+                    className={cn(
+                      'ml-2',
+                      scholarship.status === 'Public'
+                        ? 'bg-blue-100 text-blue-700 border-blue-200'
+                        : scholarship.status === 'Private'
+                          ? 'bg-gray-100 text-gray-700 border-gray-200'
+                          : ''
+                    )}
+                  >
+                    {scholarship.status}
+                  </Badge>
+                </div>
                 <h3 className="text-xl line-clamp-1 font-bold text-gray-900 mb-1 group-hover:text-primary-brand transition-colors">
                   {scholarship.title}
                 </h3>
@@ -260,10 +345,21 @@ export const ScholarshipCard = ({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem asChild className="cursor-pointer">
+                  <DropdownMenuItem
+                    asChild
+                    className={cn(
+                      'cursor-pointer',
+                      scholarship.status === 'Banned' && 'opacity-50 pointer-events-none'
+                    )}
+                  >
                     <Link
-                      href={`/provider/scholarships/update/${scholarship.id}`}
+                      href={
+                        scholarship.status === 'Banned'
+                          ? '#'
+                          : `/provider/scholarships/update/${scholarship.id}`
+                      }
                       className="flex items-center gap-2"
+                      aria-disabled={scholarship.status === 'Banned'}
                     >
                       <Edit className="w-4 h-4" />
                       <span>{t('edit')}</span>

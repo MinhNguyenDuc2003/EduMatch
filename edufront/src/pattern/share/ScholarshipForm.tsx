@@ -8,7 +8,7 @@ import { Form } from '@/pattern/cus/form';
 import { IScholarship, scholarshipSchema } from '@/lib/schemas';
 import { generateSlug } from '@/utils/generateSlug';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus, Trash2, Image as ImageIcon, X } from 'lucide-react';
+import { Image as ImageIcon, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
@@ -127,34 +127,28 @@ const ScholarshipForm = ({
     fileInputRef.current?.click();
   };
 
-  const handleAddPreference = () => {
-    const currentPreferences = watch('scholarshipPreferences') || [];
-    setValue('scholarshipPreferences', [
-      ...currentPreferences,
-      {
-        type: '',
-        value: '',
-        weight: 0,
-        note: '',
-      },
-    ]);
-  };
-
-  const handleRemovePreference = (index: number) => {
-    const currentPreferences = watch('scholarshipPreferences') || [];
-    setValue(
-      'scholarshipPreferences',
-      currentPreferences.filter((_, i) => i !== index)
-    );
-  };
-
   return (
     <Form {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="space-y-8">
           {/* Basic Information */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-900">{t('basicInformation')}</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-gray-900">{t('basicInformation')}</h2>
+              <CustomFormField
+                name="status"
+                label={t('status')}
+                type="select"
+                placeholder="Enter scholarship status"
+                isBorder={true}
+                inlineLabel
+                initialValue={scholarship?.status || 'Public'}
+                options={[
+                  { value: 'Public', label: 'Public' },
+                  { value: 'Private', label: 'Private' },
+                ]}
+              />
+            </div>
 
             {/* Title */}
             <CustomFormField
@@ -578,89 +572,6 @@ const ScholarshipForm = ({
                 step={1}
               />
             </div>
-          </div>
-
-          {/* Scholarship Preferences */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-gray-900">{t('preferences')}</h2>
-              <Button
-                type="button"
-                onClick={handleAddPreference}
-                className="bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                {t('addPreference')}
-              </Button>
-            </div>
-
-            <p className="text-sm text-gray-600">{t('subtitlePreferences')}</p>
-
-            {watch('scholarshipPreferences')?.map((preference, index) => (
-              <div key={index} className="border-2 border-gray-200 rounded-lg p-6 space-y-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {t('preferences')} {index + 1}
-                  </h3>
-
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleRemovePreference(index)}
-                    className="p-2 h-full w-fit text-red-500 hover:text-red-700 hover:bg-red-50 border-red-500"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                {/* Type & Value */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <CustomFormField
-                    name={`scholarshipPreferences.${index}.type`}
-                    label={t('type')}
-                    type="text"
-                    placeholder="e.g., Ethnicity, Region, Field"
-                    isBorder={true}
-                  />
-
-                  <CustomFormField
-                    name={`scholarshipPreferences.${index}.value`}
-                    label={t('value')}
-                    type="text"
-                    placeholder="e.g., Asian, Southeast Asia, Computer Science"
-                    isBorder={true}
-                  />
-                </div>
-
-                {/* Weight & Note */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <CustomFormField
-                    name={`scholarshipPreferences.${index}.weight`}
-                    label={t('weight')}
-                    type="range"
-                    placeholder="Enter weight (0-1)"
-                    isBorder={true}
-                    min={0}
-                    max={1}
-                    step={0.1}
-                  />
-
-                  <CustomFormField
-                    name={`scholarshipPreferences.${index}.note`}
-                    label={t('note')}
-                    type="text"
-                    placeholder="Additional notes (optional)"
-                    isBorder={true}
-                  />
-                </div>
-              </div>
-            ))}
-
-            {(!watch('scholarshipPreferences') ||
-              watch('scholarshipPreferences')?.length === 0) && (
-              <p className="text-sm text-gray-500 italic">{t('noPreferences')}</p>
-            )}
           </div>
 
           {/* Submit Button */}

@@ -171,6 +171,7 @@
   },
   "scholarshipForm": {
     "basicInformation": "Thông tin cơ bản",
+    "status": "Trạng thái",
     "title": "Tiêu đề học bổng*",
     "slug": "Slug*",
     "shortDescription": "Mô tả ngắn*",

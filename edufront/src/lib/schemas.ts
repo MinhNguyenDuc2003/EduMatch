@@ -122,13 +122,12 @@ export const applicantProfileSchema = z.object({
       .array(
         z.object({
           applicantId: z.number().optional(),
-          type: z.string().min(1, 'Preference type is required'),
-          value: z.string().min(1, 'Preference value is required'),
+          type: z.string().optional(),
+          field: z.string().optional(),
           weight: z.coerce
             .number<number>()
             .min(0, 'Weight must be at least 0')
-            .max(10, 'Weight cannot exceed 10'),
-          note: z.string().optional(),
+            .max(1, 'Weight cannot exceed 1'),
         })
       )
       .optional(),
@@ -293,16 +292,16 @@ export const scholarshipSchema = z
       .min(0, 'Class rank percentile must be greater than 0')
       .max(100, 'Class rank percentile must be less than 100')
       .optional(),
+    status: z.string().optional(),
     scholarshipPreferences: z
       .array(
         z.object({
-          type: z.string().min(1, 'Type is required'),
-          value: z.string().min(1, 'Value is required'),
+          type: z.string().optional(),
+          field: z.string().optional(),
           weight: z.coerce
             .number<number>()
             .min(0, 'Weight must be at least 0')
             .max(1, 'Weight cannot exceed 1'),
-          note: z.string().optional(),
         })
       )
       .optional(),

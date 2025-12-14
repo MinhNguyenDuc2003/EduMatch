@@ -35,9 +35,8 @@ const Preferences = () => {
   const handleAddPreference = () => {
     append({
       type: '',
-      value: '',
+      field: '',
       weight: 0,
-      note: '',
     });
   };
 

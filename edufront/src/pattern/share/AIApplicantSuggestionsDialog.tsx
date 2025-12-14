@@ -13,30 +13,29 @@ import ApplicantsList from './ApplicantsList';
 import ApplicantDetail from './ApplicantDetail';
 import { Button } from '@/pattern/cus/button';
 import { useTranslations } from 'next-intl';
+import { ScholarshipPreferencesWeightDialog } from './ScholarshipPreferencesWeightDialog';
 
 interface AISuggestionsDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  scholarshipId: number;
-  scholarshipTitle: string;
+  scholarship: Scholarship;
 }
 
 const AIApplicantSuggestionsDialog = ({
   isOpen,
   onClose,
-  scholarshipId,
-  scholarshipTitle,
+  scholarship,
 }: AISuggestionsDialogProps) => {
   const t = useTranslations('aiApplicantSuggestions');
   const [selectedApplicant, setSelectedApplicant] = useState<ApplicantProfile | null>(null);
 
   const { data: applicants, isLoading } = useGetRecommendedApplicantsQuery(
     {
-      scholarshipId,
+      scholarshipId: scholarship.id!,
       topK: 10,
     },
     {
-      skip: !isOpen || !scholarshipId,
+      skip: !isOpen || !scholarship,
     }
   );
 
@@ -48,11 +47,16 @@ const AIApplicantSuggestionsDialog = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[95vw] sm:w-[90vw] md:w-[85vw] lg:min-w-7xl max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5" style={{ color: '#3d6cb9' }} />
-            {t('title')}
+          <DialogTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" style={{ color: '#3d6cb9' }} />
+              {t('title')}
+            </div>
+            <ScholarshipPreferencesWeightDialog scholarship={scholarship} />
           </DialogTitle>
-          <DialogDescription>{t('description', { scholarshipTitle })}</DialogDescription>
+          <DialogDescription>
+            {t('description', { scholarshipTitle: scholarship.title })}
+          </DialogDescription>
         </DialogHeader>
 
         {selectedApplicant ? (
@@ -61,7 +65,7 @@ const AIApplicantSuggestionsDialog = ({
           <ApplicantsList
             applicants={applicants || []}
             setDetailApplicant={setSelectedApplicant}
-            scholarshipId={scholarshipId}
+            scholarshipId={scholarship.id}
           />
         )}
 

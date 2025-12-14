@@ -171,6 +171,7 @@
   },
   "scholarshipForm": {
     "basicInformation": "Basic Information",
+    "status": "Status",
     "title": "Scholarship Title*",
     "slug": "Slug*",
     "shortDescription": "Short Description*",

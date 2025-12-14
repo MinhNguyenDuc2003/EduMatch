@@ -34,6 +34,7 @@ export const DEFAULT_SCHOLARSHIP_FORM_VALUES: IScholarship = {
   requiredPublicationCount: 0,
   requiredAcademicAwards: '',
   requiredClassRankPercentile: undefined,
+  status: 'Public',
   scholarshipPreferences: [],
 };
 

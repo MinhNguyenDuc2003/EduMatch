@@ -71,6 +71,7 @@ const ApplicantsList = ({
 
   return (
     <div className="flex-1 overflow-y-auto">
+      {/* PreferencesWeight */}
       <div className="overflow-x-auto border rounded mb-4">
         <table className="w-full text-xs sm:text-sm">
           <thead>

@@ -10,7 +10,7 @@ export default function ApplicantPaymentHistory() {
     <>
       <BreadcrumbHeader
         items={[
-          { label: t('breadcrumb.applicant'), href: '/applicant' },
+          { label: t('breadcrumb.applicant'), href: '/applicant/profile' },
           { label: t('breadcrumb.paymentHistory') },
         ]}
       />

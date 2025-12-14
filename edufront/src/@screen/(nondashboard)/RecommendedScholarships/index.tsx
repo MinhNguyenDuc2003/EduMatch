@@ -2,20 +2,15 @@
 
 import { HeroSection } from './components';
 import ScholarshipCard from '@/pattern/share/ScholarshipCard';
-import {
-  useFollowScholarshipMutation,
-  useGetRecommendedScholarshipsQuery,
-  useUnfollowScholarshipMutation,
-} from '@/state/apiScholarship';
+import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
 import { useFollowProviderMutation, useUnfollowProviderMutation } from '@/state/apiProvider';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { PreferencesWeightDialog } from './components/PreferencesWeightDialog';
 
 export default function RecommendedScholarships() {
-  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const t = useTranslations('recommendedScholarships');
   const tToast = useTranslations('toast');
@@ -55,11 +50,7 @@ export default function RecommendedScholarships() {
   };
 
   const handleViewScholarship = (slug: string) => {
-    if (!isAuthenticated) {
-      router.push('http://159.89.200.244/oauth2/authorization/keycloak');
-    } else {
-      router.push(`/scholarships/${slug}`);
-    }
+    router.push(`/scholarships/${slug}`);
   };
 
   const handleViewProvider = (providerId: number) => {
@@ -67,7 +58,7 @@ export default function RecommendedScholarships() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <div className="h-full bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       <HeroSection />
 
       <section className="relative z-10 -mt-16 pb-20">
@@ -75,15 +66,16 @@ export default function RecommendedScholarships() {
           {/* Container */}
           <div className="flex flex-col rounded-3xl border border-white/60 bg-white/80 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] backdrop-blur-sm">
             {/* Header */}
-            <div className="flex items-center p-4 gap-4">
-              <div>
+            <div className="flex items-center justify-between p-4">
+              <div className="flex items-center gap-4">
                 <h2 className="text-lg font-bold">{t('title')}</h2>
+                <div>
+                  {isLoading
+                    ? t('matchingLoading')
+                    : t('description', { count: scholarships?.length || 0 })}
+                </div>
               </div>
-              <div>
-                {isLoading
-                  ? t('matchingLoading')
-                  : t('description', { count: scholarships?.length || 0 })}
-              </div>
+              <PreferencesWeightDialog />
             </div>
 
             {/* Content */}

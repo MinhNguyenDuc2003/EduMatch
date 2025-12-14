@@ -60,6 +60,42 @@ const ProfileUpdatePage = () => {
   const onSubmit = async (data: IApplicantProfile) => {
     try {
       // Call API to update or create student info
+      if (
+        data.applicantProfile.applicantPreferences &&
+        data.applicantProfile.applicantPreferences.length === 0
+      ) {
+        data.applicantProfile.applicantPreferences = [
+          {
+            field: 'experience_w',
+            weight: 0.8,
+          },
+          {
+            field: 'career_w',
+            weight: 0.3,
+          },
+          {
+            field: 'education_w',
+            weight: 0.8,
+          },
+          {
+            field: 'intentions_w',
+            weight: 0.4,
+          },
+          {
+            field: 'major_w',
+            weight: 0.4,
+          },
+          {
+            field: 'skills_w',
+            weight: 0.5,
+          },
+          {
+            field: 'research_w',
+            weight: 0.5,
+          },
+        ];
+      }
+
       if (profileData && profileData.applicantProfile) {
         await updateProfile(data)
           .unwrap()
@@ -91,7 +127,6 @@ const ProfileUpdatePage = () => {
     <>
       <BreadcrumbHeader
         items={[
-          { label: t('breadcrumb.applicant'), href: '/applicant' },
           { label: t('breadcrumb.profile'), href: '/applicant/profile' },
           { label: t('breadcrumb.update') },
         ]}
@@ -106,8 +141,6 @@ const ProfileUpdatePage = () => {
               <PreferredPreferences />
               <Separator />
               <Activities />
-              <Separator />
-              <Preferences />
               <Separator />
               <Intentions />
               <Separator />

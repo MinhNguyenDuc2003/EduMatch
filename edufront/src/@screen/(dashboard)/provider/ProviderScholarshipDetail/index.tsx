@@ -73,8 +73,7 @@ const ProviderScholarshipDetail = ({ scholarshipSlug }: { scholarshipSlug: strin
         onClose={() => {
           setShowAISuggestions(false);
         }}
-        scholarshipId={scholarship.id}
-        scholarshipTitle={scholarship.title}
+        scholarship={scholarship}
       />
     </>
   );
