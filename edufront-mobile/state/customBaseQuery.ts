@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BaseQueryApi, FetchArgs } from "@reduxjs/toolkit/query";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Toast } from "toastify-react-native";
@@ -10,7 +11,8 @@ export const customBaseQuery = async (
   const baseQuery = fetchBaseQuery({
     baseUrl: process.env.EXPO_PUBLIC_API_BASE_PATH || "",
     prepareHeaders: async (headers) => {
-      const token = process.env.EXPO_PUBLIC_API_TOKEN || "";
+      // const token = process.env.EXPO_PUBLIC_API_TOKEN || "";
+      const token = await AsyncStorage.getItem("accessToken");
 
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);

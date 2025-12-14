@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   FilterSidebar,
-  ScholarshipCard,
   RightSidebar,
   PremiumBanner,
   ScholarshipsListSkeleton,
@@ -13,6 +12,7 @@ import { Filter } from 'lucide-react';
 import SearchBar from '@/pattern/share/SearchBar';
 import {
   useFollowScholarshipMutation,
+  useGetScholarshipTopViewByMonthQuery,
   useSearchScholarshipsQuery,
   useUnfollowScholarshipMutation,
 } from '@/state/apiScholarship';
@@ -23,6 +23,8 @@ import { useTranslations } from 'next-intl';
 import { useDebounce } from '@/utils/useDebounce';
 import { toast } from 'sonner';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
+import ScholarshipCard from '@/pattern/share/ScholarshipCard';
+import { TopViewedScholarships } from '../NewsPage/components';
 
 export default function ScholarshipsList() {
   const router = useRouter();
@@ -92,6 +94,8 @@ export default function ScholarshipsList() {
 
   // Call API
   const { data: response, isLoading, isError, refetch } = useSearchScholarshipsQuery(requestBody);
+  const { data: scholarshipTopView, isLoading: isLoadingScholarshipTopView } =
+    useGetScholarshipTopViewByMonthQuery();
   const [followScholarship] = useFollowScholarshipMutation();
   const [unfollowScholarship] = useUnfollowScholarshipMutation();
   const [followProvider] = useFollowProviderMutation();
@@ -286,12 +290,12 @@ export default function ScholarshipsList() {
         </div>
       )}
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 pt-20 pb-4 px-4 md:py-8 md:px-10 lg:px-40 lg:pt-8">
+      <div className="min-h-screen bg-gradient-to-br  from-slate-50 via-gray-50 to-blue-50/30 pt-20 pb-4 px-4 md:py-8 md:px-10 lg:px-40 lg:pt-8">
         {/* Main Content - Desktop & Mobile */}
-        <div className="max-w-[1400px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-9 gap-6">
+        <div className="">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Left Sidebar - Filters (Desktop only, 3 columns) */}
-            <div className="hidden lg:block lg:col-span-3">
+            <div className="hidden lg:block lg:col-span-1">
               <FilterSidebar
                 filters={filters}
                 setFilters={setFilters}
@@ -301,12 +305,12 @@ export default function ScholarshipsList() {
             </div>
 
             {/* Middle Content - Scholarship Cards (6 columns desktop, full width mobile) */}
-            <div className="lg:col-span-6 lg:col-start-4">
+            <div className="lg:col-span-2">
               {/* Premium Upgrade Banner */}
               <PremiumBanner />
 
               {/* Search Bar - Desktop only */}
-              <div className="mb-4">
+              <div className="mb-4 md:block hidden">
                 <SearchBar
                   placeholder={t('searchPlaceholder')}
                   value={keywordInput}
@@ -361,15 +365,14 @@ export default function ScholarshipsList() {
               </div>
             </div>
 
-            {/* Right Sidebar - Tabs & Stats (3 columns) */}
-            {/* <div className="lg:col-span-3">
-              <RightSidebar
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                scholarshipsCount={filteredScholarships.length}
-                researchCount={0}
+            {/* Right Sidebar */}
+            <div className="lg:col-span-1">
+              <TopViewedScholarships
+                scholarships={scholarshipTopView || []}
+                isLoading={isLoadingScholarshipTopView}
+                onViewScholarship={handleViewScholarship}
               />
-            </div> */}
+            </div>
           </div>
         </div>
       </div>

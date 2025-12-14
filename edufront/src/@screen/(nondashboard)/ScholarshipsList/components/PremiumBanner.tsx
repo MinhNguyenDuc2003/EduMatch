@@ -132,20 +132,22 @@ export default function PremiumBanner() {
 
             {/* Desktop Layout: Horizontal */}
             <div className="hidden md:flex items-center justify-between gap-4">
-              <div className="flex items-center gap-4 flex-1">
-                <div className="inline-block px-2 py-1 bg-white/20 backdrop-blur-sm rounded-md">
+              <div className="flex flex-col gap-2 flex-1">
+                <div className="px-2 py-1 w-fit bg-white/20 backdrop-blur-sm rounded-md">
                   <span className="text-xs font-semibold text-white uppercase tracking-wide">
                     {t('badge')}
                   </span>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-white font-bold text-lg mb-1 leading-tight">{t('title')}</h3>
+                  <h3 className="text-white font-bold text-base mb-1 leading-tight">
+                    {t('title')}
+                  </h3>
                   <p className="text-white/90 text-sm leading-relaxed">{t('description')}</p>
                 </div>
               </div>
               <button
                 onClick={handleUpdate}
-                className="flex items-center gap-2 bg-white text-blue-900 font-semibold py-2.5 px-6 rounded-lg hover:cursor-pointer hover:bg-gray-100 transition-all duration-200 shadow-lg whitespace-nowrap"
+                className="flex items-center gap-2 bg-white text-blue-900 font-semibold py-2 px-4 rounded-lg hover:cursor-pointer hover:bg-gray-100 transition-all duration-200 shadow-lg whitespace-nowrap"
               >
                 {t('updateNow')}
               </button>

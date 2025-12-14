@@ -82,7 +82,7 @@ const ApplicationDetailDialog = React.memo(
 
       return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <Skeleton className="h-8 w-64" />
               <Skeleton className="h-4 w-48 mt-2" />
@@ -683,7 +683,7 @@ const ApplicationDetailDialog = React.memo(
 
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-h-[90vh] w-full min-w-4xl max-w-6xl overflow-y-auto">
+        <DialogContent className="max-h-[90vh] w-full min-w-6xl max-w-6xl overflow-y-auto">
           <DialogTitle className="text-2xl font-bold">{t('applicationDetail')}</DialogTitle>
           <Content isMobileView={false} />
           <DialogFooter className="flex flex-col gap-4 sm:flex-col">

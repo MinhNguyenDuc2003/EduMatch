@@ -2,6 +2,7 @@
 import { Flag, Calendar, DollarSign, Eye } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/pattern/cus/button';
 
 type ScholarshipMetadataProps = {
   formattedDate: string;
@@ -21,42 +22,64 @@ export default function ScholarshipMetadata({
   const t = useTranslations('scholarshipDetail.metadata');
   const { isAuthenticated } = useAuth();
 
-  return (
-    <div className="flex flex-wrap items-center gap-6">
-      {/* Date */}
-      <div className="flex items-center gap-2 text-gray-600">
-        <Calendar className="size-5" />
-        <span className="font-medium">{formattedDate}</span>
-      </div>
+  const remainingTime = Math.floor(
+    (new Date(formattedDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+  );
 
-      {/* Amount */}
-      <div className="flex items-center gap-2 text-gray-600">
-        <DollarSign className="size-5" />
-        <span className="font-medium">{amount}</span>
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-12">
+        {/* Date */}
+        <div className="flex flex-col gap-1 text-gray-900 text-sm">
+          <span className=" text-gray-500">{t('deadline')}:</span>
+          <div className="flex gap-2">
+            <span className="font-medium">{formattedDate}</span>
+            {remainingTime > 0 && (
+              <span className="font-medium">
+                ({t('remainingTimeDays', { time: remainingTime })})
+              </span>
+            )}
+            {remainingTime === 0 && (
+              <span className="font-medium">
+                ({t('remainingTimeDay', { time: remainingTime })})
+              </span>
+            )}
+            {remainingTime < 0 && <span className="font-medium">({t('expired')})</span>}
+          </div>
+        </div>
+
+        {/* Amount */}
+        <div className="flex flex-col  gap-1 text-gray-900 text-sm">
+          <span className=" text-gray-500">{t('amount')}:</span>
+          <span className="font-medium">{amount}</span>
+        </div>
+
+        {/* Reached Count */}
+        <div className="flex flex-col gap-1 text-gray-900 text-sm">
+          <span className=" text-gray-500">{t('reachedCount')}:</span>
+          <span className="font-medium">{view}</span>
+        </div>
       </div>
 
       {/* Track */}
-
-      {isAuthenticated && (
-        <button
+      {!isAuthenticated && (
+        <Button
+          variant="custom"
           onClick={onToggleTracking}
-          className="flex items-center p-2 gap-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors"
+          className="flex items-center !gap-0 !p-0 border border-gray-200 rounded-md overflow-hidden"
           aria-label={isTracked ? t('untrackScholarship') : t('trackScholarship')}
         >
-          <Flag
-            className={`w-5 h-5 transition-colors ${
-              isTracked ? 'fill-blue-600 text-blue-600' : 'text-gray-400'
-            }`}
-          />
-          <span className="font-medium">{isTracked ? t('tracked') : t('track')}</span>
-        </button>
-      )}
+          <div className="flex items-center justify-center bg-blue-700 p-4">
+            <Flag
+              className={`w-4 h-4 transition-colors ${
+                isTracked ? 'fill-white text-white' : 'text-white'
+              }`}
+            />
+          </div>
 
-      {/* View */}
-      <div className="flex items-center gap-2 text-gray-600">
-        <Eye className="size-5" />
-        <span className="font-medium">{view}</span>
-      </div>
+          <span className=" text-md p-4">{isTracked ? t('tracked') : t('track')}</span>
+        </Button>
+      )}
     </div>
   );
 }

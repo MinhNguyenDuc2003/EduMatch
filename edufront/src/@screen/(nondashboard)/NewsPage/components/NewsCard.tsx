@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Calendar, Link2, X, ChevronLeft, ChevronRight } from 'lucide-react';
-import ScholarshipCardImages from '@/@screen/(nondashboard)/ScholarshipsList/components/ScholarshipCardImages';
+import ScholarshipCardImages from '@/pattern/share/ScholarshipCardImages';
 
 type NewsCardProps = {
   news: News;

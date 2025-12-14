@@ -23,6 +23,7 @@ import {
 import { useTranslations } from 'next-intl';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface ScholarshipCardProps {
   scholarship: Scholarship;
@@ -127,6 +128,7 @@ export const ScholarshipCard = ({
   setShowAISuggestions,
 }: ScholarshipCardProps) => {
   const t = useTranslations('action');
+  const router = useRouter();
 
   const cardContent = () => {
     switch (variant) {
@@ -160,7 +162,10 @@ export const ScholarshipCard = ({
           <div className="p-6">
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-primary-brand transition-colors">
+                <h3
+                  className="text-xl line-clamp-1 font-bold text-gray-900 mb-1 group-hover:text-primary-brand transition-colors cursor-pointer"
+                  onClick={() => router.push(`/provider/scholarships/${scholarship.slug}`)}
+                >
                   {scholarship.title}
                 </h3>
                 <p className="text-sm text-gray-600 line-clamp-2">{scholarship.shortDescription}</p>
@@ -174,7 +179,7 @@ export const ScholarshipCard = ({
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem asChild className="cursor-pointer">
                     <Link
-                      href={`/provider/scholarships/${scholarship.id}`}
+                      href={`/provider/scholarships/update/${scholarship.id}`}
                       className="flex items-center gap-2"
                     >
                       <Edit className="w-4 h-4" />
@@ -232,21 +237,10 @@ export const ScholarshipCard = ({
               <div className="flex items-center gap-2">
                 <Eye className="w-4 h-4 text-gray-400" />
                 <span>
-                  Views: <span className="font-medium text-gray-900">{scholarship.views}</span>
+                  Reached: <span className="font-medium text-gray-900">{scholarship.views}</span>
                 </span>
               </div>
             </div>
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                setSelectedScholarshipId?.(scholarship.id);
-                setShowAISuggestions?.(true);
-              }}
-              className="bg-primary-brand text-white hover:bg-primary-brand/90 w-full mt-2 shadow-sm"
-            >
-              <Sparkles className="w-4 h-4 mr-2" />
-              {t('generateSuggestions')}
-            </Button>
           </div>
         );
       default:
@@ -254,7 +248,7 @@ export const ScholarshipCard = ({
           <div className="p-6">
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-primary-brand transition-colors">
+                <h3 className="text-xl line-clamp-1 font-bold text-gray-900 mb-1 group-hover:text-primary-brand transition-colors">
                   {scholarship.title}
                 </h3>
                 <p className="text-sm text-gray-600 line-clamp-2">{scholarship.shortDescription}</p>
@@ -268,7 +262,7 @@ export const ScholarshipCard = ({
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem asChild className="cursor-pointer">
                     <Link
-                      href={`/provider/scholarships/${scholarship.id}`}
+                      href={`/provider/scholarships/update/${scholarship.id}`}
                       className="flex items-center gap-2"
                     >
                       <Edit className="w-4 h-4" />
@@ -326,21 +320,10 @@ export const ScholarshipCard = ({
               <div className="flex items-center gap-2">
                 <Eye className="w-4 h-4 text-gray-400" />
                 <span>
-                  Views: <span className="font-medium text-gray-900">{scholarship.views}</span>
+                  Reached: <span className="font-medium text-gray-900">{scholarship.views}</span>
                 </span>
               </div>
             </div>
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                setSelectedScholarshipId?.(scholarship.id);
-                setShowAISuggestions?.(true);
-              }}
-              className="bg-primary-brand text-white hover:bg-primary-brand/90 w-full mt-2 shadow-sm"
-            >
-              <Sparkles className="w-4 h-4 mr-2" />
-              {t('generateSuggestions')}
-            </Button>
           </div>
         );
     }

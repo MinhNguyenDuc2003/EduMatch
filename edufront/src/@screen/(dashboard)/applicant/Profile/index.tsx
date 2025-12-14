@@ -30,7 +30,7 @@ export default function Profile() {
   }
 
   const uiData = transformProfileData(profileData);
-  const { customer, applicantProfile } = profileData;
+  const { applicantProfile } = profileData;
 
   return (
     <>
@@ -59,7 +59,7 @@ export default function Profile() {
           </div>
 
           {/* Grid Layout for Profile Strength and Info Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 lg:grid-rows-4 gap-6 auto-rows-fr ">
+          <div className="grid grid-cols-1 lg:grid-cols-3 lg:grid-rows-3 gap-6 auto-rows-fr ">
             {/* Columns 1 - Student Info */}
             <InfoCard
               title={t('sections.studentInformation')}
@@ -80,36 +80,12 @@ export default function Profile() {
                   label: t('fields.phoneNumber'),
                   value: applicantProfile?.phoneNumber,
                 },
-                {
-                  label: t('fields.overallGpa'),
-                  value: applicantProfile?.overallGpa
-                    ? applicantProfile.overallGpa.toFixed(2)
-                    : undefined,
-                },
+
                 {
                   label: t('fields.educationLevel'),
                   value: applicantProfile?.educationLevel,
                 },
-                {
-                  label: t('fields.satScore'),
-                  value: applicantProfile?.satScore?.toString(),
-                },
-                {
-                  label: t('fields.actScore'),
-                  value: applicantProfile?.actScore?.toString(),
-                },
-                {
-                  label: t('fields.toeflScore'),
-                  value: applicantProfile?.toeflScore?.toString(),
-                },
-                {
-                  label: t('fields.ieltsScore'),
-                  value: applicantProfile?.ieltsScore?.toString(),
-                },
-                {
-                  label: t('fields.greScore'),
-                  value: applicantProfile?.greScore?.toString(),
-                },
+
                 {
                   label: t('fields.languages'),
                   value: applicantProfile?.languages,
@@ -168,11 +144,11 @@ export default function Profile() {
                   value: applicantProfile?.preferredCountry,
                 },
                 {
-                  label: t('fields.preferredUniversity'),
-                  value: applicantProfile?.preferredUniversity,
+                  label: t('fields.preferredMajor'),
+                  value: applicantProfile?.preferredMajor,
                 },
               ]}
-              className="lg:row-span-4"
+              className="lg:row-span-3"
             />
 
             {/* Columns 2 - Academic Info and Artistic/Athletic Information */}
@@ -217,29 +193,43 @@ export default function Profile() {
               className="lg:row-span-2"
             />
 
-            {/* Applicant Preferences Section */}
-            <ArrayInfoCard
-              title={t('sections.applicantPreferences')}
-              items={applicantProfile?.applicantPreferences}
-              renderItem={(preference) => <PreferenceCard preference={preference} />}
-              emptyMessage={t('common.noPreferencesAdded')}
-              className="lg:col-start-2 lg:row-start-3 "
-            />
-
             <InfoCard
-              title={t('sections.accountSettings')}
+              title={t('sections.scores')}
               fields={[
                 {
-                  label: t('fields.emailAddress'),
-                  value: customer?.email,
+                  label: t('fields.overallGpa'),
+                  value: applicantProfile?.overallGpa
+                    ? applicantProfile.overallGpa.toFixed(2)
+                    : undefined,
                 },
                 {
-                  label: t('fields.password'),
-                  value: '•••••••••',
+                  label: t('fields.satScore'),
+                  value: applicantProfile?.satScore?.toString(),
+                },
+                {
+                  label: t('fields.actScore'),
+                  value: applicantProfile?.actScore?.toString(),
+                },
+                {
+                  label: t('fields.toeflScore'),
+                  value: applicantProfile?.toeflScore?.toString(),
+                },
+                {
+                  label: t('fields.ieltsScore'),
+                  value: applicantProfile?.ieltsScore?.toString(),
+                },
+                {
+                  label: t('fields.greScore'),
+                  value: applicantProfile?.greScore?.toString(),
+                },
+                {
+                  label: t('fields.gmatScore'),
+                  value: applicantProfile?.gmatScore?.toString(),
                 },
               ]}
-              className="lg:col-start-2 lg:row-start-4"
+              className="lg:col-start-2 lg:row-start-3"
             />
+
             <ArrayInfoCard
               title={t('sections.educationHistory')}
               items={applicantProfile?.educationHistories}
@@ -253,7 +243,7 @@ export default function Profile() {
               items={applicantProfile?.skills}
               renderItem={(skill) => <SkillCard skill={skill} />}
               emptyMessage={t('common.noSkillsAdded')}
-              className="lg:col-start-3 lg:row-start-3 lg:row-span-2"
+              className="lg:col-start-3 lg:row-start-3 "
             />
           </div>
 

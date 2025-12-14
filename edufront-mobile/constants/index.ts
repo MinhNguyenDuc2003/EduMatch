@@ -4,7 +4,7 @@ import hero3 from "@/assets/images/home/3.png";
 import onboarding1 from "@/assets/images/onboarding/1.png";
 import onboarding2 from "@/assets/images/onboarding/2.png";
 import onboarding3 from "@/assets/images/onboarding/3.png";
-import { IProfileForm } from "@/lib/schemas";
+import { IApplicantProfile } from "@/lib/schemas";
 
 export const images = {
   onboarding1,
@@ -49,11 +49,12 @@ export const onboarding = [
   },
 ];
 
-export const DEFAULT_PROFILE_FORM_VALUES: IProfileForm = {
+export const DEFAULT_PROFILE_FORM_VALUES: IApplicantProfile = {
   applicantProfile: {
     contactName: "",
     firstName: "",
     lastName: "",
+    phoneNumber: "",
     religion: "",
     hometown: "",
     citizenshipStatus: "",
@@ -69,22 +70,26 @@ export const DEFAULT_PROFILE_FORM_VALUES: IProfileForm = {
     researchExperience: "",
     careerGoals: "",
     overallGpa: 0,
+    educationLevel: "",
+    satScore: undefined,
+    actScore: undefined,
+    greScore: undefined,
+    gmatScore: undefined,
+    toeflScore: undefined,
+    ieltsScore: undefined,
+    languages: "",
+    academicAwards: "",
+    publicationCount: undefined,
+    researchInterest: "",
+    extracurricularActivities: "",
+    preferredScholarshipType: "",
+    preferredCountry: "",
+    preferredMajor: "",
     certificates: [],
     educationHistories: [],
-    phoneNumbers: [],
+    applicantPreferences: [],
     skills: [],
     intentions: [],
-  },
-  addressPostVm: {
-    contactName: "",
-    phone: "",
-    addressLine1: "",
-    addressLine2: "",
-    city: "",
-    zipCode: "",
-    districtId: 0,
-    stateOrProvinceId: 0,
-    countryId: 0,
   },
 };
 

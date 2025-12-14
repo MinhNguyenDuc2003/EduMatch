@@ -1,4 +1,5 @@
 import HomeBanner from "@/components/home/HomeBanner";
+import HomeHeader from "@/components/home/HomeHeader";
 import SearchBar from "@/components/home/SearchBar";
 import TopScholarshipView from "@/components/home/TopScholarshipView";
 import ScholarshipCard from "@/components/ScholarshipCard";
@@ -24,17 +25,25 @@ const Home = () => {
   const scholarships = data?.content ?? [];
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100 px-4">
+    <SafeAreaView className="flex-1 bg-gray-50 px-4">
       <FlatList
         ListHeaderComponent={() => (
-          <View className="gap-4">
-            <SearchBar />
-            <HomeBanner />
+          <View className="gap-6 mb-2">
+            <HomeHeader />
+            <View className="gap-4">
+              <SearchBar />
+            </View>
+            <View>
+              {/* <Text className="text-lg font-bold mb-3 text-gray-900">Highlights</Text> */}
+              <HomeBanner />
+            </View>
             <TopScholarshipView />
-            <View className="flex-row justify-between items-center ">
-              <Text className="text-xl font-bold">Scholarships</Text>
+            <View className="flex-row justify-between items-center mt-2">
+              <Text className="text-xl font-bold text-gray-900">
+                Recommended
+              </Text>
               <Text
-                className="text-md font-normal text-primary-brand"
+                className="text-sm font-semibold text-primary-brand"
                 onPress={() => router.push("/(routes)/scholarships")}
               >
                 View all
@@ -46,7 +55,8 @@ const Home = () => {
         renderItem={({ item }) => <ScholarshipCard item={item} />}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
-        contentContainerClassName="gap-4"
+        contentContainerClassName="pb-4"
+        ItemSeparatorComponent={() => <View className="h-3" />}
       />
     </SafeAreaView>
   );

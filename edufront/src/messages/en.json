@@ -87,7 +87,7 @@
   "providerApplications": {
     "title": "Applications",
     "subtitle": "Manage and review scholarship applications",
-    "score": "Matching Score",
+    "appliedAt": "Applied At",
     "exportData": "Export Data",
     "selectScholarship": "Select a Scholarship",
     "selectScholarshipDescription": "Choose a scholarship from the left to view its applications",
@@ -204,6 +204,7 @@
     "requiredSatScore": "Required SAT Score",
     "requiredActScore": "Required ACT Score",
     "requiredGreScore": "Required GRE Score",
+    "requiredGmatScore": "Required GMAT Score",
     "requiredToeflScore": "Required TOEFL Score",
     "requiredIeltsScore": "Required IELTS Score",
     "experienceRequirements": "Experience & Achievement Requirements",
@@ -320,12 +321,11 @@
   },
   "action": {
     "edit": "Edit",
-    "delete": "Delete",
-    "generateSuggestions": "Generate Suggestions"
+    "delete": "Delete"
   },
   "aiApplicantSuggestions": {
     "title": "Recommended Applicants",
-    "description": "Matching applicants for scholarship {scholarshipId}",
+    "description": "Matching applicants for scholarship {scholarshipTitle}",
     "back": "Back",
     "clearSelection": "Clear Selection",
     "save": "Send Referral for {count} Applicant{count, plural, one {s} other {s}}",
@@ -376,6 +376,7 @@
       "satScore": "SAT Score",
       "actScore": "ACT Score",
       "greScore": "GRE Score",
+      "gmatScore": "GMAT Score",
       "toeflScore": "TOEFL Score",
       "ieltsScore": "IELTS Score",
       "languages": "Languages",
@@ -386,7 +387,7 @@
       "preferredScholarship": "Preferred Scholarship",
       "preferredType": "Preferred Type",
       "preferredCountry": "Preferred Country",
-      "preferredUniversity": "Preferred University"
+      "preferredMajor": "Preferred Major"
     }
   },
   "error": {
@@ -468,7 +469,7 @@
     },
     "topViewScholarships": {
       "badge": "Trending",
-      "title": "Top 5 Most Viewed Scholarships",
+      "title": "Top 5 Most Interested Scholarships",
       "description": "Discover the most popular scholarships this month",
       "viewCountDescription": "View count represents the number of people who have viewed this scholarship"
     },
@@ -495,13 +496,23 @@
   },
   "scholarshipDetail": {
     "notFound": "Scholarship not found",
+    "notFoundDescription": "The scholarship you're looking for doesn't exist or has been removed.",
+    "backToHome": "Click the back button to return",
     "backToScholarships": "Back to Scholarships",
     "scholarships": "Scholarships",
     "applyNow": "Apply Now",
+    "applyNowDisabled": "Expired",
     "upgradeToPremium": "Upgrade to AI Scholarship",
     "analyzeScholarship": "Analyze Scholarship",
     "noDeadline": "No deadline",
+    "generateSuggestions": "Finding the best applicants",
     "metadata": {
+      "deadline": "Deadline",
+      "remainingTimeDays": "{time} days remaining",
+      "remainingTimeDay": "{time} day remaining",
+      "expired": "Expired",
+      "amount": "Amount",
+      "reachedCount": "Reached",
       "track": "Track",
       "tracked": "Tracked",
       "trackScholarship": "Track scholarship",
@@ -533,6 +544,7 @@
       "requiredSatScore": "Required SAT Score",
       "requiredActScore": "Required ACT Score",
       "requiredGreScore": "Required GRE Score",
+      "requiredGmatScore": "Required GMAT Score",
       "requiredToeflScore": "Required TOEFL Score",
       "requiredIeltsScore": "Required IELTS Score",
       "requiredWorkExperienceYears": "Required Work Experience",
@@ -543,7 +555,7 @@
       "basicInformation": "Basic Information",
       "academicRequirements": "Academic Requirements",
       "testScoreRequirements": "Test Score Requirements",
-      "demographicRequirements": "Demographic Requirements",
+      "demographicRequirements": "Personal Requirements",
       "otherRequirements": "Other Requirements",
       "caseStudies": "Case Studies"
     },
@@ -683,6 +695,7 @@
       "accountSettings": "Account Settings",
       "educationHistory": "Education History",
       "skills": "Skills",
+      "scores": "Scores",
       "certificates": "Certificates",
       "educationalIntentions": "Educational Intentions"
     },
@@ -712,6 +725,7 @@
       "no": "No",
       "addInfo": "Add Info",
       "educationLevel": "Education Level",
+      "scores": "Scores",
       "satScore": "SAT Score",
       "satScorePlaceholder": "Enter SAT score (400-1600)",
       "actScore": "ACT Score",
@@ -722,6 +736,8 @@
       "ieltsScorePlaceholder": "Enter IELTS score (0.0-9.0)",
       "greScore": "GRE Score",
       "greScorePlaceholder": "Enter GRE score (260-340)",
+      "gmatScore": "GMAT Score",
+      "gmatScorePlaceholder": "Enter GMAT score (200-800)",
       "languages": "Languages",
       "academicAwards": "Academic Awards",
       "publicationCount": "Publication Count",
@@ -729,7 +745,7 @@
       "extracurricularActivities": "Extracurricular Activities",
       "preferredScholarshipType": "Preferred Scholarship Type",
       "preferredCountry": "Preferred Country",
-      "preferredUniversity": "Preferred University"
+      "preferredMajor": "Preferred Major"
     },
     "common": {
       "edit": "Edit",
@@ -915,8 +931,8 @@
       "selectPreferredScholarshipType": "Select preferred scholarship type",
       "preferredCountry": "Preferred Country",
       "selectPreferredCountry": "Select preferred country",
-      "preferredUniversity": "Preferred University",
-      "preferredUniversityPlaceholder": "e.g., Harvard University, MIT"
+      "preferredMajor": "Preferred Major",
+      "selectPreferredMajor": "Select preferred major"
     },
     "cards": {
       "historyDetails": "History Details",
@@ -1346,9 +1362,9 @@
     "subtitle": "Welcome back! Here's what's happening today.",
     "conversionFunnel": {
       "scholarships": "Scholarships",
-      "totalViews": "Total Views",
+      "totalViews": "Total Reached",
       "appliedApplications": "Applied Applications",
-      "viewedButNoApply": "Viewed but No Apply"
+      "viewedButNoApply": "Reached but No Apply"
     },
     "decisionStatus": {
       "applicationDecisions": "Application Decisions",
@@ -1357,7 +1373,7 @@
       "pending": "Pending"
     },
     "top5Scholarship": {
-      "top5ByViews": "Top 5 by Views",
+      "top5ByViews": "Top 5 by Reached",
       "top5ByApplications": "Top 5 by Applications"
     },
     "recentApplications": {
@@ -1424,7 +1440,7 @@
   },
   "newsPage": {
     "title": "EduMatch News",
-    "topViewed": "Top Viewed Scholarships",
+    "topViewed": "Top Interested Scholarships",
     "noTopScholarships": "No top viewed scholarships available",
     "recommended": "Recommended scholarships",
     "noRecommendedScholarships": "No recommended scholarships available",

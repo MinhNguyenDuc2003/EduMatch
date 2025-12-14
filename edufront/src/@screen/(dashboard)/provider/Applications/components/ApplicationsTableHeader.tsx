@@ -16,7 +16,7 @@ const ApplicationsTableHeader = React.memo(() => {
           {t('gpa')}
         </th>
         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          {t('score')}
+          {t('appliedAt')}
         </th>
         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
           {t('status')}

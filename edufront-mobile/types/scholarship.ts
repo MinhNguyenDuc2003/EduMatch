@@ -48,6 +48,7 @@ declare global {
     requiredSatScore: number;
     requiredActScore: number;
     requiredGreScore: number;
+    requiredGmatScore: number;
     requiredToeflScore: number;
     requiredIeltsScore: number;
     requiredWorkExperienceYears: number;

@@ -95,6 +95,24 @@ const StudentInformation = () => {
       />
 
       <CustomFormField
+        name="applicantProfile.greScore"
+        label="GRE Score"
+        type="number"
+        placeholder="Enter your GRE score"
+        inlineLabel
+        isBorder
+      />
+
+      <CustomFormField
+        name="applicantProfile.gmatScore"
+        label="GMAT Score"
+        type="number"
+        placeholder="Enter your GMAT score"
+        inlineLabel
+        isBorder
+      />
+
+      <CustomFormField
         name="applicantProfile.toeflScore"
         label="TOEFL Score"
         type="number"
@@ -108,15 +126,6 @@ const StudentInformation = () => {
         label="IELTS Score"
         type="number"
         placeholder="Enter your IELTS score"
-        inlineLabel
-        isBorder
-      />
-
-      <CustomFormField
-        name="applicantProfile.greScore"
-        label="GRE Score"
-        type="number"
-        placeholder="Enter your GRE score"
         inlineLabel
         isBorder
       />

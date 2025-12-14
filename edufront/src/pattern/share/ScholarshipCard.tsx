@@ -206,7 +206,7 @@ export default function ScholarshipCard({
             onClick={() => onViewScholarship?.(scholarship.slug)}
           >
             {/* Title */}
-            <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+            <h2 className="text-base font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
               {scholarship.title}
             </h2>
 
@@ -236,7 +236,7 @@ export default function ScholarshipCard({
             )}
 
             {/* Description */}
-            <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-3">
+            <p className="text-gray-900 text-sm leading-relaxed mb-3 line-clamp-3">
               {scholarship.description || scholarship.shortDescription}
             </p>
           </div>

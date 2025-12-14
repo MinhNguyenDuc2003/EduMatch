@@ -29,6 +29,7 @@ export const DEFAULT_SCHOLARSHIP_FORM_VALUES: IScholarship = {
   requiredGreScore: undefined,
   requiredToeflScore: undefined,
   requiredIeltsScore: undefined,
+  requiredGmatScore: undefined,
   requiredWorkExperienceYears: 0,
   requiredPublicationCount: 0,
   requiredAcademicAwards: '',

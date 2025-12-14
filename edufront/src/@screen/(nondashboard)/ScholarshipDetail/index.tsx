@@ -25,6 +25,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useGetApplicationsQuery } from '@/state/apiApplicant';
 import PremiumBanner from './components/PremiumBanner';
 import { toast } from 'sonner';
+import Image from 'next/image';
 
 export default function ScholarshipDetail({ slug }: { slug: string }) {
   const router = useRouter();
@@ -58,15 +59,27 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
 
   if (isError || !scholarship) {
     return (
-      <div className="h-full bg-white flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('notFound')}</h1>
-          <Button
-            value={t('backToScholarships')}
-            onClick={() => router.push('/scholarships')}
-            variant="custom"
-            className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
-          />
+      <div className="h-full bg-white flex items-center justify-center py-12">
+        <div className="">
+          <div className="relative w-96 h-96 rounded-2xl overflow-hidden">
+            <Image
+              src="https://cl2h8yilb0.ufs.sh/f/9iOVh1BwOhmurIeFvqCyKeRcQFZHL80wDt4PJ75ruqv1mxMG"
+              alt="Scholarship Not Found"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-600 mb-2">{t('notFound')}</h1>
+          <p className="text-gray-500 mb-4">{t('notFoundDescription')}</p>
+          <div className="flex items-center gap-2">
+            <span className="text-gray-500">{t('backToHome')}</span>
+            <Button
+              value={t('backToScholarships')}
+              onClick={() => router.push('/scholarships')}
+              variant="custom"
+              className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
+            />
+          </div>
         </div>
       </div>
     );
@@ -183,6 +196,8 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
       })()
     : t('noDeadline');
 
+  const isExpired = new Date(scholarshipEndDate).getTime() < Date.now();
+
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumbs Header */}
@@ -196,7 +211,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             {/* Title */}
-            <h1 className="text-4xl font-bold text-gray-900">{scholarshipTitle}</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{scholarshipTitle}</h1>
 
             {/* Metadata Row */}
             <ScholarshipMetadata
@@ -224,16 +239,20 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
                 onToggleFollow={handleToggleFollow}
               />
               {/* Action Button */}
-              {new Date(scholarship.endDate).getTime() > Date.now() && (
-                <Button
-                  value={t('applyNow')}
-                  variant="ok"
-                  size="lg"
-                  full
-                  onClick={handleApplyNow}
-                  className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
-                />
-              )}
+
+              <Button
+                value={!isExpired ? t('applyNow') : t('applyNowDisabled')}
+                variant="ok"
+                size="lg"
+                full
+                onClick={handleApplyNow}
+                className={
+                  isExpired
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all'
+                }
+              />
+
               {subscriptions.some((subscription) => subscription.userType === 'APPLICANT') ? (
                 <Button
                   value={t('analyzeScholarship')}

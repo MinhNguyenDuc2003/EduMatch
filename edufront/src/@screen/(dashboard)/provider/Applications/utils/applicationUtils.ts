@@ -43,7 +43,7 @@ export const filterApplications = (
   searchQuery: string,
   statusFilter: string
 ): ApplicationScholarship[] => {
-  let filtered = applications;
+  let filtered = [...applications].sort((a, b) => (b.createdDate || 0) - (a.createdDate || 0));
 
   // Filter by search query
   if (searchQuery.trim()) {
