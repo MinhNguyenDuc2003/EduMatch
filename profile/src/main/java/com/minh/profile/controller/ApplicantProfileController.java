@@ -5,6 +5,7 @@ import com.minh.enumeration.applicantprofile.ProfileType;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.profile.ApplicantPreferenceDto;
 import com.minh.model.dto.profile.ApplicantProfileDto;
+import com.minh.model.dto.profile.CountryRegisterStatisticDto;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.profile.data.vo.ApplicantProfileVo;
 import com.minh.profile.service.ApplicantProfileService;
@@ -73,4 +74,8 @@ public class ApplicantProfileController {
         return ApiResponse.ok(profileService.getPreferencesById(id));
     }
 
+    @GetMapping("/top-country")
+    public ApiResponse<List<CountryRegisterStatisticDto>> getTopCountryRegister() {
+        return ApiResponse.ok(profileService.getTop5CountryRegister());
+    }
 }

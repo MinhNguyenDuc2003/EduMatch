@@ -16,17 +16,17 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ApplicantProfileServiceImpl implements ApplicantProfileService {
 
     @Autowired
     private ApplicantProfileRepository applicantProfileRepository;
+    @Autowired
+    private ProviderProfileRepository providerProfileRepository;
     @Autowired
     private ApplicantCertificateRepository applicantCertificateRepository;
     @Autowired
@@ -217,4 +217,39 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
                 .map(entity -> applicantProfileMapper.toVo(entity))
                 .toList();
     }
+
+    @Override
+    public List<CountryRegisterStatisticDto> getTop5CountryRegister() {
+
+        List<CountryRegisterStatisticDto> applicantStats =
+                applicantProfileRepository.countByCountry()
+                        .stream()
+                        .map(o -> new CountryRegisterStatisticDto(
+                                o.getCountry(),
+                                o.getTotal()
+                        ))
+                        .toList();
+
+        List<CountryRegisterStatisticDto> providerStats =
+                providerProfileRepository.countByCountry()
+                        .stream()
+                        .map(o -> new CountryRegisterStatisticDto(
+                                o.getCountry(),
+                                o.getTotal()
+                        ))
+                        .toList();
+
+        return Stream.concat(applicantStats.stream(), providerStats.stream())
+                .collect(Collectors.groupingBy(
+                        CountryRegisterStatisticDto::getCountry,
+                        Collectors.summingLong(CountryRegisterStatisticDto::getTotal)
+                ))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(5)
+                .map(e -> new CountryRegisterStatisticDto(e.getKey(), e.getValue()))
+                .toList();
+    }
+
 }

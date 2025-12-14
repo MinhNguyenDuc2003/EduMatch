@@ -2,6 +2,7 @@ package com.minh.profile.data.repository;
 
 import com.minh.enumeration.applicantprofile.ProfileType;
 import com.minh.profile.data.entity.ApplicantProfileEntity;
+import com.minh.profile.data.vo.projection.CountryCountProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -54,4 +55,14 @@ public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfi
 
     List<ApplicantProfileEntity> findAllByUserIdAndTypeAndActive(String userId, ProfileType type, Boolean active);
 
+    @Query("""
+        SELECT 
+            a.preferredCountry AS country,
+            COUNT(a) AS total
+        FROM ApplicantProfileEntity a
+        WHERE a.active = true
+          AND a.preferredCountry IS NOT NULL
+        GROUP BY a.preferredCountry
+    """)
+    List<CountryCountProjection> countByCountry();
 }
