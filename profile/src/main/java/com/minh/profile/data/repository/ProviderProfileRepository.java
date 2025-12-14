@@ -1,6 +1,7 @@
 package com.minh.profile.data.repository;
 
 import com.minh.profile.data.entity.ProviderProfileEntity;
+import com.minh.profile.data.vo.projection.CountryCountProjection;
 import com.minh.profile.data.vo.projection.ProviderProfileProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,4 +36,15 @@ public interface ProviderProfileRepository extends JpaRepository<ProviderProfile
             " LEFT JOIN profile.PROVIDER_FOLLOWER f ON f.provider_id = p.id AND f.user_id = :userId " +
             " WHERE p.id = :id ", nativeQuery = true)
     Optional<ProviderProfileProjection> getDetail(Long id, String userId);
+
+    @Query("""
+        SELECT 
+            p.country AS country,
+            COUNT(p) AS total
+        FROM ProviderProfileEntity p
+        WHERE p.active = true
+          AND p.country IS NOT NULL
+        GROUP BY p.country
+    """)
+    List<CountryCountProjection> countByCountry();
 }

@@ -31,10 +31,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -168,41 +165,43 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
     public List<SubscriptionVo> getCurrentSubscriptionByUser() {
         String userId = SecurityUtil.getCurrentUserId();
         if (ObjectUtils.isEmpty(userId)) {
-            return null;
+            return List.of();
         }
 
-        // Lấy list còn hạn
-        List<SubscriptionEntity> entities = subscriptionRepository.findCurrentSubscription(userId);
+        // Lấy các subscription còn hạn
+        List<SubscriptionEntity> entities =
+                subscriptionRepository.findCurrentSubscriptionOrderByEndDateDesc(userId);
+
         if (entities.isEmpty()) {
-            return null;
+            return List.of();
         }
 
         // Lấy customer
-        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(userId));
+        CustomerVo customerVo =
+                this.parseResponse(customerFeign.getSimpleCustomerById(userId));
 
-        // Group theo userType
-        Map<SubscriptionTargetType, List<SubscriptionEntity>> grouped =
-                entities.stream().collect(Collectors.groupingBy(SubscriptionEntity::getUserType));
+        // Group theo userType, mỗi group lấy endDate lớn nhất
+        return entities.stream()
+                .collect(Collectors.groupingBy(SubscriptionEntity::getUserType))
+                .values()
+                .stream()
+                .map(list ->
+                        list.stream()
+                                .max(Comparator.comparing(SubscriptionEntity::getEndDate))
+                                .map(entity -> {
+                                    SubscriptionVo vo =
+                                            subscriptionMapper.toVo(
+                                                    subscriptionMapper.toDto(entity)
+                                            );
 
-        // Với mỗi type → chọn subscription có endDate lớn nhất
-        List<SubscriptionVo> finalList =
-                grouped.values().stream()
-                        .map(list -> {
-                            // lấy subscription mới nhất theo endDate
-                            SubscriptionEntity newest = list.stream()
-                                    .max(Comparator.comparing(SubscriptionEntity::getEndDate))
-                                    .orElse(null);
-
-                            SubscriptionVo vo = subscriptionMapper.toVo(subscriptionMapper.toDto(newest));
-
-                            // attach customer
-                            if (customerVo != null) {
-                                vo.setCustomer(customerVo.getCustomer());
-                            }
-                            return vo;
-                        })
-                        .toList();
-
-        return finalList;
+                                    if (customerVo != null) {
+                                        vo.setCustomer(customerVo.getCustomer());
+                                    }
+                                    return vo;
+                                })
+                                .orElse(null)
+                )
+                .filter(Objects::nonNull)
+                .toList();
     }
 }

@@ -77,4 +77,6 @@ public interface ScholarshipService {
     ScholarshipRecommendationVo getScholarshipRecommendation(Long applicantProfileId);
 
     List<ScholarshipYearMonthCountDto> getScholarshipYearMonthStatistics();
+
+    List<ScholarshipCountryCountDto> getTop5CountryStatistics();
 }

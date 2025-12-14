@@ -2,6 +2,7 @@ package com.minh.scholarship.data.repository;
 
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
+import com.minh.scholarship.data.vo.projection.ScholarshipCountryCountProjection;
 import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
 import com.minh.scholarship.data.vo.projection.ScholarshipYearMonthCountProjection;
 import feign.Param;
@@ -52,7 +53,7 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     @Query(value = "SELECT s.*, case when f.user_id is not null then 1 end as isFollow " +
             "            FROM scholarship.scholarship s " +
             "            LEFT join scholarship.scholarship_follower f on s.id = f.scholarship_id and f.user_id = :userId " +
-            "            WHERE s.active = true AND s.status = 'Public' " +
+            "            WHERE s.active = true " +
             "            AND UPPER(COALESCE(s.university, '')) LIKE UPPER(CONCAT('%', :university, '%')) " +
             "            AND UPPER(COALESCE(s.country, '')) LIKE UPPER(CONCAT('%', :country, '%')) " +
             "            AND UPPER(COALESCE(s.scholarship_type, '')) LIKE UPPER(CONCAT('%', :scholarshipType, '%')) " +
@@ -132,4 +133,17 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     List<ScholarshipYearMonthCountProjection> countScholarshipByYearAndMonth();
 
     List<ScholarshipEntity> getByIdIn(Collection<Long> ids);
+
+    @Query("""
+        SELECT 
+            s.country AS country,
+            COUNT(s) AS total
+        FROM ScholarshipEntity s
+        WHERE s.active = true
+          AND s.country IS NOT NULL
+        GROUP BY s.country
+        ORDER BY COUNT(s) DESC
+    """)
+    List<ScholarshipCountryCountProjection> countTopCountry();
+
 }

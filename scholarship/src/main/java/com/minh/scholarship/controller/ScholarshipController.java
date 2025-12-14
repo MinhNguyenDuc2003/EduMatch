@@ -8,6 +8,10 @@ import com.minh.model.dto.scholarship.ScholarshipFollowerDto;
 import com.minh.model.dto.scholarship.ScholarshipStatisticsDto;
 import com.minh.model.dto.scholarship.ScholarshipViewDto;
 import com.minh.model.dto.scholarship.ScholarshipYearMonthCountDto;
+import com.minh.model.dto.scholarship.*;
+import com.minh.scholarship.data.vo.ApplicantProfileVo;
+import com.minh.scholarship.data.vo.ApplicationRecommendationVo;
+import com.minh.scholarship.data.vo.ScholarshipVo;
 import com.minh.scholarship.data.vo.*;
 import com.minh.scholarship.model.filter.ScholarshipFilter;
 import com.minh.scholarship.service.ScholarshipService;
@@ -208,4 +212,8 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getScholarshipYearMonthStatistics());
     }
 
+    @GetMapping("/statistics/top-country")
+    public ApiResponse<List<ScholarshipCountryCountDto>> getTopCountryStatistics() {
+        return ApiResponse.ok(scholarshipService.getTop5CountryStatistics());
+    }
 }
