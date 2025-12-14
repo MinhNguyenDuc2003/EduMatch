@@ -3,7 +3,6 @@ package com.minh.scholarship.data.vo.ai;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.minh.model.dto.scholarship.ApplicationDto;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.scholarship.data.vo.ApplicantProfileVo;
 import lombok.*;
@@ -20,7 +19,7 @@ import java.util.List;
 @ToString(callSuper = true)
 public class AiRequestDto implements Serializable {
 
-    private ApplicationDto application;
+    private ApplicantProfileVo application;
 
     private ApplicantProfileVo profile;
 

@@ -182,7 +182,7 @@ aws:
   email: edumatch.space.scholarship@gmail.com
 
 mail:
-  resend-key: ${env.mail.key}
+  resend-key: ${env.mail.key:re_iuLXoHES_A13gEHjNC4q4tFb6y8SA2ydq}
 
 kafka:
   enable: true

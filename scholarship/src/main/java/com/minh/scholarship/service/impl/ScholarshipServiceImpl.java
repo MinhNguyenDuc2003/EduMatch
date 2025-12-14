@@ -128,8 +128,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         if (!scholarshipPreferences.isEmpty()) {
             scholarshipPreferences.forEach(o -> {
                 o.setScholarshipId(savedScholarship.getId());
+                scholarshipPreferenceRepository.save(scholarshipPreferenceMapper.toEntity(o));
             });
-            scholarshipPreferenceRepository.saveAll(scholarshipPreferenceMapper.toEntity(scholarshipPreferences));
         }
         NotificationTemplateDto notificationTemplateDto = this.parseResponse(notificationTemplateFeign.getNotificationTemplate(NotificationTemplateEnum.SCHOLARSHIP_NEW.getCode()));
         NotificationVo notificationVo = NotificationVo.builder()
@@ -491,7 +491,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         if (ObjectUtils.isEmpty(applicantProfileVo)) {
             return null;
         }
-        requestDto.setProfile(applicantProfileVo);
+        requestDto.setApplication(applicantProfileVo);
         requestDto.setScholarship(this.getById(scholarshipId));
         return aiMatchFeign.getAnalyzeMatch(requestDto);
     }

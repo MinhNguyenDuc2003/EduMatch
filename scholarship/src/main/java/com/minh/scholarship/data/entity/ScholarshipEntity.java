@@ -122,4 +122,7 @@ public class ScholarshipEntity extends BaseEntity {
     @Column(name = "REQUIRED_CLASS_RANK_PERCENTILE")
     private Integer requiredClassRankPercentile;
 
+    @Column(name = "STATUS")
+    private String status;
+
 }
