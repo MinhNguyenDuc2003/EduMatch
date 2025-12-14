@@ -36,9 +36,9 @@ const News = () => {
                 scholarship: item.scholarship?.title ?? '—',
                 providerName: item.providerProfileVo?.organizationName ?? '—',
                 images: item.newsMedias?.length ?? 0,
-                fileName: item.newsMedias[0]?.fileName ?? "—",
-                contentType: item.newsMedias[0]?.contentType ?? "—",
-                scholarshipStatus,
+                // fileName: item.newsMedias[0]?.fileName ?? "—",
+                // contentType: item.newsMedias[0]?.contentType ?? "—",
+                // scholarshipStatus,
                 publishedAt: published.toLocaleDateString('en-US', {
                 weekday: 'short',  // "Tue"
                 month: 'short',    // "Dec"
@@ -88,9 +88,9 @@ const News = () => {
               { accessorKey: "title", header: "Title" },
               { accessorKey: "scholarship", header: "Scholarship" },
               { accessorKey: "providerName", header: "Provider Name" },
-              { accessorKey: "fileName", header: "fileName" },
-              { accessorKey: "contentType", header: "contentType" },
-              { accessorKey: "scholarshipStatus", header: "Is Has Scholarship" },
+              // { accessorKey: "fileName", header: "fileName" },
+              // { accessorKey: "contentType", header: "contentType" },
+              // { accessorKey: "scholarshipStatus", header: "Is Has Scholarship" },
               { accessorKey: "publishedAt", header: "Published At" },
             ],
             []

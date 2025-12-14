@@ -28,7 +28,7 @@ const ApplicantScholarship = () => {
               return {
                 id: item.id,
                 scholarshipTitle: scholarship.title || 'Untitled Scholarship',
-                organization: provider.organizationName || 'N/A',
+                // organization: provider.organizationName || 'N/A',
                 applicantName: applicant.fullName || 'N/A',
                 university: scholarship.university || '—',
                 country: scholarship.country || '—',
@@ -83,7 +83,7 @@ const ApplicantScholarship = () => {
             () => [
               { accessorKey: "id", header: "ID" },
               { accessorKey: "scholarshipTitle", header: "Scholarship Title" },
-              { accessorKey: "organization", header: "Organization" },
+              // { accessorKey: "organization", header: "Organization" },
               { accessorKey: "applicantName", header: "Applicant" },
               { accessorKey: "university", header: "University" },
               { accessorKey: "country", header: "Country" },

@@ -27,8 +27,8 @@ const CaseStudyPage = () => {
             phoneNumber: item.profileVo?.phoneNumber || '—',
             hometown: item.profileVo?.hometown || '—',
             verified: item.verified ? 'Verified' : 'Unverified',
-            fileName: item?.medias?.[0]?.fileName || '—',
-            contentType: item?.medias?.[0]?.contentType || '—',
+            // fileName: item?.medias?.[0]?.fileName || '—',
+            // contentType: item?.medias?.[0]?.contentType || '—',
           }));
 
           const total = mappedCaseStudies.length;
@@ -66,8 +66,8 @@ const CaseStudyPage = () => {
               { accessorKey: "hometown", header: "Hometown" },
               { accessorKey: "title", header: "Title" },
               { accessorKey: "verified", header: "Verified" },
-              { accessorKey: "fileName", header: "File Name" },
-              { accessorKey: "contentType", header: "Content Type" },
+              // { accessorKey: "fileName", header: "File Name" },
+              // { accessorKey: "contentType", header: "Content Type" },
             ],
             []
           );
