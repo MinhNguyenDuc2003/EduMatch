@@ -1,14 +1,15 @@
 'use client';
 
 import { CheckCircle, Clock, DollarSign } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
+import { useRouter } from 'next/navigation';
 
 const OrderPage = () => {
   const [filterText, setFilterText] = useState('');
-
+  const router = useRouter();
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
@@ -24,7 +25,13 @@ const OrderPage = () => {
             list?.map((item: any) => ({
               ...item,
               amountStr: `$${item.amount.toFixed(2)}`,
-              paidAtStr: new Date(item.paidAt).toLocaleDateString('en-US'),
+              paidAtStr: new Date(item.paidAt).toLocaleDateString('en-US', {
+                weekday: 'short',  // "Tue"
+                month: 'short',    // "Dec"
+                day: 'numeric',    // "3"
+                year: 'numeric'    // "2025"
+              }),
+              fullName: `${item.customer.firstName} ${item.customer.lastName}`,
             })) || [];
 
           // --- Statistics ---
@@ -55,28 +62,36 @@ const OrderPage = () => {
               filterName: 'PENDING',
             },
           ];
-
+          const columns = useMemo(
+            () => [
+              { accessorKey: "id", header: "ID" },
+              { accessorKey: "fullName", header: "Customer Name" },
+              { accessorKey: "customer.email", header: "Email" },
+              // { accessorKey: "scholarshipTitle", header: "Subscription ID" },
+              // { accessorKey: "organization", header: "User ID" },
+              { accessorKey: "amountStr", header: "Amount" },
+              { accessorKey: "currency", header: "Currency" },
+              { accessorKey: "paymentMethod", header: "Payment Method" },
+              // { accessorKey: "funding", header: "Transaction ID" },
+              { accessorKey: "status", header: "Status" },
+              { accessorKey: "paidAtStr", header: "Paid At" },
+            ],
+            []
+          );
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6 space-y-6">
-              <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
+              {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
+
 
               <CustomDataTable
-                title="Order Payments List"
+                columns={columns}
                 data={mappedSubs}
-                detailPath="/order"
-                customTitles={[
-                  'ID',
-                  'Subscription ID',
-                  'User ID',
-                  'Amount',
-                  'Currency',
-                  'Payment Method',
-                  'Transaction ID',
-                  'Status',
-                  'Paid At',
-                ]}
-                externalFilterText={filterText}
-               
+                onView={(row: any) => router.push(`/payment/${row.id}`)}
+                onEdit={(row: any) => console.log("edit", row)}
+                onDelete={(row: any) => console.log("delete", row)}
+                isCreate={false}
+                isEdit={false}
+                isDelete={false}
               />
             </div>
           );

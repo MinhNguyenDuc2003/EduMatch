@@ -1,6 +1,17 @@
 'use client';
 
-import { Check, Eye, FolderKanban, MessageSquare, X } from 'lucide-react';
+import {
+  Check,
+  X,
+  MessageSquare,
+  User,
+  Mail,
+  Tag,
+  Clock,
+  AlertCircle,
+  CornerDownRight,
+  Send
+} from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Context from '../seg/context';
@@ -21,162 +32,240 @@ function ReportFeedbackDetailInner({ meds, id }: { meds: any; id: string }) {
   const [data, setData] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [replyText, setReplyText] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (id && meds?.onGetByID) {
       (async () => {
-        const res = await meds.onGetByID(id);
-        setData(res);
+        try {
+          const res = await meds.onGetByID(id);
+          setData(res);
+        } catch (error) {
+          console.error(error);
+        }
       })();
     }
-  }, [id]);
+  }, [id, meds]);
 
   const handleSubmitReply = async () => {
     if (!replyText.trim()) return alert('Please enter a reply');
+    setLoading(true);
     try {
-      // Gọi API gửi phản hồi
       await meds.onReply(id, replyText);
       window.location.reload();
-      setIsModalOpen(false);
-      setReplyText('');
     } catch (err) {
       console.error(err);
       alert('Failed to send reply');
+    } finally {
+      setLoading(false);
+      setIsModalOpen(false);
     }
   };
 
   if (!data)
     return (
-      <div className="p-16 text-center text-gray-500 animate-pulse">Loading report details...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center gap-3 animate-pulse">
+          <div className="h-16 w-16 bg-gray-200 rounded-lg"></div>
+          <div className="text-gray-400 font-medium">Loading Ticket...</div>
+        </div>
+      </div>
     );
 
+  const { customer, category } = data;
+  const isPending = data.status === 'PENDING';
+
   return (
-    <div className="w-[95%]  mx-auto bg-white p-8 mt-10 rounded-2xl shadow-md border border-gray-100 space-y-6">
-      {/* HEADER */}
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex items-center gap-3">
-          <MessageSquare size={26} className="text-blue-600" />
-          <h1 className="text-2xl font-bold text-gray-900">Report Details</h1>
-        </div>
+    <div className="min-h-screen bg-gray-50 py-10 px-4 font-sans flex justify-center">
+      <div className=" w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        <span
-          className={`px-4 py-1.5 rounded-xl text-sm font-semibold shadow-sm ${
-            data.status === 'PENDING'
-              ? 'bg-yellow-100 text-yellow-700'
-              : data.status === 'RESOLVED'
-                ? 'bg-green-100 text-green-700'
-                : 'bg-gray-100 text-gray-700'
-          }`}
-        >
-          {data.status}
-        </span>
-      </div>
+        {/* LEFT COLUMN: TICKET CONTENT (2/3) */}
+        <div className="lg:col-span-2 space-y-6">
 
-      {/* BUTTON PHẢN HỒI */}
-      {!data.isRead && (
-        <div className="flex justify-end mb-6">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-          >
-            Reply
-          </button>
-        </div>
-      )}
+          {/* Header Card */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <div className="flex justify-between items-start mb-4">
+              <div className="flex items-center gap-2 text-gray-500 text-sm font-medium">
+                <span>Ticket #{data.id}</span>
+                <span>•</span>
+                <span className={data.isRead ? 'text-gray-500' : 'text-blue-600 font-bold'}>
+                  {data.isRead ? 'Read' : 'Unread'}
+                </span>
+              </div>
+              <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border ${isPending
+                  ? 'bg-amber-50 text-amber-700 border-amber-200'
+                  : 'bg-green-50 text-green-700 border-green-200'
+                }`}>
+                {data.status}
+              </span>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">{data.title}</h1>
 
-      {/* BASIC INFO */}
-      <div className="flex flex-col gap-4">
-        <HorizontalRow label="Report ID" value={data.id} />
-        <HorizontalRow label="Title" value={data.title} />
-
-        {/* COMMENT nổi bật */}
-        <div className="flex items-start gap-5">
-          <p className="text-sm font-semibold text-gray-700 w-40 pt-1">Report Content</p>
-          <div className="flex-1 bg-blue-50 border border-blue-200 p-4 rounded-xl shadow-sm">
-            <p className="text-gray-800 leading-relaxed whitespace-pre-line">
-              {data.comment || '—'}
-            </p>
-          </div>
-        </div>
-
-        <HorizontalRow label="User ID" value={data.userId} />
-        <HorizontalRow label="Read Status" value={data.isRead ? 'Read' : 'Unread'} />
-      </div>
-      {data.response && (
-        <div className="flex flex-col gap-4 mt-6">
-          <div className="flex items-center gap-2">
-            <Eye size={20} className="text-green-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Response</h2>
-          </div>
-
-          <div className="flex items-start gap-5">
-            <p className="text-sm font-medium text-gray-600 w-40 pt-1">Response Content</p>
-            <div className="flex-1 bg-green-50 border border-green-200 p-4 rounded-xl shadow-sm">
-              <p className="text-gray-800 leading-relaxed whitespace-pre-line">
-                {data.response || '—'}
-              </p>
+            {/* Category Tags */}
+            <div className="flex flex-wrap gap-2 mt-3">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 text-xs font-medium border border-blue-100">
+                <Tag size={12} /> {category?.type}
+              </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-gray-100 text-gray-700 text-xs font-medium border border-gray-200">
+                {category?.name}
+              </span>
             </div>
           </div>
-        </div>
-      )}
-      {/* CATEGORY */}
-      <div className="flex flex-col gap-4 mt-6">
-        <div className="flex items-center gap-2">
-          <FolderKanban size={20} className="text-indigo-600" />
-          <h2 className="text-lg font-semibold text-gray-900">Category</h2>
-        </div>
 
-        <HorizontalRow label="Name" value={data.category?.name} />
-        <HorizontalRow label="Type" value={data.category?.type} />
-        <div className="flex items-start gap-5">
-          <p className="text-sm font-medium text-gray-600 w-40 pt-1">Description</p>
-          <div className="flex-1 bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
-            <p className="text-gray-800 leading-relaxed whitespace-pre-line">
-              {data.category?.description || '—'}
+          {/* The Report (User Issue) */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+              <MessageSquare size={20} className="text-gray-400" />
+              <h3 className="font-bold text-gray-900">Report Description</h3>
+            </div>
+            <div className="prose prose-blue max-w-none text-gray-700 leading-relaxed">
+              {data.comment}
+            </div>
+            <p className="mt-6 text-sm text-gray-400 italic">
+              Category description: {category?.description}
             </p>
           </div>
+
+          {/* The Response (Thread) */}
+          {data.response ? (
+            <div className="bg-blue-50/50 rounded-2xl shadow-sm border border-blue-100 p-8 ml-0 lg:ml-8 relative">
+              <div className="absolute -left-4 top-8 text-gray-300 hidden lg:block">
+                <CornerDownRight size={32} />
+              </div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
+                  <Send size={14} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900">Admin Response</h3>
+                  <p className="text-xs text-gray-500">Resolution provided</p>
+                </div>
+              </div>
+              <p className="text-gray-800 bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
+                {data.response}
+              </p>
+            </div>
+          ) : (
+            // Reply Action Area
+            <div className="bg-gray-50 rounded-2xl border border-dashed border-gray-300 p-8 text-center">
+              <div className="mx-auto h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                <MessageSquare size={20} className="text-gray-400" />
+              </div>
+              <h3 className="text-gray-900 font-medium mb-1">No response yet</h3>
+              <p className="text-gray-500 text-sm mb-6">This ticket is currently pending an admin response.</p>
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition shadow-lg shadow-blue-200"
+              >
+                Reply to Ticket
+              </button>
+            </div>
+          )}
+
+        </div>
+
+        {/* RIGHT COLUMN: SIDEBAR INFO (1/3) */}
+        <div className="space-y-6">
+
+          {/* Customer Profile Card */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="h-20 bg-gradient-to-r from-slate-700 to-slate-800"></div>
+
+
+            {/* Header */}
+            <div className="relative h-20 bg-gradient-to-r from-slate-700 to-slate-800">
+              {/* Avatar */}
+              <div className="absolute -bottom-10 left-6">
+                <div className="h-20 w-20 rounded-full border-4 border-white bg-slate-200 flex items-center justify-center text-2xl font-bold text-slate-600">
+                  {customer?.firstName?.[0] || <User />}
+                </div>
+              </div>
+            </div>
+
+            <div className="px-6 pb-6 relative">
+
+              <div className="mt-12 ">
+                <h2 className="text-lg font-bold text-gray-900 ">{customer?.firstName} {customer?.lastName}</h2>
+                <p className="text-sm text-gray-500 font-medium">@{customer?.username}</p>
+
+                <div className="mt-6 space-y-3">
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <Mail size={16} className="text-gray-400" />
+                    <a href={`mailto:${customer?.email}`} className="hover:text-blue-600 transition">
+                      {customer?.email}
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Status */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-4">Ticket Status</h3>
+            <div className="flex items-center gap-3">
+              {isPending ? (
+                <AlertCircle className="text-amber-500" size={24} />
+              ) : (
+                <Check className="text-green-500" size={24} />
+              )}
+              <div>
+                <p className="font-bold text-gray-900">{isPending ? 'Pending Review' : 'Resolved'}</p>
+                <p className="text-xs text-gray-500">
+                  {isPending ? 'Needs attention' : 'No further action required'}
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      {/* MODAL */}
+      {/* REPLY MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Reply to Report</h3>
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50 p-4">
+          <div className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg border border-gray-100 animate-in fade-in zoom-in duration-200">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-gray-900">Compose Reply</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="bg-gray-50 p-3 rounded-lg mb-4 border border-gray-200">
+              <p className="text-xs text-gray-500 font-medium uppercase mb-1">Replying to:</p>
+              <p className="text-sm text-gray-800 line-clamp-2 italic">"{data.comment}"</p>
+            </div>
+
             <textarea
               value={replyText}
               onChange={(e) => setReplyText(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-3 mb-4 focus:ring focus:ring-blue-200 focus:border-blue-400"
-              rows={5}
-              placeholder="Type your reply here..."
+              className="w-full border border-gray-300 rounded-xl p-4 mb-4 focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition resize-none text-gray-700"
+              rows={6}
+              placeholder="Type your official response here..."
             />
+
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition flex items-center gap-1"
+                className="px-5 py-2.5 text-gray-600 font-medium hover:bg-gray-100 rounded-xl transition"
               >
-                <X size={16} /> Cancel
+                Cancel
               </button>
               <button
                 onClick={handleSubmitReply}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-1"
+                disabled={loading}
+                className="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition flex items-center gap-2 shadow-lg shadow-blue-200 disabled:opacity-70"
               >
-                <Check size={16} /> Submit
+                {loading ? 'Sending...' : <><Send size={16} /> Send Reply</>}
               </button>
             </div>
           </div>
         </div>
       )}
-    </div>
-  );
-}
-
-/* HORIZONTAL ROW */
-function HorizontalRow({ label, value }: { label: string; value: any }) {
-  return (
-    <div className="flex items-start gap-5">
-      <p className="text-sm font-medium text-gray-600 w-40 pt-1">{label}</p>
-      <p className="text-gray-900 font-semibold flex-1">{value || '—'}</p>
     </div>
   );
 }

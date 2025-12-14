@@ -1,13 +1,14 @@
 import { CheckCircle, Clock, GraduationCap, XCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
+import { useRouter } from 'next/navigation';
 // import { useRouter } from 'next/navigation';
 
 const ScholarshipPage = () => {
   const [filterText, setFilterText] = useState('');
-
+  const router = useRouter();
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
@@ -68,25 +69,34 @@ const ScholarshipPage = () => {
               filterName: 'Closed',
             },
           ];
-
+          const columns = useMemo(
+            () => [
+              { accessorKey: "id", header: "ID" },
+              { accessorKey: "name", header: "Scholarship Name" },
+              { accessorKey: "sponsor", header: "University" },
+              { accessorKey: "amount", header: "Amount" },
+              { accessorKey: "deadline", header: "Deadline" },
+              { accessorKey: "status", header: "Status" },
+            ],
+            []
+          );
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
-              <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
+              {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
+
+
 
               <CustomDataTable
-                title="Scholarship List"
-                data={scholarships as any}
-                detailPath="/scholarship"
-                customTitles={[
-                  'ID',
-                  'Scholarship Name',
-                  'University',
-                  'Amount',
-                  'Deadline',
-                  'Status',
-                ]}
-                externalFilterText={filterText}
+                columns={columns}
+                data={scholarships}
+                onView={(row: any) => router.push(`/scholarship/${row.id}`)}
+                onEdit={(row: any) => console.log("edit", row)}
+                onDelete={(row: any) => console.log("delete", row)}
+                isDelete={false}
+                isEdit={false}
+                isCreate={false}
               />
+
             </div>
           );
         }}
