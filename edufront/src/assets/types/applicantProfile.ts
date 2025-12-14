@@ -36,10 +36,9 @@ declare global {
   interface ApplicantPreference {
     id: number;
     applicantId: number;
-    type: string;
-    value: string;
+    type?: string;
+    field?: string;
     weight: number;
-    note: string;
   }
 
   interface Skill {

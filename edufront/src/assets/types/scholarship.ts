@@ -14,10 +14,9 @@ declare global {
   type ScholarshipPreference = {
     id: number;
     scholarshipId: number;
-    type: string;
-    value: string;
+    type?: string;
+    field?: string;
     weight: number;
-    note: string;
   };
 
   type Scholarship = {
@@ -55,6 +54,7 @@ declare global {
     requiredPublicationCount: number;
     requiredAcademicAwards: string;
     requiredClassRankPercentile: number;
+    status: string;
     isDeleted?: boolean;
     providerProfileVo: ProviderProfile;
     scholarshipPreferences?: ScholarshipPreference[];
@@ -64,6 +64,27 @@ declare global {
     score?: number;
     createdDate?: number;
     caseStudyVos?: CaseStudy[];
+    llmScore?: ScholarshipLLMScore;
+    cosineScore?: ScholarshipCosineScore;
+  };
+
+  type ScholarshipLLMScore = {
+    motivation_score: number;
+    statement_score: number;
+    career_score: number;
+    achievement_score: number;
+    extracurricular_score: number;
+    overall_soft_score: number;
+    experience_score: number;
+    education_score: number;
+    intentions_score: number;
+  };
+
+  type ScholarshipCosineScore = {
+    major: number;
+    skills: number;
+    research: number;
+    soft_score: number;
   };
 
   type SearchScholarshipsByUniversityResponse = {

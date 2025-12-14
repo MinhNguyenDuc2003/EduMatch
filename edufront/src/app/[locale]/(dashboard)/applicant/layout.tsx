@@ -8,7 +8,7 @@ import React from 'react';
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ProtectedRoute>
-      <div className="w-full h-screen flex flex-col">
+      <div className="w-full min-h-screen flex flex-col">
         <Header />
         <main className="flex-1 ">{children}</main>
         <Footer />

@@ -6,7 +6,6 @@ export { default as CertificateCard } from './CertificateCard';
 export { default as Certificates } from './Certificates';
 export { default as HistoryCard } from './HistoryCard';
 export { default as SkillCard } from './SkillCard';
-export { default as PreferenceCard } from './PreferenceCard';
 export { default as IntentionCard } from './IntentionCard';
 export { default as IntentionDetail } from './IntentionDetail';
 export { default as Intentions } from './Intentions';

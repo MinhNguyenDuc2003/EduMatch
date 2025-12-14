@@ -77,6 +77,12 @@ export const apiAuth = createApi({
         params: { subscriptionId, subscriptionPlanId, transactionId },
       }),
     }),
+    getMyOrder: build.query<Payment[], void>({
+      query: () => ({
+        url: `${API_ENDPOINTS.SUBSCRIPTION}/payments/my-orders`,
+        method: 'GET',
+      }),
+    }),
     logout: build.mutation<void, void>({
       query: () => ({
         url: '/api/customer/storefront/logout',
@@ -97,5 +103,6 @@ export const {
   useGetSubscriptionByTargetTypeQuery,
   useConfirmPaymentMutation,
   useExtendSubscriptionMutation,
+  useGetMyOrderQuery,
   useLogoutMutation,
 } = apiAuth;

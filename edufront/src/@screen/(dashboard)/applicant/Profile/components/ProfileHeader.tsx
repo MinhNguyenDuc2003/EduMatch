@@ -21,7 +21,7 @@ interface ProfileHeaderProps {
 
 export default function ProfileHeader({ name, role, avatarUrl, stats }: ProfileHeaderProps) {
   const t = useTranslations('applicantProfile.profileHeader');
-  const { isAuthenticated, subscriptions } = useAuth();
+  const { subscriptions } = useAuth();
   const router = useRouter();
 
   return (
@@ -56,6 +56,13 @@ export default function ProfileHeader({ name, role, avatarUrl, stats }: ProfileH
               ? t('expandPackage')
               : t('upgradePackage')
           }
+          className="bg-primary-brand w-full text-white rounded-md py-4"
+        />
+
+        <Button
+          variant="custom"
+          onClick={() => router.push('/applicant/payment-history')}
+          value={t('paymentHistory')}
           className="bg-primary-brand w-full text-white rounded-md py-4"
         />
       </div>

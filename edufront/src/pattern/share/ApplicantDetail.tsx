@@ -417,31 +417,6 @@ const ApplicantDetail = ({ applicant }: { applicant: ApplicantProfile }) => {
           </div>
         )}
 
-        {applicant.applicantPreferences && applicant.applicantPreferences.length > 0 && (
-          <div className="bg-muted/30 p-3 sm:p-4 rounded">
-            <h4 className="font-semibold mb-3 text-base sm:text-lg">{t('detail.preferences')}</h4>
-            <div className="space-y-2">
-              {applicant.applicantPreferences.map((pref) => (
-                <div
-                  key={pref.id}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
-                >
-                  <div>
-                    <p className="font-medium text-xs sm:text-sm">{pref.type}</p>
-                    <p className="text-xs text-muted-foreground">{pref.value}</p>
-                    {pref.note && (
-                      <p className="text-xs text-muted-foreground italic">{pref.note}</p>
-                    )}
-                  </div>
-                  <div className="text-sm font-medium" style={{ color: '#3d6cb9' }}>
-                    {t('detail.weight')}: {(pref.weight * 100).toFixed(0)}%
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {applicant.militaryFamilyHistory && (
           <div className="bg-blue-50 border border-blue-200 p-3 sm:p-4 rounded">
             <p className="text-xs sm:text-sm font-semibold" style={{ color: '#3d6cb9' }}>

@@ -13,9 +13,6 @@ import Certificates from './components/Certificates';
 import Intentions from './components/Intentions';
 import HistoryCard from './components/HistoryCard';
 import SkillCard from './components/SkillCard';
-import PreferenceCard from './components/PreferenceCard';
-
-import BreadcrumbHeader from '@/pattern/core/BreadcrumbHeader';
 import { useGetProfileQuery } from '@/state/apiApplicant';
 import { useTranslations } from 'next-intl';
 
@@ -34,14 +31,6 @@ export default function Profile() {
 
   return (
     <>
-      {/* Breadcrumb Navigation */}
-      <BreadcrumbHeader
-        items={[
-          { label: t('breadcrumb.applicant'), href: '/applicant' },
-          { label: t('breadcrumb.profile') },
-        ]}
-      />
-
       <div className="min-h-screen bg-gray-50 py-8 px-4 lg:px-40">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Profile Header */}

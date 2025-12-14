@@ -132,7 +132,7 @@ export default function PremiumBanner() {
 
             {/* Desktop Layout: Horizontal */}
             <div className="hidden md:flex items-center justify-between gap-4">
-              <div className="flex flex-col gap-2 flex-1">
+              <div className="flex items-center gap-2 flex-1">
                 <div className="px-2 py-1 w-fit bg-white/20 backdrop-blur-sm rounded-md">
                   <span className="text-xs font-semibold text-white uppercase tracking-wide">
                     {t('badge')}
@@ -147,7 +147,7 @@ export default function PremiumBanner() {
               </div>
               <button
                 onClick={handleUpdate}
-                className="flex items-center gap-2 bg-white text-blue-900 font-semibold py-2 px-4 rounded-lg hover:cursor-pointer hover:bg-gray-100 transition-all duration-200 shadow-lg whitespace-nowrap"
+                className="flex items-center text-sm gap-2 bg-white text-blue-900 font-semibold py-2 px-4 rounded-lg hover:cursor-pointer hover:bg-gray-100 transition-all duration-200 shadow-lg whitespace-nowrap"
               >
                 {t('updateNow')}
               </button>

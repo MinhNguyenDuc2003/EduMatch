@@ -23,6 +23,7 @@ import {
   Home,
   ArrowBigUp,
   Heart,
+  CreditCard,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -72,6 +73,11 @@ const ProviderSidebar = () => {
       icon: Heart,
       label: t('favourite'),
       href: '/provider/favourite',
+    },
+    {
+      icon: CreditCard,
+      label: t('paymentHistory'),
+      href: '/provider/payment-history',
     },
   ];
 

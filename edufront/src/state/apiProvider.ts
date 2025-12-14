@@ -181,6 +181,21 @@ export const apiProvider = createApi({
       ],
     }),
 
+    // Get recommended applications by scholarship ID
+    getRecommendedApplicationsByScholarshipId: build.query<
+      ApplicationScholarship[],
+      { scholarshipId: number }
+    >({
+      query: ({ scholarshipId }) => ({
+        url: `${API_ENDPOINTS.APPLICATION}/rank/application`,
+        method: 'GET',
+        params: { scholarshipId },
+      }),
+      providesTags: (result, error, { scholarshipId }) => [
+        { type: 'Applications', id: scholarshipId },
+      ],
+    }),
+
     // Update application status
     updateApplicationStatus: build.mutation<ApplicationScholarship, UpdateApplicationStatusRequest>(
       {
@@ -343,6 +358,7 @@ export const {
   useGetFollowedProvidersQuery,
   useGetProviderProfileByIdQuery,
   useGetApplicationsByScholarshipIdQuery,
+  useGetRecommendedApplicationsByScholarshipIdQuery,
   useGetAllApplicationsQuery,
   useUpdateApplicationStatusMutation,
   useGetNewsQuery,

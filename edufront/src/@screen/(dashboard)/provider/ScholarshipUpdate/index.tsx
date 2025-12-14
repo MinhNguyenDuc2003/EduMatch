@@ -29,7 +29,54 @@ const ScholarshipUpdate = ({ scholarshipId }: { scholarshipId: string }) => {
   const onSubmit = async (data: IScholarship) => {
     try {
       // TODO: Call API to create scholarship
-      console.log('Submitting scholarship:', data);
+      if (data.scholarshipPreferences && data.scholarshipPreferences.length === 0) {
+        data.scholarshipPreferences = [
+          {
+            field: 'experience_w',
+            weight: 0.8,
+          },
+          {
+            field: 'career_w',
+            weight: 0.3,
+          },
+          {
+            field: 'education_w',
+            weight: 0.8,
+          },
+          {
+            field: 'intentions_w',
+            weight: 0.4,
+          },
+          {
+            field: 'major_w',
+            weight: 0.4,
+          },
+          {
+            field: 'skills_w',
+            weight: 0.5,
+          },
+          {
+            field: 'research_w',
+            weight: 0.5,
+          },
+          {
+            field: 'personal_statement_w',
+            weight: 0.5,
+          },
+          {
+            field: 'motivation_w',
+            weight: 0.5,
+          },
+          {
+            field: 'achievements_w',
+            weight: 0.5,
+          },
+          {
+            field: 'extracurricular_w',
+            weight: 0.5,
+          },
+        ];
+      }
 
       await updateScholarship(data).unwrap();
 

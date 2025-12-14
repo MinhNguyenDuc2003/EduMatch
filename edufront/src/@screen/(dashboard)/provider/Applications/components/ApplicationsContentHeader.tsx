@@ -1,33 +1,41 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import ApplicationsFilters from './ApplicationsFilters';
+import { ScholarshipPreferencesWeightDialog } from '@/pattern/share/ScholarshipPreferencesWeightDialog';
+import { ApplicationRecommendationDialog } from './ApplicationRecommendationDialog';
 
 interface ApplicationsContentHeaderProps {
-  scholarshipTitle: string;
+  scholarship: Scholarship;
   filteredCount: number;
   totalCount: number;
   searchQuery: string;
   onSearchChange: (value: string) => void;
   statusFilter: string;
   onStatusFilterChange: (value: string) => void;
+  onView: (applicationScholarship: ApplicationScholarship) => void;
 }
 
 const ApplicationsContentHeader = React.memo(
   ({
-    scholarshipTitle,
+    scholarship,
     filteredCount,
     totalCount,
     searchQuery,
     onSearchChange,
     statusFilter,
     onStatusFilterChange,
+    onView,
   }: ApplicationsContentHeaderProps) => {
     const t = useTranslations('providerApplications');
 
     return (
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">{scholarshipTitle}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl font-semibold text-gray-900">{scholarship.title}</h2>
+            <ScholarshipPreferencesWeightDialog scholarship={scholarship} />
+            <ApplicationRecommendationDialog scholarship={scholarship} onView={onView} />
+          </div>
           <p className="text-sm text-gray-600 mt-1">
             {t('applicationsCount', { filteredCount, totalCount })}
           </p>

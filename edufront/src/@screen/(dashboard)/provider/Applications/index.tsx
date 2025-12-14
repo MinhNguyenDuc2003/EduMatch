@@ -117,13 +117,14 @@ const Applications = () => {
           ) : (
             <>
               <ApplicationsContentHeader
-                scholarshipTitle={selectedScholarship.title}
+                scholarship={selectedScholarship}
                 filteredCount={filteredApplications.length}
                 totalCount={applications.length}
                 searchQuery={searchQuery}
                 onSearchChange={setSearchQuery}
                 statusFilter={statusFilter}
                 onStatusFilterChange={setStatusFilter}
+                onView={handleViewApplication}
               />
 
               {filteredApplications.length > 0 ? (

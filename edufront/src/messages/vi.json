@@ -68,6 +68,7 @@
     "news": "Tin tức",
     "students": "Sinh viên",
     "favourite": "Yêu thích",
+    "paymentHistory": "Lịch sử thanh toán",
     "settings": "Cài đặt",
     "profile": "Hồ sơ",
     "extendSubscription": "Gia hạn tài khoản",
@@ -170,6 +171,7 @@
   },
   "scholarshipForm": {
     "basicInformation": "Thông tin cơ bản",
+    "status": "Trạng thái",
     "title": "Tiêu đề học bổng*",
     "slug": "Slug*",
     "shortDescription": "Mô tả ngắn*",
@@ -687,8 +689,9 @@
       "matchedResearchOpportunities": "Cơ hội nghiên cứu phù hợp",
       "matchedScholarshipsAmount": "Tổng giá trị học bổng phù hợp",
       "editProfile": "Chỉnh sửa hồ sơ",
-      "expandPackage": "Mở rộng gói AI Scholarship",
-      "upgradePackage": "Nâng cấp gói"
+      "expandPackage": "Gia hạn gói AI Scholarship",
+      "upgradePackage": "Nâng cấp gói",
+      "paymentHistory": "Lịch sử thanh toán"
     },
     "profileStrength": {
       "title": "Độ hoàn thiện hồ sơ",
@@ -1704,6 +1707,46 @@
         }
       ],
       "lastUpdated": "Cập nhật lần cuối: 06/12/2025"
+    }
+  },
+  "paymentHistory": {
+    "breadcrumb": {
+      "applicant": "Ứng viên",
+      "provider": "Nhà cung cấp",
+      "paymentHistory": "Lịch sử thanh toán"
+    },
+    "title": "Lịch sử thanh toán",
+    "subtitle": "Xem lịch sử thanh toán gói đăng ký và chi tiết giao dịch của bạn",
+    "table": {
+      "transactionId": "Mã giao dịch",
+      "planName": "Tên gói",
+      "amount": "Số tiền",
+      "paymentMethod": "Phương thức thanh toán",
+      "status": "Trạng thái",
+      "paymentDate": "Ngày thanh toán",
+      "subscriptionPeriod": "Thời gian hiệu lực"
+    },
+    "empty": {
+      "title": "Chưa có lịch sử thanh toán",
+      "description": "Bạn chưa thực hiện thanh toán nào. Đăng ký gói để bắt đầu."
+    },
+    "error": {
+      "title": "Không thể tải lịch sử thanh toán",
+      "description": "Đã xảy ra lỗi khi tải lịch sử thanh toán của bạn. Vui lòng thử lại sau."
+    },
+    "footer": {
+      "total": "Tổng cộng {count} giao dịch"
+    },
+    "detail": {
+      "title": "Chi tiết giao dịch",
+      "transactionId": "Mã giao dịch",
+      "close": "Đóng",
+      "transactionInfo": "Thông tin giao dịch",
+      "subscriptionInfo": "Thông tin gói",
+      "customerInfo": "Thông tin khách hàng",
+      "createdDate": "Ngày tạo",
+      "planDetails": "Chi tiết",
+      "userType": "Loại người dùng"
     }
   }
 }
