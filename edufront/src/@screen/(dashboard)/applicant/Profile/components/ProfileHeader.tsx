@@ -58,6 +58,15 @@ export default function ProfileHeader({ name, role, avatarUrl, stats }: ProfileH
           }
           className="bg-primary-brand w-full text-white rounded-md py-4"
         />
+
+        <Button
+          variant="custom"
+          onClick={() => router.push('/applicant/paymentHistory')}
+          value={t('paymentHistory')}
+          className="bg-primary-brand w-full text-white rounded-md py-4"
+        />
+
+
       </div>
     </div>
   );
