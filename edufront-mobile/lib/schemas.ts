@@ -39,6 +39,16 @@ export const applicantProfileSchema = z.object({
       .min(1, "ACT score must be at least 1")
       .max(36, "ACT score must be at most 36")
       .optional(),
+    greScore: z.coerce
+      .number<number>()
+      .min(260, "GRE score must be greater than 260")
+      .max(340, "GRE score must be less than 340")
+      .optional(),
+    gmatScore: z.coerce
+      .number<number>()
+      .min(200, "GMAT score must be greater than 200")
+      .max(800, "GMAT score must be less than 800")
+      .optional(),
     toeflScore: z.coerce
       .number<number>()
       .min(0, "TOEFL score must be at least 0")
@@ -49,11 +59,6 @@ export const applicantProfileSchema = z.object({
       .min(0, "IELTS score must be at least 0")
       .max(9, "IELTS score must be at most 9")
       .optional(),
-    greScore: z.coerce
-      .number<number>()
-      .min(260, "GRE score must be greater than 260")
-      .max(340, "GRE score must be less than 340")
-      .optional(),
     languages: z.string().min(1, "Languages is required"),
     academicAwards: z.string().optional(),
     publicationCount: z.coerce.number<number>().min(0).optional(),
@@ -62,7 +67,7 @@ export const applicantProfileSchema = z.object({
       .string()
       .min(1, "Preferred scholarship type is required"),
     preferredCountry: z.string().min(1, "Preferred country is required"),
-    preferredUniversity: z.string().min(1, "Preferred university is required"),
+    preferredMajor: z.string().min(1, "Preferred major is required"),
     certificates: z
       .array(
         z.object({
