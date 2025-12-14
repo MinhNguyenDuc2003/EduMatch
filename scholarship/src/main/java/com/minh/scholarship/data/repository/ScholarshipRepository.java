@@ -1,6 +1,5 @@
 package com.minh.scholarship.data.repository;
 
-import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.scholarship.data.entity.ScholarshipEntity;
 import com.minh.scholarship.data.vo.projection.ScholarshipCountryCountProjection;
 import com.minh.scholarship.data.vo.projection.ScholarshipProjection;
@@ -104,46 +103,73 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
             , nativeQuery = true)
     List<ScholarshipEntity> findByApplicationSuccessAndScholarshipId(String userId, Long scholarshipId, String status);
 
-    @Query("SELECT s " +
-            "FROM ScholarshipEntity s " +
-            "WHERE s.active = true " +
-            "AND (:educationLevel IS NULL OR s.studyLevel = :educationLevel) " +
-            "AND (:country IS NULL OR s.country = :country) " +
-            "AND (:overallGpa IS NULL OR s.gpaRequirement <= :overallGpa) " +
-            "AND (:satScore IS NULL OR s.requiredSatScore <= :satScore) " +
-            "AND (:actScore IS NULL OR s.requiredActScore <= :actScore) " +
-            "AND (:greScore IS NULL OR s.requiredGreScore <= :greScore) " +
-            "AND (:gmatScore IS NULL OR s.requiredGmatScore <= :gmatScore) " +
-            "AND (:toeflScore IS NULL OR s.requiredToeflScore <= :toeflScore) " +
-            "AND (:ieltsScore IS NULL OR s.requiredIeltsScore <= :ieltsScore) ")
-    List<ScholarshipEntity> findByApplicantFilter(String educationLevel, BigDecimal overallGpa, String country,
-                                                  Integer satScore, Integer actScore,
-                                                  Integer greScore, Integer gmatScore,
-                                                  Integer toeflScore, Double ieltsScore);
+    @Query("""
+SELECT s
+FROM ScholarshipEntity s
+WHERE s.active = true
+AND (:educationLevel IS NULL OR s.studyLevel = :educationLevel)
+AND (:country IS NULL OR s.country = :country)
+
+AND (
+       (s.gpaRequirement IS NULL
+            OR (:overallGpa IS NOT NULL AND :overallGpa >= s.gpaRequirement))
+
+    OR (s.requiredSatScore IS NULL
+            OR (:satScore IS NOT NULL AND :satScore >= s.requiredSatScore))
+
+    OR (s.requiredActScore IS NULL
+            OR (:actScore IS NOT NULL AND :actScore >= s.requiredActScore))
+
+    OR (s.requiredGreScore IS NULL
+            OR (:greScore IS NOT NULL AND :greScore >= s.requiredGreScore))
+
+    OR (s.requiredGmatScore IS NULL
+            OR (:gmatScore IS NOT NULL AND :gmatScore >= s.requiredGmatScore))
+)
+
+AND (
+       (s.requiredToeflScore IS NULL
+            OR (:toeflScore IS NOT NULL AND :toeflScore >= s.requiredToeflScore))
+
+    OR (s.requiredIeltsScore IS NULL
+            OR (:ieltsScore IS NOT NULL AND :ieltsScore >= s.requiredIeltsScore))
+)
+""")
+    List<ScholarshipEntity> findByApplicantFilter(
+            String educationLevel,
+            BigDecimal overallGpa,
+            String country,
+            Integer satScore,
+            Integer actScore,
+            Integer greScore,
+            Integer gmatScore,
+            Integer toeflScore,
+            Double ieltsScore
+    );
 
     @Query("""
-       SELECT 
-           YEAR(s.createdDate) AS year,
-           MONTH(s.createdDate) AS month,
-           COUNT(s) AS count
-       FROM ScholarshipEntity s
-       GROUP BY YEAR(s.createdDate), MONTH(s.createdDate)
-       ORDER BY YEAR(s.createdDate), MONTH(s.createdDate)
-    """)
+               SELECT 
+                   YEAR(s.createdDate) AS year,
+                   MONTH(s.createdDate) AS month,
+                   COUNT(s) AS count
+               FROM ScholarshipEntity s
+               GROUP BY YEAR(s.createdDate), MONTH(s.createdDate)
+               ORDER BY YEAR(s.createdDate), MONTH(s.createdDate)
+            """)
     List<ScholarshipYearMonthCountProjection> countScholarshipByYearAndMonth();
 
     List<ScholarshipEntity> getByIdIn(Collection<Long> ids);
 
     @Query("""
-        SELECT 
-            s.country AS country,
-            COUNT(s) AS total
-        FROM ScholarshipEntity s
-        WHERE s.active = true
-          AND s.country IS NOT NULL
-        GROUP BY s.country
-        ORDER BY COUNT(s) DESC
-    """)
+                SELECT 
+                    s.country AS country,
+                    COUNT(s) AS total
+                FROM ScholarshipEntity s
+                WHERE s.active = true
+                  AND s.country IS NOT NULL
+                GROUP BY s.country
+                ORDER BY COUNT(s) DESC
+            """)
     List<ScholarshipCountryCountProjection> countTopCountry();
 
 }

@@ -28,6 +28,7 @@ public class RecommendationDto implements Serializable {
     @JsonProperty("final_score")
     Double similarityScore;
 
+    @JsonProperty("llm_score")
     private LlmResultDto llm;
 
     private CosineResultDto cosine;
