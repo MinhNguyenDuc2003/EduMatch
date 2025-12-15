@@ -48,16 +48,13 @@ const Users = () => {
               filterName: '',
             },
           ];
-          const columns = useMemo(
-            () => [
+          const columns =  [
               { accessorKey: "id", header: "ID" },
               { accessorKey: "username", header: "Username" },
               { accessorKey: "email", header: "Email" },
               { accessorKey: "name", header: "Full Name" }, // phải trùng với mappedUsers
               { accessorKey: "createdDate", header: "Created Date" },
-            ],
-            []
-          );
+            ]
 
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">

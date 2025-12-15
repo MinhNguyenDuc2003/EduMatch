@@ -1,10 +1,9 @@
 'use client';
 import { CheckCircle, Clock, GraduationCap, XCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
-import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
-import { useRouter } from 'next/navigation';
 
 const ApplicantScholarship = () => {
   const [filterText, setFilterText] = useState('');
@@ -22,7 +21,6 @@ const ApplicantScholarship = () => {
           const applications =
             list?.map((item: any) => {
               const scholarship = item.scholarshipVo || {};
-              const provider = scholarship.providerProfileVo || {};
               const applicant = item.applicationVo || {};
 
               return {
@@ -38,49 +36,48 @@ const ApplicantScholarship = () => {
               };
             }) || [];
 
-          const total = applications.length;
-          const pending = applications.filter((a: any) => a.status === 'PENDING').length;
-          const approved = applications.filter((a: any) => a.status === 'APPROVED').length;
-          const rejected = applications.filter((a: any) => a.status === 'REJECTED').length;
+          // const total = applications.length;
+          // const pending = applications.filter((a: any) => a.status === 'PENDING').length;
+          // const approved = applications.filter((a: any) => a.status === 'APPROVED').length;
+          // const rejected = applications.filter((a: any) => a.status === 'REJECTED').length;
 
-          const stats = [
-            {
-              title: 'Total Applications',
-              value: total,
-              icon: <GraduationCap />,
-              color: 'text-blue-600',
-              filterName: '',
-            },
-            {
-              title: 'Pending',
-              value: pending,
-              icon: <Clock />,
-              color: 'text-yellow-500',
-              filterName: 'PENDING',
-            },
-            {
-              title: 'Approved',
-              value: approved,
-              icon: <CheckCircle />,
-              color: 'text-green-600',
-              filterName: 'APPROVED',
-            },
-            {
-              title: 'Rejected',
-              value: rejected,
-              icon: <XCircle />,
-              color: 'text-red-600',
-              filterName: 'REJECTED',
-            },
-          ];
+          // const stats = [
+          //   {
+          //     title: 'Total Applications',
+          //     value: total,
+          //     icon: <GraduationCap />,
+          //     color: 'text-blue-600',
+          //     filterName: '',
+          //   },
+          //   {
+          //     title: 'Pending',
+          //     value: pending,
+          //     icon: <Clock />,
+          //     color: 'text-yellow-500',
+          //     filterName: 'PENDING',
+          //   },
+          //   {
+          //     title: 'Approved',
+          //     value: approved,
+          //     icon: <CheckCircle />,
+          //     color: 'text-green-600',
+          //     filterName: 'APPROVED',
+          //   },
+          //   {
+          //     title: 'Rejected',
+          //     value: rejected,
+          //     icon: <XCircle />,
+          //     color: 'text-red-600',
+          //     filterName: 'REJECTED',
+          //   },
+          // ];
 
           // ✅ Lọc theo trạng thái
           const filteredApplications =
             filterText && filterText !== ''
               ? applications.filter((a: any) => a.status === filterText)
               : applications;
-          const columns = useMemo(
-            () => [
+          const columns = [
               { accessorKey: "id", header: "ID" },
               { accessorKey: "scholarshipTitle", header: "Scholarship Title" },
               // { accessorKey: "organization", header: "Organization" },
@@ -90,9 +87,8 @@ const ApplicantScholarship = () => {
               { accessorKey: "funding", header: "Funding" },
               { accessorKey: "studyLevel", header: "Study Level" },
               { accessorKey: "status", header: "Status" },
-            ],
-            []
-          );
+            ]
+           
           return (
             <div className="flex flex-col min-h-screen bg-gray-50 p-6">
               {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}

@@ -4,110 +4,110 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Context from '../seg/context';
 import { onSetLoading } from 'src/utils/eventBus';
-import { 
-  User, 
-  MapPin, 
-  Phone, 
-  Flag, 
-  GraduationCap, 
-  Award, 
-  Code2, 
-  Target, // For Career Goals
-  Microscope, // For Research
-  Activity, // For Student Activities
-  Compass, // For Intentions
-  CalendarDays,
-  HeartPulse, // For Medical/Disabilities
-  BookOpen
+import {
+    User,
+    MapPin,
+    Phone,
+    Flag,
+    GraduationCap,
+    Award,
+    Code2,
+    Target, // For Career Goals
+    Microscope, // For Research
+    Activity, // For Student Activities
+    Compass, // For Intentions
+    CalendarDays,
+    HeartPulse, // For Medical/Disabilities
+    BookOpen
 } from 'lucide-react';
 
 export default function ApplicantProfileDetail() {
-  const { id } = useParams();
-  const idStr = Array.isArray(id) ? id[0] : id;
-  const idFormat = idStr?.replace(/^STU-/, '') || '';
+    const { id } = useParams();
+    const idStr = Array.isArray(id) ? id[0] : id;
+    const idFormat = idStr?.replace(/^STU-/, '') || '';
 
-  return (
-    <Context.Provider>
-      <Context.Consumer>
-        {({ meds }) => (
-          <ApplicantProfileInner meds={meds} idFormat={idFormat} />
-        )}
-      </Context.Consumer>
-    </Context.Provider>
-  );
+    return (
+        <Context.Provider>
+            <Context.Consumer>
+                {({ meds }) => (
+                    <ApplicantProfileInner meds={meds} idFormat={idFormat} />
+                )}
+            </Context.Consumer>
+        </Context.Provider>
+    );
 }
 
 function ApplicantProfileInner({
-  meds,
-  idFormat,
+    meds,
+    idFormat,
 }: {
-  meds: any;
-  idFormat: string;
+    meds: any;
+    idFormat: string;
 }) {
-  const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<any>(null);
 
-  useEffect(() => {
-    if (!idFormat || !meds) return;
+    useEffect(() => {
+        if (!idFormat || !meds) return;
 
-    const fetchData = async () => {
-      onSetLoading(true);
-      try {
-        const res = await meds.onGetApplicantByID(idFormat);
-        setData(res || {});
-      } catch (error) {
-        console.error(error);
-      } finally {
-        onSetLoading(false);
-      }
-    };
+        const fetchData = async () => {
+            onSetLoading(true);
+            try {
+                const res = await meds.onGetApplicantByID(idFormat);
+                setData(res || {});
+            } catch (error) {
+                console.error(error);
+            } finally {
+                onSetLoading(false);
+            }
+        };
 
-    fetchData();
-  }, [idFormat, meds]);
+        fetchData();
+    }, [idFormat, meds]);
 
-  if (!data)
+    if (!data)
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="flex flex-col items-center gap-3 animate-pulse">
+                    <div className="h-16 w-16 bg-gray-200 rounded-full"></div>
+                    <div className="text-gray-400 font-medium">Loading Applicant Profile...</div>
+                </div>
+            </div>
+        );
+
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="flex flex-col items-center gap-3 animate-pulse">
-           <div className="h-16 w-16 bg-gray-200 rounded-full"></div>
-           <div className="text-gray-400 font-medium">Loading Applicant Profile...</div>
+        <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 font-sans">
+            <div className="w-full mx-auto space-y-6">
+                <ProfileHeader applicant={data} />
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* Left Column: Main Academic & Career Info (2/3 width) */}
+                    <div className="lg:col-span-2 space-y-6">
+                        {/* 1. Future Intentions (Important for Matching) */}
+                        <IntentionsCard intentions={data.intentions} />
+
+                        {/* 2. Education History */}
+                        <EducationCard history={data.educationHistories} />
+
+                        {/* 3. Research & Career Goals */}
+                        <CareerResearchCard applicant={data} />
+
+                        {/* 4. Extracurriculars */}
+                        <ActivitiesCard applicant={data} />
+
+                        {/* 5. Certificates */}
+                        <CertificatesCard certificates={data.certificates} />
+                    </div>
+
+                    {/* Right Column: Skills & Personal Details (1/3 width) */}
+                    <div className="space-y-6">
+                        <SkillsCard skills={data.skills} />
+                        <PersonalDetailsCard applicant={data} />
+                        <AdditionalInfoCard applicant={data} />
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     );
-
-  return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="w-full mx-auto space-y-6">
-        <ProfileHeader applicant={data} />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left Column: Main Academic & Career Info (2/3 width) */}
-            <div className="lg:col-span-2 space-y-6">
-                {/* 1. Future Intentions (Important for Matching) */}
-                <IntentionsCard intentions={data.intentions} />
-
-                {/* 2. Education History */}
-                <EducationCard history={data.educationHistories} />
-
-                {/* 3. Research & Career Goals */}
-                <CareerResearchCard applicant={data} />
-
-                {/* 4. Extracurriculars */}
-                <ActivitiesCard applicant={data} />
-
-                 {/* 5. Certificates */}
-                 <CertificatesCard certificates={data.certificates} />
-            </div>
-
-            {/* Right Column: Skills & Personal Details (1/3 width) */}
-            <div className="space-y-6">
-                <SkillsCard skills={data.skills} />
-                <PersonalDetailsCard applicant={data} />
-                <AdditionalInfoCard applicant={data} />
-            </div>
-        </div>
-      </div>
-    </div>
-  );
 }
 
 /* ----------------------------- 1. PROFILE HEADER ----------------------------- */
@@ -117,9 +117,9 @@ function ProfileHeader({ applicant }: { applicant: any }) {
     return (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="h-32 bg-gradient-to-r from-emerald-600 to-teal-600 relative">
-                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
             </div>
-            
+
             <div className="px-8 pb-8 relative">
                 <div className="flex flex-col md:flex-row items-start md:items-end -mt-12 gap-6">
                     <div className="h-28 w-28 rounded-full ring-4 ring-white bg-gray-100 flex items-center justify-center shadow-md text-3xl font-bold text-gray-500 shrink-0">
@@ -152,11 +152,11 @@ function IntentionsCard({ intentions }: { intentions: any[] }) {
 
     return (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 border-l-4 border-l-blue-500">
-             <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-4">
                 <div className="p-2 bg-blue-50 rounded-lg text-blue-600"><Compass size={20} /></div>
                 <h2 className="text-lg font-bold text-gray-900">Future Intentions</h2>
             </div>
-            
+
             <div className="space-y-4">
                 {intentions.map((item, idx) => (
                     <div key={item.id || idx} className="bg-gray-50 rounded-xl p-4 border border-gray-200">
@@ -171,14 +171,17 @@ function IntentionsCard({ intentions }: { intentions: any[] }) {
                         </div>
                         <div className="mt-3 grid grid-cols-2 gap-4 text-sm text-gray-600">
                             <div className="flex items-center gap-2">
-                                <MapPin size={14}/> {item.intendedState}, {item.intendedCountry}
+                                <MapPin size={14} /> {item.intendedState}, {item.intendedCountry}
                             </div>
                             <div className="flex items-center gap-2">
-                                <CalendarDays size={14}/> Start: {new Date(item.expectedStartDate).getFullYear()}
+                                <CalendarDays size={14} /> Start: {new Date(item.expectedStartDate).getFullYear()}
                             </div>
                         </div>
                         {item.notes && (
-                            <p className="mt-3 text-sm text-gray-500 italic">"{item.notes}"</p>
+                            <p className="mt-3 text-sm text-gray-500 italic">
+                                &quot;{item.notes}&quot;
+                            </p>
+
                         )}
                     </div>
                 ))}
@@ -193,7 +196,7 @@ function EducationCard({ history }: { history: any[] }) {
 
     return (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-             <div className="flex items-center gap-2 mb-6 border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-2 mb-6 border-b border-gray-100 pb-4">
                 <div className="p-2 bg-emerald-50 rounded-lg text-emerald-600"><GraduationCap size={20} /></div>
                 <h2 className="text-lg font-bold text-gray-900">Education History</h2>
             </div>
@@ -202,21 +205,21 @@ function EducationCard({ history }: { history: any[] }) {
                 {history.map((edu, idx) => (
                     <div key={edu.id || idx} className="relative pl-6 border-l-2 border-gray-100 last:border-0">
                         <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-emerald-500 shadow-sm"></div>
-                        
+
                         <div className="space-y-1">
                             <div className="flex justify-between items-start">
                                 <h3 className="text-base font-bold text-gray-900">{edu.institutionName}</h3>
                                 <span className="text-xs font-semibold bg-gray-100 px-2 py-1 rounded text-gray-600">{edu.degreeType}</span>
                             </div>
                             <p className="text-sm font-semibold text-emerald-600">{edu.majorName} ({edu.majorCategory})</p>
-                            
+
                             <div className="grid grid-cols-2 gap-2 mt-2">
                                 <span className="text-sm text-gray-600">GPA: <b className="text-gray-900">{edu.gpa}</b></span>
                                 <span className="text-sm text-gray-600">Rank: <b className="text-gray-900">{edu.classRank}</b></span>
                                 <span className="text-sm text-gray-600">Class Size: {edu.classSize}</span>
                                 <span className="text-sm text-gray-600">Graduation: {edu.graduationYear}</span>
                             </div>
-                            
+
                             {edu.notes && <p className="text-sm text-gray-500 mt-2 bg-gray-50 p-2 rounded">Note: {edu.notes}</p>}
                         </div>
                     </div>
@@ -231,19 +234,19 @@ function CareerResearchCard({ applicant }: { applicant: any }) {
     return (
         <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                 <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-2 mb-3">
                     <div className="p-1.5 bg-purple-50 rounded text-purple-600"><Target size={18} /></div>
                     <h3 className="font-bold text-gray-900">Career Goals</h3>
-                 </div>
-                 <p className="text-gray-700 text-sm leading-relaxed">{applicant.careerGoals || 'Not specified'}</p>
+                </div>
+                <p className="text-gray-700 text-sm leading-relaxed">{applicant.careerGoals || 'Not specified'}</p>
             </div>
-            
+
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                 <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-2 mb-3">
                     <div className="p-1.5 bg-rose-50 rounded text-rose-600"><Microscope size={18} /></div>
                     <h3 className="font-bold text-gray-900">Research Exp.</h3>
-                 </div>
-                 <p className="text-gray-700 text-sm leading-relaxed">{applicant.researchExperience || 'None'}</p>
+                </div>
+                <p className="text-gray-700 text-sm leading-relaxed">{applicant.researchExperience || 'None'}</p>
             </div>
         </div>
     )
@@ -253,11 +256,11 @@ function CareerResearchCard({ applicant }: { applicant: any }) {
 function ActivitiesCard({ applicant }: { applicant: any }) {
     return (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-             <div className="flex items-center gap-2 mb-5">
+            <div className="flex items-center gap-2 mb-5">
                 <div className="p-2 bg-orange-50 rounded-lg text-orange-600"><Activity size={20} /></div>
                 <h2 className="text-lg font-bold text-gray-900">Extracurricular Activities</h2>
             </div>
-            
+
             <div className="space-y-4">
                 <ActivityRow label="Student Organizations" value={applicant.organizationsJoined} />
                 <ActivityRow label="Sports" value={applicant.sportsParticipated} />
@@ -290,7 +293,7 @@ function CertificatesCard({ certificates }: { certificates: any[] }) {
 
     return (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-             <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-4">
                 <div className="p-2 bg-amber-50 rounded-lg text-amber-600"><Award size={20} /></div>
                 <h2 className="text-lg font-bold text-gray-900">Certifications</h2>
             </div>
@@ -326,8 +329,8 @@ function SkillsCard({ skills }: { skills: any[] }) {
 
             <div className="flex flex-wrap gap-2">
                 {skills.map((skill, idx) => (
-                    <div 
-                        key={skill.id || idx} 
+                    <div
+                        key={skill.id || idx}
                         className="group relative flex items-center gap-2 px-3 py-2 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-700 hover:bg-indigo-100 transition-colors"
                     >
                         <span className="text-sm font-semibold">{skill.skillName}</span>
@@ -345,16 +348,16 @@ function SkillsCard({ skills }: { skills: any[] }) {
 function PersonalDetailsCard({ applicant }: { applicant: any }) {
     return (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-             <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+            <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
                 <h2 className="text-base font-bold text-gray-900">Personal Details</h2>
             </div>
-            
+
             <div className="p-6 space-y-5">
-                <DetailRow icon={<User size={16}/>} label="Full Name" value={`${applicant.firstName} ${applicant.lastName}`} />
-                <DetailRow icon={<Phone size={16}/>} label="Phone Number" value={applicant.phoneNumber} />
-                <DetailRow icon={<Flag size={16}/>} label="Citizenship" value={applicant.citizenshipStatus} />
-                <DetailRow icon={<MapPin size={16}/>} label="Hometown" value={applicant.hometown} />
-                
+                <DetailRow icon={<User size={16} />} label="Full Name" value={`${applicant.firstName} ${applicant.lastName}`} />
+                <DetailRow icon={<Phone size={16} />} label="Phone Number" value={applicant.phoneNumber} />
+                <DetailRow icon={<Flag size={16} />} label="Citizenship" value={applicant.citizenshipStatus} />
+                <DetailRow icon={<MapPin size={16} />} label="Hometown" value={applicant.hometown} />
+
                 <div className="grid grid-cols-2 gap-4 pt-2 border-t border-gray-100 mt-2">
                     <div>
                         <p className="text-xs text-gray-400 uppercase font-semibold mb-1">Ethnicity</p>
@@ -366,8 +369,8 @@ function PersonalDetailsCard({ applicant }: { applicant: any }) {
                     </div>
                 </div>
                 <div>
-                     <p className="text-xs text-gray-400 uppercase font-semibold mb-1">Religion</p>
-                     <p className="text-sm font-medium text-gray-900">{applicant.religion || '—'}</p>
+                    <p className="text-xs text-gray-400 uppercase font-semibold mb-1">Religion</p>
+                    <p className="text-sm font-medium text-gray-900">{applicant.religion || '—'}</p>
                 </div>
             </div>
         </div>
@@ -378,7 +381,7 @@ function PersonalDetailsCard({ applicant }: { applicant: any }) {
 function AdditionalInfoCard({ applicant }: { applicant: any }) {
     return (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-             <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex items-center gap-2">
+            <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex items-center gap-2">
                 <HeartPulse size={16} className="text-gray-400" />
                 <h2 className="text-base font-bold text-gray-900">Additional Info</h2>
             </div>
@@ -389,7 +392,7 @@ function AdditionalInfoCard({ applicant }: { applicant: any }) {
                         {applicant.militaryFamilyHistory ? 'Yes' : 'No'}
                     </span>
                 </div>
-                 <div>
+                <div>
                     <p className="text-xs text-gray-400 uppercase font-semibold mb-1">Disabilities</p>
                     <p className="text-sm text-gray-700">{applicant.disabilities}</p>
                 </div>

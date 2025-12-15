@@ -70,8 +70,7 @@ const SubscriptionPlanPage = () => {
               filterName: 'USER',
             },
           ];
-          const columns = useMemo(
-            () => [
+          const columns = [
               { accessorKey: "id", header: "ID" },
               { accessorKey: "name", header: "Plan Name" },
               { accessorKey: "description", header: "Description" },
@@ -79,9 +78,7 @@ const SubscriptionPlanPage = () => {
               { accessorKey: "duration", header: "Duration" },
               { accessorKey: "target", header: "Target Type" },
 
-            ],
-            []
-          );
+            ]
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}

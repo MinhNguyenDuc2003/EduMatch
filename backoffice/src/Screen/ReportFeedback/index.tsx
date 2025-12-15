@@ -68,18 +68,15 @@ const ReportFeedbackPage = () => {
               filterName: "RESOLVED",
             },
           ];
-          const columns = useMemo(
-            () => [
-              { accessorKey: "id", header: "ID" },
-              { accessorKey: "title", header: "Title" },
-              { accessorKey: "comment", header: "Comment" },
-              { accessorKey: "categoryName", header: "Category Name" },
-              { accessorKey: "categoryType", header: "Category Type" },
-              { accessorKey: "status", header: "Status" },
-              { accessorKey: "isRead", header: "Read" },
-            ],
-            []
-          );
+          const columns = [
+    { accessorKey: "id", header: "ID" },
+    { accessorKey: "title", header: "Title" },
+    { accessorKey: "comment", header: "Comment" },
+    { accessorKey: "categoryName", header: "Category Name" },
+    { accessorKey: "categoryType", header: "Category Type" },
+    { accessorKey: "status", header: "Status" },
+    { accessorKey: "isRead", header: "Read" },
+  ];
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               {/* STATISTIC GRID */}

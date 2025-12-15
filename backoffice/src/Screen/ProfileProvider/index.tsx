@@ -23,15 +23,12 @@ const ProviderProfiles = () => {
             role: 'Provider',
           }));
 
-          const columns = useMemo(
-            () => [
+          const columns =  [
               { accessorKey: 'id', header: 'ID' },
               { accessorKey: 'name', header: 'Name' },
               { accessorKey: 'email', header: 'Email' },
               { accessorKey: 'phone', header: 'Phone' },
-            ],
-            []
-          );
+            ]
 
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">

@@ -1,16 +1,15 @@
 'use client';
 
 import {
-  Check,
-  X,
-  MessageSquare,
-  User,
-  Mail,
-  Tag,
-  Clock,
   AlertCircle,
+  Check,
   CornerDownRight,
-  Send
+  Mail,
+  MessageSquare,
+  Send,
+  Tag,
+  User,
+  X
 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -93,8 +92,8 @@ function ReportFeedbackDetailInner({ meds, id }: { meds: any; id: string }) {
                 </span>
               </div>
               <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border ${isPending
-                  ? 'bg-amber-50 text-amber-700 border-amber-200'
-                  : 'bg-green-50 text-green-700 border-green-200'
+                ? 'bg-amber-50 text-amber-700 border-amber-200'
+                : 'bg-green-50 text-green-700 border-green-200'
                 }`}>
                 {data.status}
               </span>
@@ -196,7 +195,7 @@ function ReportFeedbackDetailInner({ meds, id }: { meds: any; id: string }) {
                     </a>
                   </div>
                   <div className="flex items-center gap-3 text-sm text-gray-600">
-                   
+
                   </div>
                 </div>
               </div>
@@ -237,7 +236,9 @@ function ReportFeedbackDetailInner({ meds, id }: { meds: any; id: string }) {
 
             <div className="bg-gray-50 p-3 rounded-lg mb-4 border border-gray-200">
               <p className="text-xs text-gray-500 font-medium uppercase mb-1">Replying to:</p>
-              <p className="text-sm text-gray-800 line-clamp-2 italic">"{data.comment}"</p>
+              <p className="text-sm text-gray-800 line-clamp-2 italic">
+                &quot;{data.comment}&quot;
+              </p>
             </div>
 
             <textarea

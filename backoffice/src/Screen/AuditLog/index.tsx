@@ -1,7 +1,6 @@
 "use client";
 import { CheckCircle, Clock, GraduationCap, XCircle } from 'lucide-react';
 import { useState } from 'react';
-import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
 // import { useRouter } from 'next/navigation';
@@ -74,7 +73,7 @@ const AuditLogPage = () => {
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} />
 
-              <CustomDataTable
+              {/* <CustomDataTable
                 title="AuditLog List"
                 data={AuditLogs as any}
                 detailPath="/AuditLog"
@@ -87,7 +86,7 @@ const AuditLogPage = () => {
                   'Status',
                 ]}
                 externalFilterText={filterText}
-              />
+              /> */}
             </div>
           );
         }}
