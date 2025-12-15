@@ -62,8 +62,7 @@ const OrderPage = () => {
               filterName: 'PENDING',
             },
           ];
-          const columns = useMemo(
-            () => [
+          const columns = [
               { accessorKey: "id", header: "ID" },
               { accessorKey: "fullName", header: "Customer Name" },
               { accessorKey: "customer.email", header: "Email" },
@@ -75,9 +74,8 @@ const OrderPage = () => {
               // { accessorKey: "funding", header: "Transaction ID" },
               { accessorKey: "status", header: "Status" },
               { accessorKey: "paidAtStr", header: "Paid At" },
-            ],
-            []
-          );
+            ]
+           
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6 space-y-6">
               {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}

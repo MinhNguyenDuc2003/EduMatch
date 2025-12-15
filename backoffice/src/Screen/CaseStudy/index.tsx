@@ -58,8 +58,7 @@ const CaseStudyPage = () => {
               filterName: 'Unverified',
             },
           ];
-          const columns = useMemo(
-            () => [
+          const columns = [
               { accessorKey: "id", header: "ID" },
               { accessorKey: "userName", header: "User Name" },
               { accessorKey: "phoneNumber", header: "Phone Number" },
@@ -68,9 +67,8 @@ const CaseStudyPage = () => {
               { accessorKey: "verified", header: "Verified" },
               // { accessorKey: "fileName", header: "File Name" },
               // { accessorKey: "contentType", header: "Content Type" },
-            ],
-            []
-          );
+            ]
+           
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6 space-y-6">
               {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}

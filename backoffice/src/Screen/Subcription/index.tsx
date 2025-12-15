@@ -89,8 +89,7 @@ const Subcription = () => {
             },
 
           ];
-          const columns = useMemo(
-            () => [
+          const columns =  [
               { accessorKey: "id", header: "ID" },
               { accessorKey: "fullName", header: "Customer Name" },
               { accessorKey: "email", header: "Email" },
@@ -105,9 +104,7 @@ const Subcription = () => {
               { accessorKey: "endDate", header: "End Date" },
               // { accessorKey: "autoRenew", header: "Auto Renew" },
               { accessorKey: "status", header: "Status" },
-            ],
-            []
-          );
+            ]
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}

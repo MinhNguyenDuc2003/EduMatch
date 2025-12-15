@@ -69,17 +69,14 @@ const ScholarshipPage = () => {
               filterName: 'Closed',
             },
           ];
-          const columns = useMemo(
-            () => [
+          const columns = [
               { accessorKey: "id", header: "ID" },
               { accessorKey: "name", header: "Scholarship Name" },
               { accessorKey: "sponsor", header: "University" },
               { accessorKey: "amount", header: "Amount" },
               { accessorKey: "deadline", header: "Deadline" },
               { accessorKey: "status", header: "Status" },
-            ],
-            []
-          );
+            ]
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}

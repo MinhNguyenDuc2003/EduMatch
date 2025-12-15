@@ -62,8 +62,7 @@ const SystemNotification = () => {
               filterName: 'Unread',
             },
           ];
-          const columns = useMemo(
-            () => [
+          const columns = [
               { accessorKey: "id", header: "ID" },
               { accessorKey: "content", header: "Content" },
               { accessorKey: "referenceType", header: "Reference Type" },
@@ -71,9 +70,7 @@ const SystemNotification = () => {
               { accessorKey: "isAdmin", header: "Created By" },
               { accessorKey: "createdDate", header: "Created Date" },
 
-            ],
-            []
-          );
+            ]
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}

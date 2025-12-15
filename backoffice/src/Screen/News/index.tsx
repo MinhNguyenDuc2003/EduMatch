@@ -82,8 +82,7 @@ const News = () => {
             },
           ];
 
-          const columns = useMemo(
-            () => [
+          const columns = [
               { accessorKey: "id", header: "ID" },
               { accessorKey: "title", header: "Title" },
               { accessorKey: "scholarship", header: "Scholarship" },
@@ -92,9 +91,7 @@ const News = () => {
               // { accessorKey: "contentType", header: "contentType" },
               // { accessorKey: "scholarshipStatus", header: "Is Has Scholarship" },
               { accessorKey: "publishedAt", header: "Published At" },
-            ],
-            []
-          );
+            ]
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
