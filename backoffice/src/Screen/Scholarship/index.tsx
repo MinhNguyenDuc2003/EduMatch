@@ -25,7 +25,16 @@ const ScholarshipPage = () => {
               name: item.title,
               sponsor: item.university || 'N/A',
               amount: item.fundingAmount || '—',
-              deadline: new Date(item.endDate).toLocaleDateString('en-US'),
+              endDate: new Date(item.endDate).toLocaleDateString('en-US', {
+                month: 'short',    // "Dec"
+                day: 'numeric',    // "3"
+                year: 'numeric'    // "2025"
+              }),
+              startDate: new Date(item.startDate).toLocaleDateString('en-US', {
+                month: 'short',    // "Dec"
+                day: 'numeric',    // "3"
+                year: 'numeric'    // "2025"
+              }),
               status:
                 Date.now() < item.startDate
                   ? 'Not Open Yet'
@@ -70,13 +79,14 @@ const ScholarshipPage = () => {
             },
           ];
           const columns = [
-              { accessorKey: "id", header: "ID" },
-              { accessorKey: "name", header: "Scholarship Name" },
-              { accessorKey: "sponsor", header: "University" },
-              { accessorKey: "amount", header: "Amount" },
-              { accessorKey: "deadline", header: "Deadline" },
-              { accessorKey: "status", header: "Status" },
-            ]
+            { accessorKey: "id", header: "ID" },
+            { accessorKey: "name", header: "Scholarship Name" },
+            { accessorKey: "sponsor", header: "University" },
+            { accessorKey: "amount", header: "Amount" },
+            { accessorKey: "startDate", header: "Start Date" },
+            { accessorKey: "endDate", header: "End Date" },
+            { accessorKey: "status", header: "Status" },
+          ]
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}

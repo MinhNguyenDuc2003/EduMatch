@@ -40,7 +40,7 @@ const News = () => {
                 // contentType: item.newsMedias[0]?.contentType ?? "—",
                 // scholarshipStatus,
                 publishedAt: published.toLocaleDateString('en-US', {
-                weekday: 'short',  // "Tue"
+                  // "Tue"
                 month: 'short',    // "Dec"
                 day: 'numeric',    // "3"
                 year: 'numeric'    // "2025"
