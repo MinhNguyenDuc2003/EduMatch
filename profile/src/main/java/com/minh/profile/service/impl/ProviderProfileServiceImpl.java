@@ -172,23 +172,38 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
 
     @Override
     public ProviderProfileVo getById(Long id) {
-        ProviderProfileProjection providerProfile = providerProfileRepository
-                .getDetail(id, SecurityUtil.getCurrentUserId())
-                .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
-        ProviderProfileVo vo = providerProfileMapper.proToVo(providerProfile);
-        List<ProviderContactEntity> contacts = providerContactRepository.findByProviderId(id);
+
+        ProviderProfileEntity entity = providerProfileRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(
+                        CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
+
+        ProviderProfileVo vo = providerProfileMapper.toVo(entity);
+
+        // Contacts
+        List<ProviderContactEntity> contacts =
+                providerContactRepository.findByProviderId(id);
         vo.setProviderContactDtos(providerContactMapper.toDto(contacts));
-        List<ProviderMediaEntity> medias = providerMediaRepository.findByProviderId(id);
-        Long logoId = medias.stream().filter(o -> "LOGO".equalsIgnoreCase(o.getImageType())).map(ProviderMediaEntity::getMediaId).findFirst().orElse(null);
-        if (ObjectUtils.isNotEmpty(logoId)) {
-            MediaDto logo = this.parseResponse(mediaFeign.getById(logoId));
-            vo.setLogoUrl(logo.getUrl());
-        }
-        Long bannerId = medias.stream().filter(o -> "BANNER".equalsIgnoreCase(o.getImageType())).map(ProviderMediaEntity::getMediaId).findFirst().orElse(null);
-        if (ObjectUtils.isNotEmpty(logoId)) {
-            MediaDto banner = this.parseResponse(mediaFeign.getById(bannerId));
-            vo.setBannerUrl(banner.getUrl());
-        }
+
+        // Media
+        List<ProviderMediaEntity> medias =
+                providerMediaRepository.findByProviderId(id);
+
+        medias.stream()
+                .filter(m -> "LOGO".equalsIgnoreCase(m.getImageType()))
+                .findFirst()
+                .ifPresent(m -> {
+                    MediaDto logo = this.parseResponse(mediaFeign.getById(m.getMediaId()));
+                    vo.setLogoUrl(logo.getUrl());
+                });
+
+        medias.stream()
+                .filter(m -> "BANNER".equalsIgnoreCase(m.getImageType()))
+                .findFirst()
+                .ifPresent(m -> {
+                    MediaDto banner = this.parseResponse(mediaFeign.getById(m.getMediaId()));
+                    vo.setBannerUrl(banner.getUrl());
+                });
+
         return vo;
     }
 
