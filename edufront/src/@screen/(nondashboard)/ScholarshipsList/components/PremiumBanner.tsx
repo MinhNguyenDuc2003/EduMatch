@@ -5,13 +5,13 @@ import { Zap } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
-import ProfileStrengthDialog from './ProfileStrengthDialog';
+import ProcessBlockedDialog from './ProfileStrengthDialog';
 import Loading from '@/pattern/share/Loading';
 
 export default function PremiumBanner() {
   const router = useRouter();
   const [isUpgraded, setIsUpgraded] = useState(false);
-  const [showProfileDialog, setShowProfileDialog] = useState(false);
+  const [showProcessBlockedDialog, setShowProcessBlockedDialog] = useState(false);
   const t = useTranslations('scholarshipsList.premiumBanner');
   const { isAuthenticated, subscriptions, isApplicant } = useAuth();
   const { data: scholarships, isLoading } = useGetRecommendedScholarshipsQuery(
@@ -30,7 +30,7 @@ export default function PremiumBanner() {
       window.location.href = 'http://159.89.200.244/oauth2/authorization/keycloak';
     } else {
       if (!isApplicant) {
-        setShowProfileDialog(true);
+        setShowProcessBlockedDialog(true);
       } else if (isUpgraded) {
         router.push('/recommended-scholarships');
       } else {
@@ -157,7 +157,10 @@ export default function PremiumBanner() {
       </div>
 
       {/* Profile Strength Dialog */}
-      <ProfileStrengthDialog open={showProfileDialog} onOpenChange={setShowProfileDialog} />
+      <ProcessBlockedDialog
+        open={showProcessBlockedDialog}
+        onOpenChange={setShowProcessBlockedDialog}
+      />
     </div>
   );
 }
