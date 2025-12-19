@@ -7,10 +7,13 @@ import com.minh.model.dto.report.*;
 import com.minh.report.data.entity.*;
 import com.minh.report.data.mapper.ReportMapper;
 import com.minh.report.data.repository.*;
+import com.minh.report.feign.ApplicantProfileFeign;
 import com.minh.report.feign.CustomerFeign;
 import com.minh.report.feign.ProviderProfileFeign;
 import com.minh.report.service.ReportService;
+import com.minh.report.vo.ApplicantProfileVo;
 import com.minh.report.vo.CustomerVo;
+import com.minh.report.vo.ProviderProfileVo;
 import com.minh.report.vo.ReportVo;
 import com.minh.report.vo.projection.ReportCountByType;
 import com.minh.service.base.BaseService;
@@ -34,22 +37,38 @@ public class ReportServiceImpl extends BaseService implements ReportService {
     private final ScholarshipReportRepository scholarshipReportRepository;
     private final ReportMapper mapper;
     private final CustomerFeign customerFeign;
+    private final ProviderProfileFeign providerProfileFeign;
+    private final ApplicantProfileFeign applicantProfileFeign;
 
     @Override
     public List<ReportVo> getAll() {
 
-        List<ReportEntity> entities = reportRepository.findByActiveTrue();
-
-        List<ReportVo> vos = mapper.toVo(entities);
+        List<ReportVo> vos = mapper.toVo(
+                reportRepository.findByActiveTrue()
+        );
 
         vos.forEach(vo -> {
-            CustomerVo customerVo = this.parseResponse(
+
+            // ===== CUSTOMER =====
+            CustomerVo customerVo = parseResponse(
                     customerFeign.getSimpleCustomerById(vo.getUserId())
             );
-
             if (customerVo != null) {
                 vo.setCustomer(customerVo.getCustomer());
             }
+
+            // ===== APPLICANT PROFILE =====
+            ApplicantProfileVo applicantProfile = parseResponse(
+                    applicantProfileFeign.getOneByUserId(vo.getUserId())
+            );
+            vo.setApplicantProfile(applicantProfile);
+
+            // ===== PROVIDER PROFILE =====
+            ProviderProfileVo providerProfile = parseResponse(
+                    providerProfileFeign.getOneByUserId(vo.getUserId())
+            );
+            vo.setProviderProfile(providerProfile);
+
         });
 
         return vos;

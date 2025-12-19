@@ -28,31 +28,50 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
     Optional<PaymentEntity> findByTransactionIdAndActive(String transactionId, Boolean active);
 
     // Doanh thu theo tháng
-    @Query("SELECT new com.minh.model.dto.subscription.MonthlyRevenueDto(" +
-            "YEAR(o.paidAt), MONTH(o.paidAt), SUM(o.amount)) " +
-            "FROM PaymentEntity o " +
-            "WHERE o.status = 'PAID' AND o.paidAt IS NOT NULL " +
-            "GROUP BY YEAR(o.paidAt), MONTH(o.paidAt) " +
-            "ORDER BY YEAR(o.paidAt), MONTH(o.paidAt)")
+    @Query("""
+    SELECT new com.minh.model.dto.subscription.MonthlyRevenueDto(
+        YEAR(o.createdDate),
+        MONTH(o.createdDate),
+        SUM(o.amount),
+        COUNT(o.id)
+    )
+    FROM PaymentEntity o
+    WHERE o.status = 'PAID'
+    GROUP BY YEAR(o.createdDate), MONTH(o.createdDate)
+    ORDER BY YEAR(o.createdDate), MONTH(o.createdDate)
+    """)
     List<MonthlyRevenueDto> getMonthlyRevenue();
+
 
     @Query("""
     SELECT new com.minh.model.dto.subscription.MonthlyRevenueDto(
         CAST(EXTRACT(YEAR FROM o.paidAt) AS integer),
         CAST(EXTRACT(MONTH FROM o.paidAt) AS integer),
-        SUM(o.amount)
+        SUM(o.amount),
+        COUNT(o.id)
     )
     FROM PaymentEntity o
     WHERE o.status = 'PAID' AND o.paidAt IS NOT NULL
-    GROUP BY CAST(EXTRACT(YEAR FROM o.paidAt) AS integer), CAST(EXTRACT(MONTH FROM o.paidAt) AS integer)
-    ORDER BY CAST(EXTRACT(YEAR FROM o.paidAt) AS integer), CAST(EXTRACT(MONTH FROM o.paidAt) AS integer)
+    GROUP BY
+        CAST(EXTRACT(YEAR FROM o.paidAt) AS integer),
+        CAST(EXTRACT(MONTH FROM o.paidAt) AS integer)
+    ORDER BY
+        CAST(EXTRACT(YEAR FROM o.paidAt) AS integer),
+        CAST(EXTRACT(MONTH FROM o.paidAt) AS integer)
     """)
     List<MonthlyRevenueDto> getRevenueByMonth();
 
     // Tổng tiền theo userType
-    @Query("SELECT new com.minh.model.dto.subscription.RevenueByUserTypeDto(o.subscription.userType, SUM(o.amount)) " +
-            "FROM PaymentEntity o " +
-            "WHERE o.status = 'PAID' " +
-            "GROUP BY o.subscription.userType")
+    @Query("""
+    SELECT new com.minh.model.dto.subscription.RevenueByUserTypeDto(
+        o.subscription.userType,
+        SUM(o.amount),
+        null
+    )
+    FROM PaymentEntity o
+    WHERE o.status = 'PAID'
+    GROUP BY o.subscription.userType
+    """)
     List<RevenueByUserTypeDto> getRevenueByUserType();
+
 }

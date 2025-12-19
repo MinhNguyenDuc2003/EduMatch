@@ -21,4 +21,6 @@ import java.time.LocalDateTime;
 public class SubscriptionVo extends SubscriptionDto {
     private CustomerVm customer;
 
+    private ApplicantProfileVo applicantProfile;
+    private ProviderProfileVo providerProfile;
 }

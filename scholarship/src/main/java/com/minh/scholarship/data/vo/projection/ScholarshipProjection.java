@@ -81,4 +81,6 @@ public interface ScholarshipProjection {
 
     Integer getRequiredClassRankPercentile();
 
+    String getStatus();
+
 }
