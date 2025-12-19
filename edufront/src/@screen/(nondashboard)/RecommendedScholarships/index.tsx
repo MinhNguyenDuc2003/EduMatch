@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import { PreferencesWeightDialog } from './components/PreferencesWeightDialog';
+import { useGetProfileQuery } from '@/state/apiApplicant';
 
 export default function RecommendedScholarships() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function RecommendedScholarships() {
     isLoading,
     refetch,
   } = useGetRecommendedScholarshipsQuery({ topK: 10 });
+  const { data: applicantProfile, isLoading: isLoadingProfile } = useGetProfileQuery();
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
@@ -87,6 +89,7 @@ export default function RecommendedScholarships() {
               ) : (
                 scholarships?.map((scholarship) => (
                   <ScholarshipCard
+                    applicantProfile={applicantProfile?.applicantProfile}
                     key={scholarship.id}
                     scholarship={scholarship}
                     onApply={handleApply}

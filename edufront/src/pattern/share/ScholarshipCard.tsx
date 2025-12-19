@@ -13,6 +13,7 @@ import {
   EllipsisVertical,
   OctagonAlert,
   ArrowRightLeft,
+  Info,
 } from 'lucide-react';
 import { Button } from '@/pattern/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
@@ -30,8 +31,10 @@ import {
   DropdownMenuTrigger,
 } from '@/pattern/cus/dropdown-menu';
 import ReportDialog from '@/pattern/share/ReportDialog';
+import RecommendedScholarshipDetail from '@/pattern/share/RecommendedScholarshipDetail';
 
 type ScholarshipCardProps = {
+  applicantProfile?: ApplicantProfile;
   scholarship: Scholarship;
   onApply: (scholarship: Scholarship) => void;
   onToggleTracking?: (scholarshipId: number) => void;
@@ -42,6 +45,7 @@ type ScholarshipCardProps = {
 };
 
 export default function ScholarshipCard({
+  applicantProfile,
   scholarship,
   onApply,
   onFollowProvider,
@@ -54,6 +58,7 @@ export default function ScholarshipCard({
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  const [isDetailSheetOpen, setIsDetailSheetOpen] = useState(false);
   const t = useTranslations('scholarshipsList.scholarshipCard');
   const tToast = useTranslations('toast');
   const { addScholarship, isScholarshipSelected, scholarships } = useScholarshipCompareStore();
@@ -124,13 +129,22 @@ export default function ScholarshipCard({
             {isAuthenticated && (
               <div className="flex items-center gap-2">
                 {isUpgraded && (
-                  <Button
-                    variant="custom"
-                    className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
-                    onClick={handleCompareClick}
-                  >
-                    <ArrowRightLeft className="w-5 h-5" />
-                  </Button>
+                  <>
+                    <Button
+                      variant="custom"
+                      className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
+                      onClick={() => setIsDetailSheetOpen(true)}
+                    >
+                      <Info className="w-5 h-5" />
+                    </Button>
+                    <Button
+                      variant="custom"
+                      className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
+                      onClick={handleCompareClick}
+                    >
+                      <ArrowRightLeft className="w-5 h-5" />
+                    </Button>
+                  </>
                 )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -364,6 +378,13 @@ export default function ScholarshipCard({
         initialType="SCHOLARSHIP"
         id={scholarship.id}
         scholarshipData={scholarship}
+      />
+
+      {/* Detail Sheet */}
+      <RecommendedScholarshipDetail
+        applicantProfile={applicantProfile}
+        open={isDetailSheetOpen}
+        onOpenChange={setIsDetailSheetOpen}
       />
     </>
   );
