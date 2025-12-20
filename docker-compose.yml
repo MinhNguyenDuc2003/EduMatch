@@ -38,7 +38,7 @@ services:
       KC_HTTP_RELATIVE_PATH: /identity
     volumes:
       - ./identity/realm-export.json:/opt/keycloak/data/import/realm-export.json
-      - ./identity/themes/yas/theme:/opt/keycloak/themes
+      - ./identity/themes/yas/theme/yas:/opt/keycloak/themes/yas
     networks:
       - m-network
   postgres:
