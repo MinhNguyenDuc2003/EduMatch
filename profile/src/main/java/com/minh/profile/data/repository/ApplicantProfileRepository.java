@@ -65,4 +65,11 @@ public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfi
         GROUP BY a.preferredCountry
     """)
     List<CountryCountProjection> countByCountry();
+
+    Optional<ApplicantProfileEntity> findByUserIdAndActiveAndType(String userId, Boolean active, ProfileType type);
+
+    @Query(value = "select SUM(ap.weight) " +
+            "from profile.applicant_preference ap " +
+            "where ap.applicant_id = :profileId ", nativeQuery = true)
+    Double getTotalWeightByProfileId(Long profileId);
 }

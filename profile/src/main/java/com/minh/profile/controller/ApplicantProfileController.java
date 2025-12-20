@@ -78,4 +78,10 @@ public class ApplicantProfileController {
     public ApiResponse<List<CountryRegisterStatisticDto>> getTopCountryRegister() {
         return ApiResponse.ok(profileService.getTop5CountryRegister());
     }
+
+    @GetMapping("/total-weight")
+    public ApiResponse<Double> getTotalWeight(@RequestParam Long profileId) {
+        return ApiResponse.ok(profileService.getTotalWeightByProfileId(profileId));
+    }
+
 }

@@ -30,4 +30,7 @@ public interface ApplicantProfileService {
     List<ApplicantPreferenceDto> getPreferencesById(Long id);
 
     List<CountryRegisterStatisticDto> getTop5CountryRegister();
+
+    Double getTotalWeightByProfileId(Long profileId);
+
 }

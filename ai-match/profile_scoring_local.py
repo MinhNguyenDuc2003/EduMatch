@@ -36,7 +36,7 @@ class ProfileScoringEngineLocal(SoftScoringEngine):
         scholarship_description = scholarship.get("description") or ""
         scholarship_fields = scholarship.get("fields") or ""
         scholarship_benefits = scholarship.get("benefits") or ""
-
+        scholarship_requirements = self.scholarship.get("requirements") or ""
 
         prompt = f"""
 You are an expert scholarship evaluation system. 
@@ -83,6 +83,9 @@ Fields / Areas of Study:
 
 Benefits / Direction:
 {scholarship_benefits}
+
+Requirements:
+{scholarship_requirements}
 
 ====================================================
 SCORING GUIDELINES (VERY IMPORTANT)

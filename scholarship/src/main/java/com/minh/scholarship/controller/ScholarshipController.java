@@ -44,9 +44,8 @@ public class ScholarshipController {
 
     @Authorized
     @GetMapping("/recommendation")
-    public ApiResponse<List<ScholarshipVo>> getRecommendationScholarship() {
-        String userId = UaaContextHolder.getUserId();
-        return ApiResponse.ok(scholarshipService.getRecommendationScholarship(userId));
+    public ApiResponse<List<ScholarshipVo>> getRecommendationScholarship(@RequestParam Long profileId) {
+        return ApiResponse.ok(scholarshipService.getRecommendationScholarship(profileId));
     }
 
     @GetMapping("/recommendation/applicant")
@@ -216,4 +215,10 @@ public class ScholarshipController {
     public ApiResponse<List<ScholarshipCountryCountDto>> getTopCountryStatistics() {
         return ApiResponse.ok(scholarshipService.getTop5CountryStatistics());
     }
+
+    @GetMapping("total-weight")
+    public ApiResponse<Double> getTotalWeight(@RequestParam Long scholarshipId) {
+        return ApiResponse.ok(scholarshipService.getTotalWeightByScholarshipId(scholarshipId));
+    }
+
 }

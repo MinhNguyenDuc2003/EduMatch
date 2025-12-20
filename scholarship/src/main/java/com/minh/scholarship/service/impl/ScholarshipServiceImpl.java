@@ -420,7 +420,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     public Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto) {
         String userId = UaaContextHolder.getUserId();
-        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(userId);
+        ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(userId));
+        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(applicantProfileVo.getId());
         CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(userId));
 
         ScholarshipDto scholarshipDto = this.getById(dto.getScholarshipId());
@@ -447,8 +448,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     }
 
     @Override
-    public List<ScholarshipVo> getRecommendationScholarship(String userId) {
-        ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(userId));
+    public List<ScholarshipVo> getRecommendationScholarship(Long profileId) {
+        ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOne(profileId));
         if (ObjectUtils.isEmpty(applicantProfileVo)) {
             return new ArrayList<>();
         }
@@ -459,7 +460,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         }
         recommendationScholarship.getResults().forEach(item -> {
             ScholarshipVo vo = this.getById(item.getScholarship());
-            vo.setScore(item.getSimilarityScore());
+            Double totalWeight = this.parseResponse(applicantProfileFeign.getTotalWeight(applicantProfileVo.getId()));
+            vo.setScore(item.getSimilarityScore() / totalWeight);
             vo.setLlmScore(item.getLlm());
             vo.setCosineScore(item.getCosine());
             result.add(vo);
@@ -476,7 +478,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         }
         recommendationScholarship.getResults().forEach(item -> {
             ApplicantProfileVo vo = this.parseResponse(applicantProfileFeign.getOne(item.getApplicant()));
-            vo.setScore(item.getSimilarityScore());
+            Double totalWeight = this.getTotalWeightByScholarshipId(scholarshipId);
+            vo.setScore(item.getSimilarityScore() / totalWeight);
             vo.setLlmScore(item.getLlm());
             vo.setCosineScore(item.getCosine());
             result.add(vo);
@@ -710,6 +713,11 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 .limit(5)
                 .map(e -> new ScholarshipCountryCountDto(e.getKey(), e.getValue()))
                 .toList();
+    }
+
+    @Override
+    public Double getTotalWeightByScholarshipId(Long scholarshipId) {
+        return scholarshipRepository.getTotalWeightByScholarshipId(scholarshipId);
     }
 
     private String normalize(String country) {

@@ -99,7 +99,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
 
     @Override
     public ApplicantProfileVo getOneByUserId(String userId) {
-        Optional<ApplicantProfileEntity> profile = applicantProfileRepository.findByUserIdAndActive(userId, true);
+        Optional<ApplicantProfileEntity> profile = applicantProfileRepository.findByUserIdAndActiveAndType(userId, true, ProfileType.CURRENT);
         if (profile.isPresent()) {
             ApplicantProfileVo vo = applicantProfileMapper
                     .toVo(profile.get());
@@ -260,5 +260,10 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
                 .limit(5)
                 .map(e -> new CountryRegisterStatisticDto(e.getKey(), e.getValue()))
                 .toList();
+    }
+
+    @Override
+    public Double getTotalWeightByProfileId(Long profileId) {
+        return applicantProfileRepository.getTotalWeightByProfileId(profileId);
     }
 }

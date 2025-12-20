@@ -29,4 +29,7 @@ public interface ApplicantProfileFeign {
     @GetMapping("applicants/preference/{id}")
     ApiResponse<List<ApplicantPreferenceDto>> getPreferencesById(@PathVariable Long id);
 
+    @GetMapping("applicants/total-weight")
+    ApiResponse<Double> getTotalWeight(@RequestParam Long profileId);
+
 }
