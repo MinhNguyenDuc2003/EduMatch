@@ -57,7 +57,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
         String userId = UaaContextHolder.getUserId();
         profile.setUserId(userId);
 
-        if (applicantProfileRepository.findByUserIdAndActive(userId, true).isPresent()) {
+        if (applicantProfileRepository.findByUserIdAndActiveAndType(userId, true, ProfileType.CURRENT.getValue()).isPresent()) {
             throw new BusinessException(CoreMessageCode.USER_PROFILE_ALREADY_EXISTED);
         }
 
@@ -99,7 +99,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
 
     @Override
     public ApplicantProfileVo getOneByUserId(String userId) {
-        Optional<ApplicantProfileEntity> profile = applicantProfileRepository.findByUserIdAndActiveAndType(userId, true, ProfileType.CURRENT);
+        Optional<ApplicantProfileEntity> profile = applicantProfileRepository.findByUserIdAndActiveAndType(userId, true, ProfileType.CURRENT.getValue());
         if (profile.isPresent()) {
             ApplicantProfileVo vo = applicantProfileMapper
                     .toVo(profile.get());
@@ -199,7 +199,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     public List<ApplicantProfileVo> getAllByType(ProfileType type) {
 
         List<ApplicantProfileEntity> list =
-                applicantProfileRepository.findAllByTypeAndActive(type, true);
+                applicantProfileRepository.findAllByTypeAndActive(type.getValue(), true);
 
         return list.stream()
                 .map(entity -> applicantProfileMapper.toVo(entity))
@@ -211,7 +211,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
 
         String userId = UaaContextHolder.getUserId();
         List<ApplicantProfileEntity> list =
-                applicantProfileRepository.findAllByUserIdAndTypeAndActive(userId, type, true);
+                applicantProfileRepository.findAllByUserIdAndTypeAndActive(userId, type.getValue(), true);
 
         return list.stream()
                 .map(entity -> applicantProfileMapper.toVo(entity))
@@ -266,4 +266,16 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     public Double getTotalWeightByProfileId(Long profileId) {
         return applicantProfileRepository.getTotalWeightByProfileId(profileId);
     }
+
+    @Override
+    public List<ApplicantProfileVo> getAllMyProfile(String userId) {
+        List<ApplicantProfileEntity> list =
+                applicantProfileRepository.findAllByUserIdAndActive(userId, true);
+        List<ApplicantProfileVo> applicantProfileVos = new ArrayList<>();
+        list.forEach(o -> {
+            applicantProfileVos.add(this.getOne(o.getId()));
+        });
+        return applicantProfileVos;
+    }
+
 }

@@ -33,4 +33,6 @@ public interface ApplicantProfileService {
 
     Double getTotalWeightByProfileId(Long profileId);
 
+    List<ApplicantProfileVo> getAllMyProfile(String userId);
+
 }

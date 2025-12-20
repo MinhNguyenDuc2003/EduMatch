@@ -10,14 +10,10 @@ import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.profile.data.vo.ApplicantProfileVo;
 import com.minh.profile.service.ApplicantProfileService;
 import com.minh.service.aspect.Authorized;
+import com.minh.utils.UaaContextHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 @RestController
@@ -43,6 +39,12 @@ public class ApplicantProfileController {
     }
 
     @Authorized
+    @GetMapping("/all/my-profile")
+    public ApiResponse<List<ApplicantProfileVo>> getAllMyProfile() {
+        return ApiResponse.ok(profileService.getAllMyProfile(UaaContextHolder.getUserId()));
+    }
+
+    @Authorized
     @PutMapping
     public ApiResponse<ApplicantProfileDto> update(@RequestBody ApplicantProfileVo profile) {
         return ApiResponse.ok(profileService.update(profile));
@@ -64,6 +66,7 @@ public class ApplicantProfileController {
     ) {
         return ApiResponse.ok(profileService.getAllByUserIdAndType(type));
     }
+
     @PostMapping("/filter")
     public ApiResponse<List<ApplicantProfileVo>> filter(@RequestBody ScholarshipDto scholarshipDto) {
         return ApiResponse.ok(profileService.getByScholarshipFilter(scholarshipDto));
