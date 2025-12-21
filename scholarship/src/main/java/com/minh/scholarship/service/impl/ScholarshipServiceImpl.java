@@ -664,7 +664,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
             throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
         }
         ScholarshipEntity scholarshipEntity = scholarship.get();
-        List<ScholarshipPreferenceEntity> preferences = scholarshipPreferenceRepository.findByScholarshipIdAndType(scholarshipId, "PROFILE");
+        List<ScholarshipPreferenceEntity> preferences = scholarshipPreferenceRepository.findByScholarshipId(scholarshipId);
         Map<String, Double> preferenceMap = preferences.stream().filter(o -> ObjectUtils.isNotEmpty(o.getField()))
                 .collect(Collectors.toMap(ScholarshipPreferenceEntity::getField, ScholarshipPreferenceEntity::getWeight));
         List<ApplicantProfileVo> profiles = this.parseResponse(applicantProfileFeign.getByFilter(scholarshipMapper.toDto(scholarshipEntity)));
