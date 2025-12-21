@@ -26,11 +26,13 @@ import {
   Skills,
   StudentInformation,
 } from '../ProfileUpdate/components';
+import { useRouter } from 'next/navigation';
 
 export default function ExpectedProfilePage() {
   const { data: profiles, isLoading: isLoadingProfiles } = useGetAllProfilesQuery();
   const [createProfile, { isLoading: isCreating }] = useCreateExpectedProfileMutation();
   const [updateProfile, { isLoading: isUpdating }] = useUpdateExpectedProfileMutation();
+  const router = useRouter();
 
   const expectedProfile = profiles?.find((p) => p.type === 'Expected');
   const currentProfile = profiles?.find((p) => p.type === 'Current');
@@ -81,11 +83,19 @@ export default function ExpectedProfilePage() {
       };
 
       if (isEditing && expectedProfile?.id) {
-        await updateProfile({ ...payload }).unwrap();
-        toast.success('Expected profile updated successfully');
+        await updateProfile({ ...payload })
+          .unwrap()
+          .then(() => {
+            toast.success('Expected profile updated successfully');
+            router.push('/recommended-scholarships');
+          });
       } else {
-        await createProfile({ ...payload, id: undefined }).unwrap();
-        toast.success('Expected profile created successfully');
+        await createProfile({ ...payload, id: undefined })
+          .unwrap()
+          .then(() => {
+            toast.success('Expected profile created successfully');
+            router.push('/recommended-scholarships');
+          });
       }
     } catch (error: any) {
       console.error('Failed to save profile:', error);
