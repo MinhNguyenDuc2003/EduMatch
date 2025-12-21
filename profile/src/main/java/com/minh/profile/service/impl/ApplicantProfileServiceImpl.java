@@ -196,10 +196,10 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     }
 
     @Override
-    public List<ApplicantProfileVo> getAllByType(ProfileType type) {
+    public List<ApplicantProfileVo> getAllByType(String type) {
 
         List<ApplicantProfileEntity> list =
-                applicantProfileRepository.findAllByTypeAndActive(type.getValue(), true);
+                applicantProfileRepository.findAllByTypeAndActive(type, true);
 
         return list.stream()
                 .map(entity -> applicantProfileMapper.toVo(entity))
@@ -207,11 +207,11 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     }
 
     @Override
-    public List<ApplicantProfileVo> getAllByUserIdAndType(ProfileType type) {
+    public List<ApplicantProfileVo> getAllByUserIdAndType(String type) {
 
         String userId = UaaContextHolder.getUserId();
         List<ApplicantProfileEntity> list =
-                applicantProfileRepository.findAllByUserIdAndTypeAndActive(userId, type.getValue(), true);
+                applicantProfileRepository.findAllByUserIdAndTypeAndActive(userId, type, true);
 
         return list.stream()
                 .map(entity -> applicantProfileMapper.toVo(entity))

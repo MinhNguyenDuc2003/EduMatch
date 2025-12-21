@@ -21,9 +21,9 @@ public interface ApplicantProfileService {
 
     List<ApplicantProfileDto> getAll();
 
-    List<ApplicantProfileVo> getAllByType(ProfileType type);
+    List<ApplicantProfileVo> getAllByType(String type);
 
-    List<ApplicantProfileVo> getAllByUserIdAndType(ProfileType type);
+    List<ApplicantProfileVo> getAllByUserIdAndType(String type);
 
     List<ApplicantProfileVo> getByScholarshipFilter(ScholarshipDto scholarshipDto);
 

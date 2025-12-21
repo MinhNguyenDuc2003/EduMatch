@@ -1,7 +1,6 @@
 package com.minh.profile.controller;
 
 import com.minh.constants.EndPoint;
-import com.minh.enumeration.applicantprofile.ProfileType;
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.profile.ApplicantPreferenceDto;
 import com.minh.model.dto.profile.ApplicantProfileDto;
@@ -56,13 +55,13 @@ public class ApplicantProfileController {
     }
 
     @GetMapping("/by-type")
-    public ApiResponse<List<ApplicantProfileVo>> getAllByType(@RequestParam ProfileType type) {
+    public ApiResponse<List<ApplicantProfileVo>> getAllByType(@RequestParam String type) {
         return ApiResponse.ok(profileService.getAllByType(type));
     }
 
     @GetMapping("/by-user-and-type")
     public ApiResponse<List<ApplicantProfileVo>> getAllByUserAndType(
-            @RequestParam ProfileType type
+            @RequestParam String type
     ) {
         return ApiResponse.ok(profileService.getAllByUserIdAndType(type));
     }
