@@ -59,6 +59,7 @@ public class ApplicantProfileController {
         return ApiResponse.ok(profileService.getAllByType(type));
     }
 
+    @Authorized
     @GetMapping("/by-user-and-type")
     public ApiResponse<List<ApplicantProfileVo>> getAllByUserAndType(
             @RequestParam String type
