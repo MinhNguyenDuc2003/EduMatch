@@ -106,7 +106,7 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     @Query("""
             SELECT s
             FROM ScholarshipEntity s
-            WHERE s.active = true AND CAST(s.endDate AS DATE) <= CURRENT_DATE
+            WHERE s.active = true AND s.endDate >= CURRENT_TIMESTAMP
             AND (:educationLevel IS NULL OR s.studyLevel = :educationLevel)
             AND (:country IS NULL OR s.country = :country)
             
