@@ -9,20 +9,38 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import { PreferencesWeightDialog } from './components/PreferencesWeightDialog';
-import { useGetProfileQuery } from '@/state/apiApplicant';
+import { useGetAllProfilesQuery } from '@/state/apiApplicant';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/pattern/cus/select';
+import { useEffect, useState } from 'react';
 
 export default function RecommendedScholarships() {
   const router = useRouter();
   const t = useTranslations('recommendedScholarships');
   const tToast = useTranslations('toast');
-  const { data: applicantProfile, isLoading: isLoadingProfile } = useGetProfileQuery();
+
+  const { data: profiles, isLoading: isLoadingProfiles } = useGetAllProfilesQuery();
+  const [selectedProfileId, setSelectedProfileId] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (profiles && profiles.length > 0 && selectedProfileId === undefined) {
+      setSelectedProfileId(profiles.find((p) => p.type === 'Current')?.id);
+    }
+  }, [profiles, selectedProfileId]);
+
   const {
     data: scholarships,
     isLoading,
     refetch,
-  } = useGetRecommendedScholarshipsQuery({
-    profileId: applicantProfile?.applicantProfile?.id || 0,
-  });
+  } = useGetRecommendedScholarshipsQuery(
+    { profileId: selectedProfileId || 0 }, // Pass 0 or handle skip if undefined if query allows, but usually better to wait or pass a dummy valid if required
+    { skip: selectedProfileId === undefined }
+  );
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
@@ -73,6 +91,24 @@ export default function RecommendedScholarships() {
             <div className="flex items-center justify-between p-4">
               <div className="flex items-center gap-4">
                 <h2 className="text-lg font-bold">{t('title')}</h2>
+                <div className="flex items-center gap-2">
+                  <Select
+                    value={selectedProfileId?.toString()}
+                    onValueChange={(value) => setSelectedProfileId(Number(value))}
+                    disabled={isLoadingProfiles}
+                  >
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Select Profile" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {profiles?.map((profile) => (
+                        <SelectItem key={profile.id} value={profile.id.toString()}>
+                          {profile.type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div>
                   {isLoading
                     ? t('matchingLoading')

@@ -232,14 +232,14 @@ export default function ScholarshipCard({
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-xs font-medium text-gray-600">{t('matchScore')}</span>
                   <span className="text-xs font-bold text-gray-900">
-                    {(((score * 100) / 380) * 100).toFixed(1)}%
+                    {(score * 100).toFixed(1)}%
                   </span>
                 </div>
                 <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{
-                      width: `${(((score * 100) / 380) * 100).toFixed(1)}%`,
+                      width: `${(score * 100).toFixed(1)}%`,
                       background: `linear-gradient(to right, 
                         rgb(29, 78, 216) 0%, 
                         rgb(37, 99, 235) 33%, 

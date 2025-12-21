@@ -95,7 +95,7 @@ declare global {
     gmatScore: number;
     toeflScore: number;
     ieltsScore: number;
-    type: string;
+    type: 'Current' | 'Expected';
     languages: string;
     academicAwards: string;
     publicationCount: number;
