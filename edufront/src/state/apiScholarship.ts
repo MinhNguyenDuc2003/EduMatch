@@ -125,7 +125,7 @@ export const apiScholarship = createApi({
       }),
     }),
 
-    getRecommendedScholarships: build.query<Scholarship[], { topK: number }>({
+    getRecommendedScholarships: build.query<Scholarship[], { profileId: number }>({
       query: (data) => ({
         url: `${API_ENDPOINTS.SCHOLARSHIP}/recommendation`,
         method: 'GET',
