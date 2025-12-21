@@ -15,12 +15,14 @@ export default function RecommendedScholarships() {
   const router = useRouter();
   const t = useTranslations('recommendedScholarships');
   const tToast = useTranslations('toast');
+  const { data: applicantProfile, isLoading: isLoadingProfile } = useGetProfileQuery();
   const {
     data: scholarships,
     isLoading,
     refetch,
-  } = useGetRecommendedScholarshipsQuery({ topK: 10 });
-  const { data: applicantProfile, isLoading: isLoadingProfile } = useGetProfileQuery();
+  } = useGetRecommendedScholarshipsQuery({
+    profileId: applicantProfile?.applicantProfile?.id || 0,
+  });
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 

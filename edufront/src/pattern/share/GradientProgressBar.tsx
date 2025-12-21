@@ -15,7 +15,7 @@ export default function GradientProgressBar({
   className = '',
   customColor,
 }: GradientProgressBarProps) {
-  const filledSegments = Math.round((percentage / 100) * segments);
+  const filledSegments = Math.round(percentage * segments);
 
   // Simple gradient colors from blue to pink
   const getSegmentColor = (index: number) => {
@@ -47,7 +47,7 @@ export default function GradientProgressBar({
     <div className={`space-y-1 ${className}`}>
       <div className="flex items-center justify-between">
         <span className="text-sm text-gray-700">{label}</span>
-        <span className="text-sm font-bold text-gray-900">{percentage}%</span>
+        <span className="text-sm font-bold text-gray-900">{(percentage * 100).toFixed(2)}%</span>
       </div>
       <div className="flex gap-1">
         {segmentArray.map((segment, i) => (

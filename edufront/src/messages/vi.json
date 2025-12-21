@@ -658,7 +658,8 @@
       "noDeadline": "Không có hạn chót",
       "compare": "So sánh",
       "alreadySelected": "Đã được chọn",
-      "matchScore": "Điểm phù hợp"
+      "matchScore": "Điểm phù hợp",
+      "report": "Báo cáo"
     },
     "premiumBanner": {
       "badge": "AI Scholarship",
@@ -1747,6 +1748,31 @@
       "createdDate": "Ngày tạo",
       "planDetails": "Chi tiết",
       "userType": "Loại người dùng"
+    }
+  },
+  "recommendedScholarshipsDetail": {
+    "profile": {
+      "title": "Hồ sơ"
+    },
+    "detail": {
+      "title": "Chi tiết",
+      "criteria": "Tiêu chí",
+      "careerScore": "Ngành nghề",
+      "achievementScore": "Thành tích",
+      "extracurricularScore": "Hoạt động ngoại khóa",
+      "experienceScore": "Kinh nghiệm",
+      "educationScore": "Giáo dục",
+      "intentionScore": "Mục đích",
+      "overallScore": "Tổng thể",
+      "majorScore": "Chuyên ngành",
+      "researchScore": "Nghiên cứu",
+      "skillScore": "Kỹ năng",
+      "score": "Tổng thể",
+      "about": "Về điểm số này",
+      "aboutContent": "Điểm số này phản ánh mức độ phù hợp tổng thể giữa hồ sơ của bạn và các tiêu chí của học bổng, bao gồm thành tích học tập, kỹ năng, kinh nghiệm và định hướng tương lai. Điểm càng cao, cơ hội nhận học bổng càng lớn."
+    },
+    "scholarship": {
+      "title": "Học bổng"
     }
   }
 }

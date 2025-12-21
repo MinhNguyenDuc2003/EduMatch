@@ -651,7 +651,8 @@
       "noDeadline": "No deadline",
       "compare": "Compare",
       "alreadySelected": "Already selected",
-      "matchScore": "Match Score"
+      "matchScore": "Match Score",
+      "report": "Report"
     },
     "premiumBanner": {
       "badge": "AI Scholarship",
@@ -1740,6 +1741,31 @@
       "createdDate": "Created Date",
       "planDetails": "Plan Details",
       "userType": "User Type"
+    }
+  },
+  "recommendedScholarshipsDetail": {
+    "profile": {
+      "title": "Profile"
+    },
+    "detail": {
+      "title": "Detail",
+      "criteria": "Criteria",
+      "careerScore": "Career Score",
+      "achievementScore": "Achievement Score",
+      "extracurricularScore": "Extracurricular Score",
+      "experienceScore": "Experience Score",
+      "educationScore": "Education Score",
+      "intentionScore": "Intentions Score",
+      "overallScore": "Overall Score",
+      "majorScore": "Major Score",
+      "researchScore": "Research Score",
+      "skillScore": "Skill Score",
+      "score": "Score",
+      "about": "About this score",
+      "aboutContent": "This score reflects the overall compatibility between your profile and the scholarship criteria, including academic achievements, skills, experience, and future intentions. The higher the score, the greater the chance of receiving the scholarship."
+    },
+    "scholarship": {
+      "title": "Scholarship"
     }
   }
 }

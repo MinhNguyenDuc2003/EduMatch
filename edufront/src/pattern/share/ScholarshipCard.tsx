@@ -130,13 +130,15 @@ export default function ScholarshipCard({
               <div className="flex items-center gap-2">
                 {isUpgraded && (
                   <>
-                    <Button
-                      variant="custom"
-                      className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
-                      onClick={() => setIsDetailSheetOpen(true)}
-                    >
-                      <Info className="w-5 h-5" />
-                    </Button>
+                    {scholarship.llmScore && scholarship.cosineScore && (
+                      <Button
+                        variant="custom"
+                        className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
+                        onClick={() => setIsDetailSheetOpen(true)}
+                      >
+                        <Info className="w-5 h-5" />
+                      </Button>
+                    )}
                     <Button
                       variant="custom"
                       className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
@@ -179,7 +181,7 @@ export default function ScholarshipCard({
                       className="cursor-pointer"
                     >
                       <OctagonAlert className="w-4 h-4 mr-2" />
-                      <span>Report</span>
+                      <span>{t('report')}</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -382,6 +384,7 @@ export default function ScholarshipCard({
 
       {/* Detail Sheet */}
       <RecommendedScholarshipDetail
+        scholarship={scholarship}
         applicantProfile={applicantProfile}
         open={isDetailSheetOpen}
         onOpenChange={setIsDetailSheetOpen}
