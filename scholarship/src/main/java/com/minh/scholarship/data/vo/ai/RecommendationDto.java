@@ -1,5 +1,6 @@
 package com.minh.scholarship.data.vo.ai;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,6 +30,7 @@ public class RecommendationDto implements Serializable {
     Double similarityScore;
 
     @JsonProperty("llm_score")
+    @JsonAlias({"llm"})
     private LlmResultDto llm;
 
     private CosineResultDto cosine;

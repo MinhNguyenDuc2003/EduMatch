@@ -316,7 +316,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         }
         ScholarshipVo vo = scholarshipMapper.proToVo(projection);
         vo.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(vo.getProviderId())));
-
+        List<ScholarshipPreferenceDto> preferences = scholarshipPreferenceMapper.toDto(scholarshipPreferenceRepository.findByScholarshipId(vo.getId()));
+        vo.setScholarshipPreferences(preferences);
         if (userId != null) {
             if (!scholarshipViewRepository.existsByUserIdAndScholarshipId(userId, vo.getId())) {
                 ScholarshipViewEntity viewEntity = new ScholarshipViewEntity();
