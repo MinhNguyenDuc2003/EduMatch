@@ -32,9 +32,9 @@ export default function Profile() {
   return (
     <>
       <div className="min-h-screen bg-gray-50 py-8 px-4 lg:px-40">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="mx-auto space-y-6">
           {/* Profile Header */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 auto-rows-fr">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
               <ProfileHeader
                 name={uiData.name}
@@ -48,7 +48,7 @@ export default function Profile() {
           </div>
 
           {/* Grid Layout for Profile Strength and Info Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 lg:grid-rows-3 gap-6 auto-rows-fr ">
+          <div className="grid grid-cols-1 lg:grid-cols-3 lg:grid-rows-5 gap-6 ">
             {/* Columns 1 - Student Info */}
             <InfoCard
               title={t('sections.studentInformation')}
@@ -137,7 +137,7 @@ export default function Profile() {
                   value: applicantProfile?.preferredMajor,
                 },
               ]}
-              className="lg:row-span-3"
+              className="lg:row-span-5"
             />
 
             {/* Columns 2 - Academic Info and Artistic/Athletic Information */}
@@ -179,7 +179,7 @@ export default function Profile() {
                   value: applicantProfile?.extracurricularActivities,
                 },
               ]}
-              className="lg:row-span-2"
+              className="lg:row-span-3"
             />
 
             <InfoCard
@@ -216,7 +216,7 @@ export default function Profile() {
                   value: applicantProfile?.gmatScore?.toString(),
                 },
               ]}
-              className="lg:col-start-2 lg:row-start-3"
+              className="lg:col-start-2 lg:row-start-4"
             />
 
             <ArrayInfoCard
@@ -224,7 +224,7 @@ export default function Profile() {
               items={applicantProfile?.educationHistories}
               renderItem={(edu) => <HistoryCard edu={edu} />}
               emptyMessage={t('common.noEducationHistoryAdded')}
-              className="lg:col-start-3 lg:row-start-1 lg:row-span-2"
+              className="lg:col-start-3 lg:row-start-1 lg:row-span-3"
             />
 
             <ArrayInfoCard
@@ -232,7 +232,7 @@ export default function Profile() {
               items={applicantProfile?.skills}
               renderItem={(skill) => <SkillCard skill={skill} />}
               emptyMessage={t('common.noSkillsAdded')}
-              className="lg:col-start-3 lg:row-start-3 "
+              className="lg:col-start-3 lg:row-start-4 "
             />
           </div>
 

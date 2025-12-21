@@ -51,7 +51,7 @@ export default function RecommendedScholarshipsSection() {
 
   return (
     <section className="py-12 bg-gradient-to-br from-slate-50 to-blue-50/30">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className=" mx-auto px-6 lg:px-40">
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
           <div>

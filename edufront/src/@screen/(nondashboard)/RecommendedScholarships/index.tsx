@@ -36,6 +36,7 @@ export default function RecommendedScholarships() {
   const {
     data: scholarships,
     isLoading,
+    isFetching,
     refetch,
   } = useGetRecommendedScholarshipsQuery(
     { profileId: selectedProfileId || 0 }, // Pass 0 or handle skip if undefined if query allows, but usually better to wait or pass a dummy valid if required
@@ -110,23 +111,24 @@ export default function RecommendedScholarships() {
                   </Select>
                 </div>
                 <div>
-                  {isLoading
+                  {isLoading || isFetching
                     ? t('matchingLoading')
                     : t('description', { count: scholarships?.length || 0 })}
                 </div>
               </div>
-              <PreferencesWeightDialog />
+              <PreferencesWeightDialog refetch={refetch} />
             </div>
 
             {/* Content */}
             <div className="flex flex-col p-4 gap-4">
-              {isLoading ? (
+              {isLoading || isFetching ? (
                 <div className="flex h-full items-center justify-center">
                   <Loader2 className="w-10 h-10 animate-spin" />
                 </div>
               ) : (
                 scholarships?.map((scholarship) => (
                   <ScholarshipCard
+                    applicantProfile={profiles?.find((p) => p.type === 'Current')}
                     key={scholarship.id}
                     scholarship={scholarship}
                     onApply={handleApply}

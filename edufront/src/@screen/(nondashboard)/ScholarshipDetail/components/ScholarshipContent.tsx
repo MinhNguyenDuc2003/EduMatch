@@ -46,6 +46,12 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
             <p className="font-medium text-gray-900">{scholarship.university}</p>
           </div>
         )}
+        {scholarship.availableSlots && (
+          <div className="text-sm flex items-center gap-2">
+            <p className=" text-gray-500">{t('availableSlots')}:</p>
+            <p className="font-medium text-gray-900">{scholarship.availableSlots}</p>
+          </div>
+        )}
       </section>
 
       {/* Criteria Section */}
@@ -228,9 +234,7 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
         )}
 
         {/* Other Requirements Section */}
-        {(scholarship.requiredWorkExperienceYears ||
-          scholarship.languageRequirement ||
-          scholarship.availableSlots) && (
+        {(scholarship.requiredWorkExperienceYears || scholarship.languageRequirement) && (
           <section className="flex flex-col mb-2 py-2 border-t border-gray-300">
             <h2 className="text-sm font-semibold text-gray-900 mb-2">{t('otherRequirements')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -246,12 +250,6 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
                 <div className="text-sm">
                   <p className=" text-gray-500">{t('languageRequirement')}</p>
                   <p className="font-medium text-gray-900">{scholarship.languageRequirement}</p>
-                </div>
-              )}
-              {scholarship.availableSlots > 0 && (
-                <div className="text-sm">
-                  <p className="text-xs text-gray-500">{t('availableSlots')}</p>
-                  <p className="text-sm font-medium text-gray-900">{scholarship.availableSlots}</p>
                 </div>
               )}
             </div>
