@@ -57,7 +57,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
         String userId = UaaContextHolder.getUserId();
         profile.setUserId(userId);
 
-        if (applicantProfileRepository.findByUserIdAndActiveAndType(userId, true, ProfileType.CURRENT.getValue()).isPresent()) {
+        if ("Current".equals(profile.getType()) && applicantProfileRepository.findByUserIdAndActiveAndType(userId, true, ProfileType.CURRENT.getValue()).isPresent()) {
             throw new BusinessException(CoreMessageCode.USER_PROFILE_ALREADY_EXISTED);
         }
 
