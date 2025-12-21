@@ -57,7 +57,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
         String userId = UaaContextHolder.getUserId();
         profile.setUserId(userId);
 
-        if (applicantProfileRepository.findByUserIdAndActive(userId, true).isPresent()) {
+        if (applicantProfileRepository.findByUserIdAndActiveAndType(userId, true, ProfileType.CURRENT.getValue()).isPresent()) {
             throw new BusinessException(CoreMessageCode.USER_PROFILE_ALREADY_EXISTED);
         }
 
@@ -99,7 +99,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
 
     @Override
     public ApplicantProfileVo getOneByUserId(String userId) {
-        Optional<ApplicantProfileEntity> profile = applicantProfileRepository.findByUserIdAndActive(userId, true);
+        Optional<ApplicantProfileEntity> profile = applicantProfileRepository.findByUserIdAndActiveAndType(userId, true, ProfileType.CURRENT.getValue());
         if (profile.isPresent()) {
             ApplicantProfileVo vo = applicantProfileMapper
                     .toVo(profile.get());
@@ -196,7 +196,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     }
 
     @Override
-    public List<ApplicantProfileVo> getAllByType(ProfileType type) {
+    public List<ApplicantProfileVo> getAllByType(String type) {
 
         List<ApplicantProfileEntity> list =
                 applicantProfileRepository.findAllByTypeAndActive(type, true);
@@ -207,7 +207,7 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
     }
 
     @Override
-    public List<ApplicantProfileVo> getAllByUserIdAndType(ProfileType type) {
+    public List<ApplicantProfileVo> getAllByUserIdAndType(String type) {
 
         String userId = UaaContextHolder.getUserId();
         List<ApplicantProfileEntity> list =
@@ -261,4 +261,21 @@ public class ApplicantProfileServiceImpl implements ApplicantProfileService {
                 .map(e -> new CountryRegisterStatisticDto(e.getKey(), e.getValue()))
                 .toList();
     }
+
+    @Override
+    public Double getTotalWeightByProfileId(Long profileId) {
+        return applicantProfileRepository.getTotalWeightByProfileId(profileId);
+    }
+
+    @Override
+    public List<ApplicantProfileVo> getAllMyProfile(String userId) {
+        List<ApplicantProfileEntity> list =
+                applicantProfileRepository.findAllByUserIdAndActive(userId, true);
+        List<ApplicantProfileVo> applicantProfileVos = new ArrayList<>();
+        list.forEach(o -> {
+            applicantProfileVos.add(this.getOne(o.getId()));
+        });
+        return applicantProfileVos;
+    }
+
 }

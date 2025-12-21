@@ -67,5 +67,5 @@ public class ApplicantProfileDto extends BaseDto {
     // ==============================
     // Type Applicant Profile
     // ==============================
-    private ProfileType type;
+    private String type;
 }

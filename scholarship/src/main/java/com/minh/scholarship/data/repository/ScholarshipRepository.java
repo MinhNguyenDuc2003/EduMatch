@@ -104,37 +104,37 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     List<ScholarshipEntity> findByApplicationSuccessAndScholarshipId(String userId, Long scholarshipId, String status);
 
     @Query("""
-SELECT s
-FROM ScholarshipEntity s
-WHERE s.active = true
-AND (:educationLevel IS NULL OR s.studyLevel = :educationLevel)
-AND (:country IS NULL OR s.country = :country)
-
-AND (
-       (s.gpaRequirement IS NULL
-            OR (:overallGpa IS NOT NULL AND :overallGpa >= s.gpaRequirement))
-
-    OR (s.requiredSatScore IS NULL
-            OR (:satScore IS NOT NULL AND :satScore >= s.requiredSatScore))
-
-    OR (s.requiredActScore IS NULL
-            OR (:actScore IS NOT NULL AND :actScore >= s.requiredActScore))
-
-    OR (s.requiredGreScore IS NULL
-            OR (:greScore IS NOT NULL AND :greScore >= s.requiredGreScore))
-
-    OR (s.requiredGmatScore IS NULL
-            OR (:gmatScore IS NOT NULL AND :gmatScore >= s.requiredGmatScore))
-)
-
-AND (
-       (s.requiredToeflScore IS NULL
-            OR (:toeflScore IS NOT NULL AND :toeflScore >= s.requiredToeflScore))
-
-    OR (s.requiredIeltsScore IS NULL
-            OR (:ieltsScore IS NOT NULL AND :ieltsScore >= s.requiredIeltsScore))
-)
-""")
+            SELECT s
+            FROM ScholarshipEntity s
+            WHERE s.active = true
+            AND (:educationLevel IS NULL OR s.studyLevel = :educationLevel)
+            AND (:country IS NULL OR s.country = :country)
+            
+            AND (
+                   (s.gpaRequirement IS NULL
+                        OR (:overallGpa IS NOT NULL AND :overallGpa >= s.gpaRequirement))
+            
+                OR (s.requiredSatScore IS NULL
+                        OR (:satScore IS NOT NULL AND :satScore >= s.requiredSatScore))
+            
+                OR (s.requiredActScore IS NULL
+                        OR (:actScore IS NOT NULL AND :actScore >= s.requiredActScore))
+            
+                OR (s.requiredGreScore IS NULL
+                        OR (:greScore IS NOT NULL AND :greScore >= s.requiredGreScore))
+            
+                OR (s.requiredGmatScore IS NULL
+                        OR (:gmatScore IS NOT NULL AND :gmatScore >= s.requiredGmatScore))
+            )
+            
+            AND (
+                   (s.requiredToeflScore IS NULL
+                        OR (:toeflScore IS NOT NULL AND :toeflScore >= s.requiredToeflScore))
+            
+                OR (s.requiredIeltsScore IS NULL
+                        OR (:ieltsScore IS NOT NULL AND :ieltsScore >= s.requiredIeltsScore))
+            )
+            """)
     List<ScholarshipEntity> findByApplicantFilter(
             String educationLevel,
             BigDecimal overallGpa,
@@ -171,5 +171,10 @@ AND (
                 ORDER BY COUNT(s) DESC
             """)
     List<ScholarshipCountryCountProjection> countTopCountry();
+
+    @Query(value = "select SUM(sp.weight) " +
+            "from scholarship.scholarship_preference sp " +
+            "where sp.scholarship_id = :scholarshipId and sp.active = true ", nativeQuery = true)
+    Double getTotalWeightByScholarshipId(Long scholarshipId);
 
 }

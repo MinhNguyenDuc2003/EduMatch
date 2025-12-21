@@ -51,9 +51,9 @@ public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfi
                                                         Double gpaRequirement, Integer requiredSatScore,
                                                         Integer requiredGreScore, Integer requiredActScore, Integer requiredGmatScore,
                                                         Integer requiredToeflScore, Double requiredIeltsScore);
-    List<ApplicantProfileEntity> findAllByTypeAndActive(ProfileType type, Boolean active);
+    List<ApplicantProfileEntity> findAllByTypeAndActive(String type, Boolean active);
 
-    List<ApplicantProfileEntity> findAllByUserIdAndTypeAndActive(String userId, ProfileType type, Boolean active);
+    List<ApplicantProfileEntity> findAllByUserIdAndTypeAndActive(String userId, String type, Boolean active);
 
     @Query("""
         SELECT 
@@ -65,4 +65,14 @@ public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfi
         GROUP BY a.preferredCountry
     """)
     List<CountryCountProjection> countByCountry();
+
+    Optional<ApplicantProfileEntity> findByUserIdAndActiveAndType(String userId, Boolean active, String type);
+
+    @Query(value = "select SUM(ap.weight) " +
+            "from profile.applicant_preference ap " +
+            "where ap.applicant_id = :profileId AND ap.active = true ", nativeQuery = true)
+    Double getTotalWeightByProfileId(Long profileId);
+
+    List<ApplicantProfileEntity> findAllByUserIdAndActive(String userId, Boolean active);
+
 }

@@ -145,6 +145,5 @@ public class ApplicantProfileEntity extends BaseEntity {
     private String preferredMajor;
 
     @Column(name = "TYPE", length = 100)
-    @Enumerated(EnumType.STRING)
-    private ProfileType type;
+    private String type;
 }

@@ -39,7 +39,7 @@ public class MailServiceImpl implements MailService {
 
         try {
             Map<String, Object> body = Map.of(
-                    "from", "Edumatch <edumatch.space@resend.dev>",
+                    "from", "Edumatch <support@edumatch.space>",
                     "to", List.of(to),
                     "subject", subject,
                     "html", htmlBody

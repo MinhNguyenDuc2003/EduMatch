@@ -21,13 +21,18 @@ public interface ApplicantProfileService {
 
     List<ApplicantProfileDto> getAll();
 
-    List<ApplicantProfileVo> getAllByType(ProfileType type);
+    List<ApplicantProfileVo> getAllByType(String type);
 
-    List<ApplicantProfileVo> getAllByUserIdAndType(ProfileType type);
+    List<ApplicantProfileVo> getAllByUserIdAndType(String type);
 
     List<ApplicantProfileVo> getByScholarshipFilter(ScholarshipDto scholarshipDto);
 
     List<ApplicantPreferenceDto> getPreferencesById(Long id);
 
     List<CountryRegisterStatisticDto> getTop5CountryRegister();
+
+    Double getTotalWeightByProfileId(Long profileId);
+
+    List<ApplicantProfileVo> getAllMyProfile(String userId);
+
 }
