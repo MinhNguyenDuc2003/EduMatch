@@ -20,7 +20,7 @@ const PreferredPreferences = () => {
         <CustomFormField
           name="applicantProfile.preferredScholarshipType"
           label={t('preferredScholarshipType')}
-          type="select"
+          type="multi-select"
           placeholder={t('selectPreferredScholarshipType')}
           options={SCHOLARSHIP_TYPES}
           inlineLabel
@@ -30,7 +30,7 @@ const PreferredPreferences = () => {
         <CustomFormField
           name="applicantProfile.preferredCountry"
           label={t('preferredCountry')}
-          type="select"
+          type="multi-select"
           placeholder={t('selectPreferredCountry')}
           options={COUNTRIES}
           inlineLabel
@@ -40,7 +40,7 @@ const PreferredPreferences = () => {
         <CustomFormField
           name="applicantProfile.preferredMajor"
           label={t('preferredMajor')}
-          type="select"
+          type="multi-select"
           placeholder={t('selectPreferredMajor')}
           options={MAJOR_NAMES}
           inlineLabel

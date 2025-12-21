@@ -7,6 +7,7 @@ import { useGetRecommendedScholarshipsQuery } from '@/state/apiScholarship';
 import { useAuth } from '@/hooks/useAuth';
 import ProcessBlockedDialog from './ProfileStrengthDialog';
 import Loading from '@/pattern/share/Loading';
+import { useGetProfileQuery } from '@/state/apiApplicant';
 
 export default function PremiumBanner() {
   const router = useRouter();
@@ -14,8 +15,9 @@ export default function PremiumBanner() {
   const [showProcessBlockedDialog, setShowProcessBlockedDialog] = useState(false);
   const t = useTranslations('scholarshipsList.premiumBanner');
   const { isAuthenticated, subscriptions, isApplicant } = useAuth();
+  const { data: profile, isLoading: isLoadingProfile } = useGetProfileQuery();
   const { data: scholarships, isLoading } = useGetRecommendedScholarshipsQuery(
-    { topK: 10 },
+    { profileId: profile?.applicantProfile?.id! },
     { skip: isUpgraded === false || !isApplicant }
   );
 
@@ -100,7 +102,7 @@ export default function PremiumBanner() {
             <div className="hidden md:flex items-center gap-4" onClick={handleUpdate}>
               <div>
                 <h3 className="text-white font-bold text-xl mb-1">
-                  {isLoading
+                  {isLoading || isLoadingProfile
                     ? t('loadingMatches')
                     : t('foundMatches', { count: scholarships?.length ?? 0 })}
                 </h3>

@@ -25,7 +25,7 @@ const PREFERENCE_FIELDS = [
   { key: 'research_w', label: 'Research' },
 ];
 
-export function PreferencesWeightDialog() {
+export function PreferencesWeightDialog({ refetch }: { refetch?: () => void }) {
   const t = useTranslations('applicantProfile.preferencesDialog');
   const [open, setOpen] = useState(false);
   const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
@@ -62,16 +62,6 @@ export function PreferencesWeightDialog() {
     if (!profileData?.applicantProfile) return;
 
     try {
-      const updatedPreferences = Object.entries(weights).map(([field, weight]) => ({
-        field,
-        weight,
-        type: '', // Assuming type is optional or handled by backend if empty string
-      }));
-
-      // Merge with existing preferences to keep IDs if they exist (to update instead of recreate if backend requires IDs)
-      // But looking at previous logic, it seems we might just be sending the array.
-      // However, to be safe, let's map over existing ones and update weights, and add new ones if missing.
-
       const existingPrefs = profileData.applicantProfile.applicantPreferences || [];
       const finalPreferences = PREFERENCE_FIELDS.map((fieldDef) => {
         const existing = existingPrefs.find((p) => p.field === fieldDef.key);
@@ -92,6 +82,7 @@ export function PreferencesWeightDialog() {
       await updateProfile({ applicantProfile: updatedProfile }).unwrap();
       toast.success('Preferences updated successfully');
       setOpen(false);
+      refetch?.();
     } catch (error) {
       console.error('Failed to update preferences:', error);
       toast.error('Failed to update preferences');
