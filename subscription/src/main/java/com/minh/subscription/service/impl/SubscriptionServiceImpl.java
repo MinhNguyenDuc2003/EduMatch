@@ -13,11 +13,11 @@ import com.minh.subscription.data.entity.SubscriptionPlanEntity;
 import com.minh.subscription.data.mapper.SubscriptionMapper;
 import com.minh.subscription.data.repository.SubscriptionPlanRepository;
 import com.minh.subscription.data.repository.SubscriptionRepository;
-import com.minh.subscription.data.vo.CustomerVm;
-import com.minh.subscription.data.vo.CustomerVo;
-import com.minh.subscription.data.vo.SubscriptionVo;
+import com.minh.subscription.data.vo.*;
+import com.minh.subscription.feign.ApplicantProfileFeign;
 import com.minh.subscription.feign.CustomerFeign;
 import com.minh.subscription.feign.MediaFeign;
+import com.minh.subscription.feign.ProviderProfileFeign;
 import com.minh.subscription.service.SubscriptionService;
 import com.minh.utils.DateTimeUtils;
 import com.minh.utils.SecurityUtil;
@@ -43,6 +43,8 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
     private final SubscriptionPlanRepository subscriptionPlanRepository;
     private final MediaFeign mediaFeign;
     private final CustomerFeign customerFeign;
+    private final ApplicantProfileFeign applicantProfileFeign;
+    private final ProviderProfileFeign providerProfileFeign;
 
     @Value("${fe.end-point}")
     private String feEndPoint;
@@ -66,20 +68,42 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
 
     @Override
     public SubscriptionVo getById(Long id) {
+
         SubscriptionEntity entity = subscriptionRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND));
 
         SubscriptionDto dto = subscriptionMapper.toDto(entity);
-
         SubscriptionVo vo = subscriptionMapper.toVo(dto);
 
-        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(dto.getUserId()));
+        String userId = dto.getUserId();
+
+        // ================= CUSTOMER =================
+        CustomerVo customerVo = this.parseResponse(
+                customerFeign.getSimpleCustomerById(userId)
+        );
         if (customerVo != null) {
             vo.setCustomer(customerVo.getCustomer());
         }
 
+        // ================= APPLICANT PROFILE =================
+        ApplicantProfileVo applicantProfile = this.parseResponse(
+                applicantProfileFeign.getOneByUserId(userId)
+        );
+        if (applicantProfile != null) {
+            vo.setApplicantProfile(applicantProfile);
+        }
+
+        // ================= PROVIDER PROFILE =================
+        ProviderProfileVo providerProfile = this.parseResponse(
+                providerProfileFeign.getOneByUserId(userId)
+        );
+        if (providerProfile != null) {
+            vo.setProviderProfile(providerProfile);
+        }
+
         return vo;
     }
+
 
     @Override
     @Transactional(rollbackOn = Exception.class)

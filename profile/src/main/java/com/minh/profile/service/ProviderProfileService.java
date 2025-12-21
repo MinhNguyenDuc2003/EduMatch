@@ -26,4 +26,6 @@ public interface ProviderProfileService {
     Boolean verifyCode(String code);
 
     List<ProviderProfileVo> getAll();
+
+    ProviderProfileVo getByUserId(String userId);
 }

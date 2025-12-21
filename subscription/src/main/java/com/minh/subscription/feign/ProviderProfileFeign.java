@@ -1,9 +1,9 @@
-package com.minh.report.feign;
+package com.minh.subscription.feign;
 
 import com.minh.model.ApiResponse;
 import com.minh.model.dto.profile.ProviderProfileDto;
-import com.minh.report.vo.ProviderProfileVo;
 import com.minh.service.feign.FeignInterceptorConfig;
+import com.minh.subscription.data.vo.ProviderProfileVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,5 +20,3 @@ public interface ProviderProfileFeign {
     @GetMapping("/providers/user/{userId}")
     ApiResponse<ProviderProfileVo> getOneByUserId(@PathVariable String userId);
 }
-
-

@@ -211,8 +211,26 @@ public class PaymentServiceImpl extends BaseService implements PaymentService {
 
     @Override
     public List<RevenueByUserTypeDto> getRevenueByUserType() {
-        return paymentRepository.getRevenueByUserType();
+
+        List<RevenueByUserTypeDto> list =
+                paymentRepository.getRevenueByUserType();
+
+        double totalRevenue = list.stream()
+                .mapToDouble(RevenueByUserTypeDto::getTotal)
+                .sum();
+
+        if (totalRevenue == 0) {
+            return list;
+        }
+
+        list.forEach(dto -> {
+            double percent = (dto.getTotal() / totalRevenue) * 100;
+            dto.setPercent(Math.round(percent * 100.0) / 100.0);
+        });
+
+        return list;
     }
+
 
     @Override
     public List<MonthlyRevenueDto> getRevenueByMonth() {

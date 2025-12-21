@@ -87,4 +87,9 @@ public class ProviderProfileController {
     public ApiResponse<List<ProviderProfileVo>> getAll() {
         return ApiResponse.ok(providerProfileService.getAll());
     }
+
+    @GetMapping("/user/{userId}")
+    public ApiResponse<ProviderProfileVo> getByUserId(@PathVariable String userId) {
+        return ApiResponse.ok(providerProfileService.getByUserId(userId));
+    }
 }
