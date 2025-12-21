@@ -44,7 +44,7 @@ public class ReportServiceImpl extends BaseService implements ReportService {
     public List<ReportVo> getAll() {
 
         List<ReportVo> vos = mapper.toVo(
-                reportRepository.findByActiveTrue()
+                reportRepository.findByActiveTrueOrderByCreatedDateDesc()
         );
 
         vos.forEach(vo -> {

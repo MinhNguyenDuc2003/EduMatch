@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public interface ReportRepository extends JpaRepository<ReportEntity, Long> {
 
-    List<ReportEntity> findByActiveTrue();
+    List<ReportEntity> findByActiveTrueOrderByCreatedDateDesc();
 
     Optional<ReportEntity> findByIdAndActive(Long id, boolean active);
 
