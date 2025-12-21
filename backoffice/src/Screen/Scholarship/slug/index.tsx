@@ -240,7 +240,7 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
                                     )}
                                 </div>
                                 <button 
-                                    onClick={() => router.push(`/profile/${provider.id}/Provider`)}
+                                    onClick={() => router.push(`/profileProvider/${provider.id}`)}
                                     className="text-sm text-blue-600 font-bold hover:underline flex items-center gap-1 mb-1"
                                 >
                                     View Organization <ArrowRight size={14}/>

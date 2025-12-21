@@ -144,6 +144,7 @@ function ProviderHeader({ provider, meds }: { provider: any; meds: any }) {
             <div className="flex items-center gap-2 mb-1">
                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 truncate mt-3">
                  {provider.organizationName}
+                 
                </h1>
                {verified && (
                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
@@ -156,6 +157,10 @@ function ProviderHeader({ provider, meds }: { provider: any; meds: any }) {
               <Building2 size={16} />
               {provider.organizationType}
             </p>
+            {/* <p className="text-gray-500 font-medium flex items-center gap-2">
+              <Building2 size={16} />
+              {provider.createddate}
+            </p> */}
           </div>
 
           {/* Action Button */}

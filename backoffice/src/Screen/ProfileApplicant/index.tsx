@@ -21,6 +21,12 @@ const ApplicantProfiles = () => {
             email: s.contactName ?? 'N/A',
             phone: s.phoneNumber ?? 'N/A',
             role: 'Applicant',
+             createDate: new Date(s.createdDate).toLocaleDateString('en-US', {
+                  // "Tue"
+                month: 'short',    // "Dec"
+                day: 'numeric',    // "3"
+                year: 'numeric'    // "2025"
+              }),
           }));
 
           const columns =  [
@@ -28,6 +34,7 @@ const ApplicantProfiles = () => {
               { accessorKey: 'name', header: 'Name' },
               { accessorKey: 'email', header: 'Email' },
               { accessorKey: 'phone', header: 'Phone' },
+              { accessorKey: 'createDate', header: 'Create Date' },
             ]
 
           return (

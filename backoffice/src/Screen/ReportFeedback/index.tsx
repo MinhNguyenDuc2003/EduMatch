@@ -28,7 +28,7 @@ const ReportFeedbackPage = () => {
               categoryName: item.category?.name || "—",
               categoryType: item.category?.type || "—",
               status: item.status ?? "—",
-              isRead: item.isRead ? "Read" : "Unread",
+              // isRead: item.isRead ? "Read" : "Unread",
             })) || [];
 
           // ✅ Thống kê
@@ -75,7 +75,7 @@ const ReportFeedbackPage = () => {
     { accessorKey: "categoryName", header: "Category Name" },
     { accessorKey: "categoryType", header: "Category Type" },
     { accessorKey: "status", header: "Status" },
-    { accessorKey: "isRead", header: "Read" },
+    // { accessorKey: "isRead", header: "Read" },
   ];
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">

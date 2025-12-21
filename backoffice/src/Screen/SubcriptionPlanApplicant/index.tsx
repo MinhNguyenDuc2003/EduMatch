@@ -30,6 +30,11 @@ const SubscriptionPlanPage = () => {
                 price: `${item.price} ${item.currency}`,
                 duration: `${item.durationDays} days`,
                 target: item.targetType,
+                createdDate: new Date(item.createdDate).toLocaleDateString('en-US', {
+                  month: 'short',    // "Dec"
+                  day: 'numeric',    // "3"
+                  year: 'numeric'    // "2025"
+                }),
               })) || [];
 
 
@@ -71,14 +76,15 @@ const SubscriptionPlanPage = () => {
             },
           ];
           const columns = [
-              { accessorKey: "id", header: "ID" },
-              { accessorKey: "name", header: "Plan Name" },
-              { accessorKey: "description", header: "Description" },
-              { accessorKey: "price", header: "Price" },
-              { accessorKey: "duration", header: "Duration" },
-              { accessorKey: "target", header: "Target Type" },
+            { accessorKey: "id", header: "ID" },
+            { accessorKey: "name", header: "Plan Name" },
+            { accessorKey: "description", header: "Description" },
+            { accessorKey: "price", header: "Price" },
+            { accessorKey: "duration", header: "Duration" },
+            { accessorKey: "target", header: "Target Type" },
+            { accessorKey: "createdDate", header: "Created Date" },
 
-            ]
+          ]
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}

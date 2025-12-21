@@ -27,6 +27,11 @@ const CaseStudyPage = () => {
             phoneNumber: item.profileVo?.phoneNumber || '—',
             hometown: item.profileVo?.hometown || '—',
             verified: item.verified ? 'Verified' : 'Unverified',
+            createdDate: new Date(item.createdDate).toLocaleDateString('en-US', {
+                month: 'short',    // "Dec"
+                day: 'numeric',    // "3"
+                year: 'numeric'    // "2025"
+              }),
             // fileName: item?.medias?.[0]?.fileName || '—',
             // contentType: item?.medias?.[0]?.contentType || '—',
           }));
@@ -65,6 +70,7 @@ const CaseStudyPage = () => {
               { accessorKey: "hometown", header: "Hometown" },
               { accessorKey: "title", header: "Title" },
               { accessorKey: "verified", header: "Verified" },
+              { accessorKey: "createdDate", header: "Created Date" },
               // { accessorKey: "fileName", header: "File Name" },
               // { accessorKey: "contentType", header: "Content Type" },
             ]

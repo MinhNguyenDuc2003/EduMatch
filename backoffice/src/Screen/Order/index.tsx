@@ -26,7 +26,7 @@ const OrderPage = () => {
               ...item,
               amountStr: `$${item.amount.toFixed(2)}`,
               paidAtStr: new Date(item.paidAt).toLocaleDateString('en-US', {
-                weekday: 'short',  // "Tue"
+                  // "Tue"
                 month: 'short',    // "Dec"
                 day: 'numeric',    // "3"
                 year: 'numeric'    // "2025"

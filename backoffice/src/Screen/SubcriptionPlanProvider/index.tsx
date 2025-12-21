@@ -30,6 +30,11 @@ const SubscriptionPlanPage = () => {
                 price: `${item.price} ${item.currency}`,
                 duration: `${item.durationDays} days`,
                 target: item.targetType,
+                   createdDate: new Date(item.createdDate).toLocaleDateString('en-US', {
+                  month: 'short',    // "Dec"
+                  day: 'numeric',    // "3"
+                  year: 'numeric'    // "2025"
+                }),
               })) || [];
 
           const total = plans.length;
@@ -74,6 +79,7 @@ const SubscriptionPlanPage = () => {
               { accessorKey: "price", header: "Price" },
               { accessorKey: "duration", header: "Duration" },
               { accessorKey: "target", header: "Target Type" },
+              { accessorKey: "createdDate", header: "Created Date" },
 
             ]
           return (

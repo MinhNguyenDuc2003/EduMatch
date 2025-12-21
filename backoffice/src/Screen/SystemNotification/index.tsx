@@ -25,10 +25,10 @@ const SystemNotification = () => {
             id: item.id,
             content: item.content,
             referenceType: item.referenceType,
-            isRead: item.isRead ? 'Read' : 'Unread',
+            // isRead: item.isRead ? 'Read' : 'Unread',
             isAdmin: item.isAdmin ? 'Admin' : 'User',
             createdDate: new Date(item.createdDate).toLocaleDateString('en-US', {
-                weekday: 'short',  // "Tue"
+                  // "Tue"
                 month: 'short',    // "Dec"
                 day: 'numeric',    // "3"
                 year: 'numeric'    // "2025"
@@ -66,7 +66,7 @@ const SystemNotification = () => {
               { accessorKey: "id", header: "ID" },
               { accessorKey: "content", header: "Content" },
               { accessorKey: "referenceType", header: "Reference Type" },
-              { accessorKey: "isRead", header: "Read Status" },
+              // { accessorKey: "isRead", header: "Read Status" },
               { accessorKey: "isAdmin", header: "Created By" },
               { accessorKey: "createdDate", header: "Created Date" },
 

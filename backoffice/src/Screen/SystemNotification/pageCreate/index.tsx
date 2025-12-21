@@ -53,7 +53,14 @@ function SystemNotificationCreateInner({ meds }: { meds: any }) {
       <div className=" w-full">
         
         {/* Navigation */}
-        <div className="pt-6 border-t border-gray-100 flex justify-end gap-4 mb-4">
+       
+
+        <FormProvider {...methods}>
+          <form
+            onSubmit={onSubmit}
+            className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden relative"
+          >
+             <div className="pt-6 border-t border-gray-100 flex justify-end gap-4 mb-4">
                     <button
                         type="button"
                         onClick={() => router.back()}
@@ -69,12 +76,6 @@ function SystemNotificationCreateInner({ meds }: { meds: any }) {
                         {loading ? 'Sending...' : <><Send size={18} /> Broadcast</>}
                     </button>
                 </div>
-
-        <FormProvider {...methods}>
-          <form
-            onSubmit={onSubmit}
-            className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden relative"
-          >
             {/* Header Banner */}
             <div className="h-32 bg-gradient-to-r from-blue-600 to-indigo-600 relative flex items-center px-8">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
