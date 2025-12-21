@@ -70,7 +70,7 @@ public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfi
 
     @Query(value = "select SUM(ap.weight) " +
             "from profile.applicant_preference ap " +
-            "where ap.applicant_id = :profileId ", nativeQuery = true)
+            "where ap.applicant_id = :profileId AND ap.active = true ", nativeQuery = true)
     Double getTotalWeightByProfileId(Long profileId);
 
     List<ApplicantProfileEntity> findAllByUserIdAndActive(String userId, Boolean active);
