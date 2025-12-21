@@ -76,18 +76,31 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 
     @Override
     public ReportVo getById(Long id) {
+
         ReportEntity entity = reportRepository.findByIdAndActive(id, true)
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.REPORT_NOT_FOUND));
 
         ReportVo vo = mapper.toVo(entity);
 
-        CustomerVo customerVo = this.parseResponse(
+        // ===== CUSTOMER =====
+        CustomerVo customerVo = parseResponse(
                 customerFeign.getSimpleCustomerById(vo.getUserId())
         );
-
         if (customerVo != null) {
             vo.setCustomer(customerVo.getCustomer());
         }
+
+        // ===== APPLICANT PROFILE =====
+        ApplicantProfileVo applicantProfile = parseResponse(
+                applicantProfileFeign.getOneByUserId(vo.getUserId())
+        );
+        vo.setApplicantProfile(applicantProfile);
+
+        // ===== PROVIDER PROFILE =====
+        ProviderProfileVo providerProfile = parseResponse(
+                providerProfileFeign.getOneByUserId(vo.getUserId())
+        );
+        vo.setProviderProfile(providerProfile);
 
         return vo;
     }
