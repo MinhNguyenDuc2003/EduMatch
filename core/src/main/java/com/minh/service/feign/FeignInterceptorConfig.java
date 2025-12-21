@@ -1,6 +1,7 @@
 package com.minh.service.feign;
 
 import feign.Feign;
+import feign.Request;
 import feign.RequestInterceptor;
 import feign.Retryer;
 import feign.codec.Encoder;
@@ -13,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @RequiredArgsConstructor
@@ -34,9 +37,19 @@ public class FeignInterceptorConfig {
     }
 
     @Bean
+    public Request.Options feignRequestOptions() {
+        return new Request.Options(
+                10, TimeUnit.SECONDS,
+                180, TimeUnit.SECONDS,
+                true
+        );
+    }
+
+    @Bean
     @Primary
     public Feign.Builder feignBuilder() {
         return Feign.builder()
+                .options(feignRequestOptions())
                 .requestInterceptor(getRequestInterceptor())
                 .retryer(retryer());
     }

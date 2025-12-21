@@ -64,6 +64,12 @@ server {
 
     location /scholarship/ {
         proxy_pass http://scholarship;
+
+        proxy_connect_timeout  300s;
+        proxy_read_timeout     300s;
+        proxy_send_timeout     300s;
+        send_timeout           300s;
+
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto https; 
