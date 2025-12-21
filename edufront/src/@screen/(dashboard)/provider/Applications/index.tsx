@@ -42,13 +42,16 @@ const Applications = () => {
   );
 
   // Fetch applications for selected scholarship
-  const { data: applicationsScholarships, isLoading: isLoadingApplications } =
-    useGetApplicationsByScholarshipIdQuery(
-      { scholarshipId: selectedScholarship?.id ?? 0 },
-      {
-        skip: !selectedScholarship?.id,
-      }
-    );
+  const {
+    data: applicationsScholarships,
+    isLoading: isLoadingApplications,
+    isFetching: isFetchingApplications,
+  } = useGetApplicationsByScholarshipIdQuery(
+    { scholarshipId: selectedScholarship?.id ?? 0 },
+    {
+      skip: !selectedScholarship?.id,
+    }
+  );
 
   // Transform and filter applications data
   const { applications, filteredApplications } = useApplicationsData(
@@ -106,7 +109,7 @@ const Applications = () => {
         <div className="flex-1 flex flex-col overflow-hidden">
           {!selectedScholarship ? (
             <ApplicationsSelectScholarship />
-          ) : isLoadingApplications ? (
+          ) : isLoadingApplications || isFetchingApplications ? (
             <ApplicationsSkeleton
               scholarshipTitle={selectedScholarship.title}
               searchQuery={searchQuery}

@@ -5,7 +5,7 @@ import {
   useGetProfileQuery,
   useReferApplicantsMutation,
 } from '@/state/apiProvider';
-import { Eye, Heart, Loader2, MapPin } from 'lucide-react';
+import { BarChart2, Eye, Heart, Loader2, MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
@@ -13,10 +13,12 @@ import { toast } from 'sonner';
 const ApplicantsList = ({
   applicants,
   setDetailApplicant,
+  setViewScoreApplicant,
   scholarshipId,
 }: {
   applicants: ApplicantProfile[];
   setDetailApplicant: (applicant: ApplicantProfile) => void;
+  setViewScoreApplicant: (applicant: ApplicantProfile) => void;
   scholarshipId: number;
 }) => {
   const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
@@ -25,8 +27,7 @@ const ApplicantsList = ({
 
   const [referApplicants, { isLoading: isReferApplicantsLoading }] = useReferApplicantsMutation();
   const { data } = useGetProfileQuery();
-  const [addFavouriteApplicant, { isLoading: isAddFavouriteApplicantLoading }] =
-    useAddFavouriteApplicantMutation();
+  const [addFavouriteApplicant] = useAddFavouriteApplicantMutation();
 
   const toggleApplicantSelection = (userId: string) => {
     if (selectedApplicants.includes(userId)) {
@@ -178,6 +179,14 @@ const ApplicantsList = ({
                       className="shadow-none w-fit"
                     >
                       <Eye className="w-4 h-4 text-primary-brand" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setViewScoreApplicant(applicant)}
+                      className="shadow-none w-fit"
+                    >
+                      <BarChart2 className="w-4 h-4 text-primary-brand" />
                     </Button>
                     <Button
                       variant="ghost"
