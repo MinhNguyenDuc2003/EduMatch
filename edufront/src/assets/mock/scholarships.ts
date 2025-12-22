@@ -745,3 +745,117 @@ export const MOCK_APPLICANT_PROFILES: ApplicantProfile[] = [
     ],
   },
 ];
+
+export const MOCK_APPLICATIONS: Application[] = [
+  {
+    id: 1,
+    userId: 'applicant-user-1',
+    applicationName: 'Tech Visionary Leaders Scholarship Application',
+    code: 'APP-2024-001',
+    versionApplication: 1,
+    fullName: 'Emily Chen',
+    gender: 'Female',
+    dateOfBirth: '2006-03-15',
+    email: 'emily.chen@email.com',
+    phone: '+1-555-1001',
+    address: '123 Market Street, San Francisco, CA 94102',
+    nationality: 'United States',
+    educationLevel: 'High School Senior',
+    schoolName: 'Lincoln High School',
+    major: 'Computer Science Track',
+    gpa: 3.9,
+    graduationYear: '2024',
+    skills:
+      'Python Programming (Advanced), Machine Learning (Intermediate), Web Development (Advanced), Java, C++, React, Node.js',
+    achievements:
+      'National Merit Scholar, First Place Regional Coding Competition 2023, AP Scholar with Distinction, Published 2 research papers on neural networks, Developed mobile app with 500+ downloads',
+    extracurricular:
+      'President of Coding Club - Organized 5 successful hackathons with 200+ participants, Volunteer coding instructor for underprivileged youth (100+ hours), Mentored 10 middle school students in STEM subjects, Active member of Girls Who Code chapter, IEEE Student Branch member',
+    motivation:
+      'I am deeply passionate about leveraging technology to solve real-world healthcare challenges. Growing up, I witnessed my grandmother struggle with delayed diagnosis of a treatable condition, which sparked my interest in using AI for early disease detection. Through my research on machine learning algorithms for medical diagnosis, I have seen firsthand how technology can save lives. The Tech Visionary Leaders Scholarship would enable me to pursue my dream of becoming a CTO in healthcare technology, where I can lead teams in developing accessible, AI-powered diagnostic tools that can reach underserved communities globally.',
+    personalStatement:
+      "Technology has always been more than just code to me—it is a powerful tool for social change. As the president of my school's Coding Club, I have organized five hackathons that brought together over 200 students to solve community problems through technology. One of our projects, a food distribution app for local food banks, now serves over 500 users and has helped distribute meals to hundreds of families. Beyond my technical skills, I am committed to making technology accessible to everyone. I have spent over 100 hours teaching coding to underprivileged youth, many of whom had never touched a computer before. Watching their eyes light up when their first program runs successfully reminds me why I chose this path. At MIT, I plan to continue this mission by studying computer science with a focus on healthcare applications, ultimately working toward my goal of starting a health tech company that makes early disease detection accessible to all.",
+    languages: 'English (Native), Mandarin (Fluent), Spanish (Intermediate)',
+    careerGoal:
+      'My ultimate career goal is to become a Chief Technology Officer at a leading healthcare technology company, where I can drive innovation in AI-powered medical diagnostics. I envision developing machine learning systems that can detect diseases earlier and more accurately than current methods, particularly for conditions that disproportionately affect underserved populations. Long-term, I plan to establish my own health tech startup focused on creating affordable, accessible diagnostic tools that can be deployed in resource-limited settings worldwide.',
+    researchInterest:
+      'Artificial Intelligence in Healthcare, Machine Learning for Medical Diagnosis, Computer Vision for Medical Imaging, Deep Learning Neural Networks, Healthcare Accessibility Technology',
+    academicAwards:
+      'National Merit Scholar, First Place Regional Coding Competition, AP Scholar with Distinction',
+    publicationCount: 2,
+    satScore: 1520,
+    actScore: 34,
+    greScore: 0,
+    gmatScore: 0,
+    toeflScore: 0,
+    ieltsScore: 0,
+    workExperienceYears: 0,
+    classRank: 22,
+    classSize: 450,
+    classRankPercentile: 4.89,
+    age: 18,
+    citizenship: 'US Citizen',
+    isAthlete: true,
+    athleticAchievements:
+      'Varsity Swimming Team - Regional Qualifier, Track and Field - 400m runner',
+    applicationMedias: [
+      {
+        id: 1,
+        s3Key: 'applications/emily-chen/transcript.pdf',
+        contentType: 'application/pdf',
+        size: 524288,
+        folderName: 'applications',
+        fileName: 'transcript.pdf',
+        isPublic: false,
+        thumbnail: 'https://via.placeholder.com/150',
+        url: 'https://via.placeholder.com/transcript.pdf',
+      },
+      {
+        id: 2,
+        s3Key: 'applications/emily-chen/recommendation-letter-1.pdf',
+        contentType: 'application/pdf',
+        size: 245760,
+        folderName: 'applications',
+        fileName: 'recommendation-letter-1.pdf',
+        isPublic: false,
+        thumbnail: 'https://via.placeholder.com/150',
+        url: 'https://via.placeholder.com/recommendation.pdf',
+      },
+      {
+        id: 3,
+        s3Key: 'applications/emily-chen/research-paper.pdf',
+        contentType: 'application/pdf',
+        size: 1048576,
+        folderName: 'applications',
+        fileName: 'research-paper.pdf',
+        isPublic: false,
+        thumbnail: 'https://via.placeholder.com/150',
+        url: 'https://via.placeholder.com/research.pdf',
+      },
+    ],
+    applicationAttributes: [
+      {
+        id: 1,
+        applicationId: '1',
+        key: 'intended_major',
+        value: 'Computer Science',
+        note: 'Primary field of study',
+      },
+      {
+        id: 2,
+        applicationId: '1',
+        key: 'intended_institution',
+        value: 'Massachusetts Institute of Technology',
+        note: 'First choice university',
+      },
+      {
+        id: 3,
+        applicationId: '1',
+        key: 'scholarship_amount_needed',
+        value: '10000',
+        note: 'Annual scholarship amount',
+      },
+    ],
+    createdDate: new Date('2024-01-20').getTime(),
+  },
+];
