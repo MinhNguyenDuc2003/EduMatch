@@ -11,7 +11,7 @@ export default function HeroSection() {
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-200">
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-6">
+      <div className="relative mx-auto px-6 lg:px-40 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Section - Banner Content */}
           <div className="space-y-8 z-10">

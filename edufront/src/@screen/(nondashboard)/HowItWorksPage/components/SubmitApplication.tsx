@@ -8,7 +8,7 @@ export default function SubmitApplication() {
 
   return (
     <section className="py-16 lg:py-24 bg-gradient-to-br from-slate-50 to-blue-50/30">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className=" mx-auto px-6 lg:px-40">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left - Visual */}
           <div className="order-2 lg:order-1">

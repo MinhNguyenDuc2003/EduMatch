@@ -22,12 +22,31 @@ import { useAuth } from '@/hooks/useAuth';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslations } from 'next-intl';
 import ReportDialog from '../share/ReportDialog';
+import ProcessBlockedDialog from '@/@screen/(nondashboard)/ScholarshipsList/components/ProfileStrengthDialog';
+import { useRouter } from 'next/navigation';
 
 const Header = () => {
-  const { isAuthenticated, isLoading, isProvider, subscriptions, handleLogout } = useAuth();
+  const { isAuthenticated, isLoading, isProvider, isApplicant, subscriptions, handleLogout } =
+    useAuth();
+  const [showProcessBlockedDialog, setShowProcessBlockedDialog] = useState(false);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  const router = useRouter();
 
   const t = useTranslations('navbar');
+
+  const handlePressPremium = () => {
+    if (!isAuthenticated) {
+      window.location.href = 'http://159.89.200.244/oauth2/authorization/keycloak';
+    } else {
+      if (!isApplicant) {
+        setShowProcessBlockedDialog(true);
+      } else if (subscriptions.some((subscription) => subscription.userType === 'APPLICANT')) {
+        router.push('/recommended-scholarships');
+      } else {
+        router.push('/subscriptions?type=APPLICANT');
+      }
+    }
+  };
 
   // Calculate total days for APPLICANT subscription
   const applicantSubscription = subscriptions.find((sub) => sub.userType === 'APPLICANT');
@@ -120,12 +139,8 @@ const Header = () => {
         </div>
 
         <div className="flex items-center space-x-2">
-          <Link
-            href={
-              subscriptions.some((subscription) => subscription.userType === 'APPLICANT')
-                ? '/recommended-scholarships'
-                : '/subscriptions?type=APPLICANT'
-            }
+          <Button
+            onClick={handlePressPremium}
             className="relative inline-flex items-center gap-1.5 px-4 py-1.5 rounded-md bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white font-semibold text-sm shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:scale-105 transition-all duration-200 border border-blue-400/50"
           >
             <div className="flex items-center gap-1">
@@ -137,7 +152,7 @@ const Header = () => {
               </span>
             )}
             <span className="absolute inset-0 rounded-md bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 blur-sm -z-10 transition-opacity duration-200"></span>
-          </Link>
+          </Button>
           <LanguageSwitcher />
 
           {!isAuthenticated && !isLoading && (
@@ -206,6 +221,10 @@ const Header = () => {
         open={isReportDialogOpen}
         onOpenChange={setIsReportDialogOpen}
         initialType="SYSTEM"
+      />
+      <ProcessBlockedDialog
+        open={showProcessBlockedDialog}
+        onOpenChange={setShowProcessBlockedDialog}
       />
     </div>
   );

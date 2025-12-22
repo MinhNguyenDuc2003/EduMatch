@@ -327,6 +327,7 @@
   },
   "aiApplicantSuggestions": {
     "title": "Ứng viên được đề xuất",
+    "refresh": "Làm mới",
     "description": "Ứng viên phù hợp cho học bổng {scholarshipTitle}",
     "back": "Quay lại",
     "clearSelection": "Xóa lựa chọn",
@@ -658,7 +659,8 @@
       "noDeadline": "Không có hạn chót",
       "compare": "So sánh",
       "alreadySelected": "Đã được chọn",
-      "matchScore": "Điểm phù hợp"
+      "matchScore": "Điểm phù hợp",
+      "report": "Báo cáo"
     },
     "premiumBanner": {
       "badge": "AI Scholarship",
@@ -942,7 +944,10 @@
       "preferredCountry": "Quốc gia ưa thích",
       "selectPreferredCountry": "Chọn quốc gia ưa thích",
       "preferredMajor": "Chuyên ngành ưa thích",
-      "selectPreferredMajor": "Chọn chuyên ngành ưa thích"
+      "selectPreferredMajor": "Chọn chuyên ngành ưa thích",
+      "adjustMatchingWeights": "Điều chỉnh trọng số",
+      "adjustMatchingWeightsDescription": "Điều chỉnh mức độ quan trọng của mỗi tiêu chí để tìm kiếm học bổng (0.0 đến 1.0).",
+      "saveChanges": "Lưu thay đổi"
     },
     "cards": {
       "historyDetails": "Chi tiết lịch sử",
@@ -1424,7 +1429,8 @@
     },
     "title": "Học bổng đề xuất",
     "description": "Chúng tôi đã tìm thấy {count} học bổng phù hợp với hồ sơ của bạn",
-    "matchingLoading": "Chúng tôi đang tìm kiếm những học bổng phù hợp nhất cho bạn..."
+    "matchingLoading": "Chúng tôi đang tìm kiếm những học bổng phù hợp nhất cho bạn...",
+    "selectProfile": "Chọn hồ sơ"
   },
   "providerProfile": {
     "organizationInformation": "Thông tin tổ chức",
@@ -1747,6 +1753,45 @@
       "createdDate": "Ngày tạo",
       "planDetails": "Chi tiết",
       "userType": "Loại người dùng"
+    }
+  },
+  "recommendedScholarshipsDetail": {
+    "profile": {
+      "headerTitle": "Thông Tin Chi Tiết",
+      "title": "Hồ sơ",
+      "careerGoals": "Mục tiêu nghề nghiệp",
+      "certificates": "Bằng cấp",
+      "extracurricularActivities": "Hoạt động ngoại khóa",
+      "researchExperience": "Kinh nghiệm nghiên cứu",
+      "skills": "Kỹ năng",
+      "educationLevel": "Học vấn",
+      "major": "Chuyên ngành",
+      "ieltsScore": "Điểm Ielts",
+      "toeflScore": "Điểm Toefl",
+      "greScore": "Điểm GRE",
+      "gmatScore": "Điểm GMAT",
+      "satScore": "Điểm SAT",
+      "actScore": "Điểm ACT",
+      "gpa": "GPA"
+    },
+    "detail": {
+      "title": "Độ phù hợp",
+      "criteria": "Tiêu chí",
+      "careerScore": "Ngành nghề",
+      "achievementScore": "Thành tích",
+      "extracurricularScore": "Hoạt động ngoại khóa",
+      "motivationScore": "Bài thuyết phục",
+      "statementScore": "Bài cam kết",
+      "overallScore": "Tổng thể",
+      "majorScore": "Chuyên ngành",
+      "researchScore": "Nghiên cứu",
+      "skillScore": "Kỹ năng",
+      "score": "Tổng thể",
+      "about": "Mô tả",
+      "aboutContent": "Điểm số này phản ánh mức độ phù hợp tổng thể giữa hồ sơ của bạn và các tiêu chí của học bổng, bao gồm thành tích học tập, kỹ năng, kinh nghiệm và định hướng tương lai. Điểm càng cao, mức độ phù hợp càng lớn."
+    },
+    "scholarship": {
+      "title": "Học bổng"
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Card } from '@/pattern/cus/card';  
+import { Card } from '@/pattern/cus/card';
 import { featuresData } from '../mockData';
 import { useTranslations } from 'next-intl';
 
@@ -40,7 +40,7 @@ export default function FeaturesSection() {
 
   return (
     <section className="py-8 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className=" mx-auto px-6 lg:px-40">
         <div className="text-center max-w-3xl mx-auto mb-8">
           <h2 className="text-3xl font-bold text-slate-900 mb-2">{t('title')}</h2>
           <p className="text-lg text-slate-600">{t('subtitle')}</p>

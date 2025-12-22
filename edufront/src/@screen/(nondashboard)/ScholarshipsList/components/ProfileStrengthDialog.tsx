@@ -13,13 +13,13 @@ import {
 } from '@/pattern/cus/dialog';
 import { Button } from '@/pattern/cus/button';
 
-interface ProfileStrengthDialogProps {
+interface ProcessBlockedDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   profileId?: number;
 }
 
-export default function ProfileStrengthDialog({ open, onOpenChange }: ProfileStrengthDialogProps) {
+export default function ProcessBlockedDialog({ open, onOpenChange }: ProcessBlockedDialogProps) {
   const router = useRouter();
   const t = useTranslations('scholarshipsList.premiumBanner.profileStrengthDialog');
 

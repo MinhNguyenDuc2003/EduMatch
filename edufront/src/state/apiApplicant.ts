@@ -13,6 +13,7 @@ const API_ENDPOINTS = {
   SCHOLARSHIP_FOLLOW: '/api/scholarship/scholarships/follow',
   REPORT: '/api/report/reports',
   GET_REPORTS: '/api/report/report/category/type',
+  APPLICANTS: '/api/profile/applicants',
 } as const;
 
 export const apiApplicant = createApi({
@@ -24,6 +25,29 @@ export const apiApplicant = createApi({
     getProfile: build.query<ProfileApiResponse, void>({
       query: () => API_ENDPOINTS.CUSTOMER_PROFILE,
       providesTags: ['Profile'],
+    }),
+
+    getAllProfiles: build.query<ApplicantProfile[], void>({
+      query: () => `${API_ENDPOINTS.APPLICANTS}/all/my-profile`,
+      providesTags: ['Profile'],
+    }),
+
+    createExpectedProfile: build.mutation<ApplicantProfile, any>({
+      query: (data) => ({
+        url: API_ENDPOINTS.APPLICANTS,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Profile'],
+    }),
+
+    updateExpectedProfile: build.mutation<ApplicantProfile, any>({
+      query: (data) => ({
+        url: API_ENDPOINTS.APPLICANTS,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Profile'],
     }),
 
     // Create applicant profile
@@ -214,6 +238,9 @@ export const apiApplicant = createApi({
 
 export const {
   useGetProfileQuery,
+  useGetAllProfilesQuery,
+  useCreateExpectedProfileMutation,
+  useUpdateExpectedProfileMutation,
   useCreateProfileMutation,
   useUpdateProfileMutation,
   useGetApplicationsQuery,
