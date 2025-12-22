@@ -89,4 +89,9 @@ public class ProviderFollowerServiceImpl implements ProviderFollowerService {
         return vos;
     }
 
+    @Override
+    public ProviderFollowerEntity getByUserIdAndProviderId(String userId, Long id) {
+        return providerFollowerRepository.findByUserIdAndProviderId(userId, id).orElse(null);
+    }
+
 }

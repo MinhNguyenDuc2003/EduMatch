@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProviderFollowerRepository extends JpaRepository<ProviderFollowerEntity, ProviderFollowerId> {
@@ -18,5 +19,7 @@ public interface ProviderFollowerRepository extends JpaRepository<ProviderFollow
     List<ProviderFollowerEntity> findByUserId(String userId);
 
     boolean existsByProviderIdAndUserId(Long providerId, String userId);
+
+    Optional<ProviderFollowerEntity> findByUserIdAndProviderId(String userId, Long id);
 
 }
