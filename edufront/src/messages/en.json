@@ -560,7 +560,8 @@
       "testScoreRequirements": "Test Score Requirements",
       "demographicRequirements": "Personal Requirements",
       "otherRequirements": "Other Requirements",
-      "caseStudies": "Case Studies"
+      "caseStudies": "Case Studies",
+      "or": "or"
     },
     "sidebar": {
       "following": "Following",
@@ -1774,6 +1775,9 @@
       "careerScore": "Career Score",
       "achievementScore": "Achievement Score",
       "extracurricularScore": "Extracurricular Score",
+      "experienceScore": "Experience Score",
+      "educationScore": "Education Score",
+      "intentionScore": "Intention Score",
       "motivationScore": "Motivation Statement Score",
       "statementScore": "Personal Statement Score",
       "overallScore": "Overall Score",
