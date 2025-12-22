@@ -8,8 +8,8 @@ import GradientProgressBar from './GradientProgressBar';
 import { useTranslations } from 'next-intl';
 
 interface RecommendedScholarshipDetailProps {
-  scholarship?: Scholarship;
-  applicantProfile?: ApplicantProfile;
+  scholarship: Scholarship;
+  applicantProfile: ApplicantProfile;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -94,7 +94,10 @@ export default function RecommendedScholarshipDetail({
                       <p className="text-xs text-gray-500 mb-1">{tProfile('certificates')}</p>
                       <div className="flex flex-col gap-1">
                         {applicantProfile?.certificates.map((certificate) => (
-                          <p className="text-sm font-semibold text-gray-900 line-clamp-1">
+                          <p
+                            className="text-sm font-semibold text-gray-900 line-clamp-1"
+                            key={certificate.id}
+                          >
                             {certificate.certificateName}
                           </p>
                         ))}
@@ -188,7 +191,10 @@ export default function RecommendedScholarshipDetail({
                         <p className="text-xs text-gray-500 mb-1">{tProfile('major')}</p>
                         <div className="flex flex-col gap-1">
                           {applicantProfile?.educationHistories.map((educationHistory) => (
-                            <p className="text-sm font-semibold text-gray-900 line-clamp-1">
+                            <p
+                              className="text-sm font-semibold text-gray-900 line-clamp-1"
+                              key={educationHistory.id}
+                            >
                               {educationHistory.majorName}
                             </p>
                           ))}
@@ -200,7 +206,10 @@ export default function RecommendedScholarshipDetail({
                       <p className="text-xs text-gray-500 mb-1">{tProfile('skills')}</p>
                       <div className="flex flex-col gap-1">
                         {applicantProfile?.skills.map((skill) => (
-                          <p className="text-sm font-semibold text-gray-900 line-clamp-1">
+                          <p
+                            className="text-sm font-semibold text-gray-900 line-clamp-1"
+                            key={skill.id}
+                          >
                             {skill.skillName}
                           </p>
                         ))}
@@ -270,14 +279,14 @@ export default function RecommendedScholarshipDetail({
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-sm font-semibold text-gray-700">{tDetail('score')}</span>
                     <span className="text-sm font-bold text-gray-900">
-                      {(scholarship?.score! * 100).toFixed(1)}%
+                      {(scholarship.score! * 100).toFixed(1)}%
                     </span>
                   </div>
                   <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all duration-500"
                       style={{
-                        width: `${(scholarship?.score! * 100).toFixed(1)}%`,
+                        width: `${(scholarship.score! * 100).toFixed(1)}%`,
                         background: `linear-gradient(to right, 
                         rgba(123, 0, 255, 0.2) 0%, 
                         rgba(123, 0, 255, 0.4) 33%, 
