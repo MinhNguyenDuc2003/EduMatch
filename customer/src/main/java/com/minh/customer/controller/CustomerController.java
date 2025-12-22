@@ -14,9 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -134,7 +134,7 @@ public class CustomerController {
     @GetMapping("/authenticated")
     public ApiResponse<AuthenticationVo> getAuthenticated() {
         String userId = SecurityUtil.getCurrentUserId();
-        if (StringUtils.isEmpty(userId)) {
+        if (ObjectUtils.isEmpty(userId)) {
             return ApiResponse.ok(AuthenticationVo.builder().isAuthenticated(false).build());
         } else {
             AuthenticationVo vo = new AuthenticationVo();
