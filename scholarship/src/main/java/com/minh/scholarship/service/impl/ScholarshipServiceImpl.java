@@ -156,7 +156,10 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
         scholarshipPreferenceRepository.deleteAllByScholarshipId(entity.getId());
         if (!scholarship.getScholarshipPreferences().isEmpty()) {
-            scholarshipPreferenceRepository.saveAll(scholarshipPreferenceMapper.toEntity(scholarship.getScholarshipPreferences()));
+            scholarship.getScholarshipPreferences().forEach(o -> {
+                o.setScholarshipId(scholarship.getId());
+                scholarshipPreferenceRepository.save(scholarshipPreferenceMapper.toEntity(o));
+            });
         }
         scholarshipMapper.updateEntityFromVo(scholarship, entity);
         return scholarshipMapper.entityToVo(scholarshipRepository.save(entity));
