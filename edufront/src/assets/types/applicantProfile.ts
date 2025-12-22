@@ -110,7 +110,26 @@ declare global {
     skills: Skill[];
     intentions: Intention[];
     score?: number;
+    llmScore?: LlmScore;
+    cosineScore?: CosineScore;
     note?: string;
+  }
+
+  interface LlmScore {
+    career_score: number;
+    achievement_score: number;
+    extracurricular_score: number;
+    overall_soft_score: number;
+    experience_score: number;
+    education_score: number;
+    intentions_score: number;
+  }
+
+  interface CosineScore {
+    major: number;
+    skills: number;
+    research: number;
+    soft_score: number;
   }
 
   interface ProfileApiResponse {

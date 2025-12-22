@@ -19,7 +19,6 @@ const ProviderScholarshipDetail = ({ scholarshipSlug }: { scholarshipSlug: strin
     data: scholarship,
     isLoading,
     isError,
-    refetch,
   } = useGetScholarshipBySlugQuery(scholarshipSlug, { skip: !scholarshipSlug });
 
   if (isLoading) {
@@ -54,8 +53,7 @@ const ProviderScholarshipDetail = ({ scholarshipSlug }: { scholarshipSlug: strin
           rightElement={
             <Button
               onClick={(e) => {
-                e.preventDefault();
-                setShowAISuggestions?.(true);
+                setShowAISuggestions(true);
               }}
               className="bg-primary-brand text-white hover:bg-primary-brand/90 w-full mt-2 shadow-sm"
             >

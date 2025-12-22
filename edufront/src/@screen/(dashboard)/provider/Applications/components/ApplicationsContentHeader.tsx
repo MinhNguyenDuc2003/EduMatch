@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import ApplicationsFilters from './ApplicationsFilters';
-import { ScholarshipPreferencesWeightDialog } from '@/pattern/share/ScholarshipPreferencesWeightDialog';
 import { ApplicationRecommendationDialog } from './ApplicationRecommendationDialog';
 
 interface ApplicationsContentHeaderProps {
@@ -33,7 +32,6 @@ const ApplicationsContentHeader = React.memo(
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-semibold text-gray-900">{scholarship.title}</h2>
-            <ScholarshipPreferencesWeightDialog scholarship={scholarship} />
             <ApplicationRecommendationDialog scholarship={scholarship} onView={onView} />
           </div>
           <p className="text-sm text-gray-600 mt-1">

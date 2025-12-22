@@ -31,11 +31,13 @@ const PREFERENCE_FIELDS = [
 interface ScholarshipPreferencesWeightDialogProps {
   scholarship: Scholarship;
   trigger?: React.ReactNode;
+  refetch?: () => void;
 }
 
 export function ScholarshipPreferencesWeightDialog({
   scholarship,
   trigger,
+  refetch,
 }: ScholarshipPreferencesWeightDialogProps) {
   const [open, setOpen] = useState(false);
   const [updateScholarship, { isLoading: isUpdating }] = useUpdateScholarshipMutation();
@@ -89,6 +91,7 @@ export function ScholarshipPreferencesWeightDialog({
       await updateScholarship(updatedScholarship).unwrap();
       toast.success('Scholarship preferences updated successfully');
       setOpen(false);
+      refetch?.();
     } catch (error) {
       console.error('Failed to update preferences:', error);
       toast.error('Failed to update preferences');
