@@ -66,6 +66,7 @@ export const applicantProfileSchema = z.object({
     preferredScholarshipType: z.string().min(1, 'Preferred scholarship type is required'),
     preferredCountry: z.string().min(1, 'Preferred country is required'),
     preferredMajor: z.string().min(1, 'Preferred major is required'),
+    type: z.string().optional(),
     certificates: z
       .array(
         z.object({
