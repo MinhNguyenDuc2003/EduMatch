@@ -943,7 +943,10 @@
       "preferredCountry": "Quốc gia ưa thích",
       "selectPreferredCountry": "Chọn quốc gia ưa thích",
       "preferredMajor": "Chuyên ngành ưa thích",
-      "selectPreferredMajor": "Chọn chuyên ngành ưa thích"
+      "selectPreferredMajor": "Chọn chuyên ngành ưa thích",
+      "adjustMatchingWeights": "Điều chỉnh trọng số",
+      "adjustMatchingWeightsDescription": "Điều chỉnh mức độ quan trọng của mỗi tiêu chí để tìm kiếm học bổng (0.0 đến 1.0).",
+      "saveChanges": "Lưu thay đổi"
     },
     "cards": {
       "historyDetails": "Chi tiết lịch sử",
@@ -1425,7 +1428,8 @@
     },
     "title": "Học bổng đề xuất",
     "description": "Chúng tôi đã tìm thấy {count} học bổng phù hợp với hồ sơ của bạn",
-    "matchingLoading": "Chúng tôi đang tìm kiếm những học bổng phù hợp nhất cho bạn..."
+    "matchingLoading": "Chúng tôi đang tìm kiếm những học bổng phù hợp nhất cho bạn...",
+    "selectProfile": "Chọn hồ sơ"
   },
   "providerProfile": {
     "organizationInformation": "Thông tin tổ chức",
@@ -1752,10 +1756,25 @@
   },
   "recommendedScholarshipsDetail": {
     "profile": {
-      "title": "Hồ sơ"
+      "headerTitle": "Thông Tin Chi Tiết",
+      "title": "Hồ sơ",
+      "careerGoals": "Mục tiêu nghề nghiệp",
+      "certificates": "Bằng cấp",
+      "extracurricularActivities": "Hoạt động ngoại khóa",
+      "researchExperience": "Kinh nghiệm nghiên cứu",
+      "skills": "Kỹ năng",
+      "educationLevel": "Học vấn",
+      "major": "Chuyên ngành",
+      "ieltsScore": "Điểm Ielts",
+      "toeflScore": "Điểm Toefl",
+      "greScore": "Điểm GRE",
+      "gmatScore": "Điểm GMAT",
+      "satScore": "Điểm SAT",
+      "actScore": "Điểm ACT",
+      "gpa": "GPA"
     },
     "detail": {
-      "title": "Chi tiết",
+      "title": "Độ phù hợp",
       "criteria": "Tiêu chí",
       "careerScore": "Ngành nghề",
       "achievementScore": "Thành tích",
@@ -1768,7 +1787,7 @@
       "researchScore": "Nghiên cứu",
       "skillScore": "Kỹ năng",
       "score": "Tổng thể",
-      "about": "Về điểm số này",
+      "about": "Mô tả",
       "aboutContent": "Điểm số này phản ánh mức độ phù hợp tổng thể giữa hồ sơ của bạn và các tiêu chí của học bổng, bao gồm thành tích học tập, kỹ năng, kinh nghiệm và định hướng tương lai. Điểm càng cao, mức độ phù hợp càng lớn."
     },
     "scholarship": {

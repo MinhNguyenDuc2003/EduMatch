@@ -90,16 +90,23 @@ export default function RecommendedScholarships() {
           <div className="flex flex-col rounded-3xl border border-white/60 bg-white/80 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] backdrop-blur-sm">
             {/* Header */}
             <div className="flex items-center justify-between p-4">
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col gap-2">
                 <h2 className="text-lg font-bold">{t('title')}</h2>
-                <div className="flex items-center gap-2">
+                <div>
+                  {isLoading || isFetching
+                    ? t('matchingLoading')
+                    : t('description', { count: scholarships?.length || 0 })}
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="">
                   <Select
                     value={selectedProfileId?.toString()}
                     onValueChange={(value) => setSelectedProfileId(Number(value))}
                     disabled={isLoadingProfiles}
                   >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Select Profile" />
+                    <SelectTrigger className="w-[200px] border border-gray-600">
+                      <SelectValue placeholder={t('selectProfile')} />
                     </SelectTrigger>
                     <SelectContent>
                       {profiles?.map((profile) => (
@@ -110,13 +117,8 @@ export default function RecommendedScholarships() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
-                  {isLoading || isFetching
-                    ? t('matchingLoading')
-                    : t('description', { count: scholarships?.length || 0 })}
-                </div>
+                <PreferencesWeightDialog refetch={refetch} />
               </div>
-              <PreferencesWeightDialog refetch={refetch} />
             </div>
 
             {/* Content */}

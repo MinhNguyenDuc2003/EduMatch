@@ -936,7 +936,10 @@
       "preferredCountry": "Preferred Country",
       "selectPreferredCountry": "Select preferred country",
       "preferredMajor": "Preferred Major",
-      "selectPreferredMajor": "Select preferred major"
+      "selectPreferredMajor": "Select preferred major",
+      "adjustMatchingWeights": "Adjust Matching Weights",
+      "adjustMatchingWeightsDescription": "Adjust the importance of each criterion for scholarship matching (0.0 to 1.0).",
+      "saveChanges": "Save Changes"
     },
     "cards": {
       "historyDetails": "History Details",
@@ -1467,7 +1470,8 @@
     },
     "title": "Recommended Scholarships",
     "description": "We found {count} scholarships that match your profile",
-    "matchingLoading": "We are finding the best matches for you..."
+    "matchingLoading": "We are finding the best matches for you...",
+    "selectProfile": "Select profile"
   },
   "inputSelect": {
     "placeholder": "Select an option"
@@ -1745,10 +1749,25 @@
   },
   "recommendedScholarshipsDetail": {
     "profile": {
-      "title": "Profile"
+      "headerTitle": "Recommended Scholarship Details",
+      "title": "Profile",
+      "careerGoals": "Career Goals",
+      "certificates": "Certificates",
+      "extracurricularActivities": "Extracurricular Activities",
+      "researchExperience": "Research Experience",
+      "skills": "Skills",
+      "educationLevel": "Education Level",
+      "major": "Major",
+      "ieltsScore": "IELTS Score",
+      "toeflScore": "TOEFL Score",
+      "greScore": "GRE Score",
+      "gmatScore": "GMAT Score",
+      "satScore": "SAT Score",
+      "actScore": "ACT Score",
+      "gpa": "GPA"
     },
     "detail": {
-      "title": "Detail",
+      "title": "Matching score",
       "criteria": "Criteria",
       "careerScore": "Career Score",
       "achievementScore": "Achievement Score",
@@ -1761,7 +1780,7 @@
       "researchScore": "Research Score",
       "skillScore": "Skill Score",
       "score": "Score",
-      "about": "About this score",
+      "about": "About",
       "aboutContent": "This score reflects the overall compatibility between your profile and the scholarship criteria, including academic achievements, skills, experience, and future intentions. The higher the score, the greater the chance of receiving the scholarship."
     },
     "scholarship": {

@@ -112,7 +112,7 @@ export default function ScholarshipCard({
                 >
                   {organizationName || t('organizationName')}
                 </h3>
-                {isAuthenticated && (
+                {isAuthenticated && !score && (
                   <button
                     onClick={() => onFollowProvider?.(id)}
                     className={`text-xs font-medium hover:cursor-pointer px-2 py-1 rounded transition-colors ${
@@ -127,10 +127,10 @@ export default function ScholarshipCard({
               </div>
             </div>
             {isAuthenticated && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 {isUpgraded && (
                   <>
-                    {scholarship.llmScore && scholarship.cosineScore && (
+                    {score && (
                       <Button
                         variant="custom"
                         className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
@@ -241,10 +241,10 @@ export default function ScholarshipCard({
                     style={{
                       width: `${(score * 100).toFixed(1)}%`,
                       background: `linear-gradient(to right, 
-                        rgb(29, 78, 216) 0%, 
-                        rgb(37, 99, 235) 33%, 
-                        rgb(59, 130, 246) 66%, 
-                        rgb(96, 165, 250) 100%`,
+                        rgba(123, 0, 255, 0.2) 0%, 
+                        rgba(123, 0, 255, 0.4) 33%, 
+                        rgba(123, 0, 255, 0.6) 66%, 
+                        rgba(123, 0, 255, 0.8) 100%`,
                     }}
                   />
                 </div>

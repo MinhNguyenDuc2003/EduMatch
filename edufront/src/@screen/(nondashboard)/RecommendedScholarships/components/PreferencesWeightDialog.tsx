@@ -92,19 +92,14 @@ export function PreferencesWeightDialog({ refetch }: { refetch?: () => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="text-primary-brand hover:text-primary-brand hover:bg-primary-brand/10 border-primary-brand"
-        >
+        <Button variant="outline" className="text-gray-900 hover:text-gray-900 border-gray-600">
           <SlidersHorizontal className="w-6 h-6" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Adjust Matching Weights</DialogTitle>
-          <DialogDescription>
-            Adjust the importance of each criterion for scholarship matching (0.0 to 1.0).
-          </DialogDescription>
+          <DialogTitle>{t('adjustMatchingWeights')}</DialogTitle>
+          <DialogDescription>{t('adjustMatchingWeightsDescription')}</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto">
           {isLoadingProfile ? (
@@ -143,7 +138,7 @@ export function PreferencesWeightDialog({ refetch }: { refetch?: () => void }) {
             className="bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
           >
             {isUpdating && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-            Save Changes
+            {t('saveChanges')}
           </Button>
         </div>
       </DialogContent>

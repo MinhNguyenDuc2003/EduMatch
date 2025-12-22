@@ -35,7 +35,9 @@ export default function RecommendedScholarshipDetail({
           {/* Header */}
           <SheetHeader className="!p-0 mb-4">
             <div className="flex items-center justify-between">
-              <SheetTitle className="text-2xl font-bold text-gray-900">Chưa có Tiêu đề</SheetTitle>
+              <SheetTitle className="text-2xl font-bold text-gray-900">
+                {tProfile('headerTitle')}
+              </SheetTitle>
               <div className="flex items-center gap-2">
                 {/* <Button className="bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white">Button</Button> */}
                 <SheetClose className="rounded-full bg-white p-2 shadow-lg ring-1 ring-gray-200 transition-opacity hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 flex-shrink-0">
@@ -45,7 +47,7 @@ export default function RecommendedScholarshipDetail({
             </div>
           </SheetHeader>
 
-          {!scholarship?.llmScore && (
+          {!scholarship?.score && (
             <>
               <div className="flex items-center justify-center h-full">
                 <Loader2 className="h-8 w-8 animate-spin" />
@@ -79,70 +81,132 @@ export default function RecommendedScholarshipDetail({
 
                 {/* Profile Info */}
                 <div className="space-y-3">
+                  {applicantProfile?.careerGoals && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('careerGoals')}</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {applicantProfile?.careerGoals || 'N/A'}
+                      </p>
+                    </div>
+                  )}
+                  {applicantProfile?.certificates && applicantProfile?.certificates?.length > 0 && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('certificates')}</p>
+                      <div className="flex flex-col gap-1">
+                        {applicantProfile?.certificates.map((certificate) => (
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-1">
+                            {certificate.certificateName}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {applicantProfile?.extracurricularActivities && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">
+                        {tProfile('extracurricularActivities')}
+                      </p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {applicantProfile?.extracurricularActivities}
+                      </p>
+                    </div>
+                  )}
+                  {applicantProfile?.researchExperience && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('researchExperience')}</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {applicantProfile?.researchExperience}
+                      </p>
+                    </div>
+                  )}
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Full Name</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicantProfile?.firstName} {applicantProfile?.lastName}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Phone</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicantProfile?.phoneNumber || 'N/A'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Education Level</p>
+                    <p className="text-xs text-gray-500 mb-1">{tProfile('educationLevel')}</p>
                     <p className="text-sm font-semibold text-gray-900">
                       {applicantProfile?.educationLevel || 'N/A'}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Overall GPA</p>
+                    <p className="text-xs text-gray-500 mb-1">{tProfile('gpa')}</p>
                     <p className="text-sm font-semibold text-gray-900">
                       {applicantProfile?.overallGpa || 'N/A'}
                     </p>
                   </div>
+                  {applicantProfile?.ieltsScore && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('ieltsScore')}</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {applicantProfile.ieltsScore}
+                      </p>
+                    </div>
+                  )}
+                  {applicantProfile?.toeflScore && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('toeflScore')}</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {applicantProfile.toeflScore}
+                      </p>
+                    </div>
+                  )}
                   {applicantProfile?.satScore && (
                     <div>
-                      <p className="text-xs text-gray-500 mb-1">SAT Score</p>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('satScore')}</p>
                       <p className="text-sm font-semibold text-gray-900">
                         {applicantProfile.satScore}
                       </p>
                     </div>
                   )}
+
                   {applicantProfile?.actScore && (
                     <div>
-                      <p className="text-xs text-gray-500 mb-1">ACT Score</p>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('actScore')}</p>
                       <p className="text-sm font-semibold text-gray-900">
                         {applicantProfile.actScore}
                       </p>
                     </div>
                   )}
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Citizenship</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicantProfile?.citizenshipStatus || 'N/A'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Preferred Country</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicantProfile?.preferredCountry || 'N/A'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Preferred Major</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicantProfile?.preferredMajor || 'N/A'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Scholarship Type</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicantProfile?.preferredScholarshipType || 'N/A'}
-                    </p>
-                  </div>
+                  {applicantProfile?.greScore && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('greScore')}</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {applicantProfile.greScore}
+                      </p>
+                    </div>
+                  )}
+
+                  {applicantProfile?.gmatScore && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('gmatScore')}</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {applicantProfile.gmatScore}
+                      </p>
+                    </div>
+                  )}
+
+                  {applicantProfile?.educationHistories &&
+                    applicantProfile?.educationHistories?.length > 0 && (
+                      <div>
+                        <p className="text-xs text-gray-500 mb-1">{tProfile('major')}</p>
+                        <div className="flex flex-col gap-1">
+                          {applicantProfile?.educationHistories.map((educationHistory) => (
+                            <p className="text-sm font-semibold text-gray-900 line-clamp-1">
+                              {educationHistory.majorName}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  {applicantProfile?.skills && applicantProfile?.skills?.length > 0 && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('skills')}</p>
+                      <div className="flex flex-col gap-1">
+                        {applicantProfile?.skills.map((skill) => (
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-1">
+                            {skill.skillName}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </section>
             </div>
@@ -185,10 +249,6 @@ export default function RecommendedScholarshipDetail({
                     label={tDetail('intentionScore')}
                     percentage={scholarship?.llmScore?.intentions_score ?? 0}
                   />
-                  {/* <GradientProgressBar
-                    label={tDetail('overallScore')}
-                    percentage={scholarship?.llmScore?.overall_soft_score ?? 0}
-                  /> */}
                   <GradientProgressBar
                     label={tDetail('majorScore')}
                     percentage={scholarship?.cosineScore?.major ?? 0}
@@ -206,12 +266,27 @@ export default function RecommendedScholarshipDetail({
 
               {/* Score */}
               <section>
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">{tDetail('score')}</h4>
-                <GradientProgressBar
-                  label=""
-                  percentage={scholarship?.score ?? 0}
-                  customColor="#ef4444"
-                />
+                <div className="mb-3">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-sm font-semibold text-gray-700">{tDetail('score')}</span>
+                    <span className="text-sm font-bold text-gray-900">
+                      {(scholarship?.score! * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                  <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${(scholarship?.score! * 100).toFixed(1)}%`,
+                        background: `linear-gradient(to right, 
+                        rgba(123, 0, 255, 0.2) 0%, 
+                        rgba(123, 0, 255, 0.4) 33%, 
+                        rgba(123, 0, 255, 0.6) 66%, 
+                        rgba(123, 0, 255, 0.8) 100%`,
+                      }}
+                    />
+                  </div>
+                </div>
               </section>
 
               {/* About */}

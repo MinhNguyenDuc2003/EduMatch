@@ -216,7 +216,7 @@ export default function Profile() {
                   value: applicantProfile?.gmatScore?.toString(),
                 },
               ]}
-              className="lg:col-start-2 lg:row-start-4"
+              className="lg:col-start-2 lg:row-start-4 lg:row-span-2"
             />
 
             <ArrayInfoCard
@@ -224,7 +224,7 @@ export default function Profile() {
               items={applicantProfile?.educationHistories}
               renderItem={(edu) => <HistoryCard edu={edu} />}
               emptyMessage={t('common.noEducationHistoryAdded')}
-              className="lg:col-start-3 lg:row-start-1 lg:row-span-3"
+              className="lg:col-start-3 lg:row-span-3"
             />
 
             <ArrayInfoCard
@@ -232,7 +232,7 @@ export default function Profile() {
               items={applicantProfile?.skills}
               renderItem={(skill) => <SkillCard skill={skill} />}
               emptyMessage={t('common.noSkillsAdded')}
-              className="lg:col-start-3 lg:row-start-4 "
+              className="lg:col-start-3 lg:row-start-4 lg:row-span-2"
             />
           </div>
 
