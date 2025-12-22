@@ -19,7 +19,6 @@ import {
   Certificates,
   EducationHistory,
   Intentions,
-  Preferences,
   PreferredPreferences,
   Skills,
   StudentInformation,
