@@ -18,6 +18,8 @@ import {
   SelectValue,
 } from '@/pattern/cus/select';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/pattern/cus/button';
 
 export default function RecommendedScholarships() {
   const router = useRouter();
@@ -117,6 +119,12 @@ export default function RecommendedScholarships() {
                     </SelectContent>
                   </Select>
                 </div>
+                <Button
+                  variant="custom"
+                  className=" border border-gray-600 !bg-transparent !text-gray-900"
+                  onClick={() => router.push('/applicant/expected-profile')}
+                  value={t('expectedProfile')}
+                />
                 <PreferencesWeightDialog refetch={refetch} />
               </div>
             </div>

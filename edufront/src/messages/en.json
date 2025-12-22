@@ -1472,7 +1472,8 @@
     "title": "Recommended Scholarships",
     "description": "We found {count} scholarships that match your profile",
     "matchingLoading": "We are finding the best matches for you...",
-    "selectProfile": "Select profile"
+    "selectProfile": "Select profile",
+    "expectedProfile": "Expected profile"
   },
   "inputSelect": {
     "placeholder": "Select an option"
