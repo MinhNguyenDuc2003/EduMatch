@@ -18,7 +18,9 @@ export default function PremiumBanner() {
   const { data: profile, isLoading: isLoadingProfile } = useGetProfileQuery();
   const { data: scholarships, isLoading } = useGetRecommendedScholarshipsQuery(
     { profileId: profile?.applicantProfile?.id ?? 0 },
-    { skip: !isUpgraded || !isApplicant || !profile?.applicantProfile?.id }
+    {
+      skip: !isUpgraded || !isApplicant || !profile?.applicantProfile?.id || isLoadingProfile,
+    }
   );
 
   useEffect(() => {

@@ -22,11 +22,13 @@ import Loading from '@/pattern/share/Loading';
 import EmptyNews from './components/EmptyNews';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
+import { useGetProfileQuery } from '@/state/apiApplicant';
 
 export default function NewsPage() {
   const router = useRouter();
   const tToast = useTranslations('toast');
   const { isAuthenticated, subscriptions } = useAuth();
+  const { data: profile, isLoading: isLoadingProfile } = useGetProfileQuery();
   const { data: newsData, isLoading, refetch } = useGetAllNewsQuery();
   const { data: scholarshipTopView, isLoading: isLoadingScholarshipTopView } =
     useGetScholarshipTopViewByMonthQuery();
@@ -34,7 +36,10 @@ export default function NewsPage() {
     (subscription) => subscription.userType === 'APPLICANT'
   );
   const { data: recommendedScholarships, isLoading: isLoadingRecommended } =
-    useGetRecommendedScholarshipsQuery({ topK: 12 }, { skip: !hasApplicantSubscription });
+    useGetRecommendedScholarshipsQuery(
+      { profileId: profile?.applicantProfile?.id ?? 0 },
+      { skip: !hasApplicantSubscription || !profile?.applicantProfile?.id }
+    );
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 

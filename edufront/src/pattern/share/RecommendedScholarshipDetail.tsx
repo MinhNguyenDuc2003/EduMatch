@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 
 interface RecommendedScholarshipDetailProps {
   scholarship: Scholarship;
-  applicantProfile: ApplicantProfile;
+  applicantProfile?: ApplicantProfile;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -138,7 +138,7 @@ export default function RecommendedScholarshipDetail({
                     <div>
                       <p className="text-xs text-gray-500 mb-1">{tProfile('ieltsScore')}</p>
                       <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.ieltsScore}
+                        {applicantProfile?.ieltsScore}
                       </p>
                     </div>
                   )}
@@ -146,7 +146,7 @@ export default function RecommendedScholarshipDetail({
                     <div>
                       <p className="text-xs text-gray-500 mb-1">{tProfile('toeflScore')}</p>
                       <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.toeflScore}
+                        {applicantProfile?.toeflScore}
                       </p>
                     </div>
                   )}
@@ -154,7 +154,7 @@ export default function RecommendedScholarshipDetail({
                     <div>
                       <p className="text-xs text-gray-500 mb-1">{tProfile('satScore')}</p>
                       <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.satScore}
+                        {applicantProfile?.satScore}
                       </p>
                     </div>
                   )}
@@ -163,7 +163,7 @@ export default function RecommendedScholarshipDetail({
                     <div>
                       <p className="text-xs text-gray-500 mb-1">{tProfile('actScore')}</p>
                       <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.actScore}
+                        {applicantProfile?.actScore}
                       </p>
                     </div>
                   )}
@@ -171,7 +171,7 @@ export default function RecommendedScholarshipDetail({
                     <div>
                       <p className="text-xs text-gray-500 mb-1">{tProfile('greScore')}</p>
                       <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.greScore}
+                        {applicantProfile?.greScore}
                       </p>
                     </div>
                   )}
@@ -180,7 +180,7 @@ export default function RecommendedScholarshipDetail({
                     <div>
                       <p className="text-xs text-gray-500 mb-1">{tProfile('gmatScore')}</p>
                       <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.gmatScore}
+                        {applicantProfile?.gmatScore}
                       </p>
                     </div>
                   )}
