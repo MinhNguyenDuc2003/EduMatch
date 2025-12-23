@@ -186,14 +186,6 @@ export default function ApplicantScoreDetailDialog({
                     percentage={applicant?.llmScore?.career_score ?? 0}
                   />
                   <GradientProgressBar
-                    label={tDetail('achievementScore')}
-                    percentage={applicant?.llmScore?.achievement_score ?? 0}
-                  />
-                  <GradientProgressBar
-                    label={tDetail('extracurricularScore')}
-                    percentage={applicant?.llmScore?.extracurricular_score ?? 0}
-                  />
-                  <GradientProgressBar
                     label={tDetail('experienceScore')}
                     percentage={applicant?.llmScore?.experience_score ?? 0}
                   />

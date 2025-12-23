@@ -239,14 +239,6 @@ export default function RecommendedScholarshipDetail({
                     percentage={scholarship?.llmScore?.career_score ?? 0}
                   />
                   <GradientProgressBar
-                    label={tDetail('achievementScore')}
-                    percentage={scholarship?.llmScore?.achievement_score ?? 0}
-                  />
-                  <GradientProgressBar
-                    label={tDetail('extracurricularScore')}
-                    percentage={scholarship?.llmScore?.extracurricular_score ?? 0}
-                  />
-                  <GradientProgressBar
                     label={tDetail('experienceScore')}
                     percentage={scholarship?.llmScore?.experience_score ?? 0}
                   />
