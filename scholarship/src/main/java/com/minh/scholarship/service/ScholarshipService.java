@@ -82,4 +82,6 @@ public interface ScholarshipService {
 
     Double getTotalWeightByScholarshipId(Long scholarshipId);
 
+    Double getTotalWeightByScholarshipIdByType(Long scholarshipId, String type);
+
 }

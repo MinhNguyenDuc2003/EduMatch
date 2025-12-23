@@ -177,4 +177,9 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
             "where sp.scholarship_id = :scholarshipId and sp.active = true ", nativeQuery = true)
     Double getTotalWeightByScholarshipId(Long scholarshipId);
 
+    @Query(value = "select SUM(sp.weight) " +
+            "from scholarship.scholarship_preference sp " +
+            "where sp.scholarship_id = :scholarshipId and sp.active = true " +
+            "and (sp.type = :type OR COALESCE(sp.type, '') = '') ", nativeQuery = true)
+    Double getTotalWeightByScholarshipIdAndType(Long scholarshipId, String type);
 }

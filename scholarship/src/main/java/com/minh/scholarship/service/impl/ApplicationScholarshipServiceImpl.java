@@ -293,7 +293,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
         }
         recommendationScholarship.getResults().forEach(item -> {
             ApplicationScholarshipVo vo = this.getByScholarshipIdAndApplicationId(scholarshipId, item.getApplication());
-            Double totalWeight = scholarshipService.getTotalWeightByScholarshipId(scholarshipId);
+            Double totalWeight = scholarshipService.getTotalWeightByScholarshipIdByType(scholarshipId, "APPLICATION");
             vo.setScore(item.getSimilarityScore() / totalWeight);
             vo.setLlmScore(item.getLlm());
             vo.setCosineScore(item.getCosine());

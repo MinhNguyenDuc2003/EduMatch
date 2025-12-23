@@ -482,7 +482,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         }
         recommendationScholarship.getResults().forEach(item -> {
             ApplicantProfileVo vo = this.parseResponse(applicantProfileFeign.getOne(item.getApplicant()));
-            Double totalWeight = this.getTotalWeightByScholarshipId(scholarshipId);
+            Double totalWeight = this.getTotalWeightByScholarshipIdByType(scholarshipId, "PROFILE");
             vo.setScore(item.getSimilarityScore() / totalWeight);
             vo.setLlmScore(item.getLlm());
             vo.setCosineScore(item.getCosine());
@@ -722,6 +722,11 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     public Double getTotalWeightByScholarshipId(Long scholarshipId) {
         return scholarshipRepository.getTotalWeightByScholarshipId(scholarshipId);
+    }
+
+    @Override
+    public Double getTotalWeightByScholarshipIdByType(Long scholarshipId, String type) {
+        return scholarshipRepository.getTotalWeightByScholarshipIdAndType(scholarshipId, type);
     }
 
     private String normalize(String country) {
