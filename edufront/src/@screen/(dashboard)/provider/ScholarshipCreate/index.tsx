@@ -23,48 +23,36 @@ const ScholarshipCreatePage = () => {
         data.scholarshipPreferences = [
           {
             field: 'experience_w',
-            weight: 0.8,
+            weight: 0.5,
+            type: 'PROFILE',
           },
           {
             field: 'career_w',
-            weight: 0.3,
+            weight: 0.5,
           },
           {
             field: 'education_w',
-            weight: 0.8,
+            weight: 0.5,
+            type: 'PROFILE',
           },
           {
             field: 'intentions_w',
-            weight: 0.4,
+            weight: 0.5,
+            type: 'PROFILE',
           },
           {
             field: 'major_w',
-            weight: 0.4,
+            weight: 0.5,
           },
           {
             field: 'skills_w',
             weight: 0.5,
           },
-          {
-            field: 'research_w',
-            weight: 0.5,
-          },
-          {
-            field: 'personal_statement_w',
-            weight: 0.5,
-          },
-          {
-            field: 'motivation_w',
-            weight: 0.5,
-          },
-          {
-            field: 'achievements_w',
-            weight: 0.5,
-          },
-          {
-            field: 'extracurricular_w',
-            weight: 0.5,
-          },
+          { field: 'research_w', weight: 0.5 },
+          { field: 'personal_statement_w', weight: 0.5, type: 'APPLICATION' },
+          { field: 'motivation_w', weight: 0.5, type: 'APPLICATION' },
+          { field: 'achievements_w', weight: 0.5, type: 'APPLICATION' },
+          { field: 'extracurricular_w', weight: 0.5, type: 'APPLICATION' },
         ];
       }
 
