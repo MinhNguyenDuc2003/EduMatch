@@ -56,7 +56,7 @@ public interface ScholarshipService {
 
     Boolean sendMailSuggestion(String userId);
 
-    Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto);
+    Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto, CustomerVo customerVo);
 
     List<ScholarshipVo> getRecommendationScholarship(Long profileId);
 

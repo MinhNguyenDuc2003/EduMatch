@@ -69,7 +69,6 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     private final ApplicationService applicationService;
     private final AiMatchFeign aiMatchFeign;
     private final ApplicantProfileFeign applicantProfileFeign;
-    private final CustomerFeign customerFeign;
     private final CaseStudyService caseStudyService;
     private final ApplicationRepository applicationRepository;
     private final ApplicationMapper applicationMapper;
@@ -422,11 +421,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     }
 
     @Override
-    public Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto) {
-        String userId = UaaContextHolder.getUserId();
-        ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(userId));
-        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(applicantProfileVo.getId());
-        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(userId));
+    public Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto, CustomerVo customerVo) {
+        List<ScholarshipVo> scholarshipEntities = this.getTopViewsByMonth().subList(0, 5);
 
         ScholarshipDto scholarshipDto = this.getById(dto.getScholarshipId());
         ApplicationDto applicationDto = applicationService.getById(dto.getApplicationId());

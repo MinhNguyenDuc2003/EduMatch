@@ -38,14 +38,14 @@ public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfi
             "                    ) " +
             "                      and (:gpaRequirement is null or a.overall_gpa >= :gpaRequirement)  " +
             "                      and (  " +
-            "                            (CAST(:requiredSatScore  AS INTEGER) IS NULL OR a.sat_score  >= :requiredSatScore)  " +
-            "                         OR (CAST(:requiredActScore  AS INTEGER) IS NULL OR a.act_score  >= :requiredActScore)  " +
-            "                         OR (CAST(:requiredGreScore  AS INTEGER) IS NULL OR a.gre_score  >= :requiredGreScore)  " +
-            "                         OR (CAST(:requiredGmatScore AS INTEGER) IS NULL OR a.gmat_score >= :requiredGmatScore)  " +
+            "                             (CAST(:requiredSatScore  AS INTEGER) IS NULL OR a.sat_score  >= :requiredSatScore)  " +
+            "                         and (CAST(:requiredActScore  AS INTEGER) IS NULL OR a.act_score  >= :requiredActScore)  " +
+            "                         and (CAST(:requiredGreScore  AS INTEGER) IS NULL OR a.gre_score  >= :requiredGreScore)  " +
+            "                         and (CAST(:requiredGmatScore AS INTEGER) IS NULL OR a.gmat_score >= :requiredGmatScore)  " +
             "                          )  " +
             "                      and (  " +
-            "                            (CAST(:requiredToeflScore AS INTEGER) IS NULL OR a.toefl_score >= :requiredToeflScore)  " +
-            "                         OR (CAST(:requiredIeltsScore AS DOUBLE PRECISION) IS NULL OR a.ielts_score >= :requiredIeltsScore)  " +
+            "                             (CAST(:requiredToeflScore AS INTEGER) IS NULL OR a.toefl_score >= :requiredToeflScore)  " +
+            "                         and (CAST(:requiredIeltsScore AS DOUBLE PRECISION) IS NULL OR a.ielts_score >= :requiredIeltsScore)  " +
             "                          )", nativeQuery = true)
     List<ApplicantProfileEntity> getByScholarshipFilter(String studyLevel, List<String> restrictedNationalities,
                                                         Double gpaRequirement, Integer requiredSatScore,

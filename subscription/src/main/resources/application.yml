@@ -180,7 +180,7 @@ keycloak:
     secret: ${env.keycloak.client-secret:TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF}
 
 quartz-job:
-  auto-start: false
+  auto-start: true
   expired-notice:
     name: 'expired-notice'
     group: 'subscription'

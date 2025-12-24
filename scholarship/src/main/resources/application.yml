@@ -200,7 +200,7 @@ keycloak:
     secret: ${env.keycloak.client-secret:TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF}
 
 quartz-job:
-  auto-start: false
+  auto-start: true
   scholarship-suggestion:
     name: 'scholarship-suggestion'
     group: 'scholarship'

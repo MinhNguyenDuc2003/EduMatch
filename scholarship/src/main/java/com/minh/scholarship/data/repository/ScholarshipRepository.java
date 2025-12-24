@@ -114,16 +114,16 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
                    (s.gpaRequirement IS NULL
                         OR (:overallGpa IS NOT NULL AND :overallGpa >= s.gpaRequirement))
             
-                OR (s.requiredSatScore IS NULL
+                AND (s.requiredSatScore IS NULL
                         OR (:satScore IS NOT NULL AND :satScore >= s.requiredSatScore))
             
-                OR (s.requiredActScore IS NULL
+                AND (s.requiredActScore IS NULL
                         OR (:actScore IS NOT NULL AND :actScore >= s.requiredActScore))
             
-                OR (s.requiredGreScore IS NULL
+                AND (s.requiredGreScore IS NULL
                         OR (:greScore IS NOT NULL AND :greScore >= s.requiredGreScore))
             
-                OR (s.requiredGmatScore IS NULL
+                AND (s.requiredGmatScore IS NULL
                         OR (:gmatScore IS NOT NULL AND :gmatScore >= s.requiredGmatScore))
             )
             
@@ -131,7 +131,7 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
                    (s.requiredToeflScore IS NULL
                         OR (:toeflScore IS NOT NULL AND :toeflScore >= s.requiredToeflScore))
             
-                OR (s.requiredIeltsScore IS NULL
+                AND (s.requiredIeltsScore IS NULL
                         OR (:ieltsScore IS NOT NULL AND :ieltsScore >= s.requiredIeltsScore))
             )
             """)

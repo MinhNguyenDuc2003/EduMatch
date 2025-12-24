@@ -54,14 +54,14 @@ public interface ApplicationRepository extends JpaRepository<ApplicationEntity, 
                     "       or a.gender = :genderRequirement) " +
                     "  and (:gpaRequirement is null or a.gpa >= :gpaRequirement) " +
                     "  and ( " +
-                    "        (:requiredSatScore  IS NULL OR a.sat_score  >= :requiredSatScore) " +
-                    "     OR (:requiredActScore  IS NULL OR a.act_score  >= :requiredActScore) " +
-                    "     OR (:requiredGreScore  IS NULL OR a.gre_score  >= :requiredGreScore) " +
-                    "     OR (:requiredGmatScore IS NULL OR a.gmat_score >= :requiredGmatScore) " +
+                    "         (:requiredSatScore  IS NULL OR a.sat_score  >= :requiredSatScore) " +
+                    "     AND (:requiredActScore  IS NULL OR a.act_score  >= :requiredActScore) " +
+                    "     AND (:requiredGreScore  IS NULL OR a.gre_score  >= :requiredGreScore) " +
+                    "     AND (:requiredGmatScore IS NULL OR a.gmat_score >= :requiredGmatScore) " +
                     "      ) " +
                     "  and ( " +
                     "        (:requiredToeflScore IS NULL OR a.toefl_score >= :requiredToeflScore) " +
-                    "     OR (:requiredIeltsScore IS NULL OR a.ielts_score >= :requiredIeltsScore) " +
+                    "     AND (:requiredIeltsScore IS NULL OR a.ielts_score >= :requiredIeltsScore) " +
                     "      ) " +
                     "  and (:requiredWorkExperienceYears is null " +
                     "       or a.work_experience_years >= :requiredWorkExperienceYears) " +
