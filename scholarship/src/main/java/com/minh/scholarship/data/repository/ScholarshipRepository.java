@@ -109,6 +109,8 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
             WHERE s.active = true AND s.endDate >= CURRENT_TIMESTAMP
             AND (:educationLevel IS NULL OR s.studyLevel = :educationLevel)
             AND (:country IS NULL OR s.country = :country)
+            AND (s.gpaRequirement IS NULL
+                        OR (:overallGpa IS NOT NULL AND :overallGpa >= s.gpaRequirement))
             AND (
                     (
                         s.requiredSatScore  IS NULL
