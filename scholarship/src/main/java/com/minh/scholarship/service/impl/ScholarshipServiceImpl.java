@@ -422,8 +422,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto, CustomerVo customerVo) {
-        List<ScholarshipVo> scholarshipEntities = this.getTopViewsByMonth().subList(0, 5);
-
+        List<ScholarshipVo> scholarshipEntities = this.getTopViewsByMonth();
+        scholarshipEntities = scholarshipEntities.subList(0, Math.min(10, scholarshipEntities.size()));
         ScholarshipDto scholarshipDto = this.getById(dto.getScholarshipId());
         ApplicationDto applicationDto = applicationService.getById(dto.getApplicationId());
         MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.APPLICATION_SUBMITTED.getCode()));
@@ -639,7 +639,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         );
         ApplicationRecommendationVo response = new ApplicationRecommendationVo();
         response.setScholarshipPreference(preferenceMap);
-        response.setApplications(applicationFilter);
+        response.setApplications(applicationFilter.subList(0, Math.min(10, applicationFilter.size())));
         response.setScholarship(scholarshipEntity);
         return response;
     }
@@ -670,7 +670,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
         ProfileRecommendationVo response = new ProfileRecommendationVo();
         response.setScholarshipPreference(preferenceMap);
-        response.setProfiles(profiles);
+        response.setProfiles(profiles.subList(0, Math.min(10, profiles.size())));
         response.setScholarship(scholarshipEntity);
         return response;
     }
@@ -689,7 +689,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 applicantProfileVo.getGreScore(), applicantProfileVo.getGmatScore(),
                 applicantProfileVo.getToeflScore(), applicantProfileVo.getIeltsScore()
         );
-        scholarshipRecommendationVo.setScholarships(scholarshipMapper.toDto(scholarshipEntities));
+        scholarshipRecommendationVo.setScholarships(scholarshipMapper.toDto(scholarshipEntities.subList(0, Math.min(10, scholarshipEntities.size()))));
         scholarshipRecommendationVo.setProfile(applicantProfileVo);
         return scholarshipRecommendationVo;
     }
