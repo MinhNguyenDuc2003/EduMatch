@@ -110,6 +110,12 @@ export default function ApplicationScoreDetailDialog({
                         {scholarship?.scholarshipType}
                       </span>
                     </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-500">
+                        {tScholarshipDetail('content.studyLevel')}
+                      </span>
+                      <span className="font-medium text-gray-900">{scholarship?.studyLevel}</span>
+                    </div>
                     {scholarship?.fundingAmount && (
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-500">
@@ -128,46 +134,54 @@ export default function ApplicationScoreDetailDialog({
                       {tScholarshipDetail('content.criteria')}
                     </h4>
                     <div className="space-y-3">
-                      {scholarship?.gpaRequirement && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.gpaRequirement')}
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {scholarship.gpaRequirement.toFixed(1)} / 4.0
-                          </span>
+                      {scholarship?.description && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.description')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                            {scholarship?.description || 'N/A'}
+                          </p>
                         </div>
                       )}
-                      {(scholarship?.requiredIeltsScore || 0) > 0 && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.requiredIeltsScore')}
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {scholarship?.requiredIeltsScore}
-                          </span>
+                      {scholarship?.benefits && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.benefits')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                            {scholarship?.benefits}
+                          </p>
                         </div>
                       )}
-                      {(scholarship?.requiredToeflScore || 0) > 0 && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.requiredToeflScore')}
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {scholarship?.requiredToeflScore}
-                          </span>
+                      {scholarship?.fields && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.fields')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900">
+                            {scholarship?.fields}
+                          </p>
                         </div>
                       )}
-                      {scholarship?.requiredMajor && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.requiredMajor')}
-                          </span>
-                          <span className="font-medium text-gray-900 text-right max-w-[60%] truncate">
-                            {scholarship.requiredMajor}
-                          </span>
+                      {scholarship?.requirements && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.requirements')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                            {scholarship?.requirements}
+                          </p>
                         </div>
                       )}
+                      <div>
+                        <p className="text-xs text-gray-500 mb-1">
+                          {tScholarshipDetail('content.gpaRequirement')}
+                        </p>
+                        <p className="text-sm font-semibold text-gray-900">
+                          {scholarship?.gpaRequirement || 'N/A'}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

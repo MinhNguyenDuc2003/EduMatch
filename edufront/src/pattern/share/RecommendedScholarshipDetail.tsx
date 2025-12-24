@@ -60,7 +60,6 @@ export default function RecommendedScholarshipDetail({
             {/* Left Column - Profile */}
             <div className="lg:col-span-3 pr-4">
               <section className="rounded-lg space-y-4">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">{tProfile('title')}</h3>
                 <div className="flex items-center gap-4">
                   {/* Avatar */}
                   <div className="flex items-center justify-center">
@@ -87,18 +86,6 @@ export default function RecommendedScholarshipDetail({
                       <p className="text-sm font-semibold text-gray-900">
                         {applicantProfile?.careerGoals || 'N/A'}
                       </p>
-                    </div>
-                  )}
-                  {applicantProfile?.certificates && applicantProfile?.certificates?.length > 0 && (
-                    <div>
-                      <p className="text-xs text-gray-500 mb-1">{tProfile('certificates')}</p>
-                      <div className="flex flex-col gap-1">
-                        {applicantProfile?.certificates.map((certificate) => (
-                          <p className="text-sm font-semibold text-gray-900 line-clamp-1">
-                            {certificate.certificateName}
-                          </p>
-                        ))}
-                      </div>
                     </div>
                   )}
                   {applicantProfile?.extracurricularActivities && (
@@ -131,57 +118,6 @@ export default function RecommendedScholarshipDetail({
                       {applicantProfile?.overallGpa || 'N/A'}
                     </p>
                   </div>
-                  {applicantProfile?.ieltsScore && (
-                    <div>
-                      <p className="text-xs text-gray-500 mb-1">{tProfile('ieltsScore')}</p>
-                      <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.ieltsScore}
-                      </p>
-                    </div>
-                  )}
-                  {applicantProfile?.toeflScore && (
-                    <div>
-                      <p className="text-xs text-gray-500 mb-1">{tProfile('toeflScore')}</p>
-                      <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.toeflScore}
-                      </p>
-                    </div>
-                  )}
-                  {applicantProfile?.satScore && (
-                    <div>
-                      <p className="text-xs text-gray-500 mb-1">{tProfile('satScore')}</p>
-                      <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.satScore}
-                      </p>
-                    </div>
-                  )}
-
-                  {applicantProfile?.actScore && (
-                    <div>
-                      <p className="text-xs text-gray-500 mb-1">{tProfile('actScore')}</p>
-                      <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.actScore}
-                      </p>
-                    </div>
-                  )}
-                  {applicantProfile?.greScore && (
-                    <div>
-                      <p className="text-xs text-gray-500 mb-1">{tProfile('greScore')}</p>
-                      <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.greScore}
-                      </p>
-                    </div>
-                  )}
-
-                  {applicantProfile?.gmatScore && (
-                    <div>
-                      <p className="text-xs text-gray-500 mb-1">{tProfile('gmatScore')}</p>
-                      <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile.gmatScore}
-                      </p>
-                    </div>
-                  )}
-
                   {applicantProfile?.educationHistories &&
                     applicantProfile?.educationHistories?.length > 0 && (
                       <div>
@@ -349,9 +285,15 @@ export default function RecommendedScholarshipDetail({
                       <span className="text-gray-500">
                         {tScholarshipDetail('content.scholarshipType')}
                       </span>
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-gray-900 ">
                         {scholarship?.scholarshipType}
                       </span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-500">
+                        {tScholarshipDetail('content.studyLevel')}
+                      </span>
+                      <span className="font-medium text-gray-900">{scholarship?.studyLevel}</span>
                     </div>
                     {scholarship?.fundingAmount && (
                       <div className="flex justify-between items-center text-sm">
@@ -371,46 +313,54 @@ export default function RecommendedScholarshipDetail({
                       {tScholarshipDetail('content.criteria')}
                     </h4>
                     <div className="space-y-3">
-                      {scholarship?.gpaRequirement && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.gpaRequirement')}
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {scholarship.gpaRequirement.toFixed(1)} / 4.0
-                          </span>
+                      {scholarship?.description && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.description')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                            {scholarship?.description || 'N/A'}
+                          </p>
                         </div>
                       )}
-                      {(scholarship?.requiredIeltsScore || 0) > 0 && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.requiredIeltsScore')}
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {scholarship?.requiredIeltsScore}
-                          </span>
+                      {scholarship?.benefits && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.benefits')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                            {scholarship?.benefits}
+                          </p>
                         </div>
                       )}
-                      {(scholarship?.requiredToeflScore || 0) > 0 && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.requiredToeflScore')}
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {scholarship?.requiredToeflScore}
-                          </span>
+                      {scholarship?.fields && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.fields')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900">
+                            {scholarship?.fields}
+                          </p>
                         </div>
                       )}
-                      {scholarship?.requiredMajor && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.requiredMajor')}
-                          </span>
-                          <span className="font-medium text-gray-900 text-right max-w-[60%] truncate">
-                            {scholarship.requiredMajor}
-                          </span>
+                      {scholarship?.requirements && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.requirements')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                            {scholarship?.requirements}
+                          </p>
                         </div>
                       )}
+                      <div>
+                        <p className="text-xs text-gray-500 mb-1">
+                          {tScholarshipDetail('content.gpaRequirement')}
+                        </p>
+                        <p className="text-sm font-semibold text-gray-900">
+                          {scholarship?.gpaRequirement || 'N/A'}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
