@@ -38,15 +38,26 @@ public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfi
             "                    ) " +
             "                      and (:gpaRequirement is null or a.overall_gpa >= :gpaRequirement)  " +
             "                      and (  " +
-            "                             (CAST(:requiredSatScore  AS INTEGER) IS NULL OR a.sat_score  >= :requiredSatScore)  " +
-            "                         and (CAST(:requiredActScore  AS INTEGER) IS NULL OR a.act_score  >= :requiredActScore)  " +
-            "                         and (CAST(:requiredGreScore  AS INTEGER) IS NULL OR a.gre_score  >= :requiredGreScore)  " +
-            "                         and (CAST(:requiredGmatScore AS INTEGER) IS NULL OR a.gmat_score >= :requiredGmatScore)  " +
-            "                          )  " +
+            "       (  " +
+            "           :requiredSatScore  IS NULL  " +
+            "       AND :requiredActScore  IS NULL  " +
+            "       AND :requiredGreScore  IS NULL  " +
+            "       AND :requiredGmatScore IS NULL  " +
+            "       )  " +
+            "    OR (  " +
+            "           (:requiredSatScore  IS NOT NULL AND a.sat_score  >= :requiredSatScore)  " +
+            "        OR (:requiredActScore  IS NOT NULL AND a.act_score  >= :requiredActScore)  " +
+            "        OR (:requiredGreScore  IS NOT NULL AND a.gre_score  >= :requiredGreScore)  " +
+            "        OR (:requiredGmatScore IS NOT NULL AND a.gmat_score >= :requiredGmatScore)  " +
+            "       )  " +
+            ")  " +
             "                      and (  " +
-            "                             (CAST(:requiredToeflScore AS INTEGER) IS NULL OR a.toefl_score >= :requiredToeflScore)  " +
-            "                         and (CAST(:requiredIeltsScore AS DOUBLE PRECISION) IS NULL OR a.ielts_score >= :requiredIeltsScore)  " +
-            "                          )", nativeQuery = true)
+            "       (:requiredToeflScore IS NULL AND :requiredIeltsScore IS NULL)  " +
+            "    OR (  " +
+            "           (:requiredToeflScore IS NOT NULL AND a.toefl_score >= :requiredToeflScore)  " +
+            "        OR (:requiredIeltsScore IS NOT NULL AND a.ielts_score >= :requiredIeltsScore)  " +
+            "       )  " +
+            ")  ", nativeQuery = true)
     List<ApplicantProfileEntity> getByScholarshipFilter(String studyLevel, List<String> restrictedNationalities,
                                                         Double gpaRequirement, Integer requiredSatScore,
                                                         Integer requiredGreScore, Integer requiredActScore, Integer requiredGmatScore,

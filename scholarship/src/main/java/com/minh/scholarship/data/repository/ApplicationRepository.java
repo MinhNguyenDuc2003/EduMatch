@@ -54,18 +54,29 @@ public interface ApplicationRepository extends JpaRepository<ApplicationEntity, 
                     "       or a.gender = :genderRequirement) " +
                     "  and (:gpaRequirement is null or a.gpa >= :gpaRequirement) " +
                     "  and ( " +
-                    "         (:requiredSatScore  IS NULL OR a.sat_score  >= :requiredSatScore) " +
-                    "     AND (:requiredActScore  IS NULL OR a.act_score  >= :requiredActScore) " +
-                    "     AND (:requiredGreScore  IS NULL OR a.gre_score  >= :requiredGreScore) " +
-                    "     AND (:requiredGmatScore IS NULL OR a.gmat_score >= :requiredGmatScore) " +
-                    "      ) " +
+                    "       ( " +
+                    "           :requiredSatScore  IS NULL " +
+                    "       AND :requiredActScore  IS NULL " +
+                    "       AND :requiredGreScore  IS NULL " +
+                    "       AND :requiredGmatScore IS NULL " +
+                    "       ) " +
+                    "    OR ( " +
+                    "           (:requiredSatScore  IS NOT NULL AND a.sat_score  >= :requiredSatScore) " +
+                    "        OR (:requiredActScore  IS NOT NULL AND a.act_score  >= :requiredActScore) " +
+                    "        OR (:requiredGreScore  IS NOT NULL AND a.gre_score  >= :requiredGreScore) " +
+                    "        OR (:requiredGmatScore IS NOT NULL AND a.gmat_score >= :requiredGmatScore) " +
+                    "       ) " +
+                    "   )  " +
                     "  and ( " +
-                    "        (:requiredToeflScore IS NULL OR a.toefl_score >= :requiredToeflScore) " +
-                    "     AND (:requiredIeltsScore IS NULL OR a.ielts_score >= :requiredIeltsScore) " +
-                    "      ) " +
-                    "  and (:requiredWorkExperienceYears is null " +
+                    "       (:requiredToeflScore IS NULL AND :requiredIeltsScore IS NULL) " +
+                    "    OR ( " +
+                    "           (:requiredToeflScore IS NOT NULL AND a.toefl_score >= :requiredToeflScore) " +
+                    "        OR (:requiredIeltsScore IS NOT NULL AND a.ielts_score >= :requiredIeltsScore) " +
+                    "       ) " +
+                    ")  " +
+                    "  and (:requiredWorkExperienceYears is null or :requiredWorkExperienceYears = 0 " +
                     "       or a.work_experience_years >= :requiredWorkExperienceYears) " +
-                    "  and (:requiredPublicationCount is null " +
+                    "  and (:requiredPublicationCount is null or :requiredPublicationCount = 0 " +
                     "       or a.publication_count >= :requiredPublicationCount) "
             , nativeQuery = true)
     List<ApplicationEntity> findAllByFilter(
