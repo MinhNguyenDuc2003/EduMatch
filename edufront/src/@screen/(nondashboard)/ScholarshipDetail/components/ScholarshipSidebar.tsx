@@ -137,7 +137,9 @@ export default function ScholarshipSidebar({
         {provider.description && (
           <div className="pt-2 border-t border-gray-200">
             <h4 className="font-semibold text-gray-900 text-sm mb-2">{t('about')}</h4>
-            <p className="text-gray-700 text-sm leading-relaxed">{provider.description}</p>
+            <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">
+              {provider.description}
+            </p>
           </div>
         )}
       </div>

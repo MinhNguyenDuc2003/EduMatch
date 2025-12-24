@@ -67,13 +67,13 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
           </div>
         )}
         {scholarship.fields && (
-          <div className="text-sm flex items-center gap-2">
-            <p className=" text-gray-500">{t('fields')}:</p>
+          <div className="text-sm flex gap-2">
+            <p className=" text-gray-500 min-w-[60px]">{t('fields')}:</p>
             <p className="font-medium text-gray-900">{scholarship.fields}</p>
           </div>
         )}
         {scholarship.requiredMajor && (
-          <div className="text-sm flex items-center gap-2">
+          <div className="text-sm flex gap-2">
             <p className=" text-gray-500">{t('requiredMajor')}:</p>
             <p className="font-medium text-gray-900">{scholarship.requiredMajor}</p>
           </div>
@@ -85,7 +85,7 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
           </div>
         )}
         {scholarship.requiredClassRankPercentile && (
-          <div className="text-sm flex items-center gap-2">
+          <div className="text-sm flex gap-2">
             <p className=" text-gray-500">{t('requiredClassRankPercentile')}:</p>
             <p className="font-medium text-gray-900">
               Top {scholarship.requiredClassRankPercentile}%
@@ -93,7 +93,7 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
           </div>
         )}
         {(scholarship.requiredPublicationCount || 0) > 0 && (
-          <div className="text-sm flex items-center gap-2">
+          <div className="text-sm flex gap-2">
             <p className=" text-gray-500">{t('requiredPublicationCount')}:</p>
             <p className="font-medium text-gray-900">
               {scholarship.requiredPublicationCount || 0} {t('publications')}
@@ -115,80 +115,96 @@ export default function ScholarshipContent({ scholarship }: ScholarshipContentPr
           scholarship.requiredIeltsScore ||
           scholarship.requiredGmatScore) && (
           <section className="flex flex-col mb-2 py-2 border-t border-gray-300">
-            <h2 className="text-sm font-semibold text-gray-900 mb-2">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">
               {t('testScoreRequirements')}
             </h2>
             <div className="flex flex-col gap-2">
-              <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-9 gap-4">
-                {scholarship.requiredToeflScore > 0 && (
-                  <div className="col-span-1 lg:col-span-2">
-                    <p className="text-xs text-gray-500">{t('requiredToeflScore')}</p>
-                    <p className="text-sm font-medium text-gray-900">
-                      {scholarship.requiredToeflScore}
-                    </p>
-                  </div>
-                )}
-                {scholarship.requiredIeltsScore > 0 && scholarship.requiredToeflScore > 0 && (
-                  <div className="col-span-1">
-                    <span className="text-xs font-bold text-gray-500 mx-2">Or</span>
-                  </div>
-                )}
-                {scholarship.requiredIeltsScore > 0 && (
-                  <div className="col-span-1 lg:col-span-2">
-                    <p className="text-xs text-gray-500">{t('requiredIeltsScore')}</p>
-                    <p className="text-sm font-medium text-gray-900">
-                      {scholarship.requiredIeltsScore}
-                    </p>
-                  </div>
-                )}
-              </div>
-              <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-9 gap-4">
-                {scholarship.requiredSatScore > 0 && (
-                  <div className="col-span-1 lg:col-span-2">
-                    <p className="text-xs text-gray-500">{t('requiredSatScore')}</p>
-                    <p className="text-sm font-medium text-gray-900">
-                      {scholarship.requiredSatScore}
-                    </p>
-                  </div>
-                )}
-                {scholarship.requiredSatScore > 0 && scholarship.requiredActScore > 0 && (
-                  <div className="col-span-1">
-                    <span className="text-xs font-bold text-gray-500 mx-2">Or</span>
-                  </div>
-                )}
-                {scholarship.requiredActScore > 0 && (
-                  <div className="col-span-1 lg:col-span-2">
-                    <p className="text-xs text-gray-500">{t('requiredActScore')}</p>
-                    <p className="text-sm font-medium text-gray-900">
-                      {scholarship.requiredActScore}
-                    </p>
-                  </div>
-                )}
-              </div>
+              {/* Language Proficiency: TOEFL and IELTS */}
+              {(scholarship.requiredToeflScore > 0 || scholarship.requiredIeltsScore > 0) && (
+                <div className="flex flex-wrap items-center gap-2">
+                  {scholarship.requiredToeflScore > 0 && (
+                    <div className="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+                      <span className="text-xs text-gray-600">{t('requiredToeflScore')}</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {scholarship.requiredToeflScore}
+                      </span>
+                    </div>
+                  )}
 
-              <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-9 gap-4">
-                {scholarship.requiredGreScore > 0 && (
-                  <div className="col-span-1 lg:col-span-2">
-                    <p className="text-xs text-gray-500">{t('requiredGreScore')}</p>
-                    <p className="text-sm font-medium text-gray-900">
-                      {scholarship.requiredGreScore}
-                    </p>
-                  </div>
-                )}
-                {scholarship.requiredGreScore > 0 && scholarship.requiredGmatScore > 0 && (
-                  <div className="col-span-1">
-                    <span className="text-xs font-bold text-gray-500 mx-2">Or</span>
-                  </div>
-                )}
-                {scholarship.requiredGmatScore > 0 && (
-                  <div className="col-span-1 lg:col-span-2">
-                    <p className="text-xs text-gray-500">{t('requiredGmatScore')}</p>
-                    <p className="text-sm font-medium text-gray-900">
-                      {scholarship.requiredGmatScore}
-                    </p>
-                  </div>
-                )}
-              </div>
+                  {scholarship.requiredToeflScore > 0 && scholarship.requiredIeltsScore > 0 && (
+                    <span className="text-xs font-medium text-gray-500 px-1">{t('or')}</span>
+                  )}
+
+                  {scholarship.requiredIeltsScore > 0 && (
+                    <div className="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+                      <span className="text-xs text-gray-600">{t('requiredIeltsScore')}</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {scholarship.requiredIeltsScore}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Academic Tests: SAT, ACT, GRE, GMAT */}
+              {(scholarship.requiredSatScore > 0 ||
+                scholarship.requiredActScore > 0 ||
+                scholarship.requiredGreScore > 0 ||
+                scholarship.requiredGmatScore > 0) && (
+                <div className="flex flex-wrap items-center gap-2">
+                  {scholarship.requiredSatScore > 0 && (
+                    <div className="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+                      <span className="text-xs text-gray-600">{t('requiredSatScore')}</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {scholarship.requiredSatScore}
+                      </span>
+                    </div>
+                  )}
+
+                  {scholarship.requiredSatScore > 0 &&
+                    (scholarship.requiredActScore > 0 ||
+                      scholarship.requiredGreScore > 0 ||
+                      scholarship.requiredGmatScore > 0) && (
+                      <span className="text-xs font-medium text-gray-500 px-1">{t('or')}</span>
+                    )}
+
+                  {scholarship.requiredActScore > 0 && (
+                    <div className="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+                      <span className="text-xs text-gray-600">{t('requiredActScore')}</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {scholarship.requiredActScore}
+                      </span>
+                    </div>
+                  )}
+
+                  {scholarship.requiredActScore > 0 &&
+                    (scholarship.requiredGreScore > 0 || scholarship.requiredGmatScore > 0) && (
+                      <span className="text-xs font-medium text-gray-500 px-1">{t('or')}</span>
+                    )}
+
+                  {scholarship.requiredGreScore > 0 && (
+                    <div className="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+                      <span className="text-xs text-gray-600">{t('requiredGreScore')}</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {scholarship.requiredGreScore}
+                      </span>
+                    </div>
+                  )}
+
+                  {scholarship.requiredGreScore > 0 && scholarship.requiredGmatScore > 0 && (
+                    <span className="text-xs font-medium text-gray-500 px-1">{t('or')}</span>
+                  )}
+
+                  {scholarship.requiredGmatScore > 0 && (
+                    <div className="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+                      <span className="text-xs text-gray-600">{t('requiredGmatScore')}</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {scholarship.requiredGmatScore}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </section>
         )}

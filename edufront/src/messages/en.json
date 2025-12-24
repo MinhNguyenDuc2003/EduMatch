@@ -560,7 +560,8 @@
       "testScoreRequirements": "Test Score Requirements",
       "demographicRequirements": "Personal Requirements",
       "otherRequirements": "Other Requirements",
-      "caseStudies": "Case Studies"
+      "caseStudies": "Case Studies",
+      "or": "or"
     },
     "sidebar": {
       "following": "Following",
@@ -1472,7 +1473,8 @@
     "title": "Recommended Scholarships",
     "description": "We found {count} scholarships that match your profile",
     "matchingLoading": "We are finding the best matches for you...",
-    "selectProfile": "Select profile"
+    "selectProfile": "Select profile",
+    "expectedProfile": "Expected profile"
   },
   "inputSelect": {
     "placeholder": "Select an option"

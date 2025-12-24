@@ -568,7 +568,8 @@
       "testScoreRequirements": "Yêu cầu điểm",
       "demographicRequirements": "Yêu cầu cá nhân",
       "otherRequirements": "Yêu cầu khác",
-      "caseStudies": "Bài viết về học bổng"
+      "caseStudies": "Bài viết về học bổng",
+      "or": "hoặc"
     },
     "sidebar": {
       "following": "Đang theo dõi",
@@ -1430,7 +1431,8 @@
     "title": "Học bổng đề xuất",
     "description": "Chúng tôi đã tìm thấy {count} học bổng phù hợp với hồ sơ của bạn",
     "matchingLoading": "Chúng tôi đang tìm kiếm những học bổng phù hợp nhất cho bạn...",
-    "selectProfile": "Chọn hồ sơ"
+    "selectProfile": "Chọn hồ sơ",
+    "expectedProfile": "Hồ sơ mong đợi"
   },
   "providerProfile": {
     "organizationInformation": "Thông tin tổ chức",
