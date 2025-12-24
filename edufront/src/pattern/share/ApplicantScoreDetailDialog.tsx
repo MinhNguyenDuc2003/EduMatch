@@ -301,7 +301,10 @@ export default function ApplicantScoreDetailDialog({
                       <p className="text-xs text-gray-500 mb-1">{tProfile('major')}</p>
                       <div className="flex flex-col gap-1">
                         {applicant?.educationHistories.map((educationHistory) => (
-                          <p className="text-sm font-semibold text-gray-900 line-clamp-1">
+                          <p
+                            className="text-sm font-semibold text-gray-900 line-clamp-1"
+                            key={educationHistory.id}
+                          >
                             {educationHistory.majorName}
                           </p>
                         ))}
@@ -313,7 +316,10 @@ export default function ApplicantScoreDetailDialog({
                       <p className="text-xs text-gray-500 mb-1">{tProfile('skills')}</p>
                       <div className="flex flex-col gap-1">
                         {applicant?.skills.map((skill) => (
-                          <p className="text-sm font-semibold text-gray-900 line-clamp-1">
+                          <p
+                            className="text-sm font-semibold text-gray-900 line-clamp-1"
+                            key={skill.id}
+                          >
                             {skill.skillName}
                           </p>
                         ))}
