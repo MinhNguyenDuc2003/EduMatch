@@ -343,8 +343,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
     }
 
     public ProviderProfileVo getByUserId(String userId) {
-        ProviderProfileEntity entity = providerProfileRepository.findByUserId(userId)
-                .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
-        return providerProfileMapper.toVo(entity);
+        Optional<ProviderProfileEntity> entity = providerProfileRepository.findByUserId(userId);
+        return entity.map(providerProfileEntity -> providerProfileMapper.toVo(providerProfileEntity)).orElse(null);
     }
 }
