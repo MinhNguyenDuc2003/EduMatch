@@ -21,6 +21,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
@@ -85,6 +86,11 @@ public class ScholarshipApplication {
     public DataSource dataSource() {
         DataSourceBuilder ds = DataSourceBuilder.create();
         return ds.build();
+    }
+
+    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean() {
+        return new SchedulerFactoryBean();
     }
 
 }

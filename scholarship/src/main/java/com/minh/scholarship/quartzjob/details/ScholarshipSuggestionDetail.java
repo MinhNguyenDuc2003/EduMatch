@@ -5,6 +5,8 @@ import org.quartz.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.TimeZone;
+
 @Component
 public class ScholarshipSuggestionDetail {
 
@@ -25,8 +27,11 @@ public class ScholarshipSuggestionDetail {
     public Trigger prepareScholarshipSuggestionTrigger() {
         return TriggerBuilder.newTrigger()
                 .withIdentity(jobName, jobGroup)
-                .forJob(jobName, jobGroup)
-                .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
+                .forJob(jobName + "_TRIGGER", jobGroup)
+                .withSchedule(
+                        CronScheduleBuilder.cronSchedule(cronExpression)
+                                .inTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"))
+                )
                 .build();
     }
 

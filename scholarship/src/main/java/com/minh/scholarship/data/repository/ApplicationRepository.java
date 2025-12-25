@@ -40,7 +40,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationEntity, 
                     "inner join scholarship.application_scholarship asch " +
                     "    on a.id = asch.application_id " +
                     "where asch.scholarship_id = :scholarshipId " +
-                    "  and a.active = true " +
+                    "  and a.active = true and asch.status = 'Pending' " +
                     "  AND ( " +
                     "      :restrictedNationalities IS NULL " +
                     "   OR cardinality(CAST(:restrictedNationalities AS text[])) = 0 " +
