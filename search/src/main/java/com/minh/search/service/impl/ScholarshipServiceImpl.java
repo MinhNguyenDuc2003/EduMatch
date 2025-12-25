@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsAggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.json.JsonData;
 import com.minh.model.dto.scholarship.ScholarshipDto;
 import com.minh.search.data.entity.ScholarshipEntity;
 import com.minh.search.data.mapper.ScholarshipMapper;
@@ -185,16 +186,35 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         boolBuilder.must(m -> m.bool(inner.build()));
     }
 
-    private void extractedRange(Number min, Number max, BoolQuery.Builder bool) {
-        if (min != null || max != null) {
-            bool.must(m -> m
-                    .range(r -> r
-                            .field(ScholarshipField.GPA_REQUIREMENT)
-                            .from(min != null ? min.toString() : null)
-                            .to(max != null ? max.toString() : null)
+    private void extractedRange(
+            Number min,
+            Number max,
+            BoolQuery.Builder bool
+    ) {
+        if (min == null && max == null) return;
+
+        bool.must(m -> m.bool(b -> {
+
+            b.should(s -> s
+                    .bool(bb -> bb
+                            .mustNot(mn -> mn
+                                    .exists(e -> e.field(ScholarshipField.GPA_REQUIREMENT))
+                            )
                     )
             );
-        }
+
+            b.should(s -> s
+                    .range(r -> {
+                        r.field(ScholarshipField.GPA_REQUIREMENT);
+                        if (min != null) r.gte(JsonData.of(min));
+                        if (max != null) r.lte(JsonData.of(max));
+                        return r;
+                    })
+            );
+
+            b.minimumShouldMatch("1");
+            return b;
+        }));
     }
 
     private Map<String, Map<String, Long>> getAggregations(SearchHits<ScholarshipEntity> searchHits) {
