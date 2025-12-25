@@ -572,9 +572,20 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 .filter(a -> scholarships.stream().anyMatch(s -> s.getId().equals(a.getScholarshipId())))
                 .count();
 
+        long totalSuccessful = applicationScholarshipRepository
+                .findByStatusAndActive("Successful", true)
+                .stream()
+                .filter(a -> scholarships.stream()
+                        .anyMatch(s -> s.getId().equals(a.getScholarshipId())))
+                .count();
+
+
         double approveRate = totalApplies > 0 ? ((double) totalApproved / totalApplies) * 100 : 0;
         double rejectRate = totalApplies > 0 ? ((double) totalRejected / totalApplies) * 100 : 0;
         double pendingRate = totalApplies > 0 ? ((double) totalPending / totalApplies) * 100 : 0;
+        double successfulRate = totalApplies > 0
+                ? ((double) totalSuccessful / totalApplies) * 100
+                : 0;
 
         // 6. Calculate the rate of views that did not result in an application
         double viewButNoApplyRate = totalViews > 0 ? ((double) (totalViews - totalApplies) / totalViews) * 100 : 0;
@@ -601,7 +612,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
         // Return the DTO
         return new ScholarshipStatisticsDto(
-                totalScholarships, totalViews, totalApplies, averageApplyRate,
+                totalScholarships, totalViews, totalApplies,totalSuccessful, successfulRate, averageApplyRate,
                 approveRate, rejectRate, pendingRate, viewButNoApplyRate,
                 top5ByView, top5ByApply
         );
@@ -701,19 +712,12 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
         return scholarshipRepository.countTopCountry()
                 .stream()
+                .sorted((a, b) -> Long.compare(b.getTotal(), a.getTotal()))
+                .limit(5)
                 .map(o -> new ScholarshipCountryCountDto(
-                        normalize(o.getCountry()),
+                        o.getCountry(),
                         o.getTotal()
                 ))
-                .collect(Collectors.groupingBy(
-                        ScholarshipCountryCountDto::getCountry,
-                        Collectors.summingLong(ScholarshipCountryCountDto::getTotal)
-                ))
-                .entrySet()
-                .stream()
-                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-                .limit(5)
-                .map(e -> new ScholarshipCountryCountDto(e.getKey(), e.getValue()))
                 .toList();
     }
 

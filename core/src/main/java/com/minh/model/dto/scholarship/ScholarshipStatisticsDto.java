@@ -13,6 +13,10 @@ public class ScholarshipStatisticsDto {
     private Long totalScholarships;
     private Long totalViews;
     private Long totalApplies;
+
+    private Long totalSuccessful;
+    private Double successfulRate;
+
     private Double averageApplyRate;
     private Double approveRate;
     private Double rejectRate;
