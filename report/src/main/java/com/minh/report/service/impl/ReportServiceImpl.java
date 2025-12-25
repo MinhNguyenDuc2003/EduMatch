@@ -49,7 +49,6 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 
         vos.forEach(vo -> {
 
-            // ===== CUSTOMER =====
             CustomerVo customerVo = parseResponse(
                     customerFeign.getSimpleCustomerById(vo.getUserId())
             );
@@ -57,13 +56,11 @@ public class ReportServiceImpl extends BaseService implements ReportService {
                 vo.setCustomer(customerVo.getCustomer());
             }
 
-            // ===== APPLICANT PROFILE =====
             ApplicantProfileVo applicantProfile = parseResponse(
                     applicantProfileFeign.getOneByUserId(vo.getUserId())
             );
             vo.setApplicantProfile(applicantProfile);
 
-            // ===== PROVIDER PROFILE =====
             ProviderProfileVo providerProfile = parseResponse(
                     providerProfileFeign.getOneByUserId(vo.getUserId())
             );
