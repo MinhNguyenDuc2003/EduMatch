@@ -88,9 +88,4 @@ public class ScholarshipApplication {
         return ds.build();
     }
 
-    @Bean
-    public SchedulerFactoryBean schedulerFactoryBean() {
-        return new SchedulerFactoryBean();
-    }
-
 }
