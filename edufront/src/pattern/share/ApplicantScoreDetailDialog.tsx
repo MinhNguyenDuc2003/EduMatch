@@ -19,7 +19,6 @@ export default function ApplicantScoreDetailDialog({
 }: ApplicantScoreDetailDialogProps) {
   const tDetail = useTranslations('recommendedScholarshipsDetail.detail');
   const tProfile = useTranslations('recommendedScholarshipsDetail.profile');
-  const tScholarship = useTranslations('recommendedScholarshipsDetail.scholarship');
   const tScholarshipDetail = useTranslations('scholarshipDetail');
 
   return (
@@ -112,6 +111,12 @@ export default function ApplicantScoreDetailDialog({
                         {scholarship?.scholarshipType}
                       </span>
                     </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-500">
+                        {tScholarshipDetail('content.studyLevel')}
+                      </span>
+                      <span className="font-medium text-gray-900">{scholarship?.studyLevel}</span>
+                    </div>
                     {scholarship?.fundingAmount && (
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-500">
@@ -130,46 +135,54 @@ export default function ApplicantScoreDetailDialog({
                       {tScholarshipDetail('content.criteria')}
                     </h4>
                     <div className="space-y-3">
-                      {scholarship?.gpaRequirement && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.gpaRequirement')}
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {scholarship.gpaRequirement.toFixed(1)} / 4.0
-                          </span>
+                      {scholarship?.description && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.description')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                            {scholarship?.description || 'N/A'}
+                          </p>
                         </div>
                       )}
-                      {(scholarship?.requiredIeltsScore || 0) > 0 && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.requiredIeltsScore')}
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {scholarship?.requiredIeltsScore}
-                          </span>
+                      {scholarship?.benefits && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.benefits')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                            {scholarship?.benefits}
+                          </p>
                         </div>
                       )}
-                      {(scholarship?.requiredToeflScore || 0) > 0 && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.requiredToeflScore')}
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {scholarship?.requiredToeflScore}
-                          </span>
+                      {scholarship?.fields && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.fields')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900">
+                            {scholarship?.fields}
+                          </p>
                         </div>
                       )}
-                      {scholarship?.requiredMajor && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">
-                            {tScholarshipDetail('content.requiredMajor')}
-                          </span>
-                          <span className="font-medium text-gray-900 text-right max-w-[60%] truncate">
-                            {scholarship.requiredMajor}
-                          </span>
+                      {scholarship?.requirements && (
+                        <div>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {tScholarshipDetail('content.requirements')}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                            {scholarship?.requirements}
+                          </p>
                         </div>
                       )}
+                      <div>
+                        <p className="text-xs text-gray-500 mb-1">
+                          {tScholarshipDetail('content.gpaRequirement')}
+                        </p>
+                        <p className="text-sm font-semibold text-gray-900">
+                          {scholarship?.gpaRequirement || 'N/A'}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -245,66 +258,74 @@ export default function ApplicantScoreDetailDialog({
 
                 {/* Profile Info */}
                 <div className="space-y-3">
+                  {applicant?.careerGoals && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('careerGoals')}</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {applicant?.careerGoals || 'N/A'}
+                      </p>
+                    </div>
+                  )}
+                  {applicant?.extracurricularActivities && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">
+                        {tProfile('extracurricularActivities')}
+                      </p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {applicant?.extracurricularActivities}
+                      </p>
+                    </div>
+                  )}
+                  {applicant?.researchExperience && (
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('researchExperience')}</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {applicant?.researchExperience}
+                      </p>
+                    </div>
+                  )}
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Full Name</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicant?.firstName} {applicant?.lastName}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Phone</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicant?.phoneNumber || 'N/A'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Education Level</p>
+                    <p className="text-xs text-gray-500 mb-1">{tProfile('educationLevel')}</p>
                     <p className="text-sm font-semibold text-gray-900">
                       {applicant?.educationLevel || 'N/A'}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Overall GPA</p>
+                    <p className="text-xs text-gray-500 mb-1">{tProfile('gpa')}</p>
                     <p className="text-sm font-semibold text-gray-900">
                       {applicant?.overallGpa || 'N/A'}
                     </p>
                   </div>
-                  {applicant?.satScore && (
+                  {applicant?.educationHistories && applicant?.educationHistories?.length > 0 && (
                     <div>
-                      <p className="text-xs text-gray-500 mb-1">SAT Score</p>
-                      <p className="text-sm font-semibold text-gray-900">{applicant.satScore}</p>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('major')}</p>
+                      <div className="flex flex-col gap-1">
+                        {applicant?.educationHistories.map((educationHistory) => (
+                          <p
+                            className="text-sm font-semibold text-gray-900 line-clamp-1"
+                            key={educationHistory.id}
+                          >
+                            {educationHistory.majorName}
+                          </p>
+                        ))}
+                      </div>
                     </div>
                   )}
-                  {applicant?.actScore && (
+                  {applicant?.skills && applicant?.skills?.length > 0 && (
                     <div>
-                      <p className="text-xs text-gray-500 mb-1">ACT Score</p>
-                      <p className="text-sm font-semibold text-gray-900">{applicant.actScore}</p>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('skills')}</p>
+                      <div className="flex flex-col gap-1">
+                        {applicant?.skills.map((skill) => (
+                          <p
+                            className="text-sm font-semibold text-gray-900 line-clamp-1"
+                            key={skill.id}
+                          >
+                            {skill.skillName}
+                          </p>
+                        ))}
+                      </div>
                     </div>
                   )}
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Citizenship</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicant?.citizenshipStatus || 'N/A'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Preferred Country</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicant?.preferredCountry || 'N/A'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Preferred Major</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicant?.preferredMajor || 'N/A'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Scholarship Type</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicant?.preferredScholarshipType || 'N/A'}
-                    </p>
-                  </div>
                 </div>
               </section>
             </div>
