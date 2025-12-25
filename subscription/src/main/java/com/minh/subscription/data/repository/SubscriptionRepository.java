@@ -40,12 +40,12 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
 //    List<SubscriptionEntity> findCurrentSubscription(@Param("userId") String userId);
 
     @Query("""
-    SELECT s
-    FROM SubscriptionEntity s
-    WHERE s.userId = :userId
-      AND s.endDate >= CURRENT_TIMESTAMP
-    ORDER BY s.endDate DESC
-    """)
+            SELECT s
+            FROM SubscriptionEntity s
+            WHERE s.userId = :userId
+              AND s.endDate >= CURRENT_TIMESTAMP
+            ORDER BY s.endDate DESC
+            """)
     List<SubscriptionEntity> findCurrentSubscriptionOrderByEndDateDesc(
             @Param("userId") String userId
     );
@@ -72,5 +72,7 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
             "WHERE s.end_date::date - CURRENT_DATE = 5 ",
             nativeQuery = true)
     List<SubscriptionEntity> getAllExpiredDate5DaysLeft();
+
+    Optional<SubscriptionEntity> findFirstByUserIdAndActiveTrueAndUserTypeOrderByEndDateDesc(String userId, SubscriptionTargetType userType);
 
 }

@@ -18,7 +18,7 @@ const CheckoutPaymentPageContent = () => {
     return userSubscriptions.find(
       (userSubscription) => userSubscription.userType === subscriptionPlan?.targetType
     );
-  }, [subscriptionPlan]);
+  }, [subscriptionPlan, userSubscriptions]);
 
   const stripe = useStripe();
   const elements = useElements();

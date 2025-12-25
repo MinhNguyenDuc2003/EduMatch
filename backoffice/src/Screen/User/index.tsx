@@ -28,7 +28,7 @@ const Users = () => {
                 email: item.email,
                 name: `${item.firstName} ${item.lastName}`,
                 createdDate: created.toLocaleDateString('en-US', {
-                  weekday: 'short',  // "Tue"
+                    // "Tue"
                   month: 'short',    // "Dec"
                   day: 'numeric',    // "3"
                   year: 'numeric'    // "2025"

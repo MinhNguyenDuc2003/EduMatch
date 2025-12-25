@@ -25,7 +25,7 @@ const PREFERENCE_FIELDS = [
   { key: 'research_w', label: 'Research' },
 ];
 
-export function PreferencesWeightDialog() {
+export function PreferencesWeightDialog({ refetch }: { refetch?: () => void }) {
   const t = useTranslations('applicantProfile.preferencesDialog');
   const [open, setOpen] = useState(false);
   const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
@@ -62,16 +62,6 @@ export function PreferencesWeightDialog() {
     if (!profileData?.applicantProfile) return;
 
     try {
-      const updatedPreferences = Object.entries(weights).map(([field, weight]) => ({
-        field,
-        weight,
-        type: '', // Assuming type is optional or handled by backend if empty string
-      }));
-
-      // Merge with existing preferences to keep IDs if they exist (to update instead of recreate if backend requires IDs)
-      // But looking at previous logic, it seems we might just be sending the array.
-      // However, to be safe, let's map over existing ones and update weights, and add new ones if missing.
-
       const existingPrefs = profileData.applicantProfile.applicantPreferences || [];
       const finalPreferences = PREFERENCE_FIELDS.map((fieldDef) => {
         const existing = existingPrefs.find((p) => p.field === fieldDef.key);
@@ -92,6 +82,7 @@ export function PreferencesWeightDialog() {
       await updateProfile({ applicantProfile: updatedProfile }).unwrap();
       toast.success('Preferences updated successfully');
       setOpen(false);
+      refetch?.();
     } catch (error) {
       console.error('Failed to update preferences:', error);
       toast.error('Failed to update preferences');
@@ -101,19 +92,14 @@ export function PreferencesWeightDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="text-primary-brand hover:text-primary-brand hover:bg-primary-brand/10 border-primary-brand"
-        >
+        <Button variant="outline" className="text-gray-900 hover:text-gray-900 border-gray-600">
           <SlidersHorizontal className="w-6 h-6" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Adjust Matching Weights</DialogTitle>
-          <DialogDescription>
-            Adjust the importance of each criterion for scholarship matching (0.0 to 1.0).
-          </DialogDescription>
+          <DialogTitle>{t('adjustMatchingWeights')}</DialogTitle>
+          <DialogDescription>{t('adjustMatchingWeightsDescription')}</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto">
           {isLoadingProfile ? (
@@ -152,7 +138,7 @@ export function PreferencesWeightDialog() {
             className="bg-[#3D6CB9] hover:bg-[#2F5A9E] text-white py-3 text-base font-semibold"
           >
             {isUpdating && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-            Save Changes
+            {t('saveChanges')}
           </Button>
         </div>
       </DialogContent>

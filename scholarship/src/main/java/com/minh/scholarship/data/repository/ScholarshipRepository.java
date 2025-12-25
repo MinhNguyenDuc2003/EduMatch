@@ -106,33 +106,34 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
     @Query("""
             SELECT s
             FROM ScholarshipEntity s
-            WHERE s.active = true
+            WHERE s.active = true AND s.endDate >= CURRENT_TIMESTAMP
             AND (:educationLevel IS NULL OR s.studyLevel = :educationLevel)
             AND (:country IS NULL OR s.country = :country)
-            
-            AND (
-                   (s.gpaRequirement IS NULL
+            AND (s.gpaRequirement IS NULL
                         OR (:overallGpa IS NOT NULL AND :overallGpa >= s.gpaRequirement))
-            
-                OR (s.requiredSatScore IS NULL
-                        OR (:satScore IS NOT NULL AND :satScore >= s.requiredSatScore))
-            
-                OR (s.requiredActScore IS NULL
-                        OR (:actScore IS NOT NULL AND :actScore >= s.requiredActScore))
-            
-                OR (s.requiredGreScore IS NULL
-                        OR (:greScore IS NOT NULL AND :greScore >= s.requiredGreScore))
-            
-                OR (s.requiredGmatScore IS NULL
-                        OR (:gmatScore IS NOT NULL AND :gmatScore >= s.requiredGmatScore))
-            )
-            
             AND (
-                   (s.requiredToeflScore IS NULL
-                        OR (:toeflScore IS NOT NULL AND :toeflScore >= s.requiredToeflScore))
-            
-                OR (s.requiredIeltsScore IS NULL
-                        OR (:ieltsScore IS NOT NULL AND :ieltsScore >= s.requiredIeltsScore))
+                    (
+                        s.requiredSatScore  IS NULL
+                    AND s.requiredActScore  IS NULL
+                    AND s.requiredGreScore  IS NULL
+                    AND s.requiredGmatScore IS NULL
+                    )
+                 OR (
+                        (s.requiredSatScore  IS NOT NULL AND :satScore  IS NOT NULL AND :satScore  >= s.requiredSatScore)
+                     OR (s.requiredActScore  IS NOT NULL AND :actScore  IS NOT NULL AND :actScore  >= s.requiredActScore)
+                     OR (s.requiredGreScore  IS NOT NULL AND :greScore  IS NOT NULL AND :greScore  >= s.requiredGreScore)
+                     OR (s.requiredGmatScore IS NOT NULL AND :gmatScore IS NOT NULL AND :gmatScore >= s.requiredGmatScore)
+                    )
+            )
+            AND (
+                    (
+                        s.requiredToeflScore IS NULL
+                    AND s.requiredIeltsScore IS NULL
+                    )
+                 OR (
+                        (s.requiredToeflScore IS NOT NULL AND :toeflScore IS NOT NULL AND :toeflScore >= s.requiredToeflScore)
+                     OR (s.requiredIeltsScore IS NOT NULL AND :ieltsScore IS NOT NULL AND :ieltsScore >= s.requiredIeltsScore)
+                    )
             )
             """)
     List<ScholarshipEntity> findByApplicantFilter(
@@ -177,4 +178,9 @@ public interface ScholarshipRepository extends JpaRepository<ScholarshipEntity, 
             "where sp.scholarship_id = :scholarshipId and sp.active = true ", nativeQuery = true)
     Double getTotalWeightByScholarshipId(Long scholarshipId);
 
+    @Query(value = "select SUM(sp.weight) " +
+            "from scholarship.scholarship_preference sp " +
+            "where sp.scholarship_id = :scholarshipId and sp.active = true " +
+            "and (sp.type = :type OR COALESCE(sp.type, '') = '') ", nativeQuery = true)
+    Double getTotalWeightByScholarshipIdAndType(Long scholarshipId, String type);
 }

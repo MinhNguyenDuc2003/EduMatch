@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <SidebarProvider>
-          <div className="min-h-screen w-full bg-customgreys-primarybg flex ml-10">
+          <div className="min-h-screen w-full bg-customgreys-primarybg flex ml-17">
             <AppSidebar />
             <AnimatedContainer>
               <LoadingOverlay />

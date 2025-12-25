@@ -13,6 +13,7 @@ import {
   EllipsisVertical,
   OctagonAlert,
   ArrowRightLeft,
+  Info,
 } from 'lucide-react';
 import { Button } from '@/pattern/cus/button';
 import ScholarshipCardImages from './ScholarshipCardImages';
@@ -30,8 +31,10 @@ import {
   DropdownMenuTrigger,
 } from '@/pattern/cus/dropdown-menu';
 import ReportDialog from '@/pattern/share/ReportDialog';
+import RecommendedScholarshipDetail from '@/pattern/share/RecommendedScholarshipDetail';
 
 type ScholarshipCardProps = {
+  applicantProfile?: ApplicantProfile;
   scholarship: Scholarship;
   onApply: (scholarship: Scholarship) => void;
   onToggleTracking?: (scholarshipId: number) => void;
@@ -42,6 +45,7 @@ type ScholarshipCardProps = {
 };
 
 export default function ScholarshipCard({
+  applicantProfile,
   scholarship,
   onApply,
   onFollowProvider,
@@ -54,6 +58,7 @@ export default function ScholarshipCard({
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  const [isDetailSheetOpen, setIsDetailSheetOpen] = useState(false);
   const t = useTranslations('scholarshipsList.scholarshipCard');
   const tToast = useTranslations('toast');
   const { addScholarship, isScholarshipSelected, scholarships } = useScholarshipCompareStore();
@@ -107,7 +112,7 @@ export default function ScholarshipCard({
                 >
                   {organizationName || t('organizationName')}
                 </h3>
-                {isAuthenticated && (
+                {isAuthenticated && !score && (
                   <button
                     onClick={() => onFollowProvider?.(id)}
                     className={`text-xs font-medium hover:cursor-pointer px-2 py-1 rounded transition-colors ${
@@ -122,15 +127,26 @@ export default function ScholarshipCard({
               </div>
             </div>
             {isAuthenticated && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 {isUpgraded && (
-                  <Button
-                    variant="custom"
-                    className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
-                    onClick={handleCompareClick}
-                  >
-                    <ArrowRightLeft className="w-5 h-5" />
-                  </Button>
+                  <>
+                    {score && (
+                      <Button
+                        variant="custom"
+                        className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
+                        onClick={() => setIsDetailSheetOpen(true)}
+                      >
+                        <Info className="w-5 h-5" />
+                      </Button>
+                    )}
+                    <Button
+                      variant="custom"
+                      className="text-[#3D6CB9] !border-none !shadow-none !p-0 hover:translate-none"
+                      onClick={handleCompareClick}
+                    >
+                      <ArrowRightLeft className="w-5 h-5" />
+                    </Button>
+                  </>
                 )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -165,7 +181,7 @@ export default function ScholarshipCard({
                       className="cursor-pointer"
                     >
                       <OctagonAlert className="w-4 h-4 mr-2" />
-                      <span>Report</span>
+                      <span>{t('report')}</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -216,19 +232,19 @@ export default function ScholarshipCard({
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-xs font-medium text-gray-600">{t('matchScore')}</span>
                   <span className="text-xs font-bold text-gray-900">
-                    {(((score * 100) / 380) * 100).toFixed(1)}%
+                    {(score * 100).toFixed(1)}%
                   </span>
                 </div>
                 <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{
-                      width: `${(((score * 100) / 380) * 100).toFixed(1)}%`,
+                      width: `${(score * 100).toFixed(1)}%`,
                       background: `linear-gradient(to right, 
-                        rgb(29, 78, 216) 0%, 
-                        rgb(37, 99, 235) 33%, 
-                        rgb(59, 130, 246) 66%, 
-                        rgb(96, 165, 250) 100%`,
+                        rgba(123, 0, 255, 0.2) 0%, 
+                        rgba(123, 0, 255, 0.4) 33%, 
+                        rgba(123, 0, 255, 0.6) 66%, 
+                        rgba(123, 0, 255, 0.8) 100%`,
                     }}
                   />
                 </div>
@@ -364,6 +380,14 @@ export default function ScholarshipCard({
         initialType="SCHOLARSHIP"
         id={scholarship.id}
         scholarshipData={scholarship}
+      />
+
+      {/* Detail Sheet */}
+      <RecommendedScholarshipDetail
+        scholarship={scholarship}
+        applicantProfile={applicantProfile}
+        open={isDetailSheetOpen}
+        onOpenChange={setIsDetailSheetOpen}
       />
     </>
   );

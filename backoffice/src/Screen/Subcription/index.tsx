@@ -39,13 +39,13 @@ const Subcription = () => {
                 price: `${item.plan?.price || 0} ${item.plan?.currency || ''}`,
                 duration: `${item.plan?.durationDays || 0} days`,
                 startDate: start.toLocaleDateString('en-US', {
-                  weekday: 'short',  // "Tue"
+                    // "Tue"
                   month: 'short',    // "Dec"
                   day: 'numeric',    // "3"
                   year: 'numeric'    // "2025"
                 }),
                 endDate: end.toLocaleDateString('en-US', {
-                  weekday: 'short',  // "Tue"
+                    // "Tue"
                   month: 'short',    // "Dec"
                   day: 'numeric',    // "3"
                   year: 'numeric'    // "2025"

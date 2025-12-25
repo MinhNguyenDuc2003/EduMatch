@@ -87,8 +87,8 @@ function OrderDetailInner({ meds, id }: { meds: any; id: string }) {
                 <div className="flex items-center gap-2 text-gray-400 text-sm font-bold uppercase tracking-wider mb-1">
                     <Receipt size={16} /> Order Receipt
                 </div>
-                <h1 className="text-2xl font-bold text-white">#{data.id}</h1>
-                <p className="text-gray-400 text-xs mt-1">Transaction ID: {data.transactionId}</p>
+                {/* <h1 className="text-2xl font-bold text-white">#{data.id}</h1> */}
+                {/* <p className="text-gray-400 text-xs mt-1">Transaction ID: {data.transactionId}</p> */}
             </div>
             <div className={`px-4 py-2 rounded-xl border flex items-center gap-2 font-bold shadow-sm ${statusStyle.color.replace('bg-', 'bg-white/10 ').replace('text-', 'text-white ')}`}>
                  {statusStyle.icon}

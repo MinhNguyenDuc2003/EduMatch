@@ -21,6 +21,12 @@ const ProviderProfiles = () => {
             email: p.email ?? 'N/A',
             phone: p.phone ?? 'N/A',
             role: 'Provider',
+            createDate: new Date(p.createdDate).toLocaleDateString('en-US', {
+                  // "Tue"
+                month: 'short',    // "Dec"
+                day: 'numeric',    // "3"
+                year: 'numeric'    // "2025"
+              }),
           }));
 
           const columns =  [
@@ -28,6 +34,7 @@ const ProviderProfiles = () => {
               { accessorKey: 'name', header: 'Name' },
               { accessorKey: 'email', header: 'Email' },
               { accessorKey: 'phone', header: 'Phone' },
+              { accessorKey: 'createDate', header: 'Create Date' },
             ]
 
           return (

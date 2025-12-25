@@ -69,10 +69,10 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     private final ApplicationService applicationService;
     private final AiMatchFeign aiMatchFeign;
     private final ApplicantProfileFeign applicantProfileFeign;
-    private final CustomerFeign customerFeign;
     private final CaseStudyService caseStudyService;
     private final ApplicationRepository applicationRepository;
     private final ApplicationMapper applicationMapper;
+    private final CustomerFeign customerFeign;
 
     @Value("${fe.end-point}")
     private String feEndPoint;
@@ -156,7 +156,10 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
         scholarshipPreferenceRepository.deleteAllByScholarshipId(entity.getId());
         if (!scholarship.getScholarshipPreferences().isEmpty()) {
-            scholarshipPreferenceRepository.saveAll(scholarshipPreferenceMapper.toEntity(scholarship.getScholarshipPreferences()));
+            scholarship.getScholarshipPreferences().forEach(o -> {
+                o.setScholarshipId(scholarship.getId());
+                scholarshipPreferenceRepository.save(scholarshipPreferenceMapper.toEntity(o));
+            });
         }
         scholarshipMapper.updateEntityFromVo(scholarship, entity);
         return scholarshipMapper.entityToVo(scholarshipRepository.save(entity));
@@ -316,7 +319,8 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         }
         ScholarshipVo vo = scholarshipMapper.proToVo(projection);
         vo.setProviderProfileVo(this.parseResponse(providerProfileFeign.getOne(vo.getProviderId())));
-
+        List<ScholarshipPreferenceDto> preferences = scholarshipPreferenceMapper.toDto(scholarshipPreferenceRepository.findByScholarshipId(vo.getId()));
+        vo.setScholarshipPreferences(preferences);
         if (userId != null) {
             if (!scholarshipViewRepository.existsByUserIdAndScholarshipId(userId, vo.getId())) {
                 ScholarshipViewEntity viewEntity = new ScholarshipViewEntity();
@@ -401,15 +405,16 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public Boolean sendMailSuggestion(String userId) {
-//        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(userId, 5);
+        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(userId));
+        List<ScholarshipVo> scholarshipEntities = this.getTopViewsByMonth();
+        scholarshipEntities = scholarshipEntities.subList(0, Math.min(scholarshipEntities.size(), 10));
 
         MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.SCHOLARSHIP_RECOMMENDATION.getCode()));
-//        String body = generateBodyEmailScholarshipSuggestion(scholarshipEntities, templateDto.getBody());
-        String body = "TEST SEND MAIL";
+        String body = generateBodyEmailScholarshipSuggestion(scholarshipEntities, templateDto.getBody());
         body = body.replace("{{link}}", feEndPoint + "/scholarships");
         MailDto mailDto = new MailDto();
         mailDto.setBody(body);
-        mailDto.setTo("ducm40877@gmail.com");
+        mailDto.setTo(customerVo.getCustomer().email());
         mailDto.setSubject(templateDto.getSubject());
         mailDto.setTemplateId(templateDto.getId());
         kafkaProducer.convertToByteAndSend(mailTopic, mailDto);
@@ -418,12 +423,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     }
 
     @Override
-    public Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto) {
-        String userId = UaaContextHolder.getUserId();
-        ApplicantProfileVo applicantProfileVo = this.parseResponse(applicantProfileFeign.getOneByUserId(userId));
-        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(applicantProfileVo.getId());
-        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(userId));
-
+    public Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto, CustomerVo customerVo) {
+        List<ScholarshipVo> scholarshipEntities = this.getTopViewsByMonth();
+        scholarshipEntities = scholarshipEntities.subList(0, Math.min(10, scholarshipEntities.size()));
         ScholarshipDto scholarshipDto = this.getById(dto.getScholarshipId());
         ApplicationDto applicationDto = applicationService.getById(dto.getApplicationId());
         MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.APPLICATION_SUBMITTED.getCode()));
@@ -478,7 +480,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         }
         recommendationScholarship.getResults().forEach(item -> {
             ApplicantProfileVo vo = this.parseResponse(applicantProfileFeign.getOne(item.getApplicant()));
-            Double totalWeight = this.getTotalWeightByScholarshipId(scholarshipId);
+            Double totalWeight = this.getTotalWeightByScholarshipIdByType(scholarshipId, "PROFILE");
             vo.setScore(item.getSimilarityScore() / totalWeight);
             vo.setLlmScore(item.getLlm());
             vo.setCosineScore(item.getCosine());
@@ -639,7 +641,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         );
         ApplicationRecommendationVo response = new ApplicationRecommendationVo();
         response.setScholarshipPreference(preferenceMap);
-        response.setApplications(applicationFilter);
+        response.setApplications(applicationFilter.subList(0, Math.min(10, applicationFilter.size())));
         response.setScholarship(scholarshipEntity);
         return response;
     }
@@ -663,14 +665,14 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
             throw new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST);
         }
         ScholarshipEntity scholarshipEntity = scholarship.get();
-        List<ScholarshipPreferenceEntity> preferences = scholarshipPreferenceRepository.findByScholarshipIdAndType(scholarshipId, "PROFILE");
+        List<ScholarshipPreferenceEntity> preferences = scholarshipPreferenceRepository.findByScholarshipId(scholarshipId);
         Map<String, Double> preferenceMap = preferences.stream().filter(o -> ObjectUtils.isNotEmpty(o.getField()))
                 .collect(Collectors.toMap(ScholarshipPreferenceEntity::getField, ScholarshipPreferenceEntity::getWeight));
         List<ApplicantProfileVo> profiles = this.parseResponse(applicantProfileFeign.getByFilter(scholarshipMapper.toDto(scholarshipEntity)));
 
         ProfileRecommendationVo response = new ProfileRecommendationVo();
         response.setScholarshipPreference(preferenceMap);
-        response.setProfiles(profiles);
+        response.setProfiles(profiles.subList(0, Math.min(10, profiles.size())));
         response.setScholarship(scholarshipEntity);
         return response;
     }
@@ -689,7 +691,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 applicantProfileVo.getGreScore(), applicantProfileVo.getGmatScore(),
                 applicantProfileVo.getToeflScore(), applicantProfileVo.getIeltsScore()
         );
-        scholarshipRecommendationVo.setScholarships(scholarshipMapper.toDto(scholarshipEntities));
+        scholarshipRecommendationVo.setScholarships(scholarshipMapper.toDto(scholarshipEntities.subList(0, Math.min(10, scholarshipEntities.size()))));
         scholarshipRecommendationVo.setProfile(applicantProfileVo);
         return scholarshipRecommendationVo;
     }
@@ -718,6 +720,11 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     @Override
     public Double getTotalWeightByScholarshipId(Long scholarshipId) {
         return scholarshipRepository.getTotalWeightByScholarshipId(scholarshipId);
+    }
+
+    @Override
+    public Double getTotalWeightByScholarshipIdByType(Long scholarshipId, String type) {
+        return scholarshipRepository.getTotalWeightByScholarshipIdAndType(scholarshipId, type);
     }
 
     private String normalize(String country) {

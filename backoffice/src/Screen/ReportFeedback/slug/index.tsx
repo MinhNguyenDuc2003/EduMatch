@@ -11,7 +11,7 @@ import {
   User,
   X
 } from 'lucide-react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Context from '../seg/context';
 
@@ -29,6 +29,8 @@ export default function ReportFeedbackDetail() {
 
 function ReportFeedbackDetailInner({ meds, id }: { meds: any; id: string }) {
   const [data, setData] = useState<any>(null);
+  const router = useRouter()
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [replyText, setReplyText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -83,14 +85,16 @@ function ReportFeedbackDetailInner({ meds, id }: { meds: any; id: string }) {
 
           {/* Header Card */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <div className="flex justify-between items-start mb-4">
-              <div className="flex items-center gap-2 text-gray-500 text-sm font-medium">
+            <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">{data.title}</h1>
+
+              {/* <div className="flex items-center gap-2 text-gray-500 text-sm font-medium">
                 <span>Ticket #{data.id}</span>
                 <span>•</span>
                 <span className={data.isRead ? 'text-gray-500' : 'text-blue-600 font-bold'}>
                   {data.isRead ? 'Read' : 'Unread'}
                 </span>
-              </div>
+              </div> */}
               <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border ${isPending
                 ? 'bg-amber-50 text-amber-700 border-amber-200'
                 : 'bg-green-50 text-green-700 border-green-200'
@@ -98,7 +102,6 @@ function ReportFeedbackDetailInner({ meds, id }: { meds: any; id: string }) {
                 {data.status}
               </span>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">{data.title}</h1>
 
             {/* Category Tags */}
             <div className="flex flex-wrap gap-2 mt-3">
@@ -184,8 +187,8 @@ function ReportFeedbackDetailInner({ meds, id }: { meds: any; id: string }) {
             <div className="px-6 pb-6 relative">
 
               <div className="mt-12 ">
-                <h2 className="text-lg font-bold text-gray-900 ">{customer?.firstName} {customer?.lastName}</h2>
-                <p className="text-sm text-gray-500 font-medium">@{customer?.username}</p>
+                <h2 onClick={() => router.push('/profileApplica')} className="text-lg font-bold text-gray-900 ">{customer?.firstName} {customer?.lastName}</h2>
+                {/* <p className="text-sm text-gray-500 font-medium">@{customer?.username}</p> */}
 
                 <div className="mt-6 space-y-3">
                   <div className="flex items-center gap-3 text-sm text-gray-600">

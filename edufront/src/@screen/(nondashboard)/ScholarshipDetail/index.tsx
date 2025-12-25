@@ -245,7 +245,7 @@ export default function ScholarshipDetail({ slug }: { slug: string }) {
                 variant="ok"
                 size="lg"
                 full
-                onClick={handleApplyNow}
+                onClick={!isExpired ? handleApplyNow : () => {}}
                 className={
                   isExpired
                     ? 'bg-gray-400 cursor-not-allowed'

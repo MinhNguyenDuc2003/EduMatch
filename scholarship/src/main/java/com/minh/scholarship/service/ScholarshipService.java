@@ -56,7 +56,7 @@ public interface ScholarshipService {
 
     Boolean sendMailSuggestion(String userId);
 
-    Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto);
+    Boolean sendMailSubmittedApplication(ApplicationScholarshipDto dto, CustomerVo customerVo);
 
     List<ScholarshipVo> getRecommendationScholarship(Long profileId);
 
@@ -81,5 +81,7 @@ public interface ScholarshipService {
     List<ScholarshipCountryCountDto> getTop5CountryStatistics();
 
     Double getTotalWeightByScholarshipId(Long scholarshipId);
+
+    Double getTotalWeightByScholarshipIdByType(Long scholarshipId, String type);
 
 }

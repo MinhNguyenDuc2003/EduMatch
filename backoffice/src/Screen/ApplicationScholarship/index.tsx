@@ -29,10 +29,16 @@ const ApplicantScholarship = () => {
                 // organization: provider.organizationName || 'N/A',
                 applicantName: applicant.fullName || 'N/A',
                 university: scholarship.university || '—',
-                country: scholarship.country || '—',
+                // country: scholarship.country || '—',
                 funding: scholarship.fundingAmount || '—',
                 studyLevel: scholarship.studyLevel || '—',
                 status: item.status?.toUpperCase() || 'UNKNOWN',
+                createdDate: new Date(item.createdDate).toLocaleDateString('en-US', {
+                  // "Tue"
+                month: 'short',    // "Dec"
+                day: 'numeric',    // "3"
+                year: 'numeric'    // "2025"
+              }),
               };
             }) || [];
 
@@ -83,10 +89,11 @@ const ApplicantScholarship = () => {
               // { accessorKey: "organization", header: "Organization" },
               { accessorKey: "applicantName", header: "Applicant" },
               { accessorKey: "university", header: "University" },
-              { accessorKey: "country", header: "Country" },
+              // { accessorKey: "country", header: "Country" },
               { accessorKey: "funding", header: "Funding" },
               { accessorKey: "studyLevel", header: "Study Level" },
               { accessorKey: "status", header: "Status" },
+              { accessorKey: "createdDate", header: "Created Date" },
             ]
            
           return (

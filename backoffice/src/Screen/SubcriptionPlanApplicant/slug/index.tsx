@@ -185,6 +185,11 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
                                     {isEditing && <span className="text-xs text-gray-400 font-medium italic">(Editing Mode)</span>}
                                 </div>
                                 <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">{data.name}</h1>
+                                <span className=" tracking-wide text-sm font-medium">Created Date: {new Date(data.createdDate).toLocaleDateString('en-US', {
+                                    month: 'short',    // "Dec"
+                                    day: 'numeric',    // "3"
+                                    year: 'numeric'    // "2025"
+                                }) || 'Unknown Status'}</span>
                             </div>
                             <div className="text-right">
                                 <div className="flex items-baseline justify-end gap-1">

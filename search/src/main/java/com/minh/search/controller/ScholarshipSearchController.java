@@ -38,4 +38,9 @@ public class ScholarshipSearchController {
         return ApiResponse.ok(scholarshipService.autoCompleteUniversity(keyword));
     }
 
+    @GetMapping("/delete/all")
+    public ApiResponse<?> deleteAll() {
+        return ApiResponse.ok(scholarshipService.deleteAll());
+    }
+
 }

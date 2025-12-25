@@ -16,4 +16,6 @@ public interface ScholarshipService {
 
     List<ScholarshipDto> autoCompleteUniversity(String keyword);
 
+    Boolean deleteAll();
+
 }

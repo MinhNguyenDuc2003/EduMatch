@@ -86,7 +86,7 @@ management:
 logging:
   pattern:
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
-    org.flywaydb: DEBUG
+    org.flywaydb: INFO
   level:
     org.springframework.messaging: DEBUG
     org.springframework.web.socket: DEBUG

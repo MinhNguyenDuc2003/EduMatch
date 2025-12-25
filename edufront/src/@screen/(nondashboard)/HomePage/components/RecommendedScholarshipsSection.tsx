@@ -8,11 +8,13 @@ import { Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/pattern/cus/button';
 import TopViewScholarshipCard from './TopViewScholarshipCard';
 import TopViewCardSkeleton from './TopViewCardSkeleton';
+import { useGetProfileQuery } from '@/state/apiApplicant';
 
 export default function RecommendedScholarshipsSection() {
   const router = useRouter();
   const t = useTranslations('homepage.recommendedScholarships');
   const { isAuthenticated, subscriptions, isApplicant } = useAuth();
+  const { data: profile, isLoading: isLoadingProfile } = useGetProfileQuery();
 
   const hasApplicantSubscription = subscriptions.some(
     (subscription) => subscription.userType === 'APPLICANT'
@@ -23,8 +25,10 @@ export default function RecommendedScholarshipsSection() {
     isLoading,
     isError,
   } = useGetRecommendedScholarshipsQuery(
-    { topK: 5 },
-    { skip: !hasApplicantSubscription || !isApplicant }
+    { profileId: profile?.applicantProfile?.id ?? 0 },
+    {
+      skip: !hasApplicantSubscription || !isApplicant || !profile?.applicantProfile?.id,
+    }
   );
 
   const top5Scholarships = scholarships?.slice(0, 5) || [];
@@ -51,7 +55,7 @@ export default function RecommendedScholarshipsSection() {
 
   return (
     <section className="py-12 bg-gradient-to-br from-slate-50 to-blue-50/30">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className=" mx-auto px-6 lg:px-40">
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
           <div>
@@ -72,7 +76,7 @@ export default function RecommendedScholarshipsSection() {
 
         {/* Scholarships Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-          {isLoading ? (
+          {isLoading || isLoadingProfile ? (
             <>
               {Array.from({ length: 5 }).map((_, index) => (
                 <TopViewCardSkeleton key={`skeleton-${index}`} />

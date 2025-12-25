@@ -78,6 +78,7 @@ export const mapProfileToApplication = (profile: ProfileApiResponse): Partial<IA
     satScore: applicantProfile?.satScore,
     actScore: applicantProfile?.actScore,
     greScore: applicantProfile?.greScore,
+    gmatScore: applicantProfile?.gmatScore,
     toeflScore: applicantProfile?.toeflScore,
     ieltsScore: applicantProfile?.ieltsScore,
     classRank: currentEducation?.classRank ? parseInt(currentEducation.classRank) : undefined,

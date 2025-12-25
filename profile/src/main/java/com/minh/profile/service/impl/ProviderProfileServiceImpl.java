@@ -11,14 +11,15 @@ import com.minh.model.dto.profile.ProviderProfileDto;
 import com.minh.profile.data.entity.ProviderCodeVerifiedEntity;
 import com.minh.profile.data.entity.ProviderContactEntity;
 import com.minh.profile.data.entity.ProviderProfileEntity;
+import com.minh.profile.data.entity.junction.ProviderFollowerEntity;
 import com.minh.profile.data.entity.junction.ProviderMediaEntity;
 import com.minh.profile.data.mapper.ProviderContactMapper;
 import com.minh.profile.data.mapper.ProviderNewsMapper;
 import com.minh.profile.data.mapper.ProviderProfileMapper;
 import com.minh.profile.data.repository.*;
 import com.minh.profile.data.vo.ProviderProfileVo;
-import com.minh.profile.data.vo.projection.ProviderProfileProjection;
 import com.minh.profile.feign.MediaFeign;
+import com.minh.profile.service.ProviderFollowerService;
 import com.minh.profile.service.ProviderProfileService;
 import com.minh.service.base.BaseService;
 import com.minh.utils.SecurityUtil;
@@ -59,6 +60,8 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
     private ProviderContactMapper providerContactMapper;
     @Autowired
     private ProviderNewsMapper providerNewsMapper;
+    @Autowired
+    private ProviderFollowerService providerFollowerService;
 
     @Autowired
     private MediaFeign mediaFeign;
@@ -204,6 +207,13 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
                     vo.setBannerUrl(banner.getUrl());
                 });
 
+        String userId = SecurityUtil.getCurrentUserId();
+        if (ObjectUtils.isNotEmpty(userId)) {
+            ProviderFollowerEntity follower = providerFollowerService.getByUserIdAndProviderId(userId, id);
+            if (ObjectUtils.isNotEmpty(follower)) {
+                vo.setIsFollow(1);
+            }
+        }
         return vo;
     }
 
@@ -243,7 +253,7 @@ public class ProviderProfileServiceImpl extends BaseService implements ProviderP
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.PROVIDER_PROFILE_IS_NOT_EXIST));
         entity.setVerified(verified);
         if (verified) {
-            MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.PROVIDER_VERIFIED.getCode()));
+            MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.PROVIDER_APPROVED.getCode()));
             String body = templateDto.getBody().replace("{{link}}", feEndPoint + "/applicant/providers/" + entity.getId());
 
             MailDto mailDto = new MailDto();

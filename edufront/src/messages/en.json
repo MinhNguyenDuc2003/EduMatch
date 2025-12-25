@@ -327,6 +327,7 @@
   },
   "aiApplicantSuggestions": {
     "title": "Recommended Applicants",
+    "refresh": "Refresh",
     "description": "Matching applicants for scholarship {scholarshipTitle}",
     "back": "Back",
     "clearSelection": "Clear Selection",
@@ -651,7 +652,8 @@
       "noDeadline": "No deadline",
       "compare": "Compare",
       "alreadySelected": "Already selected",
-      "matchScore": "Match Score"
+      "matchScore": "Match Score",
+      "report": "Report"
     },
     "premiumBanner": {
       "badge": "AI Scholarship",
@@ -935,7 +937,10 @@
       "preferredCountry": "Preferred Country",
       "selectPreferredCountry": "Select preferred country",
       "preferredMajor": "Preferred Major",
-      "selectPreferredMajor": "Select preferred major"
+      "selectPreferredMajor": "Select preferred major",
+      "adjustMatchingWeights": "Adjust Matching Weights",
+      "adjustMatchingWeightsDescription": "Adjust the importance of each criterion for scholarship matching (0.0 to 1.0).",
+      "saveChanges": "Save Changes"
     },
     "cards": {
       "historyDetails": "History Details",
@@ -1466,7 +1471,9 @@
     },
     "title": "Recommended Scholarships",
     "description": "We found {count} scholarships that match your profile",
-    "matchingLoading": "We are finding the best matches for you..."
+    "matchingLoading": "We are finding the best matches for you...",
+    "selectProfile": "Select profile",
+    "expectedProfile": "Expected profile"
   },
   "inputSelect": {
     "placeholder": "Select an option"
@@ -1740,6 +1747,48 @@
       "createdDate": "Created Date",
       "planDetails": "Plan Details",
       "userType": "User Type"
+    }
+  },
+  "recommendedScholarshipsDetail": {
+    "profile": {
+      "headerTitle": "Recommended Scholarship Details",
+      "title": "Profile",
+      "careerGoals": "Career Goals",
+      "certificates": "Certificates",
+      "extracurricularActivities": "Extracurricular Activities",
+      "researchExperience": "Research Experience",
+      "skills": "Skills",
+      "educationLevel": "Education Level",
+      "major": "Major",
+      "ieltsScore": "IELTS Score",
+      "toeflScore": "TOEFL Score",
+      "greScore": "GRE Score",
+      "gmatScore": "GMAT Score",
+      "satScore": "SAT Score",
+      "actScore": "ACT Score",
+      "gpa": "GPA"
+    },
+    "detail": {
+      "title": "Matching score",
+      "criteria": "Criteria",
+      "careerScore": "Career Score",
+      "achievementScore": "Achievement Score",
+      "extracurricularScore": "Extracurricular Score",
+      "experienceScore": "Experience Score",
+      "educationScore": "Education Score",
+      "intentionScore": "Intention Score",
+      "motivationScore": "Motivation Statement Score",
+      "statementScore": "Personal Statement Score",
+      "overallScore": "Overall Score",
+      "majorScore": "Major Score",
+      "researchScore": "Research Score",
+      "skillScore": "Skill Score",
+      "score": "Score",
+      "about": "About",
+      "aboutContent": "This score reflects the overall compatibility between your profile and the scholarship criteria, including academic achievements, skills, experience, and future intentions. The higher the score, the greater the chance of receiving the scholarship."
+    },
+    "scholarship": {
+      "title": "Scholarship"
     }
   }
 }

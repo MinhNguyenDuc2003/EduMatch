@@ -66,7 +66,7 @@ const AppSidebar = () => {
               size="lg"
               className="group hover:bg-gray-100 transition-all duration-300"
             >
-              <div className="flex justify-between items-center gap-5 w-1 pl-3 pr-1">
+              <div className="flex justify-between items-center gap-5 w-1 pr-1">
                 <div className="flex items-center gap-4">
                   <LayoutDashboard
                     width={24}

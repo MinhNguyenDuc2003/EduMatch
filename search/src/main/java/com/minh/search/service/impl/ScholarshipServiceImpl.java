@@ -164,6 +164,12 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         return scholarshipMapper.toDto(new ArrayList<>(scholarshipEntityMap.values()));
     }
 
+    @Override
+    public Boolean deleteAll() {
+        scholarshipRepository.deleteAll();
+        return true;
+    }
+
     private void extractedTermsFilter(String fieldValues, String keywordField, BoolQuery.Builder boolBuilder) {
         if (!StringUtils.hasText(fieldValues)) return;
 

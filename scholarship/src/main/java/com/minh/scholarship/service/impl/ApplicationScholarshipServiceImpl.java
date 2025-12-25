@@ -18,15 +18,13 @@ import com.minh.scholarship.data.repository.ScholarshipRepository;
 import com.minh.scholarship.data.repository.ScholarshipViewRepository;
 import com.minh.scholarship.data.vo.*;
 import com.minh.scholarship.data.vo.ai.ScholarshipRecommendationResponseDto;
-import com.minh.scholarship.feign.AiMatchFeign;
-import com.minh.scholarship.feign.MediaFeign;
-import com.minh.scholarship.feign.NotificationTemplateFeign;
-import com.minh.scholarship.feign.ProviderProfileFeign;
+import com.minh.scholarship.feign.*;
 import com.minh.scholarship.message.KafkaProducer;
 import com.minh.scholarship.service.ApplicationScholarshipService;
 import com.minh.scholarship.service.ApplicationService;
 import com.minh.scholarship.service.ScholarshipService;
 import com.minh.service.base.BaseService;
+import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
@@ -53,6 +51,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
     private final ApplicationScholarshipRepository applicationScholarshipRepository;
     private final ScholarshipViewRepository scholarshipViewRepository;
     private final AiMatchFeign aiMatchFeign;
+    private final CustomerFeign customerFeign;
 
     @Autowired
     private KafkaProducer kafkaProducer;
@@ -124,8 +123,10 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
                 .userNotificationId(notificationTemplateDto.getId())
                 .build();
         kafkaProducer.convertToByteAndSend(newEventProviderTopic, notificationVo);
+        String userId = UaaContextHolder.getUserId();
+        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(userId));
         Thread thread = new Thread(() -> {
-            scholarshipService.sendMailSubmittedApplication(dto);
+            scholarshipService.sendMailSubmittedApplication(dto, customerVo);
         });
         thread.start();
         return mapper.toDto(saved);
@@ -293,7 +294,7 @@ public class ApplicationScholarshipServiceImpl extends BaseService implements Ap
         }
         recommendationScholarship.getResults().forEach(item -> {
             ApplicationScholarshipVo vo = this.getByScholarshipIdAndApplicationId(scholarshipId, item.getApplication());
-            Double totalWeight = scholarshipService.getTotalWeightByScholarshipId(scholarshipId);
+            Double totalWeight = scholarshipService.getTotalWeightByScholarshipIdByType(scholarshipId, "APPLICATION");
             vo.setScore(item.getSimilarityScore() / totalWeight);
             vo.setLlmScore(item.getLlm());
             vo.setCosineScore(item.getCosine());

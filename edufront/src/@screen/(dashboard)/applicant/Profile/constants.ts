@@ -36,6 +36,7 @@ export const DEFAULT_PROFILE_FORM_VALUES: IApplicantProfile = {
     preferredScholarshipType: '',
     preferredCountry: '',
     preferredMajor: '',
+    type: 'Current',
     certificates: [],
     educationHistories: [],
     applicantPreferences: [],

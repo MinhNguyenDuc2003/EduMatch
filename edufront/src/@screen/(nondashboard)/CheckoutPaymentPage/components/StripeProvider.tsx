@@ -51,7 +51,7 @@ const StripeProvider = ({ children }: { children: React.ReactNode }) => {
         });
     };
     fetchPaymentIntent();
-  }, [subscriptionPlan, subscriptionPlan?.price, user]);
+  }, [subscriptionPlan, subscriptionPlan?.price, user, createPaymentIntent]);
 
   if (!clientSecret) return <Loading />;
 
