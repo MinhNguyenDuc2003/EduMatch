@@ -72,6 +72,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     private final CaseStudyService caseStudyService;
     private final ApplicationRepository applicationRepository;
     private final ApplicationMapper applicationMapper;
+    private final CustomerFeign customerFeign;
 
     @Value("${fe.end-point}")
     private String feEndPoint;
@@ -404,15 +405,16 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
     @Override
     public Boolean sendMailSuggestion(String userId) {
-//        List<ScholarshipVo> scholarshipEntities = this.getRecommendationScholarship(userId, 5);
+        CustomerVo customerVo = this.parseResponse(customerFeign.getSimpleCustomerById(userId));
+        List<ScholarshipVo> scholarshipEntities = this.getTopViewsByMonth();
+        scholarshipEntities = scholarshipEntities.subList(0, Math.min(scholarshipEntities.size(), 10));
 
         MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.SCHOLARSHIP_RECOMMENDATION.getCode()));
-//        String body = generateBodyEmailScholarshipSuggestion(scholarshipEntities, templateDto.getBody());
-        String body = "TEST SEND MAIL";
+        String body = generateBodyEmailScholarshipSuggestion(scholarshipEntities, templateDto.getBody());
         body = body.replace("{{link}}", feEndPoint + "/scholarships");
         MailDto mailDto = new MailDto();
         mailDto.setBody(body);
-        mailDto.setTo("ducm40877@gmail.com");
+        mailDto.setTo(customerVo.getCustomer().email());
         mailDto.setSubject(templateDto.getSubject());
         mailDto.setTemplateId(templateDto.getId());
         kafkaProducer.convertToByteAndSend(mailTopic, mailDto);

@@ -2,7 +2,6 @@ package com.minh.subscription.service.impl;
 
 import com.minh.constants.CoreMessageCode;
 import com.minh.enumeration.mail.MailTypeEnum;
-import com.minh.enumeration.subscription.SubscriptionTargetType;
 import com.minh.exception.BusinessException;
 import com.minh.model.dto.media.MailDto;
 import com.minh.model.dto.media.MailTemplateDto;
@@ -13,7 +12,10 @@ import com.minh.subscription.data.entity.SubscriptionPlanEntity;
 import com.minh.subscription.data.mapper.SubscriptionMapper;
 import com.minh.subscription.data.repository.SubscriptionPlanRepository;
 import com.minh.subscription.data.repository.SubscriptionRepository;
-import com.minh.subscription.data.vo.*;
+import com.minh.subscription.data.vo.ApplicantProfileVo;
+import com.minh.subscription.data.vo.CustomerVo;
+import com.minh.subscription.data.vo.ProviderProfileVo;
+import com.minh.subscription.data.vo.SubscriptionVo;
 import com.minh.subscription.feign.ApplicantProfileFeign;
 import com.minh.subscription.feign.CustomerFeign;
 import com.minh.subscription.feign.MediaFeign;
@@ -25,13 +27,13 @@ import com.minh.utils.UaaContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -169,7 +171,7 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
     @Override
     public Boolean sendMailExpiredDate5DaysLeft() {
         List<SubscriptionEntity> entities = subscriptionRepository.getAllExpiredDate5DaysLeft();
-        System.out.println("Size: "+ entities.size());
+        System.out.println("Size: " + entities.size());
         MailTemplateDto templateDto = this.parseResponse(mediaFeign.getMailTemplate(MailTypeEnum.SUBSCRIPTION_EXPIRING.getCode()));
         MailDto mailDto = new MailDto();
         mailDto.setSubject(templateDto.getSubject());
@@ -209,22 +211,38 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
                 .collect(Collectors.groupingBy(SubscriptionEntity::getUserType))
                 .values()
                 .stream()
-                .map(list ->
-                        list.stream()
-                                .max(Comparator.comparing(SubscriptionEntity::getEndDate))
-                                .map(entity -> {
-                                    SubscriptionVo vo =
-                                            subscriptionMapper.toVo(
-                                                    subscriptionMapper.toDto(entity)
-                                            );
+                .map(list -> {
+                    Optional<SubscriptionEntity> latestStart =
+                            list.stream()
+                                    .filter(e -> e.getStartDate() != null)
+                                    .max(Comparator.comparing(SubscriptionEntity::getStartDate));
 
-                                    if (customerVo != null) {
-                                        vo.setCustomer(customerVo.getCustomer());
-                                    }
-                                    return vo;
-                                })
-                                .orElse(null)
-                )
+                    Optional<SubscriptionEntity> latestEnd =
+                            list.stream()
+                                    .filter(e -> e.getEndDate() != null)
+                                    .max(Comparator.comparing(SubscriptionEntity::getEndDate));
+
+                    if (latestStart.isEmpty() && latestEnd.isEmpty()) {
+                        return null;
+                    }
+
+                    SubscriptionEntity base =
+                            latestEnd.orElseGet(latestStart::get);
+
+                    SubscriptionVo vo =
+                            subscriptionMapper.toVo(
+                                    subscriptionMapper.toDto(base)
+                            );
+
+                    latestStart.ifPresent(e -> vo.setStartDate(e.getStartDate()));
+                    latestEnd.ifPresent(e -> vo.setEndDate(e.getEndDate()));
+
+                    if (customerVo != null) {
+                        vo.setCustomer(customerVo.getCustomer());
+                    }
+
+                    return vo;
+                })
                 .filter(Objects::nonNull)
                 .toList();
     }
