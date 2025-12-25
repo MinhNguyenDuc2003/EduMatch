@@ -26,8 +26,8 @@ public class ScholarshipSuggestionDetail {
 
     public Trigger prepareScholarshipSuggestionTrigger() {
         return TriggerBuilder.newTrigger()
-                .withIdentity(jobName, jobGroup)
-                .forJob(jobName + "_TRIGGER", jobGroup)
+                .withIdentity(jobName + "_TRIGGER", jobGroup)
+                .forJob(jobName, jobGroup)
                 .withSchedule(
                         CronScheduleBuilder.cronSchedule(cronExpression)
                                 .inTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"))
