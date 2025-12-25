@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface ProviderNewsRepository extends JpaRepository<ProviderNewsEntity, Long> {
-    List<ProviderNewsEntity> findAllByActive(boolean active);
+    List<ProviderNewsEntity> findAllByActiveOrderByCreatedDateDesc(boolean active);
 
     Optional<ProviderNewsEntity> findByIdAndActive(Long id, boolean active);
 

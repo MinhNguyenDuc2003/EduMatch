@@ -59,7 +59,7 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
 
     @Override
     public List<ProviderNewsVo> getAll() {
-        List<ProviderNewsEntity> entities = providerNewsRepository.findAllByActive(true);
+        List<ProviderNewsEntity> entities = providerNewsRepository.findAllByActiveOrderByCreatedDateDesc(true);
         return entities.stream()
                 .map(this::addNewsMediaAndProvider)
                 .collect(Collectors.toList());
@@ -184,7 +184,7 @@ public class ProviderNewsServiceImpl extends BaseService implements ProviderNews
 
     @Override
     public List<ProviderNewsVo> getAllByStatus(boolean active) {
-        List<ProviderNewsEntity> entities = providerNewsRepository.findAllByActive(active);
+        List<ProviderNewsEntity> entities = providerNewsRepository.findAllByActiveOrderByCreatedDateDesc(active);
         return entities.stream()
                 .map(this::addNewsMediaAndProvider)
                 .collect(Collectors.toList());

@@ -13,6 +13,8 @@ import java.util.Optional;
 @Repository
 public interface ProviderProfileRepository extends JpaRepository<ProviderProfileEntity, Long> {
 
+    List<ProviderProfileEntity> findAllByOrderByCreatedDateDesc();
+
     Optional<ProviderProfileEntity> findByUserId(String userId);
 
     List<ProviderProfileEntity> findByVerifiedFalse();

@@ -22,7 +22,8 @@ public interface ApplicantProfileRepository extends JpaRepository<ApplicantProfi
     FROM ApplicantProfileEntity a
     WHERE a.active = true
       AND UPPER(a.type) = 'CURRENT'
-    """)
+    ORDER BY a.createdDate DESC
+""")
     List<ApplicantProfileEntity> findAllCurrentProfiles();
 
 
