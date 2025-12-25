@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -167,7 +166,7 @@ public class PaymentServiceImpl extends BaseService implements PaymentService {
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_PLAN_NOT_FOUND));
 
         // Lấy subscription hiện tại của user
-        SubscriptionEntity current = subscriptionRepository.findFirstByUserIdAndActiveTrueOrderByEndDateDesc(userId)
+        SubscriptionEntity current = subscriptionRepository.findFirstByUserIdAndActiveTrueAndUserTypeOrderByEndDateDesc(userId, plan.getTargetType())
                 .orElseThrow(() -> new BusinessException(CoreMessageCode.SUBSCRIPTION_NOT_FOUND));
 
         // Tính ngày bắt đầu subscription mới

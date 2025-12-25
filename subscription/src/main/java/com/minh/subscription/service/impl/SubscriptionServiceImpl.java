@@ -215,7 +215,7 @@ public class SubscriptionServiceImpl extends BaseService implements Subscription
                     Optional<SubscriptionEntity> latestStart =
                             list.stream()
                                     .filter(e -> e.getStartDate() != null)
-                                    .max(Comparator.comparing(SubscriptionEntity::getStartDate));
+                                    .min(Comparator.comparing(SubscriptionEntity::getStartDate));
 
                     Optional<SubscriptionEntity> latestEnd =
                             list.stream()
