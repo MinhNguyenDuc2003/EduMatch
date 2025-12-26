@@ -31,7 +31,7 @@ import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
 
 const CreateProviderProfilePage = () => {
-  const { isAuthenticated, isProvider, isLoading, subscriptions } = useAuth();
+  const { isAuthenticated, isProvider, isLoading, subscriptions, refetch: refetchAuth } = useAuth();
   const router = useRouter();
   const t = useTranslations('providerProfile');
 
@@ -199,7 +199,10 @@ const CreateProviderProfilePage = () => {
 
       await createProfile(formData)
         .unwrap()
-        .then(() => router.push('/subscriptions?type=PROVIDER'));
+        .then(() => {
+          router.push('/subscriptions?type=PROVIDER');
+          refetchAuth();
+        });
     } catch (error) {
       console.error('Error updating organization info:', error);
       throw error;
