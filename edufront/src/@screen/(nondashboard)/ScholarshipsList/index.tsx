@@ -25,6 +25,7 @@ import { toast } from 'sonner';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import ScholarshipCard from '@/pattern/share/ScholarshipCard';
 import { TopViewedScholarships } from '../NewsPage/components';
+import Loading from '@/pattern/share/Loading';
 
 export default function ScholarshipsList() {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function ScholarshipsList() {
     maxGpa: 4,
     page: 0,
     size: 10,
+    sortDirection: 'DESC',
   });
 
   // Accumulated scholarships for infinite scroll
@@ -74,6 +76,7 @@ export default function ScholarshipsList() {
     filters.fields,
     filters.minGpa,
     filters.maxGpa,
+    filters.sortDirection,
   ]);
 
   // Prepare API request body
@@ -90,10 +93,17 @@ export default function ScholarshipsList() {
     keyword: filters.keyword || '',
     minGpa: filters.minGpa,
     maxGpa: filters.maxGpa,
+    sortDirection: filters.sortDirection || 'DESC',
   };
 
   // Call API
-  const { data: response, isLoading, isError, refetch } = useSearchScholarshipsQuery(requestBody);
+  const {
+    data: response,
+    isLoading,
+    isError,
+    refetch,
+    isFetching,
+  } = useSearchScholarshipsQuery(requestBody);
   const { data: scholarshipTopView, isLoading: isLoadingScholarshipTopView } =
     useGetScholarshipTopViewByMonthQuery();
   const [followScholarship] = useFollowScholarshipMutation();
@@ -132,10 +142,8 @@ export default function ScholarshipsList() {
         });
       }
       // Check if there's more data
-      setHasMore(deduplicatedNewScholarships.length === filters.size);
-    } else if (currentPage > 0) {
-      // No more data
-      setHasMore(false);
+      // setHasMore(!(currentPage === response?.totalPages! -1));
+      setHasMore(!(currentPage === response?.totalPages!));
     }
   }, [response, currentPage, filters.size]);
 
@@ -230,7 +238,7 @@ export default function ScholarshipsList() {
   })();
 
   // Show full page skeleton on initial load
-  if (isLoading && currentPage === 0 && allScholarships.length === 0) {
+  if (isLoading && currentPage === 0 && allScholarships.length === 0 && isFetching) {
     return <ScholarshipsListSkeleton />;
   }
 
@@ -342,20 +350,15 @@ export default function ScholarshipsList() {
                     ))}
 
                     {/* Infinite scroll trigger */}
-                    {hasMore && (
+                    {hasMore ? (
                       <div ref={targetRef} className="h-10 flex items-center justify-center">
-                        {isLoading && (
+                        {isFetching && (
                           <>
-                            {Array.from({ length: 3 }).map((_, index) => (
-                              <ScholarshipCardSkeleton key={`loading-${index}`} />
-                            ))}
+                            <Loading />
                           </>
                         )}
                       </div>
-                    )}
-
-                    {/* End of list message */}
-                    {!hasMore && scholarships.length > 0 && (
+                    ) : (
                       <div className="text-center py-8 text-gray-500 text-sm">
                         {t('endOfList') || 'You have reached the end of the list'}
                       </div>

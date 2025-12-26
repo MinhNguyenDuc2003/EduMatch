@@ -1,0 +1,24 @@
+{
+  "organizationName": "International Arts & Culture Council",
+  "organizationType": "Non-Profit",
+  "website": "https://iacc.org",
+  "email": "grants@iacc.org",
+  "phone": "+1-555-0400",
+  "logoUrl": "https://via.placeholder.com/150",
+  "bannerUrl": "https://via.placeholder.com/600x200",
+  "addressSummary": "Paris, France",
+  "description": "Supporting global heritage, arts, and cultural exchange through grants.",
+  "yearEstablished": 1980,
+  "accreditation": "UNESCO Partner",
+  "specialization": "Arts & Humanities",
+  "country": "France",
+  "providerContactDtos": [
+    {
+      "contactName": "Marie Curie",
+      "roleTitle": "Director of Cultural Affairs",
+      "email": "marie.curie@iacc.org",
+      "phone": "+33-1-555-0401",
+      "linkedinUrl": "https://linkedin.com/in/mariecurie"
+    }
+  ]
+}

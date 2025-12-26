@@ -6,6 +6,7 @@ interface DecisionStatusCardProps {
   approveRate: number;
   rejectRate: number;
   pendingRate: number;
+  successfulRate: number;
 }
 
 function DecisionStatusCard({
@@ -13,11 +14,13 @@ function DecisionStatusCard({
   approveRate,
   rejectRate,
   pendingRate,
+  successfulRate,
 }: DecisionStatusCardProps) {
   const t = useTranslations('providerDashboard.decisionStatus');
   const approveCount = Math.round((totalApplies * approveRate) / 100);
   const rejectCount = Math.round((totalApplies * rejectRate) / 100);
   const pendingCount = Math.round((totalApplies * pendingRate) / 100);
+  const successfulCount = Math.round((totalApplies * successfulRate) / 100);
 
   return (
     <Card className="bg-card hover:shadow-md transition-shadow">
@@ -80,6 +83,24 @@ function DecisionStatusCard({
               <div
                 className="h-full rounded-full bg-amber-500"
                 style={{ width: `${pendingRate}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Successful */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-medium text-foreground">
+                {t('successful')} ({successfulRate.toFixed(2)}%)
+              </p>
+              <p className="text-lg font-semibold text-blue-600">
+                {successfulCount.toLocaleString()}
+              </p>
+            </div>
+            <div className="bg-muted rounded-full h-2.5 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-blue-500"
+                style={{ width: `${successfulRate.toFixed(2)}%` }}
               />
             </div>
           </div>

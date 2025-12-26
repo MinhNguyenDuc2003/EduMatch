@@ -36,6 +36,7 @@ export default function SelectedScholarshipCompare() {
   const {
     data: comparisonResponse,
     isLoading: isLoadingComparison,
+    isFetching: isFetchingComparison,
     isError: isErrorComparison,
   } = useAiComparisonQuery(scholarshipIds, {
     skip: !isCompareSheetOpen || scholarshipIds.length < 2,
@@ -186,7 +187,7 @@ export default function SelectedScholarshipCompare() {
                     <p className="text-sm text-gray-600">{tCompare('aiAnalysisDescription')}</p>
                   </div>
 
-                  {isLoadingComparison ? (
+                  {isLoadingComparison || isFetchingComparison ? (
                     <div className="space-y-4">
                       <div className="flex flex-col items-center justify-center py-8">
                         <div className="relative">

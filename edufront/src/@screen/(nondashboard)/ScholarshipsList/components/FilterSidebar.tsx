@@ -81,6 +81,7 @@ export default function FilterSidebar({
       maxGpa: 4,
       page: 0,
       size: 100,
+      sortDirection: 'DESC',
     });
     setUniversitySearch('');
     setFieldsSearch('');
@@ -189,7 +190,7 @@ export default function FilterSidebar({
         </div>
 
         {/* Fields Filter */}
-        <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+        <div className="border border-gray-200 rounded-lg p-2 space-y-3">
           <h3 className="text-sm font-semibold text-gray-900">
             {t('fields')} {filters.fields && '(1)'}
           </h3>
@@ -200,8 +201,25 @@ export default function FilterSidebar({
           />
         </div>
 
+        {/* Sort Filter */}
+        <div className="border border-gray-200 rounded-lg p-2 space-y-3">
+          <h3 className="text-sm font-semibold text-gray-900">{t('sort')}</h3>
+          <Select
+            value={filters.sortDirection || 'DESC'}
+            onValueChange={(value) => handleFilterChange('sortDirection', value)}
+          >
+            <SelectTrigger className="w-full text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white">
+              <SelectValue placeholder={t('sortDesc')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="DESC">{t('sortDesc')}</SelectItem>
+              <SelectItem value="ASC">{t('sortAsc')}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         {/* Study Level Filter */}
-        <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+        <div className="border border-gray-200 rounded-lg p-2 space-y-3">
           <h3 className="text-sm font-semibold text-gray-900">
             {t('studyLevel')} {filters.studyLevel && '(1)'}
           </h3>
@@ -226,7 +244,7 @@ export default function FilterSidebar({
         </div>
 
         {/* Country Filter */}
-        <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+        <div className="border border-gray-200 rounded-lg p-2 space-y-3">
           <h3 className="text-sm font-semibold text-gray-900">
             {t('country')} {filters.country && '(1)'}
           </h3>
@@ -249,7 +267,7 @@ export default function FilterSidebar({
         </div>
 
         {/* Scholarship Type Filter */}
-        <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+        <div className="border border-gray-200 rounded-lg p-2 space-y-3">
           <h3 className="text-sm font-semibold text-gray-900">{t('scholarshipType')}</h3>
           <Select
             value={filters.scholarshipType || 'all'}
@@ -272,7 +290,7 @@ export default function FilterSidebar({
         </div>
 
         {/* GPA Filter */}
-        <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+        <div className="border border-gray-200 rounded-lg p-2 space-y-3">
           <h3 className="text-sm font-semibold text-gray-900">{t('gpaRequirement')}</h3>
           <div className="space-y-3">
             {/* GPA Quick Options - Dropdown */}

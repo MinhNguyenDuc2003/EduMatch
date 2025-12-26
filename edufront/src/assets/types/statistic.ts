@@ -4,6 +4,8 @@ declare global {
     totalViews: number;
     totalApplies: number;
     averageApplyRate: number; // Tỉ lệ apply trung bình so với total views
+    totalSuccessful: number;
+    successfulRate: number;
     approveRate: number; // Tỉ lệ approve so với total applies
     rejectRate: number; // Tỉ lệ reject so với total applies
     pendingRate: number; // Tỉ lệ pending so với total applies

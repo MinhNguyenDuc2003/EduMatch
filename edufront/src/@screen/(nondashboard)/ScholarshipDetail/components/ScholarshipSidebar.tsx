@@ -61,7 +61,7 @@ export default function ScholarshipSidebar({
             {/* University Name */}
             <div className="flex-1 cursor-pointer" onClick={() => onViewProvider(provider.id)}>
               <h3 className="font-semibold text-gray-900 hover:text-blue-600 transition-colors">
-                {scholarship.university}
+                {scholarship.providerProfileVo.organizationName}
               </h3>
             </div>
             {/* Follow Button */}
