@@ -143,7 +143,7 @@ export default function ScholarshipsList() {
       }
       // Check if there's more data
       // setHasMore(!(currentPage === response?.totalPages! -1));
-      setHasMore(!(currentPage === response?.totalPages!));
+      setHasMore(!(currentPage === response?.totalPages));
     }
   }, [response, currentPage, filters.size]);
 
