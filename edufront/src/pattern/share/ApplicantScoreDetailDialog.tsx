@@ -177,10 +177,10 @@ export default function ApplicantScoreDetailDialog({
                       )}
                       <div>
                         <p className="text-xs text-gray-500 mb-1">
-                          {tScholarshipDetail('content.requirements')}
+                          {tScholarshipDetail('content.requiredMajor')}
                         </p>
                         <p className="text-sm font-semibold text-gray-900">
-                          {scholarship?.requirements}
+                          {scholarship?.requiredMajor}
                         </p>
                       </div>
                     </div>

@@ -8,7 +8,7 @@ import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 const Skills = () => {
-  const { control } = useFormContext<IApplicantProfile>();
+  const { control, formState } = useFormContext<IApplicantProfile>();
   const t = useTranslations('applicantProfile.skillsDialog');
   const tCommon = useTranslations('applicantProfile.common');
 
@@ -116,6 +116,10 @@ const Skills = () => {
           </div>
         )}
       </div>
+
+      {formState.errors.applicantProfile?.skills && (
+        <p className="text-red-500 mt-2">{formState.errors.applicantProfile.skills.message}</p>
+      )}
     </div>
   );
 };

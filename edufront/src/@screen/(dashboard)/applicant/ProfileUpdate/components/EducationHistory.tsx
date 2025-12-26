@@ -10,7 +10,7 @@ import { INSTITUTION_TYPES } from '../../Profile/constants';
 import { COUNTRIES, MAJOR_CATEGORIES, MAJOR_NAMES, STUDY_LEVELS } from '@/constants/Common';
 
 const EducationHistory = () => {
-  const { control } = useFormContext<IApplicantProfile>();
+  const { control, formState } = useFormContext<IApplicantProfile>();
   const t = useTranslations('applicantProfile.educationHistoryDialog');
 
   const { fields, append, remove } = useFieldArray({
@@ -284,6 +284,12 @@ const EducationHistory = () => {
           </div>
         )}
       </div>
+
+      {formState.errors.applicantProfile?.educationHistories && (
+        <p className="text-red-500 mt-2">
+          {formState.errors.applicantProfile.educationHistories.message}
+        </p>
+      )}
     </div>
   );
 };
