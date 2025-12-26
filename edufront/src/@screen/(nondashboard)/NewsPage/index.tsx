@@ -28,18 +28,18 @@ export default function NewsPage() {
   const router = useRouter();
   const tToast = useTranslations('toast');
   const { isAuthenticated, subscriptions } = useAuth();
-  const { data: profile, isLoading: isLoadingProfile } = useGetProfileQuery();
+  // const { data: profile, isLoading: isLoadingProfile } = useGetProfileQuery();
   const { data: newsData, isLoading, refetch } = useGetAllNewsQuery();
   const { data: scholarshipTopView, isLoading: isLoadingScholarshipTopView } =
     useGetScholarshipTopViewByMonthQuery();
-  const hasApplicantSubscription = subscriptions.some(
-    (subscription) => subscription.userType === 'APPLICANT'
-  );
-  const { data: recommendedScholarships, isLoading: isLoadingRecommended } =
-    useGetRecommendedScholarshipsQuery(
-      { profileId: profile?.applicantProfile?.id ?? 0 },
-      { skip: !hasApplicantSubscription || !profile?.applicantProfile?.id }
-    );
+  // const hasApplicantSubscription = subscriptions.some(
+  //   (subscription) => subscription.userType === 'APPLICANT'
+  // );
+  // const { data: recommendedScholarships, isLoading: isLoadingRecommended } =
+  //   useGetRecommendedScholarshipsQuery(
+  //     { profileId: profile?.applicantProfile?.id ?? 0 },
+  //     { skip: !hasApplicantSubscription || !profile?.applicantProfile?.id }
+  //   );
   const [followProvider] = useFollowProviderMutation();
   const [unfollowProvider] = useUnfollowProviderMutation();
 
@@ -94,7 +94,7 @@ export default function NewsPage() {
       <section className="py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Sidebar - Recommended Scholarships or Premium Banner */}
-          <div className="lg:col-span-1 order-2 lg:order-1">
+          {/* <div className="lg:col-span-1 order-2 lg:order-1">
             {hasApplicantSubscription ? (
               <RecommendedScholarships
                 scholarships={recommendedScholarships || []}
@@ -104,10 +104,10 @@ export default function NewsPage() {
             ) : (
               <PremiumBanner />
             )}
-          </div>
+          </div> */}
 
           {/* Main Content - News */}
-          <div className="space-y-4 lg:col-span-2 order-1 lg:order-2">
+          <div className="space-y-4 lg:col-span-3 order-1 lg:order-2">
             {!newsData || newsData.length === 0 ? (
               <EmptyNews />
             ) : (

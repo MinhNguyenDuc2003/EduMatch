@@ -73,7 +73,9 @@
     "profile": "Profile",
     "extendSubscription": "Extend Subscription",
     "helpSupport": "Help & Support",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "day": "day",
+    "days": "days"
   },
   "providerScholaship": {
     "title": "Scholarships",
@@ -625,6 +627,9 @@
       "studyLevel": "Study Level",
       "university": "University",
       "fields": "Field",
+      "sort": "Sort",
+      "sortAsc": "Latest",
+      "sortDesc": "Oldest",
       "allLevels": "All Levels",
       "country": "Country",
       "allCountries": "All Countries",
@@ -1380,7 +1385,8 @@
       "applicationDecisions": "Application Decisions",
       "approved": "Approved",
       "rejected": "Rejected",
-      "pending": "Pending"
+      "pending": "Pending",
+      "successful": "Successful"
     },
     "top5Scholarship": {
       "top5ByViews": "Top 5 by Reached",

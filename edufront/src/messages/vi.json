@@ -73,7 +73,9 @@
     "profile": "Hồ sơ",
     "extendSubscription": "Gia hạn tài khoản",
     "helpSupport": "Trợ giúp & Hỗ trợ",
-    "backToHome": "Quay về trang chủ"
+    "backToHome": "Quay về trang chủ",
+    "day": "ngày",
+    "days": "ngày"
   },
   "providerScholaship": {
     "title": "Học bổng",
@@ -625,6 +627,7 @@
     "closeFilters": "Đóng bộ lọc",
     "failedToLoad": "Không thể tải danh sách học bổng. Vui lòng thử lại sau.",
     "noScholarshipsFound": "Không tìm thấy học bổng nào phù hợp với tiêu chí của bạn.",
+    "endOfList": "Bạn đã đến cuối danh sách",
     "filters": {
       "title": "Bộ lọc",
       "applied": "đã áp dụng",
@@ -632,6 +635,9 @@
       "studyLevel": "Trình độ học vấn",
       "university": "Trường đại học",
       "fields": "Lĩnh vực",
+      "sort": "Sắp xếp",
+      "sortAsc": "Gần đây nhất",
+      "sortDesc": "Cũ nhất",
       "allLevels": "Tất cả",
       "country": "Quốc gia",
       "allCountries": "Tất cả quốc gia",
@@ -1387,7 +1393,8 @@
       "applicationDecisions": "Quyết định ứng tuyển",
       "approved": "Đã duyệt",
       "rejected": "Từ chối",
-      "pending": "Chờ xét duyệt"
+      "pending": "Chờ xét duyệt",
+      "successful": "Hoàn thành"
     },
     "top5Scholarship": {
       "top5ByViews": "Top 5 theo số người dùng tiếp cận",

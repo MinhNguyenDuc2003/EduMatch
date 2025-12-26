@@ -116,6 +116,7 @@ declare global {
     keyword?: string;
     minGpa?: number;
     maxGpa?: number;
+    sortDirection?: 'ASC' | 'DESC';
   };
 
   type ScholarshipSearchAggregations = {
@@ -125,6 +126,10 @@ declare global {
   };
 
   type ScholarshipSearchResponse = {
+    pageNum?: number;
+    pageSize?: number;
+    totalElements?: number;
+    totalPages?: number;
     scholarship: Scholarship[];
     aggregations?: ScholarshipSearchAggregations;
   };
@@ -141,6 +146,7 @@ declare global {
     maxGpa: number;
     page: number;
     size: number;
+    sortDirection?: 'ASC' | 'DESC';
   };
 
   type ApiGetScholarshipResponse = {

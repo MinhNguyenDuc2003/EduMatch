@@ -42,11 +42,17 @@ import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
 
 const ProviderSidebar = () => {
-  const { user } = useAuth();
+  const { user, subscriptions } = useAuth();
   const pathname = usePathname();
   const { state } = useSidebar();
 
   const t = useTranslations('providerSidebar');
+
+  // Calculate total days for PROVIDER subscription
+  const providerSubscription = subscriptions.find((sub) => sub.userType === 'PROVIDER');
+  const totalDays = providerSubscription
+    ? Math.ceil((providerSubscription.endDate - new Date().getTime()) / (1000 * 60 * 60 * 24))
+    : null;
 
   const navLinks = [
     {
@@ -176,6 +182,12 @@ const ProviderSidebar = () => {
                   {user?.firstName} {user?.lastName}
                 </p>
                 <p className="text-xs text-gray-500">{user?.email}</p>
+                {providerSubscription && (
+                  <p className="text-xs text-gray-500">
+                    <span className="font-semibold">AI Recruitment: </span>
+                    {totalDays} {t(totalDays === 1 ? 'day' : 'days')}
+                  </p>
+                )}
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
