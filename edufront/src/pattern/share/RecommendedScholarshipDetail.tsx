@@ -98,11 +98,11 @@ export default function RecommendedScholarshipDetail({
                       </p>
                     </div>
                   )}
-                  {applicantProfile?.researchExperience && (
+                  {applicantProfile?.researchInterest && (
                     <div>
-                      <p className="text-xs text-gray-500 mb-1">{tProfile('researchExperience')}</p>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('researchInterest')}</p>
                       <p className="text-sm font-semibold text-gray-900">
-                        {applicantProfile?.researchExperience}
+                        {applicantProfile?.researchInterest}
                       </p>
                     </div>
                   )}

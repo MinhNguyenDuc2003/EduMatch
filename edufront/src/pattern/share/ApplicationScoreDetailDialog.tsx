@@ -30,7 +30,7 @@ export default function ApplicationScoreDetailDialog({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="bottom"
-        className="w-full p-0 sm:max-w-7xl min-h-fit max-h-[95vh] overflow-y-auto [&>button]:hidden rounded-xl !left-1/2 !-translate-x-1/2 !top-1/2 !-translate-y-1/2 scrollbar-hide"
+        className="w-full p-0 sm:max-w-7xl h-fit max-h-[95vh] overflow-y-auto [&>button]:hidden rounded-xl !left-1/2 !-translate-x-1/2 !top-1/2 !-translate-y-1/2 scrollbar-hide"
       >
         <div className="p-6">
           <SheetHeader className="!p-0 mb-4">

@@ -25,7 +25,7 @@ export default function ApplicantScoreDetailDialog({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="bottom"
-        className="w-full p-0 sm:max-w-7xl min-h-fit max-h-[95vh] overflow-y-auto [&>button]:hidden rounded-xl !left-1/2 !-translate-x-1/2 !top-1/2 !-translate-y-1/2 scrollbar-hide"
+        className="w-full p-0 sm:max-w-7xl h-fit max-h-[95vh] overflow-y-auto [&>button]:hidden rounded-xl !left-1/2 !-translate-x-1/2 !top-1/2 !-translate-y-1/2 scrollbar-hide"
       >
         <div className="p-6">
           <SheetHeader className="!p-0 mb-4">
@@ -177,10 +177,10 @@ export default function ApplicantScoreDetailDialog({
                       )}
                       <div>
                         <p className="text-xs text-gray-500 mb-1">
-                          {tScholarshipDetail('content.gpaRequirement')}
+                          {tScholarshipDetail('content.requirements')}
                         </p>
                         <p className="text-sm font-semibold text-gray-900">
-                          {scholarship?.gpaRequirement || 'N/A'}
+                          {scholarship?.requirements}
                         </p>
                       </div>
                     </div>
@@ -276,11 +276,11 @@ export default function ApplicantScoreDetailDialog({
                       </p>
                     </div>
                   )}
-                  {applicant?.researchExperience && (
+                  {applicant?.researchInterest && (
                     <div>
-                      <p className="text-xs text-gray-500 mb-1">{tProfile('researchExperience')}</p>
+                      <p className="text-xs text-gray-500 mb-1">{tProfile('researchInterest')}</p>
                       <p className="text-sm font-semibold text-gray-900">
-                        {applicant?.researchExperience}
+                        {applicant?.researchInterest}
                       </p>
                     </div>
                   )}
