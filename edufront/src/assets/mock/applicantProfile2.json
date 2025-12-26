@@ -1,0 +1,93 @@
+{
+  "contactName": "Ahmed Al-Fayed",
+  "firstName": "Ahmed",
+  "lastName": "Al-Fayed",
+  "phoneNumber": "+20-100-555-1234",
+  "religion": "Muslim",
+  "hometown": "Alexandria, Egypt",
+  "citizenshipStatus": "Citizen",
+  "ethnicity": "Middle Eastern",
+  "race": "Middle Eastern",
+  "militaryFamilyHistory": false,
+  "disabilities": "None",
+  "medicalConditions": "None",
+  "favoriteActivities": "Visiting Museums, Reading History, Travel",
+  "sportsParticipated": "Soccer",
+  "studentActivities": "History Club President, Museum Volunteer, Archaeological Society Member",
+  "organizationsJoined": "The Egypt Exploration Society, Supreme Council of Antiquities (Student Member)",
+  "researchExperience": "Participated in excavation project at Saqqara for 3 months. Cataloged over 500 artifacts for the Alexandria National Museum. Conducted independent research on Ptolemaic era coinage.",
+  "careerGoals": "I aspire to become a curator at a major museum or an academic researcher specializing in Ancient Egyptian history. I want to use modern technology to preserve cultural heritage and make history accessible to everyone. My dream is to lead my own excavation project.",
+  "overallGpa": 3.5,
+  "educationLevel": "Master",
+  "greScore": 310,
+  "toeflScore": 95,
+  "ieltsScore": 7.0,
+  "type": "Current",
+  "languages": "Arabic (Native), English (Fluent), French (Basic), Hieroglyphs (Academic)",
+  "academicAwards": "Young Historian Award, University Scholarship for Excellence in Humanities",
+  "researchInterest": "Egyptology, Archaeological Conservation, Museum Studies, Ancient History",
+  "extracurricularActivities": "Organized university trip to historical sites, Volunteered as tour guide at local museum (200+ hours), Assisted in digitalization of historical archives",
+  "preferredScholarshipType": "Research",
+  "preferredCountry": "Egypt",
+  "preferredMajor": "History",
+  "certificates": [
+    {
+      "id": 7,
+      "applicantId": 5,
+      "certificateName": "Introduction to Archaeology",
+      "issuedBy": "Coursera - Brown University",
+      "score": "96%"
+    }
+  ],
+  "educationHistories": [
+    {
+      "institutionName": "Alexandria University",
+      "institutionType": "Public University",
+      "state": "Alexandria",
+      "country": "Egypt",
+      "degreeType": "Bachelor of Arts",
+      "majorCategory": "Humanities",
+      "majorName": "History and Archaeology",
+      "gpa": 3.5,
+      "classRank": "Top 10%",
+      "classSize": 300,
+      "graduationYear": 2024,
+      "isDualEnrolled": false,
+      "isTransfer": false,
+      "isReturningStudent": false,
+      "notes": "Specializing in Egyptology"
+    }
+  ],
+  "skills": [
+    {
+      "skillName": "Excavation Techniques",
+      "proficiencyLevel": "Intermediate",
+      "yearsExperience": 1
+    },
+    {
+      "skillName": "Artifact Preservation",
+      "proficiencyLevel": "Intermediate",
+      "yearsExperience": 2
+    },
+    {
+      "skillName": "Historical Research",
+      "proficiencyLevel": "Advanced",
+      "yearsExperience": 3
+    }
+  ],
+  "intentions": [
+    {
+      "intendedInstitution": "Cairo University",
+      "intendedState": "Cairo",
+      "intendedCountry": "Egypt",
+      "degreeType": "Master of Arts",
+      "intendedMajorCategory": "Humanities",
+      "intendedMajorName": "Archaeology",
+      "academicClassification": "Post-graduate",
+      "expectedGraduationYear": 2026,
+      "isTransferStudent": false,
+      "isReturningStudent": false,
+      "notes": "Applying for research grant"
+    }
+  ]
+}
