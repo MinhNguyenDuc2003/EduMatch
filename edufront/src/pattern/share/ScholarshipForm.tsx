@@ -154,11 +154,17 @@ const ScholarshipForm = ({
       // Basic validation and wrapping logic
       // If the JSON is directly the scholarship object
       if (parsedData.scholarship) {
-        methods.reset(parsedData.scholarship);
+        methods.reset({
+          ...DEFAULT_SCHOLARSHIP_FORM_VALUES,
+          ...parsedData.scholarship,
+        });
       } else {
         // If user pasted the raw object, use it directly as it matches IScholarship structure
         // deeper validation will happen via schema on submit
-        methods.reset(parsedData);
+        methods.reset({
+          ...DEFAULT_SCHOLARSHIP_FORM_VALUES,
+          ...parsedData,
+        });
       }
 
       setImportError(null);

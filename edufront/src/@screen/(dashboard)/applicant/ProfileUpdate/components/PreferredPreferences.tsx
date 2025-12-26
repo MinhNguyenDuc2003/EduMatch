@@ -5,7 +5,7 @@ import React from 'react';
 import { SCHOLARSHIP_TYPES, COUNTRIES, MAJOR_NAMES } from '@/constants/Common';
 import { University } from '@/constants/University';
 
-const PreferredPreferences = () => {
+const PreferredPreferences = ({ profile }: { profile?: ApplicantProfile }) => {
   const t = useTranslations('applicantProfile.preferencesDialog');
   const universityOptions = University.map((university) => ({
     value: university.value,
@@ -23,6 +23,7 @@ const PreferredPreferences = () => {
           type="select"
           placeholder={t('selectPreferredScholarshipType')}
           options={SCHOLARSHIP_TYPES}
+          initialValue={profile?.preferredScholarshipType}
           inlineLabel
           isBorder
         />
@@ -33,6 +34,7 @@ const PreferredPreferences = () => {
           type="select"
           placeholder={t('selectPreferredCountry')}
           options={COUNTRIES}
+          initialValue={profile?.preferredCountry}
           inlineLabel
           isBorder
         />
@@ -43,6 +45,7 @@ const PreferredPreferences = () => {
           type="select"
           placeholder={t('selectPreferredMajor')}
           options={MAJOR_NAMES}
+          initialValue={profile?.preferredMajor}
           inlineLabel
           isBorder
           className="md:col-span-2"

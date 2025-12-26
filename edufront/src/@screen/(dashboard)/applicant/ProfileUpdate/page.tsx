@@ -150,10 +150,15 @@ const ProfileUpdatePage = () => {
 
       // If the JSON is directly the profile object
       if (parsedData.applicantProfile) {
-        methods.reset(parsedData);
+        methods.reset({ ...DEFAULT_PROFILE_FORM_VALUES, ...parsedData });
       } else {
         // Attempt to wrap it if user pasted just the inner object
-        methods.reset({ applicantProfile: parsedData });
+        methods.reset({
+          applicantProfile: {
+            ...DEFAULT_PROFILE_FORM_VALUES.applicantProfile,
+            ...parsedData,
+          },
+        });
       }
 
       setImportError(null);
@@ -223,7 +228,7 @@ const ProfileUpdatePage = () => {
             <div className="space-y-6">
               <StudentInformation profile={profileData?.applicantProfile} />
               <Separator />
-              <PreferredPreferences />
+              <PreferredPreferences profile={profileData?.applicantProfile} />
               <Separator />
               <Activities />
               <Separator />
