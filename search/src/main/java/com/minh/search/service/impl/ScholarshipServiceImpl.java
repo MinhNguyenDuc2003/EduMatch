@@ -55,41 +55,39 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         boolean hasCountry = criteria.getCriteria().getCountry() != null && !criteria.getCriteria().getCountry().isEmpty();
         boolean hasStudyLevel = criteria.getCriteria().getStudyLevel() != null && !criteria.getCriteria().getStudyLevel().isEmpty();
         boolean hasScholarshipType = criteria.getCriteria().getScholarshipType() != null && !criteria.getCriteria().getScholarshipType().isEmpty();
-        boolean hasGpa = criteria.getMinGpa() != null || criteria.getMaxGpa() != null;
+        boolean hasGpa =
+                (criteria.getMinGpa() != null && criteria.getMinGpa() > 0)
+                        || (criteria.getMaxGpa() != null && criteria.getMaxGpa() < 4);
         boolean hasUniversity = criteria.getCriteria().getUniversity() != null && !criteria.getCriteria().getUniversity().isEmpty();
         boolean hasFields = criteria.getCriteria().getFields() != null && !criteria.getCriteria().getFields().isEmpty();
 
-        if (hasKeyword) {
+        if (hasKeyword || hasFields) {
             nativeQuery.withQuery(q -> q
                     .bool(b -> {
-                        b.should(s -> s
-                                .match(m -> m
-                                        .field(ScholarshipField.TITLE)
-                                        .query(criteria.getKeyword())
-                                        .fuzziness(Fuzziness.ONE.asString())
-                                )
-                        );
+
+                        if (hasKeyword) {
+                            b.should(s -> s.match(m -> m
+                                    .field(ScholarshipField.TITLE)
+                                    .query(criteria.getKeyword())
+                                    .fuzziness(Fuzziness.ONE.asString())
+                            ));
+                        }
+
+                        if (hasFields) {
+                            b.should(s -> s.match(m -> m
+                                    .field(ScholarshipField.SCHOLARSHIP_FIELDS)
+                                    .query(criteria.getCriteria().getFields())
+                                    .fuzziness(Fuzziness.ONE.asString())
+                            ));
+                        }
+
+                        b.minimumShouldMatch("1");
                         return b;
                     })
             );
         }
 
-        if (hasFields) {
-            nativeQuery.withQuery(q -> q
-                    .bool(b -> {
-                        b.should(s -> s
-                                .match(m -> m
-                                        .field(ScholarshipField.SCHOLARSHIP_FIELDS)
-                                        .query(criteria.getCriteria().getFields())
-                                        .fuzziness(Fuzziness.ONE.asString())
-                                )
-                        );
-                        return b;
-                    })
-            );
-        }
-
-        if (hasCountry || hasStudyLevel || hasScholarshipType || hasGpa) {
+        if (hasCountry || hasStudyLevel || hasScholarshipType || hasGpa || hasUniversity) {
             nativeQuery.withFilter(f -> f
                     .bool(b -> {
                         if (hasCountry)
