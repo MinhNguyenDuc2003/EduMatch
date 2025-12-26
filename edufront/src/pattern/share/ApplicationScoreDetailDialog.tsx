@@ -30,7 +30,7 @@ export default function ApplicationScoreDetailDialog({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="bottom"
-        className="w-full p-0 sm:max-w-7xl min-h-fit max-h-[95vh] overflow-y-auto [&>button]:hidden rounded-xl !left-1/2 !-translate-x-1/2 !top-1/2 !-translate-y-1/2 scrollbar-hide"
+        className="w-full p-0 sm:max-w-7xl h-fit max-h-[95vh] overflow-y-auto [&>button]:hidden rounded-xl !left-1/2 !-translate-x-1/2 !top-1/2 !-translate-y-1/2 scrollbar-hide"
       >
         <div className="p-6">
           <SheetHeader className="!p-0 mb-4">
@@ -176,10 +176,10 @@ export default function ApplicationScoreDetailDialog({
                       )}
                       <div>
                         <p className="text-xs text-gray-500 mb-1">
-                          {tScholarshipDetail('content.gpaRequirement')}
+                          {tScholarshipDetail('content.requiredMajor')}
                         </p>
                         <p className="text-sm font-semibold text-gray-900">
-                          {scholarship?.gpaRequirement || 'N/A'}
+                          {scholarship?.requiredMajor || 'N/A'}
                         </p>
                       </div>
                     </div>
@@ -261,12 +261,28 @@ export default function ApplicationScoreDetailDialog({
                 {/* Application Info */}
                 <div className="space-y-3">
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Full Name</p>
-                    <p className="text-sm font-semibold text-gray-900">{application.fullName}</p>
+                    <p className="text-xs text-gray-500 mb-1">Career Goal</p>
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                      {application.careerGoal}
+                    </p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Email</p>
-                    <p className="text-sm font-semibold text-gray-900">{application.email}</p>
+                    <p className="text-xs text-gray-500 mb-1">Research Interest</p>
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                      {application.researchInterest}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">Extracurricular</p>
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                      {application.extracurricular}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">Skill</p>
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                      {application.skills}
+                    </p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 mb-1">Major</p>
@@ -275,23 +291,21 @@ export default function ApplicationScoreDetailDialog({
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">GPA</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {application.gpa || 'N/A'}
+                    <p className="text-xs text-gray-500 mb-1">Achievements</p>
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                      {application.achievements || 'N/A'}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Applied Date</p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {applicationScholarship.createdDate
-                        ? new Date(applicationScholarship.createdDate).toLocaleDateString()
-                        : 'N/A'}
+                    <p className="text-xs text-gray-500 mb-1">Motivation Statement</p>
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                      {application.motivation || 'N/A'}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Status</p>
-                    <p className="text-sm font-semibold text-gray-900 capitalize">
-                      {applicationScholarship.status || 'Pending'}
+                    <p className="text-xs text-gray-500 mb-1">Personal Statement</p>
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-3">
+                      {application.personalStatement || 'N/A'}
                     </p>
                   </div>
                 </div>

@@ -27,9 +27,23 @@ import { Separator } from '@/pattern/cus/separator';
 import { Button } from '@/pattern/cus/button';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/pattern/cus/dialog';
+import { Textarea } from '@/pattern/cus/textarea';
+import { toast } from 'sonner';
 
 const ProfileUpdatePage = () => {
   const t = useTranslations('applicantProfile');
+  const [isImportOpen, setIsImportOpen] = React.useState(false);
+  const [jsonInput, setJsonInput] = React.useState('');
+  const [importError, setImportError] = React.useState<string | null>(null);
   const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
   const [createProfile, { isLoading: isLoadingCreateProfile }] = useCreateProfileMutation();
   const [updateProfile, { isLoading: isLoadingUpdateProfile }] = useUpdateProfileMutation();
@@ -118,6 +132,39 @@ const ProfileUpdatePage = () => {
     router.push('/applicant/profile');
   };
 
+  const handleImport = () => {
+    try {
+      if (!jsonInput.trim()) {
+        setImportError('Please enter valid JSON');
+        return;
+      }
+
+      const parsedData = JSON.parse(jsonInput);
+
+      // Basic validation - check if it looks like an applicant profile
+      // We rely on simple check to avoid strict schema validation issues on raw input,
+      // but form validation will happen on submit anyway.
+
+      // If the JSON is directly the profile object
+      if (parsedData.applicantProfile) {
+        methods.reset(parsedData);
+      } else {
+        // Attempt to wrap it if user pasted just the inner object
+        methods.reset({ applicantProfile: parsedData });
+      }
+
+      setImportError(null);
+      setIsImportOpen(false);
+      setJsonInput('');
+      toast('Profile data imported successfully', {
+        description: 'Review the form fields before saving.',
+      });
+    } catch (e) {
+      console.error('Invalid JSON', e);
+      setImportError('Invalid JSON syntax: ' + (e as Error).message);
+    }
+  };
+
   if (isLoadingProfile) {
     return <Loading />;
   }
@@ -132,6 +179,42 @@ const ProfileUpdatePage = () => {
       />
 
       <div className="mx-auto px-4 lg:px-40 py-6 bg-white space-y-6">
+        <div className="flex justify-end">
+          <Dialog open={isImportOpen} onOpenChange={setIsImportOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="w-full sm:w-auto text-primary-brand py-2.5">
+                Import JSON
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px] max-h-[60vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Import Profile Data</DialogTitle>
+                <DialogDescription>
+                  Paste your profile data JSON here to quickly populate the form.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <Textarea
+                  placeholder="Paste JSON here..."
+                  className="min-h-[300px] font-mono text-xs"
+                  value={jsonInput}
+                  onChange={(e) => setJsonInput(e.target.value)}
+                />
+                {importError && <p className="text-sm text-red-500">{importError}</p>}
+              </div>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsImportOpen(false)}
+                  className="w-full sm:w-auto text-primary-brand py-2.5"
+                >
+                  Cancel
+                </Button>
+                <Button onClick={handleImport}>Import</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
         <Form {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className="space-y-6">
