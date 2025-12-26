@@ -38,6 +38,7 @@ import {
 } from '@/pattern/cus/dialog';
 import { Textarea } from '@/pattern/cus/textarea';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 
 const ProfileUpdatePage = () => {
   const t = useTranslations('applicantProfile');
@@ -45,6 +46,7 @@ const ProfileUpdatePage = () => {
   const [jsonInput, setJsonInput] = React.useState('');
   const [importError, setImportError] = React.useState<string | null>(null);
   const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
+  const { refetch: refetchProfile } = useAuth();
   const [createProfile, { isLoading: isLoadingCreateProfile }] = useCreateProfileMutation();
   const [updateProfile, { isLoading: isLoadingUpdateProfile }] = useUpdateProfileMutation();
 
@@ -120,6 +122,7 @@ const ProfileUpdatePage = () => {
           .unwrap()
           .then(() => {
             router.push('/applicant/profile');
+            refetchProfile();
           });
       }
     } catch (error) {
