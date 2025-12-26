@@ -20,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ApplicationVo extends ApplicationDto {
 
+    private Long applicationScholarshipId;
     private List<MediaDto> applicationMedias;
     private List<ApplicationAttributeDto> applicationAttributes;
 

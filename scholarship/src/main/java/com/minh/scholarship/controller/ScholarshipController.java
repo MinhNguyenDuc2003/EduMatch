@@ -213,4 +213,14 @@ public class ScholarshipController {
         return ApiResponse.ok(scholarshipService.getTotalWeightByScholarshipId(scholarshipId));
     }
 
+    @Authorized
+    @PutMapping("/{id}/status/scholarship")
+    public ApiResponse<Boolean> updateScholarshipStatus(
+            @PathVariable Long id,
+            @RequestParam String status
+    ) {
+        return ApiResponse.ok(
+                scholarshipService.updateStatus(id, status)
+        );
+    }
 }

@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -174,10 +175,30 @@ public class ApplicationServiceImpl extends BaseService implements ApplicationSe
 
     @Override
     public List<ApplicationVo> getApplicationByScholarshipId(Long id) {
-        List<ApplicationScholarshipEntity> applicationScholarshipEntities = applicationScholarshipRepository.findAllByScholarshipId(id);
-        List<ApplicationVo> vos = applicationMapper.entitiesToVos(applicationRepository.findAllById(applicationScholarshipEntities.stream().map(ApplicationScholarshipEntity::getApplicationId).collect((Collectors.toList()))));
-        vos.forEach(this::addAttributesAndMedia);
-        return vos;
+
+        List<ApplicationScholarshipEntity> applicationScholarships =
+                applicationScholarshipRepository.findAllByScholarshipId(id);
+
+        List<ApplicationVo> result = new ArrayList<>();
+
+        for (ApplicationScholarshipEntity as : applicationScholarships) {
+
+            ApplicationEntity application = applicationRepository
+                    .findById(as.getApplicationId())
+                    .orElse(null);
+
+            if (application == null) continue;
+
+            ApplicationVo vo = applicationMapper.entityToVo(application);
+
+            vo.setApplicationScholarshipId(as.getId());
+
+            addAttributesAndMedia(vo);
+
+            result.add(vo);
+        }
+
+        return result;
     }
 
     @Override
