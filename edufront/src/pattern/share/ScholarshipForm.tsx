@@ -13,6 +13,17 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/pattern/cus/dialog';
+import { Textarea } from '@/pattern/cus/textarea';
+import { toast } from 'sonner';
 
 const ScholarshipForm = ({
   scholarship,
@@ -32,6 +43,10 @@ const ScholarshipForm = ({
     value: university.value,
     label: university.label,
   }));
+  const [isImportOpen, setIsImportOpen] = useState(false);
+  const [jsonInput, setJsonInput] = useState('');
+  const [importError, setImportError] = useState<string | null>(null);
+
   // Form setup
   const methods = useForm<IScholarship>({
     reValidateMode: 'onSubmit',
@@ -127,6 +142,37 @@ const ScholarshipForm = ({
     fileInputRef.current?.click();
   };
 
+  const handleImport = () => {
+    try {
+      if (!jsonInput.trim()) {
+        setImportError('Please enter valid JSON');
+        return;
+      }
+
+      const parsedData = JSON.parse(jsonInput);
+
+      // Basic validation and wrapping logic
+      // If the JSON is directly the scholarship object
+      if (parsedData.scholarship) {
+        methods.reset(parsedData.scholarship);
+      } else {
+        // If user pasted the raw object, use it directly as it matches IScholarship structure
+        // deeper validation will happen via schema on submit
+        methods.reset(parsedData);
+      }
+
+      setImportError(null);
+      setIsImportOpen(false);
+      setJsonInput('');
+      toast('Scholarship data imported successfully', {
+        description: 'Review the form fields before saving.',
+      });
+    } catch (e) {
+      console.error('Invalid JSON', e);
+      setImportError('Invalid JSON syntax: ' + (e as Error).message);
+    }
+  };
+
   return (
     <Form {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
@@ -135,6 +181,42 @@ const ScholarshipForm = ({
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-semibold text-gray-900">{t('basicInformation')}</h2>
+
+              <Dialog open={isImportOpen} onOpenChange={setIsImportOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="text-primary-brand py-2.5">
+                    Import JSON
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[600px] max-h-[60vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Import Scholarship Data</DialogTitle>
+                    <DialogDescription>
+                      Paste your scholarship data JSON here to quickly populate the form.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <Textarea
+                      placeholder="Paste JSON here..."
+                      className="min-h-[300px] font-mono text-xs"
+                      value={jsonInput}
+                      onChange={(e) => setJsonInput(e.target.value)}
+                    />
+                    {importError && <p className="text-sm text-red-500">{importError}</p>}
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setIsImportOpen(false)}
+                      className="w-full sm:w-auto text-primary-brand py-2.5"
+                    >
+                      Cancel
+                    </Button>
+                    <Button onClick={handleImport}>Import</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+
               <CustomFormField
                 name="status"
                 label={t('status')}
