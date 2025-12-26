@@ -46,6 +46,7 @@ export default function ScholarshipsList() {
     maxGpa: 4,
     page: 0,
     size: 10,
+    sortDirection: 'DESC',
   });
 
   // Accumulated scholarships for infinite scroll
@@ -74,6 +75,7 @@ export default function ScholarshipsList() {
     filters.fields,
     filters.minGpa,
     filters.maxGpa,
+    filters.sortDirection,
   ]);
 
   // Prepare API request body
@@ -90,10 +92,17 @@ export default function ScholarshipsList() {
     keyword: filters.keyword || '',
     minGpa: filters.minGpa,
     maxGpa: filters.maxGpa,
+    sortDirection: filters.sortDirection || 'DESC',
   };
 
   // Call API
-  const { data: response, isLoading, isError, refetch } = useSearchScholarshipsQuery(requestBody);
+  const {
+    data: response,
+    isLoading,
+    isError,
+    refetch,
+    isFetching,
+  } = useSearchScholarshipsQuery(requestBody);
   const { data: scholarshipTopView, isLoading: isLoadingScholarshipTopView } =
     useGetScholarshipTopViewByMonthQuery();
   const [followScholarship] = useFollowScholarshipMutation();
@@ -132,7 +141,7 @@ export default function ScholarshipsList() {
         });
       }
       // Check if there's more data
-      setHasMore(deduplicatedNewScholarships.length === filters.size);
+      setHasMore(!(currentPage === response?.totalPages! - 1));
     } else if (currentPage > 0) {
       // No more data
       setHasMore(false);
@@ -207,7 +216,7 @@ export default function ScholarshipsList() {
   // Intersection observer for infinite scroll
   const { targetRef, isIntersecting } = useIntersectionObserver({
     threshold: 0.1,
-    rootMargin: '200px',
+    rootMargin: '100px',
   });
 
   // Trigger load more when intersection observer detects bottom
@@ -230,7 +239,7 @@ export default function ScholarshipsList() {
   })();
 
   // Show full page skeleton on initial load
-  if (isLoading && currentPage === 0 && allScholarships.length === 0) {
+  if (isLoading && currentPage === 0 && allScholarships.length === 0 && isFetching) {
     return <ScholarshipsListSkeleton />;
   }
 
@@ -342,9 +351,9 @@ export default function ScholarshipsList() {
                     ))}
 
                     {/* Infinite scroll trigger */}
-                    {hasMore && (
+                    {hasMore ? (
                       <div ref={targetRef} className="h-10 flex items-center justify-center">
-                        {isLoading && (
+                        {isLoading && isFetching && (
                           <>
                             {Array.from({ length: 3 }).map((_, index) => (
                               <ScholarshipCardSkeleton key={`loading-${index}`} />
@@ -352,10 +361,7 @@ export default function ScholarshipsList() {
                           </>
                         )}
                       </div>
-                    )}
-
-                    {/* End of list message */}
-                    {!hasMore && scholarships.length > 0 && (
+                    ) : (
                       <div className="text-center py-8 text-gray-500 text-sm">
                         {t('endOfList') || 'You have reached the end of the list'}
                       </div>

@@ -625,6 +625,7 @@
     "closeFilters": "Đóng bộ lọc",
     "failedToLoad": "Không thể tải danh sách học bổng. Vui lòng thử lại sau.",
     "noScholarshipsFound": "Không tìm thấy học bổng nào phù hợp với tiêu chí của bạn.",
+    "endOfList": "Bạn đã đến cuối danh sách",
     "filters": {
       "title": "Bộ lọc",
       "applied": "đã áp dụng",
@@ -632,6 +633,9 @@
       "studyLevel": "Trình độ học vấn",
       "university": "Trường đại học",
       "fields": "Lĩnh vực",
+      "sort": "Sắp xếp",
+      "sortAsc": "Gần đây nhất",
+      "sortDesc": "Cũ nhất",
       "allLevels": "Tất cả",
       "country": "Quốc gia",
       "allCountries": "Tất cả quốc gia",
