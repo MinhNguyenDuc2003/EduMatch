@@ -12,7 +12,11 @@ import { useAuth } from '@/hooks/useAuth';
 
 const CheckoutPaymentPageContent = () => {
   const { subscriptionPlan, subscriptionPlanId, isLoading, isError } = useCurrentSubscription();
-  const { subscriptions: userSubscriptions, isLoading: userLoading } = useAuth();
+  const {
+    subscriptions: userSubscriptions,
+    isLoading: userLoading,
+    refetch: refetchAuth,
+  } = useAuth();
 
   const userSubscription = useMemo(() => {
     return userSubscriptions.find(
@@ -63,6 +67,7 @@ const CheckoutPaymentPageContent = () => {
         });
       }
       navigateToStep(2);
+      refetchAuth();
     }
   };
 

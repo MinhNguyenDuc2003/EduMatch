@@ -223,7 +223,7 @@ const ProfileUpdatePage = () => {
             <div className="space-y-6">
               <StudentInformation profile={profileData?.applicantProfile} />
               <Separator />
-              <PreferredPreferences />
+              <PreferredPreferences profile={profileData?.applicantProfile} />
               <Separator />
               <Activities />
               <Separator />
