@@ -61,7 +61,19 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
         boolean hasUniversity = criteria.getCriteria().getUniversity() != null && !criteria.getCriteria().getUniversity().isEmpty();
         boolean hasFields = criteria.getCriteria().getFields() != null && !criteria.getCriteria().getFields().isEmpty();
 
-        if (hasKeyword || hasFields) {
+        boolean hasAnyQuery = hasKeyword || hasFields;
+        boolean hasAnyFilter =
+                hasCountry || hasStudyLevel || hasScholarshipType || hasUniversity || hasGpa;
+
+        if (!hasAnyQuery && !hasAnyFilter) {
+            nativeQuery.withQuery(q -> q.matchAll(m -> m));
+        }
+
+        if (!hasAnyQuery && !hasAnyFilter) {
+            nativeQuery.withQuery(q -> q.matchAll(m -> m));
+        }
+
+        if (hasAnyQuery) {
             nativeQuery.withQuery(q -> q
                     .bool(b -> {
 
@@ -87,7 +99,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
             );
         }
 
-        if (hasCountry || hasStudyLevel || hasScholarshipType || hasGpa || hasUniversity) {
+        if (hasAnyFilter) {
             nativeQuery.withFilter(f -> f
                     .bool(b -> {
                         if (hasCountry)
