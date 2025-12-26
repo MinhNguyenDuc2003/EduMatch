@@ -740,4 +740,28 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
                 .replaceAll("\\s+", "");
     }
 
+    @Override
+    public Boolean updateStatus(Long scholarshipId, String status) {
+
+        if (status == null || status.isBlank()) {
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_STATUS_NOT_EXIST );
+        }
+
+        String normalizedStatus =
+                status.substring(0, 1).toUpperCase() +
+                        status.substring(1).toLowerCase();
+
+        if (!List.of("Pending", "Rejected", "Approved", "Successful")
+                .contains(normalizedStatus)) {
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_STATUS_NOT_EXIST );
+        }
+
+        ScholarshipEntity entity = scholarshipRepository.findById(scholarshipId)
+                .orElseThrow(() -> new BusinessException(CoreMessageCode.SCHOLARSHIP_IS_NOT_EXIST));
+
+        entity.setStatus(normalizedStatus);
+        scholarshipRepository.save(entity);
+
+        return true;
+    }
 }
