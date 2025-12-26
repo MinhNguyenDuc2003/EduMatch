@@ -25,6 +25,7 @@ import { toast } from 'sonner';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import ScholarshipCard from '@/pattern/share/ScholarshipCard';
 import { TopViewedScholarships } from '../NewsPage/components';
+import Loading from '@/pattern/share/Loading';
 
 export default function ScholarshipsList() {
   const router = useRouter();
@@ -141,10 +142,8 @@ export default function ScholarshipsList() {
         });
       }
       // Check if there's more data
-      setHasMore(!(currentPage === response?.totalPages! - 1));
-    } else if (currentPage > 0) {
-      // No more data
-      setHasMore(false);
+      // setHasMore(!(currentPage === response?.totalPages! -1));
+      setHasMore(!(currentPage === response?.totalPages!));
     }
   }, [response, currentPage, filters.size]);
 
@@ -216,7 +215,7 @@ export default function ScholarshipsList() {
   // Intersection observer for infinite scroll
   const { targetRef, isIntersecting } = useIntersectionObserver({
     threshold: 0.1,
-    rootMargin: '100px',
+    rootMargin: '200px',
   });
 
   // Trigger load more when intersection observer detects bottom
@@ -353,11 +352,9 @@ export default function ScholarshipsList() {
                     {/* Infinite scroll trigger */}
                     {hasMore ? (
                       <div ref={targetRef} className="h-10 flex items-center justify-center">
-                        {isLoading && isFetching && (
+                        {isFetching && (
                           <>
-                            {Array.from({ length: 3 }).map((_, index) => (
-                              <ScholarshipCardSkeleton key={`loading-${index}`} />
-                            ))}
+                            <Loading />
                           </>
                         )}
                       </div>

@@ -47,6 +47,7 @@ const DashboardPage = () => {
           approveRate={statistics?.approveRate || 0}
           rejectRate={statistics?.rejectRate || 0}
           pendingRate={statistics?.pendingRate || 0}
+          successfulRate={statistics?.successfulRate || 0}
         />
       </div>
 

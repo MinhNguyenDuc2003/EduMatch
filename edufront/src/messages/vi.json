@@ -73,7 +73,9 @@
     "profile": "Hồ sơ",
     "extendSubscription": "Gia hạn tài khoản",
     "helpSupport": "Trợ giúp & Hỗ trợ",
-    "backToHome": "Quay về trang chủ"
+    "backToHome": "Quay về trang chủ",
+    "day": "ngày",
+    "days": "ngày"
   },
   "providerScholaship": {
     "title": "Học bổng",
@@ -1391,7 +1393,8 @@
       "applicationDecisions": "Quyết định ứng tuyển",
       "approved": "Đã duyệt",
       "rejected": "Từ chối",
-      "pending": "Chờ xét duyệt"
+      "pending": "Chờ xét duyệt",
+      "successful": "Hoàn thành"
     },
     "top5Scholarship": {
       "top5ByViews": "Top 5 theo số người dùng tiếp cận",
