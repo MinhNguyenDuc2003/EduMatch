@@ -24,10 +24,10 @@ declare global {
     providerId: number;
     title: string;
     slug: string;
-    shortDescription: string;
-    description: string;
-    requirements: string;
-    benefits: string;
+    shortDescription: string; // Có liên quan đến kinh nghiệm, mục tiêu nghề nghiệp, thành tích và các hoạt động ngoại khóa của học sinh
+    description: string; // Có liên quan đến kinh nghiệm, mục tiêu nghề nghiệp, thành tích và các hoạt động ngoại khóa của học sinh
+    requirements: string; // Yêu cầu về kỹ năng của người dùng
+    benefits: string; // Có liên quan đến kinh nghiệm, mục tiêu nghề nghiệp, thành tích và các hoạt động ngoại khóa của học sinh
     fields: string;
     country: string;
     university: string;

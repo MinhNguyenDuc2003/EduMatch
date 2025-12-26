@@ -657,6 +657,7 @@ export const MAJOR_NAMES = [
   { value: 'Human Sciences (General)', label: 'Human Sciences (General)' },
   { value: 'Human Services', label: 'Human Services' },
   { value: 'Law Enforcement Administration', label: 'Law Enforcement Administration' },
+  { value: 'Law', label: 'Law' },
   { value: 'Police Science', label: 'Police Science' },
   { value: 'Sport and Fitness Administration', label: 'Sport and Fitness Administration' },
   { value: 'Other', label: 'Other' },
