@@ -27,7 +27,6 @@
       "favicon": "./assets/images/favicon.png",
       "bundler": "metro"
     },
-
     "plugins": [
       "expo-router",
       [
@@ -41,11 +40,25 @@
             "backgroundColor": "#000000"
           }
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enablePngCrunchInReleaseBuilds": false
+          }
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "7e241912-2f05-45a1-98f4-192ef866e69a"
+      }
     }
   }
 }

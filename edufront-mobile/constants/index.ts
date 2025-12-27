@@ -1,9 +1,9 @@
-import hero1 from "@/assets/images/home/1.png";
-import hero2 from "@/assets/images/home/2.png";
-import hero3 from "@/assets/images/home/3.png";
-import onboarding1 from "@/assets/images/onboarding/1.png";
-import onboarding2 from "@/assets/images/onboarding/2.png";
-import onboarding3 from "@/assets/images/onboarding/3.png";
+import hero1 from "@/assets/images/home/img_1.png";
+import hero2 from "@/assets/images/home/img_2.png";
+import hero3 from "@/assets/images/home/img_3.png";
+import onboarding1 from "@/assets/images/onboarding/img_1.png";
+import onboarding2 from "@/assets/images/onboarding/img_2.png";
+import onboarding3 from "@/assets/images/onboarding/img_3.png";
 import { IApplicantProfile } from "@/lib/schemas";
 
 export const images = {

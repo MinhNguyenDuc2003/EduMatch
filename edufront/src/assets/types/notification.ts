@@ -6,6 +6,7 @@ declare global {
     referenceId: string;
     content: string;
     slug?: string;
+    createdDate: number;
   };
 }
 
