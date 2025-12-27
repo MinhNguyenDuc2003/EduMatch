@@ -19,28 +19,36 @@ const ApplicantScholarship = () => {
           const list = (ss?.Joint?.ApplicationItem as any)?.data || [];
 
           const applications =
-            list?.map((item: any) => {
-              const scholarship = item.scholarshipVo || {};
-              const applicant = item.applicationVo || {};
+            // Giữ nguyên list gốc, chỉ thêm .sort() trước khi .map()
+            [...list]
+              .sort((a: any, b: any) => {
+                // Chuyển đổi về timestamp để so sánh chính xác tuyệt đối
+                const dateA = new Date(a.createdDate).getTime() || 0;
+                const dateB = new Date(b.createdDate).getTime() || 0;
+                return dateB - dateA; // Ngày lớn hơn (mới hơn) sẽ đứng trước
+              })
+              .map((item: any) => {
+                const scholarship = item.scholarshipVo || {};
+                const applicant = item.applicationVo || {};
 
-              return {
-                id: item.id,
-                scholarshipTitle: scholarship.title || 'Untitled Scholarship',
-                // organization: provider.organizationName || 'N/A',
-                applicantName: applicant.fullName || 'N/A',
-                university: scholarship.university || '—',
-                // country: scholarship.country || '—',
-                funding: scholarship.fundingAmount || '—',
-                studyLevel: scholarship.studyLevel || '—',
-                status: item.status?.toUpperCase() || 'UNKNOWN',
-                createdDate: new Date(item.createdDate).toLocaleDateString('en-US', {
-                  // "Tue"
-                month: 'short',    // "Dec"
-                day: 'numeric',    // "3"
-                year: 'numeric'    // "2025"
-              }),
-              };
-            }) || [];
+                return {
+                  id: item.id,
+                  scholarshipTitle: scholarship.title || 'Untitled Scholarship',
+                  // organization: provider.organizationName || 'N/A',
+                  applicantName: applicant.fullName || 'N/A',
+                  university: scholarship.university || '—',
+                  // country: scholarship.country || '—',
+                  funding: scholarship.fundingAmount || '—',
+                  studyLevel: scholarship.studyLevel || '—',
+                  status: item.status?.toUpperCase() || 'UNKNOWN',
+                  createdDate: new Date(item.createdDate).toLocaleDateString('en-US', {
+                    // "Tue"
+                    month: 'short',    // "Dec"
+                    day: 'numeric',    // "3"
+                    year: 'numeric'    // "2025"
+                  }),
+                };
+              }) || [];
 
           // const total = applications.length;
           // const pending = applications.filter((a: any) => a.status === 'PENDING').length;

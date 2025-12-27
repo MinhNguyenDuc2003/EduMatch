@@ -22,41 +22,46 @@ const Subcription = () => {
 
           // Map dữ liệu từ API vào định dạng cho bảng
           const Subcriptions =
-            list?.map((item: any) => {
-              const start = new Date(item.startDate);   // ❗ KHÔNG nhân *1000
-              const end = new Date(item.endDate);
+            [...list] // Tạo bản sao để không ảnh hưởng mảng gốc
+              .sort((a: any, b: any) => {
+                // Sắp xếp: Start Date mới nhất (giá trị thời gian lớn hơn) lên trước
+                return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+              })
+              .map((item: any) => {
+                const start = new Date(item.startDate);   // ❗ KHÔNG nhân *1000
+                const end = new Date(item.endDate);
 
-              // Calculate actual status based on dates
-              let computedStatus = '';
-              if (Date.now() < start.getTime()) computedStatus = 'Not Started';
-              else if (Date.now() > end.getTime()) computedStatus = 'Expired';
-              else computedStatus = 'Active';
+                // Calculate actual status based on dates
+                let computedStatus = '';
+                if (Date.now() < start.getTime()) computedStatus = 'Not Started';
+                else if (Date.now() > end.getTime()) computedStatus = 'Expired';
+                else computedStatus = 'Active';
 
-              return {
-                id: item.id,
-                planName: item.plan?.name || '—',
-                userType: item.userType || '—',
-                price: `${item.plan?.price || 0} ${item.plan?.currency || ''}`,
-                duration: `${item.plan?.durationDays || 0} days`,
-                startDate: start.toLocaleDateString('en-US', {
-                    // "Tue"
-                  month: 'short',    // "Dec"
-                  day: 'numeric',    // "3"
-                  year: 'numeric'    // "2025"
-                }),
-                endDate: end.toLocaleDateString('en-US', {
-                    // "Tue"
-                  month: 'short',    // "Dec"
-                  day: 'numeric',    // "3"
-                  year: 'numeric'    // "2025"
-                }),
-                autoRenew: item.autoRenew ? 'Yes' : 'No',
-                status: computedStatus,
-                fullName: `${item.customer.firstName} ${item.customer.lastName}`,
-                email: `${item.customer.email}`,
+                return {
+                  id: item.id,
+                  planName: item.plan?.name || '—',
+                  userType: item.userType || '—',
+                  price: `${item.plan?.price || 0} ${item.plan?.currency || ''}`,
+                  duration: `${item.plan?.durationDays || 0} days`,
+                  startDate: start.toLocaleDateString('en-US', {
+                      // "Tue"
+                    month: 'short',    // "Dec"
+                    day: 'numeric',    // "3"
+                    year: 'numeric'    // "2025"
+                  }),
+                  endDate: end.toLocaleDateString('en-US', {
+                      // "Tue"
+                    month: 'short',    // "Dec"
+                    day: 'numeric',    // "3"
+                    year: 'numeric'    // "2025"
+                  }),
+                  autoRenew: item.autoRenew ? 'Yes' : 'No',
+                  status: computedStatus,
+                  fullName: `${item.customer.firstName} ${item.customer.lastName}`,
+                  email: `${item.customer.email}`,
 
-              };
-            }) || [];
+                };
+              }) || [];
 
           // Stats
           const total = Subcriptions.length;

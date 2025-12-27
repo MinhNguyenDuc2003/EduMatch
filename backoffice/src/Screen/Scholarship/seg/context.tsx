@@ -7,7 +7,7 @@ import { GenCtx } from 'src/apiController/GeneralContext';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
 
-const data = 'ffffff';
+
 export default GenCtx({
   useLogic() {
     type IForm = {
@@ -71,6 +71,28 @@ export default GenCtx({
           onSetLoading(false);
         }
       },
+      async onGetApplicationByScholarshipID(id: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get(`/api/scholarship/applications/scholarship/${id}`);
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+      async onChangeStatusScholarship(id: string, status: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.put(`/api/scholarship/scholarships/${id}/status/scholarship?status=${status}`,{});
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
     };
 
     useEffect(() => {
@@ -78,9 +100,7 @@ export default GenCtx({
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {
-      ss,
-      data,
-      meds,
+      ss,meds,
       methods,
     };
   },

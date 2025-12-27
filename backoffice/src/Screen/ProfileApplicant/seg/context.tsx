@@ -7,14 +7,14 @@ import { GenCtx } from 'src/apiController/GeneralContext';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
 export type IUser = {
-  username: string,
-  email: string,
-  firstName: string,
-  lastName: string,
-  password: string,
-  role: string
-}
-const data = 'ffffff';
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  role: string;
+};
+
 export default GenCtx({
   useLogic() {
     type IForm = {
@@ -43,7 +43,10 @@ export default GenCtx({
         try {
           const data = await apiClientService.get(`/api/profile/applicants/all`);
           if (data) {
-            ss.Joint.Students = data;
+            ss.setJointData({
+              Students: data || [],
+            });
+
             console.log('first', data);
           }
           return;
@@ -53,7 +56,7 @@ export default GenCtx({
           onSetLoading(false);
         }
       },
-     
+
       async onGetApplicantByID(id: string) {
         onSetLoading(true);
         try {
@@ -71,10 +74,8 @@ export default GenCtx({
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {
-      ss,
-      data,
-      meds,
-      methods
+      ss,meds,
+      methods,
     };
   },
 });

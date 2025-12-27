@@ -47,7 +47,6 @@ function SubcriptionPlanCreateInner({ meds }: { meds: any }) {
       router.push('/subscriptionPlan'); // Redirect after success
     } catch (err) {
       console.error(err);
-      alert('Failed to create subscription plan.');
     } finally {
       setLoading(false);
     }

@@ -1,10 +1,10 @@
+'use client';
 import { CheckCircle, Clock, GraduationCap, XCircle } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import CustomDataTable from 'src/common/components/common/CustomDataTable';
 import StatisticGrid from 'src/common/components/common/StatisticGrid';
 import Context from './seg/context';
 import { useRouter } from 'next/navigation';
-// import { useRouter } from 'next/navigation';
 
 const ScholarshipPage = () => {
   const [filterText, setFilterText] = useState('');
@@ -12,36 +12,39 @@ const ScholarshipPage = () => {
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
   };
-  // const router = useRouter();
+
   return (
     <Context.Provider>
       <Context.Consumer>
         {({ ss }) => {
           const list = (ss?.Joint?.ScholarshipList as any)?.data?.content || [];
           console.log('list', list);
+
+          // XỬ LÝ SẮP XẾP: startDate mới nhất lên đầu trước khi map
           const scholarships =
-            list?.map((item: any) => ({
-              id: item.id,
-              name: item.title,
-              sponsor: item.university || 'N/A',
-              amount: item.fundingAmount || '—',
-              endDate: new Date(item.endDate).toLocaleDateString('en-US', {
-                month: 'short',    // "Dec"
-                day: 'numeric',    // "3"
-                year: 'numeric'    // "2025"
-              }),
-              startDate: new Date(item.startDate).toLocaleDateString('en-US', {
-                month: 'short',    // "Dec"
-                day: 'numeric',    // "3"
-                year: 'numeric'    // "2025"
-              }),
-              status:
-                Date.now() < item.startDate
-                  ? 'Not Open Yet'
-                  : Date.now() > item.endDate
-                    ? 'Closed'
-                    : 'Open',
-            })) || [];
+            [...list]
+              .sort((a: any, b: any) => {
+                const timeA = new Date(a.startDate).getTime() || 0;
+                const timeB = new Date(b.startDate).getTime() || 0;
+                return timeB - timeA; // b - a để ngày lớn nhất (mới nhất) nằm trên cùng
+              })
+              .map((item: any) => ({
+                id: item.id,
+                name: item.title,
+                sponsor: item.university || 'N/A',
+                amount: item.fundingAmount || '—',
+                endDate: new Date(item.endDate).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+                }),
+                startDate: new Date(item.startDate).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+                }),
+                status: item.status
+              })) || [];
 
           const total = scholarships.length;
           const open = scholarships.filter((s: any) => s.status === 'Open').length;
@@ -78,6 +81,7 @@ const ScholarshipPage = () => {
               filterName: 'Closed',
             },
           ];
+
           const columns = [
             { accessorKey: "id", header: "ID" },
             { accessorKey: "name", header: "Scholarship Name" },
@@ -86,12 +90,11 @@ const ScholarshipPage = () => {
             { accessorKey: "startDate", header: "Start Date" },
             { accessorKey: "endDate", header: "End Date" },
             { accessorKey: "status", header: "Status" },
-          ]
+          ];
+
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
-
-
 
               <CustomDataTable
                 columns={columns}
@@ -103,7 +106,6 @@ const ScholarshipPage = () => {
                 isEdit={false}
                 isCreate={false}
               />
-
             </div>
           );
         }}

@@ -31,12 +31,12 @@ type State = {
     TopView?: ITopView[];
     CaseStudy?: ICaseStudy[];
     formFocusID?: string;
-    Users? : IUser[];
-    SystemNotification? : ISystemNotification[];
-    ScholarshipCreatedInMonth? : any
-    ReportsStatistics? : any
-    TopCountry? : any
-    AmountViewApplyApproveReject? : any
+    Users?: IUser[];
+    SystemNotification?: ISystemNotification[];
+    ScholarshipCreatedInMonth?: any;
+    ReportsStatistics?: any;
+    TopCountry?: any;
+    AmountViewApplyApproveReject?: any;
   };
   setJointData(Obj: State['Joint']): void;
   resetJoint(): void;
@@ -46,7 +46,17 @@ export const JointSlice: StateCreator<State> = (set) => {
   return {
     Joint: {},
     setJointData(Obj) {
-      set((state) => ({ Joint: { ...state.Joint, ...Obj } }));
+      set((state) => ({
+        Joint: {
+          ...state.Joint,
+          ...Object.fromEntries(
+            Object.entries(Obj).map(([key, value]) => [
+              key,
+              Array.isArray(value) ? [...value] : value,
+            ])
+          ),
+        },
+      }));
     },
     resetJoint() {
       set({ Joint: {} });
