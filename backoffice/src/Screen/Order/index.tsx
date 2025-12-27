@@ -90,6 +90,7 @@ const OrderPage = () => {
                 isCreate={false}
                 isEdit={false}
                 isDelete={false}
+                title='Payment'
               />
             </div>
           );

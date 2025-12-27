@@ -56,6 +56,21 @@ export default GenCtx({
           onSetLoading(false);
         }
       },
+      async onUpdateStatus(id: string, status: string) {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.put(`/api/subscription/subscription`, {
+            id: id,
+            status: status,
+          });
+          console.log('data.data', data.data);
+          return data.data;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
     };
 
     useEffect(() => {

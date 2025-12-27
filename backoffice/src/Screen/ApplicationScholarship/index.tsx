@@ -116,6 +116,7 @@ const ApplicantScholarship = () => {
                 isCreate={false}
                 isEdit={false}
                 isDelete={false}
+                title='ApplicantScholarship'
               />
               
             </div>

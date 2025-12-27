@@ -50,6 +50,7 @@ const ApplicantProfiles = () => {
                 isCreate={false}
                 isDelete={false}
                 isEdit={false}
+                title='ApplicantProfiles'
               />
             </div>
           );

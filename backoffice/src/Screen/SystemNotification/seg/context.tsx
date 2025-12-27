@@ -54,14 +54,10 @@ export default GenCtx({
                         title: Notification.title,
                         content: Notification.content
                     });
-                    if (data !== null) {
-                        alert('Create Notification successfull');
-                        router.push('/systemNotification')
-                    }
+                   
                     return;
                 } catch (error) {
                     console.error({ error });
-                     alert('Failed to create Notification.');
                 } finally {
                     onSetLoading(false);
                 }

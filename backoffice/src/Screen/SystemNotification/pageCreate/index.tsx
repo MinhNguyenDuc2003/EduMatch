@@ -1,130 +1,272 @@
 'use client';
 
-import { Check, ArrowLeft, Bell, Send, MessageSquare } from 'lucide-react';
+import { Check, Bell, Send, MessageSquare, X, AlertTriangle, CheckCircle2, XCircle } from 'lucide-react';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { CustomFormField } from 'src/common/components/common/CustomFormField';
 import Context from '../seg/context';
 import { useRouter } from 'next/navigation';
 
+/* ==========================================================================
+   LOCAL COMPONENT: NOTIFICATION MODAL
+   ========================================================================== */
+interface ModalProps {
+    isOpen: boolean;
+    type: 'success' | 'error' | 'confirm';
+    title: string;
+    message: string;
+    onClose: () => void;
+    onConfirm?: () => void;
+}
+
+const NotificationModal = ({ isOpen, type, title, message, onClose, onConfirm }: ModalProps) => {
+    if (!isOpen) return null;
+
+    const config = {
+        success: {
+            icon: <CheckCircle2 className="text-emerald-500" size={48} />,
+            btnColor: 'bg-emerald-600 hover:bg-emerald-700',
+            borderColor: 'border-emerald-100',
+        },
+        error: {
+            icon: <XCircle className="text-red-500" size={48} />,
+            btnColor: 'bg-red-600 hover:bg-red-700',
+            borderColor: 'border-red-100',
+        },
+        confirm: {
+            icon: <AlertTriangle className="text-amber-500" size={48} />,
+            btnColor: 'bg-blue-600 hover:bg-blue-700',
+            borderColor: 'border-blue-100',
+        },
+    };
+
+    const current = config[type];
+
+    return (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 font-sans">
+            {/* Backdrop */}
+            <div 
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-300" 
+                onClick={type !== 'confirm' ? onClose : undefined} 
+            />
+            
+            {/* Modal Content */}
+            <div className={`relative bg-white w-full max-w-sm rounded-3xl shadow-2xl border-t-8 ${current.borderColor} p-8 text-center animate-in fade-in zoom-in duration-200`}>
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                    <X size={20} />
+                </button>
+                <div className="flex flex-col items-center">
+                    <div className="mb-4">{current.icon}</div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2 tracking-tight">{title}</h3>
+                    <p className="text-gray-500 font-medium leading-relaxed mb-8">{message}</p>
+                    
+                    <div className="flex w-full gap-3">
+                        {type === 'confirm' ? (
+                            <>
+                                <button 
+                                    onClick={onClose} 
+                                    className="flex-1 py-3 rounded-2xl font-bold text-gray-500 bg-gray-100 hover:bg-gray-200 transition-all active:scale-95"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    onClick={onConfirm} 
+                                    className={`flex-1 py-3 rounded-2xl font-bold text-white shadow-lg ${current.btnColor} transition-all active:scale-95`}
+                                >
+                                    Confirm
+                                </button>
+                            </>
+                        ) : (
+                            <button 
+                                onClick={onClose} 
+                                className={`w-full py-3 rounded-2xl font-bold text-white shadow-lg ${current.btnColor} transition-all active:scale-95`}
+                            >
+                                Close
+                            </button>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+/* ==========================================================================
+   MAIN PAGE COMPONENT
+   ========================================================================== */
 export default function SystemNotificationCreate() {
-  return (
-    <Context.Provider>
-      <Context.Consumer>
-        {({ meds }) => <SystemNotificationCreateInner meds={meds} />}
-      </Context.Consumer>
-    </Context.Provider>
-  );
+    return (
+        <Context.Provider>
+            <Context.Consumer>
+                {({ meds }) => <SystemNotificationCreateInner meds={meds} />}
+            </Context.Consumer>
+        </Context.Provider>
+    );
 }
 
 function SystemNotificationCreateInner({ meds }: { meds: any }) {
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
-  const methods = useForm<any>({
-    defaultValues: {
-      fields: {
-        SystemNotification: {
-          title: '',
-          content: '',
+    // Modal State
+    const [modal, setModal] = useState({
+        isOpen: false,
+        type: 'success' as 'success' | 'error' | 'confirm',
+        title: '',
+        message: '',
+        onConfirm: () => { },
+    });
+
+    const methods = useForm<any>({
+        defaultValues: {
+            fields: {
+                SystemNotification: {
+                    title: '',
+                    content: '',
+                },
+            },
         },
-      },
-    },
-  });
+    });
 
-  const { handleSubmit } = methods;
+    const { handleSubmit, reset } = methods;
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      setLoading(true);
-      const notification = data.fields.SystemNotification;
-      await meds.onCreate(notification);
-      router.back(); // Or router.push('/systemNotification') based on your route
-    } catch (err) {
-      console.error(err);
-      alert('Failed to create notification.');
-    } finally {
-      setLoading(false);
-    }
-  });
+    // Hàm gọi API thực tế
+    const performBroadcast = async (data: any) => {
+        setModal(prev => ({ ...prev, isOpen: false })); // Đóng modal confirm
+        try {
+            setLoading(true);
+            const notification = data.fields.SystemNotification;
+            const res = await meds.onCreate(notification);
 
-  return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 font-sans flex justify-center">
-      <div className=" w-full">
-        
-        {/* Navigation */}
-       
+            if (res) {
+                setModal({
+                    isOpen: true,
+                    type: 'success',
+                    title: 'Broadcast Successful!',
+                    message: 'The notification has been sent to all system users.',
+                    onConfirm: () => {
+                        reset();
+                        router.back();
+                    },
+                });
+            }
+        } catch (err) {
+            setModal({
+                isOpen: true,
+                type: 'error',
+                title: 'Broadcast Failed',
+                message: 'We encountered an error while sending the notification. Please try again.',
+                onConfirm: () => { },
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        <FormProvider {...methods}>
-          <form
-            onSubmit={onSubmit}
-            className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden relative"
-          >
-             <div className="pt-6 border-t border-gray-100 flex justify-end gap-4 mb-4">
-                    <button
-                        type="button"
-                        onClick={() => router.back()}
-                        className="px-6 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition"
+    // Hàm khi nhấn nút Submit
+    const onSubmit = handleSubmit((data) => {
+        setModal({
+            isOpen: true,
+            type: 'confirm',
+            title: 'Confirm Broadcast',
+            message: 'Are you sure you want to send this message to ALL users? This action cannot be undone.',
+            onConfirm: () => performBroadcast(data),
+        });
+    });
+
+    return (
+        <div className="min-h-screen bg-gray-50 py-10 px-4 font-sans flex justify-center overflow-y-auto">
+            <div className="w-full  h-fit pb-20">
+                <FormProvider {...methods}>
+                    <form
+                        onSubmit={onSubmit}
+                        className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-visible relative"
                     >
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="flex items-center gap-2 px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-200 transition transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
-                    >
-                        {loading ? 'Sending...' : <><Send size={18} /> Broadcast</>}
-                    </button>
-                </div>
-            {/* Header Banner */}
-            <div className="h-32 bg-gradient-to-r from-blue-600 to-indigo-600 relative flex items-center px-8">
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                <div className="relative z-10 text-white">
-                    <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-3">
-                        <Bell className="bg-white/20 p-1.5 rounded-full" size={36}/> 
-                        New Notification
-                    </h1>
-                    <p className="text-blue-100 mt-1 text-sm md:text-base">Broadcast a message to all system users.</p>
-                </div>
-            </div>
-
-            <div className="p-8 space-y-8">
-                
-                {/* Notification Details */}
-                <div className="space-y-6">
-                    <div className="flex items-start gap-4">
-                        <div className="mt-3 p-2 bg-blue-50 rounded-lg text-blue-600 hidden sm:block">
-                            <MessageSquare size={24} />
+                        {/* Static Action Bar for Better UX */}
+                        <div className="absolute top-6 right-8 z-20 flex gap-3">
+                            <button
+                                type="button"
+                                onClick={() => router.back()}
+                                className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold border border-white/20 transition backdrop-blur-sm"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="flex items-center gap-2 px-8 py-2.5 bg-white text-blue-700 hover:bg-blue-50 rounded-xl font-bold shadow-lg transition transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                            >
+                                {loading ? (
+                                    <div className="h-5 w-5 border-2 border-blue-700/30 border-t-blue-700 rounded-full animate-spin" />
+                                ) : (
+                                    <Send size={18} />
+                                )}
+                                {loading ? 'Sending...' : 'Broadcast Now'}
+                            </button>
                         </div>
-                        <div className="flex-1 space-y-6">
-                            <CustomFormField
-                                name="fields.SystemNotification.title"
-                                label="Subject Title"
-                                placeholder="e.g. System Maintenance Scheduled"
-                                isBorder
-                                rules={{ required: 'Title is required' }}
-                            />
 
-                            <CustomFormField
-                                name="fields.SystemNotification.content"
-                                label="Message Content"
-                                placeholder="Type your detailed message here..."
-                                type="textarea"
-                                isBorder
-                                className="min-h-[150px]" // Helper class for taller textarea if supported, else relies on default
-                                rules={{ required: 'Content is required' }}
-                            />
+                        {/* Header Banner */}
+                        <div className="h-44 bg-gradient-to-r from-blue-600 to-indigo-600 relative flex items-center px-8 rounded-t-3xl overflow-hidden">
+                            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                            <div className="relative z-10 text-white">
+                                <h1 className="text-3xl md:text-4xl font-black flex items-center gap-4 tracking-tight">
+                                    <Bell className="bg-white/20 p-2 rounded-2xl" size={48} />
+                                    Broadcast Center
+                                </h1>
+                                <p className="text-blue-100 mt-2 max-w-md font-medium">Create a system-wide announcement to reach every active user on the platform.</p>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                {/* Actions */}
-               
+                        <div className="p-8 md:p-12 space-y-12">
+                            {/* Notification Content Section */}
+                            <div className="space-y-10">
+                                <div className="flex items-center gap-3 border-b border-gray-100 pb-5">
+                                    <MessageSquare size={22} className="text-blue-600" />
+                                    <h3 className="text-sm font-sans text-gray-400 uppercase font-bold ">Message Configuration</h3>
+                                </div>
 
+                                <div className="space-y-8">
+                                    <CustomFormField
+                                        name="fields.SystemNotification.title"
+                                        label="Notification Subject"
+                                        placeholder="Enter a concise and clear title..."
+                                        isBorder
+                                        rules={{ required: 'A subject title is required' }}
+                                    />
+
+                                    {/* Wrapper to ensure textarea has enough vertical space */}
+                                    <div className="min-h-[300px]"> 
+                                        <CustomFormField
+                                            name="fields.SystemNotification.content"
+                                            label="Message Body"
+                                            placeholder="Compose your detailed announcement here..."
+                                            type="textarea"
+                                            isBorder
+                                            // Using inline styles or Tailwind classes to force height
+                                            className="min-h-[250px] text-lg leading-relaxed" 
+                                            rules={{ required: 'The message body cannot be empty' }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </FormProvider>
+
+                {/* NOTIFICATION MODAL SYSTEM */}
+                <NotificationModal
+                    isOpen={modal.isOpen}
+                    type={modal.type}
+                    title={modal.title}
+                    message={modal.message}
+                    onClose={() => {
+                        setModal(prev => ({ ...prev, isOpen: false }));
+                        // Nếu là success thì có thể thực hiện hành động phụ khi đóng
+                        if (modal.type === 'success') router.back();
+                    }}
+                    onConfirm={modal.onConfirm}
+                />
             </div>
-          </form>
-        </FormProvider>
-      </div>
-    </div>
-  );
+        </div>
+    );
 }

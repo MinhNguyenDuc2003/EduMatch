@@ -12,12 +12,85 @@ import {
   Users,
   ShieldCheck,
   Save,
-  ArrowLeft
+  CheckCircle2,
+  XCircle,
+  AlertTriangle
 } from 'lucide-react';
 import Context from '../seg/context';
 import { FormProvider, useForm } from 'react-hook-form';
 import { CustomFormField } from 'src/common/components/common/CustomFormField';
 
+/* ==========================================================================
+   LOCAL COMPONENT: NOTIFICATION MODAL
+   ========================================================================== */
+interface NotificationModalProps {
+  isOpen: boolean;
+  type: 'success' | 'error' | 'confirm';
+  title: string;
+  message: string;
+  onClose: () => void;
+  onConfirm?: () => void;
+}
+
+const NotificationModal = ({ isOpen, type, title, message, onClose, onConfirm }: NotificationModalProps) => {
+  if (!isOpen) return null;
+
+  const config = {
+    success: {
+      icon: <CheckCircle2 className="text-emerald-500" size={48} />,
+      btnColor: 'bg-emerald-600 hover:bg-emerald-700',
+      borderColor: 'border-emerald-100',
+    },
+    error: {
+      icon: <XCircle className="text-red-500" size={48} />,
+      btnColor: 'bg-red-600 hover:bg-red-700',
+      borderColor: 'border-red-100',
+    },
+    confirm: {
+      icon: <AlertTriangle className="text-amber-500" size={48} />,
+      btnColor: 'bg-blue-600 hover:bg-blue-700',
+      borderColor: 'border-blue-100',
+    },
+  };
+
+  const current = config[type];
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 font-sans">
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={type !== 'confirm' ? onClose : undefined} />
+      <div className={`relative bg-white w-full max-w-sm rounded-3xl shadow-2xl border-t-8 ${current.borderColor} p-8 text-center animate-in fade-in zoom-in duration-200`}>
+        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+          <X size={20} />
+        </button>
+        <div className="flex flex-col items-center">
+          <div className="mb-4">{current.icon}</div>
+          <h3 className="text-2xl font-black text-gray-900 mb-2 tracking-tight">{title}</h3>
+          <p className="text-gray-500 font-medium leading-relaxed mb-8">{message}</p>
+          <div className="flex w-full gap-3">
+            {type === 'confirm' ? (
+              <>
+                <button onClick={onClose} className="flex-1 py-3 rounded-2xl font-bold text-gray-500 bg-gray-100 hover:bg-gray-200 transition-all">
+                  Cancel
+                </button>
+                <button onClick={onConfirm} className={`flex-1 py-3 rounded-2xl font-bold text-white shadow-lg ${current.btnColor} transition-all active:scale-95`}>
+                  Confirm
+                </button>
+              </>
+            ) : (
+              <button onClick={onClose} className={`w-full py-3 rounded-2xl font-bold text-white shadow-lg ${current.btnColor} transition-all active:scale-95`}>
+                Close
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ==========================================================================
+   MAIN PAGE COMPONENT
+   ========================================================================== */
 export default function SubcriptionPlanDetail() {
   const { id } = useParams();
 
@@ -36,6 +109,18 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Modal State quản lý thông báo
+  const [notif, setNotif] = useState({
+    isOpen: false,
+    type: 'success' as 'success' | 'error' | 'confirm',
+    title: '',
+    message: '',
+    onConfirm: () => { },
+    onClose: () => { },
+  });
+
+  const closeNotif = () => setNotif(prev => ({ ...prev, isOpen: false }));
+
   const methods = useForm<any>({ defaultValues: {} });
   const { reset, handleSubmit } = methods;
 
@@ -44,7 +129,6 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
       (async () => {
         try {
           const res = await meds.onGetByID(id);
-          // Ensure features is array
           const featuresArray = Array.isArray(res.features)
             ? res.features
             : (typeof res.features === 'string' ? res.features.split(',').map((f: string) => f.trim()) : []);
@@ -66,11 +150,12 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
     }
   }, [id, meds, reset]);
 
-  const handleSave = handleSubmit(async (formData) => {
+  /* --- ACTIONS: SAVE --- */
+  const performSave = async (formData: any) => {
+    closeNotif();
     try {
       setLoading(true);
       const planData = formData.fields.SubcriptionPlan;
-
       const featuresArray = Array.isArray(planData.features)
         ? planData.features
         : planData.features?.split(',').map((f: string) => f.trim()) || [];
@@ -82,25 +167,80 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
 
       setData({ ...planData, features: featuresArray });
       setIsEditing(false);
+
+      setNotif({
+        isOpen: true,
+        type: 'success',
+        title: 'Successfully Updated',
+        message: 'Your changes have been saved.',
+        onConfirm: () => { },
+        onClose: closeNotif,
+      });
     } catch (error) {
-      console.error(error);
-      alert('Failed to update plan.');
+      setNotif({
+        isOpen: true,
+        type: 'error',
+        title: 'Update Failed',
+        message: 'Could not save changes. Please check your connection.',
+        onConfirm: () => { },
+        onClose: closeNotif,
+      });
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSave = handleSubmit((data) => {
+    setNotif({
+      isOpen: true,
+      type: 'confirm',
+      title: 'Confirm Changes',
+      message: 'Are you sure you want to update this subscription plan?',
+      onConfirm: () => performSave(data),
+      onClose: closeNotif,
+    });
   });
 
-  const handleDelete = async () => {
-    const ok = confirm("Are you sure you want to delete this plan? This action cannot be undone.");
-    if (!ok) return;
+  /* --- ACTIONS: DELETE (Chuyển hướng về trang trước) --- */
+  const performDelete = async () => {
+    closeNotif();
     try {
+      setLoading(true);
       await meds.onDelete(id);
-      router.push('/subscriptionPlan');
+      
+      setNotif({
+        isOpen: true,
+        type: 'success',
+        title: 'Plan Deleted',
+        message: 'The subscription plan has been removed from the system.',
+        // Khi nhấn nút trên Modal Success, thực hiện chuyển hướng
+        onConfirm: () => router.push('/subscriptionPlan'),
+        onClose: () => router.push('/subscriptionPlan'),
+      });
     } catch (error) {
-      console.error(error);
-      alert('Failed to delete plan.');
+      setNotif({
+        isOpen: true,
+        type: 'error',
+        title: 'Delete Failed',
+        message: 'An error occurred while trying to delete the plan.',
+        onConfirm: () => { },
+        onClose: closeNotif,
+      });
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
+  const handleDelete = () => {
+    setNotif({
+      isOpen: true,
+      type: 'confirm',
+      title: 'Confirm Deletion',
+      message: 'This action cannot be undone. Are you sure you want to delete this plan?',
+      onConfirm: performDelete,
+      onClose: closeNotif,
+    });
+  };
 
   if (!data)
     return (
@@ -113,18 +253,11 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 font-sans flex justify-center">
-      <div className=" w-full">
+    <div className="min-h-screen bg-gray-50 py-10 px-4 font-sans flex justify-center overflow-y-auto">
+      <div className="w-full  h-fit pb-20">
 
         {/* Toolbar */}
         <div className="flex justify-end items-center mb-6">
-          {/* <button 
-                    onClick={() => router.back()} 
-                    className="flex items-center gap-2 text-gray-500 hover:text-gray-800 transition-colors"
-                >
-                    <ArrowLeft size={20} /> Back
-                </button> */}
-
           {!isEditing ? (
             <div className="flex gap-3">
               <button
@@ -164,9 +297,8 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
         </div>
 
         <FormProvider {...methods}>
-          <form onSubmit={handleSave} className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden relative">
+          <form className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-visible relative">
 
-            {/* Decorative Header Background */}
             <div className="h-32 bg-gradient-to-r from-violet-600 to-indigo-600 relative overflow-hidden">
               <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
               <div className="absolute -bottom-10 -right-10 text-white/10">
@@ -175,7 +307,6 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
             </div>
 
             <div className="px-8 pb-8 -mt-12 relative">
-              {/* Plan Header Card */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
@@ -186,10 +317,10 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
                   </div>
                   <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">{data.name}</h1>
                   <span className=" tracking-wide text-sm font-medium">Created Date: {new Date(data.createdDate).toLocaleDateString('en-US', {
-                                    month: 'short',    // "Dec"
-                                    day: 'numeric',    // "3"
-                                    year: 'numeric'    // "2025"
-                                }) || 'Unknown Status'}</span>
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  }) || 'Unknown Status'}</span>
                 </div>
                 <div className="text-right">
                   <div className="flex items-baseline justify-end gap-1">
@@ -200,10 +331,7 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
                 </div>
               </div>
 
-              {/* Form Fields Section */}
               <div className="space-y-8">
-
-                {/* General Information */}
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                     <Clock size={20} className="text-blue-500" /> General Details
@@ -211,13 +339,13 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
                   <div className="grid md:grid-cols-2 gap-6 p-1">
                     {isEditing ? (
                       <>
-                        <CustomFormField rules={require} name="fields.SubcriptionPlan.name" label="Plan Name" isBorder />
+                        <CustomFormField name="fields.SubcriptionPlan.name" label="Plan Name" isBorder rules={{ required: true }} />
                         <div className="grid grid-cols-2 gap-4">
-                          <CustomFormField rules={require} name="fields.SubcriptionPlan.price" label="Price" type="number" isBorder />
-                          <CustomFormField rules={require} name="fields.SubcriptionPlan.currency" label="Currency" isBorder type='select' options={[{ value: 'USD', label: 'USD' }, { value: 'VND', label: 'VND' }]} />
+                          <CustomFormField name="fields.SubcriptionPlan.price" label="Price" type="number" isBorder rules={{ required: true }} />
+                          <CustomFormField name="fields.SubcriptionPlan.currency" label="Currency" isBorder type='select' options={[{ value: 'USD', label: 'USD' }, { value: 'VND', label: 'VND' }]} />
                         </div>
-                        <CustomFormField rules={require} name="fields.SubcriptionPlan.durationDays" label="Duration (Days)" type="number" isBorder />
-                        <CustomFormField rules={require} name="fields.SubcriptionPlan.targetType" label="Target Audience" isBorder type="select" options={[{ value: 'PROVIDER', label: 'Provider' }, { value: 'APPLICANT', label: 'Applicant' }]} />
+                        <CustomFormField name="fields.SubcriptionPlan.durationDays" label="Duration (Days)" type="number" isBorder rules={{ required: true }} />
+                        <CustomFormField name="fields.SubcriptionPlan.targetType" label="Target Audience" isBorder type="select" options={[{ value: 'PROVIDER', label: 'Provider' }, { value: 'APPLICANT', label: 'Applicant' }]} />
                       </>
                     ) : (
                       <>
@@ -228,13 +356,12 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
                   </div>
                 </div>
 
-                {/* Description */}
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                     <Users size={20} className="text-amber-500" /> Description
                   </h3>
                   {isEditing ? (
-                    <CustomFormField rules={require} name="fields.SubcriptionPlan.description" label="" type="textarea" isBorder />
+                    <CustomFormField name="fields.SubcriptionPlan.description" label="" type="textarea" isBorder rules={{ required: true }} />
                   ) : (
                     <p className="text-gray-600 leading-relaxed bg-gray-50 p-4 rounded-xl border border-gray-100">
                       {data.description}
@@ -242,26 +369,27 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
                   )}
                 </div>
 
-                {/* Features */}
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                     <ShieldCheck size={20} className="text-green-500" /> Included Features
                   </h3>
                   {isEditing ? (
-                    <CustomFormField rules={require}
-                      type="multi-select"
-                      label=""
-                      name="fields.SubcriptionPlan.features"
-                      options={[
-                        { value: "AI_SCHOLARSHIP_NOTIFICATION", label: "AI Scholarship Notification" },
-                        { value: "AI_SCHOLARSHIP_RECOMMENDATION", label: "AI Scholarship Recommendation" },
-                        { value: "POST_SCHOLARSHIP", label: "Post Scholarship" },
-                        { value: "APPLICATION_FILTERING", label: "Application Filtering" },
-                        { value: "AI_PROFILE_RECOMMENDATION", label: "AI Profile Recommendation" },
-                      ]}
-                      placeholder="Select features included in this plan"
-                      isBorder
-                    />
+                    <div className="z-20 relative">
+                      <CustomFormField
+                        type="multi-select"
+                        label=""
+                        name="fields.SubcriptionPlan.features"
+                        options={[
+                          { value: "AI_SCHOLARSHIP_NOTIFICATION", label: "AI Scholarship Notification" },
+                          { value: "AI_SCHOLARSHIP_RECOMMENDATION", label: "AI Scholarship Recommendation" },
+                          { value: "POST_SCHOLARSHIP", label: "Post Scholarship" },
+                          { value: "APPLICATION_FILTERING", label: "Application Filtering" },
+                          { value: "AI_PROFILE_RECOMMENDATION", label: "AI Profile Recommendation" },
+                        ]}
+                        placeholder="Select features"
+                        isBorder
+                      />
+                    </div>
                   ) : (
                     <div className="grid sm:grid-cols-2 gap-3">
                       {data.features?.map((feature: string, idx: number) => (
@@ -277,11 +405,20 @@ function SubcriptionPlanDetailInner({ meds, id }: { meds: any; id: string }) {
                     </div>
                   )}
                 </div>
-
               </div>
             </div>
           </form>
         </FormProvider>
+
+        {/* NOTIFICATION MODAL SYSTEM */}
+        <NotificationModal
+          isOpen={notif.isOpen}
+          type={notif.type}
+          title={notif.title}
+          message={notif.message}
+          onClose={notif.onClose} // Sửa ở đây để nhận callback đóng/chuyển hướng
+          onConfirm={notif.onConfirm}
+        />
       </div>
     </div>
   );

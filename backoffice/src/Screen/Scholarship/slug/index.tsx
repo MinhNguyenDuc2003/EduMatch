@@ -160,32 +160,36 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
 
   const closeNotif = () => setNotif((prev) => ({ ...prev, isOpen: false }));
 
+// 1. Định nghĩa các option cho Modal chọn status
   const statusOptions = [
-    { label: 'Pending', value: 'Pending', color: 'bg-amber-100 text-amber-700 border-amber-200' },
-    {
-      label: 'Approved',
-      value: 'Approved',
-      color: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+    { 
+      label: 'Public', 
+      value: 'Public', 
+      color: 'bg-emerald-100 text-emerald-700 border-emerald-200' 
     },
-    { label: 'Rejected', value: 'Rejected', color: 'bg-red-100 text-red-700 border-red-200' },
-    {
-      label: 'Successful',
-      value: 'Successful',
-      color: 'bg-blue-100 text-blue-700 border-blue-200',
+    { 
+      label: 'Private', 
+      value: 'Private', 
+      color: 'bg-gray-100 text-gray-700 border-gray-200' 
+    },
+    { 
+      label: 'Banned', 
+      value: 'Banned', 
+      color: 'bg-red-100 text-red-700 border-red-200' 
     },
   ];
 
+  // 2. Định nghĩa màu sắc cho Badge hiển thị ở Hero Section
   const getStatusBadgeClass = (status: string) => {
     switch (status) {
-      case 'Approved':
+      case 'Public':
         return 'bg-emerald-500 text-white shadow-emerald-100';
-      case 'Rejected':
+      case 'Private':
+        return 'bg-gray-500 text-white shadow-gray-100';
+      case 'Banned':
         return 'bg-red-500 text-white shadow-red-100';
-      case 'Successful':
-        return 'bg-blue-600 text-white shadow-blue-100';
-      case 'Pending':
       default:
-        return 'bg-amber-500 text-white shadow-amber-100';
+        return 'bg-blue-500 text-white shadow-blue-100';
     }
   };
 
@@ -339,7 +343,7 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
       )}
 
       {/* MODAL: VIEW PREFERENCES */}
-      {isPrefModalOpen && (
+      {/* {isPrefModalOpen && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center p-4">
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -415,7 +419,7 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* 1. HERO SECTION */}
       <div className="relative bg-white border-b border-gray-200">
@@ -463,7 +467,7 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
 
               <div className="flex flex-col items-end gap-3 min-w-[220px]">
                 {/* BUTTON VIEW PREFERENCES */}
-                <button
+                {/* <button
                   onClick={() => setIsPrefModalOpen(true)}
                   className="w-full md:w-auto px-6 py-4 rounded-2xl font-black text-blue-600 bg-white border-2 border-blue-600 hover:bg-blue-50 transition-all shadow-lg flex items-center justify-center gap-2 group active:scale-95"
                 >
@@ -472,7 +476,7 @@ function ScholarshipDetailInner({ meds, id }: { meds: any; id: string }) {
                     className="group-hover:rotate-90 transition-transform duration-500"
                   />
                   VIEW PREFERENCES
-                </button>
+                </button> */}
 
                 <button
                   onClick={() => {

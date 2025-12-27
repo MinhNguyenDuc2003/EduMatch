@@ -34,6 +34,7 @@ import * as XLSX from "xlsx-js-style";
 interface ModernDataTableProps {
   columns: any[];
   data?: any[];
+  title?: string;
   onView?: (row: any) => void;
   onEdit?: (row: any) => void;
   onDelete?: (row: any) => void;
@@ -47,6 +48,7 @@ interface ModernDataTableProps {
 export default function ModernDataTable({
   columns,
   data = [],
+  title = "ExportData",
   onView,
   onEdit,
   onDelete,
@@ -89,7 +91,7 @@ export default function ModernDataTable({
     pageCount: Math.ceil(filteredData.length / pageSize),
   });
 
-  // 4. LOGIC: EXPORT EXCEL (Kept exactly as provided)
+  // 4. LOGIC: EXPORT EXCEL
   const handleExportExcel = () => {
     if (!filteredData || filteredData.length === 0) return;
 
@@ -138,7 +140,12 @@ export default function ModernDataTable({
 
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Data");
-    XLSX.writeFile(wb, `export-${new Date().toISOString().slice(0, 10)}.xlsx`);
+    
+    // LẤY NGÀY HIỆN TẠI (YYYY-MM-DD)
+    const currentDate = new Date().toISOString().slice(0, 10);
+    
+    // XUẤT FILE: Tên_File-2025-12-27.xlsx
+    XLSX.writeFile(wb, `${title}-${currentDate}.xlsx`);
   };
 
   return (
@@ -195,13 +202,11 @@ export default function ModernDataTable({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow 
                 key={headerGroup.id} 
-                className="border-b border-slate-800 hover:bg-slate-900" // Tắt hiệu ứng hover sáng ở header
+                className="border-b border-slate-800 hover:bg-slate-900" 
               >
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    // Sửa text-gray-500 -> text-white
-                    // Sửa hover:bg-gray-100 -> hover:bg-slate-800
                     className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider cursor-pointer select-none hover:bg-slate-800 transition-colors"
                     style={{ width: header.column.getSize() }}
                     onClick={header.column.getToggleSortingHandler()}
@@ -211,7 +216,6 @@ export default function ModernDataTable({
                         header.column.columnDef.header,
                         header.getContext()
                       )}
-                      {/* Sửa màu icon sort thành sáng hơn để nổi trên nền tối */}
                       <span className="text-gray-400">
                         {header.column.getIsSorted() === "asc" ? (
                           <ArrowUpDown className="h-3 w-3 rotate-180 text-white" />

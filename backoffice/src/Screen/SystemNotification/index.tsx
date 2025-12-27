@@ -9,33 +9,34 @@ import Context from './seg/context';
 
 const SystemNotification = () => {
   const [filterText, setFilterText] = useState('');
-  const router = useRouter()
-  const handleFilterSelect = (filterKey: string) => {
-    setFilterText(filterKey);
-  };
+  const router = useRouter();
 
   return (
     <Context.Provider>
       <Context.Consumer>
         {({ ss }) => {
           const list = (ss?.Joint?.SystemNotification as any)?.data || [];
-          console.log('list', list);
 
-          const notifications = list.map((item: any) => ({
+          // LOGIC: Sắp xếp dữ liệu theo ngày tạo giảm dần (mới nhất lên đầu)
+          // Chúng ta sort trước khi format thành string để đảm bảo tính chính xác
+          const sortedList = [...list].sort((a, b) => {
+            return new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime();
+          });
+
+          const notifications = sortedList.map((item: any) => ({
             id: item.id,
             content: item.content,
             referenceType: item.referenceType,
-            // isRead: item.isRead ? 'Read' : 'Unread',
             isAdmin: item.isAdmin ? 'Admin' : 'User',
             createdDate: new Date(item.createdDate).toLocaleDateString('en-US', {
-                  // "Tue"
-                month: 'short',    // "Dec"
-                day: 'numeric',    // "3"
-                year: 'numeric'    // "2025"
-              }),
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            }),
           }));
 
           const total = notifications.length;
+          // Note: Logic read/unread cần key isRead trong mapping nếu muốn dùng stats này
           const read = notifications.filter((n: any) => n.isRead === 'Read').length;
           const unread = notifications.filter((n: any) => n.isRead === 'Unread').length;
 
@@ -62,22 +63,17 @@ const SystemNotification = () => {
               filterName: 'Unread',
             },
           ];
-          const columns = [
-              { accessorKey: "id", header: "ID" },
-              { accessorKey: "content", header: "Content" },
-              { accessorKey: "referenceType", header: "Reference Type" },
-              // { accessorKey: "isRead", header: "Read Status" },
-              { accessorKey: "isAdmin", header: "Created By" },
-              { accessorKey: "createdDate", header: "Created Date" },
 
-            ]
+          const columns = [
+            { accessorKey: "id", header: "ID" },
+            { accessorKey: "content", header: "Content" },
+            { accessorKey: "referenceType", header: "Reference Type" },
+            { accessorKey: "isAdmin", header: "Created By" },
+            { accessorKey: "createdDate", header: "Created Date" },
+          ];
+
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
-              {/* <StatisticGrid stats={stats} onFilterSelect={handleFilterSelect} /> */}
-
-
-
-
               <CustomDataTable
                 columns={columns}
                 data={notifications}
@@ -88,6 +84,7 @@ const SystemNotification = () => {
                 isEdit={false}
                 isView={false}
                 isDelete={false}
+                title='SystemNotification'
               />
             </div>
           );

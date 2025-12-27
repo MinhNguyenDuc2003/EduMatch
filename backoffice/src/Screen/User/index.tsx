@@ -76,6 +76,7 @@ const Users = () => {
                 isDelete={false}
                 isEdit={false}
                 isView={false}
+                title='Users'
               />
             </div>
           );

@@ -21,6 +21,7 @@ const ProviderProfiles = () => {
             email: p.email ?? 'N/A',
             phone: p.phone ?? 'N/A',
             role: 'Provider',
+            verified: p.verified ? 'Verified' : 'Unverified',
             createDate: new Date(p.createdDate).toLocaleDateString('en-US', {
                   // "Tue"
                 month: 'short',    // "Dec"
@@ -34,6 +35,7 @@ const ProviderProfiles = () => {
               { accessorKey: 'name', header: 'Name' },
               { accessorKey: 'email', header: 'Email' },
               { accessorKey: 'phone', header: 'Phone' },
+              { accessorKey: 'verified', header: 'Verified' },
               { accessorKey: 'createDate', header: 'Create Date' },
             ]
 
@@ -50,6 +52,7 @@ const ProviderProfiles = () => {
                 isCreate={false}
                 isDelete={false}
                 isEdit={false}
+                title='ProviderProfiles'
               />
             </div>
           );
