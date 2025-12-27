@@ -5,44 +5,93 @@ export function calculateProfileStrength(profile: ProfileApiResponse): number {
   const applicant = profile.applicantProfile;
   if (!applicant) return 0;
 
-  const totalFields = 30; // Total important fields to track
+  // Weighted fields configuration
+  // Arrays and complex objects can be weighted higher
   let filledFields = 0;
+  let totalPossible = 0;
 
-  // Basic info
-  if (applicant.firstName) filledFields++;
-  if (applicant.lastName) filledFields++;
-  if (applicant.contactName) filledFields++;
-  if (profile.customer?.email) filledFields++;
+  const checkField = (field: any, weight: number = 1) => {
+    totalPossible += weight;
+    if (field !== undefined && field !== null && field !== '') {
+      if (Array.isArray(field)) {
+        if (field.length > 0) filledFields += weight;
+      } else if (typeof field === 'number') {
+        // For numbers like scores or counts, 0 might be valid or invalid depending on context
+        // Assuming > 0 for scores/counts implies "filled" for completeness in this context,
+        // but for publicationCount 0 is a valid "filing".
+        // Let's stick to existence (not undefined/null) for non-optional numbers,
+        // but often default is 0.
+        // We will increment if it serves the profile strength (usually positive info).
+        if (field > 0) filledFields += weight;
+      } else if (typeof field === 'boolean') {
+        // For boolean like militaryFamilyHistory, if it's strictly true/false it's filled.
+        filledFields += weight;
+      } else {
+        filledFields += weight;
+      }
+    }
+  };
 
-  // Personal info
-  if (applicant.religion) filledFields++;
-  if (applicant.hometown) filledFields++;
-  if (applicant.citizenshipStatus) filledFields++;
-  if (applicant.ethnicity) filledFields++;
-  if (applicant.race) filledFields++;
+  // 1. Basic Info
+  checkField(applicant.firstName);
+  checkField(applicant.lastName);
+  checkField(applicant.contactName);
+  checkField(applicant.phoneNumber);
+  checkField(profile.customer?.email);
 
-  // Academic
-  if (applicant.overallGpa) filledFields++;
-  if (applicant.educationHistories?.length > 0) filledFields += 2;
-  if (applicant.intentions?.length > 0) filledFields += 2;
+  // 2. Personal Info & Demographics
+  checkField(applicant.religion);
+  checkField(applicant.hometown);
+  checkField(applicant.citizenshipStatus);
+  checkField(applicant.ethnicity);
+  checkField(applicant.race);
+  checkField(applicant.languages);
+  checkField(applicant.militaryFamilyHistory);
 
-  // Activities
-  if (applicant.favoriteActivities) filledFields++;
-  if (applicant.sportsParticipated) filledFields++;
-  if (applicant.studentActivities) filledFields++;
-  if (applicant.organizationsJoined) filledFields++;
+  // 3. Academic
+  checkField(applicant.educationLevel);
+  checkField(applicant.overallGpa);
+  checkField(applicant.academicAwards);
+  checkField(applicant.publicationCount);
+  checkField(applicant.educationHistories, 2); // Higher weight for lists
+  checkField(applicant.intentions, 2);
 
-  // Skills & Experience
-  if (applicant.skills?.length > 0) filledFields += 2;
-  if (applicant.researchExperience) filledFields++;
-  if (applicant.careerGoals) filledFields++;
-  if (applicant.certificates?.length > 0) filledFields += 2;
+  // 4. Test Scores (Each score adds to strength)
+  checkField(applicant.satScore);
+  checkField(applicant.actScore);
+  checkField(applicant.greScore);
+  checkField(applicant.gmatScore);
+  checkField(applicant.toeflScore);
+  checkField(applicant.ieltsScore);
 
-  // Background
-  if (applicant.disabilities) filledFields++;
-  if (applicant.medicalConditions) filledFields++;
+  // 5. Activities
+  checkField(applicant.favoriteActivities);
+  checkField(applicant.sportsParticipated);
+  checkField(applicant.studentActivities);
+  checkField(applicant.organizationsJoined);
+  checkField(applicant.extracurricularActivities);
 
-  return Math.round((filledFields / totalFields) * 100);
+  // 6. Experience & Career
+  checkField(applicant.researchExperience);
+  checkField(applicant.careerGoals);
+  checkField(applicant.researchInterest);
+
+  // 7. Skills & Certs
+  checkField(applicant.skills, 2);
+  checkField(applicant.certificates, 2);
+
+  // 8. Background
+  checkField(applicant.disabilities);
+  checkField(applicant.medicalConditions);
+
+  // 9. Preferences (Excluding applicantPreferences array as requested)
+  checkField(applicant.preferredScholarshipType);
+  checkField(applicant.preferredCountry);
+  checkField(applicant.preferredMajor);
+
+  if (totalPossible === 0) return 0;
+
+  return Math.round((filledFields / totalPossible) * 100);
 }
 
 /**
