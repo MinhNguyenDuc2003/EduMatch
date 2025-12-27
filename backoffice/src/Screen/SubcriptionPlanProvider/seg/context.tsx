@@ -66,7 +66,7 @@ export default GenCtx({
       async onCreate(plan: ISubscriptionPlanList) {
         onSetLoading(true);
         try {
-          const featuresString = (plan?.features as any).join(", ");
+          const featuresString = (plan?.features as any).join(', ');
 
           const data = await apiClientService.post(
             `/api/subscription/subscription/subscription/plans`,
@@ -74,21 +74,19 @@ export default GenCtx({
               name: plan.name,
               description: plan.description,
               currency: plan.currency,
-              price: Number(plan.price),          // chuyển string -> number
+              price: Number(plan.price), // chuyển string -> number
               durationDays: Number(plan.durationDays), // chuyển string -> number
               targetType: plan.targetType,
-              features: Array.isArray(plan.features) ? plan.features : plan.features?.split(',') || [],
+              features: Array.isArray(plan.features)
+                ? plan.features
+                : plan.features?.split(',') || [],
             }
           );
           console.log('Created plan:', data.data);
-          if (data !== null) {
-            alert('Create subscriptions successfull')
-            window.location.reload()
 
-          }
           return data.data;
         } catch (error) {
-          alert('Create subscriptions failed')
+         
           console.error({ error });
         } finally {
           onSetLoading(false);
@@ -108,17 +106,15 @@ export default GenCtx({
               price: Number(plan.price),
               durationDays: Number(plan.durationDays),
               targetType: plan.targetType,
-              features: Array.isArray(plan.features) ? plan.features : plan.features?.split(',') || [],
+              features: Array.isArray(plan.features)
+                ? plan.features
+                : plan.features?.split(',') || [],
             }
           );
           console.log('Update plan:', data.data);
-          if (data !== null) {
-            alert('Update subscriptions successfull')
-            window.location.reload()
-          }
+       
           return data.data;
         } catch (error) {
-          alert('Update subscriptions failed')
           console.error({ error });
         } finally {
           onSetLoading(false);
@@ -131,14 +127,11 @@ export default GenCtx({
           const data = await apiClientService.delete(
             `/api/subscription/subscription/subscription/plans/${id}`
           );
-          if(data !== null){
-            alert('Delete subscriptions failed')
-            window.location.reload()
-          }
+          
           console.log('Delete plan:', data.data);
-              return data?.data ?? true;   
+          return data?.data ?? true;
         } catch (error) {
-          alert('Delete subscriptions failed')
+         
           console.error({ error });
         } finally {
           onSetLoading(false);

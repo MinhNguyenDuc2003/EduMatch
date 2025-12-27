@@ -107,6 +107,7 @@ const News = () => {
                 isCreate={false}
                 isEdit={false}
                 isDelete={false}
+                title='News'
               />
             </div>
           );

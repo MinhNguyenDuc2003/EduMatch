@@ -101,6 +101,7 @@ const ReportFeedbackPage = () => {
                 isCreate={false}
                 isEdit={false}
                 isDelete={false}
+                title='ReportFeedback'
               />
             </div>
           );

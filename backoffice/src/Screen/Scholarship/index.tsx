@@ -105,6 +105,7 @@ const ScholarshipPage = () => {
                 isDelete={false}
                 isEdit={false}
                 isCreate={false}
+                title='Scholarship'
               />
             </div>
           );

@@ -7,7 +7,6 @@ import { GenCtx } from 'src/apiController/GeneralContext';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
 
-
 export default GenCtx({
   useLogic() {
     type IForm = {
@@ -21,6 +20,7 @@ export default GenCtx({
       };
       filters: object;
     };
+
     const ss = sStore();
     const methods = useForm<IForm>({
       mode: 'onSubmit',
@@ -29,11 +29,13 @@ export default GenCtx({
         filters: {},
       },
     });
-    // const loading = useState(false);
+
     const meds = {
+      /**
+       * Fetches all customer data using pagination
+       */
       async onGetData() {
         onSetLoading(true);
-
         try {
           const results: any[] = [];
           let page = 0;
@@ -46,14 +48,12 @@ export default GenCtx({
             const totalUser = res?.totalUser ?? 0;
             const customers = res?.customers ?? [];
 
-            console.log(`Page ${page} → totalUser: ${totalUser}`);
-
             if (customers.length > 0) {
               results.push(...customers);
             }
 
-            if (totalUser === 0) {
-              console.log('Stop fetching — totalUser = 0');
+            // Stop condition: no more users or page returns empty
+            if (totalUser === 0 || customers.length === 0) {
               break;
             }
 
@@ -63,38 +63,45 @@ export default GenCtx({
           ss.setJointData({
             Users: results || [],
           });
-          console.log('Total users loaded:', results.length);
 
           return results;
         } catch (err) {
-          console.error(err);
+          console.error("Fetch Data Error:", err);
         } finally {
           onSetLoading(false);
         }
       },
 
+      /**
+       * Creates a new user. 
+       * Throws error so the UI can trigger the Error Modal.
+       */
       async onCreate(user: any) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.post(`/api/customer/backoffice/customers`, {
+          const response = await apiClientService.post(`/api/customer/backoffice/customers`, {
             username: user.username,
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
             password: user.password,
-            role: user.role[0],
+            role: user.role[0], // Sending the first role from the array
           });
-          if (data !== null) {
-            alert('User created successfully');
-          }
-          window.location.reload();
-          return data.data;
+
+          // Return response to UI for the Success Modal
+          return response;
         } catch (error) {
-          console.error({ error });
+          console.error("Create User Error:", error);
+          // Throwing the error is vital for the UI try-catch block
+          throw error; 
         } finally {
           onSetLoading(false);
         }
       },
+
+      /**
+       * Gets a specific user profile by ID
+       */
       async onGetByID(id: string) {
         onSetLoading(true);
         try {
@@ -103,7 +110,7 @@ export default GenCtx({
           );
           return data.data.data;
         } catch (error) {
-          console.error({ error });
+          console.error("Get User By ID Error:", error);
         } finally {
           onSetLoading(false);
         }
@@ -114,8 +121,10 @@ export default GenCtx({
       meds.onGetData();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
     return {
-      ss,meds,
+      ss,
+      meds,
       methods,
     };
   },

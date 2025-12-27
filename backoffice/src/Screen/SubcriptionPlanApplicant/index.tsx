@@ -96,6 +96,7 @@ const SubscriptionPlanPage = () => {
                 onEdit={(row: any) => router.push(`/subscriptionPlanApplicant/${row.id}`)}
                 onCreate={(row: any) => router.push('/subscriptionPlanApplicant/create')}
                 onDelete={(row: any) => meds.onDelete(row.id)}
+                title='SubscriptionPlan'
               />
             </div>
           );

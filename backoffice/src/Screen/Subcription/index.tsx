@@ -56,7 +56,7 @@ const Subcription = () => {
                     year: 'numeric'    // "2025"
                   }),
                   autoRenew: item.autoRenew ? 'Yes' : 'No',
-                  status: computedStatus,
+                  status: item.status === "true" ? "Active" : "In Active",
                   fullName: `${item.customer.firstName} ${item.customer.lastName}`,
                   email: `${item.customer.email}`,
 
@@ -122,6 +122,7 @@ const Subcription = () => {
                 onDelete={(row: any) => console.log("delete", row)}
                 isCreate={false}
                 isEdit={false}
+                title='Subscription'
                 isDelete={false}
               />
             </div>

@@ -2,22 +2,32 @@
 
 import React from 'react';
 import {
-  BarChart,
+  Area,
+  AreaChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-  Legend,
-  AreaChart,
-  Area,
-  PieChart,
-  Pie,
-  Cell,
 } from 'recharts';
 
-import { TrendingUp, Users, FileText, DollarSign, Eye, Send, Globe } from 'lucide-react';
+import {
+  ArrowUpRight,
+  DollarSign,
+  Eye,
+  FileText,
+  Globe,
+  Send,
+  TrendingUp,
+  Trophy,
+  Users,
+} from 'lucide-react';
 import Context from './seg/context';
 
 /* =========================
@@ -122,22 +132,18 @@ export default function DashboardPage() {
             (acc, curr) => acc + (curr.total || 0),
             0
           );
-
           const revenuePercentageData = revenueByUserTypeRaw.map((item) => {
             const userType = item.userType ?? 'unknown';
             const total = item.total ?? 0;
-
             return {
               name: userType.charAt(0).toUpperCase() + userType.slice(1).toLowerCase(),
-
               percentValue:
                 totalUserRevenue > 0 ? Number(((total / totalUserRevenue) * 100).toFixed(1)) : 0,
-
               originalTotal: total,
             };
           });
 
-          /* --- ĐỊNH DẠNG DỮ LIỆU KHÁC --- */
+          /* --- ĐỊNH DẠNG DỮ LIỆU --- */
           const formattedScholarship = scholarshipCreated.map((i) => ({
             period: `${i.month}/${i.year}`,
             count: i.count,
@@ -145,7 +151,8 @@ export default function DashboardPage() {
 
           const formattedCountries = topCountry.map((i) => ({
             name: i.country.charAt(0).toUpperCase() + i.country.slice(1),
-            total: i.total,
+            // total: i.total, // <-- Cũ
+            count: i.total, // <-- Mới: Đổi tên để tránh bị format thành tiền tệ ($) trong tooltip
           }));
 
           const formattedRevenue = revenueByMonth.map((i) => ({
@@ -153,19 +160,12 @@ export default function DashboardPage() {
             total: Number(i?.total?.toFixed(2)),
           }));
 
-          const formattedTopViews = topViewRaw
-            .map((item) => ({
-              fullName: item.title,
-              views: item.views,
-            }))
-            .sort((a, b) => b.views - a.views);
+          // Dữ liệu Top 5 cho Table
+          const top5Views = [...topViewRaw].sort((a, b) => b.views - a.views).slice(0, 5);
 
-          const formattedTopApply = topApplyRaw
-            .map((item) => ({
-              fullName: item.scholarshipTitle,
-              apply: item.totalApply,
-            }))
-            .sort((a, b) => b.apply - a.apply);
+          const top5Apply = [...topApplyRaw]
+            .sort((a, b) => b.totalApply - a.totalApply)
+            .slice(0, 5);
 
           const totalRevenue = revenueByMonth.reduce((acc, curr) => acc + (curr.total ?? 0), 0);
           const totalScholarships = scholarshipCreated.reduce((acc, curr) => acc + curr.count, 0);
@@ -202,78 +202,8 @@ export default function DashboardPage() {
                 </div>
               </div>
 
+              {/* ROW 1: REVENUE SHARE & REGIONAL */}
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
-                {/* 1. TOP VIEWS - Full Titles */}
-                <ChartCard
-                  title="Engagement: Most Viewed Scholarships"
-                  subtitle="Complete ranking based on total user page views"
-                  icon={Eye}
-                  className="xl:col-span-2 min-h-[650px]"
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={formattedTopViews}
-                      layout="vertical"
-                      margin={{ left: 250, right: 40 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
-                      <XAxis type="number" hide />
-                      <YAxis
-                        dataKey="fullName"
-                        type="category"
-                        axisLine={false}
-                        tickLine={false}
-                        width={240}
-                        tick={{ fill: '#374151', fontSize: 12, fontWeight: 700 }}
-                      />
-                      <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f9fafb' }} />
-                      <Bar
-                        dataKey="views"
-                        name="Views"
-                        fill="#8b5cf6"
-                        radius={[0, 6, 6, 0]}
-                        barSize={30}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </ChartCard>
-
-                {/* 2. TOP APPLY - Full Titles */}
-                <ChartCard
-                  title="Conversion: Highest Application Volume"
-                  subtitle="Scholarships with the most successful submissions"
-                  icon={Send}
-                  className="xl:col-span-2 min-h-[650px]"
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={formattedTopApply}
-                      layout="vertical"
-                      margin={{ left: 250, right: 40 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
-                      <XAxis type="number" hide />
-                      <YAxis
-                        dataKey="fullName"
-                        type="category"
-                        axisLine={false}
-                        tickLine={false}
-                        width={240}
-                        tick={{ fill: '#374151', fontSize: 12, fontWeight: 700 }}
-                      />
-                      <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f9fafb' }} />
-                      <Bar
-                        dataKey="apply"
-                        name="Applications"
-                        fill="#f59e0b"
-                        radius={[0, 6, 6, 0]}
-                        barSize={30}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </ChartCard>
-
-                {/* 3. REVENUE SOURCE PIE - CONVERTED TO PERCENTAGE */}
                 <ChartCard
                   title="Revenue Share Percentage"
                   subtitle="Relative contribution of Providers vs Applicants"
@@ -308,22 +238,26 @@ export default function DashboardPage() {
                   </ResponsiveContainer>
                 </ChartCard>
 
-                {/* 4. GEOGRAPHIC IMPACT */}
                 <ChartCard title="Regional Distribution" icon={Globe} className="h-[500px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={formattedCountries} layout="vertical">
                       <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
                       <XAxis type="number" hide />
+
+                      {/* CẬP NHẬT YAxis */}
                       <YAxis
                         dataKey="name"
                         type="category"
                         axisLine={false}
                         tickLine={false}
-                        width={100}
+                        width={180}
                         tick={{ fontWeight: 700 }}
                       />
+
                       <Tooltip content={<CustomTooltip />} />
-                      <Bar dataKey="total" name="Activity" radius={[0, 4, 4, 0]} barSize={35}>
+
+                      {/* CẬP NHẬT Bar: đổi dataKey thành 'count' */}
+                      <Bar dataKey="count" name="Scholarships" radius={[0, 4, 4, 0]} barSize={35}>
                         {formattedCountries.map((_, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
@@ -331,8 +265,10 @@ export default function DashboardPage() {
                     </BarChart>
                   </ResponsiveContainer>
                 </ChartCard>
+              </div>
 
-                {/* 5. GROWTH TRENDS */}
+              {/* ROW 2: GROWTH & TRENDS */}
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                 <ChartCard
                   title="Monthly Scholarship Growth"
                   icon={TrendingUp}
@@ -362,7 +298,6 @@ export default function DashboardPage() {
                   </ResponsiveContainer>
                 </ChartCard>
 
-                {/* 6. FINANCIAL TRAJECTORY */}
                 <ChartCard title="Total Revenue Trend" icon={DollarSign} className="h-[450px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={formattedRevenue}>
@@ -387,36 +322,137 @@ export default function DashboardPage() {
                     </AreaChart>
                   </ResponsiveContainer>
                 </ChartCard>
+              </div>
 
-                {/* 7. REPORTS ANALYSIS */}
+              {/* ROW 3: SYSTEM PERFORMANCE */}
+              <ChartCard title="System Performance Reports" icon={FileText} className="h-[450px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={reportsStatistics}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+                    <XAxis dataKey="type" axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} />
+                    <Tooltip cursor={{ fill: '#f9fafb' }} content={<CustomTooltip />} />
+                    <Legend verticalAlign="top" height={36} />
+                    <Bar
+                      dataKey="thisMonthCount"
+                      name="This Month"
+                      fill="#3b82f6"
+                      radius={[6, 6, 0, 0]}
+                      barSize={60}
+                    />
+                    <Bar
+                      dataKey="lastMonthCount"
+                      name="Last Month"
+                      fill="#e5e7eb"
+                      radius={[6, 6, 0, 0]}
+                      barSize={60}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartCard>
+
+              {/* ROW 4: TOP RANKINGS TABLES (FINAL SECTION) */}
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+                {/* TOP VIEWS TABLE */}
                 <ChartCard
-                  title="System Performance Reports"
-                  icon={FileText}
-                  className="xl:col-span-2 h-[450px]"
+                  title="Top 5 Most Viewed Scholarships"
+                  subtitle="Ranked by total engagement"
+                  icon={Eye}
                 >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={reportsStatistics}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-                      <XAxis dataKey="type" axisLine={false} tickLine={false} />
-                      <YAxis axisLine={false} tickLine={false} />
-                      <Tooltip cursor={{ fill: '#f9fafb' }} content={<CustomTooltip />} />
-                      <Legend verticalAlign="top" height={36} />
-                      <Bar
-                        dataKey="thisMonthCount"
-                        name="This Month"
-                        fill="#3b82f6"
-                        radius={[6, 6, 0, 0]}
-                        barSize={60}
-                      />
-                      <Bar
-                        dataKey="lastMonthCount"
-                        name="Last Month"
-                        fill="#e5e7eb"
-                        radius={[6, 6, 0, 0]}
-                        barSize={60}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="border-b border-gray-100">
+                          <th className="py-4 px-2 text-xs font-black text-gray-400 uppercase tracking-widest w-16">
+                            Rank
+                          </th>
+                          <th className="py-4 px-2 text-xs font-black text-gray-400 uppercase tracking-widest">
+                            Scholarship Name
+                          </th>
+                          <th className="py-4 px-2 text-xs font-black text-gray-400 uppercase tracking-widest text-right">
+                            Views
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {top5Views.map((item, idx) => (
+                          <tr
+                            key={idx}
+                            className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors group"
+                          >
+                            <td className="py-4 px-2 font-bold text-gray-400">
+                              {idx === 0 ? (
+                                <Trophy size={18} className="text-amber-400" />
+                              ) : (
+                                `#${idx + 1}`
+                              )}
+                            </td>
+                            <td className="py-4 px-2">
+                              <p className="font-bold text-gray-800 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                                {item.title}
+                              </p>
+                            </td>
+                            <td className="py-4 px-2 text-right">
+                              <span className="inline-flex items-center gap-1 font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-lg text-sm">
+                                {formatNumber(item.views)} <ArrowUpRight size={14} />
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </ChartCard>
+
+                {/* TOP APPLY TABLE */}
+                <ChartCard
+                  title="Top 5 High Conversion Scholarships"
+                  subtitle="Ranked by successful applications"
+                  icon={Send}
+                >
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="border-b border-gray-100">
+                          <th className="py-4 px-2 text-xs font-black text-gray-400 uppercase tracking-widest w-16">
+                            Rank
+                          </th>
+                          <th className="py-4 px-2 text-xs font-black text-gray-400 uppercase tracking-widest">
+                            Scholarship Name
+                          </th>
+                          <th className="py-4 px-2 text-xs font-black text-gray-400 uppercase tracking-widest text-right">
+                            Applied
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {top5Apply.map((item, idx) => (
+                          <tr
+                            key={idx}
+                            className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors group"
+                          >
+                            <td className="py-4 px-2 font-bold text-gray-400">
+                              {idx === 0 ? (
+                                <Trophy size={18} className="text-amber-400" />
+                              ) : (
+                                `#${idx + 1}`
+                              )}
+                            </td>
+                            <td className="py-4 px-2">
+                              <p className="font-bold text-gray-800 line-clamp-1 group-hover:text-amber-600 transition-colors">
+                                {item.scholarshipTitle}
+                              </p>
+                            </td>
+                            <td className="py-4 px-2 text-right">
+                              <span className="inline-flex items-center gap-1 font-black text-amber-600 bg-amber-50 px-3 py-1 rounded-lg text-sm">
+                                {formatNumber(item.totalApply)} <ArrowUpRight size={14} />
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </ChartCard>
               </div>
             </div>
