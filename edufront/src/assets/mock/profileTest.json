@@ -1,0 +1,96 @@
+{
+  "contactName": "Alex Rivera",
+  "firstName": "Alex",
+  "lastName": "Rivera",
+  "phoneNumber": "+1-555-1007",
+  "religion": "None",
+  "hometown": "United States",
+  "citizenshipStatus": "Citizen",
+  "ethnicity": "Hispanic or Latino",
+  "race": "Hispanic or Latino",
+  "militaryFamilyHistory": false,
+  "disabilities": "None",
+  "medicalConditions": "None",
+  "favoriteActivities": "Robotics, Coding, Chess",
+  "sportsParticipated": "Soccer",
+  "studentActivities": "Robotics Club President, Math Team Captain",
+  "organizationsJoined": "National Honor Society, SHPE Jr. Chapter",
+  "researchExperience": "Built an autonomous drone for agricultural monitoring. Analyzed crop health data using computer vision algorithms.",
+  "careerGoals": "I want to be a Robotics Engineer, designing intelligent machines that can assist in disaster relief and environmental monitoring. I aim to lead innovation in the field of autonomous systems.",
+  "overallGpa": 3.92,
+  "educationLevel": "Undergraduate",
+  "satScore": 1530,
+  "actScore": 34,
+  "ieltsScore": 8,
+  "type": "Current",
+  "languages": "English (Native), Spanish (Fluent), Python (Advanced)",
+  "academicAwards": "FIRST Robotics Dean's List Finalist, National Merit Commended, AP Scholar with Distinction",
+  "researchInterest": "Robotics, Computer Vision, Autonomous Systems, Artificial Intelligence",
+  "extracurricularActivities": "Led school robotics team to State Championships, Volunteer coding instructor at Boys & Girls Club, Organized STEM outreach day for local elementary schools",
+  "preferredScholarshipType": "Merit-based Scholarship",
+  "preferredCountry": "United States",
+  "preferredMajor": "Computer Science",
+  "certificates": [
+    {
+      "certificateName": "Certified Associate in Python Programming",
+      "issuedBy": "Python Institute",
+      "issueDate": 1684540800000,
+      "expiryDate": 4102358400000,
+      "score": "Pass"
+    }
+  ],
+  "educationHistories": [
+    {
+      "institutionName": "Westlake High School",
+      "institutionType": "Public High School",
+      "state": "Texas",
+      "country": "USA",
+      "degreeType": "High School",
+      "majorCategory": "STEM",
+      "majorName": "Computer Science",
+      "gpa": 3.92,
+      "classRank": "Top 5%",
+      "classSize": 600,
+      "enrollmentStartDate": 1597881600000,
+      "enrollmentEndDate": 1716595200000,
+      "graduationYear": 2024,
+      "isDualEnrolled": true,
+      "isTransfer": false,
+      "isReturningStudent": false,
+      "notes": "Robotics focus"
+    }
+  ],
+  "skills": [
+    {
+      "skillName": "Python",
+      "proficiencyLevel": "Advanced",
+      "yearsExperience": 4
+    },
+    {
+      "skillName": "C++",
+      "proficiencyLevel": "Intermediate",
+      "yearsExperience": 2
+    },
+    {
+      "skillName": "ROS (Robot Operating System)",
+      "proficiencyLevel": "Intermediate",
+      "yearsExperience": 2
+    }
+  ],
+  "intentions": [
+    {
+      "intendedInstitution": "Stanford University",
+      "intendedState": "California",
+      "intendedCountry": "USA",
+      "degreeType": "Undergraduate",
+      "intendedMajorCategory": "STEM",
+      "intendedMajorName": "Computer Science",
+      "academicClassification": "Freshman",
+      "expectedStartDate": 1725148800000,
+      "expectedGraduationYear": 2028,
+      "isTransferStudent": false,
+      "isReturningStudent": false,
+      "notes": "Top choice"
+    }
+  ]
+}
