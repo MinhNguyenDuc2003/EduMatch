@@ -204,7 +204,7 @@ quartz-job:
   scholarship-suggestion:
     name: 'scholarship-suggestion'
     group: 'scholarship'
-    expression: '0 0 8 * * ?'
+    expression: '0 0 20 * * ?'
 
 ai:
   end-point: ${env.ai.url:http://localhost:8000}

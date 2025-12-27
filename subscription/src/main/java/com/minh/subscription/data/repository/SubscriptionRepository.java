@@ -44,8 +44,10 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity
             FROM SubscriptionEntity s
             WHERE s.userId = :userId
               AND s.endDate >= CURRENT_TIMESTAMP
+              AND s.status = 'true'\s
+              AND s.active = true
             ORDER BY s.endDate DESC
-            """)
+           \s""")
     List<SubscriptionEntity> findCurrentSubscriptionOrderByEndDateDesc(
             @Param("userId") String userId
     );
