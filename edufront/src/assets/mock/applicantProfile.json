@@ -1,43 +1,66 @@
 [
   {
+    "id": 1,
+    "userId": "applicant-user-1",
     "contactName": "Michael Chen",
     "firstName": "Michael",
     "lastName": "Chen",
     "phoneNumber": "+1-555-0101",
     "religion": "Agnostic",
-    "hometown": "Canada",
+    "hometown": "Toronto, ON",
     "citizenshipStatus": "Citizen",
     "ethnicity": "Asian",
     "race": "Asian",
     "militaryFamilyHistory": false,
     "disabilities": "None",
     "medicalConditions": "None",
-    "favoriteActivities": "Chess, Piano, Robotics",
-    "sportsParticipated": "Badminton",
-    "studentActivities": "Robotics Club President, Math Olympiad Team",
-    "organizationsJoined": "IEEE Student Branch",
-    "researchExperience": "Undergraduate Researcher at AI Lab. Developed a computer vision model for traffic sign recognition.",
-    "careerGoals": "To become an AI Research Scientist specializing in autonomous systems.",
+    "favoriteActivities": "Chess, Piano, Robotics, Coding Competitions",
+    "sportsParticipated": "Badminton (Varsity Team), Swimming",
+    "studentActivities": "Robotics Club President, Math Olympiad Team Captain, Computer Science Society Member",
+    "organizationsJoined": "IEEE Student Branch, Association for Computing Machinery (ACM)",
+    "researchExperience": "Undergraduate Researcher at AI Lab. Developed a computer vision model for real-time traffic sign recognition with 98% accuracy. Co-authored a paper presented at a student symposium.",
+    "careerGoals": "To become an AI Research Scientist specializing in autonomous systems. I aim to lead research that bridges the gap between theoretical AI and safety-critical applications in transportation.",
     "overallGpa": 3.9,
     "educationLevel": "Bachelor",
     "satScore": 1550,
     "actScore": 35,
-    "greScore": 330,
+    "greScore": 332,
     "gmatScore": 0,
     "toeflScore": 115,
     "ieltsScore": 8.0,
-    "languages": "English (Native), Mandarin (Fluent)",
-    "academicAwards": "National Merit Scholar, Dean's List",
-    "publicationCount": 1,
-    "researchInterest": "Artificial Intelligence, Computer Vision, Robotics",
-    "extracurricularActivities": "Volunteered at local coding bootcamp for kids.",
-    "preferredScholarshipType": "Merit-based Scholarship",
-    "preferredCountry": "United States",
-    "preferredMajor": "Computer Science",
     "type": "Current",
-    "certificates": [],
+    "languages": "English (Native), Mandarin (Fluent), French (Basic)",
+    "academicAwards": "National Merit Scholar, Dean's List (All Semesters), Best Undergraduate Research Award",
+    "publicationCount": 1,
+    "researchInterest": "Artificial Intelligence, Computer Vision, Robotics, Autonomous Vehicles",
+    "extracurricularActivities": "Volunteered at local coding bootcamp for underprivileged kids (100+ hours), Organized regional hackathon, Mentor for First Robotics Competition team",
+    "preferredScholarshipType": "Merit-based",
+    "preferredCountry": "USA",
+    "preferredMajor": "Computer Science",
+    "certificates": [
+      {
+        "id": 101,
+        "applicantId": 1,
+        "certificateName": "TensorFlow Developer Certificate",
+        "issuedBy": "Google",
+        "issueDate": 1685616000000,
+        "expiryDate": 1748774400000,
+        "score": "Pass"
+      },
+      {
+        "id": 102,
+        "applicantId": 1,
+        "certificateName": "AWS Certified Machine Learning - Specialty",
+        "issuedBy": "Amazon Web Services",
+        "issueDate": 1693564800000,
+        "expiryDate": 1788259200000,
+        "score": "850/1000"
+      }
+    ],
     "educationHistories": [
       {
+        "id": 1,
+        "applicantId": 1,
         "institutionName": "University of Toronto",
         "institutionType": "University",
         "state": "Ontario",
@@ -48,149 +71,224 @@
         "gpa": 3.9,
         "classRank": "Top 5%",
         "classSize": 800,
-        "enrollmentStartDate": 1600128000,
-        "enrollmentEndDate": 1716854400,
+        "enrollmentStartDate": 1600128000000,
+        "enrollmentEndDate": 1716854400000,
         "graduationYear": 2024,
         "isDualEnrolled": false,
         "isTransfer": false,
         "isReturningStudent": false,
-        "notes": "Focused on AI and Robotics"
+        "notes": "Minored in Mathematics"
+      }
+    ],
+    "applicantPreferences": [
+      {
+        "id": 1,
+        "applicantId": 1,
+        "type": "Field of Study",
+        "field": "Artificial Intelligence",
+        "weight": 10
+      },
+      {
+        "id": 2,
+        "applicantId": 1,
+        "type": "Location",
+        "field": "USA",
+        "weight": 8
       }
     ],
     "skills": [
       {
+        "id": 1,
+        "applicantId": 1,
         "skillName": "Python",
         "proficiencyLevel": "Advanced",
-        "yearsExperience": 4
+        "yearsExperience": 5
       },
       {
+        "id": 2,
+        "applicantId": 1,
         "skillName": "TensorFlow",
         "proficiencyLevel": "Intermediate",
+        "yearsExperience": 2
+      },
+      {
+        "id": 3,
+        "applicantId": 1,
+        "skillName": "Computer Vision",
+        "proficiencyLevel": "Advanced",
         "yearsExperience": 2
       }
     ],
     "intentions": [
       {
+        "id": 1,
+        "applicantId": 1,
         "intendedInstitution": "MIT",
         "intendedState": "Massachusetts",
-        "intendedCountry": "United States",
+        "intendedCountry": "USA",
         "degreeType": "Master",
         "intendedMajorCategory": "Engineering",
         "intendedMajorName": "Computer Science",
         "academicClassification": "Graduate",
-        "expectedStartDate": 1725148800,
+        "expectedStartDate": 1725148800000,
         "expectedGraduationYear": 2026,
         "isTransferStudent": false,
         "isReturningStudent": false,
-        "notes": "Aiming for AI research lab"
+        "notes": "Focusing on Robotics and AI"
       }
     ]
   },
   {
-    "contactName": "Sarah Johnson",
-    "firstName": "Sarah",
+    "id": 2,
+    "userId": "applicant-user-2",
+    "contactName": "Marcus Johnson",
+    "firstName": "Marcus",
     "lastName": "Johnson",
-    "phoneNumber": "+44-20-7946-0102",
-    "religion": "Christianity",
-    "hometown": "United Kingdom",
-    "citizenshipStatus": "Citizen",
-    "ethnicity": "White",
-    "race": "White",
+    "phoneNumber": "+1-555-1002",
+    "religion": "Christian",
+    "hometown": "Atlanta, GA",
+    "citizenshipStatus": "US Citizen",
+    "ethnicity": "African American",
+    "race": "Black",
     "militaryFamilyHistory": true,
     "disabilities": "None",
-    "medicalConditions": "Asthma",
-    "favoriteActivities": "Reading, Hiking, Painting",
-    "sportsParticipated": "Soccer",
-    "studentActivities": "Literary Magazine Editor, Debate Team",
-    "organizationsJoined": "Red Cross Volunteer",
-    "researchExperience": "Assisted in a sociology study on urban youth culture.",
-    "careerGoals": "To work in international relations and diplomacy.",
-    "overallGpa": 3.7,
-    "educationLevel": "Bachelor",
-    "satScore": 0,
-    "actScore": 0,
-    "greScore": 310,
+    "medicalConditions": "None",
+    "favoriteActivities": "Community Service, Basketball, Painting",
+    "sportsParticipated": "Basketball (Varsity Captain), Soccer",
+    "studentActivities": "Student Government Vice President, Art Club, Debate Team",
+    "organizationsJoined": "National Art Honor Society, Key Club, Youth Leadership Council",
+    "researchExperience": "Participated in community-based participatory research on urban art programs and their impact on youth development. Collaborated with local university on study examining art therapy benefits.",
+    "careerGoals": "Dedicated to using art as a tool for social change and community development. Aspire to become an art director for a non-profit organization focused on youth empowerment. Long-term vision includes opening a community art center in underserved neighborhoods.",
+    "overallGpa": 3.6,
+    "educationLevel": "High School Senior",
+    "satScore": 1380,
+    "actScore": 29,
+    "greScore": 0,
     "gmatScore": 0,
     "toeflScore": 0,
     "ieltsScore": 0,
-    "languages": "English (Native), French (Fluent), Spanish (Basic)",
-    "academicAwards": "History Prize, Community Service Award",
+    "type": "Current",
+    "languages": "English (Native), French (Basic)",
+    "academicAwards": "Regional Art Competition Winner, AP Scholar, Community Service Award",
     "publicationCount": 0,
-    "researchInterest": "International Relations, Sociology, History",
-    "extracurricularActivities": "Organized community cleanup drives.",
-    "preferredScholarshipType": "Need-based Scholarship",
-    "preferredCountry": "France",
-    "preferredMajor": "International Relations",
-    "certificates": [],
+    "researchInterest": "Community Art, Social Justice, Youth Development, Art Therapy",
+    "extracurricularActivities": "Founded after-school art program for 50+ elementary students, Organized 3 community murals addressing social issues, Volunteered 200+ hours at local homeless shelter teaching art classes, Led fundraiser that raised $5,000 for art supplies for underfunded schools",
+    "preferredScholarshipType": "Need-based",
+    "preferredCountry": "UK",
+    "preferredMajor": "Fine Arts",
+    "certificates": [
+      {
+        "id": 201,
+        "applicantId": 2,
+        "certificateName": "Adobe Creative Suite Certification",
+        "issuedBy": "Adobe",
+        "issueDate": 1691625600000,
+        "expiryDate": 4102358400000,
+        "score": "Certified"
+      }
+    ],
     "educationHistories": [
       {
-        "institutionName": "University of Oxford",
-        "institutionType": "University",
-        "state": "Oxfordshire",
-        "country": "United Kingdom",
-        "degreeType": "Bachelor",
-        "majorCategory": "Humanities",
-        "majorName": "History and Politics",
-        "gpa": 3.7,
-        "classRank": "Top 10%",
-        "classSize": 200,
-        "enrollmentStartDate": 1631664000,
-        "enrollmentEndDate": 1718409600,
+        "id": 2,
+        "applicantId": 2,
+        "institutionName": "Martin Luther King Jr. High School",
+        "institutionType": "Public High School",
+        "state": "Georgia",
+        "country": "USA",
+        "degreeType": "High School Diploma",
+        "majorCategory": "Arts",
+        "majorName": "Visual Arts",
+        "gpa": 3.6,
+        "classRank": "Top 15%",
+        "classSize": 380,
+        "enrollmentStartDate": 1597449600000,
+        "enrollmentEndDate": 1717027200000,
         "graduationYear": 2024,
         "isDualEnrolled": false,
         "isTransfer": false,
         "isReturningStudent": false,
-        "notes": ""
+        "notes": "Completed advanced art portfolio program"
+      }
+    ],
+    "applicantPreferences": [
+      {
+        "id": 3,
+        "applicantId": 2,
+        "type": "Arts",
+        "field": "Fine Arts",
+        "weight": 10
+      },
+      {
+        "id": 4,
+        "applicantId": 2,
+        "type": "Social Work",
+        "field": "Community Development",
+        "weight": 7
       }
     ],
     "skills": [
       {
-        "skillName": "Public Speaking",
+        "id": 4,
+        "applicantId": 2,
+        "skillName": "Oil Painting",
         "proficiencyLevel": "Advanced",
+        "yearsExperience": 6
+      },
+      {
+        "id": 5,
+        "applicantId": 2,
+        "skillName": "Graphic Design",
+        "proficiencyLevel": "Intermediate",
         "yearsExperience": 3
       },
       {
-        "skillName": "Writing",
+        "id": 6,
+        "applicantId": 2,
+        "skillName": "Community Organizing",
         "proficiencyLevel": "Advanced",
-        "yearsExperience": 5
+        "yearsExperience": 4
       }
     ],
     "intentions": [
       {
-        "intendedInstitution": "Sciences Po",
-        "intendedState": "Paris",
-        "intendedCountry": "France",
-        "degreeType": "Master",
-        "intendedMajorCategory": "Social Sciences",
-        "intendedMajorName": "International Management",
-        "academicClassification": "Graduate",
-        "expectedStartDate": 1725148800,
-        "expectedGraduationYear": 2026,
+        "id": 2,
+        "applicantId": 2,
+        "intendedInstitution": "University of the Arts London",
+        "intendedState": "",
+        "intendedCountry": "UK",
+        "degreeType": "Bachelor of Arts",
+        "intendedMajorCategory": "Arts",
+        "intendedMajorName": "Fine Arts",
+        "academicClassification": "Freshman",
+        "expectedStartDate": 1726358400000,
+        "expectedGraduationYear": 2028,
         "isTransferStudent": false,
         "isReturningStudent": false,
-        "notes": ""
+        "notes": "Interested in community art specialization"
       }
     ]
   },
   {
+    "id": 3,
+    "userId": "applicant-user-3",
     "contactName": "Aisha Bakari",
     "firstName": "Aisha",
     "lastName": "Bakari",
     "phoneNumber": "+234-803-555-0103",
     "religion": "Islam",
-    "hometown": "Nigeria",
+    "hometown": "Lagos",
     "citizenshipStatus": "Citizen",
     "ethnicity": "Black",
     "race": "Black",
     "militaryFamilyHistory": false,
     "disabilities": "None",
     "medicalConditions": "None",
-    "favoriteActivities": "Coding, Community Organizing",
+    "favoriteActivities": "Coding Meets, Community Organizing, Reading African Literature",
     "sportsParticipated": "Track and Field",
-    "studentActivities": "Women in Tech President, Student Union Representative",
-    "organizationsJoined": "Google Developer Student Clubs",
-    "researchExperience": "Developed a mobile app for maternal health tracking in rural areas.",
-    "careerGoals": "To use technology to solve public health challenges in Africa.",
+    "studentActivities": "Women in Tech President, Student Union Representative, Google Developer Student Clubs Lead",
+    "organizationsJoined": "Google Developer Student Clubs, Society for Family Health",
+    "researchExperience": "Developed a mobile app for maternal health tracking in rural areas. Conducted user research with 50+ expectant mothers to improve UI accessibility.",
+    "careerGoals": "To use technology to solve public health challenges in Africa. I plan to build scalable mobile health solutions that bridge the gap between rural communities and medical care.",
     "overallGpa": 3.6,
     "educationLevel": "Bachelor",
     "satScore": 1400,
@@ -199,17 +297,39 @@
     "gmatScore": 0,
     "toeflScore": 105,
     "ieltsScore": 7.5,
+    "type": "Current",
     "languages": "English (Fluent), Hausa (Native)",
-    "academicAwards": "Best Graduating Student in CS",
+    "academicAwards": "Best Graduating Student in CS, Dean's Prize for Innovation",
     "publicationCount": 0,
-    "researchInterest": "Health Informatics, Mobile Development",
-    "extracurricularActivities": "Mentoring girls in STEM.",
-    "preferredScholarshipType": "Note",
-    "preferredCountry": "United Kingdom",
+    "researchInterest": "Health Informatics, Mobile Development, Public Health",
+    "extracurricularActivities": "Mentoring girls in STEM through weekly workshops, Organized a 'Hack for Health' hackathon with 200 participants.",
+    "preferredScholarshipType": "Fellowship",
+    "preferredCountry": "UK",
     "preferredMajor": "Public Health",
-    "certificates": [],
+    "certificates": [
+      {
+        "id": 301,
+        "applicantId": 3,
+        "certificateName": "Associate Android Developer",
+        "issuedBy": "Google",
+        "issueDate": 1656633600000,
+        "expiryDate": 1719792000000,
+        "score": "Pass"
+      },
+      {
+        "id": 302,
+        "applicantId": 3,
+        "certificateName": "Data Science for Health",
+        "issuedBy": "Coursera",
+        "issueDate": 1690848000000,
+        "expiryDate": 4102358400000,
+        "score": "98%"
+      }
+    ],
     "educationHistories": [
       {
+        "id": 3,
+        "applicantId": 3,
         "institutionName": "University of Lagos",
         "institutionType": "University",
         "state": "Lagos",
@@ -220,37 +340,66 @@
         "gpa": 3.6,
         "classRank": "Top 2%",
         "classSize": 120,
-        "enrollmentStartDate": 1569888000,
-        "enrollmentEndDate": 1686787200,
+        "enrollmentStartDate": 1569888000000,
+        "enrollmentEndDate": 1686787200000,
         "graduationYear": 2023,
         "isDualEnrolled": false,
         "isTransfer": false,
         "isReturningStudent": false,
-        "notes": ""
+        "notes": "Graduated with First Class Honors"
+      }
+    ],
+    "applicantPreferences": [
+      {
+        "id": 5,
+        "applicantId": 3,
+        "type": "Field of Study",
+        "field": "Health Informatics",
+        "weight": 9
+      },
+      {
+        "id": 6,
+        "applicantId": 3,
+        "type": "Impact",
+        "field": "Public Health",
+        "weight": 10
       }
     ],
     "skills": [
       {
+        "id": 7,
+        "applicantId": 3,
         "skillName": "Android Development",
         "proficiencyLevel": "Advanced",
         "yearsExperience": 3
       },
       {
+        "id": 8,
+        "applicantId": 3,
         "skillName": "Data Analysis",
         "proficiencyLevel": "Intermediate",
         "yearsExperience": 1
+      },
+      {
+        "id": 9,
+        "applicantId": 3,
+        "skillName": "Community Organizing",
+        "proficiencyLevel": "Advanced",
+        "yearsExperience": 4
       }
     ],
     "intentions": [
       {
+        "id": 3,
+        "applicantId": 3,
         "intendedInstitution": "Imperial College London",
         "intendedState": "London",
-        "intendedCountry": "United Kingdom",
+        "intendedCountry": "UK",
         "degreeType": "Master",
         "intendedMajorCategory": "Medical",
         "intendedMajorName": "Health Data Analytics",
         "academicClassification": "Graduate",
-        "expectedStartDate": 1725148800,
+        "expectedStartDate": 1725148800000,
         "expectedGraduationYear": 2025,
         "isTransferStudent": false,
         "isReturningStudent": false,
@@ -259,24 +408,26 @@
     ]
   },
   {
+    "id": 4,
+    "userId": "applicant-user-4",
     "contactName": "Carlos Rodriguez",
     "firstName": "Carlos",
     "lastName": "Rodriguez",
     "phoneNumber": "+34-600-555-0104",
     "religion": "Catholicism",
-    "hometown": "Spain",
+    "hometown": "Seville",
     "citizenshipStatus": "Citizen",
     "ethnicity": "Hispanic",
     "race": "White",
     "militaryFamilyHistory": false,
     "disabilities": "None",
     "medicalConditions": "None",
-    "favoriteActivities": "Cooking, Photography, Guitar",
+    "favoriteActivities": "Cooking, Photography, Guitar, Community Gardening",
     "sportsParticipated": "Basketball",
-    "studentActivities": "Culinary Club, Photography Club",
-    "organizationsJoined": "Local Food Bank Volunteer",
-    "researchExperience": "Studied sustainable farming practices in Andalusia.",
-    "careerGoals": "To modernize agricultural practices using sustainable technology.",
+    "studentActivities": "Culinary Club President, Photography Club Member, Environmental Action Group",
+    "organizationsJoined": "Local Food Bank Volunteer, Slow Food Movement",
+    "researchExperience": "Studied sustainable farming practices in Andalusia, specifically focusing on soil moisture retention in olive groves.",
+    "careerGoals": "To modernize agricultural practices using sustainable technology. I hope to help farmers adapt to climate change while preserving traditional methods.",
     "overallGpa": 3.5,
     "educationLevel": "Bachelor",
     "satScore": 0,
@@ -285,17 +436,30 @@
     "gmatScore": 0,
     "toeflScore": 0,
     "ieltsScore": 7.0,
+    "type": "Current",
     "languages": "Spanish (Native), English (Fluent)",
-    "academicAwards": "Sustainability Project Award",
+    "academicAwards": "Sustainability Project Award, Photography Competition Finalist",
     "publicationCount": 0,
-    "researchInterest": "Sustainable Agriculture, Environmental Science",
-    "extracurricularActivities": "Managing a community garden.",
-    "preferredScholarshipType": "Merit-based Scholarship",
+    "researchInterest": "Sustainable Agriculture, Environmental Science, Soil Health",
+    "extracurricularActivities": "Managing a community garden that supplies fresh produce to a local food pantry. Organizing workshops on urban farming.",
+    "preferredScholarshipType": "Merit-based",
     "preferredCountry": "Netherlands",
     "preferredMajor": "Agricultural Science",
-    "certificates": [],
+    "certificates": [
+      {
+        "id": 401,
+        "applicantId": 4,
+        "certificateName": "Permaculture Design Certificate",
+        "issuedBy": "The Permaculture Association",
+        "issueDate": 1661990400000,
+        "expiryDate": 4102358400000,
+        "score": "Pass"
+      }
+    ],
     "educationHistories": [
       {
+        "id": 4,
+        "applicantId": 4,
         "institutionName": "University of Barcelona",
         "institutionType": "University",
         "state": "Catalonia",
@@ -306,8 +470,8 @@
         "gpa": 3.5,
         "classRank": "Top 15%",
         "classSize": 300,
-        "enrollmentStartDate": 1600128000,
-        "enrollmentEndDate": 1716854400,
+        "enrollmentStartDate": 1600128000000,
+        "enrollmentEndDate": 1716854400000,
         "graduationYear": 2024,
         "isDualEnrolled": false,
         "isTransfer": false,
@@ -315,20 +479,49 @@
         "notes": ""
       }
     ],
+    "applicantPreferences": [
+      {
+        "id": 7,
+        "applicantId": 4,
+        "type": "Field of Study",
+        "field": "Agriculture",
+        "weight": 8
+      },
+      {
+        "id": 8,
+        "applicantId": 4,
+        "type": "Location",
+        "field": "Europe",
+        "weight": 6
+      }
+    ],
     "skills": [
       {
+        "id": 10,
+        "applicantId": 4,
         "skillName": "Soil Analysis",
         "proficiencyLevel": "Intermediate",
         "yearsExperience": 2
       },
       {
+        "id": 11,
+        "applicantId": 4,
         "skillName": "GIS Mapping",
         "proficiencyLevel": "Basic",
         "yearsExperience": 1
+      },
+      {
+        "id": 12,
+        "applicantId": 4,
+        "skillName": "Photography",
+        "proficiencyLevel": "Intermediate",
+        "yearsExperience": 4
       }
     ],
     "intentions": [
       {
+        "id": 4,
+        "applicantId": 4,
         "intendedInstitution": "Wageningen University & Research",
         "intendedState": "Gelderland",
         "intendedCountry": "Netherlands",
@@ -336,7 +529,7 @@
         "intendedMajorCategory": "Science",
         "intendedMajorName": "Organic Agriculture",
         "academicClassification": "Graduate",
-        "expectedStartDate": 1725148800,
+        "expectedStartDate": 1725148800000,
         "expectedGraduationYear": 2026,
         "isTransferStudent": false,
         "isReturningStudent": false,
@@ -345,24 +538,26 @@
     ]
   },
   {
+    "id": 5,
+    "userId": "applicant-user-5",
     "contactName": "Yuki Tanaka",
     "firstName": "Yuki",
     "lastName": "Tanaka",
     "phoneNumber": "+81-90-5555-0105",
     "religion": "Buddhism",
-    "hometown": "Japan",
+    "hometown": "Tokyo",
     "citizenshipStatus": "Citizen",
     "ethnicity": "Asian",
     "race": "Asian",
     "militaryFamilyHistory": false,
     "disabilities": "None",
     "medicalConditions": "None",
-    "favoriteActivities": "Origami, Violin, Animation",
-    "sportsParticipated": "Kendo",
-    "studentActivities": "Animation Club, Orchestra",
-    "organizationsJoined": "Art Society",
-    "researchExperience": "",
-    "careerGoals": "To become a world-renowned animator and storyteller.",
+    "favoriteActivities": "Origami, Violin, Animation, Manga Drawing",
+    "sportsParticipated": "Kendo (Team Captain)",
+    "studentActivities": "Animation Club President, School Orchestra Violinist, Art Society",
+    "organizationsJoined": "Japan Animators Association (Student Member)",
+    "researchExperience": "Independent study on the evolution of character design in post-war anime.",
+    "careerGoals": "To become a world-renowned animator and storyteller, creating works that bridge cultures and evoke deep emotion.",
     "overallGpa": 3.4,
     "educationLevel": "High School",
     "satScore": 1300,
@@ -371,17 +566,30 @@
     "gmatScore": 0,
     "toeflScore": 90,
     "ieltsScore": 6.5,
+    "type": "Current",
     "languages": "Japanese (Native), English (Intermediate)",
-    "academicAwards": "Regional Art Competition Winner",
+    "academicAwards": "Regional Art Competition Winner, Best Short Film at Youth Film Festival",
     "publicationCount": 0,
-    "researchInterest": "Digital Art, Animation Techniques",
-    "extracurricularActivities": "Creating animated shorts for local festivals.",
-    "preferredScholarshipType": "Artistic Scholarship",
-    "preferredCountry": "United States",
+    "researchInterest": "Digital Art, Animation Techniques, Visual Storytelling",
+    "extracurricularActivities": "Creating animated shorts for local festivals. Teaching origami classes at the community center.",
+    "preferredScholarshipType": "Artistic",
+    "preferredCountry": "USA",
     "preferredMajor": "Fine Arts",
-    "certificates": [],
+    "certificates": [
+      {
+        "id": 501,
+        "applicantId": 5,
+        "certificateName": "Adobe Certified Professional (After Effects)",
+        "issuedBy": "Adobe",
+        "issueDate": 1704067200000,
+        "expiryDate": 1798761600000,
+        "score": "950/1000"
+      }
+    ],
     "educationHistories": [
       {
+        "id": 5,
+        "applicantId": 5,
         "institutionName": "Tokyo High School",
         "institutionType": "High School",
         "state": "Tokyo",
@@ -392,8 +600,8 @@
         "gpa": 3.4,
         "classRank": "Top 20%",
         "classSize": 250,
-        "enrollmentStartDate": 1617235200,
-        "enrollmentEndDate": 1709251200,
+        "enrollmentStartDate": 1617235200000,
+        "enrollmentEndDate": 1709251200000,
         "graduationYear": 2024,
         "isDualEnrolled": false,
         "isTransfer": false,
@@ -401,54 +609,85 @@
         "notes": ""
       }
     ],
+    "applicantPreferences": [
+      {
+        "id": 9,
+        "applicantId": 5,
+        "type": "Field of Study",
+        "field": "Animation",
+        "weight": 10
+      },
+      {
+        "id": 10,
+        "applicantId": 5,
+        "type": "Location",
+        "field": "California, USA",
+        "weight": 9
+      }
+    ],
     "skills": [
       {
+        "id": 13,
+        "applicantId": 5,
         "skillName": "Drawing",
         "proficiencyLevel": "Expert",
         "yearsExperience": 10
       },
       {
+        "id": 14,
+        "applicantId": 5,
         "skillName": "Adobe After Effects",
         "proficiencyLevel": "Intermediate",
         "yearsExperience": 2
+      },
+      {
+        "id": 15,
+        "applicantId": 5,
+        "skillName": "Origami",
+        "proficiencyLevel": "Advanced",
+        "yearsExperience": 8
       }
     ],
     "intentions": [
       {
+        "id": 5,
+        "applicantId": 5,
         "intendedInstitution": "CalArts",
         "intendedState": "California",
-        "intendedCountry": "United States",
+        "intendedCountry": "USA",
         "degreeType": "Bachelor",
         "intendedMajorCategory": "Arts",
         "intendedMajorName": "Character Animation",
         "academicClassification": "Undergraduate",
-        "expectedStartDate": 1725148800,
+        "expectedStartDate": 1725148800000,
         "expectedGraduationYear": 2028,
         "isTransferStudent": false,
         "isReturningStudent": false,
-        "notes": ""
+        "notes": "My dream school"
       }
     ]
   },
   {
+    "id": 6,
+    "userId": "applicant-user-6",
     "contactName": "Elena Bianchi",
     "firstName": "Elena",
     "lastName": "Bianchi",
     "phoneNumber": "+39-333-555-0106",
     "religion": "Catholicism",
-    "hometown": "Italy",
+    "hometown": "Milan",
     "citizenshipStatus": "Citizen",
     "ethnicity": "White",
     "race": "White",
     "militaryFamilyHistory": false,
     "disabilities": "Dyslexia",
     "medicalConditions": "None",
-    "favoriteActivities": "Fashion Design, Travel, Blogging",
+    "favoriteActivities": "Fashion Design, Travel, Blogging, Visiting Art Museums",
     "sportsParticipated": "Volleyball",
-    "studentActivities": "Fashion Club President, Student Council",
-    "organizationsJoined": "Greenpeace Volunteer",
-    "researchExperience": "",
-    "careerGoals": "To launch a sustainable fashion brand.",
+    "studentActivities": "Fashion Club President, Student Council, Greenpeace Volunteer",
+    "organizationsJoined": "Fashion Revolution, Greenpeace",
+    "researchExperience": "Conducted a case study on waste reduction in local textile factories.",
+    "careerGoals": "To launch a sustainable fashion brand that prioritizes ethical sourcing and circular design principles.",
     "overallGpa": 3.2,
     "educationLevel": "High School",
     "satScore": 1250,
@@ -457,17 +696,30 @@
     "gmatScore": 0,
     "toeflScore": 95,
     "ieltsScore": 7.0,
+    "type": "Current",
     "languages": "Italian (Native), English (Fluent), French (Basic)",
-    "academicAwards": "Design Innovation Award",
+    "academicAwards": "Design Innovation Award, Young Talent Showcase Finalist",
     "publicationCount": 0,
-    "researchInterest": "Sustainable Textiles, Fashion Marketing",
-    "extracurricularActivities": "Organized school charity fashion show.",
-    "preferredScholarshipType": "Talent-based Scholarship",
-    "preferredCountry": "United Kingdom",
+    "researchInterest": "Sustainable Textiles, Fashion Marketing, Circular Economy",
+    "extracurricularActivities": "Organized annual school charity fashion show using recycled materials. Writes a blog on sustainable living.",
+    "preferredScholarshipType": "Talent-based",
+    "preferredCountry": "UK",
     "preferredMajor": "Fashion Design",
-    "certificates": [],
+    "certificates": [
+      {
+        "id": 601,
+        "applicantId": 6,
+        "certificateName": "IELTS Academic",
+        "issuedBy": "British Council",
+        "issueDate": 1709251200000,
+        "expiryDate": 1772323200000,
+        "score": "Band 7.0"
+      }
+    ],
     "educationHistories": [
       {
+        "id": 6,
+        "applicantId": 6,
         "institutionName": "Liceo Artistico Milano",
         "institutionType": "High School",
         "state": "Lombardy",
@@ -478,8 +730,8 @@
         "gpa": 3.2,
         "classRank": "Top 25%",
         "classSize": 150,
-        "enrollmentStartDate": 1599868800,
-        "enrollmentEndDate": 1718409600,
+        "enrollmentStartDate": 1599868800000,
+        "enrollmentEndDate": 1718409600000,
         "graduationYear": 2024,
         "isDualEnrolled": false,
         "isTransfer": false,
@@ -487,28 +739,57 @@
         "notes": ""
       }
     ],
+    "applicantPreferences": [
+      {
+        "id": 11,
+        "applicantId": 6,
+        "type": "Field of Study",
+        "field": "Sustainable Fashion",
+        "weight": 10
+      },
+      {
+        "id": 12,
+        "applicantId": 6,
+        "type": "City",
+        "field": "London",
+        "weight": 7
+      }
+    ],
     "skills": [
       {
+        "id": 16,
+        "applicantId": 6,
         "skillName": "Sewing",
         "proficiencyLevel": "Advanced",
         "yearsExperience": 5
       },
       {
+        "id": 17,
+        "applicantId": 6,
         "skillName": "Fashion Illustration",
         "proficiencyLevel": "Intermediate",
         "yearsExperience": 3
+      },
+      {
+        "id": 18,
+        "applicantId": 6,
+        "skillName": "Textile Design",
+        "proficiencyLevel": "Basic",
+        "yearsExperience": 1
       }
     ],
     "intentions": [
       {
+        "id": 6,
+        "applicantId": 6,
         "intendedInstitution": "Central Saint Martins",
         "intendedState": "London",
-        "intendedCountry": "United Kingdom",
+        "intendedCountry": "UK",
         "degreeType": "Bachelor",
         "intendedMajorCategory": "Arts",
         "intendedMajorName": "Fashion Design",
         "academicClassification": "Undergraduate",
-        "expectedStartDate": 1725148800,
+        "expectedStartDate": 1725148800000,
         "expectedGraduationYear": 2027,
         "isTransferStudent": false,
         "isReturningStudent": false,
@@ -517,24 +798,26 @@
     ]
   },
   {
+    "id": 7,
+    "userId": "applicant-user-7",
     "contactName": "Ahmed Al-Fayed",
     "firstName": "Ahmed",
     "lastName": "Al-Fayed",
     "phoneNumber": "+20-100-555-0107",
     "religion": "Islam",
-    "hometown": "Egypt",
+    "hometown": "Giza",
     "citizenshipStatus": "Citizen",
     "ethnicity": "Arab",
     "race": "White",
     "militaryFamilyHistory": false,
     "disabilities": "None",
     "medicalConditions": "None",
-    "favoriteActivities": "Reading History, Soccer, Calligraphy",
+    "favoriteActivities": "Reading History, Soccer, Calligraphy, Visiting Museums",
     "sportsParticipated": "Soccer",
-    "studentActivities": "History Club, Debating Society",
-    "organizationsJoined": "Library Volunteer",
-    "researchExperience": "Cataloged ancient manuscripts at the visiting museum exhibit.",
-    "careerGoals": "To become an Egyptologist and curate museums.",
+    "studentActivities": "History Club President, Debating Society, Library Volunteer",
+    "organizationsJoined": "Friends of the Museum",
+    "researchExperience": "Cataloged ancient manuscripts at the visiting museum exhibit. Published a student paper on the New Kingdom era.",
+    "careerGoals": "To become an Egyptologist and Museum Curator. I want to tell the stories of my ancestors accurately and engagingly.",
     "overallGpa": 3.8,
     "educationLevel": "Bachelor",
     "satScore": 0,
@@ -543,17 +826,30 @@
     "gmatScore": 0,
     "toeflScore": 100,
     "ieltsScore": 7.5,
+    "type": "Current",
     "languages": "Arabic (Native), English (Fluent), German (Basic)",
-    "academicAwards": "Excellence in History",
+    "academicAwards": "Excellence in History, University Debating Champion",
     "publicationCount": 1,
-    "researchInterest": "Ancient Egyptian History, Archeology",
-    "extracurricularActivities": "Guided tours at local historical sites.",
+    "researchInterest": "Ancient Egyptian History, Archeology, Museum Studies",
+    "extracurricularActivities": "Guided tours for tourists at the Giza Plateau. Organized a book donation drive for rural schools.",
     "preferredScholarshipType": "Research Grant",
     "preferredCountry": "Germany",
     "preferredMajor": "Archaeology",
-    "certificates": [],
+    "certificates": [
+      {
+        "id": 701,
+        "applicantId": 7,
+        "certificateName": "Goethe-Zertifikat B1",
+        "issuedBy": "Goethe-Institut",
+        "issueDate": 1696118400000,
+        "expiryDate": 4102358400000,
+        "score": "80/100"
+      }
+    ],
     "educationHistories": [
       {
+        "id": 7,
+        "applicantId": 7,
         "institutionName": "Cairo University",
         "institutionType": "University",
         "state": "Cairo",
@@ -564,8 +860,8 @@
         "gpa": 3.8,
         "classRank": "Top 5%",
         "classSize": 400,
-        "enrollmentStartDate": 1600128000,
-        "enrollmentEndDate": 1716854400,
+        "enrollmentStartDate": 1600128000000,
+        "enrollmentEndDate": 1716854400000,
         "graduationYear": 2024,
         "isDualEnrolled": false,
         "isTransfer": false,
@@ -573,20 +869,49 @@
         "notes": ""
       }
     ],
+    "applicantPreferences": [
+      {
+        "id": 13,
+        "applicantId": 7,
+        "type": "Field of Study",
+        "field": "Egyptology",
+        "weight": 10
+      },
+      {
+        "id": 14,
+        "applicantId": 7,
+        "type": "University",
+        "field": "Heidelberg University",
+        "weight": 8
+      }
+    ],
     "skills": [
       {
+        "id": 19,
+        "applicantId": 7,
         "skillName": "Hieroglyphics Deciphering",
         "proficiencyLevel": "Intermediate",
         "yearsExperience": 2
       },
       {
+        "id": 20,
+        "applicantId": 7,
         "skillName": "Research",
         "proficiencyLevel": "Advanced",
         "yearsExperience": 3
+      },
+      {
+        "id": 21,
+        "applicantId": 7,
+        "skillName": "Calligraphy",
+        "proficiencyLevel": "Advanced",
+        "yearsExperience": 5
       }
     ],
     "intentions": [
       {
+        "id": 7,
+        "applicantId": 7,
         "intendedInstitution": "Heidelberg University",
         "intendedState": "Baden-Württemberg",
         "intendedCountry": "Germany",
@@ -594,7 +919,7 @@
         "intendedMajorCategory": "Humanities",
         "intendedMajorName": "Egyptology",
         "academicClassification": "Graduate",
-        "expectedStartDate": 1728950400,
+        "expectedStartDate": 1728950400000,
         "expectedGraduationYear": 2026,
         "isTransferStudent": false,
         "isReturningStudent": false,
@@ -603,12 +928,14 @@
     ]
   },
   {
+    "id": 8,
+    "userId": "applicant-user-8",
     "contactName": "Isabella Santos",
     "firstName": "Isabella",
     "lastName": "Santos",
     "phoneNumber": "+55-11-9555-0108",
     "religion": "Catholicism",
-    "hometown": "Brazil",
+    "hometown": "São Paulo",
     "citizenshipStatus": "Citizen",
     "ethnicity": "Latino",
     "race": "Mixed",
@@ -617,10 +944,10 @@
     "medicalConditions": "None",
     "favoriteActivities": "Dancing, Environmental Advocacy, Swimming",
     "sportsParticipated": "Swimming",
-    "studentActivities": "Eco Club, Salsa Dance Group",
-    "organizationsJoined": "Amazon Watch",
-    "researchExperience": "Field research on deforestation impact on local communities.",
-    "careerGoals": "To work as an environmental lawyer protecting the rainforest.",
+    "studentActivities": "Eco Club President, Salsa Dance Group, Law Student Association",
+    "organizationsJoined": "Amazon Watch, Greenpeace Brazil",
+    "researchExperience": "Field research on the legal impact of deforestation on indigenous communities in the Amazon basin.",
+    "careerGoals": "To work as an environmental lawyer protecting the rainforest and indigenous rights. I aim to hold corporations accountable for environmental damage.",
     "overallGpa": 3.75,
     "educationLevel": "Bachelor",
     "satScore": 0,
@@ -629,17 +956,30 @@
     "gmatScore": 0,
     "toeflScore": 102,
     "ieltsScore": 0,
+    "type": "Current",
     "languages": "Portuguese (Native), English (Fluent), Spanish (Fluent)",
-    "academicAwards": "Environmental Steward Award",
+    "academicAwards": "Environmental Steward Award, Top 10% Class Ranking",
     "publicationCount": 0,
-    "researchInterest": "Environmental Law, Human Rights",
-    "extracurricularActivities": "Organized tree planting campaigns.",
-    "preferredScholarshipType": "Merit-based Scholarship",
-    "preferredCountry": "United States",
+    "researchInterest": "Environmental Law, Human Rights, Indigenous Rights",
+    "extracurricularActivities": "Organized tree planting campaigns in the city. Volunteered as a legal aide for an environmental NGO.",
+    "preferredScholarshipType": "Merit-based",
+    "preferredCountry": "USA",
     "preferredMajor": "Environmental Law",
-    "certificates": [],
+    "certificates": [
+      {
+        "id": 801,
+        "applicantId": 8,
+        "certificateName": "TOEFL iBT",
+        "issuedBy": "ETS",
+        "issueDate": 1686787200000,
+        "expiryDate": 1749859200000,
+        "score": "102"
+      }
+    ],
     "educationHistories": [
       {
+        "id": 8,
+        "applicantId": 8,
         "institutionName": "University of São Paulo",
         "institutionType": "University",
         "state": "São Paulo",
@@ -650,8 +990,8 @@
         "gpa": 3.75,
         "classRank": "Top 10%",
         "classSize": 500,
-        "enrollmentStartDate": 1582934400,
-        "enrollmentEndDate": 1701388800,
+        "enrollmentStartDate": 1582934400000,
+        "enrollmentEndDate": 1701388800000,
         "graduationYear": 2023,
         "isDualEnrolled": false,
         "isTransfer": false,
@@ -659,28 +999,57 @@
         "notes": ""
       }
     ],
+    "applicantPreferences": [
+      {
+        "id": 15,
+        "applicantId": 8,
+        "type": "Field of Study",
+        "field": "Environmental Law",
+        "weight": 10
+      },
+      {
+        "id": 16,
+        "applicantId": 8,
+        "type": "University",
+        "field": "Yale University",
+        "weight": 9
+      }
+    ],
     "skills": [
       {
+        "id": 22,
+        "applicantId": 8,
         "skillName": "Legal Research",
         "proficiencyLevel": "Advanced",
         "yearsExperience": 3
       },
       {
+        "id": 23,
+        "applicantId": 8,
         "skillName": "Advocacy",
         "proficiencyLevel": "Intermediate",
         "yearsExperience": 2
+      },
+      {
+        "id": 24,
+        "applicantId": 8,
+        "skillName": "Public Speaking",
+        "proficiencyLevel": "Intermediate",
+        "yearsExperience": 3
       }
     ],
     "intentions": [
       {
+        "id": 8,
+        "applicantId": 8,
         "intendedInstitution": "Yale University",
         "intendedState": "Connecticut",
-        "intendedCountry": "United States",
+        "intendedCountry": "USA",
         "degreeType": "Master",
         "intendedMajorCategory": "Law",
         "intendedMajorName": "Environmental Law",
         "academicClassification": "Graduate",
-        "expectedStartDate": 1725148800,
+        "expectedStartDate": 1725148800000,
         "expectedGraduationYear": 2025,
         "isTransferStudent": false,
         "isReturningStudent": false,
@@ -689,24 +1058,26 @@
     ]
   },
   {
+    "id": 9,
+    "userId": "applicant-user-9",
     "contactName": "Lars Johansson",
     "firstName": "Lars",
     "lastName": "Johansson",
     "phoneNumber": "+46-70-555-0109",
     "religion": "Atheist",
-    "hometown": "Sweden",
+    "hometown": "Stockholm",
     "citizenshipStatus": "Citizen",
     "ethnicity": "White",
     "race": "White",
     "militaryFamilyHistory": true,
     "disabilities": "None",
     "medicalConditions": "Type 1 Diabetes",
-    "favoriteActivities": "Skiing, Engineering, Gaming",
-    "sportsParticipated": "Ice Hockey",
-    "studentActivities": "Engineering Society, eSports Team",
-    "organizationsJoined": "Diabetes Awareness Group",
-    "researchExperience": "Interned at a renewable energy firm designing wind turbine components.",
-    "careerGoals": "To innovate in the field of renewable energy engineering.",
+    "favoriteActivities": "Skiing, Engineering Projects, Gaming, Hiking",
+    "sportsParticipated": "Ice Hockey (League Champion)",
+    "studentActivities": "Engineering Society, University eSports Team, Renewable Energy Club",
+    "organizationsJoined": "Diabetes Awareness Group, Engineers Without Borders",
+    "researchExperience": "Master's thesis on aerodynamic efficiency of wind turbine blades. Interned at Vattenfall working on offshore wind projects.",
+    "careerGoals": "To innovate in the field of renewable energy engineering. I hope to lead R&D projects that make wind energy more efficient and accessible.",
     "overallGpa": 3.6,
     "educationLevel": "Master",
     "satScore": 0,
@@ -715,17 +1086,30 @@
     "gmatScore": 0,
     "toeflScore": 110,
     "ieltsScore": 8.0,
+    "type": "Current",
     "languages": "Swedish (Native), English (Fluent), German (Intermediate)",
-    "academicAwards": "Innovative Design Award",
+    "academicAwards": "Innovative Design Award, Best Master's Thesis",
     "publicationCount": 1,
-    "researchInterest": "Renewable Energy, Mechanical Engineering",
-    "extracurricularActivities": "Repairing electronics for charity.",
+    "researchInterest": "Renewable Energy, Mechanical Engineering, Fluid Dynamics",
+    "extracurricularActivities": "Repairing electronics for charity to reduce e-waste. Mentoring undergraduate engineering students.",
     "preferredScholarshipType": "Fellowship",
     "preferredCountry": "Germany",
     "preferredMajor": "Mechanical Engineering",
-    "certificates": [],
+    "certificates": [
+      {
+        "id": 901,
+        "applicantId": 9,
+        "certificateName": "Certified Energy Manager (CEM)",
+        "issuedBy": "Association of Energy Engineers",
+        "issueDate": 1690848000000,
+        "expiryDate": 1785542400000,
+        "score": "Pass"
+      }
+    ],
     "educationHistories": [
       {
+        "id": 9,
+        "applicantId": 9,
         "institutionName": "KTH Royal Institute of Technology",
         "institutionType": "University",
         "state": "Stockholm",
@@ -736,8 +1120,8 @@
         "gpa": 3.6,
         "classRank": "Top 15%",
         "classSize": 100,
-        "enrollmentStartDate": 1630454400,
-        "enrollmentEndDate": 1686787200,
+        "enrollmentStartDate": 1630454400000,
+        "enrollmentEndDate": 1686787200000,
         "graduationYear": 2023,
         "isDualEnrolled": false,
         "isTransfer": false,
@@ -745,20 +1129,49 @@
         "notes": ""
       }
     ],
+    "applicantPreferences": [
+      {
+        "id": 17,
+        "applicantId": 9,
+        "type": "Field of Study",
+        "field": "Renewable Energy",
+        "weight": 10
+      },
+      {
+        "id": 18,
+        "applicantId": 9,
+        "type": "Institution",
+        "field": "Technical University of Munich",
+        "weight": 9
+      }
+    ],
     "skills": [
       {
+        "id": 25,
+        "applicantId": 9,
         "skillName": "CAD Design",
         "proficiencyLevel": "Advanced",
         "yearsExperience": 4
       },
       {
+        "id": 26,
+        "applicantId": 9,
         "skillName": "Simulink",
         "proficiencyLevel": "Intermediate",
         "yearsExperience": 2
+      },
+      {
+        "id": 27,
+        "applicantId": 9,
+        "skillName": "Matlab",
+        "proficiencyLevel": "Advanced",
+        "yearsExperience": 3
       }
     ],
     "intentions": [
       {
+        "id": 9,
+        "applicantId": 9,
         "intendedInstitution": "Technical University of Munich",
         "intendedState": "Bavaria",
         "intendedCountry": "Germany",
@@ -766,33 +1179,35 @@
         "intendedMajorCategory": "Engineering",
         "intendedMajorName": "Energy Systems",
         "academicClassification": "Postgraduate",
-        "expectedStartDate": 1728950400,
+        "expectedStartDate": 1728950400000,
         "expectedGraduationYear": 2027,
         "isTransferStudent": false,
         "isReturningStudent": false,
-        "notes": ""
+        "notes": "Researching Wind Turbine Efficiency"
       }
     ]
   },
   {
+    "id": 10,
+    "userId": "applicant-user-10",
     "contactName": "Priya Sharma",
     "firstName": "Priya",
     "lastName": "Sharma",
     "phoneNumber": "+91-98-555-0110",
     "religion": "Hinduism",
-    "hometown": "India",
+    "hometown": "Delhi",
     "citizenshipStatus": "Citizen",
     "ethnicity": "Asian",
     "race": "Asian",
     "militaryFamilyHistory": false,
     "disabilities": "None",
     "medicalConditions": "None",
-    "favoriteActivities": "Yoga, Volunteering, Reading",
-    "sportsParticipated": "Cricket",
-    "studentActivities": "Medical Students Association, Health Camp Organizer",
-    "organizationsJoined": "Doctors Without Borders (Student Chapter)",
-    "researchExperience": "Conducted surveys on hygiene practices in urban slums.",
-    "careerGoals": "To become a pediatrician serving underprivileged communities.",
+    "favoriteActivities": "Yoga, Volunteering, Reading Medical Journals",
+    "sportsParticipated": "Cricket (State Level)",
+    "studentActivities": "Medical Students Association Secretary, Health Camp Organizer",
+    "organizationsJoined": "Doctors Without Borders (Student Chapter), Red Cross",
+    "researchExperience": "Conducted surveys on hygiene practices in urban slums and analyzed the correlation with waterborne diseases. Published findings in a national journal.",
+    "careerGoals": "To become a pediatrician serving underprivileged communities. I also aim to influence public health policy to improve sanitation and child health outcomes.",
     "overallGpa": 3.85,
     "educationLevel": "Bachelor",
     "satScore": 0,
@@ -801,17 +1216,39 @@
     "gmatScore": 0,
     "toeflScore": 108,
     "ieltsScore": 7.5,
+    "type": "Current",
     "languages": "Hindi (Native), English (Fluent), Bengali (Basic)",
-    "academicAwards": "Gold Medal in Biology",
+    "academicAwards": "Gold Medal in Biology, Best Intern Award, Research Excellence Prize",
     "publicationCount": 2,
-    "researchInterest": "Pediatrics, Public Health",
-    "extracurricularActivities": "Teaching hygiene at local schools.",
-    "preferredScholarshipType": "Merit-based Scholarship",
-    "preferredCountry": "United Kingdom",
+    "researchInterest": "Pediatrics, Public Health, Epidemiology",
+    "extracurricularActivities": "Organizing free health checkup camps in rural villages. Teaching hygiene and sanitation at local schools.",
+    "preferredScholarshipType": "Merit-based",
+    "preferredCountry": "UK",
     "preferredMajor": "Medicine",
-    "certificates": [],
+    "certificates": [
+      {
+        "id": 1001,
+        "applicantId": 10,
+        "certificateName": "Basic Life Support (BLS)",
+        "issuedBy": "Indian Red Cross Society",
+        "issueDate": 1675209600000,
+        "expiryDate": 1738368000000,
+        "score": "Pass"
+      },
+      {
+        "id": 1002,
+        "applicantId": 10,
+        "certificateName": "IELTS Academic",
+        "issuedBy": "British Council",
+        "issueDate": 1706745600000,
+        "expiryDate": 1769817600000,
+        "score": "Band 7.5"
+      }
+    ],
     "educationHistories": [
       {
+        "id": 10,
+        "applicantId": 10,
         "institutionName": "All India Institute of Medical Sciences",
         "institutionType": "University",
         "state": "Delhi",
@@ -822,37 +1259,66 @@
         "gpa": 3.85,
         "classRank": "Top 1%",
         "classSize": 100,
-        "enrollmentStartDate": 1564617600,
-        "enrollmentEndDate": 1716854400,
+        "enrollmentStartDate": 1564617600000,
+        "enrollmentEndDate": 1716854400000,
         "graduationYear": 2024,
         "isDualEnrolled": false,
         "isTransfer": false,
         "isReturningStudent": false,
-        "notes": ""
+        "notes": "Graduated with Distinction"
+      }
+    ],
+    "applicantPreferences": [
+      {
+        "id": 19,
+        "applicantId": 10,
+        "type": "Field of Study",
+        "field": "Public Health",
+        "weight": 10
+      },
+      {
+        "id": 20,
+        "applicantId": 10,
+        "type": "University",
+        "field": "University of Cambridge",
+        "weight": 9
       }
     ],
     "skills": [
       {
+        "id": 28,
+        "applicantId": 10,
         "skillName": "Clinical Diagnosis",
         "proficiencyLevel": "Intermediate",
         "yearsExperience": 2
       },
       {
+        "id": 29,
+        "applicantId": 10,
         "skillName": "Patient Care",
         "proficiencyLevel": "Advanced",
         "yearsExperience": 3
+      },
+      {
+        "id": 30,
+        "applicantId": 10,
+        "skillName": "Public Health Surveying",
+        "proficiencyLevel": "Intermediate",
+        "yearsExperience": 2
       }
     ],
     "intentions": [
       {
+        "id": 10,
+        "applicantId": 10,
         "intendedInstitution": "University of Cambridge",
         "intendedState": "Cambridgeshire",
-        "intendedCountry": "United Kingdom",
+        "intendedCountry": "UK",
         "degreeType": "Master",
         "intendedMajorCategory": "Medical",
         "intendedMajorName": "Public Health",
         "academicClassification": "Graduate",
-        "expectedStartDate": 1728950400,
+        "expectedStartDate": 1728950400000,
         "expectedGraduationYear": 2025,
         "isTransferStudent": false,
         "isReturningStudent": false,

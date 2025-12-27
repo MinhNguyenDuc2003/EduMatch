@@ -20,6 +20,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { NOTIFICATION_TYPES } from '@/constants/Common';
+import { formatDate } from '@/utils/formatDate';
 
 const Notifications = () => {
   const clientRef = useRef<Client | null>(null);
@@ -220,6 +221,9 @@ const Notifications = () => {
                       )}
                     </div>
                     <p className="text-xs text-gray-600 line-clamp-2">{notification.content}</p>
+                    <p className="text-xs text-gray-600 font-medium w-full flex justify-end">
+                      {formatDate(notification.createdDate)}
+                    </p>
                   </DropdownMenuItem>
                 );
               })}
