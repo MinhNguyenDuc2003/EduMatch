@@ -331,7 +331,9 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
             }
         }
         ScholarshipViewProjection entities = scholarshipViewRepository.getViewsByScholarshipId(vo.getId());
-        vo.setViews(entities.getView());
+        if (ObjectUtils.isNotEmpty(entities) && ObjectUtils.isNotEmpty(entities.getView())) {
+            vo.setViews(entities.getView());
+        }
         vo.setCaseStudyVos(caseStudyService.getByScholarshipId(vo.getId()));
         return addScholarshipMedia(vo);
     }
@@ -612,7 +614,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
 
         // Return the DTO
         return new ScholarshipStatisticsDto(
-                totalScholarships, totalViews, totalApplies,totalSuccessful, successfulRate, averageApplyRate,
+                totalScholarships, totalViews, totalApplies, totalSuccessful, successfulRate, averageApplyRate,
                 approveRate, rejectRate, pendingRate, viewButNoApplyRate,
                 top5ByView, top5ByApply
         );
@@ -744,7 +746,7 @@ public class ScholarshipServiceImpl extends BaseService implements ScholarshipSe
     public Boolean updateStatus(Long scholarshipId, String status) {
 
         if (status == null || status.isBlank()) {
-            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_STATUS_NOT_EXIST );
+            throw new BusinessException(CoreMessageCode.SCHOLARSHIP_STATUS_NOT_EXIST);
         }
 
         String normalizedStatus =
