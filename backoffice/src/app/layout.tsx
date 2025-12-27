@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <AppSidebar />
             <AnimatedContainer>
               <LoadingOverlay />
-              <main className="ml-16">{children}</main>
+              <main className="ml-16 font-sans">{children}</main>
             </AnimatedContainer>
           </div>
         </SidebarProvider>

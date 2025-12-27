@@ -38,19 +38,6 @@ function AuditLogDetailInner({ meds, id }: { meds: any; id: string }) {
     setForm((prev: any) => ({ ...prev, [key]: value }));
   };
 
-  // const handleSave = async () => {
-  //   try {
-  //     setLoading(true);
-  //     await meds.onUpdate(id, form);
-  //     setData(form);
-  //     setIsEditing(false);
-  //   } catch (error) {
-  //     console.error('Update failed:', error);
-  //     alert('Failed to update AuditLog.');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   if (!data)
     return (

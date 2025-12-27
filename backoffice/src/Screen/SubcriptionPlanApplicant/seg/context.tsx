@@ -82,13 +82,11 @@ export default GenCtx({
           );
           console.log('Created plan:', data.data);
           if (data !== null) {
-            alert('Create subscriptions successfull')
             window.location.reload()
 
           }
           return data.data;
         } catch (error) {
-          alert('Create subscriptions failed')
           console.error({ error });
         } finally {
           onSetLoading(false);
@@ -113,12 +111,10 @@ export default GenCtx({
           );
           console.log('Update plan:', data.data);
           if (data !== null) {
-            alert('Update subscriptions successfull')
             window.location.reload()
           }
           return data.data;
         } catch (error) {
-          alert('Update subscriptions failed')
           console.error({ error });
         } finally {
           onSetLoading(false);
@@ -132,13 +128,11 @@ export default GenCtx({
             `/api/subscription/subscription/subscription/plans/${id}`
           );
           if(data !== null){
-            alert('Delete subscriptions failed')
             window.location.reload()
           }
           console.log('Delete plan:', data.data);
               return data?.data ?? true;   
         } catch (error) {
-          alert('Delete subscriptions failed')
           console.error({ error });
         } finally {
           onSetLoading(false);

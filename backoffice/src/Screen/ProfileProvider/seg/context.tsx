@@ -7,14 +7,14 @@ import { GenCtx } from 'src/apiController/GeneralContext';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
 export type IUser = {
-  username: string,
-  email: string,
-  firstName: string,
-  lastName: string,
-  password: string,
-  role: string
-}
-const data = 'ffffff';
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  role: string;
+};
+
 export default GenCtx({
   useLogic() {
     type IForm = {
@@ -43,7 +43,10 @@ export default GenCtx({
         try {
           const data = await apiClientService.get(`/api/profile/providers/all`);
           if (data) {
-            ss.Joint.Provider = data;
+            ss.setJointData({
+              Provider: data || [],
+            });
+
             console.log('first', data);
           }
           return;
@@ -58,7 +61,10 @@ export default GenCtx({
         try {
           const data = await apiClientService.get(`/api/profile/applicants/all`);
           if (data) {
-            ss.Joint.Students = data;
+            ss.setJointData({
+              Students: data || [],
+            });
+
             console.log('first', data);
           }
           return;
@@ -93,22 +99,21 @@ export default GenCtx({
       async onUpdateProviderVerifyByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.put(`/api/profile/providers/${id}/verified?verified=true`, {});
-          if(data !== null) {
-               alert('Verify email successfull')
-               window.location.reload()
+          const data = await apiClientService.put(
+            `/api/profile/providers/${id}/verified?verified=true`,
+            {}
+          );
+          if (data !== null) {
+            window.location.reload();
           }
           return data.data;
         } catch (error) {
-           alert('Verify email failed')
           console.error({ error });
         } finally {
           onSetLoading(false);
         }
       },
-     
     };
-
 
     useEffect(() => {
       meds.onGetDataApplicant();
@@ -116,10 +121,8 @@ export default GenCtx({
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {
-      ss,
-      data,
-      meds,
-      methods
+      ss,meds,
+      methods,
     };
   },
 });

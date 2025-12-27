@@ -7,7 +7,7 @@ import { GenCtx } from 'src/apiController/GeneralContext';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
 
-const data = 'ffffff';
+
 export default GenCtx({
   useLogic() {
     type IForm = {
@@ -53,18 +53,19 @@ export default GenCtx({
             }
 
             if (totalUser === 0) {
-              console.log("Stop fetching — totalUser = 0");
+              console.log('Stop fetching — totalUser = 0');
               break;
             }
 
             page++;
           }
 
-          ss.Joint.Users = results;
-          console.log("Total users loaded:", results.length);
+          ss.setJointData({
+            Users: results || [],
+          });
+          console.log('Total users loaded:', results.length);
 
           return results;
-
         } catch (err) {
           console.error(err);
         } finally {
@@ -76,29 +77,30 @@ export default GenCtx({
         onSetLoading(true);
         try {
           const data = await apiClientService.post(`/api/customer/backoffice/customers`, {
-            "username": user.username,
-            "email": user.email,
-            "firstName": user.firstName,
-            "lastName": user.lastName,
-            "password": user.password,
-            "role": user.role[0]
+            username: user.username,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            password: user.password,
+            role: user.role[0],
           });
           if (data !== null) {
-            alert("User created successfully");
+            alert('User created successfully');
           }
-          window.location.reload()
+          window.location.reload();
           return data.data;
-
         } catch (error) {
           console.error({ error });
         } finally {
           onSetLoading(false);
         }
       },
-       async onGetByID(id: string) {
+      async onGetByID(id: string) {
         onSetLoading(true);
         try {
-          const data = await apiClientService.get(`/api/customer/backoffice/customers/profile/${id}`);
+          const data = await apiClientService.get(
+            `/api/customer/backoffice/customers/profile/${id}`
+          );
           return data.data.data;
         } catch (error) {
           console.error({ error });
@@ -108,16 +110,13 @@ export default GenCtx({
       },
     };
 
-
     useEffect(() => {
       meds.onGetData();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {
-      ss,
-      data,
-      meds,
-      methods
+      ss,meds,
+      methods,
     };
   },
 });

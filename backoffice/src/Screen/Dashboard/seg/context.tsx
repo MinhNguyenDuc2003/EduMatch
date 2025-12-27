@@ -7,7 +7,7 @@ import { GenCtx } from 'src/apiController/GeneralContext';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
 
-const data = 'ffffff';
+
 export default GenCtx({
   useLogic() {
     type IForm = {
@@ -31,40 +31,40 @@ export default GenCtx({
     });
     // const loading = useState(false);
     const meds = {
-      // async onGetDataTopApply() {
-      //   onSetLoading(true);
-      //   try {
-      //     const data = await apiClientService.get('/api/scholarship/applications-scholarship/top-applied');
-      //     if (data) {
-      //        ss.setJointData({
-      //         TopApply : data || [],
-      //       });
-      //       console.log('TopApply', data);
-      //     }
-      //     return;
-      //   } catch (error) {
-      //     console.error({ error });
-      //   } finally {
-      //     onSetLoading(false);
-      //   }
-      // },
-      // async onGetDataTopView() {
-      //   onSetLoading(true);
-      //   try {
-      //     const data = await apiClientService.get('/api/scholarship/scholarships/top-views/month');
-      //     if (data) {
-      //        ss.setJointData({
-      //         TopView : data || [],
-      //       });
-      //       console.log('TopView', data);
-      //     }
-      //     return;
-      //   } catch (error) {
-      //     console.error({ error });
-      //   } finally {
-      //     onSetLoading(false);
-      //   }
-      // },
+      async onGetDataTopApply() {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get('/api/scholarship/applications-scholarship/top-applied');
+          if (data) {
+             ss.setJointData({
+              TopApply : data.data || [],
+            });
+            console.log('TopApply', data.data);
+          }
+          return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
+      async onGetDataTopView() {
+        onSetLoading(true);
+        try {
+          const data = await apiClientService.get('/api/scholarship/scholarships/top-views/month');
+          if (data) {
+             ss.setJointData({
+              TopView : data.data || [],
+            });
+            console.log('TopView', data.data);
+          }
+          return;
+        } catch (error) {
+          console.error({ error });
+        } finally {
+          onSetLoading(false);
+        }
+      },
       async onGetDataRevenueByUsertype() {
         onSetLoading(true);
         try {
@@ -188,6 +188,8 @@ export default GenCtx({
     };
 
     useEffect(() => {
+      meds.onGetDataTopApply();
+      meds.onGetDataTopView();
       meds.onGetDataRevenueByMonth();
       meds.onGetDataRevenueMonthly();
       meds.onGetDataRevenueByUsertype();
@@ -198,9 +200,7 @@ export default GenCtx({
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {
-      ss,
-      data,
-      meds,
+      ss,meds,
       methods
     };
   },

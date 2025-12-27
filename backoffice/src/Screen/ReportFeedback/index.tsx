@@ -1,13 +1,13 @@
-"use client";
-import { CheckCircle, Clock, GraduationCap, Mail } from "lucide-react";
-import { useMemo, useState } from "react";
-import CustomDataTable from "src/common/components/common/CustomDataTable";
-import StatisticGrid from "src/common/components/common/StatisticGrid";
-import Context from "./seg/context";
-import { useRouter } from "next/navigation";
+'use client';
+import { CheckCircle, Clock, GraduationCap, Mail } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import CustomDataTable from 'src/common/components/common/CustomDataTable';
+import StatisticGrid from 'src/common/components/common/StatisticGrid';
+import Context from './seg/context';
+import { useRouter } from 'next/navigation';
 
 const ReportFeedbackPage = () => {
-  const [filterText, setFilterText] = useState("");
+  const [filterText, setFilterText] = useState('');
   const router = useRouter();
   const handleFilterSelect = (filterKey: string) => {
     setFilterText(filterKey);
@@ -18,65 +18,73 @@ const ReportFeedbackPage = () => {
       <Context.Consumer>
         {({ ss }) => {
           const list = (ss?.Joint?.ReportList as any)?.data || [];
-          console.log("list", list);
+          console.log('list', list);
 
           const ReportFeedbacks =
             list?.map((item: any) => ({
               id: item.id,
-              title: item.title ?? "—",
-              comment: item.comment ?? "—",
-              categoryName: item.category?.name || "—",
-              categoryType: item.category?.type || "—",
-              status: item.status ?? "—",
+              title: item.title ?? '—',
+              comment: item.comment ?? '—',
+              categoryName: item.category?.name || '—',
+              categoryType: item.category?.type || '—',
+              status: item.status ?? '—',
+              createdDate: new Date(item.createdDate).toLocaleDateString('en-US', {
+                // "Tue"
+                month: 'short', // "Dec"
+                day: 'numeric', // "3"
+                year: 'numeric', // "2025"
+              }),
+
               // isRead: item.isRead ? "Read" : "Unread",
             })) || [];
 
           // ✅ Thống kê
           const total = ReportFeedbacks.length;
-          const unread = ReportFeedbacks.filter((s: any) => s.isRead === "Unread").length;
-          const pending = ReportFeedbacks.filter((s: any) => s.status === "PENDING").length;
-          const resolved = ReportFeedbacks.filter((s: any) => s.status === "RESOLVED").length;
+          const unread = ReportFeedbacks.filter((s: any) => s.isRead === 'Unread').length;
+          const pending = ReportFeedbacks.filter((s: any) => s.status === 'PENDING').length;
+          const resolved = ReportFeedbacks.filter((s: any) => s.status === 'RESOLVED').length;
 
           // UI của thống kê
           const stats = [
             {
-              title: "Total Reports",
+              title: 'Total Reports',
               value: total,
               icon: <GraduationCap />,
-              color: "text-blue-600",
-              filterName: "",
+              color: 'text-blue-600',
+              filterName: '',
             },
             {
-              title: "Unread",
+              title: 'Unread',
               value: unread,
               icon: <Mail />,
-              color: "text-purple-600",
-              filterName: "Unread",
+              color: 'text-purple-600',
+              filterName: 'Unread',
             },
             {
-              title: "Pending",
+              title: 'Pending',
               value: pending,
               icon: <Clock />,
-              color: "text-yellow-500",
-              filterName: "PENDING",
+              color: 'text-yellow-500',
+              filterName: 'PENDING',
             },
             {
-              title: "Resolved",
+              title: 'Resolved',
               value: resolved,
               icon: <CheckCircle />,
-              color: "text-green-600",
-              filterName: "RESOLVED",
+              color: 'text-green-600',
+              filterName: 'RESOLVED',
             },
           ];
           const columns = [
-    { accessorKey: "id", header: "ID" },
-    { accessorKey: "title", header: "Title" },
-    { accessorKey: "comment", header: "Comment" },
-    { accessorKey: "categoryName", header: "Category Name" },
-    { accessorKey: "categoryType", header: "Category Type" },
-    { accessorKey: "status", header: "Status" },
-    // { accessorKey: "isRead", header: "Read" },
-  ];
+            { accessorKey: 'id', header: 'ID' },
+            { accessorKey: 'title', header: 'Title' },
+            { accessorKey: 'comment', header: 'Comment' },
+            { accessorKey: 'categoryName', header: 'Category Name' },
+            { accessorKey: 'categoryType', header: 'Category Type' },
+            { accessorKey: 'status', header: 'Status' },
+            { accessorKey: 'createdDate', header: 'Created Date' },
+            // { accessorKey: "isRead", header: "Read" },
+          ];
           return (
             <div className="flex flex-col min-h-screen bg-gray-100 p-6">
               {/* STATISTIC GRID */}
@@ -88,8 +96,8 @@ const ReportFeedbackPage = () => {
                 columns={columns}
                 data={ReportFeedbacks}
                 onView={(row: any) => router.push(`/reportFeedback/${row.id}`)}
-                onEdit={(row: any) => console.log("edit", row)}
-                onDelete={(row: any) => console.log("delete", row)}
+                onEdit={(row: any) => console.log('edit', row)}
+                onDelete={(row: any) => console.log('delete', row)}
                 isCreate={false}
                 isEdit={false}
                 isDelete={false}

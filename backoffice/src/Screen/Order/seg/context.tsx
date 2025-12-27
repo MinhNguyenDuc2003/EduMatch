@@ -7,7 +7,7 @@ import { GenCtx } from 'src/apiController/GeneralContext';
 import { sStore } from 'src/stores';
 import { onSetLoading } from 'src/utils/eventBus';
 
-const data = 'ffffff';
+
 export default GenCtx({
   useLogic() {
     type IForm = {
@@ -66,9 +66,7 @@ export default GenCtx({
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return {
-      ss,
-      data,
-      meds,
+      ss,meds,
       methods
     };
   },
